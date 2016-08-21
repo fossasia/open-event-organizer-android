@@ -1,24 +1,27 @@
 language: android
+sudo: false
 android:
   components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
-    # - platform-tools
-    # - tools
-
-    # The BuildTools version used by your project
-    - build-tools-19.1.0
-
-    # The SDK version used to compile your project
-    - android-22
-
-    # Additional components
+    - platform-tools
+    - tools
+    - build-tools-24.0.1
+    - android-24
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
-    - addon-google_apis-google-19
-
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
-    - sys-img-armeabi-v7a-android-22
-    - sys-img-x86-android-17
+    - addon-google_apis-google-24
+    - sys-img-armeabi-v7a-android-24
+    - sys-img-x86-android-24
+cache:
+    directories:
+        - node_modules
+        - src/lib
+install:
+    - npm install -g ionic cordova
+    - npm install
+    - export PATH=$(npm bin):$PATH
+    - bower install
+script:
+    - ionic platform add android
+    - ionic resources
+    - ionic build android
