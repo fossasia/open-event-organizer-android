@@ -274,21 +274,7 @@
         color: $color;
       }
     }
-
   }
-
-  &.tabs-striped.#{$style} {
-    .tab-item {
-      &.tab-item-active,
-      &.active,
-      &.activated {
-        border-color: $color;
-        color: $color;
-      }
-    }
-
-  }
-
 }
 
 ion-tabs {

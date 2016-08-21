@@ -99,7 +99,7 @@
   &.bar-balanced {
     @include bar-style($bar-balanced-bg, $bar-balanced-border, $bar-balanced-text);
     &.bar-footer{
-      background-image: linear-gradient(180deg, $bar-balanced-border, $bar-balanced-border 50%, transparent 50%);
+      background-image: linear-gradient(180deg, $bar-balanced-border, $bar-positive-border 50%, transparent 50%);
     }
   }
   &.bar-energized {
@@ -366,11 +366,6 @@
   &.item-input-inset {
     position: absolute;
   }
-
-  .title {
-    height: $bar-footer-height - 1;
-    line-height: $bar-footer-height;
-  }
 }
 
 // Don't render padding if the bar is just for tabs
@@ -380,23 +375,15 @@
 
 .bar-subheader {
   top: $bar-height;
+  display: block;
 
   height: $bar-subheader-height;
-
-  .title {
-    height: $bar-subheader-height - 1;
-    line-height: $bar-subheader-height;
-  }
 }
 .bar-subfooter {
   bottom: $bar-footer-height;
+  display: block;
 
   height: $bar-subfooter-height;
-
-  .title {
-    height: $bar-subfooter-height - 1;
-    line-height: $bar-subfooter-height;
-  }
 }
 
 .nav-bar-block {
