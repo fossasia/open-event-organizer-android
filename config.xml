@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.openeventorgaapp727801" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>open-event-orga-app</name>
+<widget id="org.fossasia.open-event.organizer" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Open Event Organizer App</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Mobile App for Organizers and Entry Manager.
     </description>
-  <author email="you@example.com" href="http://example.com.com/">
-      Your Name Here
+  <author email="open-event@fossasia.org" href="http://fossasia.org/">
+      FOSSASIA
     </author>
   <content src="index.html"/>
   <access origin="*"/>
