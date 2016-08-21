@@ -17,7 +17,6 @@ android:
 cache:
     directories:
         - node_modules
-        - src/lib
 env:
   - NODE_VERSION="4.4.7"
 install:
