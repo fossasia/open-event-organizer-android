@@ -1,26 +1,33 @@
 language: android
 sudo: false
+jdk:
+  - oraclejdk8
 android:
   components:
     - platform-tools
     - tools
     - build-tools-24.0.1
+    - build-tools-23.0.3
     - android-24
+    - android-23
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
-    - addon-google_apis-google-24
-    - sys-img-armeabi-v7a-android-24
-    - sys-img-x86-android-24
+    - extra-android-support
 cache:
     directories:
         - node_modules
         - src/lib
+env:
+  - NODE_VERSION="4.4.7"
 install:
+    - nvm install $NODE_VERSION
+    - nvm use $NODE_VERSION
     - npm install -g ionic cordova
     - npm install
     - export PATH=$(npm bin):$PATH
     - bower install
+    - chmod +x hooks/after_prepare/010_add_platform_class.js
 script:
     - ionic platform add android
     - ionic resources
