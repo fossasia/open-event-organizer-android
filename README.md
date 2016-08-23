@@ -23,9 +23,9 @@ This project uses [Ionic Framework v1.x](http://ionicframework.com/).
 
 ### Development environment setup
 - Install [Node.js](nodejs.org).
-- Install ionic framework CLI tool and apache cordova globally
+- Install ionic framework CLI tool, apache cordova and gulp globally
 ```
-npm install -g ionic cordova
+npm install -g ionic cordova gulp
 ```
 - Clone this repository
 ```
@@ -35,7 +35,10 @@ git clone https://github.com/fossasia/open-event-orga-app.git
 ```
 npm install
 ```
-
+- Build javascript assets.
+```
+gulp
+```
 Depending on the platform you wish to build for (i.e Android or iOS) you will have to setup the required build tools and SDKs. 
 
 #### Building for Android
