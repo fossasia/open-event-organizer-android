@@ -1,15 +1,18 @@
 <ion-view title="Login" id="page1">
     <ion-content padding="true" class="has-header">
-        <form id="login-form3" class="list ">
-            <label class="item item-input item-stacked-label " id="login-input3" name="email">
+        <form id="login-form" class="list ">
+            <label class="item item-input item-stacked-label">
                 <span class="input-label">Email ID</span>
-                <input type="email" placeholder="john.doe@example.com">
+                <input type="email" placeholder="john.doe@example.com" ng-model="user.email">
             </label>
-            <label class="item item-input item-stacked-label " id="login-input4" name="password">
+            <label class="item item-input item-stacked-label">
                 <span class="input-label">Password</span>
-                <input type="password" placeholder="xyzzy">
+                <input type="password" placeholder="xyzzy" ng-model="user.password">
             </label>
         </form>
-        <button id="login-button1" class=" button button-calm  button-block ">Login</button>
+        <div style="text-align: center;" id="loading-view" ng-show="isLoading">
+            <ion-spinner></ion-spinner>
+        </div>
+        <button id="login-button" class=" button button-calm  button-block" ng-click="login()" ng-hide="isLoading">Login</button>
     </ion-content>
 </ion-view>
