@@ -6,12 +6,13 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
 
-var paths = {
-    sass: ['./scss/**/*.scss']
-};
 
-gulp.task('default', ['sass']);
+var paths = ['./scss/**/*.scss', './www/js/**/*.js'];
+
+gulp.task('default', ['browserify']);
 
 gulp.task('sass', function (done) {
     gulp.src('./scss/ionic.app.scss')
@@ -26,8 +27,17 @@ gulp.task('sass', function (done) {
         .on('end', done);
 });
 
+gulp.task('browserify', function() {
+    // Grabs the app.js file
+    return browserify('./www/js/app.js')
+        .bundle()
+        .pipe(source('app.js'))
+        // saves it the public/js/ directory
+        .pipe(gulp.dest('./www/builds/'));
+});
+
 gulp.task('watch', function () {
-    gulp.watch(paths.sass, ['sass']);
+    gulp.watch(paths, ['browserify']);
 });
 
 gulp.task('install', ['git-check'], function () {
