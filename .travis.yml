@@ -22,10 +22,11 @@ env:
 install:
     - nvm install $NODE_VERSION
     - nvm use $NODE_VERSION
-    - npm install -g ionic cordova
+    - npm install -g ionic cordova gulp
     - npm install
     - export PATH=$(npm bin):$PATH
     - bower install
+    - gulp
     - chmod +x hooks/after_prepare/010_add_platform_class.js
 script:
     - ionic platform add android
