@@ -22,7 +22,7 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 This project uses [Ionic Framework v1.x](http://ionicframework.com/).
 
 ### Development environment setup
-- Install [Node.js](nodejs.org).
+- Install [Node.js](https://nodejs.org/en/). (v4.x.x recommended).
 - Install ionic framework CLI tool, apache cordova and gulp globally
 ```
 npm install -g ionic cordova gulp
@@ -87,5 +87,9 @@ ionic build ios
 
 ## Technology Stack
 
-* Progressive Web Apps
-* Ionic Framework
+* [Node.js](https://nodejs.org/en/)
+* [Ionic Framework v1](http://ionicframework.com/)
+* [AngularJS 1](https://angularjs.org/)
+* [Apache Cordova](https://cordova.apache.org/)
+* [Browserify](http://browserify.org/)
+* [Gulp](http://gulpjs.com/)
