@@ -27,6 +27,10 @@ This project uses [Ionic Framework v1.x](http://ionicframework.com/).
 ```
 npm install -g ionic cordova gulp
 ```
+- Install nodejs-legacy
+```
+apt install nodejs-legacy
+```
 - Clone this repository
 ```
 git clone https://github.com/fossasia/open-event-orga-app.git
