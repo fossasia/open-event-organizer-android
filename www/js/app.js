@@ -4,6 +4,13 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 
+require('../lib/ionic/js/ionic');
+require('angular');
+require('angular-route');
+require('angular-animate');
+require('angular-sanitize');
+require('angular-ui-router');
+require('../lib/ionic/js/ionic-angular');
 require('./config');
 require('./controllers');
 require('./directives');
