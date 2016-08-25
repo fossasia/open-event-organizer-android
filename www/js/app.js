@@ -18,9 +18,12 @@ require('./routes');
 require('angular-jwt');
 require('./services');
 require('ngstorage');
+require('moment');
+require('angular-moment');
 
-angular.module('app', ['ionic', 'angular-jwt', 'app.config', 'app.controllers', 'app.routes', 'app.directives', 'app.services'])
-    .config(function Config($httpProvider, jwtOptionsProvider, APP_CONFIG) {
+angular.module('app', ['ionic', 'angular-jwt', 'app.config', 'app.controllers', 'app.routes', 'app.directives', 'app.services', 'ngStorage', 'angularMoment'])
+    .config(function Config($httpProvider, jwtOptionsProvider, APP_CONFIG, jwtInterceptorProvider, $localStorageProvider) {
+        jwtInterceptorProvider.authPrefix = "JWT ";
         jwtOptionsProvider.config({
             unauthenticatedRedirectPath: '/login',
             whiteListedDomains: APP_CONFIG.WHITELISTED_DOMAINS,
