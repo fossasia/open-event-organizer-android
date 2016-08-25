@@ -4,23 +4,31 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 
+require('../lib/ionic/js/ionic');
+require('angular');
+require('angular-route');
+require('angular-animate');
+require('angular-sanitize');
+require('angular-ui-router');
+require('../lib/ionic/js/ionic-angular');
 require('./config');
 require('./controllers');
 require('./directives');
 require('./routes');
 require('angular-jwt');
 require('./services');
+require('ngstorage');
+require('moment');
+require('angular-moment');
 
-angular.module('app', ['ionic', 'angular-jwt', 'app.config', 'app.controllers', 'app.routes', 'app.directives', 'app.services'])
-    .config(function Config($httpProvider, jwtOptionsProvider, APP_CONFIG) {
+angular.module('app', ['ionic', 'angular-jwt', 'app.config', 'app.controllers', 'app.routes', 'app.directives', 'app.services', 'ngStorage', 'angularMoment'])
+    .config(function Config($httpProvider, jwtOptionsProvider, APP_CONFIG, jwtInterceptorProvider, $localStorageProvider) {
+        $localStorageProvider.setKeyPrefix('appStorage_');
+        jwtInterceptorProvider.authPrefix = "JWT ";
         jwtOptionsProvider.config({
             unauthenticatedRedirectPath: '/login',
             whiteListedDomains: APP_CONFIG.WHITELISTED_DOMAINS,
-            tokenGetter: ['options', function (options) {
-                // Skip authentication for template requests
-                if (options.url.substr(options.url.length - 5) == '.html') {
-                    return null;
-                }
+            tokenGetter: [function () {
                 return localStorage.getItem('access_token');
             }]
         });

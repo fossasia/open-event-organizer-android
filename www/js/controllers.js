@@ -4,26 +4,67 @@
 
 
 module.exports = angular.module('app.controllers', [])
-    .controller('loginCtrl', ['$scope', '$stateParams', '$http', 'LoginService', '$ionicPopup', '$location',
-        function ($scope, $stateParams, $http, LoginService, $ionicPopup, $location) {
-
-        $scope.user = {
-
-        };
-        $scope.login = function() {
+    .controller('loginCtrl', function ($scope, $stateParams, $http, LoginService, $ionicPopup, $location, $localStorage, verifyToken) {
+        $scope.user = {};
+        verifyToken.then(function () {
+            if($localStorage.selectedEvent) {
+                $location.path("/event").replace();
+            } else {
+                $location.path("/").replace();
+            }
+        });
+        $scope.login = function () {
             $scope.isLoading = true;
-            LoginService.loginUser($scope.user.email, $scope.user.password).success(function(data) {
-                console.log(data);
-                $location.path("/");
-            }).error(function(data) {
-                $ionicPopup.alert({
-                    title: 'Login failed',
-                    template: data
+            LoginService
+                .loginUser($scope.user.email, $scope.user.password)
+                .success(function (data) {
+                    console.log(data);
+                    $location.path("/").replace();
+                })
+                .error(function (data) {
+                    $ionicPopup.alert({
+                        title: 'Login failed',
+                        template: data
+                    });
+                    $scope.isLoading = false;
                 });
-                $scope.isLoading = false;
-            });
         }
-    }])
-    .controller('dashboardCtrl', ['$scope', '$stateParams', '$ionicNavBarDelegate', function ($scope, $stateParams, $ionicNavBarDelegate) {
+    })
+    .controller('eventPickerCtrl', function ($scope, $stateParams, $ionicNavBarDelegate, $location, LoadEventsService, $localStorage, verifyToken) {
         $ionicNavBarDelegate.showBackButton(false);
-    }]);
+        $scope.events = [];
+        $scope.isLoading = true;
+        $scope.$storage = $localStorage;
+        verifyToken.then(function () {
+            $scope.pickEvent = function (event) {
+                $scope.$storage.selectedEvent = event;
+                $location.path("/event").replace();
+            };
+
+            LoadEventsService
+                .loadEvents()
+                .success(function (data) {
+                    $scope.events = data;
+                    $scope.isLoading = false;
+                })
+                .error(function (data) {
+                    if(data === 'auth_failed') {
+                        $location.path("/login").replace();
+                    } else {
+                        $ionicPopup.alert({
+                            title: 'Data loading failed',
+                            template: data
+                        });
+                        $scope.isLoading = false;
+                    }
+                });
+        });
+    })
+    .controller('eventDashboardCtrl', function ($scope, $stateParams, $ionicNavBarDelegate, $location, LoadEventsService, $localStorage, verifyToken) {
+        $scope.isLoading = false;
+        $scope.$storage = $localStorage;
+        $ionicNavBarDelegate.showBackButton(false);
+        verifyToken.then(function () {
+
+        });
+    });
