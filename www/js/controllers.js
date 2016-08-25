@@ -53,3 +53,10 @@ module.exports = angular.module('app.controllers', [])
                 });
         });
     })
+    .controller('eventDashboardCtrl', function ($scope, $stateParams, $ionicNavBarDelegate, $location, LoadEventsService, $localStorage, verifyToken) {
+        $scope.isLoading = false;
+        $scope.$storage = $localStorage;
+        verifyToken.then(function () {
+
+        });
+    });
