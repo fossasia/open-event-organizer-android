@@ -1,0 +1,13 @@
+<ion-view title="Dashboard" id="event-dashboard">
+    <ion-content padding="true" class="scroll-content ionic-scroll has-header">
+        <div class="scroll padding">
+            <h2>{{ $storage.selectedEvent.name }}</h2>
+            <span style="font-size: larger">{{ $storage.selectedEvent.start_time | amDateFormat:'MMMM Do YYYY, HH:mm' }} to {{ $storage.selectedEvent.end_time | amDateFormat:'MMMM Do YYYY, HH:mm' }}</span>
+            <div style="text-align: center;" id="loading-view" ng-show="isLoading">
+                <ion-spinner></ion-spinner>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
+
+
