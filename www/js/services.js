@@ -12,14 +12,15 @@ module.exports = angular.module('app.services', [])
                     email: email,
                     password: password
                 }).then(function successCallback(response) {
-                    if(response.data.hasOwnProperty('access_token')) {
-                        localStorage.setItem('access_token', response.data.access_token);
+                    if (response.data.hasOwnProperty('access_token')) {
+                        $localStorage.access_token = response.data.access_token;
                         deferred.resolve(response.data);
                     } else {
                         deferred.reject('An unexpected error occurred.');
                     }
                 }, function errorCallback(response) {
-                    if(response.status == 401) {
+                    console.log(response);
+                    if (response.status == 401) {
                         deferred.reject('Credentials were incorrect.');
                     } else {
                         deferred.reject('Could not connect to the server.');
