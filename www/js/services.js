@@ -1,10 +1,18 @@
 module.exports = angular.module('app.services', [])
-    .factory('BlankFactory', [function () {
-
+    .factory('verifyToken', ['$location', '$q', '$localStorage', 'jwtHelper', function ($location, $q, $localStorage, jwtHelper) {
+        var defer = $q.defer();
+        var accessToken = $localStorage.access_token;
+        if (accessToken === null || jwtHelper.isTokenExpired(accessToken)) {
+            defer.reject();
+            $location.path("/login").replace();
+        } else {
+            defer.resolve('valid');
+        }
+        return defer.promise;
     }])
-    .service('LoginService', function($q, $http, APP_CONFIG) {
+    .service('LoginService', function ($q, $http, APP_CONFIG, $localStorage) {
         return {
-            loginUser: function(email, password) {
+            loginUser: function (email, password) {
                 var deferred = $q.defer();
                 var promise = deferred.promise;
 
