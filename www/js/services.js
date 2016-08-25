@@ -1,8 +1,8 @@
 module.exports = angular.module('app.services', [])
-    .factory('verifyToken', ['$location', '$q', '$localStorage', 'jwtHelper', function ($location, $q, $localStorage, jwtHelper) {
+    .factory('verifyToken', ['$location', '$q', 'jwtHelper', function ($location, $q, jwtHelper) {
         var defer = $q.defer();
-        var accessToken = $localStorage.access_token;
-        if (accessToken === null || jwtHelper.isTokenExpired(accessToken)) {
+        var accessToken = localStorage.getItem('access_token');
+        if (!accessToken || jwtHelper.isTokenExpired(accessToken)) {
             defer.reject();
             $location.path("/login").replace();
         } else {
@@ -10,7 +10,7 @@ module.exports = angular.module('app.services', [])
         }
         return defer.promise;
     }])
-    .service('LoginService', function ($q, $http, APP_CONFIG, $localStorage) {
+    .service('LoginService', function ($q, $http, APP_CONFIG) {
         return {
             loginUser: function (email, password) {
                 var deferred = $q.defer();
@@ -21,7 +21,7 @@ module.exports = angular.module('app.services', [])
                     password: password
                 }).then(function successCallback(response) {
                     if (response.data.hasOwnProperty('access_token')) {
-                        $localStorage.access_token = response.data.access_token;
+                        localStorage.setItem('access_token', response.data.access_token);
                         deferred.resolve(response.data);
                     } else {
                         deferred.reject('An unexpected error occurred.');

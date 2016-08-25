@@ -23,12 +23,13 @@ require('angular-moment');
 
 angular.module('app', ['ionic', 'angular-jwt', 'app.config', 'app.controllers', 'app.routes', 'app.directives', 'app.services', 'ngStorage', 'angularMoment'])
     .config(function Config($httpProvider, jwtOptionsProvider, APP_CONFIG, jwtInterceptorProvider, $localStorageProvider) {
+        $localStorageProvider.setKeyPrefix('appStorage_');
         jwtInterceptorProvider.authPrefix = "JWT ";
         jwtOptionsProvider.config({
             unauthenticatedRedirectPath: '/login',
             whiteListedDomains: APP_CONFIG.WHITELISTED_DOMAINS,
             tokenGetter: [function () {
-                return $localStorageProvider.get('access_token');
+                return localStorage.getItem('access_token');
             }]
         });
         $httpProvider.interceptors.push('jwtInterceptor');
