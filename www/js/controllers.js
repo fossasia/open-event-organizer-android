@@ -4,8 +4,15 @@
 
 
 module.exports = angular.module('app.controllers', [])
-    .controller('loginCtrl', function ($scope, $stateParams, $http, LoginService, $ionicPopup, $location) {
+    .controller('loginCtrl', function ($scope, $stateParams, $http, LoginService, $ionicPopup, $location, $localStorage, verifyToken) {
         $scope.user = {};
+        verifyToken.then(function () {
+            if($localStorage.selectedEvent) {
+                $location.path("/event").replace();
+            } else {
+                $location.path("/").replace();
+            }
+        });
         $scope.login = function () {
             $scope.isLoading = true;
             LoginService
@@ -56,6 +63,7 @@ module.exports = angular.module('app.controllers', [])
     .controller('eventDashboardCtrl', function ($scope, $stateParams, $ionicNavBarDelegate, $location, LoadEventsService, $localStorage, verifyToken) {
         $scope.isLoading = false;
         $scope.$storage = $localStorage;
+        $ionicNavBarDelegate.showBackButton(false);
         verifyToken.then(function () {
 
         });
