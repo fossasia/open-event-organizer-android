@@ -23,6 +23,8 @@ This project uses [Ionic Framework v1.x](http://ionicframework.com/).
 
 ### Development environment setup
 - Install [Node.js](https://nodejs.org/en/). (v4.x.x recommended).
+    - **Linux/OS X Users** - You can use [Node Version Manager](https://github.com/creationix/nvm) to install and manage Node.js versions.
+    - **Windows Users** - You can download the lastest installer from [nodejs.org](https://nodejs.org/en/) and install it directly.
 - Install ionic framework CLI tool, apache cordova and gulp globally
 ```
 npm install -g ionic cordova gulp
