@@ -34,11 +34,38 @@ module.exports = angular.module('app.services', [])
                         deferred.reject('Could not connect to the server.');
                     }
                 });
-                promise.success = function(fn) {
+                promise.success = function (fn) {
                     promise.then(fn);
                     return promise;
                 };
-                promise.error = function(fn) {
+                promise.error = function (fn) {
+                    promise.then(null, fn);
+                    return promise;
+                };
+                return promise;
+            }
+        }
+    }).service('LoadEventsService', function ($q, $http, APP_CONFIG) {
+        return {
+            loadEvents: function () {
+                var deferred = $q.defer();
+                var promise = deferred.promise;
+                $http.get(APP_CONFIG.API_ENDPOINT + "/users/me/events")
+                    .then(function successCallback(response) {
+                        deferred.resolve(response.data);
+                    }, function errorCallback(response) {
+                        console.log(response);
+                        if (response.status == 401) {
+                            deferred.reject('auth_failed');
+                        } else {
+                            deferred.reject('Could not connect to the server.');
+                        }
+                    });
+                promise.success = function (fn) {
+                    promise.then(fn);
+                    return promise;
+                };
+                promise.error = function (fn) {
                     promise.then(null, fn);
                     return promise;
                 };
