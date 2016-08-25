@@ -17,18 +17,15 @@ require('./directives');
 require('./routes');
 require('angular-jwt');
 require('./services');
+require('ngstorage');
 
 angular.module('app', ['ionic', 'angular-jwt', 'app.config', 'app.controllers', 'app.routes', 'app.directives', 'app.services'])
     .config(function Config($httpProvider, jwtOptionsProvider, APP_CONFIG) {
         jwtOptionsProvider.config({
             unauthenticatedRedirectPath: '/login',
             whiteListedDomains: APP_CONFIG.WHITELISTED_DOMAINS,
-            tokenGetter: ['options', function (options) {
-                // Skip authentication for template requests
-                if (options.url.substr(options.url.length - 5) == '.html') {
-                    return null;
-                }
-                return localStorage.getItem('access_token');
+            tokenGetter: [function () {
+                return $localStorageProvider.get('access_token');
             }]
         });
         $httpProvider.interceptors.push('jwtInterceptor');
