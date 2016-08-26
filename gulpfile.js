@@ -10,7 +10,10 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var requireGlobify = require('require-globify');
 
-var paths = ['./www/scss/**/*.scss', './www/js/**/*.js'];
+var paths = {
+    scss: ['./www/scss/**/*.scss'],
+    js: ['./www/js/**/*.js']
+};
 
 gulp.task('default', ['browserify', 'sass']);
 
@@ -44,7 +47,8 @@ gulp.task('browserify', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch(paths, ['browserify', 'sass']);
+    gulp.watch(paths.scss, ['sass']);
+    gulp.watch(paths.js, ['browserify']);
 });
 
 gulp.task('install', ['git-check'], function () {
