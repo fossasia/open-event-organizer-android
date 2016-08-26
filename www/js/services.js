@@ -12,13 +12,13 @@ function getPromise(deferred) {
 }
 
 module.exports = angular.module('app.services', [])
-    .factory('verifyToken', ['$location', '$q', 'jwtHelper', function ($location, $q, jwtHelper) {
+    .factory('verifyToken', ['$location', '$q', 'jwtHelper', '$state', function ($location, $q, jwtHelper, $state) {
         var deferred = $q.defer();
         var promise = getPromise(deferred);
         var accessToken = localStorage.getItem('access_token');
         if (!accessToken || jwtHelper.isTokenExpired(accessToken)) {
             deferred.reject();
-            $location.path("/login").replace();
+            $state.go("login", {}, {location: 'replace'});
         } else {
             deferred.resolve('valid');
         }

@@ -4,13 +4,11 @@
 
 
 module.exports = angular.module('app.controllers', [])
-    .controller('loginCtrl', function ($scope, $stateParams, $http, LoginService, $ionicPopup, $location, $localStorage, verifyToken) {
+    .controller('loginCtrl', function ($scope, $stateParams, $http, LoginService, $ionicPopup, $localStorage, verifyToken, $state) {
         $scope.user = {};
         verifyToken.then(function () {
             if($localStorage.selectedEvent) {
-                $location.path("/event").replace();
-            } else {
-                $location.path("/").replace();
+                $state.go("event_dashboard", {}, {location: 'replace'});
             }
         });
         $scope.login = function () {
@@ -19,7 +17,7 @@ module.exports = angular.module('app.controllers', [])
                 .loginUser($scope.user.email, $scope.user.password)
                 .success(function (data) {
                     console.log(data);
-                    $location.path("/").replace();
+                    $state.go("event_picker", {}, {location: 'replace'});
                 })
                 .error(function (data) {
                     $ionicPopup.alert({
@@ -30,13 +28,13 @@ module.exports = angular.module('app.controllers', [])
                 });
         }
     })
-    .controller('eventPickerCtrl', function ($scope, $stateParams, $ionicNavBarDelegate, $location, LoadEventsService, $localStorage, verifyToken) {
+    .controller('eventPickerCtrl', function ($scope, $stateParams, $ionicNavBarDelegate, $location, LoadEventsService, $localStorage, $state) {
         $scope.events = [];
         $scope.isLoading = true;
         $scope.$storage = $localStorage;
         $scope.pickEvent = function (event) {
             $scope.$storage.selectedEvent = event;
-            $location.path("/event").replace();
+            $state.go("event_dashboard", {}, {location: 'replace'});
         };
 
         LoadEventsService
@@ -47,7 +45,7 @@ module.exports = angular.module('app.controllers', [])
             })
             .error(function (data) {
                 if(data === 'auth_failed') {
-                    $location.path("/login").replace();
+                    $state.go("login", {}, {location: 'replace'});
                 } else {
                     $ionicPopup.alert({
                         title: 'Data loading failed',
@@ -57,7 +55,7 @@ module.exports = angular.module('app.controllers', [])
                 }
             });
     })
-    .controller('eventDashboardCtrl', function ($scope, $stateParams, $ionicNavBarDelegate, $location, LoadEventsService, $localStorage, verifyToken, LoadEventService, LoadAttendeesService) {
+    .controller('eventDashboardCtrl', function ($scope, $stateParams, $ionicNavBarDelegate, $location, LoadEventsService, $localStorage, verifyToken, LoadEventService, LoadAttendeesService, $state) {
         $scope.isLoading = false;
         $scope.$storage = $localStorage;
         $scope.stats = {
@@ -90,7 +88,7 @@ module.exports = angular.module('app.controllers', [])
                 })
                 .error(function (data) {
                     if(data === 'auth_failed') {
-                        $location.path("/login").replace();
+                        $state.go("login", {}, {location: 'replace'});
                     } else {
 
                     }
@@ -105,7 +103,7 @@ module.exports = angular.module('app.controllers', [])
                 })
                 .error(function (data) {
                     if(data === 'auth_failed') {
-                        $location.path("/login").replace();
+                        $state.go("login", {}, {location: 'replace'});
                     } else {
 
                     }
