@@ -10,20 +10,20 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 
 
-var paths = ['./scss/**/*.scss', './www/js/**/*.js'];
+var paths = ['./www/scss/**/*.scss', './www/js/**/*.js'];
 
-gulp.task('default', ['browserify']);
+gulp.task('default', ['browserify', 'sass']);
 
 gulp.task('sass', function (done) {
-    gulp.src('./scss/ionic.app.scss')
+    gulp.src('./www/scss/app.scss')
         .pipe(sass())
         .on('error', sass.logError)
-        .pipe(gulp.dest('./www/css/'))
+        .pipe(gulp.dest('./www/builds/'))
         .pipe(minifyCss({
             keepSpecialComments: 0
         }))
         .pipe(rename({extname: '.min.css'}))
-        .pipe(gulp.dest('./www/css/'))
+        .pipe(gulp.dest('./www/builds/'))
         .on('end', done);
 });
 
@@ -37,7 +37,7 @@ gulp.task('browserify', function() {
 });
 
 gulp.task('watch', function () {
-    gulp.watch(paths, ['browserify']);
+    gulp.watch(paths, ['browserify', 'sass']);
 });
 
 gulp.task('install', ['git-check'], function () {
