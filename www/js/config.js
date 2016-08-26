@@ -1,7 +1,7 @@
 var config = {
     'APP_CONFIG': {
         'API_ENDPOINT': 'https://open-event-dev.herokuapp.com/api/v2',
-        'WHITELISTED_DOMAINS': ['open-event-dev.herokuapp.com']
+        'WHITELISTED_DOMAINS': ['open-event-dev.herokuapp.com', 'localhost:5000', 'localhost']
     }
 };
 
