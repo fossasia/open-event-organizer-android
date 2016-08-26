@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Open Event Organizer App by fossasia</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Open Event Organizer App</h1>
+        <p>Open Event Mobile App for Organizers and Entry Manager</p>
+
+        <p class="view"><a href="https://github.com/fossasia/open-event-orga-app">View the Project on GitHub <small>fossasia/open-event-orga-app</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/fossasia/open-event-orga-app/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/fossasia/open-event-orga-app/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/fossasia/open-event-orga-app">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="open-event-organizer-app" class="anchor" href="#open-event-organizer-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Open Event Organizer App</h1>
+
+<p><a href="https://travis-ci.org/fossasia/open-event-orga-app"><img src="https://travis-ci.org/fossasia/open-event-orga-app.svg?branch=master" alt="Build Status"></a>
+<a href="https://gitter.im/fossasia/open-event-orga-app?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/fossasia/open-event-orga-app.svg" alt="Join the chat at https://gitter.im/fossasia/open-event-orga-app"></a></p>
+
+<p>Mobile App for Organizers and Entry Manager</p>
+
+<p>The main feature of the app is: Scan a QR code, check in attendees and keep it inline with the orga server data.</p>
+
+<h2>
+<a id="roadmap" class="anchor" href="#roadmap" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Roadmap</h2>
+
+<p>Future features are to give overviews of sales, tracks and sessions, but all this can come later.</p>
+
+<h2>
+<a id="communication" class="anchor" href="#communication" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Communication</h2>
+
+<p>Please join our mailing list to discuss questions regarding the project: <a href="https://groups.google.com/forum/#!forum/open-event">https://groups.google.com/forum/#!forum/open-event</a></p>
+
+<p>Our chat channel is on gitter here: <a href="https://gitter.im/fossasia/open-event-orga-app">https://gitter.im/fossasia/open-event-orga-app</a></p>
+
+<h2>
+<a id="development" class="anchor" href="#development" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Development</h2>
+
+<p>This project uses <a href="http://ionicframework.com/">Ionic Framework v1.x</a>.</p>
+
+<h3>
+<a id="development-environment-setup" class="anchor" href="#development-environment-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Development environment setup</h3>
+
+<ul>
+<li>Install <a href="https://nodejs.org/en/">Node.js</a>. (v4.x.x recommended).
+
+<ul>
+<li>
+<strong>Linux/OS X Users</strong> - You can use <a href="https://github.com/creationix/nvm">Node Version Manager</a> to install and manage Node.js versions.</li>
+<li>
+<strong>Windows Users</strong> - You can download the lastest installer from <a href="https://nodejs.org/en/">nodejs.org</a> and install it directly.</li>
+</ul>
+</li>
+<li>Install ionic framework CLI tool, apache cordova and gulp globally</li>
+</ul>
+
+<pre><code>npm install -g ionic cordova gulp
+</code></pre>
+
+<ul>
+<li>Clone this repository</li>
+</ul>
+
+<pre><code>git clone https://github.com/fossasia/open-event-orga-app.git
+</code></pre>
+
+<ul>
+<li>From with the cloned repository, install all the Node.js dependencies using <code>npm</code>.</li>
+</ul>
+
+<pre><code>npm install
+</code></pre>
+
+<ul>
+<li>Build javascript assets.</li>
+</ul>
+
+<pre><code>gulp
+</code></pre>
+
+<p>Depending on the platform you wish to build for (i.e Android or iOS) you will have to setup the required build tools and SDKs. </p>
+
+<h4>
+<a id="building-for-android" class="anchor" href="#building-for-android" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Building for Android</h4>
+
+<ul>
+<li>Install <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">Java Development Kit (JDK) 8</a> or later.</li>
+<li>Install the <a href="https://developer.android.com/studio/index.html#downloads">Android SDK Tools or Android Studio</a>.</li>
+<li>Install required Android SDK Packages from the SDK Manager
+
+<ul>
+<li>Android Platform SDK for API 24</li>
+<li>Android SDK Build tools 24.x.x</li>
+<li>Android Support Repository</li>
+</ul>
+</li>
+<li>Setup required environment variables and PATH
+
+<ul>
+<li>Set the <code>JAVA_HOME</code> environment variable to the location of your JDK installation</li>
+<li>Set the <code>ANDROID_HOME</code> environment variable to the location of your Android SDK installation</li>
+<li>Add the Android SDK's <code>tools</code> and <code>platform-tools</code> directories to your <code>PATH</code>
+</li>
+</ul>
+</li>
+<li>Create android platform specific build files for our Ionic app</li>
+</ul>
+
+<pre><code>ionic platform add android
+</code></pre>
+
+<ul>
+<li>Generate the icon and splash screen resources</li>
+</ul>
+
+<pre><code>ionic resources
+</code></pre>
+
+<ul>
+<li>Build the android application</li>
+</ul>
+
+<pre><code>ionic build android
+</code></pre>
+
+<ul>
+<li>The app will have been built and located at <code>platforms/android/build/outputs/apk/android-debug.apk</code>
+</li>
+</ul>
+
+<h4>
+<a id="building-for-ios" class="anchor" href="#building-for-ios" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Building for iOS</h4>
+
+<ul>
+<li>Install Xcode from the <a href="https://itunes.apple.com/us/app/xcode/id497799835?mt=12">App store</a>
+</li>
+<li>Once Xcode is installed, few command-line tools need to be enabled. From the command line, run:</li>
+</ul>
+
+<pre><code>xcode-select --install
+</code></pre>
+
+<ul>
+<li>Create iOS platform specific build files for our Ionic app</li>
+</ul>
+
+<pre><code>ionic platform add ios
+</code></pre>
+
+<ul>
+<li>Generate the icon and splash screen resources</li>
+</ul>
+
+<pre><code>ionic resources
+</code></pre>
+
+<ul>
+<li>Build the iOS application</li>
+</ul>
+
+<pre><code>ionic build ios
+</code></pre>
+
+<h2>
+<a id="technology-stack" class="anchor" href="#technology-stack" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Technology Stack</h2>
+
+<ul>
+<li><a href="https://nodejs.org/en/">Node.js</a></li>
+<li><a href="http://ionicframework.com/">Ionic Framework v1</a></li>
+<li><a href="https://angularjs.org/">AngularJS 1</a></li>
+<li><a href="https://cordova.apache.org/">Apache Cordova</a></li>
+<li><a href="http://browserify.org/">Browserify</a></li>
+<li><a href="http://gulpjs.com/">Gulp</a></li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/fossasia">fossasia</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
