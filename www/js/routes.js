@@ -22,5 +22,5 @@ module.exports = angular.module('app.routes', [])
                 templateUrl: 'templates/event/dashboard.html',
                 controller: 'eventDashboardCtrl'
             });
-        $urlRouterProvider.otherwise('/login')
+        $urlRouterProvider.otherwise('/')
     });
