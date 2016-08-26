@@ -8,7 +8,7 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
-
+var requireGlobify = require('require-globify');
 
 var paths = ['./www/scss/**/*.scss', './www/js/**/*.js'];
 
@@ -27,9 +27,16 @@ gulp.task('sass', function (done) {
         .on('end', done);
 });
 
-gulp.task('browserify', function() {
+gulp.task('browserify', function () {
     // Grabs the app.js file
-    return browserify('./www/js/app.js')
+    //noinspection JSUnresolvedFunction
+    return browserify(
+        {
+            entries: './www/js/app.js',
+            debug: true,
+            // defining transforms here will avoid crashing your stream
+            transform: [requireGlobify]
+        })
         .bundle()
         .pipe(source('app.js'))
         // saves it the public/js/ directory
