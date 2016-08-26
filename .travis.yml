@@ -32,3 +32,6 @@ script:
     - ionic platform add android
     - ionic resources
     - ionic build android
+after_success:
+  - chmod +x /home/travis/build/the-dagger/open-event-orga-app/upload-apk.sh
+  - sh /home/travis/build/the-dagger/open-event-orga-app/upload-apk.sh
