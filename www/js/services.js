@@ -22,9 +22,9 @@ module.exports = angular.module('app.services', [])
         } else {
             deferred.resolve('valid');
         }
-        return defer.promise;
+        return promise;
     }])
-    .service('LoginService', function ($q, $http, APP_CONFIG) {
+    .service('LoginService', function ($q, $http, APP_CONFIG, $localStorage) {
         return {
             loginUser: function (email, password) {
                 var deferred = $q.defer();
@@ -32,16 +32,27 @@ module.exports = angular.module('app.services', [])
                 $http.post(APP_CONFIG.API_ENDPOINT + "/login", {
                     email: email,
                     password: password
-                }).then(function successCallback(response) {
-                    if (response.data.hasOwnProperty('access_token')) {
-                        localStorage.setItem('access_token', response.data.access_token);
-                        deferred.resolve(response.data);
+                }).then(function successCallback(loginResponse) {
+                    if (loginResponse.data.hasOwnProperty('access_token')) {
+                        localStorage.setItem('access_token', loginResponse.data.access_token);
+                        $http.get(APP_CONFIG.API_ENDPOINT + "/users/me")
+                            .then(function successCallback(userResponse) {
+                                $localStorage.user = userResponse.data;
+                                deferred.resolve(loginResponse.data);
+                            }, function errorCallback(userResponse) {
+                                console.log(userResponse);
+                                if (userResponse.status == 401) {
+                                    deferred.reject('Credentials were incorrect.');
+                                } else {
+                                    deferred.reject('Could not connect to the server.');
+                                }
+                            });
                     } else {
                         deferred.reject('An unexpected error occurred.');
                     }
-                }, function errorCallback(response) {
-                    console.log(response);
-                    if (response.status == 401) {
+                }, function errorCallback(loginResponse) {
+                    console.log(loginResponse);
+                    if (loginResponse.status == 401) {
                         deferred.reject('Credentials were incorrect.');
                     } else {
                         deferred.reject('Could not connect to the server.');
