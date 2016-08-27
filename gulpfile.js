@@ -33,16 +33,13 @@ gulp.task('sass', function (done) {
 gulp.task('browserify', function () {
     // Grabs the app.js file
     //noinspection JSUnresolvedFunction
-    return browserify(
-        {
+    return browserify({
             entries: './www/js/app.js',
             debug: true,
-            // defining transforms here will avoid crashing your stream
             transform: [requireGlobify]
         })
         .bundle()
         .pipe(source('app.js'))
-        // saves it the public/js/ directory
         .pipe(gulp.dest('./www/builds/'));
 });
 
