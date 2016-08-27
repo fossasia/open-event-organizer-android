@@ -1,0 +1,25 @@
+<ion-view title="Attendee List" id="event-dashboard">
+    <ion-content padding="true" class="scroll-content ionic-scroll has-header">
+        <div class="scroll padding">
+            <form id="attendee-search-form" class="list">
+                <label class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="search" placeholder="First or Last Name" ng-model="attendeeSearch">
+                </label>
+            </form>
+
+            <div style="text-align: center;" id="loading-view" ng-show="isLoading">
+                <ion-spinner></ion-spinner>
+            </div>
+
+            <ion-list id="attendee-list" ng-hide="isLoading">
+                <div class="list">
+                    <ion-item id="attendee-list-item-{{ attendee.id }}" class="item" ng-repeat='attendee in attendees | filter:attendeeSearch' ng-click="checkIn(attendee)">
+                        {{ attendee.lastname }}, {{ attendee.firstname }}<br>
+                        <span class="text-muted">{{ attendee.email}}</span>
+                    </ion-item>
+                </div>
+            </ion-list>
+        </div>
+    </ion-content>
+</ion-view>
