@@ -9,7 +9,7 @@ android:
     - build-tools-24.0.1
     - build-tools-23.0.3
     - android-24
-    - android 23
+    - android-23
     - extra-google-m2repository
     - extra-android-m2repository
 cache:
