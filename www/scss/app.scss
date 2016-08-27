@@ -40,3 +40,23 @@ $brand-color: $calm;
 .text-muted {
     color: #b4b4b4;
 }
+
+.item-icon-left-square {
+    padding-left: 90px;
+
+    .icon {
+        left: 0;
+        width: 72px;
+        color: #ffffff;
+        font-size: 50px;
+        background-color: #4CAF50;
+    }
+
+    .icon:before {
+        width: 100%;
+    }
+
+}
+
+#attendee-search-form {
+}
