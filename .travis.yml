@@ -10,10 +10,8 @@ android:
     - build-tools-23.0.3
     - android-24
     - android-23
-    - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
-    - extra-android-support
 cache:
     directories:
         - node_modules
