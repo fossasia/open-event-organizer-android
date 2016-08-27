@@ -21,6 +21,11 @@ module.exports = angular.module('app.routes', [])
                 url: '/event',
                 templateUrl: 'templates/event/dashboard.html',
                 controller: 'eventDashboardCtrl'
+            })
+            .state('event_attendee_list', {
+                url: '/event/attendees',
+                templateUrl: 'templates/event/attendees.html',
+                controller: 'eventAttendeesCtrl'
             });
         $urlRouterProvider.otherwise('/')
     });
