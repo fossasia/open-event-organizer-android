@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/e919f89ae61ae268a19e6796b4c601173e05d1de/moment/moment.d.ts",
+    "raw": "registry:dt/moment#2.11.1+20160829143156",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/e919f89ae61ae268a19e6796b4c601173e05d1de/moment/moment.d.ts"
+  }
+}
