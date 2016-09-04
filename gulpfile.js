@@ -1,69 +1,74 @@
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var bower = require('bower');
-var concat = require('gulp-concat');
-var sass = require('gulp-sass');
-var minifyCss = require('gulp-minify-css');
-var rename = require('gulp-rename');
-var sh = require('shelljs');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var requireGlobify = require('require-globify');
+var gulp = require('gulp'),
+    gulpWatch = require('gulp-watch'),
+    del = require('del'),
+    runSequence = require('run-sequence'),
+    argv = process.argv;
 
-var paths = {
-    scss: ['./www/scss/**/*.scss'],
-    js: ['./www/js/**/*.js']
-};
 
-gulp.task('default', ['browserify', 'sass']);
+/**
+ * Ionic hooks
+ * Add ':before' or ':after' to any Ionic project command name to run the specified
+ * tasks before or after the command.
+ */
+gulp.task('serve:before', ['watch']);
+gulp.task('emulate:before', ['build']);
+gulp.task('deploy:before', ['build']);
+gulp.task('build:before', ['build']);
 
-gulp.task('sass', function (done) {
-    gulp.src('./www/scss/app.scss')
-        .pipe(sass())
-        .on('error', sass.logError)
-        .pipe(gulp.dest('./www/builds/'))
-        .pipe(minifyCss({
-            keepSpecialComments: 0
-        }))
-        .pipe(rename({extname: '.min.css'}))
-        .pipe(gulp.dest('./www/builds/'))
-        .on('end', done);
-});
+// we want to 'watch' when livereloading
+var shouldWatch = argv.indexOf('-l') > -1 || argv.indexOf('--livereload') > -1;
+gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
 
-gulp.task('browserify', function () {
-    // Grabs the app.js file
-    //noinspection JSUnresolvedFunction
-    return browserify({
-            entries: './www/js/app.js',
-            debug: true,
-            transform: [requireGlobify]
-        })
-        .bundle()
-        .pipe(source('app.js'))
-        .pipe(gulp.dest('./www/builds/'));
-});
+/**
+ * Ionic Gulp tasks, for more information on each see
+ * https://github.com/driftyco/ionic-gulp-tasks
+ *
+ * Using these will allow you to stay up to date if the default Ionic 2 build
+ * changes, but you are of course welcome (and encouraged) to customize your
+ * build however you see fit.
+ */
+var buildBrowserify = require('ionic-gulp-browserify-typescript');
+var buildSass = require('ionic-gulp-sass-build');
+var copyHTML = require('ionic-gulp-html-copy');
+var copyFonts = require('ionic-gulp-fonts-copy');
+var copyScripts = require('ionic-gulp-scripts-copy');
+var tslint = require('ionic-gulp-tslint');
 
-gulp.task('watch', function () {
-    gulp.watch(paths.scss, ['sass']);
-    gulp.watch(paths.js, ['browserify']);
-});
+var isRelease = argv.indexOf('--release') > -1;
 
-gulp.task('install', ['git-check'], function () {
-    return bower.commands.install()
-        .on('log', function (data) {
-            gutil.log('bower', gutil.colors.cyan(data.id), data.message);
-        });
-});
-
-gulp.task('git-check', function (done) {
-    if (!sh.which('git')) {
-        console.log(
-            '  ' + gutil.colors.red('Git is not installed.'),
-            '\n  Git, the version control system, is required to download Ionic.',
-            '\n  Download git here:', gutil.colors.cyan('http://git-scm.com/downloads') + '.',
-            '\n  Once git is installed, run \'' + gutil.colors.cyan('gulp install') + '\' again.'
-        );
-        process.exit(1);
+gulp.task('watch', ['clean'], function(done){
+  runSequence(
+    ['sass', 'html', 'fonts', 'scripts'],
+    function(){
+      gulpWatch('app/**/*.scss', function(){ gulp.start('sass'); });
+      gulpWatch('app/**/*.html', function(){ gulp.start('html'); });
+      buildBrowserify({ watch: true }).on('end', done);
     }
-    done();
+  );
 });
+
+gulp.task('build', ['clean'], function(done){
+  runSequence(
+    ['sass', 'html', 'fonts', 'scripts'],
+    function(){
+      buildBrowserify({
+        minify: isRelease,
+        browserifyOptions: {
+          debug: !isRelease
+        },
+        uglifyOptions: {
+          mangle: false
+        }
+      }).on('end', done);
+    }
+  );
+});
+
+gulp.task('sass', buildSass);
+gulp.task('html', copyHTML);
+gulp.task('fonts', copyFonts);
+gulp.task('scripts', copyScripts);
+gulp.task('clean', function(){
+  return del('www/build');
+});
+gulp.task('lint', tslint);
