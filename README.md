@@ -90,8 +90,7 @@ ionic build ios
 ## Technology Stack
 
 * [Node.js](https://nodejs.org/en/)
-* [Ionic Framework v1](http://ionicframework.com/)
-* [AngularJS 1](https://angularjs.org/)
+* [Ionic Framework v2](http://ionicframework.com/docs/v2/)
+* [Angular 2](https://angular.io/)
 * [Apache Cordova](https://cordova.apache.org/)
-* [Browserify](http://browserify.org/)
 * [Gulp](http://gulpjs.com/)
