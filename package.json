@@ -7,7 +7,7 @@
     "@angular/http": "2.0.0-rc.4",
     "@angular/platform-browser": "2.0.0-rc.4",
     "@angular/platform-browser-dynamic": "2.0.0-rc.4",
-    "angular2-jwt": "^0.1.20",
+    "angular2-jwt": "0.1.20",
     "angular2-moment": "^0.8.2",
     "es6-shim": "0.35.1",
     "ionic-angular": "2.0.0-beta.11",
