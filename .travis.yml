@@ -6,9 +6,7 @@ android:
   components:
     - platform-tools
     - tools
-    - build-tools-24.0.1
     - build-tools-23.0.3
-    - android-24
     - android-23
     - extra-google-m2repository
     - extra-android-m2repository
@@ -20,11 +18,10 @@ env:
 install:
     - nvm install $NODE_VERSION
     - nvm use $NODE_VERSION
-    - npm install -g ionic cordova gulp
+    - npm install -g ionic@beta cordova gulp
     - npm install
     - export PATH=$(npm bin):$PATH
-    - bower install
-    - gulp
+    - gulp build
     - chmod +x hooks/after_prepare/010_add_platform_class.js
 script:
     - ionic platform add android

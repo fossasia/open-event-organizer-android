@@ -19,7 +19,7 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 ## Development
 
-This project uses [Ionic Framework v1.x](http://ionicframework.com/).
+This project uses [Ionic Framework v2.x (beta)](http://ionicframework.com/docs/v2).
 
 ### Development environment setup
 - Install [Node.js](https://nodejs.org/en/). (v4.x.x recommended).
@@ -27,7 +27,7 @@ This project uses [Ionic Framework v1.x](http://ionicframework.com/).
     - **Windows Users** - You can download the lastest installer from [nodejs.org](https://nodejs.org/en/) and install it directly.
 - Install ionic framework CLI tool, apache cordova and gulp globally
 ```
-npm install -g ionic cordova gulp
+npm install -g ionic@beta cordova gulp
 ```
 - Clone this repository
 ```
@@ -47,8 +47,8 @@ Depending on the platform you wish to build for (i.e Android or iOS) you will ha
 - Install [Java Development Kit (JDK) 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or later.
 - Install the [Android SDK Tools or Android Studio](https://developer.android.com/studio/index.html#downloads).
 - Install required Android SDK Packages from the SDK Manager
-	- Android Platform SDK for API 24
-	- Android SDK Build tools 24.x.x
+	- Android Platform SDK for API 23
+	- Android SDK Build tools 23.x.x
 	- Android Support Repository
 - Setup required environment variables and PATH
 	- Set the `JAVA_HOME` environment variable to the location of your JDK installation
