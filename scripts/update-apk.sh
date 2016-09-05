@@ -9,9 +9,9 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/open-
     exit 0
 fi
 
-git clone --quiet --branch=gh-pages https://the-dagger:$GITHUB_API_KEY@github.com/fossasia/open-event-orga-app  gh-pages > /dev/null
-cp platforms/android/build/outputs/apk/android-debug.apk gh-pages/sample-apk/android-debug.apk
-cd gh-pages
-git add sample-apk/android-debug.apk
-git commit -m "[Auto] Update Sample Apk"
-git push origin gh-pages > /dev/null
+git clone --quiet --branch=apk https://the-dagger:$GITHUB_API_KEY@github.com/fossasia/open-event-orga-app  apk > /dev/null
+cp platforms/android/build/outputs/apk/android-debug.apk apk/test-android-debug.apk
+cd apk
+git add test-android-debug.apk
+git commit -m "[Auto] Update Test Apk"
+git push origin apk > /dev/null
