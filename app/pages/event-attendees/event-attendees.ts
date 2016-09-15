@@ -6,13 +6,6 @@ import {LocalStore} from "../../services/helper.service";
 import {Event} from "../../interfaces/event";
 import {NgClass} from "@angular/common";
 
-/*
- Generated class for the EventAttendeesPage page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
-
 @Pipe({name: 'keys'})
 export class KeysPipe implements PipeTransform {
   transform(value, args:string[]):any {

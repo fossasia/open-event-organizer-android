@@ -5,12 +5,6 @@ import {EventsService} from "../../services/events.service";
 import {LocalStore} from "../../services/helper.service";
 import {EventDashboardPage} from "../event-dashboard/event-dashboard";
 
-/*
-  Generated class for the EventsPage page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   templateUrl: 'build/pages/events/events.html',
   providers: [EventsService]
