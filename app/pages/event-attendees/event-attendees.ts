@@ -1,17 +1,11 @@
 import {Component, Pipe, PipeTransform} from '@angular/core';
-import {NavController, ToastController } from 'ionic-angular';
+import {ToastController } from 'ionic-angular';
 import {Attendee} from "../../interfaces/attende";
 import {AttendeesService} from "../../services/attendees.service";
 import {LocalStore} from "../../services/helper.service";
 import {Event} from "../../interfaces/event";
 import {NgClass} from "@angular/common";
-
-/*
- Generated class for the EventAttendeesPage page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
+import { BarcodeScanner } from 'ionic-native';
 
 @Pipe({name: 'keys'})
 export class KeysPipe implements PipeTransform {
@@ -114,6 +108,41 @@ export class EventAttendeesPage {
 
 
     this.attendeesGrouped = attendeesGrouped;
+  }
+
+  scanQrCode() {
+    BarcodeScanner.scan().then((barcodeData) => {
+      let toast = this.toastCtrl.create({
+        message: "Processing QR Code",
+        duration: 1000
+      });
+      toast.present();
+      this.attendeesService.checkInOut(this.event.id, barcodeData.text, true).subscribe(
+        attendeeResult => {
+          let toast = this.toastCtrl.create({
+            message: attendeeResult.lastname + ", " + attendeeResult.firstname + " has been checked in.",
+            duration: 500
+          });
+          toast.present();
+        },
+        err => {
+          console.log(err);
+          let toast = this.toastCtrl.create({
+            message: 'Invalid QR Code. Please scan again.',
+            duration: 500
+          });
+          toast.present();
+        }
+      );
+    }, (err) => {
+      console.log(err);
+      let toast = this.toastCtrl.create({
+        message: 'Invalid QR Code. Please scan again.',
+        duration: 500
+      });
+      toast.present();
+    });
+
   }
 
 
