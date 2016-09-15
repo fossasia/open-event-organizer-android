@@ -4,24 +4,30 @@
   </ion-navbar>
 </ion-header>
 
-
-
 <ion-content padding>
 
-  <ion-searchbar [(ngModel)]="query" (ionInput)="searchFilter()"></ion-searchbar>
+  <div style="padding-bottom: 2.9em;">
+    <ion-searchbar [(ngModel)]="query" (ionInput)="searchFilter()"></ion-searchbar>
 
-  <div style="text-align: center;" id="loading-view" [hidden]="!isLoading">
-    <ion-spinner></ion-spinner>
+    <div style="text-align: center;" id="loading-view" [hidden]="!isLoading">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <ion-list>
+      <ion-item-group *ngFor="let entry of attendeesGrouped | keys">
+        <ion-item-divider light class="caps-300">{{ entry.key }}</ion-item-divider>
+        <ion-item *ngFor="let attendee of entry.value" [ngClass]="{'item-icon-left-square':attendee.checked_in}" (click)="checkIn(attendee)">
+          <ion-icon name="checkmark" item-left [hidden]="!attendee.checked_in"></ion-icon>
+          <h2>{{ attendee.lastname }}, {{ attendee.firstname}}</h2>
+          <p class="text-muted">{{ attendee.email}}</p>
+        </ion-item>
+      </ion-item-group>
+    </ion-list>
+
   </div>
 
-  <ion-list>
-    <ion-item-group *ngFor="let entry of attendeesGrouped | keys">
-      <ion-item-divider light class="caps-300">{{ entry.key }}</ion-item-divider>
-      <ion-item *ngFor="let attendee of entry.value" [ngClass]="{'item-icon-left-square':attendee.checked_in}" (click)="checkIn(attendee)">
-        <ion-icon name="checkmark" item-left [hidden]="!attendee.checked_in"></ion-icon>
-        <h2>{{ attendee.lastname }}, {{ attendee.firstname}}</h2>
-        <p class="text-muted">{{ attendee.email}}</p>
-      </ion-item>
-    </ion-item-group>
-  </ion-list>
+  <button class="caps-300" style="left:0;bottom:0;position: fixed;margin: 0;padding: 0;" (click)="scanQrCode()"
+          full large dark><ion-icon name="qr-scanner"></ion-icon> Scan QR Code
+  </button>
+
 </ion-content>
