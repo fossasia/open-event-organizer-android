@@ -9,12 +9,6 @@ import {Ticket} from "../../interfaces/ticket";
 import {DateFormatPipe} from "angular2-moment/index";
 import {EventAttendeesPage} from "../event-attendees/event-attendees";
 
-/*
-  Generated class for the EventDashboardPage page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   templateUrl: 'build/pages/event-dashboard/event-dashboard.html',
   providers: [EventsService, AttendeesService],
