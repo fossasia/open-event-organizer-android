@@ -31,27 +31,20 @@ export class QueueService {
   }
 
   processQueueChange(change: any) {
-    console.log(change);
+    this.db.get(change.id).then((doc) => {
+      this.processDocument(doc);
+    });
   }
 
   processQueue() {
     this.db.allDocs({
       include_docs: true,
       attachments: true
-    }).then(function (result) {
+    }).then( (result) => {
       result.rows.forEach(row => {
-        let attendeeQueueDoc = row.doc;
-        this.attendeeService.checkInOut(attendeeQueueDoc.event_id, attendeeQueueDoc.attendee.id, attendeeQueueDoc.attendee.checked_in).subscribe(
-          attendeeResult => {
-            console.log(attendeeResult);
-            this.db.remove(attendeeQueueDoc)
-          },
-          err => {
-            console.log(err);
-          }
-        )
+        this.processDocument(row.doc);
       })
-    }).catch(function (err) {
+    }).catch((err) => {
       console.log(err);
     });
   }
@@ -67,5 +60,20 @@ export class QueueService {
       console.log(err);
     });
 
+  }
+
+  processDocument(doc: any) {
+    console.log(doc);
+    if(doc.hasOwnProperty('attendee')) {
+      this.attendeeService.checkInOut(doc.event_id, doc.attendee.id, doc.attendee.checked_in).subscribe(
+        attendeeResult => {
+          console.log(attendeeResult);
+          this.db.remove(doc)
+        },
+        err => {
+          console.log(err);
+        }
+      )
+    }
   }
 }
