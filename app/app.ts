@@ -9,10 +9,11 @@ import {EventsPage} from "./pages/events/events";
 import {LoginPage} from "./pages/login/login";
 import {Network} from 'ionic-native';
 import {QueueService} from "./services/queue.service";
+import {AttendeesService} from "./services/attendees.service";
 
 @Component({
   templateUrl: 'build/app.html',
-  providers: [QueueService],
+  providers: [QueueService, AttendeesService],
   queries: {
     nav: new ViewChild('content')
   }
@@ -29,6 +30,7 @@ export class OrganizerApp {
       this.handleNetworkChanges();
     });
     this.queueService.setupQueueListener();
+    this.queueService.processQueue();
   }
 
   handleRoot() {
