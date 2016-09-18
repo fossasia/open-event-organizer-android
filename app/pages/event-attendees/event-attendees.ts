@@ -43,7 +43,6 @@ export class EventAttendeesPage {
         this.localStore.set('attendees', attendees);
         this.attendees = attendees;
         this.groupByAlphabets(this.attendees);
-        console.log(this.attendeesGrouped);
       },
       err => {
         console.log(err);
@@ -83,9 +82,6 @@ export class EventAttendeesPage {
       return 0;
     });
 
-    console.log(attendees);
-
-
     var attendeesGrouped = {};
     for (var i = 0; i < attendees.length; i++) {
       var letter = attendees[i].lastname.charAt(0).toUpperCase();
@@ -94,9 +90,6 @@ export class EventAttendeesPage {
       }
       attendeesGrouped[letter].push(attendees[i]);
     }
-
-    console.log(attendeesGrouped);
-
 
     this.attendeesGrouped = attendeesGrouped;
   }
