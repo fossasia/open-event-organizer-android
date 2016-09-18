@@ -7,6 +7,7 @@ import {Config} from "./config";
 import {LocalStore} from "./services/helper.service";
 import {EventsPage} from "./pages/events/events";
 import {LoginPage} from "./pages/login/login";
+import {Network} from 'ionic-native';
 
 @Component({
   templateUrl: 'build/app.html',
@@ -21,24 +22,34 @@ export class OrganizerApp {
 
   constructor(private platform: Platform) {
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       this.handleRoot();
+      this.handleNetworkChanges();
     });
   }
 
   handleRoot() {
-    if(tokenNotExpired(Config.ACCESS_TOKEN_NAME)) {
+    if (tokenNotExpired(Config.ACCESS_TOKEN_NAME)) {
       this.nav.setRoot(EventsPage);
     } else {
       this.nav.setRoot(LoginPage);
     }
   }
+
+  handleNetworkChanges() {
+    Network.onDisconnect().subscribe(() => {
+      console.log('network was disconnected :-(');
+    });
+    Network.onConnect().subscribe(() => {
+      console.log('network connected!');
+      setTimeout(() => {
+        this.queueService.processQueue();
+      }, 3000);
+    });
+  }
 }
 
-
-ionicBootstrap(OrganizerApp,  [
+ionicBootstrap(OrganizerApp, [
   HTTP_PROVIDERS,
   provideAuth({
     headerName: 'Authorization',
