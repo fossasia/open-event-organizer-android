@@ -8,9 +8,11 @@ import {LocalStore} from "./services/helper.service";
 import {EventsPage} from "./pages/events/events";
 import {LoginPage} from "./pages/login/login";
 import {Network} from 'ionic-native';
+import {QueueService} from "./services/queue.service";
 
 @Component({
   templateUrl: 'build/app.html',
+  providers: [QueueService],
   queries: {
     nav: new ViewChild('content')
   }
@@ -20,12 +22,13 @@ export class OrganizerApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  constructor(private platform: Platform) {
+  constructor(private platform: Platform, private queueService: QueueService) {
     platform.ready().then(() => {
       StatusBar.styleDefault();
       this.handleRoot();
       this.handleNetworkChanges();
     });
+    this.queueService.setupQueueListener();
   }
 
   handleRoot() {
