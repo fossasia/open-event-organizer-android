@@ -1,1 +1,14 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content">
+  <ion-toolbar>
+    <ion-title> </ion-title>
+  </ion-toolbar>
+  <ion-content>
+    <ion-list>
+      <button ion-item>
+        Logout
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-nav id="nav" #content [root]="rootPage"></ion-nav>
