@@ -1,11 +1,12 @@
 import {Component, Pipe, PipeTransform} from '@angular/core';
-import {ToastController } from 'ionic-angular';
+import {NavController, ToastController } from 'ionic-angular';
 import {Attendee} from "../../interfaces/attende";
 import {AttendeesService} from "../../services/attendees.service";
 import {LocalStore} from "../../services/helper.service";
 import {Event} from "../../interfaces/event";
 import {NgClass} from "@angular/common";
 import { BarcodeScanner } from 'ionic-native';
+import {QueueService} from "../../services/queue.service";
 
 @Pipe({name: 'keys'})
 export class KeysPipe implements PipeTransform {
@@ -20,7 +21,7 @@ export class KeysPipe implements PipeTransform {
 
 @Component({
   templateUrl: 'build/pages/event-attendees/event-attendees.html',
-  providers: [AttendeesService],
+  providers: [AttendeesService, QueueService],
   pipes: [KeysPipe],
   directives: [NgClass],
 })
@@ -33,7 +34,7 @@ export class EventAttendeesPage {
   event:Event;
   query:string;
 
-  constructor(private attendeesService:AttendeesService, private localStore:LocalStore, private toastCtrl: ToastController) {
+  constructor(private attendeesService:AttendeesService, private localStore:LocalStore, private toastCtrl: ToastController, private queueService: QueueService) {
     this.attendees = this.localStore.get('attendees');
     this.groupByAlphabets(this.attendees);
     this.event = this.localStore.get('event');
@@ -56,20 +57,10 @@ export class EventAttendeesPage {
 
   checkIn(attendee) {
     attendee.checked_in = !attendee.checked_in;
-    this.attendeesService.checkInOut(this.event.id, attendee.id, attendee.checked_in).subscribe(
-      attendeeResult => {
-        attendee = attendeeResult;
-      },
-      err => {
-        console.log(err);
-        attendee.checked_in = !attendee.checked_in;
-        let toast = this.toastCtrl.create({
-          message: 'An error occurred. Please try again later.',
-          duration: 1000
-        });
-        toast.present();
-      }
-    )
+    this.queueService.addToQueue({
+      event_id: this.event.id,
+      attendee: attendee
+    });
   }
 
   groupByAlphabets(data, query = null) {
