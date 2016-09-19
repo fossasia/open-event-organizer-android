@@ -3,19 +3,22 @@
  */
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
+import { AlertController } from 'ionic-angular';
 
 @Injectable()
 export class NetworkCheck {
 
-  constructor(private navCtrl: NavController, private platform: Platform) {
+  constructor(public alertCtrl: AlertController) {
 
   }
-  hasNetwork() {
-    this.platform.ready().then(() => {
-      var networkState = navigator.connection.type;
-      return networkState !== Connection.NONE;
+
+  showNoNetworkAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'No Internet Connection',
+      message: 'Please check your internet connection.',
+      buttons: ['Ok']
     });
+    alert.present();
   }
-
 
 }

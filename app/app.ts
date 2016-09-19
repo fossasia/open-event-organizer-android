@@ -10,10 +10,11 @@ import {LoginPage} from "./pages/login/login";
 import {Network} from 'ionic-native';
 import {QueueService} from "./services/queue.service";
 import {AttendeesService} from "./services/attendees.service";
+import {NetworkCheck} from "./services/network-check.service";
 
 @Component({
   templateUrl: 'build/app.html',
-  providers: [QueueService, AttendeesService],
+  providers: [QueueService, AttendeesService, NetworkCheck],
   queries: {
     nav: new ViewChild('content')
   }
@@ -23,7 +24,7 @@ export class OrganizerApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  constructor(private platform: Platform, private queueService: QueueService) {
+  constructor(private platform: Platform, private queueService: QueueService, private networkCheckService: NetworkCheck) {
     platform.ready().then(() => {
       StatusBar.styleDefault();
       this.handleRoot();
@@ -44,6 +45,7 @@ export class OrganizerApp {
   handleNetworkChanges() {
     Network.onDisconnect().subscribe(() => {
       console.log('network was disconnected :-(');
+      this.networkCheckService.showNoNetworkAlert();
     });
     Network.onConnect().subscribe(() => {
       console.log('network connected!');
