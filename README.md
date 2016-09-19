@@ -39,7 +39,7 @@ npm install
 ```
 - Build javascript assets.
 ```
-gulp
+gulp build
 ```
 Depending on the platform you wish to build for (i.e Android or iOS) you will have to setup the required build tools and SDKs. 
 
