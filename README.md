@@ -94,3 +94,10 @@ ionic build ios
 * [Angular 2](https://angular.io/)
 * [Apache Cordova](https://cordova.apache.org/)
 * [Gulp](http://gulpjs.com/)
+
+## License
+
+This project is currently licensed under the GNU General Public License v3. A
+copy of LICENSE.md should be present along with the source code. To obtain the
+software under a different license, please contact FOSSASIA.
+
