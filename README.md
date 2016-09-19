@@ -1,4 +1,4 @@
-# open-event-orga-app
+#  Open Event Mobile App for Organizers
 
 [![Build Status](https://travis-ci.org/fossasia/open-event-orga-app.svg?branch=master)](https://travis-ci.org/fossasia/open-event-orga-app)
 [![Join the chat at https://gitter.im/fossasia/open-event-orga-app](https://badges.gitter.im/fossasia/open-event-orga-app.svg)](https://gitter.im/fossasia/open-event-orga-app?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
