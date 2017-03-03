@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>Events</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div style="text-align: center;" id="loading-view" [hidden]="!isLoading">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-list [hidden]="isLoading">
+    <ion-item *ngFor="let event of events" (click)="pickEvent(event)">
+      {{event.name}}
+      <ion-icon name="checkmark" item-right [hidden]="!pickedEvent || pickedEvent.id != event.id"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>

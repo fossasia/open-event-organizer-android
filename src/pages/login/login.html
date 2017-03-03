@@ -1,0 +1,28 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item style="margin-top: -10px;">
+    <ion-label floating>Email</ion-label>
+    <ion-input type="text" [(ngModel)]="credentials.email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Password</ion-label>
+    <ion-input type="password" [(ngModel)]="credentials.password"></ion-input>
+  </ion-item>
+  <br>
+
+  <div style="text-align: center;" id="loading-view" [hidden]="!isLoading">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <button ion-button full [hidden]="isLoading" color="secondary" (click)="login()">Login</button>
+</ion-content>

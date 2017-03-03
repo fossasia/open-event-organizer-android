@@ -19,15 +19,15 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 ## Development
 
-This project uses [Ionic Framework v2.x (beta)](http://ionicframework.com/docs/v2).
+This project uses [Ionic Framework v2.x](http://ionicframework.com/docs/v2).
 
 ### Development environment setup
-- Install [Node.js](https://nodejs.org/en/). (v4.x.x recommended).
+- Install [Node.js](https://nodejs.org/en/). (v6.x.x recommended).
     - **Linux/OS X Users** - You can use [Node Version Manager](https://github.com/creationix/nvm) to install and manage Node.js versions.
     - **Windows Users** - You can download the lastest installer from [nodejs.org](https://nodejs.org/en/) and install it directly.
-- Install ionic framework CLI tool, apache cordova and gulp globally
+- Install ionic framework CLI tool and apache cordova globally
 ```
-npm install -g ionic@beta cordova gulp
+npm install -g ionic cordova
 ```
 - Clone this repository
 ```
@@ -36,10 +36,6 @@ git clone https://github.com/fossasia/open-event-orga-app.git
 - From with the cloned repository, install all the Node.js dependencies using `npm`.
 ```
 npm install
-```
-- Build javascript assets.
-```
-gulp build
 ```
 Depending on the platform you wish to build for (i.e Android or iOS) you will have to setup the required build tools and SDKs. 
 
@@ -89,11 +85,10 @@ ionic build ios
 
 ## Technology Stack
 
-* [Node.js](https://nodejs.org/en/)
-* [Ionic Framework v2](http://ionicframework.com/docs/v2/)
-* [Angular 2](https://angular.io/)
-* [Apache Cordova](https://cordova.apache.org/)
-* [Gulp](http://gulpjs.com/)
+* [Node.js v6.x](https://nodejs.org/en/)
+* [Ionic Framework v2.x](http://ionicframework.com/docs/v2/)
+* [Angular v2.2.x](https://angular.io/)
+* [Apache Cordova v6.5.x](https://cordova.apache.org/)
 
 ## License
 

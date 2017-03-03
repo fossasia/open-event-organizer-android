@@ -1,0 +1,14 @@
+$fontWeights: 100 200 300 400 500 600 700 800 900;
+@each $fontWight in $fontWeights {
+  .weight-#{$fontWight} {
+    font-weight: $fontWight !important;
+  }
+}
+
+$fontWeights: 100 200 300 400 500 600 700 800 900;
+@each $fontWight in $fontWeights {
+  .caps-#{$fontWight} {
+    font-weight: $fontWight !important;
+    text-transform: uppercase !important;
+  }
+}
