@@ -6,24 +6,23 @@ android:
   components:
     - platform-tools
     - tools
-    - build-tools-23.0.3
-    - android-23
+    - build-tools-25.0.1
+    - android-25
     - extra-google-m2repository
     - extra-android-m2repository
 cache:
     directories:
       - node_modules
 env:
-    - NODE_VERSION="4.4.7"
+    - NODE_VERSION="6.9.5"
 install:
     - nvm install $NODE_VERSION
     - nvm use $NODE_VERSION
-    - npm install -g ionic@beta cordova gulp
+    - npm install -g ionic cordova
     - npm install
     - export PATH=$(npm bin):$PATH
-    - gulp build
-    - chmod +x hooks/after_prepare/010_add_platform_class.js
 script:
+    - ./node_modules/.bin/tslint -c tslint.json src/**/*.ts --type-check -t stylish
     - ionic platform add android
     - ionic resources
     - ionic build android

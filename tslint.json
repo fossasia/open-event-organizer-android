@@ -1,6 +1,3 @@
 {
-    "extends": "tslint-ionic-rules",
-    "rules" : {
-
-    }
+    "extends": "tslint:recommended"
 }
