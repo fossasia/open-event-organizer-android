@@ -37,9 +37,10 @@ This project uses [Ionic Framework v2.x](http://ionicframework.com/docs/v2).
 ```
 npm install -g ionic cordova
 ```
-- Clone this repository
+- Fork this repository this repository into your account
+- Clone the forked repository
 ```
-git clone https://github.com/fossasia/open-event-orga-app.git
+git clone https://github.com/<username>/open-event-orga-app.git
 ```
 - From with the cloned repository, install all the Node.js dependencies using `npm`.
 ```
@@ -51,8 +52,8 @@ Depending on the platform you wish to build for (i.e Android or iOS) you will ha
 - Install [Java Development Kit (JDK) 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or later.
 - Install the [Android SDK Tools or Android Studio](https://developer.android.com/studio/index.html#downloads).
 - Install required Android SDK Packages from the SDK Manager
-	- Android Platform SDK for API 23
-	- Android SDK Build tools 23.x.x
+	- Android Platform SDK for API 25
+	- Android SDK Build tools 25.x.x
 	- Android Support Repository
 - Setup required environment variables and PATH
 	- Set the `JAVA_HOME` environment variable to the location of your JDK installation
