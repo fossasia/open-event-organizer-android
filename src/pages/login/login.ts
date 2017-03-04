@@ -15,6 +15,7 @@ import {EventsPage} from "../events/events";
 
 export class LoginPage {
 
+  public server: string;
   public credentials: {email: string, password: string};
   public isLoading: boolean;
 
@@ -30,10 +31,15 @@ export class LoginPage {
     };
 
     this.isLoading = false;
+
+    if (Config.SERVER) {
+      this.server = Config.SERVER;
+    }
   }
 
   public login() {
     this.isLoading = true;
+    Config.SERVER = this.server;
     this.loginService.login(this.credentials).subscribe(
       (res) => {
         this.isLoading = false;

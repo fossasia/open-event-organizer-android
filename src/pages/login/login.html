@@ -1,22 +1,23 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>Login</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
-
   <ion-item style="margin-top: -10px;">
+    <ion-label floating>Server</ion-label>
+    <ion-input type="text" [(ngModel)]="server"></ion-input>
+  </ion-item>
+
+  <ion-item>
     <ion-label floating>Email</ion-label>
-    <ion-input type="text" [(ngModel)]="credentials.email"></ion-input>
+    <ion-input type="email" name="email" [(ngModel)]="credentials.email"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label floating>Password</ion-label>
-    <ion-input type="password" [(ngModel)]="credentials.password"></ion-input>
+    <ion-input type="password" name="password" [(ngModel)]="credentials.password"></ion-input>
   </ion-item>
   <br>
 
