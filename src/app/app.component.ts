@@ -5,7 +5,7 @@ import {Network, Splashscreen, StatusBar} from "ionic-native";
 import {EventsPage} from "../pages/events/events";
 import {LoginPage} from "../pages/login/login";
 import {AttendeesService} from "../services/attendees.service";
-import { NetworkCheck} from "../services/network-check.service";
+import {NetworkCheck} from "../services/network-check.service";
 import {QueueService} from "../services/queue.service";
 import {Config} from "./config";
 
@@ -23,16 +23,22 @@ export class OrganizerAppComponent {
   public rootPage: any;
 
   constructor(private platform: Platform, private queueService: QueueService,
-              private networkCheckService: NetworkCheck, menu: MenuController) {
+              private networkCheckService: NetworkCheck, private menuCtrl: MenuController) {
     platform.ready().then(() => {
       StatusBar.styleDefault();
       Splashscreen.hide();
-      menu.enable(true);
+      menuCtrl.enable(true);
       this.handleRoot();
       this.handleNetworkChanges();
     });
     this.queueService.setupQueueListener();
     this.queueService.processQueue();
+  }
+
+  public logout() {
+    localStorage.removeItem(Config.ACCESS_TOKEN_NAME);
+    this.nav.setRoot(LoginPage);
+    this.menuCtrl.close();
   }
 
   private handleRoot() {
