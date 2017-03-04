@@ -19,8 +19,12 @@ export class EventAttendeesPage {
   public attendeesGrouped: any;
   public event: IEvent;
 
+  private alphabetRe: RegExp;
+
   constructor(private attendeesService: AttendeesService, private storage: Storage,
               private toastCtrl: ToastController, private queueService: QueueService) {
+
+    this.alphabetRe = new RegExp("^[A-Za-z]");
 
     this.storage.get("attendees").then((attendees) => {
       this.attendees = attendees;
@@ -88,32 +92,55 @@ export class EventAttendeesPage {
   private groupByAlphabets(data, query = null) {
 
     if (query && query !== "") {
-      data = data.filter((item) => {
-        return item.firstname.includes(query) || item.lastname.includes(query) || item.email.includes(query);
-      });
+      data = data.filter(
+        item => item.firstname.includes(query) || item.lastname.includes(query) || item.email.includes(query)
+      );
     }
 
     let attendees = data.sort((a, b) => {
-      let lastname1 = a.lastname.toUpperCase();
-      let lastname2 = b.lastname.toUpperCase();
-      if (lastname1 < lastname2) {
-        return -1;
-      }
-      if (lastname1 > lastname2) {
-        return 1;
-      }
-      return 0;
+      let name1 = a.lastname.toUpperCase();
+      let name2 = b.lastname.toUpperCase();
+      return name1 < name2 ? -1 : (name1 > name2 ? 1 : 0);
     });
 
     let attendeesGrouped = {};
     attendees.forEach((attendee) => {
       let letter = attendee.lastname.charAt(0).toUpperCase();
+      if (!this.alphabetRe.test(letter)) {
+        attendee.lastname = "";
+      }
+      const tempName = attendee.lastname + attendee.firstname;
+
+      if (tempName.trim().length === 0) {
+        return;
+      }
+
+      letter = tempName.charAt(0).toUpperCase();
+      if (!this.alphabetRe.test(letter)) {
+        letter = "1@#";
+      }
       if (attendeesGrouped[letter] === undefined) {
         attendeesGrouped[letter] = [];
       }
       attendeesGrouped[letter].push(attendee);
     });
 
-    this.attendeesGrouped = attendeesGrouped;
+    this.attendeesGrouped = this.orderKeys(attendeesGrouped);
   }
+
+  private orderKeys(obj): any {
+    let keys = Object.keys(obj).sort((k1, k2) => (k1 < k2) ? -1 : ((k1 > k2) ? 1 : 0));
+    let i;
+    let after = {};
+    for (i = 0; i < keys.length; i++) {
+      after[keys[i]] = obj[keys[i]];
+      delete obj[keys[i]];
+    }
+
+    for (i = 0; i < keys.length; i++) {
+      obj[keys[i]] = after[keys[i]];
+    }
+    return obj;
+  }
+
 }

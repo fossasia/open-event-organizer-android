@@ -49,7 +49,7 @@ export class EventDashboardPage {
         (eventInner) => {
           this.event = eventInner;
           this.storage.set("event", eventInner);
-          this.loadTicketsStats(event.tickets);
+          this.loadTicketsStats(eventInner.tickets);
         },
         () => {
           // Should show error message

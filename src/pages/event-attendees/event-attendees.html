@@ -24,7 +24,7 @@
         <ion-item *ngFor="let attendee of entry.value" [ngClass]="{'item-icon-left-square':attendee.checked_in}"
                   (click)="checkIn(attendee)">
           <ion-icon name="checkmark" item-left [hidden]="!attendee.checked_in"></ion-icon>
-          <h2>{{ attendee.lastname }}, {{ attendee.firstname}}</h2>
+          <h2>{{ attendee.lastname }} {{ !attendee.lastname || attendee.lastname.trim() === '' ? '' : ','}} {{ attendee.firstname}}</h2>
           <p class="text-muted">{{ attendee.email}}</p>
         </ion-item>
       </ion-item-group>
@@ -32,8 +32,8 @@
 
   </div>
 
-  <button class="caps-300" style="left:0;bottom:0;position: fixed;margin: 0;padding: 0;" (click)="scanQrCode()"
-          ion-button full large color="dark">
+  <button class="caps-300" (click)="scanQrCode()"
+          ion-button full large bottom color="dark">
     <ion-icon name="qr-scanner"></ion-icon>
     <span style="margin-left: 10px;">Scan QR Code</span>
   </button>

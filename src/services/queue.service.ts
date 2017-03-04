@@ -29,6 +29,8 @@ export class QueueService {
   public processQueueChange(change: any) {
     this.db.get(change.id).then((doc) => {
       this.processDocument(doc);
+    }).catch(() => {
+      // Can ignore error
     });
   }
 
@@ -60,7 +62,9 @@ export class QueueService {
     if (doc.hasOwnProperty("attendee")) {
       this.attendeeService.checkInOut(doc.event_id, doc.attendee.id, doc.attendee.checked_in).subscribe(
         () => {
-          this.db.remove(doc);
+          this.db.remove(doc).catch(() => {
+            // TODO Should show error
+          });
         },
         () => {
           // TODO Should show error
