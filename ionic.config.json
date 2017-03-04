@@ -1,6 +1,6 @@
 {
-  "name": "open-event-orga-app",
-  "app_id": "",
+  "name": "Open Event Organizer App",
+  "app_id": "org.fossasia.openevent.organizer",
   "v2": true,
   "typescript": true
 }
