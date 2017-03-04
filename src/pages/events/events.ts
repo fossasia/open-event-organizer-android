@@ -14,7 +14,7 @@ import {EventDashboardPage} from "../event-dashboard/event-dashboard";
 export class EventsPage {
 
   public events: IEvent[];
-  public isLoading: boolean;
+  public isLoading: boolean = true;
   public pickedEvent: IEvent;
 
   constructor(private navCtrl: NavController, private eventService: EventsService, private storage: Storage) {
