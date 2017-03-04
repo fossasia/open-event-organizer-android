@@ -13,6 +13,9 @@ android:
 cache:
     directories:
       - node_modules
+      - $HOME/.npm
+      - $HOME/.cache
+      - $HOME/.nvm
 env:
     - NODE_VERSION="6.9.5"
 install:
