@@ -27,5 +27,4 @@ script:
     - ionic resources
     - ionic build android
 after_success:
-    - chmod +x scripts/update-apk.sh
-    - sh scripts/update-apk.sh
+    - bash scripts/update-apk.sh
