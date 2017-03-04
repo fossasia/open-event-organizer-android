@@ -23,6 +23,7 @@ install:
     - export PATH=$(npm bin):$PATH
 script:
     - ./node_modules/.bin/tslint -c tslint.json src/**/*.ts --type-check -t stylish
+    - ionic build
     - ionic platform add android
     - ionic resources
     - ionic build android
