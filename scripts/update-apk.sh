@@ -6,7 +6,7 @@ git config --global user.email "noreply+travis@fossasia.org"
 
 export DEPLOY_BRANCH=${DEPLOY_BRANCH:-master}
 
-if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/open-event-orga-server" -o  "$TRAVIS_BRANCH" != "$DEPLOY_BRANCH" ]; then
+if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/open-event-orga-app" -o  "$TRAVIS_BRANCH" != "$DEPLOY_BRANCH" ]; then
     echo "We upload apk only for changes in master. So, let's skip this shall we ? :)"
     exit 0
 fi
