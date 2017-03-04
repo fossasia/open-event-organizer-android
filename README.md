@@ -1,15 +1,23 @@
 #  Open Event Mobile App for Organizers
 
-[![Build Status](https://travis-ci.org/fossasia/open-event-orga-app.svg?branch=master)](https://travis-ci.org/fossasia/open-event-orga-app)
-[![Join the chat at https://gitter.im/fossasia/open-event-orga-app](https://badges.gitter.im/fossasia/open-event-orga-app.svg)](https://gitter.im/fossasia/open-event-orga-app?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/master.svg?style=flat-square)](https://travis-ci.org/fossasia/open-event-orga-app)
+[![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg?style=flat-square)](https://gitter.im/fossasia/open-event-orga-app)
 
-Mobile App for Organizers and Entry Manager
 
-The main feature of the app is: Scan a QR code, check in attendees and keep it inline with the orga server data.
+> Mobile App for Organizers and Entry Managers.
+
+The core features of this application are
+- Scan a QR code
+- Check-in attendees 
+- Data sync with the [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server/)
 
 ## Roadmap
 
-Future features are to give overviews of sales, tracks and sessions, but all this can come later.
+Planned features & enhancements are:
+- Overview of sales
+- Overview of tracks and sessions
+- Quick session re-scheduling
+- Push notifications for certain triggers
 
 ## Communication
 
