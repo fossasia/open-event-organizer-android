@@ -1,5 +1,5 @@
 export interface IAttendeeQueue {
   checked_in: boolean;
-  attendee_id: number;
+  attendee_identifier: number;
   event_id: number;
 }
