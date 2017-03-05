@@ -59,31 +59,33 @@ export class EventAttendeesPage {
 
   public scanQrCode() {
     BarcodeScanner.scan().then((barcodeData) => {
-      let toast = this.toastCtrl.create({
+      const toast = this.toastCtrl.create({
         duration: 1000,
         message: "Processing QR Code",
       });
       toast.present();
       this.attendeesService.checkInOut(this.event.id, barcodeData.text, true).subscribe(
         (attendeeResult) => {
-          let toastSecondary = this.toastCtrl.create({
-            duration: 500,
-            message: attendeeResult.lastname + ", " + attendeeResult.firstname + " has been checked in.",
+          const toastSecondary = this.toastCtrl.create({
+            duration: 1000,
+            message: attendeeResult.firstname + " " + attendeeResult.lastname + " has been checked in.",
           });
+          toast.dismiss();
           toastSecondary.present();
         },
         () => {
-          let toastSecondary = this.toastCtrl.create({
+          const toastSecondary = this.toastCtrl.create({
             duration: 500,
             message: "Invalid QR Code. Please scan again.",
           });
+          toast.dismiss();
           toastSecondary.present();
         },
       );
     }, () => {
-      let toastSecondary = this.toastCtrl.create({
+      const toastSecondary = this.toastCtrl.create({
         duration: 500,
-        message: "Invalid QR Code. Please scan again.",
+        message: "Only QR Codes are accepted.",
       });
       toastSecondary.present();
     });
