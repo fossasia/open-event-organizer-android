@@ -52,7 +52,7 @@ export class EventAttendeesPage {
   public checkIn(attendee) {
     this.queueService
       .addToQueue({
-        attendee_id: attendee.id,
+        attendee_identifier: attendee.id,
         checked_in: attendee.checked_in,
         event_id: this.event.id,
       })
@@ -72,7 +72,7 @@ export class EventAttendeesPage {
     BarcodeScanner.scan().then((barcodeData) => {
       this.queueService
         .addToQueue({
-          attendee_id: barcodeData.text,
+          attendee_identifier: barcodeData.text.replace('/', '-'),
           checked_in: false,
           event_id: this.event.id,
         })

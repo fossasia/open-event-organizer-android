@@ -44,15 +44,15 @@ export class QueueService {
   public addToQueue(attendeeQueue: IAttendeeQueue): Promise<any> {
     return this.db.put({
       _id: UUID.UUID(),
-      attendee_id: attendeeQueue.attendee_id,
+      attendee_identifier: attendeeQueue.attendee_identifier,
       checked_in: attendeeQueue.checked_in,
       event_id: attendeeQueue.event_id,
     });
   }
 
   private processDocument(doc: any) {
-    if (doc.hasOwnProperty("attendee_id")) {
-      this.attendeeService.checkInOut(doc.event_id, doc.attendee_id, doc.checked_in).subscribe(
+    if (doc.hasOwnProperty("attendee_identifier")) {
+      this.attendeeService.checkInOut(doc.event_id, doc.attendee_identifier, doc.checked_in).subscribe(
         () => {
           this.db.remove(doc).catch(() => { /* Errors can be ignored for now */ });
         },
