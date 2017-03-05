@@ -95,7 +95,7 @@ export class EventAttendeesPage {
 
     if (query && query !== "") {
       data = data.filter(
-        item => item.firstname.includes(query) || item.lastname.includes(query) || item.email.includes(query)
+        (item) => item.firstname.includes(query) || item.lastname.includes(query) || item.email.includes(query),
       );
     }
 
