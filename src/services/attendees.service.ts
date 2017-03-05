@@ -24,7 +24,7 @@ export class AttendeesService {
 
   public checkInOut(eventId, attendeeId, isCheckedIn): Observable<IAttendee> {
     let endpoint = Config.API_ENDPOINT + "/events/" + eventId + "/attendees/check_in_toggle/" + attendeeId + "/";
-    if (isCheckedIn) {
+    if (!isCheckedIn) {
       endpoint += "check_in";
     } else {
       endpoint += "check_out";

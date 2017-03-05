@@ -50,38 +50,46 @@ export class EventAttendeesPage {
   }
 
   public checkIn(attendee) {
-    attendee.checked_in = !attendee.checked_in;
-    this.queueService.addToQueue({
-      event_id: this.event.id,
-      attendee,
-    });
+    this.queueService
+      .addToQueue({
+        attendee_id: attendee.id,
+        checked_in: attendee.checked_in,
+        event_id: this.event.id,
+      })
+      .then(() => {
+        attendee.checked_in = !attendee.checked_in;
+      })
+      .catch(() => {
+        const toast = this.toastCtrl.create({
+          duration: 500,
+          message: "Error checking in attendee. Please try again..",
+        });
+        toast.dismiss();
+      });
   }
 
   public scanQrCode() {
     BarcodeScanner.scan().then((barcodeData) => {
-      const toast = this.toastCtrl.create({
-        duration: 1000,
-        message: "Processing QR Code",
-      });
-      toast.present();
-      this.attendeesService.checkInOut(this.event.id, barcodeData.text, true).subscribe(
-        (attendeeResult) => {
-          const toastSecondary = this.toastCtrl.create({
+      this.queueService
+        .addToQueue({
+          attendee_id: barcodeData.text,
+          checked_in: false,
+          event_id: this.event.id,
+        })
+        .then(() => {
+          const toast = this.toastCtrl.create({
             duration: 1000,
-            message: attendeeResult.firstname + " " + attendeeResult.lastname + " has been checked in.",
+            message: "Attendee will be checked in",
           });
-          toast.dismiss();
-          toastSecondary.present();
-        },
-        () => {
+          toast.present();
+        })
+        .catch(() => {
           const toastSecondary = this.toastCtrl.create({
             duration: 500,
             message: "Invalid QR Code. Please scan again.",
           });
-          toast.dismiss();
           toastSecondary.present();
-        },
-      );
+        });
     }, () => {
       const toastSecondary = this.toastCtrl.create({
         duration: 500,

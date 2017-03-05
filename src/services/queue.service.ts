@@ -21,17 +21,13 @@ export class QueueService {
       since: "now",
     }).on("change", (change) => {
       this.processQueueChange(change);
-    }).on("error", () => {
-      // TODO Should show error
-    });
+    }).on("error", () => { /* Errors can be ignored for now */ });
   }
 
   public processQueueChange(change: any) {
     this.db.get(change.id).then((doc) => {
       this.processDocument(doc);
-    }).catch(() => {
-      // Can ignore error
-    });
+    }).catch(() => { /* Errors can be ignored for now */ });
   }
 
   public processQueue() {
@@ -42,33 +38,25 @@ export class QueueService {
       result.rows.forEach((row) => {
         this.processDocument(row.doc);
       });
-    }).catch(() => {
-      // TODO Should show error
-    });
+    }).catch(() => { /* Errors can be ignored for now. Queue will be processed again on next attempt. */ });
   }
 
-  public addToQueue(attendeeQueue: IAttendeeQueue) {
-    this.db.put({
+  public addToQueue(attendeeQueue: IAttendeeQueue): Promise<any> {
+    return this.db.put({
       _id: UUID.UUID(),
-      attendee: attendeeQueue.attendee,
+      attendee_id: attendeeQueue.attendee_id,
+      checked_in: attendeeQueue.checked_in,
       event_id: attendeeQueue.event_id,
-    }).catch(() => {
-      // TODO Should show error
     });
-
   }
 
   private processDocument(doc: any) {
-    if (doc.hasOwnProperty("attendee")) {
-      this.attendeeService.checkInOut(doc.event_id, doc.attendee.id, doc.attendee.checked_in).subscribe(
+    if (doc.hasOwnProperty("attendee_id")) {
+      this.attendeeService.checkInOut(doc.event_id, doc.attendee_id, doc.checked_in).subscribe(
         () => {
-          this.db.remove(doc).catch(() => {
-            // TODO Should show error
-          });
+          this.db.remove(doc).catch(() => { /* Errors can be ignored for now */ });
         },
-        () => {
-          // TODO Should show error
-        },
+        () => { /* Errors can be ignored since processing will be attempted the next time queue is processed */ },
       );
     }
   }

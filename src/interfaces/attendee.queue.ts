@@ -1,6 +1,5 @@
-import {IAttendee} from "./attende";
-
 export interface IAttendeeQueue {
-  attendee: IAttendee;
+  checked_in: boolean;
+  attendee_id: number;
   event_id: number;
 }
