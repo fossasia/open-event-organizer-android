@@ -14,6 +14,9 @@ fi
 git clone --quiet --branch=apk https://the-dagger:$GITHUB_API_KEY@github.com/fossasia/open-event-orga-app apk > /dev/null
 cp platforms/android/build/outputs/apk/android-debug.apk apk/test-android-debug.apk
 cd apk
+git checkout --orphan temporary
 git add test-android-debug.apk
-git commit -m "[Auto] Update Test Apk ($(date +%Y-%m-%d.%H:%M:%S))"
-git push origin apk --quiet > /dev/null
+git commit -am "[Auto] Update Test Apk ($(date +%Y-%m-%d.%H:%M:%S))"
+git branch -D apk
+git branch -m apk
+git push origin apk --force --quiet > /dev/null

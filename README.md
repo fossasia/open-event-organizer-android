@@ -27,7 +27,9 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 ## Development
 
-This project uses [Ionic Framework v2.x](http://ionicframework.com/docs/v2).
+
+- The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at [https://open-event-dev.herokuapp.com/api/v1](https://open-event-dev.herokuapp.com/api/v1/) .
+- This project uses [Ionic Framework v2.x](http://ionicframework.com/docs/v2).
 
 ### Development environment setup
 - Install [Node.js](https://nodejs.org/en/). (v6.x.x recommended).
