@@ -18,35 +18,48 @@ export class EventAttendeesPage {
   public attendees: IAttendee[];
   public attendeesGrouped: any;
   public event: IEvent;
+  public isLoading: boolean = true;
 
   private alphabetRe: RegExp;
+  private qrRe: RegExp;
 
   constructor(private attendeesService: AttendeesService, private storage: Storage,
               private toastCtrl: ToastController, private queueService: QueueService) {
 
+    // Matches an alphabet-only string
     this.alphabetRe = new RegExp("^[A-Za-z]");
+    // Matches a valid QR Code pattern.
+    this.qrRe = new RegExp("^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}-[0-9]+$", "i");
 
-    this.storage.get("attendees").then((attendees) => {
-      this.attendees = attendees;
-      this.groupByAlphabets(this.attendees);
-      this.storage.get("event").then((event) => {
-        this.event = event;
-        attendeesService.loadAttendees(this.event.id).subscribe(
-          (attendeesInner) => {
-            this.storage.set("attendees", attendeesInner);
-            this.attendees = attendeesInner;
-            this.groupByAlphabets(this.attendees);
-          },
-          () => {
-            // Show errors
-          },
-        );
-      });
+    this.storage.get("event").then((event) => {
+      this.event = event;
+      attendeesService.loadAttendees(this.event.id).subscribe(
+        (attendeesInner) => {
+          this.storage.set("attendees", attendeesInner);
+          this.attendees = attendeesInner;
+          this.groupByAlphabets(this.attendees).then((attendeesGrouped) => {
+            this.attendeesGrouped = attendeesGrouped;
+            this.isLoading = false;
+          });
+        },
+        () => {
+          // Load from cache if server load fails for some reason
+          this.storage.get("attendees").then((attendees) => {
+            this.attendees = attendees;
+            this.groupByAlphabets(this.attendees).then((attendeesGrouped) => {
+              this.attendeesGrouped = attendeesGrouped;
+              this.isLoading = false;
+            });
+          });
+        },
+      );
     });
   }
 
   public searchFilter(event) {
-    this.groupByAlphabets(this.attendees, event.target.value);
+    this.groupByAlphabets(this.attendees, event.target.value).then((attendeesGrouped) => {
+      this.attendeesGrouped = attendeesGrouped;
+    });
   }
 
   public checkIn(attendee) {
@@ -60,82 +73,93 @@ export class EventAttendeesPage {
         attendee.checked_in = !attendee.checked_in;
       })
       .catch(() => {
-        const toast = this.toastCtrl.create({
+        this.toastCtrl.create({
           duration: 500,
           message: "Error checking in attendee. Please try again..",
-        });
-        toast.dismiss();
+        }).present();
       });
   }
 
   public scanQrCode() {
     BarcodeScanner.scan().then((barcodeData) => {
+      const identifier = barcodeData.text.replace("/", "-");
+      if (!this.isQRValid(identifier)) {
+        this.toastCtrl.create({
+          duration: 1200,
+          message: "Invalid QR Code. Please scan again",
+        }).present();
+        return;
+      }
+
       this.queueService
         .addToQueue({
-          attendee_identifier: barcodeData.text.replace('/', '-'),
+          attendee_identifier: identifier,
           checked_in: false,
           event_id: this.event.id,
         })
         .then(() => {
-          const toast = this.toastCtrl.create({
+          this.toastCtrl.create({
             duration: 1000,
             message: "Attendee will be checked in",
-          });
-          toast.present();
+          }).present();
         })
         .catch(() => {
-          const toastSecondary = this.toastCtrl.create({
-            duration: 500,
+          this.toastCtrl.create({
+            duration: 1200,
             message: "Invalid QR Code. Please scan again.",
-          });
-          toastSecondary.present();
+          }).present();
         });
     }, () => {
-      const toastSecondary = this.toastCtrl.create({
-        duration: 500,
+      this.toastCtrl.create({
+        duration: 1200,
         message: "Only QR Codes are accepted.",
-      });
-      toastSecondary.present();
+      }).present();
     });
   }
 
+  private isQRValid(data: string): boolean {
+    return this.qrRe.test(data);
+  }
+
   private groupByAlphabets(data, query = null) {
+    return new Promise((resolve) => {
+      if (query && query !== "") {
+        data = data.filter(
+          (item) => item.firstname.includes(query) || item.lastname.includes(query) || item.email.includes(query),
+        );
+      }
+      let attendees = data.sort((a, b) => {
+        let name1 = a.lastname.toUpperCase();
+        let name2 = b.lastname.toUpperCase();
+        return name1 < name2 ? -1 : (name1 > name2 ? 1 : 0);
+      });
 
-    if (query && query !== "") {
-      data = data.filter(
-        (item) => item.firstname.includes(query) || item.lastname.includes(query) || item.email.includes(query),
-      );
-    }
+      let attendeesGrouped = {};
+      attendees.forEach((attendee) => {
+        let lastname = attendee.lastname;
+        const firstname = attendee.firstname;
+        let letter = lastname.charAt(0).toUpperCase();
+        if (!this.alphabetRe.test(letter)) {
+          lastname = "";
+        }
+        const tempName = lastname + firstname;
 
-    let attendees = data.sort((a, b) => {
-      let name1 = a.lastname.toUpperCase();
-      let name2 = b.lastname.toUpperCase();
-      return name1 < name2 ? -1 : (name1 > name2 ? 1 : 0);
+        if (tempName.trim().length === 0) {
+          return;
+        }
+
+        letter = tempName.charAt(0).toUpperCase();
+        if (!this.alphabetRe.test(letter)) {
+          letter = "1@#";
+        }
+        if (attendeesGrouped[letter] === undefined) {
+          attendeesGrouped[letter] = [];
+        }
+        attendeesGrouped[letter].push(attendee);
+      });
+
+      resolve(this.orderKeys(attendeesGrouped));
     });
-
-    let attendeesGrouped = {};
-    attendees.forEach((attendee) => {
-      let letter = attendee.lastname.charAt(0).toUpperCase();
-      if (!this.alphabetRe.test(letter)) {
-        attendee.lastname = "";
-      }
-      const tempName = attendee.lastname + attendee.firstname;
-
-      if (tempName.trim().length === 0) {
-        return;
-      }
-
-      letter = tempName.charAt(0).toUpperCase();
-      if (!this.alphabetRe.test(letter)) {
-        letter = "1@#";
-      }
-      if (attendeesGrouped[letter] === undefined) {
-        attendeesGrouped[letter] = [];
-      }
-      attendeesGrouped[letter].push(attendee);
-    });
-
-    this.attendeesGrouped = this.orderKeys(attendeesGrouped);
   }
 
   private orderKeys(obj): any {
