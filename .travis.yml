@@ -16,6 +16,8 @@ cache:
       - $HOME/.npm
       - $HOME/.cache
       - $HOME/.nvm
+      - $HOME/android/.gradle/caches/
+      - $HOME/android/.gradle/wrapper/
 env:
     - NODE_VERSION="6.9.5"
 install:
