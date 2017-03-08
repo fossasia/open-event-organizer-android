@@ -89,7 +89,7 @@ export class EventDashboardPage {
   private loadAttendeesStats(attendees: IAttendee[]) {
     this.stats.attendees.total = this.stats.tickets.sold = attendees.length;
     attendees.forEach((attendee: IAttendee) => {
-      this.stats.tickets.total += (attendee.checked_in ? 1 : 0);
+      this.stats.attendees.present += (attendee.checked_in ? 1 : 0);
     });
   }
 }
