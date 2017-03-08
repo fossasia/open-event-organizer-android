@@ -21,6 +21,7 @@ export class OrganizerAppComponent {
 
   @ViewChild(Nav) public nav: Nav;
   public rootPage: any;
+  private disconnectSubscription: any;
 
   constructor(private platform: Platform, private queueService: QueueService,
               private networkCheckService: NetworkCheck, private menuCtrl: MenuController) {
@@ -50,13 +51,19 @@ export class OrganizerAppComponent {
   }
 
   private handleNetworkChanges() {
-    Network.onDisconnect().subscribe(() => {
-      this.networkCheckService.showNoNetworkAlert();
-    });
+    this.initDisconnectSubscription();
     Network.onConnect().subscribe(() => {
+      this.initDisconnectSubscription();
       setTimeout(() => {
         this.queueService.processQueue();
       }, 3000);
+    });
+  }
+
+  private initDisconnectSubscription() {
+    this.disconnectSubscription = Network.onDisconnect().subscribe(() => {
+      this.networkCheckService.showNoNetworkAlert();
+      this.disconnectSubscription.unsubscribe();
     });
   }
 }
