@@ -4,26 +4,32 @@
   </ion-navbar>
 </ion-header>
 
+
 <ion-content padding>
-  <ion-item style="margin-top: -10px;">
-    <ion-label floating>Server</ion-label>
-    <ion-input type="text" [(ngModel)]="server"></ion-input>
-  </ion-item>
 
-  <ion-item>
-    <ion-label floating>Email</ion-label>
-    <ion-input type="email" name="email" [(ngModel)]="credentials.email"></ion-input>
-  </ion-item>
+  <form (ngSubmit)="login()" #registerForm="ngForm">
 
-  <ion-item>
-    <ion-label floating>Password</ion-label>
-    <ion-input type="password" name="password" [(ngModel)]="credentials.password"></ion-input>
-  </ion-item>
-  <br>
+    <ion-item style="margin-top: -10px;">
+      <ion-label floating>Server</ion-label>
+      <ion-input type="text" name="server" [(ngModel)]="server" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="email" name="email" [(ngModel)]="credentials.email" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password" name="password" [(ngModel)]="credentials.password" required></ion-input>
+    </ion-item>
+    <br>
+
+    <button ion-button full [hidden]="isLoading" type="submit" color="secondary">Login</button>
+  </form>
 
   <div style="text-align: center;" id="loading-view" [hidden]="!isLoading">
     <ion-spinner></ion-spinner>
   </div>
 
-  <button ion-button full [hidden]="isLoading" color="secondary" (click)="login()">Login</button>
 </ion-content>
