@@ -124,8 +124,9 @@ export class EventAttendeesPage {
   private groupByAlphabets(data, query = null) {
     return new Promise((resolve) => {
       if (query && query !== "") {
+        query = query.toLowerCase();
         data = data.filter(
-          (item) => item.firstname.includes(query) || item.lastname.includes(query) || item.email.includes(query),
+          (item) => item.firstname.toLowerCase().includes(query) || item.lastname.toLowerCase().includes(query) || item.email.toLowerCase().includes(query),
         );
       }
       let attendees = data.sort((a, b) => {
