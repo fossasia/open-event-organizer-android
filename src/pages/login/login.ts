@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {Storage} from "@ionic/storage";
 import {provideAuth} from "angular2-jwt";
-import {AlertController, NavController} from "ionic-angular";
+import {AlertController, NavController, MenuController} from "ionic-angular";
 import {Config} from "../../app/config";
 import {LoginService} from "../../services/login.service";
 import {UserService} from "../../services/user.service";
@@ -21,10 +21,13 @@ export class LoginPage {
   public usingEventyay: boolean;
 
   constructor(private navCtrl: NavController,
+              private menuCtrl: MenuController,
               private loginService: LoginService,
               public alertCtrl: AlertController,
               private userService: UserService,
               private storage: Storage) {
+
+    this.menuCtrl.enable(false);
 
     this.credentials = {
       email: null,
@@ -33,7 +36,7 @@ export class LoginPage {
 
     this.isLoading = false;
     this.usingEventyay = true;
-
+    
     if (Config.SERVER) {
       this.server = Config.SERVER;
     }
