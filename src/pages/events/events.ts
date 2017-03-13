@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {Storage} from "@ionic/storage";
-import {NavController} from "ionic-angular";
+import {NavController, MenuController} from "ionic-angular";
 import {IEvent} from "../../interfaces/event";
 import {EventsService} from "../../services/events.service";
 import {EventDashboardPage} from "../event-dashboard/event-dashboard";
@@ -17,7 +17,12 @@ export class EventsPage {
   public isLoading: boolean = true;
   public pickedEvent: IEvent;
 
-  constructor(private navCtrl: NavController, private eventService: EventsService, private storage: Storage) {
+  constructor(private navCtrl: NavController,
+              private menuCtrl: MenuController,
+              private eventService: EventsService,
+              private storage: Storage) {
+    
+    this.menuCtrl.enable(true);
     this.isLoading = true;
 
     this.storage.get("event").then((event) => {

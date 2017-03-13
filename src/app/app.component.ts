@@ -38,8 +38,8 @@ export class OrganizerAppComponent {
 
   public logout() {
     localStorage.removeItem(Config.ACCESS_TOKEN_NAME);
-    this.nav.setRoot(LoginPage);
     this.menuCtrl.close();
+    this.nav.setRoot(LoginPage);
   }
 
   private handleRoot() {
