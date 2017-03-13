@@ -18,6 +18,7 @@ export class LoginPage {
   public server: string;
   public credentials: {email: string, password: string};
   public isLoading: boolean;
+  public usingEventyay: boolean;
 
   constructor(private navCtrl: NavController,
               private loginService: LoginService,
@@ -31,10 +32,15 @@ export class LoginPage {
     };
 
     this.isLoading = false;
+    this.usingEventyay = true;
 
     if (Config.SERVER) {
       this.server = Config.SERVER;
     }
+  }
+
+  public onCheckboxToggle() {
+    this.server = (this.usingEventyay) ? "https://eventyay.com" : "";
   }
 
   public login() {
