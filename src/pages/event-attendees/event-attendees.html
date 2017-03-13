@@ -7,12 +7,14 @@
       Attendees
     </ion-title>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="searchFilter($event)"></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
 
   <div style="padding-bottom: 2.9em;">
-    <ion-searchbar (ionInput)="searchFilter($event)"></ion-searchbar>
 
     <div style="text-align: center; margin-top: 10px;" id="loading-view" [hidden]="!isLoading">
       <ion-spinner></ion-spinner>
