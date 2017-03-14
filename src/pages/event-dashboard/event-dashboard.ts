@@ -6,8 +6,8 @@ import {IEvent} from "../../interfaces/event";
 import {ITicket} from "../../interfaces/ticket";
 import {AttendeesService} from "../../services/attendees.service";
 import {EventsService} from "../../services/events.service";
-import { EventAttendeesPage } from "../event-attendees/event-attendees";
-import { NetworkCheck } from "../../services/network-check.service";
+import {EventAttendeesPage} from "../event-attendees/event-attendees";
+import {NetworkCheck} from "../../services/network-check.service";
 
 @Component({
   providers: [EventsService, AttendeesService],
@@ -32,8 +32,14 @@ export class EventDashboardPage {
 
   public isLoading: boolean = true;
 
-  constructor(private navCtrl: NavController, private storage: Storage, private eventsService: EventsService,
-              private attendeesService: AttendeesService, private networkCheckService: NetworkCheck) {
+  private eventStorageKey: string;
+  private attendeesStorageKey: string;
+
+  constructor(private navCtrl: NavController,
+              private storage: Storage,
+              private eventsService: EventsService,
+              private attendeesService: AttendeesService,
+              private networkCheckService: NetworkCheck) {
 
     this.stats = {
       attendees: {
@@ -46,9 +52,29 @@ export class EventDashboardPage {
       },
     };
 
+    this.isLoading = true;
     this.storage.get("event").then((event) => {
+
       this.event = event;
+
+      this.eventStorageKey = "event_" + this.event.id;
+      this.attendeesStorageKey = "attendees_" + this.event.id;
+
+      this.storage.get(this.eventStorageKey).then((cachedEvent) => {
+        if (cachedEvent != null) {
+          this.event = cachedEvent;
+          this.loadTicketsStats(this.event.tickets);
+        }
+      });
+
+      this.storage.get(this.attendeesStorageKey).then((cachedAttendees) => {
+        if (cachedAttendees != null) {
+          this.loadAttendeesStats(cachedAttendees);
+        }
+      });
+
       this.loadPageData(0);
+
     });
   }
 
@@ -69,18 +95,20 @@ export class EventDashboardPage {
   }
 
   private loadTicketsStats(tickets: ITicket[]) {
-    this.stats.tickets.total = 0;
+    let totalTickets = 0;
     tickets.forEach((ticket: ITicket) => {
-      this.stats.tickets.total += ticket.quantity;
+      totalTickets += ticket.quantity;
     });
+    this.stats.tickets.total = totalTickets;
   }
 
   private loadAttendeesStats(attendees: IAttendee[]) {
     this.stats.attendees.total = this.stats.tickets.sold = attendees.length;
-    this.stats.attendees.present = 0;
+    let presentAttendees = 0;
     attendees.forEach((attendee: IAttendee) => {
-      this.stats.attendees.present += (attendee.checked_in ? 1 : 0);
+      presentAttendees += (attendee.checked_in ? 1 : 0);
     });
+    this.stats.attendees.present = presentAttendees;
   }
 
   private loadPageData(refresher: any, isRefresher: boolean = false) {
@@ -88,20 +116,20 @@ export class EventDashboardPage {
     this.eventsService.getEvent(this.event.id).subscribe(
       (eventInner) => {
         this.event = eventInner;
-        this.storage.set("event", eventInner);
+        this.storage.set(this.eventStorageKey, eventInner);
         this.loadTicketsStats(eventInner.tickets);
         this.attendeesService.loadAttendees(this.event.id).subscribe(
           (attendees) => {
-            this.storage.set("attendees", attendees);
+            this.storage.set(this.attendeesStorageKey, attendees);
             this.loadAttendeesStats(attendees);
             this.isLoading = false;
-            if(isRefresher) {
+            if (isRefresher) {
               refresher.complete();
             }
           },
           () => {
             this.isLoading = false;
-            if(isRefresher) {
+            if (isRefresher) {
               refresher.complete();
             }
             this.networkCheckService.showNoNetworkAlert();
@@ -110,7 +138,7 @@ export class EventDashboardPage {
       },
       () => {
         this.isLoading = false;
-        if(isRefresher) {
+        if (isRefresher) {
           refresher.complete();
         }
         this.networkCheckService.showNoNetworkAlert();

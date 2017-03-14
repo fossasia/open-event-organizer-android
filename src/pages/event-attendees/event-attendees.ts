@@ -5,8 +5,8 @@ import {BarcodeScanner} from "ionic-native";
 import {IAttendee} from "../../interfaces/attende";
 import {IEvent} from "../../interfaces/event";
 import {AttendeesService} from "../../services/attendees.service";
-import { QueueService } from "../../services/queue.service";
-import { NetworkCheck } from "../../services/network-check.service";
+import {QueueService} from "../../services/queue.service";
+import {NetworkCheck} from "../../services/network-check.service";
 
 @Component({
   providers: [AttendeesService, QueueService],
@@ -23,9 +23,13 @@ export class EventAttendeesPage {
 
   private alphabetRe: RegExp;
   private qrRe: RegExp;
+  private attendeesStorageKey: string;
 
-  constructor(private attendeesService: AttendeesService, private storage: Storage,
-              private toastCtrl: ToastController, private queueService: QueueService, private networkCheckService: NetworkCheck) {
+  constructor(private attendeesService: AttendeesService,
+              private storage: Storage,
+              private toastCtrl: ToastController,
+              private queueService: QueueService,
+              private networkCheckService: NetworkCheck) {
 
     // Matches an alphabet-only string
     this.alphabetRe = new RegExp("^[A-Za-z]");
@@ -34,7 +38,20 @@ export class EventAttendeesPage {
 
     this.storage.get("event").then((event) => {
       this.event = event;
+
+      // Cache attendees for each event individually in a format "attendees_eventid'
+      this.attendeesStorageKey = "attendees_" + this.event.id;
+
+      // Update UI from Cache initially. 
+      this.storage.get(this.attendeesStorageKey).then((attendees) => {
+        this.attendees = attendees;
+        this.groupByAlphabets(this.attendees).then((attendeesGrouped) => {
+          this.attendeesGrouped = attendeesGrouped;
+        });
+      });
+
       this.loadPageData(0);
+
     });
   }
 
@@ -112,7 +129,8 @@ export class EventAttendeesPage {
       if (query && query !== "") {
         query = query.toLowerCase();
         data = data.filter(
-          (item) => item.firstname.toLowerCase().includes(query) || item.lastname.toLowerCase().includes(query) || item.email.toLowerCase().includes(query),
+          (item) => item.firstname.toLowerCase().includes(query) ||
+            item.lastname.toLowerCase().includes(query) || item.email.toLowerCase().includes(query),
         );
       }
       let attendees = data.sort((a, b) => {
@@ -168,19 +186,20 @@ export class EventAttendeesPage {
     this.isLoading = true;
     this.attendeesService.loadAttendees(this.event.id).subscribe(
       (attendeesInner) => {
-        this.storage.set("attendees", attendeesInner);
+        // Store new data in cache and update UI
+        this.storage.set(this.attendeesStorageKey, attendeesInner);
         this.attendees = attendeesInner;
         this.groupByAlphabets(attendeesInner).then((attendeesGrouped) => {
           this.attendeesGrouped = attendeesGrouped;
           this.isLoading = false;
-          if(isRefresher) {
+          if (isRefresher) {
             refresher.complete();
           }
         });
       },
       () => {
         this.isLoading = false;
-        if(isRefresher) {
+        if (isRefresher) {
           refresher.complete();
         }
         this.networkCheckService.showNoNetworkAlert();
