@@ -5,7 +5,8 @@ import {BarcodeScanner} from "ionic-native";
 import {IAttendee} from "../../interfaces/attende";
 import {IEvent} from "../../interfaces/event";
 import {AttendeesService} from "../../services/attendees.service";
-import {QueueService} from "../../services/queue.service";
+import { QueueService } from "../../services/queue.service";
+import { NetworkCheck } from "../../services/network-check.service";
 
 @Component({
   providers: [AttendeesService, QueueService],
@@ -24,7 +25,7 @@ export class EventAttendeesPage {
   private qrRe: RegExp;
 
   constructor(private attendeesService: AttendeesService, private storage: Storage,
-              private toastCtrl: ToastController, private queueService: QueueService) {
+              private toastCtrl: ToastController, private queueService: QueueService, private networkCheckService: NetworkCheck) {
 
     // Matches an alphabet-only string
     this.alphabetRe = new RegExp("^[A-Za-z]");
@@ -33,27 +34,12 @@ export class EventAttendeesPage {
 
     this.storage.get("event").then((event) => {
       this.event = event;
-      attendeesService.loadAttendees(this.event.id).subscribe(
-        (attendeesInner) => {
-          this.storage.set("attendees", attendeesInner);
-          this.attendees = attendeesInner;
-          this.groupByAlphabets(this.attendees).then((attendeesGrouped) => {
-            this.attendeesGrouped = attendeesGrouped;
-            this.isLoading = false;
-          });
-        },
-        () => {
-          // Load from cache if server load fails for some reason
-          this.storage.get("attendees").then((attendees) => {
-            this.attendees = attendees;
-            this.groupByAlphabets(this.attendees).then((attendeesGrouped) => {
-              this.attendeesGrouped = attendeesGrouped;
-              this.isLoading = false;
-            });
-          });
-        },
-      );
+      this.loadPageData(0);
     });
+  }
+
+  public doRefresh(refresher) {
+    this.loadPageData(refresher, true);
   }
 
   public searchFilter(event) {
@@ -176,6 +162,30 @@ export class EventAttendeesPage {
       obj[keys[i]] = after[keys[i]];
     }
     return obj;
+  }
+
+  private loadPageData(refresher: any, isRefresher: boolean = false) {
+    this.isLoading = true;
+    this.attendeesService.loadAttendees(this.event.id).subscribe(
+      (attendeesInner) => {
+        this.storage.set("attendees", attendeesInner);
+        this.attendees = attendeesInner;
+        this.groupByAlphabets(attendeesInner).then((attendeesGrouped) => {
+          this.attendeesGrouped = attendeesGrouped;
+          this.isLoading = false;
+          if(isRefresher) {
+            refresher.complete();
+          }
+        });
+      },
+      () => {
+        this.isLoading = false;
+        if(isRefresher) {
+          refresher.complete();
+        }
+        this.networkCheckService.showNoNetworkAlert();
+      },
+    );
   }
 
 }
