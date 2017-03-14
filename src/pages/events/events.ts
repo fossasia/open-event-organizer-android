@@ -58,9 +58,9 @@ export class EventsPage {
       () => {
         if(isRefresher) {
           refresher.complete();
+          this.networkCheckService.showNoNetworkAlert();
         }
         this.isLoading = false;
-        this.networkCheckService.showNoNetworkAlert();
       },
     );
   }
