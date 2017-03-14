@@ -36,7 +36,7 @@ export class LoginPage {
 
     this.isLoading = false;
     this.usingEventyay = true;
-    
+
     if (Config.SERVER) {
       this.server = Config.SERVER;
     }

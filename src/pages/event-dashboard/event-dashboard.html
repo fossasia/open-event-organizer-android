@@ -14,9 +14,7 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
-      refreshingSpinner="circles"
-      refreshingText="Refreshing...">
+      pullingText="Pull to refresh">
     </ion-refresher-content>
   </ion-refresher>
   
@@ -24,6 +22,10 @@
     <h2>{{ event.name }}</h2>
     <span style="font-size: larger" class="weight-300">{{ event.start_time | amDateFormat:'MMMM Do YYYY, HH:mm' }} to {{ event.end_time | amDateFormat:'MMMM Do YYYY, HH:mm' }}</span>
     <br><br>
+
+    <div style="text-align: center;" id="loading-view" [hidden]="!isLoading">
+      <ion-spinner></ion-spinner>
+    </div>
 
     <ion-item-group>
       <ion-item-divider light class="caps-300">Tickets Sold</ion-item-divider>
