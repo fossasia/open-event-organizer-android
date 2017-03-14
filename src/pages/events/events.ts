@@ -47,19 +47,19 @@ export class EventsPage {
   }
 
   private loadPageData(refresher: any, isRefresher: boolean = false) {
-    this.isLoading = true;
     this.eventService.getMyEvents().subscribe(
       (res) => {
-        this.isLoading = false;
         if(isRefresher) {
           refresher.complete();
         }
+        this.isLoading = false;
         this.events = res;
       },
       () => {
         if(isRefresher) {
           refresher.complete();
         }
+        this.isLoading = false;
         this.networkCheckService.showNoNetworkAlert();
       },
     );
