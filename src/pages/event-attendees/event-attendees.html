@@ -7,7 +7,7 @@
       Attendees
     </ion-title>
   </ion-navbar>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-searchbar (ionInput)="searchFilter($event)"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
@@ -31,9 +31,9 @@
     <ion-list>
       <ion-item-group *ngFor="let entry of attendeesGrouped | keys">
         <ion-item-divider light class="caps-300">{{ entry.key }}</ion-item-divider>
-        <ion-item *ngFor="let attendee of entry.value" [ngClass]="{'item-icon-left-square':attendee.checked_in}"
-                  (click)="checkIn(attendee)">
-          <ion-icon name="checkmark" item-left [hidden]="!attendee.checked_in"></ion-icon>
+        <ion-item *ngFor="let attendee of entry.value" (click)="checkIn(attendee)">
+          <button ion-button color="secondary" [hidden]="attendee.checked_in" style="text-transform: none;float: right;" small>Check In</button>
+          <button ion-button color="danger" item-right [hidden]="!attendee.checked_in" style="text-transform: none;float: right;" small>Checked In</button>
           <h2>{{ attendee.lastname }} {{ !attendee.lastname || attendee.lastname.trim() === '' ? '' : ','}} {{ attendee.firstname}}</h2>
           <p class="text-muted">{{ attendee.email}}</p>
         </ion-item>

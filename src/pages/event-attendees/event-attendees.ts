@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {Storage} from "@ionic/storage";
-import {ToastController} from "ionic-angular";
+import { ToastController, AlertController } from "ionic-angular";
 import {BarcodeScanner} from "ionic-native";
 import {IAttendee} from "../../interfaces/attende";
 import {IEvent} from "../../interfaces/event";
@@ -25,12 +25,8 @@ export class EventAttendeesPage {
   private qrRe: RegExp;
   private attendeesStorageKey: string;
 
-  constructor(private attendeesService: AttendeesService,
-              private storage: Storage,
-              private toastCtrl: ToastController,
-              private queueService: QueueService,
-              private networkCheckService: NetworkCheck) {
-
+  constructor(private attendeesService: AttendeesService, private storage: Storage,
+              private toastCtrl: ToastController, private queueService: QueueService, private networkCheckService: NetworkCheck, private alertCtrl: AlertController) {
     // Matches an alphabet-only string
     this.alphabetRe = new RegExp("^[A-Za-z]");
     // Matches a valid QR Code pattern.
@@ -65,22 +61,41 @@ export class EventAttendeesPage {
     });
   }
 
-  public checkIn(attendee) {
-    this.queueService
-      .addToQueue({
-        attendee_identifier: attendee.id,
-        checked_in: attendee.checked_in,
-        event_id: this.event.id,
-      })
-      .then(() => {
-        attendee.checked_in = !attendee.checked_in;
-      })
-      .catch(() => {
-        this.toastCtrl.create({
-          duration: 500,
-          message: "Error checking in attendee. Please try again..",
-        }).present();
-      });
+  public checkIn(attendee: IAttendee) {
+    let confirm = this.alertCtrl.create({
+      title: attendee.checked_in ? "Checking Out" : "Checking In",
+      subTitle: attendee.firstname + " " + attendee.lastname,
+      message: "Ticket: " + attendee.ticket.name,
+      buttons: [
+        {
+          text: "Cancel",
+          handler: () => {
+            //cancelled
+          }
+        },
+        {
+          text: "Ok",
+          handler: () => {
+            this.queueService
+              .addToQueue({
+                attendee_identifier: attendee.id,
+                checked_in: attendee.checked_in,
+                event_id: this.event.id,
+              })
+              .then(() => {
+                attendee.checked_in = !attendee.checked_in;
+              })
+              .catch(() => {
+                this.toastCtrl.create({
+                  duration: 500,
+                  message: "Error checking in attendee. Please try again..",
+                }).present();
+              });
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   public scanQrCode() {
