@@ -17,14 +17,13 @@
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
-      refreshingSpinner="circles"
       refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
 
   <div style="padding-bottom: 2.9em;">
 
-    <div style="text-align: center; margin-top: 10px;" id="loading-view" [hidden]="!isLoading">
+    <div style="text-align: center; margin-top: 10px;" id="loading-view" [hidden]="!isLoadingFirstTime">
       <ion-spinner></ion-spinner>
     </div>
 

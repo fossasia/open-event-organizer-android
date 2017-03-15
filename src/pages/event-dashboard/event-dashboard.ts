@@ -31,6 +31,7 @@ export class EventDashboardPage {
   };
 
   public isLoading: boolean = true;
+  public isLoadingFirstTime: boolean = true;
 
   private eventStorageKey: string;
   private attendeesStorageKey: string;
@@ -123,6 +124,7 @@ export class EventDashboardPage {
             this.storage.set(this.attendeesStorageKey, attendees);
             this.loadAttendeesStats(attendees);
             this.isLoading = false;
+            this.isLoadingFirstTime = false;
             if (isRefresher) {
               refresher.complete();
             }

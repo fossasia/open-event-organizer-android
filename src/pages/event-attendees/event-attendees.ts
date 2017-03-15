@@ -19,7 +19,8 @@ export class EventAttendeesPage {
   public attendees: IAttendee[];
   public attendeesGrouped: any;
   public event: IEvent;
-  public isLoading: boolean = true;
+  public isLoadingFirstTime: boolean = true;
+  public isLoading: boolean;
 
   private alphabetRe: RegExp;
   private qrRe: RegExp;
@@ -192,6 +193,7 @@ export class EventAttendeesPage {
         this.groupByAlphabets(attendeesInner).then((attendeesGrouped) => {
           this.attendeesGrouped = attendeesGrouped;
           this.isLoading = false;
+          this.isLoadingFirstTime = false;
           if (isRefresher) {
             refresher.complete();
           }
