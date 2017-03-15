@@ -103,10 +103,6 @@ export class EventAttendeesPage {
     BarcodeScanner.scan().then((barcodeData) => {
       const identifier = barcodeData.text.replace("/", "-");
       if (!this.isQRValid(identifier)) {
-        this.toastCtrl.create({
-          duration: 1200,
-          message: "Invalid QR Code. Please scan again",
-        }).present();
         return;
       }
 
@@ -137,7 +133,30 @@ export class EventAttendeesPage {
   }
 
   private isQRValid(data: string): boolean {
-    return this.qrRe.test(data);
+    if (this.qrRe.test(data)) {
+      var orderIdentifier: string = data.substr(0, 36);
+      var attendeeId: number = +data.substring(37);
+      for (let attendee of this.attendees) {
+        if (orderIdentifier == attendee.order.identifier && attendeeId == attendee.id) {
+          if (attendee.checked_in) {
+            this.presentToastCtrl("Already Checked In!");
+            return false;
+          }
+          return true;
+        }
+      }
+      this.presentToastCtrl("Invalid QR Code. Please scan again");
+      return false;
+    }
+    this.presentToastCtrl("Invalid QR Code. Please scan again");
+    return false;
+  }
+
+  private presentToastCtrl(message_body: string) {
+    this.toastCtrl.create({
+      duration: 1200,
+      message: message_body,
+    }).present();
   }
 
   private groupByAlphabets(data, query = null) {
