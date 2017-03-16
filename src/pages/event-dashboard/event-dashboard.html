@@ -23,7 +23,7 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <div class="scroll padding" *ngIf="event">
+  <div class="scroll padding" *ngIf="event" style="padding-bottom: 2.9em;">
     <h2>{{ event.name }}</h2>
     <span style="font-size: larger" class="weight-300">{{ event.start_time | amDateFormat:'MMMM Do YYYY, HH:mm' }} to {{ event.end_time | amDateFormat:'MMMM Do YYYY, HH:mm' }}</span>
     <br><br>
