@@ -102,54 +102,57 @@ export class EventAttendeesPage {
   public scanQrCode() {
     BarcodeScanner.scan().then((barcodeData) => {
       const identifier = barcodeData.text.replace("/", "-");
-      if (!this.isQRValid(identifier)) {
-        return;
-      }
-
-      this.queueService
-        .addToQueue({
-          attendee_identifier: identifier,
-          checked_in: false,
-          event_id: this.event.id,
-        })
-        .then(() => {
-          this.toastCtrl.create({
-            duration: 1000,
-            message: "Attendee will be checked in",
-          }).present();
-        })
-        .catch(() => {
-          this.toastCtrl.create({
-            duration: 1200,
-            message: "Invalid QR Code. Please scan again.",
-          }).present();
-        });
-    }, () => {
-      this.toastCtrl.create({
-        duration: 1200,
-        message: "Only QR Codes are accepted.",
-      }).present();
-    });
-  }
-
-  private isQRValid(data: string): boolean {
-    if (this.qrRe.test(data)) {
-      var orderIdentifier: string = data.substr(0, 36);
-      var attendeeId: number = +data.substring(37);
-      for (let attendee of this.attendees) {
-        if (orderIdentifier == attendee.order.identifier && attendeeId == attendee.id) {
-          if (attendee.checked_in) {
-            this.presentToastCtrl("Already Checked In!");
-            return false;
+      if (this.qrRe.test(identifier)) {
+        var orderIdentifier: string = identifier.substr(0, 36);
+        var attendeeId: number = +identifier.substring(37);
+        for (let attendee of this.attendees) {
+          if (orderIdentifier == attendee.order.identifier && attendeeId == attendee.id) {
+            if (attendee.checked_in) {
+              this.presentToastCtrl("Already Checked In!");
+              return;
+            }
+            let confirm = this.alertCtrl.create({
+              title: "Checking In",
+              subTitle: attendee.firstname + " " + attendee.lastname,
+              message: "Ticket: " + attendee.ticket.name,
+              buttons: [
+                {
+                  text: "Cancel",
+                  handler: () => {
+                    this.presentToastCtrl("Check In cancelled.");
+                  }
+                },
+                {
+                  text: "Ok",
+                  handler: () => {
+                    this.queueService
+                      .addToQueue({
+                        attendee_identifier: identifier,
+                        checked_in: false,
+                        event_id: this.event.id,
+                      })
+                      .then(() => {
+                        this.presentToastCtrl("Attendee will be checked in");
+                      })
+                      .catch(() => {
+                        this.presentToastCtrl("Invalid QR Code. Please scan again.");
+                      });
+                  }
+                }
+              ]
+            });
+            confirm.present();
+            return;
           }
-          return true;
         }
+        this.presentToastCtrl("Invalid QR Code. Please scan again");
       }
-      this.presentToastCtrl("Invalid QR Code. Please scan again");
-      return false;
-    }
-    this.presentToastCtrl("Invalid QR Code. Please scan again");
-    return false;
+      else {
+        this.presentToastCtrl("Invalid QR Code. Please scan again");
+      }
+    }, () => {
+      this.presentToastCtrl("Only QR Codes are accepted.");
+    });
   }
 
   private presentToastCtrl(message_body: string) {
