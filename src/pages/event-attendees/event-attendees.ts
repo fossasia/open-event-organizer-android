@@ -235,6 +235,7 @@ export class EventAttendeesPage {
       },
       () => {
         this.isLoading = false;
+        this.isLoadingFirstTime = false;
         if (isRefresher) {
           refresher.complete();
         }
