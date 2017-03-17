@@ -131,6 +131,7 @@ export class EventDashboardPage {
           },
           () => {
             this.isLoading = false;
+            this.isLoadingFirstTime = false;
             if (isRefresher) {
               refresher.complete();
             }
