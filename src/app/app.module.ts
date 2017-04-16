@@ -1,6 +1,7 @@
 import {ErrorHandler, NgModule} from "@angular/core";
 import {Http, HttpModule} from "@angular/http";
-import {Storage} from "@ionic/storage";
+import {BrowserModule} from "@angular/platform-browser";
+import {IonicStorageModule} from "@ionic/storage";
 import {AuthConfig, AuthHttp} from "angular2-jwt";
 import {MomentModule} from "angular2-moment";
 import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
@@ -20,10 +21,6 @@ export function getAuthHttp(http) {
     tokenGetter: (() => localStorage.getItem(Config.ACCESS_TOKEN_NAME)),
     tokenName: Config.ACCESS_TOKEN_NAME,
   }), http);
-}
-
-export function provideStorage() {
-  return new Storage(["localstorage"], {name: "open_event_organizer"});
 }
 
 @NgModule({
@@ -47,14 +44,12 @@ export function provideStorage() {
   ],
   imports: [
     HttpModule,
+    BrowserModule,
     IonicModule.forRoot(OrganizerAppComponent),
+    IonicStorageModule.forRoot({name: "open-event-organizer"}),
     MomentModule,
   ],
   providers: [
-    {
-      provide: Storage,
-      useFactory: provideStorage,
-    },
     {
       provide: ErrorHandler,
       useClass: IonicErrorHandler,
