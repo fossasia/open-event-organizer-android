@@ -10,7 +10,7 @@ export class NetworkCheck {
   }
 
   public showNoNetworkAlert() {
-    let alert = this.alertCtrl.create({
+    const alert = this.alertCtrl.create({
       buttons: ["Ok"],
       message: "Please check your internet connection.",
       title: "No Internet Connection",

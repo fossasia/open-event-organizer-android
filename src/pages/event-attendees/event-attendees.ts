@@ -1,12 +1,12 @@
-import {Component} from "@angular/core";
-import {Storage} from "@ionic/storage";
-import { ToastController, AlertController } from "ionic-angular";
-import {BarcodeScanner} from "ionic-native";
-import {IAttendee} from "../../interfaces/attende";
-import {IEvent} from "../../interfaces/event";
-import {AttendeesService} from "../../services/attendees.service";
-import {QueueService} from "../../services/queue.service";
-import {NetworkCheck} from "../../services/network-check.service";
+import { Component } from "@angular/core";
+import { Storage } from "@ionic/storage";
+import { AlertController, ToastController } from "ionic-angular";
+import { BarcodeScanner } from "ionic-native";
+import { IAttendee } from "../../interfaces/attende";
+import { IEvent } from "../../interfaces/event";
+import { AttendeesService } from "../../services/attendees.service";
+import { NetworkCheck } from "../../services/network-check.service";
+import { QueueService } from "../../services/queue.service";
 
 @Component({
   providers: [AttendeesService, QueueService],
@@ -27,7 +27,8 @@ export class EventAttendeesPage {
   private attendeesStorageKey: string;
 
   constructor(private attendeesService: AttendeesService, private storage: Storage,
-              private toastCtrl: ToastController, private queueService: QueueService, private networkCheckService: NetworkCheck, private alertCtrl: AlertController) {
+              private toastCtrl: ToastController, private queueService: QueueService,
+              private networkCheckService: NetworkCheck, private alertCtrl: AlertController) {
     // Matches an alphabet-only string
     this.alphabetRe = new RegExp("^[A-Za-z]");
     // Matches a valid QR Code pattern.
@@ -39,7 +40,7 @@ export class EventAttendeesPage {
       // Cache attendees for each event individually in a format "attendees_eventid'
       this.attendeesStorageKey = "attendees_" + this.event.id;
 
-      // Update UI from Cache initially. 
+      // Update UI from Cache initially.
       this.storage.get(this.attendeesStorageKey).then((attendees) => {
         this.attendees = attendees;
         this.groupByAlphabets(this.attendees).then((attendeesGrouped) => {
@@ -63,7 +64,7 @@ export class EventAttendeesPage {
   }
 
   public checkIn(attendee: IAttendee) {
-    let confirm = this.alertCtrl.create({
+    const confirm = this.alertCtrl.create({
       title: attendee.checked_in ? "Checking Out" : "Checking In",
       subTitle: attendee.firstname + " " + attendee.lastname,
       message: "Ticket: " + attendee.ticket.name,
@@ -71,8 +72,8 @@ export class EventAttendeesPage {
         {
           text: "Cancel",
           handler: () => {
-            //cancelled
-          }
+            // cancelled
+          },
         },
         {
           text: "Ok",
@@ -92,9 +93,9 @@ export class EventAttendeesPage {
                   message: "Error checking in attendee. Please try again..",
                 }).present();
               });
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
     confirm.present();
   }
@@ -103,15 +104,15 @@ export class EventAttendeesPage {
     BarcodeScanner.scan().then((barcodeData) => {
       const identifier = barcodeData.text.replace("/", "-");
       if (this.qrRe.test(identifier)) {
-        var orderIdentifier: string = identifier.substr(0, 36);
-        var attendeeId: number = +identifier.substring(37);
-        for (let attendee of this.attendees) {
-          if (orderIdentifier == attendee.order.identifier && attendeeId == attendee.id) {
+        const orderIdentifier: string = identifier.substr(0, 36);
+        const attendeeId: number = +identifier.substring(37);
+        for (const attendee of this.attendees) {
+          if (orderIdentifier === attendee.order.identifier && attendeeId === attendee.id) {
             if (attendee.checked_in) {
               this.presentToastCtrl("Already Checked In!");
               return;
             }
-            let confirm = this.alertCtrl.create({
+            const confirm = this.alertCtrl.create({
               title: "Checking In",
               subTitle: attendee.firstname + " " + attendee.lastname,
               message: "Ticket: " + attendee.ticket.name,
@@ -120,7 +121,7 @@ export class EventAttendeesPage {
                   text: "Cancel",
                   handler: () => {
                     this.presentToastCtrl("Check In cancelled.");
-                  }
+                  },
                 },
                 {
                   text: "Ok",
@@ -137,17 +138,16 @@ export class EventAttendeesPage {
                       .catch(() => {
                         this.presentToastCtrl("Invalid QR Code. Please scan again.");
                       });
-                  }
-                }
-              ]
+                  },
+                },
+              ],
             });
             confirm.present();
             return;
           }
         }
         this.presentToastCtrl("Invalid QR Code. Please scan again");
-      }
-      else {
+      } else {
         this.presentToastCtrl("Invalid QR Code. Please scan again");
       }
     }, () => {
@@ -155,10 +155,10 @@ export class EventAttendeesPage {
     });
   }
 
-  private presentToastCtrl(message_body: string) {
+  private presentToastCtrl(messageBody: string) {
     this.toastCtrl.create({
       duration: 1200,
-      message: message_body,
+      message: messageBody,
     }).present();
   }
 
@@ -171,13 +171,13 @@ export class EventAttendeesPage {
             item.lastname.toLowerCase().includes(query) || item.email.toLowerCase().includes(query),
         );
       }
-      let attendees = data.sort((a, b) => {
-        let name1 = a.lastname.toUpperCase();
-        let name2 = b.lastname.toUpperCase();
+      const attendees = data.sort((a, b) => {
+        const name1 = a.lastname.toUpperCase();
+        const name2 = b.lastname.toUpperCase();
         return name1 < name2 ? -1 : (name1 > name2 ? 1 : 0);
       });
 
-      let attendeesGrouped = {};
+      const attendeesGrouped = {};
       attendees.forEach((attendee) => {
         let lastname = attendee.lastname;
         const firstname = attendee.firstname;
@@ -206,9 +206,9 @@ export class EventAttendeesPage {
   }
 
   private orderKeys(obj): any {
-    let keys = Object.keys(obj).sort((k1, k2) => (k1 < k2) ? -1 : ((k1 > k2) ? 1 : 0));
+    const keys = Object.keys(obj).sort((k1, k2) => (k1 < k2) ? -1 : ((k1 > k2) ? 1 : 0));
     let i;
-    let after = {};
+    const after = {};
     for (i = 0; i < keys.length; i++) {
       after[keys[i]] = obj[keys[i]];
       delete obj[keys[i]];

@@ -1,13 +1,13 @@
-import {Component} from "@angular/core";
-import {Storage} from "@ionic/storage";
-import {NavController} from "ionic-angular";
-import {IAttendee} from "../../interfaces/attende";
-import {IEvent} from "../../interfaces/event";
-import {ITicket} from "../../interfaces/ticket";
-import {AttendeesService} from "../../services/attendees.service";
-import {EventsService} from "../../services/events.service";
-import {EventAttendeesPage} from "../event-attendees/event-attendees";
-import {NetworkCheck} from "../../services/network-check.service";
+import { Component } from "@angular/core";
+import { Storage } from "@ionic/storage";
+import { NavController } from "ionic-angular";
+import { IAttendee } from "../../interfaces/attende";
+import { IEvent } from "../../interfaces/event";
+import { ITicket } from "../../interfaces/ticket";
+import { AttendeesService } from "../../services/attendees.service";
+import { EventsService } from "../../services/events.service";
+import { NetworkCheck } from "../../services/network-check.service";
+import { EventAttendeesPage } from "../event-attendees/event-attendees";
 
 @Component({
   providers: [EventsService, AttendeesService],
