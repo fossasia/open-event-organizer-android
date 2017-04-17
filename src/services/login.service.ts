@@ -10,10 +10,10 @@ export class LoginService {
 
   }
 
-  public login(credentials: Object): Observable<string> {
-    let body = JSON.stringify(credentials);
-    let headers = new Headers({"Content-Type": "application/json"});
-    let options = new RequestOptions({headers});
+  public login(credentials: any): Observable<string> {
+    const body = JSON.stringify(credentials);
+    const headers = new Headers({"Content-Type": "application/json"});
+    const options = new RequestOptions({headers});
     return this.http
       .post(Config.API_ENDPOINT + "/login", body, options)
       .map((res: Response) => res.json().access_token);

@@ -1,11 +1,11 @@
-import {Component} from "@angular/core";
-import {Storage} from "@ionic/storage";
-import {provideAuth} from "angular2-jwt";
-import {AlertController, NavController, MenuController} from "ionic-angular";
-import {Config} from "../../app/config";
-import {LoginService} from "../../services/login.service";
-import {UserService} from "../../services/user.service";
-import {EventsPage} from "../events/events";
+import { Component } from "@angular/core";
+import { Storage } from "@ionic/storage";
+import { provideAuth } from "angular2-jwt";
+import { AlertController, MenuController, NavController } from "ionic-angular";
+import { Config } from "../../app/config";
+import { LoginService } from "../../services/login.service";
+import { UserService } from "../../services/user.service";
+import { EventsPage } from "../events/events";
 
 @Component({
   providers: [LoginService, UserService],
@@ -16,7 +16,7 @@ import {EventsPage} from "../events/events";
 export class LoginPage {
 
   public server: string;
-  public credentials: {email: string, password: string};
+  public credentials: { email: string, password: string };
   public isLoading: boolean;
   public usingEventyay: boolean;
 
@@ -65,7 +65,7 @@ export class LoginPage {
       },
       (err) => {
         this.isLoading = false;
-        let alertConfig = {
+        const alertConfig = {
           buttons: ["Ok"],
           subTitle: "Something happened. Please try again later.",
           title: "An unexpected error occurred",
@@ -74,7 +74,7 @@ export class LoginPage {
           alertConfig.title = "Login failed";
           alertConfig.subTitle = "Please check your email and password";
         }
-        let alert = this.alertCtrl.create(alertConfig);
+        const alert = this.alertCtrl.create(alertConfig);
         alert.present();
       },
     );

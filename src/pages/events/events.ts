@@ -1,10 +1,10 @@
-import {Component} from "@angular/core";
-import {Storage} from "@ionic/storage";
-import {NavController, MenuController} from "ionic-angular";
-import {IEvent} from "../../interfaces/event";
-import {EventsService} from "../../services/events.service";
-import {EventDashboardPage} from "../event-dashboard/event-dashboard";
-import {NetworkCheck} from "../../services/network-check.service";
+import { Component } from "@angular/core";
+import { Storage } from "@ionic/storage";
+import { MenuController, NavController } from "ionic-angular";
+import { IEvent } from "../../interfaces/event";
+import { EventsService } from "../../services/events.service";
+import { NetworkCheck } from "../../services/network-check.service";
+import { EventDashboardPage } from "../event-dashboard/event-dashboard";
 
 @Component({
   providers: [EventsService],

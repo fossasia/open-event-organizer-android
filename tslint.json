@@ -1,3 +1,6 @@
 {
-    "extends": "tslint:recommended"
+    "extends": "tslint:recommended",
+    "rules": {
+        "object-literal-sort-keys": false
+    }
 }
