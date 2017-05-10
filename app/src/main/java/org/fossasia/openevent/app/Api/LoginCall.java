@@ -17,9 +17,7 @@ import org.fossasia.openevent.app.model.LoginDetails;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by rishabhkhanna on 25/04/17.
- */
+
 
 public class LoginCall {
 

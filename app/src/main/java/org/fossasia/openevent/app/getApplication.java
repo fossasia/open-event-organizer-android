@@ -6,9 +6,7 @@ import android.content.SharedPreferences;
 
 import org.fossasia.openevent.app.Utils.Constants;
 
-/**
- * Created by rishabhkhanna on 26/04/17.
- */
+
 
 public class getApplication extends Application {
 

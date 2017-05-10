@@ -19,9 +19,7 @@ import org.fossasia.openevent.app.Utils.CheckLogin;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by rishabhkhanna on 25/04/17.
- */
+
 
 public class ApiCall {
 
