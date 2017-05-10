@@ -23,9 +23,6 @@ import org.fossasia.openevent.app.model.AttendeeDetails;
 
 import java.util.ArrayList;
 
-/**
- * Created by rishabhkhanna on 27/04/17.
- */
 
 public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapter.AttendeeListAdapterHolder> {
     ArrayList<AttendeeDetails> attendeeDetailses;

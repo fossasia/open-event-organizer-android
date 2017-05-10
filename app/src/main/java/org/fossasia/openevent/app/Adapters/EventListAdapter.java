@@ -17,9 +17,6 @@ import org.fossasia.openevent.app.model.UserEvents;
 
 import java.util.ArrayList;
 
-/**
- * Created by rishabhkhanna on 26/04/17.
- */
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventRecyclerViewHolder>{
 

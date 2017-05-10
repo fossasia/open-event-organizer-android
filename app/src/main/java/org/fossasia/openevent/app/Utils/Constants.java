@@ -1,8 +1,5 @@
 package org.fossasia.openevent.app.Utils;
 
-/**
- * Created by rishabhkhanna on 25/04/17.
- */
 
 public class Constants {
     //url to login organiser
