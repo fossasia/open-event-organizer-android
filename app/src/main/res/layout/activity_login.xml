@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.fossasia.fossasiaorgaandroidapp.Views.LoginActivity"
+    tools:context="org.fossasia.openevent.app.Views.LoginActivity"
     android:orientation="vertical">
 
     <android.support.design.widget.TextInputLayout
