@@ -4,7 +4,7 @@
     android:id="@+id/activity_events"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.fossasia.fossasiaorgaandroidapp.Views.EventsActivity">
+    tools:context="org.fossasia.openevent.app.Views.EventsActivity">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

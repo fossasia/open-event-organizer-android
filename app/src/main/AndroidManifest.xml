@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.fossasia.fossasiaorgaandroidapp">
+    package="org.fossasia.openevent.app">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,16 +11,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Views.LoginActivity">
+        <activity android:name="org.fossasia.openevent.app.Views.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Views.EventsActivity" />
-        <activity android:name=".Views.EventDetailsActivity" />
-        <activity android:name=".Views.AttendeeListActivity" />
-        <activity android:name=".Views.ScanQRActivity"></activity>
+        <activity android:name="org.fossasia.openevent.app.Views.EventsActivity" />
+        <activity android:name="org.fossasia.openevent.app.Views.EventDetailsActivity" />
+        <activity android:name="org.fossasia.openevent.app.Views.AttendeeListActivity" />
+        <activity android:name="org.fossasia.openevent.app.Views.ScanQRActivity"></activity>
     </application>
 
 </manifest>
