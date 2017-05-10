@@ -10,26 +10,13 @@ android:
     - android-25
     - extra-google-m2repository
     - extra-android-m2repository
+    - sys-img-armeabi-v7a-android-24
 cache:
     directories:
-      - node_modules
-      - $HOME/.npm
-      - $HOME/.cache
-      - $HOME/.nvm
       - $HOME/android/.gradle/caches/
       - $HOME/android/.gradle/wrapper/
-env:
-    - NODE_VERSION="6.9.5"
-install:
-    - nvm install $NODE_VERSION
-    - nvm use $NODE_VERSION
-    - npm install -g ionic cordova
-    - npm install
-    - export PATH=$(npm bin):$PATH
 script:
-    - ./node_modules/.bin/tslint -c tslint.json src/**/*.ts --type-check -t stylish --project=tsconfig.json
-    - ionic platform add android
-    - ionic resources
-    - ionic build android
+  - ./gradlew build
+  - ./gradlew assembleRelease
 after_success:
     - bash scripts/update-apk.sh
