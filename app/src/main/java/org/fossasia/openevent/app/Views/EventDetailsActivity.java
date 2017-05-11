@@ -18,7 +18,7 @@ import org.fossasia.openevent.app.Interfaces.VolleyCallBack;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.Utils.Constants;
 import org.fossasia.openevent.app.Utils.Network;
-import org.fossasia.openevent.app.model.AttendeeDetails;
+import org.fossasia.openevent.app.model.Attendee;
 import org.fossasia.openevent.app.model.EventDetails;
 import org.fossasia.openevent.app.model.Ticket;
 
@@ -40,7 +40,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     long quantity = 0;
     int attendeeTrue = 0;
     int attendeeTotal = 0;
-    static AttendeeDetails[] attendeeDetailses;
+    static Attendee[] attendeeDetailses;
     static String urlTickets;
     static String urlAttendees;
 
@@ -99,8 +99,8 @@ public class EventDetailsActivity extends AppCompatActivity {
                     Log.d(TAG, "onSuccess: " + result);
                     attendeeTotal = 0;
                     attendeeTrue = 0;
-                    attendeeDetailses = gson.fromJson(result, AttendeeDetails[].class);
-                    for (AttendeeDetails thisAttendee : attendeeDetailses) {
+                    attendeeDetailses = gson.fromJson(result, Attendee[].class);
+                    for (Attendee thisAttendee : attendeeDetailses) {
                         if (thisAttendee.getCheckedIn()) {
                             attendeeTrue++;
                         }

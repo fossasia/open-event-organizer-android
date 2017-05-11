@@ -21,7 +21,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.Utils.Constants;
-import org.fossasia.openevent.app.model.AttendeeDetails;
+import org.fossasia.openevent.app.model.Attendee;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,9 +63,9 @@ public class ScanQRActivity extends AppCompatActivity {
                 if (barcodes.size() != 0) {
                     String barcode = barcodes.valueAt(0).displayValue;
                     Log.d(TAG, "receiveDetections: not matched" + barcode.toString());
-                    ArrayList<AttendeeDetails> attendeeDetailses = AttendeeListActivity.attendeeDetailsArrayList;
+                    ArrayList<Attendee> attendeeDetailses = AttendeeListActivity.attendeeArrayList;
                     int index = -1;
-                    for (AttendeeDetails thisAttendee : attendeeDetailses) {
+                    for (Attendee thisAttendee : attendeeDetailses) {
                         index++;
                         Log.d(TAG, "receiveDetections: " + thisAttendee.getOrder().getIdentifier().equals(barcode));
                         String identifier = thisAttendee.getOrder().getIdentifier() + "-" + thisAttendee.getId();

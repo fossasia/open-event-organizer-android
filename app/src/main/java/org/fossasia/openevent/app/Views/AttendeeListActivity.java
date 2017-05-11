@@ -21,7 +21,7 @@ import org.fossasia.openevent.app.Interfaces.VolleyCallBack;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.Utils.Constants;
 import org.fossasia.openevent.app.Utils.Network;
-import org.fossasia.openevent.app.model.AttendeeDetails;
+import org.fossasia.openevent.app.model.Attendee;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,8 +29,8 @@ import java.util.List;
 
 public class AttendeeListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    AttendeeDetails[] attendeeDetails;
-    static ArrayList<AttendeeDetails> attendeeDetailsArrayList = new ArrayList<>();
+    Attendee[] attendeeDetails;
+    static ArrayList<Attendee> attendeeArrayList = new ArrayList<>();
     AttendeeListAdapter attendeeListAdapter;
     Button btnBarCodeScanner;
     long id;
@@ -47,7 +47,7 @@ public class AttendeeListActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.rvAttendeeList);
         btnBarCodeScanner = (Button) findViewById(R.id.btnScanQr);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        attendeeListAdapter = new AttendeeListAdapter(attendeeDetailsArrayList, this , id);
+        attendeeListAdapter = new AttendeeListAdapter(attendeeArrayList, this , id);
         recyclerView.setAdapter(attendeeListAdapter);
         recyclerView.setLayoutManager(layoutManager);
         getAttendees();
@@ -61,9 +61,9 @@ public class AttendeeListActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(String result) {
                             Gson gson = new Gson();
-                            attendeeDetails = gson.fromJson(result, AttendeeDetails[].class);
-                            List<AttendeeDetails> attendeeDetailsesList = Arrays.asList(attendeeDetails);
-                            attendeeDetailsArrayList.addAll(attendeeDetailsesList);
+                            attendeeDetails = gson.fromJson(result, Attendee[].class);
+                            List<Attendee> attendeeDetailsesList = Arrays.asList(attendeeDetails);
+                            attendeeArrayList.addAll(attendeeDetailsesList);
                             attendeeListAdapter.notifyDataSetChanged();
                             btnBarCodeScanner.setVisibility(View.VISIBLE);
                         }
@@ -104,7 +104,7 @@ public class AttendeeListActivity extends AppCompatActivity {
         AlertDialog.Builder builder
                   = new AlertDialog.Builder(this);
         String alertTitle  = "";
-        final AttendeeDetails thisAttendee = attendeeDetailsArrayList.get(index);
+        final Attendee thisAttendee = attendeeArrayList.get(index);
         if(thisAttendee.getCheckedIn()){
             alertTitle = Constants.AttendeeCheckingOut;
         }else{
@@ -137,8 +137,8 @@ public class AttendeeListActivity extends AppCompatActivity {
                 public void onSuccess(String result) {
                     Log.d(TAG, "onSuccess: " + result);
                     Gson gson = new Gson();
-                    AttendeeDetails newattendeeDetailses = gson.fromJson(result, AttendeeDetails.class);
-                    attendeeDetailsArrayList.set(position, newattendeeDetailses);
+                    Attendee newattendeeDetailses = gson.fromJson(result, Attendee.class);
+                    attendeeArrayList.set(position, newattendeeDetailses);
                     attendeeListAdapter.notifyDataSetChanged();
                 }
 
