@@ -46,7 +46,7 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
     }
 
     @Override
-    public void onBindViewHolder(final AttendeeListAdapterHolder holder, final int position) {
+    public void onBindViewHolder(final AttendeeListAdapterHolder holder, int position) {
         final Attendee thisAttendee = attendeeDetailses.get(position);
         holder.tvLastName.setText(thisAttendee.getLastname());
         holder.tvFirstName.setText(thisAttendee.getFirstname());
@@ -76,7 +76,7 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Log.d(TAG, "onClick: inside ok");
-                        changeCheckStatus(activity,thisAttendee,holder.btnCheckedIn,attendeeDetailses,position);
+                        changeCheckStatus(activity,thisAttendee,holder.btnCheckedIn,attendeeDetailses, holder.getAdapterPosition());
                         }
                 }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     @Override
