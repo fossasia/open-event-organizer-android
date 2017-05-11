@@ -48,7 +48,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
 
     @Override
-    public void onBindViewHolder(EventRecyclerViewHolder holder, final int position) {
+    public void onBindViewHolder(final EventRecyclerViewHolder holder, int position) {
 
         final UserEvents thisEvent = eventsArrayList.get(position);
         holder.eventTitle.setText(thisEvent.getName());
@@ -58,7 +58,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(activity , EventDetailsActivity.class);
-                i.putExtra("position",position);
+                i.putExtra("position", holder.getAdapterPosition());
                 i.putExtra("id",thisEvent.getId());
                 activity.startActivity(i);
             }
