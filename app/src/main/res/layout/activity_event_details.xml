@@ -1,171 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    >
-<LinearLayout
-    android:id="@+id/activity_event_details"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.fossasia.openevent.app.Views.EventDetailsActivity"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Event Title"
-        android:id="@+id/tvEventTitle"
-        android:padding="12dp"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        />
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/activity_event_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="12dp"
-        >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="May 25th 2017"
-        android:padding="0dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:id="@+id/tvStartDate"
-        />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" To "
-            android:padding="0dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="May 31th 2017"
-            android:padding="0dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:id="@+id/tvEndDate"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=","
-            android:padding="0dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1300"
-            android:padding="0dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:id="@+id/tvHour"/>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="org.fossasia.openevent.app.views.EventDetailsActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tickets Sold"
-        android:paddingBottom="0dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="12dp"
-        android:layout_margin="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-         />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="2dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        <TextView
+            android:id="@+id/tvEventTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:text="@string/event_title"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingEnd="12dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingStart="12dp">
+
+            <TextView
+                android:id="@+id/tvStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:text="@string/date_placeholder"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:text="@string/to"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:id="@+id/tvEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:text="@string/date_placeholder_2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:text="@string/comma"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:id="@+id/tvHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:text="@string/hour_placeholder"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:id="@+id/tvTicketSold" />
-        <TextView
+            android:layout_margin="10dp"
+            android:paddingBottom="0dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            android:text="@string/tickets_sold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="/"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            android:paddingBottom="2dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+            <TextView
+                android:id="@+id/tvTicketSold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tickets_amount_placeholder"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/divide"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:id="@+id/tvTicketTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tickets_amount_placeholder"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressTicketSold"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:max="100"
+            android:maxHeight="10dip"
+            android:minHeight="10dip"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:progress="0" />
+
+        <TextView
+            android:id="@+id/editText3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:paddingBottom="0dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            android:text="@string/attendance"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/tvAttendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingBottom="2dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:text="@string/attendance_placeholder"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-        <TextView
-            android:layout_width="wrap_content"
+
+        <ProgressBar
+            android:id="@+id/progressAttendance"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:id="@+id/tvTicketTotal" />
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:max="100"
+            android:maxHeight="10dip"
+            android:minHeight="10dip"
+            android:progress="0" />
+
     </LinearLayout>
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:maxHeight="10dip"
-        android:minHeight="10dip"
-        android:progress="0"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/progressTicketSold"
-        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Attendance"
-        android:paddingBottom="0dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="12dp"
-        android:layout_margin="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:id="@+id/editText3" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0/0"
-        android:paddingBottom="2dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:id="@+id/tvAttendance" />
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:maxHeight="10dip"
-        android:minHeight="10dip"
-        android:progress="0"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:id="@+id/progressAttendance"
-        />
-
-</LinearLayout>
     <Button
+        android:id="@+id/btnCheckIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CHECK IN"
         android:layout_alignParentBottom="true"
         android:layout_margin="0dp"
         android:padding="20dp"
-        android:theme="@style/AppTheme.Button"
-        android:id="@+id/btnCheckin"
-        />
+        android:text="@string/check_in"
+        android:textAllCaps="true"
+        android:theme="@style/AppTheme.Button" />
 </RelativeLayout>

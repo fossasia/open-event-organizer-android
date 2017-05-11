@@ -1,13 +1,14 @@
-package org.fossasia.openevent.app.Views;
+package org.fossasia.openevent.app.views;
 
+import android.Manifest;
 import android.Manifest.permission;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -20,18 +21,17 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.Utils.Constants;
 import org.fossasia.openevent.app.model.Attendee;
+import org.fossasia.openevent.app.utils.Constants;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class ScanQRActivity extends AppCompatActivity {
-    SurfaceView surfaceView;
     public static final int PERM_REQ_CODE = 123;
-    CameraSource cameraSource;
     public static final String TAG = "ScanQRActivity";
-
+    SurfaceView surfaceView;
+    CameraSource cameraSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +40,20 @@ public class ScanQRActivity extends AppCompatActivity {
         surfaceView = (SurfaceView) findViewById(R.id.svScanView);
 
         BarcodeDetector barcodeDetector =
-                new BarcodeDetector.Builder(this)
-                        .setBarcodeFormats(Barcode.QR_CODE)
-                        .build();
+            new BarcodeDetector.Builder(this)
+                .setBarcodeFormats(Barcode.QR_CODE)
+                .build();
 
         cameraSource = new CameraSource
-                .Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(640, 480)
-                .setAutoFocusEnabled(true)
-                .build();
+            .Builder(this, barcodeDetector)
+            .setRequestedPreviewSize(640, 480)
+            .setAutoFocusEnabled(true)
+            .build();
         //for when it detects the barcode activity
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
-
+                // No action to be taken
             }
 
             @Override
@@ -62,7 +62,7 @@ public class ScanQRActivity extends AppCompatActivity {
                 SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() != 0) {
                     String barcode = barcodes.valueAt(0).displayValue;
-                    Log.d(TAG, "receiveDetections: not matched" + barcode.toString());
+                    Log.d(TAG, "receiveDetections: not matched" + barcode);
                     ArrayList<Attendee> attendeeDetailses = AttendeeListActivity.attendeeArrayList;
                     int index = -1;
                     for (Attendee thisAttendee : attendeeDetailses) {
@@ -72,10 +72,10 @@ public class ScanQRActivity extends AppCompatActivity {
                         if (identifier.equals(barcode)) {
                             Log.d(TAG, "receiveDetections: ");
                             Intent resultIntent = new Intent();
-                            resultIntent.putExtra(Constants.scannedIdentifier,thisAttendee.getOrder().getIdentifier());
-                            resultIntent.putExtra(Constants.scannedId,thisAttendee.getId());
-                            resultIntent.putExtra(Constants.scannedIndex,index);
-                            setResult(AttendeeListActivity.REQ_CODE , resultIntent );
+                            resultIntent.putExtra(Constants.SCANNED_IDENTIFIER, thisAttendee.getOrder().getIdentifier());
+                            resultIntent.putExtra(Constants.SCANNED_ID, thisAttendee.getId());
+                            resultIntent.putExtra(Constants.SCANNED_INDEX, index);
+                            setResult(AttendeeListActivity.REQ_CODE, resultIntent);
                             finish();
 
                         }
@@ -84,16 +84,16 @@ public class ScanQRActivity extends AppCompatActivity {
 
             }
         });
-        //get callback from surfaceview
-        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
 
+        // Get callback from SurfaceView
+        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
 
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 Log.d(TAG, "surfaceCreated: ");
 
-                int permisison = ContextCompat.checkSelfPermission(ScanQRActivity.this, permission.CAMERA);
-                if (permisison == PackageManager.PERMISSION_GRANTED) {
+                int permission = ContextCompat.checkSelfPermission(ScanQRActivity.this, Manifest.permission.CAMERA);
+                if (permission == PackageManager.PERMISSION_GRANTED) {
                     try {
                         cameraSource.start(surfaceView.getHolder());
                     } catch (IOException e) {
@@ -101,12 +101,10 @@ public class ScanQRActivity extends AppCompatActivity {
                     }
                 } else {
                     ActivityCompat.requestPermissions(
-                            ScanQRActivity.this,
-                            new String[]{permission.CAMERA},
-                            PERM_REQ_CODE);
+                        ScanQRActivity.this,
+                        new String[]{Manifest.permission.CAMERA},
+                        PERM_REQ_CODE);
                 }
-
-
             }
 
 
@@ -117,9 +115,7 @@ public class ScanQRActivity extends AppCompatActivity {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-
                 cameraSource.stop();
-
             }
         });
 

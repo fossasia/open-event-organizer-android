@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,16 +12,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="org.fossasia.openevent.app.Views.LoginActivity">
+        <activity android:name="org.fossasia.openevent.app.views.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.fossasia.openevent.app.Views.EventsActivity" />
-        <activity android:name="org.fossasia.openevent.app.Views.EventDetailsActivity" />
-        <activity android:name="org.fossasia.openevent.app.Views.AttendeeListActivity" />
-        <activity android:name="org.fossasia.openevent.app.Views.ScanQRActivity"></activity>
+        <activity android:name="org.fossasia.openevent.app.views.EventsActivity" />
+        <activity android:name="org.fossasia.openevent.app.views.EventDetailsActivity" />
+        <activity android:name="org.fossasia.openevent.app.views.AttendeeListActivity" />
+        <activity android:name="org.fossasia.openevent.app.views.ScanQRActivity" />
     </application>
 
 </manifest>

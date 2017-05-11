@@ -1,90 +1,88 @@
-
 package org.fossasia.openevent.app.model;
-
 
 import com.google.gson.annotations.SerializedName;
 
 public class Order {
 
     @SerializedName("amount")
-    private Long mAmount;
+    private Long amount;
     @SerializedName("completed_at")
-    private String mCompletedAt;
+    private String completedAt;
     @SerializedName("id")
-    private Long mId;
+    private Long id;
     @SerializedName("identifier")
-    private String mIdentifier;
+    private String identifier;
     @SerializedName("invoice_number")
-    private String mInvoiceNumber;
+    private String invoiceNumber;
     @SerializedName("paid_via")
-    private String mPaidVia;
+    private String paidVia;
     @SerializedName("payment_mode")
-    private Object mPaymentMode;
+    private String  paymentMode;
     @SerializedName("status")
-    private String mStatus;
+    private String status;
 
     public Long getAmount() {
-        return mAmount;
+        return amount;
     }
 
     public void setAmount(Long amount) {
-        mAmount = amount;
+        this.amount = amount;
     }
 
     public String getCompletedAt() {
-        return mCompletedAt;
+        return completedAt;
     }
 
     public void setCompletedAt(String completedAt) {
-        mCompletedAt = completedAt;
+        this.completedAt = completedAt;
     }
 
     public Long getId() {
-        return mId;
+        return id;
     }
 
     public void setId(Long id) {
-        mId = id;
+        this.id = id;
     }
 
     public String getIdentifier() {
-        return mIdentifier;
+        return identifier;
     }
 
     public void setIdentifier(String identifier) {
-        mIdentifier = identifier;
+        this.identifier = identifier;
     }
 
     public String getInvoiceNumber() {
-        return mInvoiceNumber;
+        return invoiceNumber;
     }
 
     public void setInvoiceNumber(String invoiceNumber) {
-        mInvoiceNumber = invoiceNumber;
+        this.invoiceNumber = invoiceNumber;
     }
 
     public String getPaidVia() {
-        return mPaidVia;
+        return paidVia;
     }
 
     public void setPaidVia(String paidVia) {
-        mPaidVia = paidVia;
+        this.paidVia = paidVia;
     }
 
-    public Object getPaymentMode() {
-        return mPaymentMode;
+    public String getPaymentMode() {
+        return paymentMode;
     }
 
-    public void setPaymentMode(Object paymentMode) {
-        mPaymentMode = paymentMode;
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
     }
 
     public String getStatus() {
-        return mStatus;
+        return status;
     }
 
     public void setStatus(String status) {
-        mStatus = status;
+        this.status = status;
     }
 
 }

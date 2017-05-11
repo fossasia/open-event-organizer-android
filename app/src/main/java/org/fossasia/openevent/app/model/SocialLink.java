@@ -1,41 +1,38 @@
-
 package org.fossasia.openevent.app.model;
 
 import com.google.gson.annotations.SerializedName;
 
-
-
 public class SocialLink {
 
     @SerializedName("id")
-    private Long mId;
+    private Long id;
     @SerializedName("link")
-    private String mLink;
+    private String link;
     @SerializedName("name")
-    private String mName;
+    private String name;
 
     public Long getId() {
-        return mId;
+        return id;
     }
 
     public void setId(Long id) {
-        mId = id;
+        this.id = id;
     }
 
     public String getLink() {
-        return mLink;
+        return link;
     }
 
     public void setLink(String link) {
-        mLink = link;
+        this.link = link;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String name) {
-        mName = name;
+        this.name = name;
     }
 
 }

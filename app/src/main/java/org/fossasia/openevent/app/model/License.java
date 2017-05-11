@@ -1,72 +1,68 @@
-
 package org.fossasia.openevent.app.model;
-
 
 import com.google.gson.annotations.SerializedName;
 
-
-
-public class LicenceDetails {
+public class License {
 
     @SerializedName("description")
-    private String mDescription;
+    private String description;
     @SerializedName("licence_compact_logo")
-    private String mLicenceCompactLogo;
+    private String licenceCompactLogo;
     @SerializedName("licence_logo")
-    private String mLicenceLogo;
+    private String licenseLogo;
     @SerializedName("licence_url")
-    private String mLicenceUrl;
+    private String licenseUrl;
     @SerializedName("long_name")
-    private String mLongName;
+    private String longName;
     @SerializedName("name")
-    private String mName;
+    private String name;
 
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     public void setDescription(String description) {
-        mDescription = description;
+        this.description = description;
     }
 
     public String getLicenceCompactLogo() {
-        return mLicenceCompactLogo;
+        return licenceCompactLogo;
     }
 
     public void setLicenceCompactLogo(String licenceCompactLogo) {
-        mLicenceCompactLogo = licenceCompactLogo;
+        this.licenceCompactLogo = licenceCompactLogo;
     }
 
     public String getLicenceLogo() {
-        return mLicenceLogo;
+        return licenseLogo;
     }
 
     public void setLicenceLogo(String licenceLogo) {
-        mLicenceLogo = licenceLogo;
+        licenseLogo = licenceLogo;
     }
 
     public String getLicenceUrl() {
-        return mLicenceUrl;
+        return licenseUrl;
     }
 
     public void setLicenceUrl(String licenceUrl) {
-        mLicenceUrl = licenceUrl;
+        licenseUrl = licenceUrl;
     }
 
     public String getLongName() {
-        return mLongName;
+        return longName;
     }
 
     public void setLongName(String longName) {
-        mLongName = longName;
+        this.longName = longName;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String name) {
-        mName = name;
+        this.name = name;
     }
 
 }

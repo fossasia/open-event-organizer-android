@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.Views;
+package org.fossasia.openevent.app.views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,16 +13,16 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
-import org.fossasia.openevent.app.Api.LoginCall;
-import org.fossasia.openevent.app.Interfaces.VolleyCallBack;
+import org.fossasia.openevent.app.api.LoginCall;
+import org.fossasia.openevent.app.interfaces.VolleyCallBack;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.Utils.CheckLogin;
-import org.fossasia.openevent.app.Utils.Constants;
-import org.fossasia.openevent.app.Utils.Network;
-import org.fossasia.openevent.app.model.LoginDetails;
+import org.fossasia.openevent.app.utils.CheckLogin;
+import org.fossasia.openevent.app.utils.Constants;
+import org.fossasia.openevent.app.utils.Network;
+import org.fossasia.openevent.app.model.Login;
 
 public class LoginActivity extends AppCompatActivity {
-    public static final String TAG = "MainActivity";
+    public static final String TAG = "OpenEventApplication";
     Button btnLogin;
     EditText etEmail;
     EditText etPassword;
@@ -34,19 +34,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         String token = CheckLogin.isLogin(this);
         //check if token is already present and start Event Activity
-//        if(!token.equals("null")){
-//            startEventActivity();
-//            finish();
-//        }
+        /* if(!token.equals("null")){
+              startEventActivity();
+              finish();
+          } */
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
-
-
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,16 +51,16 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: Login Button Clicked");
                 email = etEmail.getText().toString();
                 password = etPassword.getText().toString();
-                LoginDetails loginDetails = new LoginDetails(email, password);
+                Login login = new Login(email, password);
 
                 VolleyCallBack volleyCallBack  = new VolleyCallBack() {
                     @Override
                     public void onSuccess(String result) {
                         Log.d(TAG, "onSuccess: " + result);
-                        SharedPreferences sharedPreferences = getSharedPreferences(Constants.fossPrefs,Context.MODE_PRIVATE);
+                        SharedPreferences sharedPreferences = getSharedPreferences(Constants.FOSS_PREFS,Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(Constants.sharedPrefsToken, result);
-                        editor.commit();
+                        editor.putString(Constants.SHARED_PREFS_TOKEN, result);
+                        editor.apply();
                         startEventActivity();
                         finish();
                     }
@@ -73,12 +70,12 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "onError: " + error);
                     }
                 };
-                if(Network.isNetworkConnected(LoginActivity.this)) {
-                    LoginCall.login(LoginActivity.this, loginDetails, volleyCallBack);
-                }else{
-                    Toast.makeText(LoginActivity.this, Constants.noNetwork, Toast.LENGTH_SHORT).show();
-                }
 
+                if(Network.isNetworkConnected(LoginActivity.this)) {
+                    LoginCall.login(LoginActivity.this, login, volleyCallBack);
+                } else {
+                    Toast.makeText(LoginActivity.this, Constants.NO_NETWORK, Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -89,10 +86,4 @@ public class LoginActivity extends AppCompatActivity {
         Intent i =  new Intent(LoginActivity.this, EventsActivity.class);
         startActivity(i);
     }
-
-
-
-
-
-
 }

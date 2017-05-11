@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">FossAsia Orga Android App</string>
+    <string name="checked_in">Checked In</string>
+    <string name="check_in">Check In</string>
+    <string name="event_title">Event Title</string>
+    <string name="tickets_sold">Tickets Sold</string>
+    <string name="to"> To </string>
+    <string name="comma"> , </string>
+    <string name="divide">/</string>
+    <string name="attendance">Attendance</string>
+    <string name="scan_qr_code">Scan QR COde</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="scan_the_barcode">Scan the BarCode</string>
+    <string name="event_title_here">Event Title Here</string>
+
+    <!-- PLace Holders -->
+    <string name="date_placeholder">May 25th 2017</string>
+    <string name="date_placeholder_2">May 31th 2017</string>
+    <string name="hour_placeholder">1300</string>
+    <string name="tickets_amount_placeholder">0</string>
+    <string name="attendance_placeholder">0/0</string>
+    <string name="last_name_placeholder">Smith</string>
+    <string name="first_name_placeholder">John</string>
+    <string name="email_placeholder">rishabhkhanna777@gmail.com</string>
 </resources>

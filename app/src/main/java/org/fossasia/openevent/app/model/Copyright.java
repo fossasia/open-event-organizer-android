@@ -1,72 +1,68 @@
-
 package org.fossasia.openevent.app.model;
-
 
 import com.google.gson.annotations.SerializedName;
 
-
-@SuppressWarnings("unused")
 public class Copyright {
 
     @SerializedName("holder")
-    private String mHolder;
+    private String holder;
     @SerializedName("holder_url")
-    private Object mHolderUrl;
+    private String holderUrl;
     @SerializedName("licence")
-    private String mLicence;
+    private String license;
     @SerializedName("licence_url")
-    private String mLicenceUrl;
+    private String licenseUrl;
     @SerializedName("logo")
-    private String mLogo;
+    private String logo;
     @SerializedName("year")
-    private Long mYear;
+    private Long year;
 
     public String getHolder() {
-        return mHolder;
+        return holder;
     }
 
     public void setHolder(String holder) {
-        mHolder = holder;
+        this.holder = holder;
     }
 
-    public Object getHolderUrl() {
-        return mHolderUrl;
+    public String getHolderUrl() {
+        return holderUrl;
     }
 
-    public void setHolderUrl(Object holderUrl) {
-        mHolderUrl = holderUrl;
+    public void setHolderUrl(String holderUrl) {
+        this.holderUrl = holderUrl;
     }
 
     public String getLicence() {
-        return mLicence;
+        return license;
     }
 
     public void setLicence(String licence) {
-        mLicence = licence;
+        license = licence;
     }
 
     public String getLicenceUrl() {
-        return mLicenceUrl;
+        return licenseUrl;
     }
 
     public void setLicenceUrl(String licenceUrl) {
-        mLicenceUrl = licenceUrl;
+        licenseUrl = licenceUrl;
     }
 
     public String getLogo() {
-        return mLogo;
+        return logo;
     }
 
     public void setLogo(String logo) {
-        mLogo = logo;
+        this.logo = logo;
     }
 
     public Long getYear() {
-        return mYear;
+        return year;
     }
 
     public void setYear(Long year) {
-        mYear = year;
+        this.year = year;
     }
 
 }

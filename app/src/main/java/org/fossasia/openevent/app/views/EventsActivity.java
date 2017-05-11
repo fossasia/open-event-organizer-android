@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.Views;
+package org.fossasia.openevent.app.views;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,13 +11,13 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.fossasia.openevent.app.Adapters.EventListAdapter;
-import org.fossasia.openevent.app.Api.ApiCall;
-import org.fossasia.openevent.app.Interfaces.VolleyCallBack;
+import org.fossasia.openevent.app.adapters.EventListAdapter;
+import org.fossasia.openevent.app.api.ApiCall;
+import org.fossasia.openevent.app.interfaces.VolleyCallBack;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.Utils.Constants;
-import org.fossasia.openevent.app.Utils.Network;
-import org.fossasia.openevent.app.model.UserEvents;
+import org.fossasia.openevent.app.model.Event;
+import org.fossasia.openevent.app.utils.Constants;
+import org.fossasia.openevent.app.utils.Network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class EventsActivity extends AppCompatActivity {
 
     public static final String TAG = "EventsActivity";
     RecyclerView recyclerView;
-    static ArrayList<UserEvents> userEventsArrayList = new ArrayList<>();
+    static List<Event> events = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class EventsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.rvEventList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        final EventListAdapter eventListAdapter = new EventListAdapter(userEventsArrayList , this);
+        final EventListAdapter eventListAdapter = new EventListAdapter(events, this);
         recyclerView.setAdapter(eventListAdapter);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this , DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
@@ -46,12 +46,13 @@ public class EventsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String response) {
                 Gson gson = new Gson();
-                UserEvents[] userEvents = gson.fromJson(response , UserEvents[].class);
-                for (UserEvents event : userEvents){
+                Event[] userEvents = gson.fromJson(response , Event[].class);
+                for (Event event : userEvents){
                     Log.d(TAG, "onSuccess: " + event.getName());
                 }
-                List<UserEvents> eventList = Arrays.asList(userEvents);
-                userEventsArrayList.addAll(eventList);
+                List<Event> eventList = Arrays.asList(userEvents);
+                events.clear();
+                events.addAll(eventList);
                 eventListAdapter.notifyDataSetChanged();
             }
 
@@ -63,9 +64,9 @@ public class EventsActivity extends AppCompatActivity {
             }
         };
         if(Network.isNetworkConnected(this)) {
-            ApiCall.callApi(this, Constants.userEvents, volleyCallBack);
+            ApiCall.callApi(this, Constants.USER_EVENTS, volleyCallBack);
         }else{
-            Toast.makeText(this, Constants.noNetwork, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, Constants.NO_NETWORK, Toast.LENGTH_SHORT).show();
         }
     }
 
