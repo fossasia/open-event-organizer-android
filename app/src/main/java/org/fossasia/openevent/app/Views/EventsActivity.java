@@ -47,13 +47,11 @@ public class EventsActivity extends AppCompatActivity {
             public void onSuccess(String response) {
                 Gson gson = new Gson();
                 UserEvents[] userEvents = gson.fromJson(response , UserEvents[].class);
-                userEvents = Arrays.copyOfRange(userEvents,1,userEvents.length);
                 for (UserEvents event : userEvents){
                     Log.d(TAG, "onSuccess: " + event.getName());
                 }
                 List<UserEvents> eventList = Arrays.asList(userEvents);
                 userEventsArrayList.addAll(eventList);
-
                 eventListAdapter.notifyDataSetChanged();
             }
 

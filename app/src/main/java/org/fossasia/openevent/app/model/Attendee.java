@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 
 
-public class AttendeeDetails {
+public class Attendee {
 
     @SerializedName("checked_in")
     private Boolean mCheckedIn;

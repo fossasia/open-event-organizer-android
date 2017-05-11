@@ -19,18 +19,18 @@ import org.fossasia.openevent.app.Api.ApiCall;
 import org.fossasia.openevent.app.Interfaces.VolleyCallBack;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.Utils.Constants;
-import org.fossasia.openevent.app.model.AttendeeDetails;
+import org.fossasia.openevent.app.model.Attendee;
 
 import java.util.ArrayList;
 
 
 public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapter.AttendeeListAdapterHolder> {
-    ArrayList<AttendeeDetails> attendeeDetailses;
+    ArrayList<Attendee> attendeeDetailses;
     Activity activity;
     long id;
     public static final String TAG = "AttendeeAdapter";
 
-    public AttendeeListAdapter(ArrayList<AttendeeDetails> attendeeDetailses, Activity activity, long id) {
+    public AttendeeListAdapter(ArrayList<Attendee> attendeeDetailses, Activity activity, long id) {
         this.attendeeDetailses = attendeeDetailses;
         this.activity = activity;
         this.id = id;
@@ -47,7 +47,7 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
 
     @Override
     public void onBindViewHolder(final AttendeeListAdapterHolder holder, final int position) {
-        final AttendeeDetails thisAttendee = attendeeDetailses.get(position);
+        final Attendee thisAttendee = attendeeDetailses.get(position);
         holder.tvLastName.setText(thisAttendee.getLastname());
         holder.tvFirstName.setText(thisAttendee.getFirstname());
         holder.tvEmail.setText(thisAttendee.getEmail());
@@ -112,13 +112,13 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
         }
     }
 
-    public void changeCheckStatus(Activity activity, AttendeeDetails thisAttendee, final Button btnCheckedIn, final ArrayList<AttendeeDetails> attendeeDetailses, final int position){
+    public void changeCheckStatus(Activity activity, Attendee thisAttendee, final Button btnCheckedIn, final ArrayList<Attendee> attendeeDetailses, final int position){
         ApiCall.PostApiCall(activity, Constants.eventDetails +id + Constants.attendeesToggle + thisAttendee.getId(), new VolleyCallBack() {
             @Override
             public void onSuccess(String result) {
                 Log.d(TAG, "onSuccess: " + result);
                 Gson gson = new Gson();
-                AttendeeDetails newattendeeDetailses = gson.fromJson(result,AttendeeDetails.class);
+                Attendee newattendeeDetailses = gson.fromJson(result,Attendee.class);
                 attendeeDetailses.set(position , newattendeeDetailses);
                 notifyDataSetChanged();
             }
