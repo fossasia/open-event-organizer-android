@@ -4,11 +4,11 @@
     android:id="@+id/activity_events"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.fossasia.openevent.app.Views.EventsActivity">
+    tools:context="org.fossasia.openevent.app.views.EventsActivity">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvEventList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rvEventList"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent" />
 
 </FrameLayout>

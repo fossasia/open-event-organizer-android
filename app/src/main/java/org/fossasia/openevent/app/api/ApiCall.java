@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.Api;
+package org.fossasia.openevent.app.api;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,17 +13,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.fossasia.openevent.app.Interfaces.VolleyCallBack;
-import org.fossasia.openevent.app.Utils.CheckLogin;
+import org.fossasia.openevent.app.interfaces.VolleyCallBack;
+import org.fossasia.openevent.app.utils.CheckLogin;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
-
 public class ApiCall {
 
-    public static final String TAG = "ApiCall";
+    private static final String TAG = "ApiCall";
 
     public static void callApi(final Context context, String url , final VolleyCallBack callBack){
 

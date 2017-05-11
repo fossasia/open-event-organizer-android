@@ -1,14 +1,10 @@
 package org.fossasia.openevent.app.model;
 
-/**
- * Created by rishabhkhanna on 25/04/17.
- */
-
-public class LoginDetails {
+public class Login {
     String email;
     String password;
 
-    public LoginDetails(String email, String password) {
+    public Login(String email, String password) {
         this.email = email;
         this.password = password;
     }

@@ -1,71 +1,68 @@
-
 package org.fossasia.openevent.app.model;
 
 import com.google.gson.annotations.SerializedName;
 
-
-@SuppressWarnings("unused")
 public class Ticket {
 
     @SerializedName("description")
-    private String mDescription;
+    private String description;
     @SerializedName("id")
-    private Long mId;
+    private Long id;
     @SerializedName("name")
-    private String mName;
+    private String name;
     @SerializedName("price")
-    private Float mPrice;
+    private Float price;
     @SerializedName("quantity")
-    private Long mQuantity;
+    private Long quantity;
     @SerializedName("type")
-    private String mType;
+    private String type;
 
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     public void setDescription(String description) {
-        mDescription = description;
+        this.description = description;
     }
 
     public Long getId() {
-        return mId;
+        return id;
     }
 
     public void setId(Long id) {
-        mId = id;
+        this.id = id;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String name) {
-        mName = name;
+        this.name = name;
     }
 
     public Float getPrice() {
-        return mPrice;
+        return price;
     }
 
     public void setPrice(Float price) {
-        mPrice = price;
+        this.price = price;
     }
 
     public Long getQuantity() {
-        return mQuantity;
+        return quantity;
     }
 
     public void setQuantity(Long quantity) {
-        mQuantity = quantity;
+        this.quantity = quantity;
     }
 
     public String getType() {
-        return mType;
+        return type;
     }
 
     public void setType(String type) {
-        mType = type;
+        this.type = type;
     }
 
 }

@@ -1,82 +1,78 @@
-
 package org.fossasia.openevent.app.model;
 
-
 import com.google.gson.annotations.SerializedName;
-
-
 
 public class Attendee {
 
     @SerializedName("checked_in")
-    private Boolean mCheckedIn;
+    private Boolean checkedIn;
     @SerializedName("email")
-    private String mEmail;
+    private String email;
     @SerializedName("firstname")
-    private String mFirstname;
+    private String firstname;
     @SerializedName("id")
-    private Long mId;
+    private Long id;
     @SerializedName("lastname")
-    private String mLastname;
+    private String lastname;
     @SerializedName("order")
-    private Order mOrder;
+    private Order order;
     @SerializedName("ticket")
-    private Ticket mTicket;
+    private Ticket ticket;
 
-    public Boolean getCheckedIn() {
-        return mCheckedIn;
+    public Boolean isCheckedIn() {
+        return checkedIn;
     }
 
     public void setCheckedIn(Boolean checkedIn) {
-        mCheckedIn = checkedIn;
+        this.checkedIn = checkedIn;
     }
 
     public String getEmail() {
-        return mEmail;
+        return email;
     }
 
     public void setEmail(String email) {
-        mEmail = email;
+        this.email = email;
     }
 
     public String getFirstname() {
-        return mFirstname;
+        return firstname;
     }
 
     public void setFirstname(String firstname) {
-        mFirstname = firstname;
+        this.firstname = firstname;
     }
 
     public Long getId() {
-        return mId;
+        return id;
     }
 
     public void setId(Long id) {
-        mId = id;
+        this.id = id;
     }
 
     public String getLastname() {
-        return mLastname;
+        return lastname;
     }
 
     public void setLastname(String lastname) {
-        mLastname = lastname;
+        this.lastname = lastname;
     }
 
     public Order getOrder() {
-        return mOrder;
+        return order;
     }
 
     public void setOrder(Order order) {
-        mOrder = order;
+        this.order = order;
     }
 
     public Ticket getTicket() {
-        return mTicket;
+        return ticket;
     }
 
     public void setTicket(Ticket ticket) {
-        mTicket = ticket;
+        this.ticket = ticket;
     }
 
 }

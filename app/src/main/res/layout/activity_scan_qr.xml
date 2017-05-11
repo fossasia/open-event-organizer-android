@@ -4,18 +4,20 @@
     android:id="@+id/activity_scan_qr"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.fossasia.openevent.app.Views.ScanQRActivity">
+    tools:context="org.fossasia.openevent.app.views.ScanQRActivity">
+
     <SurfaceView
+        android:id="@+id/svScanView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/svScanView"/>
+        android:layout_height="match_parent" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:textSize="20dp"
-        android:text="Scan the barcode "
         android:gravity="center"
-        android:textColor="@android:color/white"/>
+        android:text="@string/scan_the_barcode"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
 
 </RelativeLayout>

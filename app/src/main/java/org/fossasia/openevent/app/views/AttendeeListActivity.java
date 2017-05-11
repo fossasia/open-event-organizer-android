@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.Views;
+package org.fossasia.openevent.app.views;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,12 +15,12 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.fossasia.openevent.app.Adapters.AttendeeListAdapter;
-import org.fossasia.openevent.app.Api.ApiCall;
-import org.fossasia.openevent.app.Interfaces.VolleyCallBack;
+import org.fossasia.openevent.app.adapters.AttendeeListAdapter;
+import org.fossasia.openevent.app.api.ApiCall;
+import org.fossasia.openevent.app.interfaces.VolleyCallBack;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.Utils.Constants;
-import org.fossasia.openevent.app.Utils.Network;
+import org.fossasia.openevent.app.utils.Constants;
+import org.fossasia.openevent.app.utils.Network;
 import org.fossasia.openevent.app.model.Attendee;
 
 import java.util.ArrayList;
@@ -82,7 +82,7 @@ public class AttendeeListActivity extends AppCompatActivity {
                 }
             });
         }else{
-            Toast.makeText(this, Constants.noNetwork , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, Constants.NO_NETWORK, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -90,9 +90,9 @@ public class AttendeeListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(data != null) {
             if (requestCode == REQ_CODE) {
-                String identifier = data.getStringExtra(Constants.scannedIdentifier);
-                long id = data.getLongExtra(Constants.scannedId, 0);
-                int index = data.getIntExtra(Constants.scannedIndex, -1);
+                String identifier = data.getStringExtra(Constants.SCANNED_IDENTIFIER);
+                long id = data.getLongExtra(Constants.SCANNED_ID, 0);
+                int index = data.getIntExtra(Constants.SCANNED_INDEX, -1);
                 if (index != -1)
                     checkInAlertBuiler(index);
             }
@@ -103,12 +103,12 @@ public class AttendeeListActivity extends AppCompatActivity {
     public void checkInAlertBuiler(final int index){
         AlertDialog.Builder builder
                   = new AlertDialog.Builder(this);
-        String alertTitle  = "";
+        String alertTitle;
         final Attendee thisAttendee = attendeeArrayList.get(index);
-        if(thisAttendee.getCheckedIn()){
-            alertTitle = Constants.AttendeeCheckingOut;
+        if(thisAttendee.isCheckedIn()){
+            alertTitle = Constants.ATTENDEE_CHECKING_OUT;
         }else{
-            alertTitle = Constants.attendeeChechingIn;
+            alertTitle = Constants.ATTENDEE_CHECKING_IN;
         }
 
         builder.setTitle(alertTitle).setMessage(thisAttendee.getFirstname() + " "
@@ -132,13 +132,13 @@ public class AttendeeListActivity extends AppCompatActivity {
 
     public void changeCheckStatus(Long thisAttendeeId, final int position){
         if(Network.isNetworkConnected(this)) {
-            ApiCall.PostApiCall(this, Constants.eventDetails + id + Constants.attendeesToggle + thisAttendeeId, new VolleyCallBack() {
+            ApiCall.PostApiCall(this, Constants.EVENT_DETAILS + id + Constants.ATTENDEES_TOGGLE + thisAttendeeId, new VolleyCallBack() {
                 @Override
                 public void onSuccess(String result) {
                     Log.d(TAG, "onSuccess: " + result);
                     Gson gson = new Gson();
-                    Attendee newattendeeDetailses = gson.fromJson(result, Attendee.class);
-                    attendeeArrayList.set(position, newattendeeDetailses);
+                    Attendee newAttendeeDetails = gson.fromJson(result, Attendee.class);
+                    attendeeArrayList.set(position, newAttendeeDetails);
                     attendeeListAdapter.notifyDataSetChanged();
                 }
 
@@ -148,7 +148,7 @@ public class AttendeeListActivity extends AppCompatActivity {
                 }
             });
         }else{
-            Toast.makeText(this, Constants.noNetwork , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, Constants.NO_NETWORK, Toast.LENGTH_SHORT).show();
         }
 
     }

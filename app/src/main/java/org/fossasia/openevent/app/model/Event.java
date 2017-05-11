@@ -1,353 +1,360 @@
-
 package org.fossasia.openevent.app.model;
-
-import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
 
-
-public class UserEvents {
+public class Event {
 
     @SerializedName("background_image")
-    private String mBackgroundImage;
+    private String backgroundImage;
     @SerializedName("call_for_papers")
-    private CallForPapers mCallForPapers;
+    private CallForPapers callForPapers;
     @SerializedName("code_of_conduct")
-    private String mCodeOfConduct;
+    private String codeOfConduct;
     @SerializedName("copyright")
-    private Copyright mCopyright;
+    private Copyright copyright;
     @SerializedName("description")
-    private String mDescription;
+    private String description;
     @SerializedName("email")
-    private String mEmail;
+    private String email;
     @SerializedName("end_time")
-    private String mEndTime;
+    private String endTime;
     @SerializedName("event_url")
-    private String mEventUrl;
+    private String eventUrl;
     @SerializedName("has_session_speakers")
-    private Boolean mHasSessionSpeakers;
+    private Boolean hasSessionSpeakers;
     @SerializedName("id")
-    private Long mId;
+    private Long id;
     @SerializedName("identifier")
-    private String mIdentifier;
+    private String identifier;
     @SerializedName("large")
-    private String mLarge;
+    private String large;
     @SerializedName("latitude")
-    private String mLatitude;
+    private Double latitude;
     @SerializedName("licence_details")
-    private LicenceDetails mLicenceDetails;
+    private License licenceDetails;
     @SerializedName("location_name")
-    private String mLocationName;
+    private String locationName;
     @SerializedName("logo")
-    private String mLogo;
+    private String logo;
     @SerializedName("longitude")
-    private String mLongitude;
+    private Double longitude;
     @SerializedName("name")
-    private String mName;
+    private String name;
     @SerializedName("organizer_description")
-    private String mOrganizerDescription;
+    private String organizerDescription;
     @SerializedName("organizer_name")
-    private String mOrganizerName;
+    private String organizerName;
     @SerializedName("placeholder_url")
-    private String mPlaceholderUrl;
+    private String placeholderUrl;
     @SerializedName("privacy")
-    private String mPrivacy;
+    private String privacy;
     @SerializedName("schedule_published_on")
-    private String mSchedulePublishedOn;
+    private String schedulePublishedOn;
     @SerializedName("searchable_location_name")
-    private String mSearchableLocationName;
+    private String searchableLocationName;
     @SerializedName("social_links")
-    private List<SocialLink> mSocialLinks;
+    private List<SocialLink> socialLinks;
     @SerializedName("start_time")
-    private String mStartTime;
+    private String startTime;
     @SerializedName("state")
-    private String mState;
+    private String state;
     @SerializedName("sub_topic")
-    private String mSubTopic;
+    private String subTopic;
     @SerializedName("thumbnail")
-    private String mThumbnail;
+    private String thumbnail;
     @SerializedName("ticket_url")
-    private String mTicketUrl;
+    private String ticketUrl;
+    @SerializedName("TICKETS")
+    private List<Ticket> tickets;
     @SerializedName("timezone")
-    private String mTimezone;
+    private String timezone;
     @SerializedName("topic")
-    private String mTopic;
+    private String topic;
     @SerializedName("type")
-    private String mType;
+    private String type;
     @SerializedName("version")
-    private Version mVersion;
+    private Version version;
 
     public String getBackgroundImage() {
-        return mBackgroundImage;
+        return backgroundImage;
     }
 
     public void setBackgroundImage(String backgroundImage) {
-        mBackgroundImage = backgroundImage;
+        this.backgroundImage = backgroundImage;
     }
 
     public CallForPapers getCallForPapers() {
-        return mCallForPapers;
+        return callForPapers;
     }
 
     public void setCallForPapers(CallForPapers callForPapers) {
-        mCallForPapers = callForPapers;
+        this.callForPapers = callForPapers;
     }
 
     public String getCodeOfConduct() {
-        return mCodeOfConduct;
+        return codeOfConduct;
     }
 
     public void setCodeOfConduct(String codeOfConduct) {
-        mCodeOfConduct = codeOfConduct;
+        this.codeOfConduct = codeOfConduct;
     }
 
     public Copyright getCopyright() {
-        return mCopyright;
+        return copyright;
     }
 
     public void setCopyright(Copyright copyright) {
-        mCopyright = copyright;
+        this.copyright = copyright;
     }
 
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     public void setDescription(String description) {
-        mDescription = description;
+        this.description = description;
     }
 
     public String getEmail() {
-        return mEmail;
+        return email;
     }
 
     public void setEmail(String email) {
-        mEmail = email;
+        this.email = email;
     }
 
     public String getEndTime() {
-        return mEndTime;
+        return endTime;
     }
 
     public void setEndTime(String endTime) {
-        mEndTime = endTime;
+        this.endTime = endTime;
     }
 
     public String getEventUrl() {
-        return mEventUrl;
+        return eventUrl;
     }
 
     public void setEventUrl(String eventUrl) {
-        mEventUrl = eventUrl;
+        this.eventUrl = eventUrl;
     }
 
     public Boolean getHasSessionSpeakers() {
-        return mHasSessionSpeakers;
+        return hasSessionSpeakers;
     }
 
     public void setHasSessionSpeakers(Boolean hasSessionSpeakers) {
-        mHasSessionSpeakers = hasSessionSpeakers;
+        this.hasSessionSpeakers = hasSessionSpeakers;
     }
 
     public Long getId() {
-        return mId;
+        return id;
     }
 
     public void setId(Long id) {
-        mId = id;
+        this.id = id;
     }
 
     public String getIdentifier() {
-        return mIdentifier;
+        return identifier;
     }
 
     public void setIdentifier(String identifier) {
-        mIdentifier = identifier;
+        this.identifier = identifier;
     }
 
     public String getLarge() {
-        return mLarge;
+        return large;
     }
 
     public void setLarge(String large) {
-        mLarge = large;
+        this.large = large;
     }
 
-    public String getLatitude() {
-        return mLatitude;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setLatitude(String latitude) {
-        mLatitude = latitude;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
-    public LicenceDetails getLicenceDetails() {
-        return mLicenceDetails;
+    public License getLicenceDetails() {
+        return licenceDetails;
     }
 
-    public void setLicenceDetails(LicenceDetails licenceDetails) {
-        mLicenceDetails = licenceDetails;
+    public void setLicenceDetails(License licenceDetails) {
+        this.licenceDetails = licenceDetails;
     }
 
     public String getLocationName() {
-        return mLocationName;
+        return locationName;
     }
 
     public void setLocationName(String locationName) {
-        mLocationName = locationName;
+        this.locationName = locationName;
     }
 
     public String getLogo() {
-        return mLogo;
+        return logo;
     }
 
     public void setLogo(String logo) {
-        mLogo = logo;
+        this.logo = logo;
     }
 
-    public String getLongitude() {
-        return mLongitude;
+    public Double getLongitude() {
+        return longitude;
     }
 
-    public void setLongitude(String longitude) {
-        mLongitude = longitude;
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String name) {
-        mName = name;
+        this.name = name;
     }
 
     public String getOrganizerDescription() {
-        return mOrganizerDescription;
+        return organizerDescription;
     }
 
     public void setOrganizerDescription(String organizerDescription) {
-        mOrganizerDescription = organizerDescription;
+        this.organizerDescription = organizerDescription;
     }
 
     public String getOrganizerName() {
-        return mOrganizerName;
+        return organizerName;
     }
 
     public void setOrganizerName(String organizerName) {
-        mOrganizerName = organizerName;
+        this.organizerName = organizerName;
     }
 
     public String getPlaceholderUrl() {
-        return mPlaceholderUrl;
+        return placeholderUrl;
     }
 
     public void setPlaceholderUrl(String placeholderUrl) {
-        mPlaceholderUrl = placeholderUrl;
+        this.placeholderUrl = placeholderUrl;
     }
 
     public String getPrivacy() {
-        return mPrivacy;
+        return privacy;
     }
 
     public void setPrivacy(String privacy) {
-        mPrivacy = privacy;
+        this.privacy = privacy;
     }
 
     public String getSchedulePublishedOn() {
-        return mSchedulePublishedOn;
+        return schedulePublishedOn;
     }
 
     public void setSchedulePublishedOn(String schedulePublishedOn) {
-        mSchedulePublishedOn = schedulePublishedOn;
+        this.schedulePublishedOn = schedulePublishedOn;
     }
 
     public String getSearchableLocationName() {
-        return mSearchableLocationName;
+        return searchableLocationName;
     }
 
     public void setSearchableLocationName(String searchableLocationName) {
-        mSearchableLocationName = searchableLocationName;
+        this.searchableLocationName = searchableLocationName;
     }
 
     public List<SocialLink> getSocialLinks() {
-        return mSocialLinks;
+        return socialLinks;
     }
 
     public void setSocialLinks(List<SocialLink> socialLinks) {
-        mSocialLinks = socialLinks;
+        this.socialLinks = socialLinks;
     }
 
     public String getStartTime() {
-        return mStartTime;
+        return startTime;
     }
 
     public void setStartTime(String startTime) {
-        mStartTime = startTime;
+        this.startTime = startTime;
     }
 
     public String getState() {
-        return mState;
+        return state;
     }
 
     public void setState(String state) {
-        mState = state;
+        this.state = state;
     }
 
     public String getSubTopic() {
-        return mSubTopic;
+        return subTopic;
     }
 
     public void setSubTopic(String subTopic) {
-        mSubTopic = subTopic;
+        this.subTopic = subTopic;
     }
 
     public String getThumbnail() {
-        return mThumbnail;
+        return thumbnail;
     }
 
     public void setThumbnail(String thumbnail) {
-        mThumbnail = thumbnail;
+        this.thumbnail = thumbnail;
     }
 
     public String getTicketUrl() {
-        return mTicketUrl;
+        return ticketUrl;
     }
 
     public void setTicketUrl(String ticketUrl) {
-        mTicketUrl = ticketUrl;
+        this.ticketUrl = ticketUrl;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public String getTimezone() {
-        return mTimezone;
+        return timezone;
     }
 
     public void setTimezone(String timezone) {
-        mTimezone = timezone;
+        this.timezone = timezone;
     }
 
     public String getTopic() {
-        return mTopic;
+        return topic;
     }
 
     public void setTopic(String topic) {
-        mTopic = topic;
+        this.topic = topic;
     }
 
     public String getType() {
-        return mType;
+        return type;
     }
 
     public void setType(String type) {
-        mType = type;
+        this.type = type;
     }
 
     public Version getVersion() {
-        return mVersion;
+        return version;
     }
 
     public void setVersion(Version version) {
-        mVersion = version;
+        this.version = version;
     }
 
 }

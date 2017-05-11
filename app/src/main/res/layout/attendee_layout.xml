@@ -1,73 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_height="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
     android:layout_marginTop="@dimen/activity_vertical_margin"
-    android:layout_marginBottom="@dimen/activity_vertical_margin"
-    >
+    android:orientation="horizontal">
+
     <LinearLayout
+        android:id="@+id/activity_event_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="2"
-        android:id="@+id/activity_event_details">
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingEnd="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingStart="5dp">
+
+            <TextView
+                android:id="@+id/tvLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="2dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingStart="2dp"
+                android:text="@string/last_name_placeholder"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/comma"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/tvFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="1dp"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:paddingStart="1dp"
+                android:text="@string/first_name_placeholder"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvLastName"
-            android:text="Khanna"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:paddingRight="2dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=","
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rishabh"
-            android:id="@+id/tvFirstName"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:paddingLeft="1dp"/>
-    </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="rishabhkhanna777@gmail.com"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:padding="5dp"
             android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            />
+            android:padding="5dp"
+            android:text="@string/email_placeholder"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-</LinearLayout>
-
+    </LinearLayout>
 
     <Button
+        android:id="@+id/btnCheckedIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CHECK IN"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="0dp"
-        android:theme="@style/AppTheme.Button"
-        android:id="@+id/btnCheckedin"
-        />
+        android:text="@string/check_in"
+        android:textAllCaps="true"
+        android:theme="@style/AppTheme.Button" />
 
 </RelativeLayout>

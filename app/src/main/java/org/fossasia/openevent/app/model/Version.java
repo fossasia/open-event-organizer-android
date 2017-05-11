@@ -1,70 +1,68 @@
-
 package org.fossasia.openevent.app.model;
 
 import com.google.gson.annotations.SerializedName;
 
-
 public class Version {
 
     @SerializedName("event_ver")
-    private Long mEventVer;
+    private Long eventVer;
     @SerializedName("microlocations_ver")
-    private Long mMicrolocationsVer;
+    private Long microlocationsVer;
     @SerializedName("sessions_ver")
-    private Long mSessionsVer;
+    private Long sessionsVer;
     @SerializedName("speakers_ver")
-    private Long mSpeakersVer;
+    private Long speakersVer;
     @SerializedName("sponsors_ver")
-    private Long mSponsorsVer;
+    private Long sponsorsVer;
     @SerializedName("tracks_ver")
-    private Long mTracksVer;
+    private Long tracksVer;
 
     public Long getEventVer() {
-        return mEventVer;
+        return eventVer;
     }
 
     public void setEventVer(Long eventVer) {
-        mEventVer = eventVer;
+        this.eventVer = eventVer;
     }
 
     public Long getMicrolocationsVer() {
-        return mMicrolocationsVer;
+        return microlocationsVer;
     }
 
     public void setMicrolocationsVer(Long microlocationsVer) {
-        mMicrolocationsVer = microlocationsVer;
+        this.microlocationsVer = microlocationsVer;
     }
 
     public Long getSessionsVer() {
-        return mSessionsVer;
+        return sessionsVer;
     }
 
     public void setSessionsVer(Long sessionsVer) {
-        mSessionsVer = sessionsVer;
+        this.sessionsVer = sessionsVer;
     }
 
     public Long getSpeakersVer() {
-        return mSpeakersVer;
+        return speakersVer;
     }
 
     public void setSpeakersVer(Long speakersVer) {
-        mSpeakersVer = speakersVer;
+        this.speakersVer = speakersVer;
     }
 
     public Long getSponsorsVer() {
-        return mSponsorsVer;
+        return sponsorsVer;
     }
 
     public void setSponsorsVer(Long sponsorsVer) {
-        mSponsorsVer = sponsorsVer;
+        this.sponsorsVer = sponsorsVer;
     }
 
     public Long getTracksVer() {
-        return mTracksVer;
+        return tracksVer;
     }
 
     public void setTracksVer(Long tracksVer) {
-        mTracksVer = tracksVer;
+        this.tracksVer = tracksVer;
     }
 
 }
