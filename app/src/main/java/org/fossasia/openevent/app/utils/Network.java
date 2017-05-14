@@ -10,6 +10,5 @@ public class Network {
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = connectivityManager.getActiveNetworkInfo();
         return (info != null && info.isConnected());
-
     }
 }

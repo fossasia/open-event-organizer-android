@@ -12,16 +12,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="org.fossasia.openevent.app.views.LoginActivity">
+        <activity android:name=".ui.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.fossasia.openevent.app.views.EventsActivity" />
-        <activity android:name="org.fossasia.openevent.app.views.EventDetailsActivity" />
-        <activity android:name="org.fossasia.openevent.app.views.AttendeeListActivity" />
-        <activity android:name="org.fossasia.openevent.app.views.ScanQRActivity" />
+        <activity android:name=".ui.activity.EventsActivity" />
+        <activity android:name=".ui.activity.EventDetailsActivity" />
+        <activity android:name=".ui.activity.AttendeeListActivity" />
+        <activity android:name=".ui.activity.ScanQRActivity" />
     </application>
 
 </manifest>
