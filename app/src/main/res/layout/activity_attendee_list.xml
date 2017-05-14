@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.fossasia.openevent.app.views.AttendeeListActivity">
+    tools:context=".ui.activity.AttendeeListActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvAttendeeList"

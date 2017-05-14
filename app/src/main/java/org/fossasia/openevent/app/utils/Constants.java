@@ -2,6 +2,9 @@ package org.fossasia.openevent.app.utils;
 
 public class Constants {
     //url to login organiser
+    public static final String BASE_URL = "http://open-event-dev.herokuapp.com/api/v1/";
+
+    //url to login organiser
     public static final String LOGIN_URL = "http://open-event-dev.herokuapp.com/api/v1/login";
     //Logged in user events
     public static final String USER_EVENTS = "http://open-event-dev.herokuapp.com/api/v1/users/me/events";
