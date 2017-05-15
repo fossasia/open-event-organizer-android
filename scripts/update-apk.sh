@@ -11,12 +11,21 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/open-
     exit 0
 fi
 
+
 git clone --quiet --branch=apk https://the-dagger:$GITHUB_API_KEY@github.com/fossasia/open-event-orga-app apk > /dev/null
-cp platforms/android/build/outputs/apk/android-debug.apk apk/test-android-debug.apk
 cd apk
+cp /home/travis/build/fossasia/open-event-orga-app/app/build/outputs/apk/app-debug.apk ./test-android-debug.apk
+# Create a new branch that will contains only latest apk
 git checkout --orphan temporary
+
+# Add generated APK
 git add test-android-debug.apk
 git commit -am "[Auto] Update Test Apk ($(date +%Y-%m-%d.%H:%M:%S))"
+
+# Delete current apk branch
 git branch -D apk
+# Rename current branch to apk
 git branch -m apk
+
+# Force push to origin since histories are unrelated
 git push origin apk --force --quiet > /dev/null
