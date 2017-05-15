@@ -27,9 +27,13 @@ import org.fossasia.openevent.app.utils.Constants;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ScanQRActivity extends AppCompatActivity {
     public static final int PERM_REQ_CODE = 123;
     public static final String TAG = "ScanQRActivity";
+    @BindView(R.id.svScanView)
     SurfaceView surfaceView;
     CameraSource cameraSource;
 
@@ -37,7 +41,8 @@ public class ScanQRActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_qr);
-        surfaceView = (SurfaceView) findViewById(R.id.svScanView);
+
+        ButterKnife.bind(this);
 
         BarcodeDetector barcodeDetector =
             new BarcodeDetector.Builder(this)

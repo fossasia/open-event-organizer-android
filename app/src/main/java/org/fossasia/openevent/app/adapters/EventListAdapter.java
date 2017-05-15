@@ -18,6 +18,9 @@ import org.fossasia.openevent.app.views.EventDetailsActivity;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventRecyclerViewHolder>{
 
@@ -69,13 +72,15 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
     //view holder class
     class EventRecyclerViewHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.tvEventTitle)
         TextView eventTitle;
+        @BindView(R.id.ivEventProfile)
         ImageView eventImage;
 
         EventRecyclerViewHolder(View itemView) {
             super(itemView);
-            eventTitle = (TextView) itemView.findViewById(R.id.tvEventTitle);
-            eventImage = (ImageView) itemView.findViewById(R.id.ivEventProfile);
+
+            ButterKnife.bind(this, itemView);
         }
 
     }

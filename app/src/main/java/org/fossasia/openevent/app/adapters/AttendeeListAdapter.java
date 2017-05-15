@@ -23,6 +23,9 @@ import org.fossasia.openevent.app.utils.Constants;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapter.AttendeeListAdapterHolder> {
     private List<Attendee> attendeeList;
@@ -98,17 +101,19 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
 
     class AttendeeListAdapterHolder extends RecyclerView.ViewHolder{
 
+        @BindView(R.id.tvLastName)
         TextView tvLastName;
+        @BindView(R.id.tvFirstName)
         TextView tvFirstName;
+        @BindView(R.id.tvEmail)
         TextView tvEmail;
+        @BindView(R.id.btnCheckedIn)
         Button btnCheckedIn;
 
         AttendeeListAdapterHolder(View itemView) {
             super(itemView);
-            tvLastName = (TextView) itemView.findViewById(R.id.tvLastName);
-            tvFirstName = (TextView) itemView.findViewById(R.id.tvFirstName);
-            tvEmail = (TextView) itemView.findViewById(R.id.tvEmail);
-            btnCheckedIn = (Button) itemView.findViewById(R.id.btnCheckedIn);
+
+            ButterKnife.bind(this, itemView);
         }
     }
 
