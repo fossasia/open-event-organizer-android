@@ -12,7 +12,7 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/open-
 fi
 
 
-git clone --quiet --branch=apk https://the-dagger:$GITHUB_API_KEY@github.com/fossasia/open-event-orga-app apk > /dev/null
+git clone --quiet --branch=apk https://niranjan94:$GITHUB_API_KEY@github.com/fossasia/open-event-orga-app apk > /dev/null
 cd apk
 cp /home/travis/build/fossasia/open-event-orga-app/app/build/outputs/apk/app-debug.apk ./test-android-debug.apk
 # Create a new branch that will contains only latest apk
