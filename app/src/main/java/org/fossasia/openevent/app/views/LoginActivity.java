@@ -3,8 +3,8 @@ package org.fossasia.openevent.app.views;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,18 +13,24 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
+import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.api.LoginCall;
 import org.fossasia.openevent.app.interfaces.VolleyCallBack;
-import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.model.Login;
 import org.fossasia.openevent.app.utils.CheckLogin;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.Network;
-import org.fossasia.openevent.app.model.Login;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "OpenEventApplication";
+    @BindView(R.id.btnLogin)
     Button btnLogin;
+    @BindView(R.id.etEmail)
     EditText etEmail;
+    @BindView(R.id.etPassword)
     EditText etPassword;
     String email = "";
     String password = "";
@@ -41,9 +47,7 @@ public class LoginActivity extends AppCompatActivity {
               finish();
           } */
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
+        ButterKnife.bind(this);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

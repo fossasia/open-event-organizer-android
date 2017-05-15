@@ -1,8 +1,8 @@
 package org.fossasia.openevent.app.views;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,27 +13,40 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.api.ApiCall;
 import org.fossasia.openevent.app.interfaces.VolleyCallBack;
-import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.utils.Constants;
-import org.fossasia.openevent.app.utils.Network;
 import org.fossasia.openevent.app.model.Attendee;
 import org.fossasia.openevent.app.model.Event;
 import org.fossasia.openevent.app.model.Ticket;
+import org.fossasia.openevent.app.utils.Constants;
+import org.fossasia.openevent.app.utils.Network;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EventDetailsActivity extends AppCompatActivity {
+    @BindView(R.id.tvEventTitle)
     TextView tvEventTitle;
+    @BindView(R.id.tvStartDate)
     TextView tvStartDate;
+    @BindView(R.id.tvEndDate)
     TextView tvEndDate;
+    @BindView(R.id.tvHour)
     TextView tvTime;
+    @BindView(R.id.tvTicketSold)
     TextView tvTicketSold;
+    @BindView(R.id.tvAttendance)
     TextView tvAttendees;
+    @BindView(R.id.tvTicketTotal)
     TextView tvTicketTotal;
+    @BindView(R.id.progressTicketSold)
     ProgressBar pbTickets;
+    @BindView(R.id.progressAttendance)
     ProgressBar pbAttendees;
+    @BindView(R.id.btnCheckIn)
     Button btnCheckIn;
     public static final String TAG = "EventDetailActivity";
     long quantity = 0;
@@ -47,18 +60,10 @@ public class EventDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
-        Intent i = getIntent();
 
-        tvEventTitle = (TextView) findViewById(R.id.tvEventTitle);
-        tvStartDate = (TextView) findViewById(R.id.tvStartDate);
-        tvEndDate = (TextView) findViewById(R.id.tvEndDate);
-        tvTime = (TextView) findViewById(R.id.tvHour);
-        tvTicketSold = (TextView) findViewById(R.id.tvTicketSold);
-        tvAttendees = (TextView) findViewById(R.id.tvAttendance);
-        tvTicketTotal = (TextView) findViewById(R.id.tvTicketTotal);
-        pbTickets = (ProgressBar) findViewById(R.id.progressTicketSold);
-        pbAttendees = (ProgressBar) findViewById(R.id.progressAttendance);
-        btnCheckIn = (Button) findViewById(R.id.btnCheckIn);
+        ButterKnife.bind(this);
+
+        Intent i = getIntent();
 
         int position = i.getIntExtra("position",0);
         final long id = i.getLongExtra("id",0);

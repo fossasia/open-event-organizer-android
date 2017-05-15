@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.views;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +11,10 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.adapters.EventListAdapter;
 import org.fossasia.openevent.app.api.ApiCall;
 import org.fossasia.openevent.app.interfaces.VolleyCallBack;
-import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.model.Event;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.Network;
@@ -23,9 +23,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EventsActivity extends AppCompatActivity {
 
     public static final String TAG = "EventsActivity";
+    @BindView(R.id.rvEventList)
     RecyclerView recyclerView;
     static List<Event> events = new ArrayList<>();
 
@@ -33,7 +37,9 @@ public class EventsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
-        recyclerView = (RecyclerView) findViewById(R.id.rvEventList);
+
+        ButterKnife.bind(this);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         final EventListAdapter eventListAdapter = new EventListAdapter(events, this);

@@ -2,9 +2,9 @@ package org.fossasia.openevent.app.views;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,24 +15,33 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.adapters.AttendeeListAdapter;
 import org.fossasia.openevent.app.api.ApiCall;
 import org.fossasia.openevent.app.interfaces.VolleyCallBack;
-import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.model.Attendee;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.Network;
-import org.fossasia.openevent.app.model.Attendee;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AttendeeListActivity extends AppCompatActivity {
+
+    @BindView(R.id.rvAttendeeList)
     RecyclerView recyclerView;
+
+    @BindView(R.id.btnScanQr)
+    Button btnBarCodeScanner;
+
     Attendee[] attendeeDetails;
     static ArrayList<Attendee> attendeeArrayList = new ArrayList<>();
     AttendeeListAdapter attendeeListAdapter;
-    Button btnBarCodeScanner;
+
     long id;
     public static final int REQ_CODE = 123;
     public static final String TAG = "AttendeeListActivity";
@@ -42,16 +51,16 @@ public class AttendeeListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendee_list);
+
+        ButterKnife.bind(this);
+
         Intent i = getIntent();
         id = i.getLongExtra("id",0);
-        recyclerView = (RecyclerView) findViewById(R.id.rvAttendeeList);
-        btnBarCodeScanner = (Button) findViewById(R.id.btnScanQr);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         attendeeListAdapter = new AttendeeListAdapter(attendeeArrayList, this , id);
         recyclerView.setAdapter(attendeeListAdapter);
         recyclerView.setLayoutManager(layoutManager);
         getAttendees();
-
     }
 
     public void getAttendees(){
