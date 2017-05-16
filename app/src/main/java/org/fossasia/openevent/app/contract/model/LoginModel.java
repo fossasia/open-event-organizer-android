@@ -6,8 +6,6 @@ import io.reactivex.Observable;
 
 public interface LoginModel {
 
-    boolean isLoggedIn();
-
     Observable<LoginResponse> login(String username,  String password);
 
 }

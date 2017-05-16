@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app;
 
 import org.fossasia.openevent.app.contract.model.LoginModel;
+import org.fossasia.openevent.app.contract.model.UtilModel;
 import org.fossasia.openevent.app.contract.view.LoginView;
 import org.fossasia.openevent.app.data.models.LoginResponse;
 import org.fossasia.openevent.app.ui.presenter.LoginActivityPresenter;
@@ -31,6 +32,9 @@ public class LoginActivityPresenterTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
+    UtilModel utilModel;
+
+    @Mock
     LoginView loginView;
 
     @Mock
@@ -43,7 +47,7 @@ public class LoginActivityPresenterTest {
 
     @Before
     public void setUp() {
-        loginPresenter = new LoginActivityPresenter(loginView, loginModel);
+        loginPresenter = new LoginActivityPresenter(loginView, loginModel, utilModel);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -56,7 +60,7 @@ public class LoginActivityPresenterTest {
 
     @Test
     public void shouldShowSuccessOnStart() {
-        Mockito.when(loginModel.isLoggedIn()).thenReturn(true);
+        Mockito.when(utilModel.isLoggedIn()).thenReturn(true);
 
         loginPresenter.attach();
 
@@ -65,7 +69,7 @@ public class LoginActivityPresenterTest {
 
     @Test
     public void shouldNotShowSuccessOnStart() {
-        Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
+        Mockito.when(utilModel.isLoggedIn()).thenReturn(false);
 
         loginPresenter.attach();
 

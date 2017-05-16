@@ -13,46 +13,34 @@ import io.reactivex.schedulers.Schedulers;
 public class RetrofitLoginModel implements LoginModel {
 
     private UtilModel utilModel;
-    private String token;
-    private LoginService loginService;
+    private EventService eventService;
 
     public RetrofitLoginModel(UtilModel utilModel) {
         this.utilModel = utilModel;
     }
 
     @Override
-    public boolean isLoggedIn() {
-        if(token == null)
-            token = utilModel.getString(Constants.SHARED_PREFS_TOKEN, null);
-        return token != null;
-    }
-
-    @Override
     public Observable<LoginResponse> login(String username, String password) {
 
-        if(isLoggedIn()) {
-            return Observable.just(new LoginResponse(token));
+        if(utilModel.isLoggedIn()) {
+            return Observable.just(new LoginResponse(utilModel.getToken()));
         }
 
         if(!utilModel.isConnected()) {
             return Observable.error(new RuntimeException(Constants.NO_NETWORK));
         }
 
-        if(loginService == null)
-            loginService = NetworkService.getLoginService();
+        if(eventService == null)
+            eventService = NetworkService.getEventService();
 
-        return loginService
+        return eventService
             .login(new Login(username, password))
-            .doOnNext(loginResponse -> saveToken(loginResponse.getAccessToken()))
+            .doOnNext(loginResponse -> utilModel.saveToken(loginResponse.getAccessToken()))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private void saveToken(String token) {
-        utilModel.saveString(Constants.SHARED_PREFS_TOKEN, token);
-    }
-
-    public void setLoginService(LoginService loginService) {
-        this.loginService = loginService;
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
     }
 }
