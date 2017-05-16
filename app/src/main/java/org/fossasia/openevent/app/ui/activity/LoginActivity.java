@@ -11,6 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.contract.model.LoginModel;
+import org.fossasia.openevent.app.contract.model.UtilModel;
 import org.fossasia.openevent.app.contract.presenter.LoginPresenter;
 import org.fossasia.openevent.app.contract.view.LoginView;
 import org.fossasia.openevent.app.data.AndroidUtilModel;
@@ -43,8 +45,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         ButterKnife.bind(this);
 
-        RetrofitLoginModel retrofitLoginModel = new RetrofitLoginModel(new AndroidUtilModel(this));
-        presenter = new LoginActivityPresenter(this, retrofitLoginModel);
+        UtilModel utilModel = new AndroidUtilModel(this);
+        LoginModel loginModel = new RetrofitLoginModel(utilModel);
+        presenter = new LoginActivityPresenter(this, loginModel, utilModel);
 
         // Notify presenter to attach
         presenter.attach();

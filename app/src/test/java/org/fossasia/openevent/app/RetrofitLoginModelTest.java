@@ -3,7 +3,7 @@ package org.fossasia.openevent.app;
 import org.fossasia.openevent.app.contract.model.UtilModel;
 import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.LoginResponse;
-import org.fossasia.openevent.app.data.network.api.LoginService;
+import org.fossasia.openevent.app.data.network.api.EventService;
 import org.fossasia.openevent.app.data.network.api.RetrofitLoginModel;
 import org.fossasia.openevent.app.utils.Constants;
 import org.junit.After;
@@ -35,7 +35,7 @@ public class RetrofitLoginModelTest {
     UtilModel utilModel;
 
     @Mock
-    LoginService loginService;
+    EventService eventService;
 
     private String token = "TestToken";
     private String email = "test";
@@ -44,7 +44,7 @@ public class RetrofitLoginModelTest {
     @Before
     public void setUp() {
         retrofitLoginModel = new RetrofitLoginModel(utilModel);
-        retrofitLoginModel.setLoginService(loginService);
+        retrofitLoginModel.setEventService(eventService);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -57,42 +57,41 @@ public class RetrofitLoginModelTest {
 
     @Test
     public void shouldCacheLogin() {
-        Mockito.when(utilModel.getString(Constants.SHARED_PREFS_TOKEN, null)).thenReturn(token);
+        Mockito.when(utilModel.isLoggedIn()).thenReturn(true);
+        Mockito.when(utilModel.getToken()).thenReturn(token);
 
         Observable<LoginResponse> responseObservable = retrofitLoginModel.login(email, password);
 
         assertEquals(responseObservable.blockingFirst().getAccessToken(), token);
 
-        Mockito.verifyNoMoreInteractions(loginService);
+        Mockito.verifyNoMoreInteractions(eventService);
     }
 
     @Test
     public void shouldCallServiceOnCacheMiss() {
-        Mockito.when(utilModel.getString(Constants.SHARED_PREFS_TOKEN, null)).thenReturn(null);
         Mockito.when(utilModel.isConnected()).thenReturn(true);
-        Mockito.when(loginService.login(Mockito.any(Login.class)))
+        Mockito.when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.just(new LoginResponse(token)));
 
         Observable<LoginResponse> responseObservable = retrofitLoginModel.login(email, password);
 
         assertEquals(responseObservable.blockingFirst().getAccessToken(), token);
 
-        Mockito.verify(loginService).login(Mockito.any(Login.class));
+        Mockito.verify(eventService).login(Mockito.any(Login.class));
         // Should save token on object return
-        Mockito.verify(utilModel).saveString(Constants.SHARED_PREFS_TOKEN, token);
+        Mockito.verify(utilModel).saveToken(token);
     }
 
     @Test
     public void shouldNotSaveTokenOnErrorResponse() {
-        Mockito.when(utilModel.getString(Constants.SHARED_PREFS_TOKEN, null)).thenReturn(null);
         Mockito.when(utilModel.isConnected()).thenReturn(true);
-        Mockito.when(loginService.login(Mockito.any(Login.class)))
+        Mockito.when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.error(new Throwable("Error")));
 
         Observable<LoginResponse> responseObservable = retrofitLoginModel.login(email, password);
         responseObservable.test().assertErrorMessage("Error");
 
-        Mockito.verify(loginService).login(Mockito.any(Login.class));
+        Mockito.verify(eventService).login(Mockito.any(Login.class));
         // Should not save token on object return
         Mockito.verify(utilModel, Mockito.never()).saveString(Constants.SHARED_PREFS_TOKEN, token);
     }
@@ -105,7 +104,7 @@ public class RetrofitLoginModelTest {
 
         responseObservable.test().assertErrorMessage(Constants.NO_NETWORK);
 
-        Mockito.verifyNoMoreInteractions(loginService);
+        Mockito.verifyNoMoreInteractions(eventService);
     }
 
 

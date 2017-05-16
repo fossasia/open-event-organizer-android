@@ -77,6 +77,12 @@ public class Event {
     @SerializedName("version")
     private Version version;
 
+    public Event() {}
+
+    public Event(long id) {
+        this.id = id;
+    }
+
     public String getBackgroundImage() {
         return backgroundImage;
     }
@@ -357,4 +363,18 @@ public class Event {
         this.version = version;
     }
 
+    @Override
+    public String toString() {
+        return "Event{" +
+            "description='" + description + '\'' +
+            ", email='" + email + '\'' +
+            ", id=" + id +
+            ", locationName='" + locationName + '\'' +
+            ", name='" + name + '\'' +
+            ", organizerDescription='" + organizerDescription + '\'' +
+            ", organizerName='" + organizerName + '\'' +
+            ", topic='" + topic + '\'' +
+            ", version=" + version +
+            '}';
+    }
 }

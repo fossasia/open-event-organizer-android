@@ -6,6 +6,6 @@ import android.content.SharedPreferences;
 public class CheckLogin {
     public static String isLogin(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.FOSS_PREFS, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(Constants.SHARED_PREFS_TOKEN,"null");
+        return sharedPreferences.getString(Constants.SHARED_PREFS_TOKEN, "null");
     }
 }

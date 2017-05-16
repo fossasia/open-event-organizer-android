@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkService {
 
-    private static LoginService loginService;
+    private static EventService eventService;
 
     static {
         Retrofit retrofit = new Retrofit.Builder()
@@ -17,11 +17,15 @@ public class NetworkService {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-        loginService = retrofit.create(LoginService.class);
+        eventService = retrofit.create(EventService.class);
     }
 
-    public static LoginService getLoginService() {
-        return loginService;
+    public static String formatToken(String token) {
+        return String.format("JWT %s", token);
+    }
+
+    public static EventService getEventService() {
+        return eventService;
     }
 
 }
