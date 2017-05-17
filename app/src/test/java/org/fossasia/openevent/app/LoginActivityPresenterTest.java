@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app;
 
-import org.fossasia.openevent.app.contract.model.LoginModel;
-import org.fossasia.openevent.app.contract.view.LoginView;
+import org.fossasia.openevent.app.contract.model.ILoginModel;
+import org.fossasia.openevent.app.contract.view.ILoginView;
 import org.fossasia.openevent.app.data.models.LoginResponse;
 import org.fossasia.openevent.app.ui.presenter.LoginActivityPresenter;
 import org.junit.After;
@@ -31,10 +31,10 @@ public class LoginActivityPresenterTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    LoginView loginView;
+    ILoginView loginView;
 
     @Mock
-    LoginModel loginModel;
+    ILoginModel loginModel;
 
     private LoginActivityPresenter loginPresenter;
 

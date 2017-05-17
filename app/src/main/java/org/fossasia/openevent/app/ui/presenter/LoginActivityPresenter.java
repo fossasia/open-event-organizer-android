@@ -1,15 +1,15 @@
 package org.fossasia.openevent.app.ui.presenter;
 
-import org.fossasia.openevent.app.contract.model.LoginModel;
-import org.fossasia.openevent.app.contract.presenter.LoginPresenter;
-import org.fossasia.openevent.app.contract.view.LoginView;
+import org.fossasia.openevent.app.contract.model.ILoginModel;
+import org.fossasia.openevent.app.contract.presenter.ILoginPresenter;
+import org.fossasia.openevent.app.contract.view.ILoginView;
 
-public class LoginActivityPresenter implements LoginPresenter {
+public class LoginActivityPresenter implements ILoginPresenter {
 
-    private LoginView loginView;
-    private LoginModel loginModel;
+    private ILoginView loginView;
+    private ILoginModel loginModel;
 
-    public LoginActivityPresenter(LoginView loginView, LoginModel loginModel) {
+    public LoginActivityPresenter(ILoginView loginView, ILoginModel loginModel) {
         this.loginView = loginView;
         this.loginModel = loginModel;
     }
@@ -46,7 +46,7 @@ public class LoginActivityPresenter implements LoginPresenter {
             });
     }
 
-    public LoginView getView() {
+    public ILoginView getView() {
         return loginView;
     }
 

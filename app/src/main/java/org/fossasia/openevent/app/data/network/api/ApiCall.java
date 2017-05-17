@@ -13,7 +13,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.fossasia.openevent.app.data.network.interfaces.VolleyCallBack;
+import org.fossasia.openevent.app.data.network.interfaces.IVolleyCallBack;
 import org.fossasia.openevent.app.utils.CheckLogin;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class ApiCall {
 
     private static final String TAG = "ApiCall";
 
-    public static void callApi(final Context context, String url , final VolleyCallBack callBack){
+    public static void callApi(final Context context, String url , final IVolleyCallBack callBack){
 
         RequestQueue  queue = Volley.newRequestQueue(context);
 
@@ -59,7 +59,7 @@ public class ApiCall {
 
     }
 
-    public static void PostApiCall(final Context context , String url , final VolleyCallBack callBack){
+    public static void PostApiCall(final Context context , String url , final IVolleyCallBack callBack){
 
         RequestQueue queue = Volley.newRequestQueue(context);
 

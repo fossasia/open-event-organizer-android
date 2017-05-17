@@ -3,11 +3,11 @@ package org.fossasia.openevent.app.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.fossasia.openevent.app.contract.model.UtilModel;
+import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.Network;
 
-public class AndroidUtilModel implements UtilModel {
+public class AndroidUtilModel implements IUtilModel {
 
     private Context context;
     private SharedPreferences sharedPreferences;

@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.network.api.ApiCall;
-import org.fossasia.openevent.app.data.network.interfaces.VolleyCallBack;
+import org.fossasia.openevent.app.data.network.interfaces.IVolleyCallBack;
 import org.fossasia.openevent.app.ui.adapters.AttendeeListAdapter;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.Network;
@@ -65,7 +65,7 @@ public class AttendeeListActivity extends AppCompatActivity {
     public void getAttendees() {
         if (Network.isNetworkConnected(this)) {
             ApiCall.callApi(this, EventDetailsActivity.urlAttendees
-                , new VolleyCallBack() {
+                , new IVolleyCallBack() {
                     @Override
                     public void onSuccess(String result) {
                         Gson gson = new Gson();
@@ -131,7 +131,7 @@ public class AttendeeListActivity extends AppCompatActivity {
 
     public void changeCheckStatus(Long thisAttendeeId, final int position) {
         if (Network.isNetworkConnected(this)) {
-            ApiCall.PostApiCall(this, Constants.EVENT_DETAILS + id + Constants.ATTENDEES_TOGGLE + thisAttendeeId, new VolleyCallBack() {
+            ApiCall.PostApiCall(this, Constants.EVENT_DETAILS + id + Constants.ATTENDEES_TOGGLE + thisAttendeeId, new IVolleyCallBack() {
                 @Override
                 public void onSuccess(String result) {
                     Log.d(TAG, "onSuccess: " + result);

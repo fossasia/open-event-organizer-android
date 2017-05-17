@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.network.api.ApiCall;
-import org.fossasia.openevent.app.data.network.interfaces.VolleyCallBack;
+import org.fossasia.openevent.app.data.network.interfaces.IVolleyCallBack;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.utils.Constants;
 
@@ -118,7 +118,7 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
     }
 
     private void changeCheckStatus(Context context, Attendee thisAttendee, final int position){
-        ApiCall.PostApiCall(context, Constants.EVENT_DETAILS + id + Constants.ATTENDEES_TOGGLE + thisAttendee.getId(), new VolleyCallBack() {
+        ApiCall.PostApiCall(context, Constants.EVENT_DETAILS + id + Constants.ATTENDEES_TOGGLE + thisAttendee.getId(), new IVolleyCallBack() {
             @Override
             public void onSuccess(String result) {
                 Log.d(TAG, "onSuccess: " + result);

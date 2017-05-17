@@ -17,7 +17,7 @@ import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.Ticket;
 import org.fossasia.openevent.app.data.network.api.ApiCall;
-import org.fossasia.openevent.app.data.network.interfaces.VolleyCallBack;
+import org.fossasia.openevent.app.data.network.interfaces.IVolleyCallBack;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.Network;
 
@@ -70,7 +70,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         final Gson gson = new Gson();
         urlTickets = Constants.EVENT_DETAILS + id + Constants.TICKETS;
         urlAttendees = Constants.EVENT_DETAILS + EventsActivity.events.get(position).getId() + Constants.ATTENDEES;
-        ApiCall.callApi(this, urlTickets, new VolleyCallBack() {
+        ApiCall.callApi(this, urlTickets, new IVolleyCallBack() {
             @Override
             public void onSuccess(String result) {
                 Event event = gson.fromJson(result , Event.class);
@@ -97,7 +97,7 @@ public class EventDetailsActivity extends AppCompatActivity {
             }
         });
         if(Network.isNetworkConnected(this)) {
-            ApiCall.callApi(this, urlAttendees, new VolleyCallBack() {
+            ApiCall.callApi(this, urlAttendees, new IVolleyCallBack() {
                 @Override
                 public void onSuccess(String result) {
                     Log.d(TAG, "onSuccess: " + result);

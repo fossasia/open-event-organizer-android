@@ -4,7 +4,7 @@ import org.fossasia.openevent.app.data.models.LoginResponse;
 
 import io.reactivex.Observable;
 
-public interface LoginModel {
+public interface ILoginModel {
 
     boolean isLoggedIn();
 

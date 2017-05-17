@@ -11,7 +11,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
-import org.fossasia.openevent.app.data.network.interfaces.VolleyCallBack;
+import org.fossasia.openevent.app.data.network.interfaces.IVolleyCallBack;
 import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.utils.Constants;
 import org.json.JSONException;
@@ -21,7 +21,7 @@ public class LoginCall {
 
     private static final String TAG = "LoginCall";
 
-    public static void login(final Context context, Login details, final VolleyCallBack callBack) {
+    public static void login(final Context context, Login details, final IVolleyCallBack callBack) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
         Gson gson = new Gson();
