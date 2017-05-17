@@ -17,11 +17,19 @@ import org.fossasia.openevent.app.data.AndroidUtilModel;
 import org.fossasia.openevent.app.data.network.api.RetrofitLoginModel;
 import org.fossasia.openevent.app.ui.presenter.LoginActivityPresenter;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LoginActivity extends AppCompatActivity implements LoginView {
     public static final String TAG = "OpenEventApplication";
+
+    @BindView(R.id.btnLogin)
     Button btnLogin;
+    @BindView(R.id.etEmail)
     EditText etEmail;
+    @BindView(R.id.etPassword)
     EditText etPassword;
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
     private LoginPresenter presenter;
@@ -33,10 +41,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        ButterKnife.bind(this);
 
         RetrofitLoginModel retrofitLoginModel = new RetrofitLoginModel(new AndroidUtilModel(this));
         presenter = new LoginActivityPresenter(this, retrofitLoginModel);
