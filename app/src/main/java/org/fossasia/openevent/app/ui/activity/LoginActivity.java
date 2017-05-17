@@ -11,20 +11,28 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.contract.presenter.LoginPresenter;
-import org.fossasia.openevent.app.contract.view.LoginView;
+import org.fossasia.openevent.app.contract.presenter.ILoginPresenter;
+import org.fossasia.openevent.app.contract.view.ILoginView;
 import org.fossasia.openevent.app.data.AndroidUtilModel;
 import org.fossasia.openevent.app.data.network.api.RetrofitLoginModel;
 import org.fossasia.openevent.app.ui.presenter.LoginActivityPresenter;
 
-public class LoginActivity extends AppCompatActivity implements LoginView {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class LoginActivity extends AppCompatActivity implements ILoginView {
     public static final String TAG = "OpenEventApplication";
+
+    @BindView(R.id.btnLogin)
     Button btnLogin;
+    @BindView(R.id.etEmail)
     EditText etEmail;
+    @BindView(R.id.etPassword)
     EditText etPassword;
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
-    private LoginPresenter presenter;
+    private ILoginPresenter presenter;
 
     // Lifecycle methods start
 
@@ -33,10 +41,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        ButterKnife.bind(this);
 
         RetrofitLoginModel retrofitLoginModel = new RetrofitLoginModel(new AndroidUtilModel(this));
         presenter = new LoginActivityPresenter(this, retrofitLoginModel);

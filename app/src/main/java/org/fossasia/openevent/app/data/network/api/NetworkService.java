@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkService {
 
-    private static LoginService loginService;
+    private static ILoginService loginService;
 
     static {
         Retrofit retrofit = new Retrofit.Builder()
@@ -17,10 +17,10 @@ public class NetworkService {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-        loginService = retrofit.create(LoginService.class);
+        loginService = retrofit.create(ILoginService.class);
     }
 
-    public static LoginService getLoginService() {
+    public static ILoginService getLoginService() {
         return loginService;
     }
 

@@ -8,7 +8,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-public interface LoginService {
+public interface ILoginService {
 
     @POST("login")
     Observable<LoginResponse> login(@Body Login login);

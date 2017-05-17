@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.contract.model;
 
-public interface UtilModel {
+public interface IUtilModel {
 
     String getString(String key, String defaultValue);
 
