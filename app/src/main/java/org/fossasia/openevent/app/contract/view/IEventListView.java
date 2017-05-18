@@ -8,9 +8,15 @@ public interface IEventListView {
 
     void showProgressBar(boolean show);
 
+    void showOrganiserPanel(boolean show);
+
     void showEvents(List<Event> events);
 
+    void showOrganiserName(String name);
+
     void showEventError(String error);
+
+    void showOrganiserLoadError(String error);
 
     void onLogout();
 

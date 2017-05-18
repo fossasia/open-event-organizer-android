@@ -8,6 +8,8 @@ public interface IEventListPresenter {
 
     void loadUserEvents(boolean forceReload);
 
+    void loadOrganiser(boolean forceReload);
+
     void logout();
 
 }

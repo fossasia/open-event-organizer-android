@@ -4,6 +4,8 @@ import org.fossasia.openevent.app.contract.model.IEventModel;
 import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.contract.view.IEventListView;
 import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.models.UserDetail;
 import org.fossasia.openevent.app.ui.presenter.EventsActivityPresenter;
 import org.junit.After;
 import org.junit.Before;
@@ -27,6 +29,8 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class EventActivityPresenterTest {
@@ -51,6 +55,8 @@ public class EventActivityPresenterTest {
         new Event(14)
     );
 
+    private User organiser = new User();
+
     @Before
     public void setUp() {
         eventsActivityPresenter = new EventsActivityPresenter(eventListView, eventModel, utilModel);
@@ -65,19 +71,25 @@ public class EventActivityPresenterTest {
     }
 
     @Test
-    public void shouldLoadEventsAutomatically() {
-        Mockito.when(eventModel.getEvents(false))
+    public void shouldLoadEventsAndOrganiserAutomatically() {
+        when(eventModel.getEvents(false))
             .thenReturn(Observable.just(eventList));
+
+        when(eventModel.getOrganiser(false))
+            .thenReturn(Observable.just(organiser));
 
         eventsActivityPresenter.attach();
 
-        Mockito.verify(eventModel).getEvents(false);
+        verify(eventModel).getEvents(false);
+        verify(eventModel).getOrganiser(false);
     }
 
     @Test
     public void shouldDetachViewOnStop() {
-        Mockito.when(eventModel.getEvents(false))
+        when(eventModel.getEvents(false))
             .thenReturn(Observable.just(eventList));
+        when(eventModel.getOrganiser(false))
+            .thenReturn(Observable.just(organiser));
 
         eventsActivityPresenter.attach();
 
@@ -90,7 +102,7 @@ public class EventActivityPresenterTest {
 
     @Test
     public void shouldLoadEventsSuccessfully() {
-        Mockito.when(eventModel.getEvents(false))
+        when(eventModel.getEvents(false))
             .thenReturn(Observable.just(eventList));
 
         InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
@@ -106,7 +118,7 @@ public class EventActivityPresenterTest {
     @Test
     public void shouldShowEventError() {
         String error = "Test Error";
-        Mockito.when(eventModel.getEvents(false))
+        when(eventModel.getEvents(false))
             .thenReturn(Observable.error(new Throwable(error)));
 
         InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
@@ -120,10 +132,86 @@ public class EventActivityPresenterTest {
     }
 
     @Test
+    public void shouldLoadOrganiserSuccessfully() {
+        UserDetail userDetail = new UserDetail();
+        userDetail.setFirstName("John");
+        userDetail.setLastName("Wick");
+
+        organiser.setUserDetail(userDetail);
+
+        when(eventModel.getOrganiser(false)).thenReturn(Observable.just(organiser));
+
+        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+
+        eventsActivityPresenter.loadOrganiser(false);
+
+        inOrder.verify(eventModel).getOrganiser(false);
+        inOrder.verify(eventListView).showOrganiserName("John Wick");
+        inOrder.verify(eventListView).showOrganiserPanel(true);
+    }
+
+    @Test
+    public void testOrganiserNameRendering() {
+        UserDetail userDetail = new UserDetail();
+        userDetail.setFirstName("John");
+        userDetail.setLastName("Wick");
+
+        organiser.setUserDetail(userDetail);
+
+        when(eventModel.getOrganiser(false)).thenReturn(Observable.just(organiser));
+
+        eventsActivityPresenter.loadOrganiser(false);
+        verify(eventListView).showOrganiserName("John Wick");
+
+        userDetail.setFirstName("John");
+        userDetail.setLastName(null);
+
+        eventsActivityPresenter.loadOrganiser(false);
+        verify(eventListView).showOrganiserName("John");
+
+        userDetail.setFirstName(null);
+        userDetail.setLastName("Wick");
+
+        eventsActivityPresenter.loadOrganiser(false);
+        verify(eventListView).showOrganiserName("Wick");
+
+        userDetail.setFirstName(null);
+        userDetail.setLastName(null);
+
+        eventsActivityPresenter.loadOrganiser(false);
+        verify(eventListView).showOrganiserName("");
+    }
+
+    @Test
+    public void shouldShowOrganiserError() {
+        String error = "Test Error";
+        when(eventModel.getOrganiser(false))
+            .thenReturn(Observable.error(new Throwable(error)));
+
+        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+
+        eventsActivityPresenter.loadOrganiser(false);
+
+        inOrder.verify(eventModel).getOrganiser(false);
+        inOrder.verify(eventListView).showOrganiserLoadError(error);
+        inOrder.verify(eventListView).showOrganiserPanel(false);
+    }
+
+    @Test
+    public void shouldLogout() {
+        eventsActivityPresenter.logout();
+
+        verify(utilModel).logout();
+        verify(eventListView).onLogout();
+    }
+
+    @Test
     public void shouldNotAccessView() {
         eventsActivityPresenter.detach();
 
         eventsActivityPresenter.loadUserEvents(false);
+        eventsActivityPresenter.loadOrganiser(false);
+        eventsActivityPresenter.logout();
 
         Mockito.verifyNoMoreInteractions(eventListView);
     }
