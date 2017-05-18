@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app;
 
-import org.fossasia.openevent.app.contract.model.UtilModel;
+import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.data.cache.ObjectCache;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
@@ -46,7 +46,7 @@ public class RetrofitEventModelTest {
     EventService eventService;
 
     @Mock
-    UtilModel utilModel;
+    IUtilModel utilModel;
 
     private String token = "TestToken";
     private String auth = NetworkService.formatToken(token);

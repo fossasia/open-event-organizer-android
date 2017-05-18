@@ -4,7 +4,7 @@ import org.fossasia.openevent.app.data.models.Event;
 
 import java.util.List;
 
-public interface EventListView {
+public interface IEventListView {
 
     void showProgressBar(boolean show);
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public interface EventModel {
+public interface IEventModel {
 
     Observable<User> getOrganiser(boolean reload);
 

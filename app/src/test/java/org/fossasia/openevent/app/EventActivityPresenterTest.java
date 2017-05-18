@@ -1,8 +1,8 @@
 package org.fossasia.openevent.app;
 
-import org.fossasia.openevent.app.contract.model.EventModel;
-import org.fossasia.openevent.app.contract.model.UtilModel;
-import org.fossasia.openevent.app.contract.view.EventListView;
+import org.fossasia.openevent.app.contract.model.IEventModel;
+import org.fossasia.openevent.app.contract.model.IUtilModel;
+import org.fossasia.openevent.app.contract.view.IEventListView;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.ui.presenter.EventsActivityPresenter;
 import org.junit.After;
@@ -35,13 +35,13 @@ public class EventActivityPresenterTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    EventListView eventListView;
+    IEventListView eventListView;
 
     @Mock
-    EventModel eventModel;
+    IEventModel eventModel;
 
     @Mock
-    UtilModel utilModel;
+    IUtilModel utilModel;
 
     private EventsActivityPresenter eventsActivityPresenter;
 

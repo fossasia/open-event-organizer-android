@@ -1,17 +1,17 @@
 package org.fossasia.openevent.app.ui.presenter;
 
-import org.fossasia.openevent.app.contract.model.EventModel;
-import org.fossasia.openevent.app.contract.model.UtilModel;
-import org.fossasia.openevent.app.contract.presenter.EventListPresenter;
-import org.fossasia.openevent.app.contract.view.EventListView;
+import org.fossasia.openevent.app.contract.model.IEventModel;
+import org.fossasia.openevent.app.contract.model.IUtilModel;
+import org.fossasia.openevent.app.contract.presenter.IEventListPresenter;
+import org.fossasia.openevent.app.contract.view.IEventListView;
 
-public class EventsActivityPresenter implements EventListPresenter {
+public class EventsActivityPresenter implements IEventListPresenter {
 
-    private EventListView eventListView;
-    private EventModel eventModel;
-    private UtilModel utilModel;
+    private IEventListView eventListView;
+    private IEventModel eventModel;
+    private IUtilModel utilModel;
 
-    public EventsActivityPresenter(EventListView eventListView, EventModel eventModel, UtilModel utilModel) {
+    public EventsActivityPresenter(IEventListView eventListView, IEventModel eventModel, IUtilModel utilModel) {
         this.eventListView = eventListView;
         this.eventModel = eventModel;
         this.utilModel = utilModel;
@@ -55,7 +55,7 @@ public class EventsActivityPresenter implements EventListPresenter {
         eventListView.onLogout();
     }
 
-    public EventListView getView() {
+    public IEventListView getView() {
         return eventListView;
     }
 

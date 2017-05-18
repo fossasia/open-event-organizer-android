@@ -14,8 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.contract.presenter.EventListPresenter;
-import org.fossasia.openevent.app.contract.view.EventListView;
+import org.fossasia.openevent.app.contract.presenter.IEventListPresenter;
+import org.fossasia.openevent.app.contract.view.IEventListView;
 import org.fossasia.openevent.app.data.AndroidUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.network.api.RetrofitEventModel;
@@ -28,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EventsActivity extends AppCompatActivity implements EventListView {
+public class EventsActivity extends AppCompatActivity implements IEventListView {
 
     @BindView(R.id.rvEventList)
     RecyclerView recyclerView;
@@ -39,7 +39,7 @@ public class EventsActivity extends AppCompatActivity implements EventListView {
     public static List<Event> events = new ArrayList<>();
 
     private EventListAdapter eventListAdapter = new EventListAdapter(events, this);
-    private EventListPresenter presenter;
+    private IEventListPresenter presenter;
 
     // Lifecycle methods start
 
