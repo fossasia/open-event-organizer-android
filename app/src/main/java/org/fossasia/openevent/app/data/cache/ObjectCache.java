@@ -3,9 +3,9 @@ package org.fossasia.openevent.app.data.cache;
 
 import android.support.v4.util.LruCache;
 
-import org.fossasia.openevent.app.contract.model.CacheModel;
+import org.fossasia.openevent.app.contract.model.ICacheModel;
 
-public class ObjectCache implements CacheModel {
+public class ObjectCache implements ICacheModel {
 
     private static ObjectCache instance;
     private LruCache<Object, Object> lruCache = new LruCache<>(1024);

@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app;
 
-import org.fossasia.openevent.app.contract.model.UtilModel;
+import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.LoginResponse;
 import org.fossasia.openevent.app.data.network.api.EventService;
@@ -32,7 +32,7 @@ public class RetrofitLoginModelTest {
     private RetrofitLoginModel retrofitLoginModel;
 
     @Mock
-    UtilModel utilModel;
+    IUtilModel utilModel;
 
     @Mock
     EventService eventService;

@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.contract.presenter;
 
-public interface EventListPresenter {
+public interface IEventListPresenter {
 
     void attach();
 

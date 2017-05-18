@@ -1,8 +1,8 @@
 package org.fossasia.openevent.app.data.network.api;
 
-import org.fossasia.openevent.app.contract.model.CacheModel;
-import org.fossasia.openevent.app.contract.model.EventModel;
-import org.fossasia.openevent.app.contract.model.UtilModel;
+import org.fossasia.openevent.app.contract.model.ICacheModel;
+import org.fossasia.openevent.app.contract.model.IEventModel;
+import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.data.cache.ObjectCache;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
@@ -15,19 +15,19 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class RetrofitEventModel implements EventModel {
+public class RetrofitEventModel implements IEventModel {
 
     public static final String ORGANIZER = "user";
     public static final String EVENT = "event";
     public static final String EVENTS = "events";
 
-    private CacheModel cacheModel;
+    private ICacheModel cacheModel;
     private EventService eventService;
 
     private String authorization;
-    private UtilModel utilModel;
+    private IUtilModel utilModel;
 
-    public RetrofitEventModel(UtilModel utilModel) {
+    public RetrofitEventModel(IUtilModel utilModel) {
         this.utilModel = utilModel;
         cacheModel = ObjectCache.getInstance();
 
