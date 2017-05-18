@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_events"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.EventsActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvEventList"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvOrganiserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/colorAccent"
+            android:visibility="gone"
+            style="@style/Base.TextAppearance.AppCompat.Medium.Inverse"
+            tools:visibility="visible"
+            tools:text="Organiser Name" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvEventList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -20,4 +38,4 @@
         android:layout_gravity="center"
         tools:visibility="visible" />
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,6 +1,5 @@
 package org.fossasia.openevent.app.data.models;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
@@ -52,5 +51,16 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "id=" + id +
+            ", lastAccessTime='" + lastAccessTime + '\'' +
+            ", signupTime='" + signupTime + '\'' +
+            ", userDetail=" + userDetail +
+            ", email='" + email + '\'' +
+            '}';
     }
 }

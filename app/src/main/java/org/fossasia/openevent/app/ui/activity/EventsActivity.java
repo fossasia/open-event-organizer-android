@@ -7,10 +7,12 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
@@ -29,6 +31,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EventsActivity extends AppCompatActivity implements IEventListView {
+
+    @BindView(R.id.tvOrganiserName)
+    TextView organiserName;
 
     @BindView(R.id.rvEventList)
     RecyclerView recyclerView;
@@ -64,8 +69,8 @@ public class EventsActivity extends AppCompatActivity implements IEventListView 
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
 
         // Detach view from presenter
         presenter.detach();
@@ -90,16 +95,25 @@ public class EventsActivity extends AppCompatActivity implements IEventListView 
         }
     }
 
-    // View Implementation start
-
-    @Override
-    public void showProgressBar(boolean show) {
+    private static void showView(View view, boolean show) {
         int mode = View.GONE;
 
         if(show)
             mode = View.VISIBLE;
 
-        progressBar.setVisibility(mode);
+        view.setVisibility(mode);
+    }
+
+    // View Implementation start
+
+    @Override
+    public void showProgressBar(boolean show) {
+        showView(progressBar, show);
+    }
+
+    @Override
+    public void showOrganiserPanel(boolean show) {
+        showView(organiserName, show);
     }
 
     @Override
@@ -110,8 +124,18 @@ public class EventsActivity extends AppCompatActivity implements IEventListView 
     }
 
     @Override
+    public void showOrganiserName(String name) {
+        organiserName.setText(name);
+    }
+
+    @Override
     public void showEventError(String error) {
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showOrganiserLoadError(String error) {
+        Log.d("TAG", error);
     }
 
     @Override

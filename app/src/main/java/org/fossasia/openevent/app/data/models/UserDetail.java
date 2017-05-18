@@ -70,4 +70,16 @@ public class UserDetail {
         this.details = details;
     }
 
+    @Override
+    public String toString() {
+        return "UserDetail{" +
+            "contact='" + contact + '\'' +
+            ", twitter='" + twitter + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", avatar='" + avatar + '\'' +
+            ", facebook='" + facebook + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", details='" + details + '\'' +
+            '}';
+    }
 }
