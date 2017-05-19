@@ -14,6 +14,34 @@ public class CacheTest {
         objectCache.saveObject(1, 2);
 
         assertEquals(2, objectCache.getValue(1));
+        assertEquals(1, objectCache.getSize());
+
+        objectCache.saveObject(2, 2);
+        assertEquals(2, objectCache.getSize());
+    }
+
+    @Test
+    public void shouldClearCache() {
+        objectCache.clear();
+
+        assertEquals(0, objectCache.getSize());
+
+        objectCache.saveObject(2, 2);
+        assertEquals(1, objectCache.getSize());
+
+        objectCache.clear();
+
+        assertEquals(0, objectCache.getSize());
+    }
+
+    @Test
+    public void shouldAvoidDuplicates() {
+        objectCache.saveObject(1, 2);
+
+        assertEquals(1, objectCache.getSize());
+
+        objectCache.saveObject(1, 2);
+        assertEquals(1, objectCache.getSize());
     }
 
 }
