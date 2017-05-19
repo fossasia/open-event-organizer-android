@@ -6,6 +6,8 @@ public interface ICacheModel {
 
     Object getValue(Object key);
 
+    int getSize();
+
     void clear();
 
 }
