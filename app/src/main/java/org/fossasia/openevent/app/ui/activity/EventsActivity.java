@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +28,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static org.fossasia.openevent.app.utils.AndroidUtils.showView;
 
 public class EventsActivity extends AppCompatActivity implements IEventListView {
 
@@ -76,8 +77,6 @@ public class EventsActivity extends AppCompatActivity implements IEventListView 
         presenter.detach();
     }
 
-    // Lifecycle methods end
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -95,14 +94,7 @@ public class EventsActivity extends AppCompatActivity implements IEventListView 
         }
     }
 
-    private static void showView(View view, boolean show) {
-        int mode = View.GONE;
-
-        if(show)
-            mode = View.VISIBLE;
-
-        view.setVisibility(mode);
-    }
+    // Lifecycle methods end
 
     // View Implementation start
 
