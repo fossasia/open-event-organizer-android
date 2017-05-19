@@ -8,13 +8,13 @@ import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.Network;
 
-public class AndroidUtilModel implements IUtilModel {
+public class AndroidDataUtils implements IUtilModel {
 
     private Context context;
     private SharedPreferences sharedPreferences;
     private String token;
 
-    public AndroidUtilModel(Context context) {
+    public AndroidDataUtils(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(Constants.FOSS_PREFS, Context.MODE_PRIVATE);
     }

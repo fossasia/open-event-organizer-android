@@ -65,4 +65,15 @@ public class Ticket {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return "Ticket{" +
+            "description='" + description + '\'' +
+            ", id=" + id +
+            ", name='" + name + '\'' +
+            ", price=" + price +
+            ", quantity=" + quantity +
+            ", type='" + type + '\'' +
+            '}';
+    }
 }
