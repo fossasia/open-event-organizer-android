@@ -28,6 +28,11 @@ public class ObjectCache implements ICacheModel {
     }
 
     @Override
+    public int getSize() {
+        return lruCache.size();
+    }
+
+    @Override
     public void clear() {
         lruCache.evictAll();
     }

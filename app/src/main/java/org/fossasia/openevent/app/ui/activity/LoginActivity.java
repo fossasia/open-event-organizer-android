@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -21,6 +20,8 @@ import org.fossasia.openevent.app.ui.presenter.LoginActivityPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static org.fossasia.openevent.app.utils.AndroidUtils.showView;
 
 public class LoginActivity extends AppCompatActivity implements ILoginView {
     public static final String TAG = "OpenEventApplication";
@@ -82,12 +83,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
 
     @Override
     public void showProgressBar(boolean show) {
-        int mode = View.GONE;
-
-        if(show)
-            mode = View.VISIBLE;
-
-        progressBar.setVisibility(mode);
+        showView(progressBar, show);
     }
 
     @Override
