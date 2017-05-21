@@ -1,9 +1,9 @@
 package org.fossasia.openevent.app.data;
 
-import org.fossasia.openevent.app.contract.model.ICacheModel;
-import org.fossasia.openevent.app.contract.model.IEventDataRepository;
-import org.fossasia.openevent.app.contract.model.IUtilModel;
+import org.fossasia.openevent.app.data.cache.ICacheModel;
 import org.fossasia.openevent.app.data.cache.ObjectCache;
+import org.fossasia.openevent.app.data.contract.IEventDataRepository;
+import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;

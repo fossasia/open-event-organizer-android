@@ -12,16 +12,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.LoginActivity">
+        <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.EventsActivity" />
-        <activity android:name=".ui.activity.EventDetailsActivity" />
-        <activity android:name=".ui.activity.AttendeeListActivity" />
-        <activity android:name=".ui.activity.ScanQRActivity" />
+        <activity android:name=".events.EventsActivity" />
+        <activity android:name=".event.detail.EventDetailsActivity" />
+        <activity android:name=".event.attendees.AttendeesActivity" />
+        <activity android:name=".event.attendees.ScanQRActivity" />
     </application>
 
 </manifest>

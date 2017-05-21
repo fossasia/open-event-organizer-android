@@ -4,7 +4,7 @@
     android:id="@+id/activity_scan_qr"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.ScanQRActivity">
+    tools:context=".event.attendees.ScanQRActivity">
 
     <SurfaceView
         android:id="@+id/svScanView"
