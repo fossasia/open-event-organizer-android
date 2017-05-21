@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app;
 
-import org.fossasia.openevent.app.contract.model.IEventModel;
+import org.fossasia.openevent.app.contract.model.IEventDataRepository;
 import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.contract.view.IEventListView;
 import org.fossasia.openevent.app.data.models.Event;
@@ -42,7 +42,7 @@ public class EventActivityPresenterTest {
     IEventListView eventListView;
 
     @Mock
-    IEventModel eventModel;
+    IEventDataRepository eventModel;
 
     @Mock
     IUtilModel utilModel;

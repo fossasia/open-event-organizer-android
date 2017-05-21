@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.utils;
 /**
  * Pure Android free static utility class
  * No Android specific code should be added
+ *
  * All static Android specific utility go into
  * AndroidUtils and others to AndroidUtilModel
  */

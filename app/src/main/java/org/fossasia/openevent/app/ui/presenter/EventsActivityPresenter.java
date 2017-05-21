@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.ui.presenter;
 
-import org.fossasia.openevent.app.contract.model.IEventModel;
+import org.fossasia.openevent.app.contract.model.IEventDataRepository;
 import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.contract.presenter.IEventListPresenter;
 import org.fossasia.openevent.app.contract.view.IEventListView;
@@ -9,12 +9,12 @@ import org.fossasia.openevent.app.utils.Utils;
 public class EventsActivityPresenter implements IEventListPresenter {
 
     private IEventListView eventListView;
-    private IEventModel eventModel;
+    private IEventDataRepository eventRepository;
     private IUtilModel utilModel;
 
-    public EventsActivityPresenter(IEventListView eventListView, IEventModel eventModel, IUtilModel utilModel) {
+    public EventsActivityPresenter(IEventListView eventListView, IEventDataRepository eventRepository, IUtilModel utilModel) {
         this.eventListView = eventListView;
-        this.eventModel = eventModel;
+        this.eventRepository = eventRepository;
         this.utilModel = utilModel;
     }
 
@@ -36,7 +36,7 @@ public class EventsActivityPresenter implements IEventListPresenter {
 
         eventListView.showProgressBar(true);
 
-        eventModel
+        eventRepository
             .getEvents(forceReload)
             .subscribe(events -> {
                 if(eventListView == null)
@@ -57,7 +57,7 @@ public class EventsActivityPresenter implements IEventListPresenter {
         if(eventListView == null)
             return;
 
-        eventModel.getOrganiser(false)
+        eventRepository.getOrganiser(false)
             .subscribe(user -> {
                 if(eventListView == null)
                     return;

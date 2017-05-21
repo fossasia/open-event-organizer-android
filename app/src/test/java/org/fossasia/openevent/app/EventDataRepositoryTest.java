@@ -2,11 +2,12 @@ package org.fossasia.openevent.app;
 
 import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.data.cache.ObjectCache;
+import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.api.EventService;
 import org.fossasia.openevent.app.data.network.api.NetworkService;
-import org.fossasia.openevent.app.data.network.api.RetrofitEventModel;
+import org.fossasia.openevent.app.data.EventDataRepository;
 import org.fossasia.openevent.app.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
@@ -26,21 +27,21 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 /**
  * EventModel implementation test with actual ObjectCache
  */
-public class RetrofitEventModelTest {
+public class EventDataRepositoryTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private ObjectCache objectCache = ObjectCache.getInstance();
 
-    private RetrofitEventModel retrofitEventModel;
+    private EventDataRepository retrofitEventModel;
 
     @Mock
     EventService eventService;
@@ -55,7 +56,7 @@ public class RetrofitEventModelTest {
     public void setUp() {
         when(utilModel.getToken()).thenReturn(token);
 
-        retrofitEventModel = new RetrofitEventModel(utilModel);
+        retrofitEventModel = new EventDataRepository(utilModel);
         retrofitEventModel.setEventService(eventService);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
@@ -128,7 +129,7 @@ public class RetrofitEventModelTest {
         verify(utilModel).getToken();
         verify(eventService).getUser(auth);
 
-        User stored = (User) objectCache.getValue(RetrofitEventModel.ORGANIZER);
+        User stored = (User) objectCache.getValue(EventDataRepository.ORGANIZER);
         assertEquals(stored, user);
     }
 
@@ -138,7 +139,7 @@ public class RetrofitEventModelTest {
         objectCache.clear();
 
         User user = new User();
-        objectCache.saveObject(RetrofitEventModel.ORGANIZER, user);
+        objectCache.saveObject(EventDataRepository.ORGANIZER, user);
 
         // No force reload ensures use of cache
         Observable<User> userObservable = retrofitEventModel.getOrganiser(false);
@@ -146,7 +147,7 @@ public class RetrofitEventModelTest {
         userObservable.test().assertNoErrors();
         userObservable.test().assertValue(user);
 
-        verify(eventService, never()).getUser(auth);
+        verifyZeroInteractions(eventService);
     }
 
     @Test
@@ -155,7 +156,7 @@ public class RetrofitEventModelTest {
         objectCache.clear();
 
         User user = new User();
-        objectCache.saveObject(RetrofitEventModel.ORGANIZER, user);
+        objectCache.saveObject(EventDataRepository.ORGANIZER, user);
 
         when(utilModel.isConnected()).thenReturn(true);
         when(eventService.getUser(auth)).thenReturn(Observable.just(user));
@@ -191,7 +192,7 @@ public class RetrofitEventModelTest {
         // Verify loads from network
         verify(eventService).getEvent(id, auth);
 
-        Event stored = (Event) objectCache.getValue(RetrofitEventModel.EVENT + id);
+        Event stored = (Event) objectCache.getValue(EventDataRepository.EVENT + id);
         assertEquals(stored, event);
     }
 
@@ -203,7 +204,7 @@ public class RetrofitEventModelTest {
         objectCache.clear();
 
         Event event = new Event();
-        objectCache.saveObject(RetrofitEventModel.EVENT + id, event);
+        objectCache.saveObject(EventDataRepository.EVENT + id, event);
 
         // No force reload ensures use of cache
         Observable<Event> userObservable = retrofitEventModel.getEvent(id, false);
@@ -211,7 +212,7 @@ public class RetrofitEventModelTest {
         userObservable.test().assertNoErrors();
         userObservable.test().assertValue(event);
 
-        verify(eventService, never()).getEvent(id, auth);
+        verifyZeroInteractions(eventService);
     }
 
     @Test
@@ -222,7 +223,7 @@ public class RetrofitEventModelTest {
         objectCache.clear();
 
         Event event = new Event();
-        objectCache.saveObject(RetrofitEventModel.EVENT + id, event);
+        objectCache.saveObject(EventDataRepository.EVENT + id, event);
 
         when(utilModel.isConnected()).thenReturn(true);
         when(eventService.getEvent(id, auth)).thenReturn(Observable.just(event));
@@ -261,19 +262,8 @@ public class RetrofitEventModelTest {
         verify(utilModel).getToken();
         verify(eventService).getEvents(auth);
 
-        // Saving is asynchronous, so we need to wait for few moments
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException ie) {
-            // Shouldn't happen
-        }
-
-        List<Event> stored = (List<Event>) objectCache.getValue(RetrofitEventModel.EVENTS);
+        List<Event> stored = (List<Event>) objectCache.getValue(EventDataRepository.EVENTS);
         assertEquals(stored, events);
-
-        // Also check for a particular event being saved
-        Event storedEvent = (Event) objectCache.getValue(RetrofitEventModel.EVENT + events.get(1).getId());
-        assertEquals(storedEvent, events.get(1));
     }
 
     @Test
@@ -286,7 +276,7 @@ public class RetrofitEventModelTest {
             new Event(21),
             new Event(52)
         );
-        objectCache.saveObject(RetrofitEventModel.EVENTS, events);
+        objectCache.saveObject(EventDataRepository.EVENTS, events);
 
         // No force reload ensures use of cache
         Observable<List<Event>> eventsObservable = retrofitEventModel.getEvents(false);
@@ -294,7 +284,7 @@ public class RetrofitEventModelTest {
         eventsObservable.test().assertNoErrors();
         eventsObservable.test().assertValue(events);
 
-        verify(eventService, never()).getEvents(auth);
+        verifyZeroInteractions(eventService);
     }
 
     @Test
@@ -307,7 +297,7 @@ public class RetrofitEventModelTest {
             new Event(21),
             new Event(52)
         );
-        objectCache.saveObject(RetrofitEventModel.EVENTS, events);
+        objectCache.saveObject(EventDataRepository.EVENTS, events);
 
         when(utilModel.isConnected()).thenReturn(true);
         when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
@@ -320,6 +310,80 @@ public class RetrofitEventModelTest {
 
         // Verify loads from network
         verify(eventService).getEvents(auth);
+    }
+
+    @Test
+    public void shouldSaveAttendeesInCache() {
+        // Clear cache
+        objectCache.clear();
+
+        List<Attendee> attendees = Arrays.asList(
+            new Attendee(),
+            new Attendee(),
+            new Attendee()
+        );
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.getAttendees(43, auth)).thenReturn(Observable.just(attendees));
+
+        // No force reload ensures use of cache
+        Observable<List<Attendee>> attendeesObservable = retrofitEventModel.getAttendees(43, false);
+
+        attendeesObservable.test().assertNoErrors();
+        attendeesObservable.test().assertValue(attendees);
+
+        // Verify loads from network
+        verify(utilModel).getToken();
+        verify(eventService).getAttendees(43, auth);
+
+        List<Attendee> stored = (List<Attendee>) objectCache.getValue(EventDataRepository.ATTENDEES + 43);
+        assertEquals(stored, attendees);
+    }
+
+    @Test
+    public void shouldLoadAttendeesFromCache() {
+        // Clear cache
+        objectCache.clear();
+
+        List<Attendee> attendees = Arrays.asList(
+            new Attendee(),
+            new Attendee(),
+            new Attendee()
+        );
+        objectCache.saveObject(EventDataRepository.ATTENDEES + 67, attendees);
+
+        // No force reload ensures use of cache
+        Observable<List<Attendee>> attendeeObservable = retrofitEventModel.getAttendees(67, false);
+
+        attendeeObservable.test().assertNoErrors();
+        attendeeObservable.test().assertValue(attendees);
+
+        verifyZeroInteractions(eventService);
+    }
+
+    @Test
+    public void shouldFetchAttendeesOnForceReload() {
+        // Clear cache
+        objectCache.clear();
+
+        List<Attendee> attendees = Arrays.asList(
+            new Attendee(),
+            new Attendee(),
+            new Attendee()
+        );
+        objectCache.saveObject(EventDataRepository.ATTENDEES + 76, attendees);
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.getAttendees(23, auth)).thenReturn(Observable.just(attendees));
+
+        // Force reload ensures no use of cache
+        Observable<List<Attendee>> attendeeObservable = retrofitEventModel.getAttendees(23, true);
+
+        attendeeObservable.test().assertNoErrors();
+        attendeeObservable.test().assertValue(attendees);
+
+        // Verify loads from network
+        verify(eventService).getAttendees(23, auth);
     }
 
 }

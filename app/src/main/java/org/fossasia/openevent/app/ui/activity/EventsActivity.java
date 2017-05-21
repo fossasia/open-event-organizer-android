@@ -17,9 +17,9 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.contract.presenter.IEventListPresenter;
 import org.fossasia.openevent.app.contract.view.IEventListView;
-import org.fossasia.openevent.app.data.AndroidUtilModel;
+import org.fossasia.openevent.app.data.AndroidDataUtils;
 import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.network.api.RetrofitEventModel;
+import org.fossasia.openevent.app.data.EventDataRepository;
 import org.fossasia.openevent.app.ui.adapters.EventListAdapter;
 import org.fossasia.openevent.app.ui.presenter.EventsActivityPresenter;
 
@@ -61,10 +61,10 @@ public class EventsActivity extends AppCompatActivity implements IEventListView 
         recyclerView.addItemDecoration(new DividerItemDecoration(this , DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        AndroidUtilModel utilModel = new AndroidUtilModel(this);
+        AndroidDataUtils androidDataUtils = new AndroidDataUtils(this);
         presenter = new EventsActivityPresenter(this,
-            new RetrofitEventModel(utilModel),
-            utilModel);
+            new EventDataRepository(androidDataUtils),
+            androidDataUtils);
 
         presenter.attach();
     }

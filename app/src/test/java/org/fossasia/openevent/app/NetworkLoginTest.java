@@ -4,7 +4,7 @@ import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.LoginResponse;
 import org.fossasia.openevent.app.data.network.api.EventService;
-import org.fossasia.openevent.app.data.network.api.RetrofitLoginModel;
+import org.fossasia.openevent.app.data.network.NetworkLogin;
 import org.fossasia.openevent.app.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
@@ -25,11 +25,11 @@ import io.reactivex.schedulers.Schedulers;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
-public class RetrofitLoginModelTest {
+public class NetworkLoginTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    private RetrofitLoginModel retrofitLoginModel;
+    private NetworkLogin networkLogin;
 
     @Mock
     IUtilModel utilModel;
@@ -43,8 +43,8 @@ public class RetrofitLoginModelTest {
 
     @Before
     public void setUp() {
-        retrofitLoginModel = new RetrofitLoginModel(utilModel);
-        retrofitLoginModel.setEventService(eventService);
+        networkLogin = new NetworkLogin(utilModel);
+        networkLogin.setEventService(eventService);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -60,7 +60,7 @@ public class RetrofitLoginModelTest {
         Mockito.when(utilModel.isLoggedIn()).thenReturn(true);
         Mockito.when(utilModel.getToken()).thenReturn(token);
 
-        Observable<LoginResponse> responseObservable = retrofitLoginModel.login(email, password);
+        Observable<LoginResponse> responseObservable = networkLogin.login(email, password);
 
         assertEquals(responseObservable.blockingFirst().getAccessToken(), token);
 
@@ -73,7 +73,7 @@ public class RetrofitLoginModelTest {
         Mockito.when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.just(new LoginResponse(token)));
 
-        Observable<LoginResponse> responseObservable = retrofitLoginModel.login(email, password);
+        Observable<LoginResponse> responseObservable = networkLogin.login(email, password);
 
         assertEquals(responseObservable.blockingFirst().getAccessToken(), token);
 
@@ -88,7 +88,7 @@ public class RetrofitLoginModelTest {
         Mockito.when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.error(new Throwable("Error")));
 
-        Observable<LoginResponse> responseObservable = retrofitLoginModel.login(email, password);
+        Observable<LoginResponse> responseObservable = networkLogin.login(email, password);
         responseObservable.test().assertErrorMessage("Error");
 
         Mockito.verify(eventService).login(Mockito.any(Login.class));
@@ -100,7 +100,7 @@ public class RetrofitLoginModelTest {
     public void shouldSendErrorOnNetworkDown() {
         Mockito.when(utilModel.isConnected()).thenReturn(false);
 
-        Observable<LoginResponse> responseObservable = retrofitLoginModel.login(email, password);
+        Observable<LoginResponse> responseObservable = networkLogin.login(email, password);
 
         responseObservable.test().assertErrorMessage(Constants.NO_NETWORK);
 

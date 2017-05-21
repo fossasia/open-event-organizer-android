@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        tools:visibility="visible" />
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,24 +38,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingEnd="12dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingStart="12dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvStartDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="0dp"
+                android:padding="10dp"
                 android:text="@string/date_placeholder"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="0dp"
+                android:padding="10dp"
                 android:text="@string/to"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -50,22 +59,22 @@
                 android:id="@+id/tvEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="0dp"
+                android:padding="10dp"
                 android:text="@string/date_placeholder_2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="0dp"
-                android:text="@string/comma"
+                android:padding="10dp"
+                android:text="@string/at"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:id="@+id/tvHour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="0dp"
+                android:padding="10dp"
                 android:text="@string/hour_placeholder"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
         </LinearLayout>
@@ -155,11 +164,13 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:max="100"
             android:maxHeight="10dip"
             android:minHeight="10dip"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:progress="0" />
 
     </LinearLayout>
@@ -175,3 +186,4 @@
         android:textAllCaps="true"
         android:theme="@style/AppTheme.Button" />
 </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

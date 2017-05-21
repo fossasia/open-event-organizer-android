@@ -1,21 +1,23 @@
-package org.fossasia.openevent.app.data.network.api;
+package org.fossasia.openevent.app.data.network;
 
 import org.fossasia.openevent.app.contract.model.ILoginModel;
 import org.fossasia.openevent.app.contract.model.IUtilModel;
 import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.LoginResponse;
+import org.fossasia.openevent.app.data.network.api.EventService;
+import org.fossasia.openevent.app.data.network.api.NetworkService;
 import org.fossasia.openevent.app.utils.Constants;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class RetrofitLoginModel implements ILoginModel {
+public class NetworkLogin implements ILoginModel {
 
     private IUtilModel utilModel;
     private EventService eventService;
 
-    public RetrofitLoginModel(IUtilModel utilModel) {
+    public NetworkLogin(IUtilModel utilModel) {
         this.utilModel = utilModel;
     }
 

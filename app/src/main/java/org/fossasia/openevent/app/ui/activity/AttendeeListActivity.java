@@ -64,7 +64,7 @@ public class AttendeeListActivity extends AppCompatActivity {
 
     public void getAttendees() {
         if (Network.isNetworkConnected(this)) {
-            ApiCall.callApi(this, EventDetailsActivity.urlAttendees
+            ApiCall.callApi(this, Constants.EVENT_DETAILS + id + Constants.ATTENDEES
                 , new VolleyCallBack() {
                     @Override
                     public void onSuccess(String result) {

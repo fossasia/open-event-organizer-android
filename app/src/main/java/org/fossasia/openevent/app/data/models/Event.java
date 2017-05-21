@@ -66,7 +66,7 @@ public class Event {
     private String thumbnail;
     @SerializedName("ticket_url")
     private String ticketUrl;
-    @SerializedName("TICKETS")
+    @SerializedName("tickets")
     private List<Ticket> tickets;
     @SerializedName("timezone")
     private String timezone;
