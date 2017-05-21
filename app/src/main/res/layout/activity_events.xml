@@ -4,7 +4,7 @@
     android:id="@+id/activity_events"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.EventsActivity">
+    tools:context=".events.EventsActivity">
 
     <LinearLayout
         android:orientation="vertical"

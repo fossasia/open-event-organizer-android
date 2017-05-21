@@ -1,13 +1,13 @@
 package org.fossasia.openevent.app;
 
-import org.fossasia.openevent.app.contract.model.IUtilModel;
+import org.fossasia.openevent.app.data.EventDataRepository;
 import org.fossasia.openevent.app.data.cache.ObjectCache;
+import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.api.EventService;
 import org.fossasia.openevent.app.data.network.api.NetworkService;
-import org.fossasia.openevent.app.data.EventDataRepository;
 import org.fossasia.openevent.app.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
