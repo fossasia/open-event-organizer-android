@@ -1,6 +1,10 @@
 package org.fossasia.openevent.app.utils;
 
+import org.fossasia.openevent.app.data.models.Attendee;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -51,6 +55,44 @@ public class UtilsTest {
         assertEquals(Utils.formatOptionalString("%s %s", nullString, nonEmptyString), " Full");
 
         assertEquals(Utils.formatOptionalString("%s %s", nonEmptyString, nonEmptyString), "Full Full");
+    }
+
+    @Test
+    public void shouldFindIndex() {
+        List<Attendee> attendees = Arrays.asList(
+            new Attendee(12),
+            new Attendee(34),
+            new Attendee(10),
+            new Attendee(90),
+            new Attendee(3)
+        );
+
+        Attendee newAttendee = new Attendee(10);
+
+        Utils.PropertyMatcher<Attendee> idEqual = (first, second) -> first.getId() == second.getId();
+
+        Utils.indexOf(attendees, newAttendee, idEqual)
+            .test()
+            .assertNoErrors()
+            .assertValue(2);
+
+        newAttendee.setId(12);
+        Utils.indexOf(attendees, newAttendee, idEqual)
+            .test()
+            .assertNoErrors()
+            .assertValue(0);
+
+        newAttendee.setId(3);
+        Utils.indexOf(attendees, newAttendee, idEqual)
+            .test()
+            .assertNoErrors()
+            .assertValue(4);
+
+        newAttendee.setId(2);
+        Utils.indexOf(attendees, newAttendee, idEqual)
+            .test()
+            .assertNoErrors()
+            .assertValue(-1);
     }
 
 }

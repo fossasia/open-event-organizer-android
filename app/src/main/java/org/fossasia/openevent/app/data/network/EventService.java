@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.data.network.api;
+package org.fossasia.openevent.app.data.network;
 
 
 import org.fossasia.openevent.app.data.models.Attendee;
@@ -28,9 +28,12 @@ public interface EventService {
     Observable<User> getUser(@Header("Authorization") String authToken);
 
     @GET("events/{id}?include=tickets")
-    Observable<Event> getEvent(@Path("id") long id, @Header("Authorization") String authToken);
+    Observable<Event> getEvent(@Path("id") long id);
 
     @GET("events/{id}/attendees")
     Observable<List<Attendee>> getAttendees(@Path("id") long id, @Header("Authorization") String authToken);
+
+    @POST("events/{id}/attendees/check_in_toggle/{attendee_id}")
+    Observable<Attendee> toggleAttendeeCheckStatus(@Path("id") long id, @Path("attendee_id") long attendeeId, @Header("Authorization") String authToken);
 
 }

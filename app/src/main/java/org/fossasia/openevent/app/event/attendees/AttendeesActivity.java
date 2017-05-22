@@ -2,34 +2,30 @@ package org.fossasia.openevent.app.event.attendees;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.data.EventDataRepository;
+import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.network.api.ApiCall;
-import org.fossasia.openevent.app.data.network.interfaces.VolleyCallBack;
-import org.fossasia.openevent.app.event.detail.EventDetailsActivity;
+import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
+import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
+import org.fossasia.openevent.app.utils.AndroidUtils;
 import org.fossasia.openevent.app.utils.Constants;
-import org.fossasia.openevent.app.utils.Network;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AttendeesActivity extends AppCompatActivity {
+public class AttendeesActivity extends AppCompatActivity implements IAttendeesView {
 
     @BindView(R.id.rvAttendeeList)
     RecyclerView recyclerView;
@@ -37,14 +33,15 @@ public class AttendeesActivity extends AppCompatActivity {
     @BindView(R.id.btnScanQr)
     Button btnBarCodeScanner;
 
-    Attendee[] attendeeDetails;
-    static ArrayList<Attendee> attendeeArrayList = new ArrayList<>();
-    AttendeeListAdapter attendeeListAdapter;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
-    long id;
+    private AttendeeListAdapter attendeeListAdapter;
+
     public static final int REQ_CODE = 123;
-    public static final String TAG = "AttendeeListActivity";
+    public static final String ATTENDEES_KEY = "attendees";
 
+    private IAttendeesPresenter attendeesPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,41 +51,22 @@ public class AttendeesActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent i = getIntent();
-        id = i.getLongExtra("id", 0);
+        long id = i.getLongExtra("id", 0);
+
+        attendeesPresenter = new AttendeesPresenter(id, this, new EventDataRepository(new UtilModel(this)));
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        attendeeListAdapter = new AttendeeListAdapter(attendeeArrayList, this, id);
+        attendeeListAdapter = new AttendeeListAdapter(this, attendeesPresenter);
         recyclerView.setAdapter(attendeeListAdapter);
         recyclerView.setLayoutManager(layoutManager);
-        getAttendees();
-    }
 
-    public void getAttendees() {
-        if (Network.isNetworkConnected(this)) {
-            ApiCall.callApi(this, Constants.EVENT_DETAILS + id + Constants.ATTENDEES
-                , new VolleyCallBack() {
-                    @Override
-                    public void onSuccess(String result) {
-                        Gson gson = new Gson();
-                        attendeeDetails = gson.fromJson(result, Attendee[].class);
-                        List<Attendee> attendeeDetailsesList = Arrays.asList(attendeeDetails);
-                        attendeeArrayList.addAll(attendeeDetailsesList);
-                        attendeeListAdapter.notifyDataSetChanged();
-                        btnBarCodeScanner.setVisibility(View.VISIBLE);
-                    }
+        attendeesPresenter.attach();
 
-                    @Override
-                    public void onError(VolleyError error) {
-
-                    }
-                });
-
-            btnBarCodeScanner.setOnClickListener(v -> {
-                Intent i = new Intent(AttendeesActivity.this, ScanQRActivity.class);
-                startActivityForResult(i, 123);
-            });
-        } else {
-            Toast.makeText(this, Constants.NO_NETWORK, Toast.LENGTH_SHORT).show();
-        }
+        btnBarCodeScanner.setOnClickListener(v -> {
+            Intent scanQr = new Intent(AttendeesActivity.this, ScanQRActivity.class);
+            scanQr.putParcelableArrayListExtra(ATTENDEES_KEY, (ArrayList<Attendee>) attendeesPresenter.getAttendees());
+            startActivityForResult(scanQr, 123);
+        });
     }
 
     @Override
@@ -99,56 +77,45 @@ public class AttendeesActivity extends AppCompatActivity {
                 long id = data.getLongExtra(Constants.SCANNED_ID, 0);
                 int index = data.getIntExtra(Constants.SCANNED_INDEX, -1);
                 if (index != -1)
-                    checkInAlertBuilder(index);
+                    attendeeListAdapter.showToggleDialog(attendeesPresenter,
+                        attendeesPresenter.getAttendees().get(index));
             }
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    public void checkInAlertBuilder(final int index) {
-        AlertDialog.Builder builder
-            = new AlertDialog.Builder(this);
-        String alertTitle;
-        final Attendee thisAttendee = attendeeArrayList.get(index);
-        if (thisAttendee.isCheckedIn()) {
-            alertTitle = Constants.ATTENDEE_CHECKING_OUT;
-        } else {
-            alertTitle = Constants.ATTENDEE_CHECKING_IN;
-        }
-
-        builder.setTitle(alertTitle).setMessage(thisAttendee.getFirstname() + " "
-            + thisAttendee.getLastname() + "\n"
-            + "Ticket: " + thisAttendee.getTicket().getType())
-            .setPositiveButton("OK", (dialog, which) -> {
-                Log.d(TAG, "onClick: inside ok");
-                changeCheckStatus(thisAttendee.getId(), index);
-            }).setNegativeButton("CANCEL", (dialog, which) -> {
-
-            });
-        builder.create();
-        builder.show();
+    @Override
+    public void showProgressBar(boolean show) {
+        AndroidUtils.showView(progressBar, show);
     }
 
-    public void changeCheckStatus(Long thisAttendeeId, final int position) {
-        if (Network.isNetworkConnected(this)) {
-            ApiCall.PostApiCall(this, Constants.EVENT_DETAILS + id + Constants.ATTENDEES_TOGGLE + thisAttendeeId, new VolleyCallBack() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.d(TAG, "onSuccess: " + result);
-                    Gson gson = new Gson();
-                    Attendee newAttendeeDetails = gson.fromJson(result, Attendee.class);
-                    attendeeArrayList.set(position, newAttendeeDetails);
-                    attendeeListAdapter.notifyDataSetChanged();
-                }
+    @Override
+    public void showScanButton(boolean show) {
+        AndroidUtils.showView(btnBarCodeScanner, show);
+    }
 
-                @Override
-                public void onError(VolleyError error) {
+    @Override
+    public void showAttendees(List<Attendee> attendees) {
+        // The list is loaded from presenter, so we just need
+        // to notify RecyclerView to update the data
+        attendeeListAdapter.notifyDataSetChanged();
+    }
 
-                }
-            });
-        } else {
-            Toast.makeText(this, Constants.NO_NETWORK, Toast.LENGTH_SHORT).show();
+    @Override
+    public void updateAttendee(int position, Attendee attendee) {
+        // The attendee is saved correctly in list by presenter, so we
+        // just need to notify RecyclerView that an item has changed
+
+        if(position == -1) {
+            attendeeListAdapter.notifyDataSetChanged();
+            return;
         }
 
+        attendeeListAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void showErrorMessage(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 }

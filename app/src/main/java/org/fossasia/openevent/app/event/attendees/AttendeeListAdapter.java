@@ -1,25 +1,22 @@
 package org.fossasia.openevent.app.event.attendees;
 
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.data.network.api.ApiCall;
-import org.fossasia.openevent.app.data.network.interfaces.VolleyCallBack;
 import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.utils.Constants;
+import org.fossasia.openevent.app.utils.Utils;
 
 import java.util.List;
 
@@ -30,14 +27,12 @@ import butterknife.ButterKnife;
 public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapter.AttendeeListAdapterHolder> {
     private List<Attendee> attendeeList;
     private Context context;
-    private long id;
+    private IAttendeesPresenter attendeesPresenter;
 
-    private static final String TAG = "AttendeeAdapter";
-
-    public AttendeeListAdapter(List<Attendee> attendeeList, Context context, long id) {
-        this.attendeeList = attendeeList;
+    public AttendeeListAdapter(Context context, IAttendeesPresenter attendeesPresenter) {
+        this.attendeeList = attendeesPresenter.getAttendees();
         this.context = context;
-        this.id = id;
+        this.attendeesPresenter = attendeesPresenter;
     }
 
     @Override
@@ -49,49 +44,23 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
 
     @Override
     public void onBindViewHolder(final AttendeeListAdapterHolder holder, int position) {
-        final Attendee thisAttendee = attendeeList.get(position);
-        holder.tvLastName.setText(thisAttendee.getLastname());
-        holder.tvFirstName.setText(thisAttendee.getFirstname());
-        holder.tvEmail.setText(thisAttendee.getEmail());
+        holder.bindAttendee(attendeeList.get(position));
+    }
 
-        if(thisAttendee.isCheckedIn()) {
-            holder.btnCheckedIn.setText(R.string.checked_in);
-            holder.btnCheckedIn.setBackgroundColor(ContextCompat.getColor(context,android.R.color.holo_green_dark));
-        } else {
-            holder.btnCheckedIn.setText(R.string.check_in);
-            holder.btnCheckedIn.setBackgroundColor(ContextCompat.getColor(context,android.R.color.holo_red_light));
-        }
-        holder.btnCheckedIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: alert builder click");
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                String alertTitle;
-                if(thisAttendee.isCheckedIn()){
-                    alertTitle = Constants.ATTENDEE_CHECKING_OUT;
-                }else{
-                    alertTitle = Constants.ATTENDEE_CHECKING_IN;
-                }
-                builder.setTitle(alertTitle).setMessage(thisAttendee.getFirstname() + " "
-                        + thisAttendee.getLastname() + "\n"
-                        + "Ticket: " + thisAttendee.getTicket().getType() )
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.d(TAG, "onClick: inside ok");
-                        changeCheckStatus(context, thisAttendee, holder.getAdapterPosition());
-                        }
-                }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+    void showToggleDialog(IAttendeesPresenter attendeesPresenter, Attendee attendee) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                    }
-                });
-                builder.create();
-                builder.show();
-            }
-        });
+        String alertTitle;
+        if(attendee.isCheckedIn())
+            alertTitle = Constants.ATTENDEE_CHECKING_OUT;
+        else
+            alertTitle = Constants.ATTENDEE_CHECKING_IN;
 
+        builder.setTitle(alertTitle).setMessage(attendee.getTicketMessage());
+        builder.setPositiveButton("OK", (dialog, which) -> attendeesPresenter.toggleAttendeeCheckStatus(attendee))
+            .setNegativeButton("CANCEL", (dialog, which) -> dialog.dismiss());
+
+        builder.show();
     }
 
     @Override
@@ -101,38 +70,39 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
 
     class AttendeeListAdapterHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.tvLastName)
-        TextView tvLastName;
-        @BindView(R.id.tvFirstName)
-        TextView tvFirstName;
+        @BindView(R.id.tvName)
+        TextView tvName;
         @BindView(R.id.tvEmail)
         TextView tvEmail;
         @BindView(R.id.btnCheckedIn)
-        Button btnCheckedIn;
+        AppCompatButton btnCheckedIn;
+
+        private Attendee attendee;
 
         AttendeeListAdapterHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
+
+            btnCheckedIn.setOnClickListener(v -> showToggleDialog(attendeesPresenter, attendee));
         }
-    }
 
-    private void changeCheckStatus(Context context, Attendee thisAttendee, final int position){
-        ApiCall.PostApiCall(context, Constants.EVENT_DETAILS + id + Constants.ATTENDEES_TOGGLE + thisAttendee.getId(), new VolleyCallBack() {
-            @Override
-            public void onSuccess(String result) {
-                Log.d(TAG, "onSuccess: " + result);
-                Gson gson = new Gson();
-                Attendee newattendeeDetailses = gson.fromJson(result,Attendee.class);
-                attendeeList.set(position , newattendeeDetailses);
-                notifyDataSetChanged();
-            }
+        void bindAttendee(Attendee attendee) {
+            this.attendee = attendee;
 
-            @Override
-            public void onError(VolleyError error) {
-                // No Action Required
+            tvName.setText(Utils.formatOptionalString("%s %s", attendee.getFirstname(), attendee.getLastname()));
+            tvEmail.setText(attendee.getEmail());
+
+            if(attendee.isCheckedIn()) {
+                btnCheckedIn.setText(R.string.checked_in);
+                ViewCompat.setBackgroundTintList(btnCheckedIn, ColorStateList.valueOf(ContextCompat.getColor(context, android.R.color.holo_green_light)));
+            } else {
+                btnCheckedIn.setText(R.string.check_in);
+                ViewCompat.setBackgroundTintList(btnCheckedIn, ColorStateList.valueOf(ContextCompat.getColor(context, android.R.color.holo_red_light)));
             }
-        });
+        }
+
+
     }
 
 }

@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.data.network.api;
+package org.fossasia.openevent.app.data.network;
 
 import org.fossasia.openevent.app.utils.Constants;
 

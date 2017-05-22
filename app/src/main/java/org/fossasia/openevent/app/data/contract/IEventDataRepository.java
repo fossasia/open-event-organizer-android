@@ -18,4 +18,6 @@ public interface IEventDataRepository {
 
     Observable<List<Event>> getEvents(boolean reload);
 
+    Observable<Attendee> toggleAttendeeCheckStatus(long eventId, long attendeeId);
+
 }
