@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app;
+package org.fossasia.openevent.app.presenter;
 
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
