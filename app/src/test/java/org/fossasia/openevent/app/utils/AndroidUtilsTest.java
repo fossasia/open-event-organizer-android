@@ -1,8 +1,7 @@
-package org.fossasia.openevent.app;
+package org.fossasia.openevent.app.utils;
 
 import android.view.View;
 
-import org.fossasia.openevent.app.utils.AndroidUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;

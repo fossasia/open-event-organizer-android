@@ -1,6 +1,5 @@
-package org.fossasia.openevent.app;
+package org.fossasia.openevent.app.utils;
 
-import org.fossasia.openevent.app.utils.Utils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app;
+package org.fossasia.openevent.app.model;
 
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.LoginModel;
@@ -29,7 +29,7 @@ public class LoginModelTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    private LoginModel loginDataRepository;
+    private LoginModel loginModel;
 
     @Mock
     IUtilModel utilModel;
@@ -43,8 +43,8 @@ public class LoginModelTest {
 
     @Before
     public void setUp() {
-        loginDataRepository = new LoginModel(utilModel);
-        loginDataRepository.setEventService(eventService);
+        loginModel = new LoginModel(utilModel);
+        loginModel.setEventService(eventService);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -60,7 +60,7 @@ public class LoginModelTest {
         Mockito.when(utilModel.isLoggedIn()).thenReturn(true);
         Mockito.when(utilModel.getToken()).thenReturn(token);
 
-        Observable<LoginResponse> responseObservable = loginDataRepository.login(email, password);
+        Observable<LoginResponse> responseObservable = loginModel.login(email, password);
 
         assertEquals(responseObservable.blockingFirst().getAccessToken(), token);
 
@@ -73,7 +73,7 @@ public class LoginModelTest {
         Mockito.when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.just(new LoginResponse(token)));
 
-        Observable<LoginResponse> responseObservable = loginDataRepository.login(email, password);
+        Observable<LoginResponse> responseObservable = loginModel.login(email, password);
 
         assertEquals(responseObservable.blockingFirst().getAccessToken(), token);
 
@@ -88,7 +88,7 @@ public class LoginModelTest {
         Mockito.when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.error(new Throwable("Error")));
 
-        Observable<LoginResponse> responseObservable = loginDataRepository.login(email, password);
+        Observable<LoginResponse> responseObservable = loginModel.login(email, password);
         responseObservable.test().assertErrorMessage("Error");
 
         Mockito.verify(eventService).login(Mockito.any(Login.class));
@@ -100,7 +100,7 @@ public class LoginModelTest {
     public void shouldSendErrorOnNetworkDown() {
         Mockito.when(utilModel.isConnected()).thenReturn(false);
 
-        Observable<LoginResponse> responseObservable = loginDataRepository.login(email, password);
+        Observable<LoginResponse> responseObservable = loginModel.login(email, password);
 
         responseObservable.test().assertErrorMessage(Constants.NO_NETWORK);
 

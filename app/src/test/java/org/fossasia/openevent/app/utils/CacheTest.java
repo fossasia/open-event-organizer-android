@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app;
+package org.fossasia.openevent.app.utils;
 
 import org.fossasia.openevent.app.data.cache.ObjectCache;
 import org.junit.Test;

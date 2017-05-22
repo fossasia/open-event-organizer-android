@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app;
+package org.fossasia.openevent.app.model;
 
 import org.fossasia.openevent.app.data.EventDataRepository;
 import org.fossasia.openevent.app.data.cache.ObjectCache;
