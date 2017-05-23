@@ -6,8 +6,8 @@ import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
-import org.fossasia.openevent.app.data.network.api.EventService;
-import org.fossasia.openevent.app.data.network.api.NetworkService;
+import org.fossasia.openevent.app.data.network.EventService;
+import org.fossasia.openevent.app.data.network.NetworkService;
 import org.fossasia.openevent.app.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
@@ -181,7 +181,7 @@ public class EventDataRepositoryTest {
         Event event = new Event();
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(eventService.getEvent(id, auth)).thenReturn(Observable.just(event));
+        when(eventService.getEvent(id)).thenReturn(Observable.just(event));
 
         // No force reload ensures use of cache
         Observable<Event> userObservable = retrofitEventModel.getEvent(23, false);
@@ -190,7 +190,7 @@ public class EventDataRepositoryTest {
         userObservable.test().assertValue(event);
 
         // Verify loads from network
-        verify(eventService).getEvent(id, auth);
+        verify(eventService).getEvent(id);
 
         Event stored = (Event) objectCache.getValue(EventDataRepository.EVENT + id);
         assertEquals(stored, event);
@@ -226,7 +226,7 @@ public class EventDataRepositoryTest {
         objectCache.saveObject(EventDataRepository.EVENT + id, event);
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(eventService.getEvent(id, auth)).thenReturn(Observable.just(event));
+        when(eventService.getEvent(id)).thenReturn(Observable.just(event));
 
         // Force reload ensures no use of cache
         Observable<Event> userObservable = retrofitEventModel.getEvent(id, true);
@@ -235,7 +235,7 @@ public class EventDataRepositoryTest {
         userObservable.test().assertValue(event);
 
         // Verify loads from network
-        verify(eventService).getEvent(id, auth);
+        verify(eventService).getEvent(id);
     }
 
     @Test

@@ -7,9 +7,10 @@ import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
-import org.fossasia.openevent.app.data.network.api.EventService;
-import org.fossasia.openevent.app.data.network.api.NetworkService;
+import org.fossasia.openevent.app.data.network.EventService;
+import org.fossasia.openevent.app.data.network.NetworkService;
 import org.fossasia.openevent.app.utils.Constants;
+import org.fossasia.openevent.app.utils.Utils;
 
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class EventDataRepository implements IEventDataRepository {
 
     @Override
     public Observable<Event> getEvent(long eventId, boolean reload) {
-        return getData(() -> eventService.getEvent(eventId, authorization), EVENT + eventId, reload);
+        return getData(() -> eventService.getEvent(eventId), EVENT + eventId, reload);
     }
 
     @Override
@@ -81,6 +82,46 @@ public class EventDataRepository implements IEventDataRepository {
     @Override
     public Observable<List<Event>> getEvents(boolean reload) {
         return getData(() -> eventService.getEvents(authorization), EVENTS, reload);
+    }
+
+
+    /**
+     * Fully network oriented task, no fetching from cache, but saving in it is a must
+     * @param eventId The ID of event for which we want to change the attendee
+     * @param attendeeId The ID of the attendee of whom the check is to be toggled
+     * @return Observable defining the process of toggling
+     */
+    @Override
+    public Observable<Attendee> toggleAttendeeCheckStatus(long eventId, long attendeeId) {
+        if(!utilModel.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return eventService.toggleAttendeeCheckStatus(eventId, attendeeId, authorization)
+            .doOnNext(attendee -> updateAttendeeList(eventId, attendee))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private void updateAttendeeList(long eventId, Attendee attendee) {
+        String key = ATTENDEES + eventId;
+
+        List<Attendee> attendees = (List<Attendee>) cacheModel.getValue(key);
+
+        // No cached results present, no need to update
+        if(attendees == null)
+            return;
+
+        Utils.indexOf(attendees, attendee, (first, second) -> first.getId() == second.getId())
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(position -> {
+                // Item not found
+                if (position == -1)
+                    return;
+                attendees.set(position, attendee);
+                cacheModel.saveObject(key, attendees);
+            });
     }
 
     public void setEventService(EventService eventService) {

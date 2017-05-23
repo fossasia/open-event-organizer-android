@@ -1,78 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/activity_vertical_margin"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginRight="@dimen/activity_horizontal_margin"
-    android:layout_marginTop="@dimen/activity_vertical_margin"
-    android:orientation="horizontal">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    android:orientation="horizontal"
+    android:gravity="center">
 
     <LinearLayout
-        android:id="@+id/activity_event_details"
-        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_weight="1">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingEnd="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingStart="5dp">
-
-            <TextView
-                android:id="@+id/tvLastName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingEnd="2dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:paddingStart="2dp"
-                android:text="@string/last_name_placeholder"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/comma"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
-
-            <TextView
-                android:id="@+id/tvFirstName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingEnd="1dp"
-                android:paddingLeft="1dp"
-                android:paddingRight="1dp"
-                android:paddingStart="1dp"
-                android:text="@string/first_name_placeholder"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
-        </LinearLayout>
+            android:padding="5dp"
+            android:text="@string/first_name_placeholder"/>
 
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
             android:padding="5dp"
-            android:text="@string/email_placeholder"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+            android:text="@string/email_placeholder"/>
 
     </LinearLayout>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/btnCheckedIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="0dp"
         android:text="@string/check_in"
         android:textAllCaps="true"
-        android:theme="@style/AppTheme.Button" />
+        android:textColor="@android:color/white"
+        app:backgroundTint="@android:color/holo_red_light" />
 
-</RelativeLayout>
+</LinearLayout>

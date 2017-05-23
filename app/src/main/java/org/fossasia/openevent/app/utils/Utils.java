@@ -1,5 +1,10 @@
 package org.fossasia.openevent.app.utils;
 
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
+
 /**
  * Pure Android free static utility class
  * No Android specific code should be added
@@ -30,5 +35,16 @@ public class Utils {
         }
 
         return String.format(format, (Object[]) newArgs);
+    }
+
+    public interface PropertyMatcher<T> {
+        boolean isEqual(T first, T second);
+    }
+
+    public static <E> Single<Integer> indexOf(List<E> items, E item, PropertyMatcher<E> propertyMatcher) {
+        return Observable.fromIterable(items)
+            .takeWhile(thisItem -> !propertyMatcher.isEqual(thisItem, item))
+            .count()
+            .map(count -> count == items.size() ? -1 : count.intValue());
     }
 }

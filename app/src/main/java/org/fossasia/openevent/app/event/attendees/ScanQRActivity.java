@@ -25,7 +25,7 @@ import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.utils.Constants;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +41,14 @@ public class ScanQRActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_qr);
+
+        List<Attendee> attendees = getIntent().getParcelableArrayListExtra(AttendeesActivity.ATTENDEES_KEY);
+
+        if(attendees == null) {
+            Log.d(TAG, "No attendees passed, finishing ...");
+            finish();
+            return;
+        }
 
         ButterKnife.bind(this);
 
@@ -68,9 +76,8 @@ public class ScanQRActivity extends AppCompatActivity {
                 if (barcodes.size() != 0) {
                     String barcode = barcodes.valueAt(0).displayValue;
                     Log.d(TAG, "receiveDetections: not matched" + barcode);
-                    ArrayList<Attendee> attendeeDetailses = AttendeesActivity.attendeeArrayList;
                     int index = -1;
-                    for (Attendee thisAttendee : attendeeDetailses) {
+                    for (Attendee thisAttendee : attendees) {
                         index++;
                         Log.d(TAG, "receiveDetections: " + thisAttendee.getOrder().getIdentifier().equals(barcode));
                         String identifier = thisAttendee.getOrder().getIdentifier() + "-" + thisAttendee.getId();

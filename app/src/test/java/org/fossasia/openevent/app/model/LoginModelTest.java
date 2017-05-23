@@ -4,7 +4,7 @@ import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.LoginModel;
 import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.LoginResponse;
-import org.fossasia.openevent.app.data.network.api.EventService;
+import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
