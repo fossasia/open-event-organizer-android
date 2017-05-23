@@ -20,7 +20,7 @@ public class EventDetailActivityPresenter implements IEventDetailPresenter {
     private IEventDetailView eventDetailView;
     private IEventDataRepository eventRepository;
 
-    private long quantity, totalAttendees, totalCheckedIn;
+    private long totalTickets, totalAttendees;
 
     public EventDetailActivityPresenter(long eventId, IEventDetailView eventDetailView, IEventDataRepository eventRepository) {
         this.eventId = eventId;
@@ -70,13 +70,13 @@ public class EventDetailActivityPresenter implements IEventDetailPresenter {
 
         List<Ticket> tickets = event.getTickets();
 
+        totalTickets = 0;
         if(tickets != null) {
-            quantity = 0;
             for (Ticket thisTicket : tickets)
-                quantity += thisTicket.getQuantity();
+                totalTickets += thisTicket.getQuantity();
         }
 
-        eventDetailView.showQuantityInfo(quantity, totalAttendees);
+        eventDetailView.showTicketStats(totalAttendees, totalTickets);
 
         eventDetailView.showProgressBar(false);
     }
@@ -100,8 +100,7 @@ public class EventDetailActivityPresenter implements IEventDetailPresenter {
         if(eventDetailView == null)
             return;
 
-        totalAttendees = 0;
-        totalCheckedIn = attendees.size();
+        totalAttendees = attendees.size();
 
         Observable.fromIterable(attendees)
             .filter(Attendee::isCheckedIn)
@@ -110,8 +109,8 @@ public class EventDetailActivityPresenter implements IEventDetailPresenter {
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(checkedIn -> {
-                eventDetailView.showAttendeeInfo(checkedIn, totalAttendees);
-                eventDetailView.showQuantityInfo(quantity, totalAttendees);
+                eventDetailView.showAttendeeStats(checkedIn, totalAttendees);
+                eventDetailView.showTicketStats(totalAttendees, totalTickets);
             });
     }
 
