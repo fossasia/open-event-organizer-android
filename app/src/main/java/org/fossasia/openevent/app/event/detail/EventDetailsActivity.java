@@ -32,18 +32,18 @@ public class EventDetailsActivity extends AppCompatActivity implements IEventDet
     TextView tvEndDate;
     @BindView(R.id.tvHour)
     TextView tvTime;
-    @BindView(R.id.tvTicketSold)
-    TextView tvTicketSold;
     @BindView(R.id.tvAttendance)
     TextView tvAttendees;
-    @BindView(R.id.tvTicketTotal)
-    TextView tvTicketTotal;
+    @BindView(R.id.tvTickets)
+    TextView tvTickets;
     @BindView(R.id.progressTicketSold)
     ProgressBar pbTickets;
     @BindView(R.id.progressAttendance)
     ProgressBar pbAttendees;
     @BindView(R.id.btnCheckIn)
     Button btnCheckIn;
+
+    private EventDetailActivityPresenter eventDetailActivityPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class EventDetailsActivity extends AppCompatActivity implements IEventDet
 
         UtilModel utilModel = new UtilModel(this);
 
-        EventDetailActivityPresenter eventDetailActivityPresenter = new EventDetailActivityPresenter(id, this,
+        eventDetailActivityPresenter = new EventDetailActivityPresenter(id, this,
             new EventDataRepository(utilModel));
 
         eventDetailActivityPresenter.attach();
@@ -67,6 +67,18 @@ public class EventDetailsActivity extends AppCompatActivity implements IEventDet
             startActivity(intent);
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        eventDetailActivityPresenter.attach();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        eventDetailActivityPresenter.detach();
     }
 
     private static void showView(View view, boolean show) {
@@ -100,21 +112,19 @@ public class EventDetailsActivity extends AppCompatActivity implements IEventDet
     }
 
     @Override
-    public void showQuantityInfo(long quantity, long total) {
-        tvTicketTotal.setText(String.valueOf(quantity));
+    public void showTicketStats(long sold, long totalTickets) {
+        tvTickets.setText(String.format(Locale.getDefault(), "%d/%d", sold, totalTickets));
 
-        if (quantity != 0) {
-            pbTickets.setProgress((int) ((total / quantity) * pbTickets.getMax()));
-        }
+        if (totalTickets != 0)
+            pbTickets.setProgress((int) (sold * pbAttendees.getMax() / totalTickets));
     }
 
     @Override
-    public void showAttendeeInfo(long checkedIn, long total) {
+    public void showAttendeeStats(long checkedIn, long total) {
         tvAttendees.setText(String.format(Locale.getDefault(), "%d/%d", checkedIn, total));
-        tvTicketSold.setText(String.valueOf(total));
 
         if(total != 0)
-            pbAttendees.setProgress((int) (checkedIn / total));
+            pbAttendees.setProgress((int) (checkedIn * pbAttendees.getMax() / total));
     }
 
     @Override

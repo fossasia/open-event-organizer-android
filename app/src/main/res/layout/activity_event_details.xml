@@ -90,36 +90,17 @@
             android:text="@string/tickets_sold"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvTickets"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:orientation="horizontal"
             android:paddingBottom="2dp"
             android:paddingLeft="12dp"
-            android:paddingRight="12dp">
-
-            <TextView
-                android:id="@+id/tvTicketSold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tickets_amount_placeholder"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/divide"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-            <TextView
-                android:id="@+id/tvTicketTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tickets_amount_placeholder"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-        </LinearLayout>
+            android:paddingRight="12dp"
+            android:text="@string/attendance_placeholder"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <ProgressBar
             android:id="@+id/progressTicketSold"

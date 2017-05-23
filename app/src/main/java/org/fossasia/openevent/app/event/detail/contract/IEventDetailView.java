@@ -10,9 +10,9 @@ public interface IEventDetailView {
 
     void showTime(String time);
 
-    void showQuantityInfo(long quantity, long total);
+    void showTicketStats(long sold, long total);
 
-    void showAttendeeInfo(long checkedIn, long total);
+    void showAttendeeStats(long checkedIn, long total);
 
     void showEventLoadError(String error);
 
