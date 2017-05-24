@@ -54,10 +54,9 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
         }
 
         holder.itemView.setOnClickListener(v -> {
-            Intent i = new Intent(context, EventDetailsActivity.class);
-            i.putExtra("position", holder.getAdapterPosition());
-            i.putExtra("id", thisEvent.getId());
-            context.startActivity(i);
+            Intent intent = new Intent(context, EventDetailsActivity.class);
+            intent.putExtra(EventDetailsActivity.EVENT_KEY, thisEvent);
+            context.startActivity(intent);
         });
 
     }

@@ -1,10 +1,13 @@
 package org.fossasia.openevent.app.data.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Event {
+public class Event implements Parcelable {
 
     @SerializedName("background_image")
     private String backgroundImage;
@@ -366,15 +369,85 @@ public class Event {
     @Override
     public String toString() {
         return "Event{" +
-            "description='" + description + '\'' +
+            "backgroundImage='" + backgroundImage + '\'' +
+            ", description='" + description + '\'' +
             ", email='" + email + '\'' +
+            ", endTime='" + endTime + '\'' +
+            ", eventUrl='" + eventUrl + '\'' +
             ", id=" + id +
-            ", locationName='" + locationName + '\'' +
+            ", logo='" + logo + '\'' +
             ", name='" + name + '\'' +
-            ", organizerDescription='" + organizerDescription + '\'' +
             ", organizerName='" + organizerName + '\'' +
-            ", topic='" + topic + '\'' +
+            ", placeholderUrl='" + placeholderUrl + '\'' +
+            ", startTime='" + startTime + '\'' +
+            ", thumbnail='" + thumbnail + '\'' +
+            ", ticketUrl='" + ticketUrl + '\'' +
+            ", tickets=" + tickets +
+            ", timezone='" + timezone + '\'' +
+            ", type='" + type + '\'' +
             ", version=" + version +
             '}';
     }
+
+    // Parcelable Information - Only basic event info
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.backgroundImage);
+        dest.writeString(this.description);
+        dest.writeString(this.email);
+        dest.writeString(this.endTime);
+        dest.writeString(this.eventUrl);
+        dest.writeValue(this.id);
+        dest.writeString(this.large);
+        dest.writeString(this.locationName);
+        dest.writeString(this.logo);
+        dest.writeString(this.name);
+        dest.writeString(this.organizerName);
+        dest.writeString(this.placeholderUrl);
+        dest.writeString(this.startTime);
+        dest.writeString(this.thumbnail);
+        dest.writeString(this.ticketUrl);
+        dest.writeString(this.timezone);
+        dest.writeString(this.topic);
+        dest.writeString(this.type);
+    }
+
+    protected Event(Parcel in) {
+        this.backgroundImage = in.readString();
+        this.description = in.readString();
+        this.email = in.readString();
+        this.endTime = in.readString();
+        this.eventUrl = in.readString();
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.large = in.readString();
+        this.locationName = in.readString();
+        this.logo = in.readString();
+        this.name = in.readString();
+        this.organizerName = in.readString();
+        this.placeholderUrl = in.readString();
+        this.startTime = in.readString();
+        this.thumbnail = in.readString();
+        this.ticketUrl = in.readString();
+        this.timezone = in.readString();
+        this.topic = in.readString();
+        this.type = in.readString();
+    }
+
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel source) {
+            return new Event(source);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 }

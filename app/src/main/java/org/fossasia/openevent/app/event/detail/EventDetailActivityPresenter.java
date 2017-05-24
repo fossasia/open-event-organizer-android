@@ -16,22 +16,23 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EventDetailActivityPresenter implements IEventDetailPresenter {
 
-    private long eventId;
+    private Event initialEvent;
     private IEventDetailView eventDetailView;
     private IEventDataRepository eventRepository;
 
     private long totalTickets, totalAttendees;
 
-    public EventDetailActivityPresenter(long eventId, IEventDetailView eventDetailView, IEventDataRepository eventRepository) {
-        this.eventId = eventId;
+    public EventDetailActivityPresenter(Event initialEvent, IEventDetailView eventDetailView, IEventDataRepository eventRepository) {
+        this.initialEvent = initialEvent;
         this.eventDetailView = eventDetailView;
         this.eventRepository = eventRepository;
     }
 
     @Override
     public void attach() {
-        loadAttendees(eventId, false);
-        loadTickets(eventId, false);
+        showEventInfo(initialEvent);
+        loadAttendees(initialEvent.getId(), false);
+        loadTickets(initialEvent.getId(), false);
     }
 
     @Override
@@ -57,9 +58,10 @@ public class EventDetailActivityPresenter implements IEventDetailPresenter {
                 });
     }
 
-    private void processEventAndDisplay(Event event) {
+    private void showEventInfo(Event event) {
         if(eventDetailView == null)
             return;
+
         eventDetailView.showEventName(event.getName());
 
         String[] startDate = event.getStartTime().split("T");
@@ -67,6 +69,13 @@ public class EventDetailActivityPresenter implements IEventDetailPresenter {
 
         eventDetailView.showDates(startDate[0], endDate[0]);
         eventDetailView.showTime(endDate[1]);
+    }
+
+    private void processEventAndDisplay(Event event) {
+        if(eventDetailView == null)
+            return;
+
+        showEventInfo(event);
 
         List<Ticket> tickets = event.getTickets();
 
