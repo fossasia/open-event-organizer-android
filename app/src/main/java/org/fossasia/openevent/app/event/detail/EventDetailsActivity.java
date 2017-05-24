@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.event.detail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.EventDataRepository;
 import org.fossasia.openevent.app.data.UtilModel;
+import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.attendees.AttendeesActivity;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
 
@@ -21,6 +23,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EventDetailsActivity extends AppCompatActivity implements IEventDetailView {
+
+    public static final String EVENT_KEY = "event";
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -50,20 +54,24 @@ public class EventDetailsActivity extends AppCompatActivity implements IEventDet
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
 
-        ButterKnife.bind(this);
+        Event initialEvent = getIntent().getParcelableExtra(EVENT_KEY);
 
-        long id = getIntent().getLongExtra("id", 0);
+        if(initialEvent == null) {
+            Log.d("ExtrasError", "Event not passed. Returning ...");
+            finish();
+            return;
+        }
+
+        ButterKnife.bind(this);
 
         UtilModel utilModel = new UtilModel(this);
 
-        eventDetailActivityPresenter = new EventDetailActivityPresenter(id, this,
+        eventDetailActivityPresenter = new EventDetailActivityPresenter(initialEvent, this,
             new EventDataRepository(utilModel));
-
-        eventDetailActivityPresenter.attach();
 
         btnCheckIn.setOnClickListener(v -> {
             Intent intent = new Intent(EventDetailsActivity.this , AttendeesActivity.class);
-            intent.putExtra("id" , id);
+            intent.putExtra("id" , initialEvent.getId());
             startActivity(intent);
         });
 

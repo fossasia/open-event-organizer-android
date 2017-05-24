@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -43,6 +42,8 @@ public class AttendeesActivity extends AppCompatActivity implements IAttendeesVi
 
     private IAttendeesPresenter attendeesPresenter;
 
+    // Lifecycle methods
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +71,12 @@ public class AttendeesActivity extends AppCompatActivity implements IAttendeesVi
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        attendeesPresenter.detach();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
             if (requestCode == REQ_CODE) {
@@ -83,6 +90,8 @@ public class AttendeesActivity extends AppCompatActivity implements IAttendeesVi
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    // View implementation start
 
     @Override
     public void showProgressBar(boolean show) {

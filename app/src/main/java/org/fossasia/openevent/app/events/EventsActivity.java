@@ -61,11 +61,9 @@ public class EventsActivity extends AppCompatActivity implements IEventsView {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         UtilModel utilModel = new UtilModel(this);
-        presenter = new EventsPresenter(this,
-            new EventDataRepository(utilModel),
-            utilModel);
+        presenter = new EventsPresenter(this, new EventDataRepository(utilModel), utilModel);
 
-         presenter.attach();
+        presenter.attach();
     }
 
     @Override
