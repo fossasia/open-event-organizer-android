@@ -26,6 +26,10 @@ public class Attendee implements Parcelable {
 
     public Attendee() {}
 
+    public Attendee(boolean checkedIn) {
+        setCheckedIn(checkedIn);
+    }
+
     public Attendee(long id) {
         setId(id);
     }

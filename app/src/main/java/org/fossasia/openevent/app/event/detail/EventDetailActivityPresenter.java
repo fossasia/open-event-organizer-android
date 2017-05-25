@@ -85,7 +85,7 @@ public class EventDetailActivityPresenter implements IEventDetailPresenter {
                 totalTickets += thisTicket.getQuantity();
         }
 
-        eventDetailView.showTicketStats(totalAttendees, totalTickets);
+        eventDetailView.showTicketStats(totalTickets > 0 ? totalAttendees : 0, totalTickets);
 
         eventDetailView.showProgressBar(false);
     }
@@ -106,9 +106,6 @@ public class EventDetailActivityPresenter implements IEventDetailPresenter {
     }
 
     private void processAttendeesAndDisplay(List<Attendee> attendees) {
-        if(eventDetailView == null)
-            return;
-
         totalAttendees = attendees.size();
 
         Observable.fromIterable(attendees)
@@ -118,8 +115,11 @@ public class EventDetailActivityPresenter implements IEventDetailPresenter {
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(checkedIn -> {
+                if (eventDetailView == null)
+                    return;
+
                 eventDetailView.showAttendeeStats(checkedIn, totalAttendees);
-                eventDetailView.showTicketStats(totalAttendees, totalTickets);
+                eventDetailView.showTicketStats(totalTickets > 0 ? totalAttendees : 0, totalTickets);
             });
     }
 

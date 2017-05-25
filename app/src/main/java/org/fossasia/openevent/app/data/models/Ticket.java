@@ -10,17 +10,22 @@ public class Ticket implements Parcelable {
     @SerializedName("description")
     private String description;
     @SerializedName("id")
-    private Long id;
+    private long id;
     @SerializedName("name")
     private String name;
     @SerializedName("price")
-    private Float price;
+    private float price;
     @SerializedName("quantity")
-    private Long quantity;
+    private long quantity;
     @SerializedName("type")
     private String type;
 
     public Ticket() {}
+
+    public Ticket(long id, long quantity) {
+        setId(id);
+        setQuantity(quantity);
+    }
 
     public String getDescription() {
         return description;
@@ -30,11 +35,11 @@ public class Ticket implements Parcelable {
         this.description = description;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -46,19 +51,19 @@ public class Ticket implements Parcelable {
         this.name = name;
     }
 
-    public Float getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
-    public Long getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 
@@ -92,23 +97,23 @@ public class Ticket implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.description);
-        dest.writeValue(this.id);
+        dest.writeLong(this.id);
         dest.writeString(this.name);
-        dest.writeValue(this.price);
-        dest.writeValue(this.quantity);
+        dest.writeFloat(this.price);
+        dest.writeLong(this.quantity);
         dest.writeString(this.type);
     }
 
     protected Ticket(Parcel in) {
         this.description = in.readString();
-        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.id = in.readLong();
         this.name = in.readString();
-        this.price = (Float) in.readValue(Float.class.getClassLoader());
-        this.quantity = (Long) in.readValue(Long.class.getClassLoader());
+        this.price = in.readFloat();
+        this.quantity = in.readLong();
         this.type = in.readString();
     }
 
-    public static final Parcelable.Creator<Ticket> CREATOR = new Parcelable.Creator<Ticket>() {
+    public static final Creator<Ticket> CREATOR = new Creator<Ticket>() {
         @Override
         public Ticket createFromParcel(Parcel source) {
             return new Ticket(source);
