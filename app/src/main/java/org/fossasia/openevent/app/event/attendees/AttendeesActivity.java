@@ -15,10 +15,10 @@ import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
-import org.fossasia.openevent.app.utils.ViewUtils;
+import org.fossasia.openevent.app.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.utils.Constants;
+import org.fossasia.openevent.app.utils.ViewUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,7 +65,7 @@ public class AttendeesActivity extends AppCompatActivity implements IAttendeesVi
 
         btnBarCodeScanner.setOnClickListener(v -> {
             Intent scanQr = new Intent(AttendeesActivity.this, ScanQRActivity.class);
-            scanQr.putParcelableArrayListExtra(ATTENDEES_KEY, (ArrayList<Attendee>) attendeesPresenter.getAttendees());
+            scanQr.putExtra(ATTENDEES_KEY, id);
             startActivityForResult(scanQr, 123);
         });
     }
@@ -78,16 +78,13 @@ public class AttendeesActivity extends AppCompatActivity implements IAttendeesVi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null) {
-            if (requestCode == REQ_CODE) {
-                String identifier = data.getStringExtra(Constants.SCANNED_IDENTIFIER);
-                long id = data.getLongExtra(Constants.SCANNED_ID, 0);
-                int index = data.getIntExtra(Constants.SCANNED_INDEX, -1);
-                if (index != -1)
-                    attendeeListAdapter.showToggleDialog(attendeesPresenter,
-                        attendeesPresenter.getAttendees().get(index));
-            }
-            super.onActivityResult(requestCode, resultCode, data);
+        if (data == null)
+            return;
+
+        if (requestCode == REQ_CODE) {
+            Attendee attendee = data.getParcelableExtra(Constants.SCANNED_ATTENDEE);
+            if (attendee != null)
+                attendeeListAdapter.showToggleDialog(attendeesPresenter, attendee);
         }
     }
 

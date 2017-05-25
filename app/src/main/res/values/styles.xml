@@ -8,6 +8,25 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.Translucent" parent="AppTheme.NoActionBar">
+        <!-- Defined in v21/styles.xml -->
+    </style>
+
+    <style name="TextCapsule">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/grey_800</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginTop">40dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center|top</item>
+        <item name="android:background">@drawable/rounded_rectangle</item>
+    </style>
+
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@android:color/holo_red_light</item>
         <item name="android:textColor">@android:color/white</item>
