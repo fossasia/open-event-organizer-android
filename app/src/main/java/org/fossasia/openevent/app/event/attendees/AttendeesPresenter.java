@@ -26,6 +26,11 @@ public class AttendeesPresenter implements IAttendeesPresenter {
         this.eventDataRepository = eventDataRepository;
     }
 
+    public void setAttendeeList(List<Attendee> attendeeList) {
+        this.attendeeList.clear();
+        this.attendeeList.addAll(attendeeList);
+    }
+
     @Override
     public void attach() {
         loadAttendees(false);
@@ -65,10 +70,16 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
     @Override
     public void toggleAttendeeCheckStatus(Attendee attendee) {
+        if(attendeesView == null)
+            return;
+
         attendeesView.showProgressBar(true);
 
         eventDataRepository.toggleAttendeeCheckStatus(eventId, attendee.getId())
             .subscribe(this::processUpdatedAttendee, throwable -> {
+                if(attendeesView == null)
+                    return;
+
                 attendeesView.showErrorMessage(throwable.getMessage());
                 attendeesView.showProgressBar(false);
             });
@@ -80,6 +91,9 @@ public class AttendeesPresenter implements IAttendeesPresenter {
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(position -> {
+                if(attendeesView == null)
+                    return;
+
                 if (position == -1)
                     attendeesView.showErrorMessage("Error in updating Attendee");
                 else {

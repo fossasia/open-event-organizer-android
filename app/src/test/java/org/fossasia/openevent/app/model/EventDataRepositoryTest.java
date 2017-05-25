@@ -104,10 +104,20 @@ public class EventDataRepositoryTest {
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
+        retrofitEventModel.getAttendees(43, false)
+            .test()
+            .assertErrorMessage(Constants.NO_NETWORK);
 
-        Mockito.verifyNoMoreInteractions(eventService);
+        retrofitEventModel.getAttendees(43, true)
+            .test()
+            .assertErrorMessage(Constants.NO_NETWORK);
+
+        retrofitEventModel.toggleAttendeeCheckStatus(43, 52)
+            .test()
+            .assertErrorMessage(Constants.NO_NETWORK);
+
+        Mockito.verifyZeroInteractions(eventService);
     }
-
 
     @Test
     public void shouldSaveOrganizerInCache() {
@@ -384,6 +394,42 @@ public class EventDataRepositoryTest {
 
         // Verify loads from network
         verify(eventService).getAttendees(23, auth);
+    }
+
+    @Test
+    public void shouldSaveToggledAttendeeCheck() {
+        // Clear cache
+        objectCache.clear();
+
+        List<Attendee> attendees = Arrays.asList(
+            new Attendee(12),
+            new Attendee(89),
+            new Attendee(64)
+        );
+
+        Attendee attendee = attendees.get(1);
+
+        attendee.setCheckedIn(false);
+
+        objectCache.saveObject(EventDataRepository.ATTENDEES + 76, attendees);
+
+        attendee.setCheckedIn(true);
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.toggleAttendeeCheckStatus(76, 89, auth)).thenReturn(Observable.just(attendee));
+
+        Observable<Attendee> attendeeObservable = retrofitEventModel.toggleAttendeeCheckStatus(76, 89);
+
+        attendeeObservable.test().assertNoErrors();
+        attendeeObservable.test().assertValue((Attendee::isCheckedIn));
+
+        // Verify loads from network
+        verify(eventService).toggleAttendeeCheckStatus(76, 89, auth);
+
+        // Verify correct caching
+        List<Attendee> stored = (List<Attendee>) objectCache.getValue(EventDataRepository.ATTENDEES + 76);
+        assertEquals(stored.get(1).getId(), attendee.getId());
+        assertEquals(stored.get(1).isCheckedIn(), attendee.isCheckedIn());
     }
 
 }
