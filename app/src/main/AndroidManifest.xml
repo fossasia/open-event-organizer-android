@@ -21,7 +21,9 @@
         <activity android:name=".events.EventsActivity" />
         <activity android:name=".event.detail.EventDetailsActivity" />
         <activity android:name=".event.attendees.AttendeesActivity" />
-        <activity android:name=".event.attendees.ScanQRActivity" />
+        <activity
+            android:name=".qrscan.ScanQRActivity"
+            android:theme="@style/AppTheme.NoActionBar.Translucent"/>
     </application>
 
 </manifest>
