@@ -28,7 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static org.fossasia.openevent.app.utils.AndroidUtils.showView;
+import static org.fossasia.openevent.app.utils.ViewUtils.showView;
 
 public class EventsActivity extends AppCompatActivity implements IEventsView {
 

@@ -20,7 +20,7 @@ import org.fossasia.openevent.app.login.contract.ILoginView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static org.fossasia.openevent.app.utils.AndroidUtils.showView;
+import static org.fossasia.openevent.app.utils.ViewUtils.showView;
 
 public class LoginActivity extends AppCompatActivity implements ILoginView {
     public static final String TAG = "OpenEventApplication";

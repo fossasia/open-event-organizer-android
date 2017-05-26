@@ -23,7 +23,7 @@
     <string name="attendance_placeholder">0/0</string>
     <string name="last_name_placeholder">Smith</string>
     <string name="first_name_placeholder">John</string>
-    <string name="email_placeholder">rishabhkhanna777@gmail.com</string>
+    <string name="email_placeholder">johh.doe@gmail.com</string>
     <string name="logout">Logout</string>
     <string name="at">\@</string>
 </resources>
