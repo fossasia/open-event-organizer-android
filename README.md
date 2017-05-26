@@ -1,4 +1,4 @@
-#  Open Event Mobile App for Organizers
+![Open Event Frontend](https://storage.googleapis.com/eventyay.com/assets/branding/organizer_app_branding.png)
 
 [![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/master.svg?style=flat-square)](https://travis-ci.org/fossasia/open-event-orga-app)
 [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg?style=flat-square)](https://gitter.im/fossasia/open-event-orga-app)
