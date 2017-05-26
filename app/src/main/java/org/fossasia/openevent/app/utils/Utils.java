@@ -10,7 +10,7 @@ import io.reactivex.Single;
  * No Android specific code should be added
  *
  * All static Android specific utility go into
- * AndroidUtils and others to AndroidUtilModel
+ * ViewUtils and others to AndroidUtilModel
  */
 public class Utils {
 

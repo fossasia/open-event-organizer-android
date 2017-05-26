@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-public class AndroidUtilsTest {
+public class ViewUtilsTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -19,14 +19,14 @@ public class AndroidUtilsTest {
 
     @Test
     public void shouldShowView() {
-        AndroidUtils.showView(view, true);
+        ViewUtils.showView(view, true);
 
         Mockito.verify(view).setVisibility(View.VISIBLE);
     }
 
     @Test
     public void shouldHideView() {
-        AndroidUtils.showView(view, false);
+        ViewUtils.showView(view, false);
 
         Mockito.verify(view).setVisibility(View.GONE);
     }

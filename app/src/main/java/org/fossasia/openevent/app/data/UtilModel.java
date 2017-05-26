@@ -6,7 +6,7 @@ import android.support.annotation.StringRes;
 
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.utils.Constants;
-import org.fossasia.openevent.app.utils.Network;
+import org.fossasia.openevent.app.utils.NetworkUtils;
 
 /**
  * Utility class to be used by presenters and models for
@@ -56,7 +56,7 @@ public class UtilModel implements IUtilModel {
 
     @Override
     public boolean isConnected() {
-        return Network.isNetworkConnected(context);
+        return NetworkUtils.isNetworkConnected(context);
     }
 
     @Override
