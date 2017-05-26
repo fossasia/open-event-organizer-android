@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.utils;
 
 import android.view.View;
 
-public class AndroidUtils {
+public class ViewUtils {
 
     public static void showView(View view, boolean show) {
         int mode = View.GONE;

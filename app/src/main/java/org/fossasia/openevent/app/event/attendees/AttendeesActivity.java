@@ -15,7 +15,7 @@ import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
-import org.fossasia.openevent.app.utils.AndroidUtils;
+import org.fossasia.openevent.app.utils.ViewUtils;
 import org.fossasia.openevent.app.utils.Constants;
 
 import java.util.ArrayList;
@@ -95,12 +95,12 @@ public class AttendeesActivity extends AppCompatActivity implements IAttendeesVi
 
     @Override
     public void showProgressBar(boolean show) {
-        AndroidUtils.showView(progressBar, show);
+        ViewUtils.showView(progressBar, show);
     }
 
     @Override
     public void showScanButton(boolean show) {
-        AndroidUtils.showView(btnBarCodeScanner, show);
+        ViewUtils.showView(btnBarCodeScanner, show);
     }
 
     @Override
