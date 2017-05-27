@@ -34,7 +34,7 @@ public class LoginPresenterTest {
     ILoginView loginView;
 
     @Mock
-    ILoginModel loginDataRepository;
+    ILoginModel loginModel;
 
     private LoginPresenter loginPresenter;
 
@@ -43,12 +43,12 @@ public class LoginPresenterTest {
 
     @Before
     public void setUp() {
-        loginPresenter = new LoginPresenter(loginView, loginDataRepository, utilModel);
+        loginPresenter = new LoginPresenter(loginView, loginModel);
     }
 
     @Test
     public void shouldShowSuccessOnStart() {
-        Mockito.when(utilModel.isLoggedIn()).thenReturn(true);
+        Mockito.when(loginModel.isLoggedIn()).thenReturn(true);
 
         loginPresenter.attach();
 
@@ -57,7 +57,7 @@ public class LoginPresenterTest {
 
     @Test
     public void shouldNotShowSuccessOnStart() {
-        Mockito.when(utilModel.isLoggedIn()).thenReturn(false);
+        Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
 
         loginPresenter.attach();
 
@@ -76,17 +76,35 @@ public class LoginPresenterTest {
     }
 
     @Test
+    public void shouldLoginAutomatically() {
+        Mockito.when(loginModel.isLoggedIn()).thenReturn(true);
+
+        loginPresenter.attach();
+
+        Mockito.verify(loginView).onLoginSuccess();
+    }
+
+    @Test
+    public void shouldNotLoginAutomatically() {
+        Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
+
+        loginPresenter.attach();
+
+        Mockito.verifyZeroInteractions(loginView);
+    }
+
+    @Test
     public void shouldLoginSuccessfully() {
         String authToken = "testToken";
-        Mockito.when(loginDataRepository.login(email, password))
+        Mockito.when(loginModel.login(email, password))
             .thenReturn(Observable.just(new LoginResponse(authToken)));
 
-        InOrder inOrder = Mockito.inOrder(loginDataRepository, loginView);
+        InOrder inOrder = Mockito.inOrder(loginModel, loginView);
 
         loginPresenter.login(email, password);
 
         inOrder.verify(loginView).showProgressBar(true);
-        inOrder.verify(loginDataRepository).login(email, password);
+        inOrder.verify(loginModel).login(email, password);
         inOrder.verify(loginView).onLoginSuccess();
         inOrder.verify(loginView).showProgressBar(false);
     }
@@ -94,15 +112,15 @@ public class LoginPresenterTest {
     @Test
     public void shouldShowLoginError() {
         String error = "Test Error";
-        Mockito.when(loginDataRepository.login(email, password))
+        Mockito.when(loginModel.login(email, password))
             .thenReturn(Observable.error(new Throwable(error)));
 
-        InOrder inOrder = Mockito.inOrder(loginDataRepository, loginView);
+        InOrder inOrder = Mockito.inOrder(loginModel, loginView);
 
         loginPresenter.login(email, password);
 
         inOrder.verify(loginView).showProgressBar(true);
-        inOrder.verify(loginDataRepository).login(email, password);
+        inOrder.verify(loginModel).login(email, password);
         inOrder.verify(loginView).onLoginError(error);
         inOrder.verify(loginView).showProgressBar(false);
     }

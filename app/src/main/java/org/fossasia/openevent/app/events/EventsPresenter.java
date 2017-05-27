@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.events;
 
 import org.fossasia.openevent.app.data.contract.IEventDataRepository;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.utils.Utils;
@@ -10,12 +10,12 @@ public class EventsPresenter implements IEventsPresenter {
 
     private IEventsView eventsView;
     private IEventDataRepository eventsDataRepository;
-    private IUtilModel utilModel;
+    private ILoginModel loginModel;
 
-    public EventsPresenter(IEventsView eventsView, IEventDataRepository eventsDataRepository, IUtilModel utilModel) {
+    public EventsPresenter(IEventsView eventsView, IEventDataRepository eventsDataRepository, ILoginModel loginModel) {
         this.eventsView = eventsView;
         this.eventsDataRepository = eventsDataRepository;
-        this.utilModel = utilModel;
+        this.loginModel = loginModel;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class EventsPresenter implements IEventsPresenter {
 
     @Override
     public void logout() {
-        utilModel.logout();
+        loginModel.logout();
         if(eventsView != null)
             eventsView.onLogout();
     }
