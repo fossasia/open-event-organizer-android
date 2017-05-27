@@ -10,13 +10,14 @@ android:
     - platform-tools
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-android-24
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
     directories:
-      - "${TRAVIS_BUILD_DIR}/android/gradle/caches/"
-      - "${TRAVIS_BUILD_DIR}/android/gradle/wrapper/dists/"
-      - "$HOME/android/.gradle/caches/"
-      - "$HOME/android/.gradle/wrapper/"
+      - "${TRAVIS_BUILD_DIR}/gradle/caches/"
+      - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
+      - "$HOME/.gradle/caches/"
+      - "$HOME/.gradle/wrapper/"
 script:
   - ./gradlew build
   - ./gradlew assembleRelease
