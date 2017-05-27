@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.model;
 
-import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.LoginModel;
+import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.LoginResponse;
 import org.fossasia.openevent.app.data.network.EventService;
@@ -23,6 +23,8 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
 public class LoginModelTest {
@@ -57,12 +59,18 @@ public class LoginModelTest {
 
     @Test
     public void shouldCacheLogin() {
-        Mockito.when(utilModel.isLoggedIn()).thenReturn(true);
+        // Partial mocking
+        LoginModel spied = Mockito.spy(loginModel);
+
+        Mockito.doReturn(true).when(spied).isLoggedIn();
         Mockito.when(utilModel.getToken()).thenReturn(token);
 
-        Observable<LoginResponse> responseObservable = loginModel.login(email, password);
+        Observable<LoginResponse> responseObservable = spied.login(email, password);
 
-        assertEquals(responseObservable.blockingFirst().getAccessToken(), token);
+        responseObservable
+            .map(LoginResponse::getAccessToken)
+            .test()
+            .assertValue(token);
 
         Mockito.verifyNoMoreInteractions(eventService);
     }
@@ -74,6 +82,7 @@ public class LoginModelTest {
             .thenReturn(Observable.just(new LoginResponse(token)));
 
         Observable<LoginResponse> responseObservable = loginModel.login(email, password);
+
 
         assertEquals(responseObservable.blockingFirst().getAccessToken(), token);
 
@@ -107,5 +116,35 @@ public class LoginModelTest {
         Mockito.verifyNoMoreInteractions(eventService);
     }
 
+    @Test
+    public void shouldSayLoggedOutOnNull() {
+        Mockito.when(utilModel.getToken()).thenReturn(null);
+
+        assertFalse(loginModel.isLoggedIn());
+
+        Mockito.verify(utilModel).getToken();
+    }
+
+    @Test
+    public void shouldResetExpiredToken() {
+        String expiredToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE0OTU3NDU0MDAsImlhdCI6MTQ5NTc0NTQwMCwiZXhwIjoxNDk1NzQ1ODAwLCJpZGVudGl0eSI6MzQ0fQ.NlZ9mrmEPyGpzQ-aIqauhwliYLh9GMiz11sG-EUaQ6I";
+
+        Mockito.when(utilModel.getToken()).thenReturn(expiredToken);
+
+        assertFalse(loginModel.isLoggedIn());
+
+        Mockito.verify(utilModel).getToken();
+    }
+
+    @Test
+    public void shouldSayLoggedInOnUnexpired() {
+        String unexpirableToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE0OTU3NDU0MDAsImlhdCI6MTQ5NTc0NTQwMCwiZXhwIjoyNDk1ODMxODAwLCJpZGVudGl0eSI6MzQ0fQ.A_aC4hwK8sixZk4k9gzmzidO1wj2hjy_EH573uorK-E";
+
+        Mockito.when(utilModel.getToken()).thenReturn(unexpirableToken);
+
+        assertTrue(loginModel.isLoggedIn());
+
+        Mockito.verify(utilModel).getToken();
+    }
 
 }

@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.presenter;
 
 import org.fossasia.openevent.app.data.contract.IEventDataRepository;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.models.UserDetail;
@@ -41,7 +41,7 @@ public class EventsPresenterTest {
     IEventDataRepository eventModel;
 
     @Mock
-    IUtilModel utilModel;
+    ILoginModel loginModel;
 
     private EventsPresenter eventsActivityPresenter;
 
@@ -55,7 +55,7 @@ public class EventsPresenterTest {
 
     @Before
     public void setUp() {
-        eventsActivityPresenter = new EventsPresenter(eventListView, eventModel, utilModel);
+        eventsActivityPresenter = new EventsPresenter(eventListView, eventModel, loginModel);
     }
 
     @Test
@@ -189,7 +189,7 @@ public class EventsPresenterTest {
     public void shouldLogout() {
         eventsActivityPresenter.logout();
 
-        verify(utilModel).logout();
+        verify(loginModel).logout();
         verify(eventListView).onLogout();
     }
 

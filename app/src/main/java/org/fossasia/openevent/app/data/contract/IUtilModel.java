@@ -14,8 +14,4 @@ public interface IUtilModel {
 
     boolean isConnected();
 
-    boolean isLoggedIn();
-
-    void logout();
-
 }

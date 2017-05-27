@@ -8,4 +8,8 @@ public interface ILoginModel {
 
     Observable<LoginResponse> login(String username, String password);
 
+    boolean isLoggedIn();
+
+    void logout();
+
 }

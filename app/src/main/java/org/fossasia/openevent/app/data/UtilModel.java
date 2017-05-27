@@ -58,16 +58,4 @@ public class UtilModel implements IUtilModel {
     public boolean isConnected() {
         return NetworkUtils.isNetworkConnected(context);
     }
-
-    @Override
-    public boolean isLoggedIn() {
-        if(token == null)
-            token = getToken();
-        return token != null;
-    }
-
-    @Override
-    public void logout() {
-        saveToken(null);
-    }
 }
