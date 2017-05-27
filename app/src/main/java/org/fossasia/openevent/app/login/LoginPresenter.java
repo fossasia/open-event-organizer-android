@@ -1,25 +1,22 @@
 package org.fossasia.openevent.app.login;
 
 import org.fossasia.openevent.app.data.contract.ILoginModel;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
 
 public class LoginPresenter implements ILoginPresenter {
 
     private ILoginView loginView;
-    private ILoginModel loginDataRepository;
-    private IUtilModel utilModel;
+    private ILoginModel loginModel;
 
-    public LoginPresenter(ILoginView loginView, ILoginModel loginDateRepository, IUtilModel utilModel) {
+    public LoginPresenter(ILoginView loginView, ILoginModel loginDateRepository) {
         this.loginView = loginView;
-        this.loginDataRepository = loginDateRepository;
-        this.utilModel = utilModel;
+        this.loginModel = loginDateRepository;
     }
 
     @Override
     public void attach() {
-        if(loginView != null && utilModel.isLoggedIn())
+        if(loginView != null && loginModel.isLoggedIn())
             loginView.onLoginSuccess();
     }
 
@@ -35,7 +32,7 @@ public class LoginPresenter implements ILoginPresenter {
 
         loginView.showProgressBar(true);
 
-        loginDataRepository.login(email, password)
+        loginModel.login(email, password)
             .subscribe(loginResponse -> {
                 if(loginView != null) {
                     loginView.onLoginSuccess();
