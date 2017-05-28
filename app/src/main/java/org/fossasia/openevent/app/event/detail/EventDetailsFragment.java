@@ -51,9 +51,6 @@ public class EventDetailsFragment extends Fragment implements IEventDetailView {
     @BindView(R.id.progressAttendance)
     ProgressBar pbAttendees;
 
-    // TODO: Rename and change types of parameters
-    private Event initialEvent;
-
     private IEventDetailPresenter eventDetailPresenter;
 
     private Context context;
@@ -66,10 +63,9 @@ public class EventDetailsFragment extends Fragment implements IEventDetailView {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param event Parameter 1.
+     * @param event Event for which the Fragment is to be created.
      * @return A new instance of fragment EventDetailsFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static EventDetailsFragment newInstance(Event event) {
         EventDetailsFragment fragment = new EventDetailsFragment();
         Bundle args = new Bundle();
@@ -85,7 +81,7 @@ public class EventDetailsFragment extends Fragment implements IEventDetailView {
         context = getActivity();
 
         if (getArguments() != null) {
-            initialEvent = getArguments().getParcelable(EventsActivity.EVENT_KEY);
+            Event initialEvent = getArguments().getParcelable(EventsActivity.EVENT_KEY);
             eventDetailPresenter = new EventDetailsPresenter(initialEvent, this, new EventDataRepository(new UtilModel(context)));
         }
     }

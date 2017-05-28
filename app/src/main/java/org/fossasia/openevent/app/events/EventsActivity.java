@@ -7,7 +7,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
@@ -28,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 import static org.fossasia.openevent.app.utils.ViewUtils.showView;
 
@@ -127,7 +127,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsView {
 
     @Override
     public void showOrganiserLoadError(String error) {
-        Log.d("TAG", error);
+        Timber.d(error);
     }
 
     @Override

@@ -2,6 +2,9 @@ package org.fossasia.openevent.app;
 
 import android.app.Application;
 import android.os.StrictMode;
+import android.util.Log;
+
+import timber.log.Timber;
 
 public class OrgaApplication extends Application {
 
@@ -20,6 +23,22 @@ public class OrgaApplication extends Application {
                     .detectAll()
                     .penaltyDeath()
                     .build());
+
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new ReleaseLogTree());
+        }
+    }
+
+    private static class ReleaseLogTree extends Timber.Tree {
+
+        @Override
+        protected void log(int priority, String tag, String message, Throwable throwable) {
+            if(priority == Log.DEBUG || priority == Log.VERBOSE)
+                return;
+
+            // Report to crashing SDK in future
+            Timber.log(priority, tag, message, throwable);
         }
     }
 

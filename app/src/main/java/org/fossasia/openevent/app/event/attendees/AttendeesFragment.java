@@ -53,7 +53,6 @@ public class AttendeesFragment extends Fragment implements IAttendeesView {
     private AttendeeListAdapter attendeeListAdapter;
 
     public static final int REQ_CODE = 123;
-    public static final String ATTENDEES_KEY = "attendees";
 
     private IAttendeesPresenter attendeesPresenter;
 

@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ProgressBar;
@@ -41,13 +40,13 @@ import butterknife.ButterKnife;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static org.fossasia.openevent.app.utils.ViewUtils.showView;
 
 public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
     public static final int PERM_REQ_CODE = 123;
-    public static final String TAG = "ScanQRActivity";
 
     @BindView(R.id.svScanView)
     SurfaceView surfaceView;
@@ -76,7 +75,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
         long eventId = getIntent().getLongExtra(EventsActivity.EVENT_KEY, -1);
 
         if (eventId == -1) {
-            Log.d(TAG, "No Event ID provided. Exiting ...");
+            Timber.d("No Event ID provided. Exiting ...");
             finish();
             return;
         }
@@ -91,7 +90,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
         if (presenter != null) presenter.detach();
 
-        if (surfaceView != null) surfaceView.removeCallbacks(() -> Log.d(TAG, "Removed"));
+        if (surfaceView != null) surfaceView.removeCallbacks(() -> Timber.d("Removed"));
         if (barcodeDetector != null) barcodeDetector.release();
     }
 
@@ -147,7 +146,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                Log.d(TAG, "surfaceCreated");
+                Timber.d("surfaceCreated");
                 presenter.onCameraLoaded();
             }
 
@@ -158,7 +157,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-                Log.d(TAG, "surfaceDestroyed");
+                Timber.d("surfaceDestroyed");
                 presenter.onCameraDestroyed();
             }
         });
@@ -178,7 +177,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
                 waitForSurface();
 
                 if(!surfaceView.getHolder().isCreating()) {
-                    Log.d(TAG, "Surface already created");
+                    Timber.d("Surface already created");
                     presenter.onCameraLoaded();
                 }
             });
@@ -230,10 +229,10 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
             try {
                 cameraSource.start(surfaceView.getHolder());
             } catch (IOException ioe) {
-                Log.d(TAG, "Oh! Exception");
+                Timber.e("Exception while starting camera");
             } catch (SecurityException se) {
                 // Should never happen as we call this when we get our permission
-                Log.d(TAG, "Should never happen. Check " + getClass().getName());
+                Timber.e("Should never happen. Check %s", getClass().getName());
             }
         }).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

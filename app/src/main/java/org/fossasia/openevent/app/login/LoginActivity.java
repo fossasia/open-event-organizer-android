@@ -3,7 +3,6 @@ package org.fossasia.openevent.app.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -23,7 +22,6 @@ import butterknife.ButterKnife;
 import static org.fossasia.openevent.app.utils.ViewUtils.showView;
 
 public class LoginActivity extends AppCompatActivity implements ILoginView {
-    public static final String TAG = "OpenEventApplication";
 
     @BindView(R.id.btnLogin)
     Button btnLogin;
@@ -51,7 +49,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         presenter.attach();
 
         btnLogin.setOnClickListener(v -> {
-            Log.d(TAG, "onClick: Login Button Clicked");
 
             String email = etEmail.getText().toString();
             String password = etPassword.getText().toString();
