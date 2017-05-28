@@ -16,15 +16,23 @@
         <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".events.EventsActivity" />
-        <activity android:name=".event.detail.EventDetailsActivity" />
-        <activity android:name=".event.attendees.AttendeesActivity" />
         <activity
             android:name=".qrscan.ScanQRActivity"
-            android:theme="@style/AppTheme.NoActionBar.Translucent"/>
+            android:theme="@style/AppTheme.NoActionBar.Translucent" />
+        <activity
+            android:name=".event.EventContainerActivity"
+            android:parentActivityName=".events.EventsActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".events.EventsActivity" />
+        </activity>
     </application>
 
 </manifest>

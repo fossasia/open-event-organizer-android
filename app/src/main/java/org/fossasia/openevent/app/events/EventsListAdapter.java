@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.event.detail.EventDetailsActivity;
+import org.fossasia.openevent.app.event.EventContainerActivity;
 
 import java.util.List;
 
@@ -54,8 +54,8 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
         }
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, EventDetailsActivity.class);
-            intent.putExtra(EventDetailsActivity.EVENT_KEY, thisEvent);
+            Intent intent = new Intent(context, EventContainerActivity.class);
+            intent.putExtra(EventsActivity.EVENT_KEY, thisEvent);
             context.startActivity(intent);
         });
 
