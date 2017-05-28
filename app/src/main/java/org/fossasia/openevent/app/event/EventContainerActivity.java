@@ -1,7 +1,6 @@
 package org.fossasia.openevent.app.event;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,11 +27,7 @@ public class EventContainerActivity extends AppCompatActivity {
     public static final String FRAG_DETAILS = "details";
     public static final String FRAG_ATTENDEES = "attendees";
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-        = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
             switch (item.getItemId()) {
                 case R.id.navigation_details:
                     loadFragment(FRAG_DETAILS);
@@ -44,9 +39,7 @@ public class EventContainerActivity extends AppCompatActivity {
                     loadFragment(FRAG_DETAILS);
                     return true;
             }
-        }
-
-    };
+        };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

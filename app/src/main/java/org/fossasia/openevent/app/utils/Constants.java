@@ -7,10 +7,6 @@ public class Constants {
     public static final String SHARED_PREFS_TOKEN = "token";
     //SharedPrefs db Name
     public static final String FOSS_PREFS = "FossPrefs";
-    //ScanQR identifier
-    public static final String SCANNED_IDENTIFIER = "identifier";
-    //ScanQR id
-    public static final String SCANNED_ID = "id";
     //attendee checking in
     public static final String ATTENDEE_CHECKING_IN = "Checking In";
     //attendee checking Out
