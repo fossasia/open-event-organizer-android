@@ -14,12 +14,17 @@ fi
 
 git clone --quiet --branch=apk https://niranjan94:$GITHUB_API_KEY@github.com/fossasia/open-event-orga-app apk > /dev/null
 cd apk
-cp /home/travis/build/fossasia/open-event-orga-app/app/build/outputs/apk/app-debug.apk ./test-android-debug.apk
+rm *.apk
+cp /home/travis/build/fossasia/open-event-orga-app/app/build/outputs/apk/*.apk .
+for file in *; do
+  mv $file test-${file%%}
+done
+
 # Create a new branch that will contains only latest apk
 git checkout --orphan temporary
 
 # Add generated APK
-git add test-android-debug.apk
+git add --all .
 git commit -am "[Auto] Update Test Apk ($(date +%Y-%m-%d.%H:%M:%S))"
 
 # Delete current apk branch

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.EventDataRepository;
+import org.fossasia.openevent.app.data.LoginModel;
 import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
@@ -63,7 +64,7 @@ public class EventsActivity extends AppCompatActivity implements IEventsView {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         UtilModel utilModel = new UtilModel(this);
-        presenter = new EventsPresenter(this, new EventDataRepository(utilModel), utilModel);
+        presenter = new EventsPresenter(this, new EventDataRepository(utilModel), new LoginModel(utilModel));
 
         presenter.attach();
     }

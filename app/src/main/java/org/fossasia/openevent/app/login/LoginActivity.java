@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
 
         ButterKnife.bind(this);
         IUtilModel utilModel = new UtilModel(this);
-        presenter = new LoginPresenter(this, new LoginModel(utilModel), utilModel);
+        presenter = new LoginPresenter(this, new LoginModel(utilModel));
 
         // Notify presenter to attach
         presenter.attach();

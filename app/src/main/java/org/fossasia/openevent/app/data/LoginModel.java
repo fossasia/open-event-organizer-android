@@ -7,6 +7,7 @@ import org.fossasia.openevent.app.data.network.NetworkService;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.utils.Constants;
+import org.fossasia.openevent.app.utils.JWTUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -16,6 +17,7 @@ public class LoginModel implements ILoginModel {
 
     private IUtilModel utilModel;
     private EventService eventService;
+    private String token;
 
     public LoginModel(IUtilModel utilModel) {
         this.utilModel = utilModel;
@@ -23,7 +25,7 @@ public class LoginModel implements ILoginModel {
 
     @Override
     public Observable<LoginResponse> login(String username, String password) {
-        if(utilModel.isLoggedIn()) {
+        if(isLoggedIn()) {
             return Observable.just(new LoginResponse(utilModel.getToken()));
         }
 
@@ -39,6 +41,19 @@ public class LoginModel implements ILoginModel {
                 .doOnNext(loginResponse -> utilModel.saveToken(loginResponse.getAccessToken()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public boolean isLoggedIn() {
+        if(token == null)
+            token = utilModel.getToken();
+
+        return token != null && !JWTUtils.isExpired(token);
+    }
+
+    @Override
+    public void logout() {
+        utilModel.saveToken(null);
     }
 
     public void setEventService(EventService eventService) {
