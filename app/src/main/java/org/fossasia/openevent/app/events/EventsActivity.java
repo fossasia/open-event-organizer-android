@@ -43,6 +43,8 @@ public class EventsActivity extends AppCompatActivity implements IEventsView {
 
     public static List<Event> events = new ArrayList<>();
 
+    public static final String EVENT_KEY = "event";
+
     private EventsListAdapter eventListAdapter = new EventsListAdapter(events, this);
     private IEventsPresenter presenter;
 

@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         tools:visibility="visible" />
 
-<RelativeLayout
+<android.support.v4.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -152,19 +152,9 @@
             android:minHeight="10dip"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
+            android:paddingBottom="12dp"
             android:progress="0" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnCheckIn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="0dp"
-        android:padding="20dp"
-        android:text="@string/check_in"
-        android:textAllCaps="true"
-        android:theme="@style/AppTheme.Button" />
-</RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

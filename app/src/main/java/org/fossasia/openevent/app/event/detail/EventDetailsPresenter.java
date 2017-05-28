@@ -14,7 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class EventDetailActivityPresenter implements IEventDetailPresenter {
+public class EventDetailsPresenter implements IEventDetailPresenter {
 
     private Event initialEvent;
     private IEventDetailView eventDetailView;
@@ -22,7 +22,7 @@ public class EventDetailActivityPresenter implements IEventDetailPresenter {
 
     private long totalTickets, totalAttendees;
 
-    public EventDetailActivityPresenter(Event initialEvent, IEventDetailView eventDetailView, IEventDataRepository eventRepository) {
+    public EventDetailsPresenter(Event initialEvent, IEventDetailView eventDetailView, IEventDataRepository eventRepository) {
         this.initialEvent = initialEvent;
         this.eventDetailView = eventDetailView;
         this.eventRepository = eventRepository;

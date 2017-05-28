@@ -4,7 +4,7 @@ import org.fossasia.openevent.app.data.contract.IEventDataRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.Ticket;
-import org.fossasia.openevent.app.event.detail.EventDetailActivityPresenter;
+import org.fossasia.openevent.app.event.detail.EventDetailsPresenter;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
 import org.junit.After;
 import org.junit.Before;
@@ -46,7 +46,7 @@ public class EventDetailPresenterTest {
     IEventDataRepository eventModel;
 
     private final int id = 42;
-    private EventDetailActivityPresenter eventDetailActivityPresenter;
+    private EventDetailsPresenter eventDetailActivityPresenter;
 
     private Event event = new Event(42);
 
@@ -73,7 +73,7 @@ public class EventDetailPresenterTest {
         event.setEndTime("2012-09-20T12:23:00");
         event.setTickets(tickets);
 
-        eventDetailActivityPresenter = new EventDetailActivityPresenter(event, eventDetailView, eventModel);
+        eventDetailActivityPresenter = new EventDetailsPresenter(event, eventDetailView, eventModel);
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());

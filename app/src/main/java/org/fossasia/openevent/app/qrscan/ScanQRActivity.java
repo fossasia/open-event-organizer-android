@@ -27,7 +27,8 @@ import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.contract.IEventDataRepository;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.event.attendees.AttendeesActivity;
+import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
+import org.fossasia.openevent.app.events.EventsActivity;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRPresenter;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRView;
 import org.fossasia.openevent.app.utils.Constants;
@@ -72,7 +73,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
         ButterKnife.bind(this);
 
-        long eventId = getIntent().getLongExtra(AttendeesActivity.ATTENDEES_KEY, -1);
+        long eventId = getIntent().getLongExtra(EventsActivity.EVENT_KEY, -1);
 
         if (eventId == -1) {
             Log.d(TAG, "No Event ID provided. Exiting ...");
@@ -204,7 +205,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra(Constants.SCANNED_ATTENDEE, attendee);
-        setResult(AttendeesActivity.REQ_CODE, resultIntent);
+        setResult(AttendeesFragment.REQ_CODE, resultIntent);
         finish();
     }
 

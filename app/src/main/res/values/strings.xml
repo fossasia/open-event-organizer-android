@@ -26,4 +26,8 @@
     <string name="email_placeholder">johh.doe@gmail.com</string>
     <string name="logout">Logout</string>
     <string name="at">\@</string>
+    <string name="title_activity_event_container">EventContainerActivity</string>
+    <string name="title_details">Dashboard</string>
+    <string name="title_attendees">Attendees</string>
+
 </resources>
