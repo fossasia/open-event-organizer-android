@@ -1,16 +1,39 @@
 package org.fossasia.openevent.app;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
 
 import timber.log.Timber;
 
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
+
 public class OrgaApplication extends Application {
+
+    private RefWatcher refWatcher;
+
+    /**
+     * Reference watcher to be used in detecting leaks in Fragments
+     * @param context Context needed to access Application
+     * @return ReferenceWatcher used to catch leaks in fragments
+     */
+    public static RefWatcher getRefWatcher(Context context) {
+        OrgaApplication application = (OrgaApplication) context.getApplicationContext();
+        return application.refWatcher;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        refWatcher = LeakCanary.install(this);
 
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy
