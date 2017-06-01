@@ -32,6 +32,6 @@
 
     <string name="title_event_list">Events</string>
     <string name="title_event_detail">Event Detail</string>
-    <string name="subtitle_organizer">Organizer: </string>
+    <string name="subtitle_organizer">Organizer: %s</string>
 
 </resources>

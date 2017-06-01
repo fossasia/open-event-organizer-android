@@ -58,21 +58,34 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
                 .into(holder.eventImage);
         }
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.itemView.setOnClickListener(view -> {
             if (isTwoPane) {
-                EventContainerFragment fragment = EventContainerFragment.newInstance(thisEvent);
-                FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
-                fm.beginTransaction()
-                    .replace(R.id.event_detail_container, fragment)
-                    .commit();
+                showEvent(thisEvent);
             } else {
-                Context context = v.getContext();
+                Context context = view.getContext();
                 Intent intent = new Intent(context, EventDetailActivity.class);
                 intent.putExtra(EventListActivity.EVENT_KEY, thisEvent);
                 context.startActivity(intent);
             }
         });
+    }
 
+    private void showEvent(Event event) {
+        EventContainerFragment fragment = EventContainerFragment.newInstance(event);
+        FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+        fm.beginTransaction()
+            .replace(R.id.event_detail_container, fragment)
+            .commit();
+    }
+
+    /**
+     * Called by the container in two pane mode to show the first event by default
+     */
+    void showInitialEvent() {
+        if(events.isEmpty())
+            return;
+
+        showEvent(events.get(0));
     }
 
     @Override

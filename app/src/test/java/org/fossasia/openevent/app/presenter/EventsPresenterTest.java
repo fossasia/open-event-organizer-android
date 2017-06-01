@@ -25,6 +25,9 @@ import io.reactivex.Observable;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -101,6 +104,31 @@ public class EventsPresenterTest {
         inOrder.verify(eventModel).getEvents(false);
         inOrder.verify(eventListView).showEvents(eventList);
         inOrder.verify(eventListView).showProgressBar(false);
+    }
+
+    @Test
+    public void showLoadInitialEventFirstTimeIfTwoPane() {
+        when(eventModel.getEvents(false))
+            .thenReturn(Observable.just(eventList));
+        when(eventListView.isTwoPane())
+            .thenReturn(true);
+
+        eventsActivityPresenter.loadUserEvents(false);
+
+        Mockito.verify(eventListView).showInitialEvent();
+    }
+
+    @Test
+    public void showNotLoadInitialEventSecondTimeIfTwoPane() {
+        when(eventModel.getEvents(false))
+            .thenReturn(Observable.just(eventList));
+        when(eventListView.isTwoPane())
+            .thenReturn(true);
+
+        eventsActivityPresenter.loadUserEvents(false);
+        eventsActivityPresenter.loadUserEvents(false);
+
+        Mockito.verify(eventListView, atMost(1)).showInitialEvent();
     }
 
     @Test

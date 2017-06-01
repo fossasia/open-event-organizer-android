@@ -6,9 +6,13 @@ import java.util.List;
 
 public interface IEventsView {
 
+    boolean isTwoPane();
+
     void showProgressBar(boolean show);
 
     void showEvents(List<Event> events);
+
+    void showInitialEvent();
 
     void showOrganiserName(String name);
 

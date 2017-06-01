@@ -22,6 +22,7 @@ import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.login.LoginActivity;
+import org.fossasia.openevent.app.utils.Utils;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -127,6 +128,11 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
     // View Implementation start
 
     @Override
+    public boolean isTwoPane() {
+        return isTwoPane;
+    }
+
+    @Override
     public void showProgressBar(boolean show) {
         ViewUtils.showView(progressBar, show);
     }
@@ -139,8 +145,15 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
     }
 
     @Override
+    public void showInitialEvent() {
+        eventListAdapter.showInitialEvent();
+    }
+
+    @Override
     public void showOrganiserName(String name) {
-        toolbar.setSubtitle(utilModel.getResourceString(R.string.subtitle_organizer) + name);
+        toolbar.setSubtitle(Utils.formatOptionalString(
+            utilModel.getResourceString(R.string.subtitle_organizer), name)
+        );
     }
 
     @Override
