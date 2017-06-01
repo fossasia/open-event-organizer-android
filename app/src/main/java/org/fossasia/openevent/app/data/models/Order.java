@@ -26,6 +26,10 @@ public class Order implements Parcelable {
 
     public Order() {}
 
+    public Order(String identifier) {
+        setIdentifier(identifier);
+    }
+
     public Long getAmount() {
         return amount;
     }

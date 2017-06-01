@@ -1,7 +1,5 @@
 package org.fossasia.openevent.app.qrscan;
 
-import android.util.SparseArray;
-
 import com.google.android.gms.vision.barcode.Barcode;
 
 import org.fossasia.openevent.app.data.contract.IEventDataRepository;
@@ -50,17 +48,31 @@ public class ScanQRPresenter implements IScanQRPresenter {
         scanQRView.showBarcodeData(barcode);
 
         Observable.fromIterable(attendees)
+            .filter(attendee -> attendee.getOrder() != null)
             .filter(attendee -> (attendee.getOrder().getIdentifier() + "-" + attendee.getId()).equals(barcode))
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(attendee -> scanQRView.onScannedAttendee(attendee));
+            .subscribe(attendee -> {
+                if(scanQRView == null)
+                    return;
+
+                scanQRView.onScannedAttendee(attendee);
+            });
+    }
+
+    public void setAttendees(List<Attendee> attendees) {
+        this.attendees = attendees;
     }
 
     @Override
     public void attach() {
+        if(scanQRView == null)
+            return;
+
         loadAttendees();
-        scanQRView.loadCamera();
+
         scanQRView.showProgressBar(true);
+        scanQRView.loadCamera();
     }
 
     @Override
@@ -78,30 +90,43 @@ public class ScanQRPresenter implements IScanQRPresenter {
 
     @Override
     public void cameraPermissionGranted(boolean granted) {
+        if(scanQRView == null)
+            return;
+
         if(granted) {
             scanQRView.startScan();
         } else {
+            scanQRView.showProgressBar(false);
             scanQRView.showPermissionError("User denied permission");
         }
     }
 
     @Override
-    public void onBarcodeDetected(SparseArray<Barcode> barcodes) {
-        detect.onNext(barcodes.size() == 0);
-
-        if (barcodes.size() == 0 || attendees == null)
+    public void onBarcodeDetected(Barcode barcode) {
+        if(scanQRView == null)
             return;
 
-        data.onNext(barcodes.valueAt(0).displayValue);
+        detect.onNext(barcode == null);
+
+        if (barcode == null || attendees.isEmpty())
+            return;
+
+        data.onNext(barcode.displayValue);
     }
 
     @Override
     public void onScanStarted() {
+        if(scanQRView == null)
+            return;
+
         scanQRView.showProgressBar(false);
     }
 
     @Override
     public void onCameraLoaded() {
+        if(scanQRView == null)
+            return;
+
         if(scanQRView.hasCameraPermission()) {
             scanQRView.startScan();
         } else {
@@ -111,6 +136,13 @@ public class ScanQRPresenter implements IScanQRPresenter {
 
     @Override
     public void onCameraDestroyed() {
+        if(scanQRView == null)
+            return;
+
         scanQRView.stopScan();
+    }
+
+    public IScanQRView getView() {
+        return scanQRView;
     }
 }
