@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -12,7 +13,7 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.LoginModel;
 import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
-import org.fossasia.openevent.app.events.EventsActivity;
+import org.fossasia.openevent.app.events.EventListActivity;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
 
@@ -31,6 +32,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     EditText etPassword;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private ILoginPresenter presenter;
 
@@ -42,6 +45,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+
         IUtilModel utilModel = new UtilModel(this);
         presenter = new LoginPresenter(this, new LoginModel(utilModel));
 
@@ -69,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     // Lifecycle methods end
 
     public void startEventActivity(){
-        Intent i =  new Intent(LoginActivity.this, EventsActivity.class);
+        Intent i =  new Intent(LoginActivity.this, EventListActivity.class);
         startActivity(i);
     }
 

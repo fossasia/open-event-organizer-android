@@ -67,12 +67,10 @@ public class EventsPresenter implements IEventsPresenter {
                     user.getUserDetail().getLastName());
 
                 eventsView.showOrganiserName(name.trim());
-                eventsView.showOrganiserPanel(true);
             }, throwable -> {
                 if(eventsView == null)
                     return;
                 eventsView.showOrganiserLoadError(throwable.getMessage());
-                eventsView.showOrganiserPanel(false);
             });
     }
 

@@ -135,7 +135,6 @@ public class EventsPresenterTest {
 
         inOrder.verify(eventModel).getOrganiser(false);
         inOrder.verify(eventListView).showOrganiserName("John Wick");
-        inOrder.verify(eventListView).showOrganiserPanel(true);
     }
 
     @Test
@@ -182,7 +181,6 @@ public class EventsPresenterTest {
 
         inOrder.verify(eventModel).getOrganiser(false);
         inOrder.verify(eventListView).showOrganiserLoadError(error);
-        inOrder.verify(eventListView).showOrganiserPanel(false);
     }
 
     @Test

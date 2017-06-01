@@ -8,8 +8,6 @@ public interface IEventsView {
 
     void showProgressBar(boolean show);
 
-    void showOrganiserPanel(boolean show);
-
     void showEvents(List<Event> events);
 
     void showOrganiserName(String name);

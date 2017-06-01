@@ -30,4 +30,8 @@
     <string name="title_details">Dashboard</string>
     <string name="title_attendees">Attendees</string>
 
+    <string name="title_event_list">Events</string>
+    <string name="title_event_detail">Event Detail</string>
+    <string name="subtitle_organizer">Organizer: </string>
+
 </resources>

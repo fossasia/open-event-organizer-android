@@ -20,7 +20,7 @@ import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
-import org.fossasia.openevent.app.events.EventsActivity;
+import org.fossasia.openevent.app.events.EventListActivity;
 import org.fossasia.openevent.app.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.ViewUtils;
@@ -67,11 +67,10 @@ public class AttendeesFragment extends Fragment implements IAttendeesView {
      * @param eventId id of the event.
      * @return A new instance of fragment AttendeesFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AttendeesFragment newInstance(long eventId) {
         AttendeesFragment fragment = new AttendeesFragment();
         Bundle args = new Bundle();
-        args.putLong(EventsActivity.EVENT_KEY, eventId);
+        args.putLong(EventListActivity.EVENT_KEY, eventId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,7 +82,7 @@ public class AttendeesFragment extends Fragment implements IAttendeesView {
         context = getActivity();
 
         if (getArguments() != null) {
-            eventId = getArguments().getLong(EventsActivity.EVENT_KEY);
+            eventId = getArguments().getLong(EventListActivity.EVENT_KEY);
             attendeesPresenter = new AttendeesPresenter(eventId, this, new EventDataRepository(new UtilModel(context)));
         }
     }
@@ -108,7 +107,7 @@ public class AttendeesFragment extends Fragment implements IAttendeesView {
 
         btnBarCodeScanner.setOnClickListener(v -> {
             Intent scanQr = new Intent(context, ScanQRActivity.class);
-            scanQr.putExtra(EventsActivity.EVENT_KEY, eventId);
+            scanQr.putExtra(EventListActivity.EVENT_KEY, eventId);
             startActivityForResult(scanQr, REQ_CODE);
         });
 
