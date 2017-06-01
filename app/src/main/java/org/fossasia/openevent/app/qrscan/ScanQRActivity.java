@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ProgressBar;
@@ -126,7 +127,8 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
-                presenter.onBarcodeDetected(detections.getDetectedItems());
+                SparseArray<Barcode> barcodeSparseArray = detections.getDetectedItems();
+                presenter.onBarcodeDetected(barcodeSparseArray.size() == 0 ? null : barcodeSparseArray.valueAt(0));
             }
         });
     }
