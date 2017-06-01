@@ -25,6 +25,9 @@ import io.reactivex.Observable;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -104,6 +107,31 @@ public class EventsPresenterTest {
     }
 
     @Test
+    public void showLoadInitialEventFirstTimeIfTwoPane() {
+        when(eventModel.getEvents(false))
+            .thenReturn(Observable.just(eventList));
+        when(eventListView.isTwoPane())
+            .thenReturn(true);
+
+        eventsActivityPresenter.loadUserEvents(false);
+
+        Mockito.verify(eventListView).showInitialEvent();
+    }
+
+    @Test
+    public void showNotLoadInitialEventSecondTimeIfTwoPane() {
+        when(eventModel.getEvents(false))
+            .thenReturn(Observable.just(eventList));
+        when(eventListView.isTwoPane())
+            .thenReturn(true);
+
+        eventsActivityPresenter.loadUserEvents(false);
+        eventsActivityPresenter.loadUserEvents(false);
+
+        Mockito.verify(eventListView, atMost(1)).showInitialEvent();
+    }
+
+    @Test
     public void shouldShowEventError() {
         String error = "Test Error";
         when(eventModel.getEvents(false))
@@ -135,7 +163,6 @@ public class EventsPresenterTest {
 
         inOrder.verify(eventModel).getOrganiser(false);
         inOrder.verify(eventListView).showOrganiserName("John Wick");
-        inOrder.verify(eventListView).showOrganiserPanel(true);
     }
 
     @Test
@@ -182,7 +209,6 @@ public class EventsPresenterTest {
 
         inOrder.verify(eventModel).getOrganiser(false);
         inOrder.verify(eventListView).showOrganiserLoadError(error);
-        inOrder.verify(eventListView).showOrganiserPanel(false);
     }
 
     @Test

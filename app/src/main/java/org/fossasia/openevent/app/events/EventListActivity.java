@@ -7,20 +7,23 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.EventDataRepository;
 import org.fossasia.openevent.app.data.LoginModel;
 import org.fossasia.openevent.app.data.UtilModel;
+import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.login.LoginActivity;
+import org.fossasia.openevent.app.utils.Utils;
+import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,51 +32,77 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-import static org.fossasia.openevent.app.utils.ViewUtils.showView;
+/**
+ * An activity representing a list of Events. This activity
+ * has different presentations for handset and tablet-size devices. On
+ * handsets, the activity presents a list of items, which when touched,
+ * lead to a {@link EventDetailActivity} representing
+ * item details. On tablets, the activity presents the list of items and
+ * item details side-by-side using two vertical panes.
+ */
+public class EventListActivity extends AppCompatActivity implements IEventsView {
 
-public class EventsActivity extends AppCompatActivity implements IEventsView {
-
-    @BindView(R.id.tvOrganiserName)
-    TextView organiserName;
-
-    @BindView(R.id.rvEventList)
+    @BindView(R.id.event_list)
     RecyclerView recyclerView;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
-    public static List<Event> events = new ArrayList<>();
+    /**
+     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
+     * device.
+     */
+    private boolean isTwoPane;
+
+    private List<Event> events;
+    private EventsListAdapter eventListAdapter;
 
     public static final String EVENT_KEY = "event";
 
-    private EventsListAdapter eventListAdapter = new EventsListAdapter(events, this);
     private IEventsPresenter presenter;
+
+    private IUtilModel utilModel;
 
     // Lifecycle methods start
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_events);
+        setContentView(R.layout.activity_event_list);
 
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getTitle());
+
+        if (findViewById(R.id.event_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            isTwoPane = true;
+        }
+
+        events = new ArrayList<>();
+        eventListAdapter = new EventsListAdapter(events, this, isTwoPane);
+
+        assert recyclerView != null;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(eventListAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this , DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        UtilModel utilModel = new UtilModel(this);
+        utilModel = new UtilModel(this);
         presenter = new EventsPresenter(this, new EventDataRepository(utilModel), new LoginModel(utilModel));
-
         presenter.attach();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        // Detach view from presenter
         presenter.detach();
     }
 
@@ -99,25 +128,32 @@ public class EventsActivity extends AppCompatActivity implements IEventsView {
     // View Implementation start
 
     @Override
+    public boolean isTwoPane() {
+        return isTwoPane;
+    }
+
+    @Override
     public void showProgressBar(boolean show) {
-        showView(progressBar, show);
+        ViewUtils.showView(progressBar, show);
     }
 
     @Override
-    public void showOrganiserPanel(boolean show) {
-        showView(organiserName, show);
-    }
-
-    @Override
-    public void showEvents(List<Event> eventList) {
-        events.clear();
-        events.addAll(eventList);
+    public void showEvents(List<Event> events) {
+        this.events.clear();
+        this.events.addAll(events);
         eventListAdapter.notifyDataSetChanged();
     }
 
     @Override
+    public void showInitialEvent() {
+        eventListAdapter.showInitialEvent();
+    }
+
+    @Override
     public void showOrganiserName(String name) {
-        organiserName.setText(name);
+        toolbar.setSubtitle(Utils.formatOptionalString(
+            utilModel.getResourceString(R.string.subtitle_organizer), name)
+        );
     }
 
     @Override
@@ -137,4 +173,5 @@ public class EventsActivity extends AppCompatActivity implements IEventsView {
     }
 
     // View Implementation end
+
 }

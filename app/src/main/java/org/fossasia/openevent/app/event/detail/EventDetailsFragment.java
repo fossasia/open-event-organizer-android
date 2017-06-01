@@ -17,7 +17,7 @@ import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailPresenter;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
-import org.fossasia.openevent.app.events.EventsActivity;
+import org.fossasia.openevent.app.events.EventListActivity;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.util.Locale;
@@ -69,7 +69,7 @@ public class EventDetailsFragment extends Fragment implements IEventDetailView {
     public static EventDetailsFragment newInstance(Event event) {
         EventDetailsFragment fragment = new EventDetailsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(EventsActivity.EVENT_KEY, event);
+        args.putParcelable(EventListActivity.EVENT_KEY, event);
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,7 +81,7 @@ public class EventDetailsFragment extends Fragment implements IEventDetailView {
         context = getActivity();
 
         if (getArguments() != null) {
-            Event initialEvent = getArguments().getParcelable(EventsActivity.EVENT_KEY);
+            Event initialEvent = getArguments().getParcelable(EventListActivity.EVENT_KEY);
             eventDetailPresenter = new EventDetailsPresenter(initialEvent, this, new EventDataRepository(new UtilModel(context)));
         }
     }

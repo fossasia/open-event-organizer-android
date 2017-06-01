@@ -59,10 +59,12 @@ public class AttendeesPresenter implements IAttendeesPresenter {
                 attendeeList.clear();
                 attendeeList.addAll(attendees);
 
+                if (attendeesView == null) return;
                 attendeesView.showAttendees(attendees);
                 attendeesView.showProgressBar(false);
                 attendeesView.showScanButton(true);
             }, throwable -> {
+                if (attendeesView == null) return;
                 attendeesView.showErrorMessage(throwable.getMessage());
                 attendeesView.showProgressBar(false);
             });

@@ -5,33 +5,23 @@
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="vertical"
-    android:paddingBottom="16dp"
-    android:paddingTop="16dp">
+    android:orientation="horizontal"
+    android:padding="16dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivEventProfile"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="2dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/tvEventTitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="12dp"
         android:text="@string/event_title_here"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
 </LinearLayout>
 
