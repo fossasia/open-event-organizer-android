@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.BaseFragment;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
 import org.fossasia.openevent.app.event.detail.EventDetailsFragment;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
  * Use the {@link EventContainerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventContainerFragment extends Fragment {
+public class EventContainerFragment extends BaseFragment {
 
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
