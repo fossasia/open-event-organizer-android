@@ -2,6 +2,8 @@ package org.fossasia.openevent.app.events;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.event.EventContainerActivity;
+import org.fossasia.openevent.app.event.EventContainerFragment;
 
 import java.util.List;
 
@@ -27,9 +29,12 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     private List<Event> events;
     private Context context;
 
-    EventsListAdapter(List<Event> events, Context context) {
+    private boolean isTwoPane;
+
+    public EventsListAdapter(List<Event> events, Context context, boolean isTwoPane) {
         this.events = events;
         this.context = context;
+        this.isTwoPane = isTwoPane;
     }
 
     @Override
@@ -53,12 +58,34 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
                 .into(holder.eventImage);
         }
 
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, EventContainerActivity.class);
-            intent.putExtra(EventsActivity.EVENT_KEY, thisEvent);
-            context.startActivity(intent);
+        holder.itemView.setOnClickListener(view -> {
+            if (isTwoPane) {
+                showEvent(thisEvent);
+            } else {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, EventDetailActivity.class);
+                intent.putExtra(EventListActivity.EVENT_KEY, thisEvent);
+                context.startActivity(intent);
+            }
         });
+    }
 
+    private void showEvent(Event event) {
+        EventContainerFragment fragment = EventContainerFragment.newInstance(event);
+        FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+        fm.beginTransaction()
+            .replace(R.id.event_detail_container, fragment)
+            .commit();
+    }
+
+    /**
+     * Called by the container in two pane mode to show the first event by default
+     */
+    void showInitialEvent() {
+        if(events.isEmpty())
+            return;
+
+        showEvent(events.get(0));
     }
 
     @Override

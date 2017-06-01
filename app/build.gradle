@@ -49,6 +49,7 @@ dependencies {
     testCompile 'org.mockito:mockito-core:2.8.9'
     testCompile 'org.json:json:20140107'
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.google.android.gms:play-services-vision:10.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'

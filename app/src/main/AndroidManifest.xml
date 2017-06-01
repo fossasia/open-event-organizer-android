@@ -13,25 +13,30 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".login.LoginActivity">
+        <activity
+            android:name=".login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".events.EventsActivity" />
         <activity
             android:name=".qrscan.ScanQRActivity"
             android:theme="@style/AppTheme.NoActionBar.Translucent" />
         <activity
-            android:name=".event.EventContainerActivity"
-            android:parentActivityName=".events.EventsActivity">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
+            android:name=".events.EventListActivity"
+            android:label="@string/title_event_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".events.EventDetailActivity"
+            android:label="@string/title_event_detail"
+            android:parentActivityName=".events.EventListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".events.EventsActivity" />
+                android:value="org.fossasia.openevent.app.events.EventListActivity" />
         </activity>
     </application>
 

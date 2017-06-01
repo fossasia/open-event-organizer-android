@@ -12,6 +12,8 @@ public class EventsPresenter implements IEventsPresenter {
     private IEventDataRepository eventsDataRepository;
     private ILoginModel loginModel;
 
+    private boolean firstLoad = true;
+
     public EventsPresenter(IEventsView eventsView, IEventDataRepository eventsDataRepository, ILoginModel loginModel) {
         this.eventsView = eventsView;
         this.eventsDataRepository = eventsDataRepository;
@@ -42,7 +44,11 @@ public class EventsPresenter implements IEventsPresenter {
                 if(eventsView == null)
                     return;
                 eventsView.showEvents(events);
+                if(eventsView.isTwoPane() && firstLoad)
+                    eventsView.showInitialEvent();
                 eventsView.showProgressBar(false);
+
+                firstLoad = false;
             }, throwable -> {
                 if(eventsView == null)
                     return;
@@ -67,12 +73,10 @@ public class EventsPresenter implements IEventsPresenter {
                     user.getUserDetail().getLastName());
 
                 eventsView.showOrganiserName(name.trim());
-                eventsView.showOrganiserPanel(true);
             }, throwable -> {
                 if(eventsView == null)
                     return;
                 eventsView.showOrganiserLoadError(throwable.getMessage());
-                eventsView.showOrganiserPanel(false);
             });
     }
 
