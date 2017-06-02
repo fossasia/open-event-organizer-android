@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.BaseFragment;
 import org.fossasia.openevent.app.data.EventDataRepository;
 import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
@@ -35,7 +36,7 @@ import butterknife.ButterKnife;
  * Use the {@link AttendeesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AttendeesFragment extends Fragment implements IAttendeesView {
+public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @BindView(R.id.rvAttendeeList)
     RecyclerView recyclerView;

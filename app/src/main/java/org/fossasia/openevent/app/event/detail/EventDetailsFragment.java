@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.BaseFragment;
 import org.fossasia.openevent.app.data.EventDataRepository;
 import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.models.Event;
@@ -30,7 +31,7 @@ import butterknife.ButterKnife;
  * Use the {@link EventDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventDetailsFragment extends Fragment implements IEventDetailView {
+public class EventDetailsFragment extends BaseFragment implements IEventDetailView {
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;

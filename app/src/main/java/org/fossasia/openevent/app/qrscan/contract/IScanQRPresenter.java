@@ -1,7 +1,5 @@
 package org.fossasia.openevent.app.qrscan.contract;
 
-import android.util.SparseArray;
-
 import com.google.android.gms.vision.barcode.Barcode;
 
 public interface IScanQRPresenter {
@@ -12,7 +10,7 @@ public interface IScanQRPresenter {
 
     void cameraPermissionGranted(boolean granted);
 
-    void onBarcodeDetected(SparseArray<Barcode> barcodes);
+    void onBarcodeDetected(Barcode barcode);
 
     void onScanStarted();
 
