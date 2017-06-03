@@ -15,14 +15,15 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class EventDetailPresenter implements IEventDetailPresenter {
 
     private Event initialEvent;
+    private Event event;
     private IEventDetailView eventDetailView;
     private IEventRepository eventRepository;
 
-    private long totalTickets, totalAttendees;
+    private long totalAttendees;
+    private long checkedInAttendees;
 
     @Inject
     public EventDetailPresenter(IEventRepository eventRepository) {
@@ -38,6 +39,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     @Override
     public void start() {
         showEventInfo(initialEvent);
+
         loadAttendees(initialEvent.getId(), false);
         loadTickets(initialEvent.getId(), false);
     }
@@ -65,36 +67,41 @@ public class EventDetailPresenter implements IEventDetailPresenter {
                 });
     }
 
-    private void showEventInfo(Event event) {
-        if(eventDetailView == null)
-            return;
-
-        eventDetailView.showEventName(event.getName());
-
-        String[] startDate = event.getStartTime().split("T");
-        String[] endDate = event.getEndTime().split("T");
-
-        eventDetailView.showDates(startDate[0], endDate[0]);
-        eventDetailView.showTime(endDate[1]);
-    }
-
     private void processEventAndDisplay(Event event) {
         if(eventDetailView == null)
             return;
+
+        this.event = event;
 
         showEventInfo(event);
 
         List<Ticket> tickets = event.getTickets();
 
-        totalTickets = 0;
+        long totalTickets = 0;
         if(tickets != null) {
             for (Ticket thisTicket : tickets)
                 totalTickets += thisTicket.getQuantity();
         }
 
-        eventDetailView.showTicketStats(totalTickets > 0 ? totalAttendees : 0, totalTickets);
+        event.totalTickets.set(totalTickets);
+        event.totalAttendees.set(totalAttendees);
+        event.checkedIn.set(checkedInAttendees);
 
         eventDetailView.showProgressBar(false);
+    }
+
+    private void showEventInfo(Event event) {
+        if(eventDetailView == null)
+            return;
+
+        eventDetailView.showEvent(event);
+
+        String[] startDate = event.getStartTime().split("T");
+        String[] endDate = event.getEndTime().split("T");
+
+        event.startDate.set(startDate[0]);
+        event.endDate.set(endDate[0]);
+        event.eventStartTime.set(endDate[1]);
     }
 
     @Override
@@ -113,7 +120,13 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     }
 
     private void processAttendeesAndDisplay(List<Attendee> attendees) {
+        if(eventDetailView == null)
+            return;
+
         totalAttendees = attendees.size();
+
+        if(event != null)
+            event.totalAttendees.set(totalAttendees);
 
         Observable.fromIterable(attendees)
             .filter(Attendee::isCheckedIn)
@@ -125,12 +138,18 @@ public class EventDetailPresenter implements IEventDetailPresenter {
                 if (eventDetailView == null)
                     return;
 
-                eventDetailView.showAttendeeStats(checkedIn, totalAttendees);
-                eventDetailView.showTicketStats(totalTickets > 0 ? totalAttendees : 0, totalTickets);
+                checkedInAttendees = checkedIn;
+
+                if(event != null)
+                    event.checkedIn.set(checkedInAttendees);
             });
     }
 
     public IEventDetailView getView() {
         return eventDetailView;
+    }
+
+    public Event getEvent() {
+        return event;
     }
 }

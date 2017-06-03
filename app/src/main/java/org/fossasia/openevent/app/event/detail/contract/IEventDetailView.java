@@ -1,18 +1,12 @@
 package org.fossasia.openevent.app.event.detail.contract;
 
+import org.fossasia.openevent.app.data.models.Event;
+
 public interface IEventDetailView {
 
     void showProgressBar(boolean show);
 
-    void showEventName(String name);
-
-    void showDates(String start, String end);
-
-    void showTime(String time);
-
-    void showTicketStats(long sold, long total);
-
-    void showAttendeeStats(long checkedIn, long total);
+    void showEvent(Event event);
 
     void showEventLoadError(String error);
 
