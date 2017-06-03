@@ -13,10 +13,8 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.data.EventDataRepository;
-import org.fossasia.openevent.app.data.LoginModel;
-import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
@@ -27,6 +25,8 @@ import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,14 +62,20 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
 
     public static final String EVENT_KEY = "event";
 
-    private IEventsPresenter presenter;
+    @Inject
+    IUtilModel utilModel;
 
-    private IUtilModel utilModel;
+    @Inject
+    IEventsPresenter presenter;
 
     // Lifecycle methods start
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        OrgaApplication
+            .getAppComponent(this)
+            .inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
 
@@ -95,9 +101,8 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
         recyclerView.addItemDecoration(new DividerItemDecoration(this , DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        utilModel = new UtilModel(this);
-        presenter = new EventsPresenter(this, new EventDataRepository(utilModel), new LoginModel(utilModel));
-        presenter.attach();
+        presenter.attach(this);
+        presenter.start();
     }
 
     @Override

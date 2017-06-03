@@ -9,13 +9,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.data.LoginModel;
-import org.fossasia.openevent.app.data.UtilModel;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.events.EventListActivity;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,12 +36,17 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    private ILoginPresenter presenter;
+    @Inject
+    ILoginPresenter presenter;
 
     // Lifecycle methods start
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        OrgaApplication
+            .getAppComponent(this)
+            .inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -48,11 +54,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
 
         setSupportActionBar(toolbar);
 
-        IUtilModel utilModel = new UtilModel(this);
-        presenter = new LoginPresenter(this, new LoginModel(utilModel));
-
         // Notify presenter to attach
-        presenter.attach();
+        presenter.attach(this);
 
         btnLogin.setOnClickListener(v -> {
 

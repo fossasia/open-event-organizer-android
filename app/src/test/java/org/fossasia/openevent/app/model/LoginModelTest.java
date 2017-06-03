@@ -45,8 +45,7 @@ public class LoginModelTest {
 
     @Before
     public void setUp() {
-        loginModel = new LoginModel(utilModel);
-        loginModel.setEventService(eventService);
+        loginModel = new LoginModel(utilModel, eventService);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }

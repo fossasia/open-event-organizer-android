@@ -10,9 +10,16 @@ import timber.log.Timber;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import org.fossasia.openevent.app.common.di.component.AppComponent;
+import org.fossasia.openevent.app.common.di.component.DaggerAppComponent;
+import org.fossasia.openevent.app.common.di.module.AndroidModule;
+import org.fossasia.openevent.app.common.di.module.DataModule;
+import org.fossasia.openevent.app.common.di.module.NetworkModule;
+
 public class OrgaApplication extends Application {
 
     private RefWatcher refWatcher;
+    private AppComponent appComponent;
 
     /**
      * Reference watcher to be used in detecting leaks in Fragments
@@ -22,6 +29,11 @@ public class OrgaApplication extends Application {
     public static RefWatcher getRefWatcher(Context context) {
         OrgaApplication application = (OrgaApplication) context.getApplicationContext();
         return application.refWatcher;
+    }
+
+    public static AppComponent getAppComponent(Context context) {
+        OrgaApplication application = (OrgaApplication) context.getApplicationContext();
+        return application.appComponent;
     }
 
     @Override
@@ -51,6 +63,12 @@ public class OrgaApplication extends Application {
         } else {
             Timber.plant(new ReleaseLogTree());
         }
+
+        appComponent = DaggerAppComponent.builder()
+            .androidModule(new AndroidModule(this))
+            .dataModule(new DataModule())
+            .networkModule(new NetworkModule())
+            .build();
     }
 
     private static class ReleaseLogTree extends Timber.Tree {

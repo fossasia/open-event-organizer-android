@@ -2,7 +2,9 @@ package org.fossasia.openevent.app.events.contract;
 
 public interface IEventsPresenter {
 
-    void attach();
+    void attach(IEventsView eventsView);
+
+    void start();
 
     void detach();
 

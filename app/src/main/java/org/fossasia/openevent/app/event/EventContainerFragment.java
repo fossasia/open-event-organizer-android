@@ -14,7 +14,7 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.BaseFragment;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
-import org.fossasia.openevent.app.event.detail.EventDetailsFragment;
+import org.fossasia.openevent.app.event.detail.EventDetailFragment;
 import org.fossasia.openevent.app.events.EventListActivity;
 
 import butterknife.BindView;
@@ -102,13 +102,13 @@ public class EventContainerFragment extends BaseFragment {
         if(fg == null) {
             switch (tag) {
                 case FRAG_DETAILS:
-                    fg = EventDetailsFragment.newInstance(initialEvent);
+                    fg = EventDetailFragment.newInstance(initialEvent);
                     break;
                 case FRAG_ATTENDEES:
                     fg = AttendeesFragment.newInstance(initialEvent.getId());
                     break;
                 default:
-                    fg = EventDetailsFragment.newInstance(initialEvent);
+                    fg = EventDetailFragment.newInstance(initialEvent);
                     break;
             }
         }

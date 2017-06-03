@@ -1,10 +1,10 @@
 package org.fossasia.openevent.app.presenter;
 
-import org.fossasia.openevent.app.data.contract.IEventDataRepository;
+import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.Ticket;
-import org.fossasia.openevent.app.event.detail.EventDetailsPresenter;
+import org.fossasia.openevent.app.event.detail.EventDetailPresenter;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
 import org.junit.After;
 import org.junit.Before;
@@ -43,10 +43,10 @@ public class EventDetailPresenterTest {
     IEventDetailView eventDetailView;
 
     @Mock
-    IEventDataRepository eventModel;
+    IEventRepository eventRepository;
 
     private final int id = 42;
-    private EventDetailsPresenter eventDetailActivityPresenter;
+    private EventDetailPresenter eventDetailPresenter;
 
     private Event event = new Event(42);
 
@@ -73,7 +73,8 @@ public class EventDetailPresenterTest {
         event.setEndTime("2012-09-20T12:23:00");
         event.setTickets(tickets);
 
-        eventDetailActivityPresenter = new EventDetailsPresenter(event, eventDetailView, eventModel);
+        eventDetailPresenter = new EventDetailPresenter(eventRepository);
+        eventDetailPresenter.attach(eventDetailView, event);
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
@@ -87,62 +88,62 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldLoadEventAndAttendeesAutomatically() {
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.just(attendees));
 
-        when(eventModel.getEvent(id, false))
+        when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
 
-        eventDetailActivityPresenter.attach();
+        eventDetailPresenter.start();
 
-        verify(eventModel).getEvent(id, false);
-        verify(eventModel).getAttendees(id, false);
+        verify(eventRepository).getEvent(id, false);
+        verify(eventRepository).getAttendees(id, false);
     }
 
     @Test
     public void shouldDetachViewOnStop() {
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.just(attendees));
 
-        when(eventModel.getEvent(id, false))
+        when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
 
-        eventDetailActivityPresenter.attach();
+        eventDetailPresenter.start();
 
-        assertNotNull(eventDetailActivityPresenter.getView());
+        assertNotNull(eventDetailPresenter.getView());
 
-        eventDetailActivityPresenter.detach();
+        eventDetailPresenter.detach();
 
-        assertNull(eventDetailActivityPresenter.getView());
+        assertNull(eventDetailPresenter.getView());
     }
 
     @Test
     public void shouldShowEventError() {
         String error = "Test Error";
-        when(eventModel.getEvent(id, false))
+        when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.error(new Throwable(error)));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventDetailView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventDetailView);
 
-        eventDetailActivityPresenter.loadTickets(id, false);
+        eventDetailPresenter.loadTickets(id, false);
 
         inOrder.verify(eventDetailView).showProgressBar(true);
-        inOrder.verify(eventModel).getEvent(id, false);
+        inOrder.verify(eventRepository).getEvent(id, false);
         inOrder.verify(eventDetailView).showEventLoadError(error);
         inOrder.verify(eventDetailView).showProgressBar(false);
     }
 
     @Test
     public void shouldLoadEventSuccessfully() {
-        when(eventModel.getEvent(id, false))
+        when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventDetailView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventDetailView);
 
-        eventDetailActivityPresenter.loadTickets(id, false);
+        eventDetailPresenter.loadTickets(id, false);
 
         inOrder.verify(eventDetailView).showProgressBar(true);
-        inOrder.verify(eventModel).getEvent(id, false);
+        inOrder.verify(eventRepository).getEvent(id, false);
         inOrder.verify(eventDetailView).showEventName("Event Name");
         inOrder.verify(eventDetailView).showDates("2004-05-21", "2012-09-20");
         inOrder.verify(eventDetailView).showTime("12:23:00");
@@ -153,40 +154,40 @@ public class EventDetailPresenterTest {
     @Test
     public void shouldShowAttendeeError() {
         String error = "Test Error";
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.error(new Throwable(error)));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventDetailView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventDetailView);
 
-        eventDetailActivityPresenter.loadAttendees(id, false);
+        eventDetailPresenter.loadAttendees(id, false);
 
-        inOrder.verify(eventModel).getAttendees(id, false);
+        inOrder.verify(eventRepository).getAttendees(id, false);
         inOrder.verify(eventDetailView).showEventLoadError(error);
     }
 
     @Test
     public void shouldLoadAttendeesSuccessfully() {
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.just(attendees));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventDetailView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventDetailView);
 
-        eventDetailActivityPresenter.loadAttendees(id, false);
+        eventDetailPresenter.loadAttendees(id, false);
 
-        inOrder.verify(eventModel).getAttendees(id, false);
+        inOrder.verify(eventRepository).getAttendees(id, false);
         inOrder.verify(eventDetailView).showAttendeeStats(3, 7);
     }
 
     @Test
     public void shouldDisplayCorrectStats() {
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.just(attendees));
 
-        when(eventModel.getEvent(id, false))
+        when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
 
         // Load all info
-        eventDetailActivityPresenter.attach();
+        eventDetailPresenter.start();
 
         Mockito.verify(eventDetailView, atLeastOnce()).showTicketStats(7, 114);
         Mockito.verify(eventDetailView, atLeastOnce()).showAttendeeStats(3, 7);
@@ -194,14 +195,14 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldDisplayNormalizedAttendeeStats() {
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.just(Collections.emptyList()));
 
-        when(eventModel.getEvent(id, false))
+        when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
 
         // Load all info
-        eventDetailActivityPresenter.attach();
+        eventDetailPresenter.start();
 
         Mockito.verify(eventDetailView, atLeastOnce()).showTicketStats(0, 114);
         Mockito.verify(eventDetailView, atLeastOnce()).showAttendeeStats(0, 0);
@@ -209,15 +210,15 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldDisplayNormalizedTicketStats() {
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.just(attendees));
 
         event.setTickets(null);
-        when(eventModel.getEvent(id, false))
+        when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
 
         // Load all info
-        eventDetailActivityPresenter.attach();
+        eventDetailPresenter.start();
 
         Mockito.verify(eventDetailView, atLeastOnce()).showTicketStats(0, 0);
         Mockito.verify(eventDetailView, atLeastOnce()).showAttendeeStats(3, 7);
@@ -225,10 +226,10 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldNotAccessView() {
-        eventDetailActivityPresenter.detach();
+        eventDetailPresenter.detach();
 
-        eventDetailActivityPresenter.loadTickets(id, false);
-        eventDetailActivityPresenter.loadAttendees(id, false);
+        eventDetailPresenter.loadTickets(id, false);
+        eventDetailPresenter.loadAttendees(id, false);
 
         Mockito.verifyZeroInteractions(eventDetailView);
     }

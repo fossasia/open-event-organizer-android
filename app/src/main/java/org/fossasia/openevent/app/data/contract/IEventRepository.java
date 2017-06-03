@@ -8,7 +8,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public interface IEventDataRepository {
+public interface IEventRepository {
 
     Observable<User> getOrganiser(boolean reload);
 

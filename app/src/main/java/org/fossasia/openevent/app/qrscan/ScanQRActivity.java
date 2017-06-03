@@ -22,11 +22,8 @@ import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.data.EventDataRepository;
-import org.fossasia.openevent.app.data.UtilModel;
-import org.fossasia.openevent.app.data.contract.IEventDataRepository;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
 import org.fossasia.openevent.app.events.EventListActivity;
@@ -36,6 +33,8 @@ import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,17 +61,19 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
 
-    private IScanQRPresenter presenter;
+    @Inject
+    IScanQRPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        OrgaApplication
+            .getAppComponent(this)
+            .inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_qr);
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-
-        IUtilModel utilModel = new UtilModel(getApplicationContext());
-        IEventDataRepository eventDataRepository = new EventDataRepository(utilModel);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         ButterKnife.bind(this);
 
@@ -84,8 +85,8 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
             return;
         }
 
-        presenter = new ScanQRPresenter(eventId, this, eventDataRepository);
-        presenter.attach();
+        presenter.attach(eventId, this);
+        presenter.start();
     }
 
     @Override

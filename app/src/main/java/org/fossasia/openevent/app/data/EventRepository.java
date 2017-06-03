@@ -1,8 +1,7 @@
 package org.fossasia.openevent.app.data;
 
 import org.fossasia.openevent.app.data.cache.ICacheModel;
-import org.fossasia.openevent.app.data.cache.ObjectCache;
-import org.fossasia.openevent.app.data.contract.IEventDataRepository;
+import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
@@ -18,7 +17,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class EventDataRepository implements IEventDataRepository {
+public class EventRepository implements IEventRepository {
 
     public static final String ORGANIZER = "user";
     public static final String EVENT = "event";
@@ -31,10 +30,10 @@ public class EventDataRepository implements IEventDataRepository {
     private String authorization;
     private IUtilModel utilModel;
 
-    public EventDataRepository(IUtilModel utilModel) {
+    public EventRepository(IUtilModel utilModel, ICacheModel cacheModel, EventService eventService) {
         this.utilModel = utilModel;
-        cacheModel = ObjectCache.getInstance();
-        eventService = NetworkService.getEventService();
+        this.cacheModel = cacheModel;
+        this.eventService = eventService;
 
         authorization = NetworkService.formatToken(utilModel.getToken());
     }

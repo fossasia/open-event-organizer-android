@@ -43,14 +43,14 @@ public class LoginPresenterTest {
 
     @Before
     public void setUp() {
-        loginPresenter = new LoginPresenter(loginView, loginModel);
+        loginPresenter = new LoginPresenter(loginModel);
     }
 
     @Test
     public void shouldShowSuccessOnStart() {
         Mockito.when(loginModel.isLoggedIn()).thenReturn(true);
 
-        loginPresenter.attach();
+        loginPresenter.attach(loginView);
 
         Mockito.verify(loginView).onLoginSuccess();
     }
@@ -59,14 +59,14 @@ public class LoginPresenterTest {
     public void shouldNotShowSuccessOnStart() {
         Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
 
-        loginPresenter.attach();
+        loginPresenter.attach(loginView);
 
         Mockito.verify(loginView, Mockito.never()).onLoginSuccess();
     }
 
     @Test
     public void shouldDetachViewOnStop() {
-        loginPresenter.attach();
+        loginPresenter.attach(loginView);
 
         assertNotNull(loginPresenter.getView());
 
@@ -79,7 +79,7 @@ public class LoginPresenterTest {
     public void shouldLoginAutomatically() {
         Mockito.when(loginModel.isLoggedIn()).thenReturn(true);
 
-        loginPresenter.attach();
+        loginPresenter.attach(loginView);
 
         Mockito.verify(loginView).onLoginSuccess();
     }
@@ -88,7 +88,7 @@ public class LoginPresenterTest {
     public void shouldNotLoginAutomatically() {
         Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
 
-        loginPresenter.attach();
+        loginPresenter.attach(loginView);
 
         Mockito.verifyZeroInteractions(loginView);
     }
@@ -101,6 +101,7 @@ public class LoginPresenterTest {
 
         InOrder inOrder = Mockito.inOrder(loginModel, loginView);
 
+        loginPresenter.attach(loginView);
         loginPresenter.login(email, password);
 
         inOrder.verify(loginView).showProgressBar(true);
@@ -117,6 +118,7 @@ public class LoginPresenterTest {
 
         InOrder inOrder = Mockito.inOrder(loginModel, loginView);
 
+        loginPresenter.attach(loginView);
         loginPresenter.login(email, password);
 
         inOrder.verify(loginView).showProgressBar(true);

@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.event.detail;
 
-import org.fossasia.openevent.app.data.contract.IEventDataRepository;
+import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.Ticket;
@@ -9,27 +9,34 @@ import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class EventDetailsPresenter implements IEventDetailPresenter {
+public class EventDetailPresenter implements IEventDetailPresenter {
 
     private Event initialEvent;
     private IEventDetailView eventDetailView;
-    private IEventDataRepository eventRepository;
+    private IEventRepository eventRepository;
 
     private long totalTickets, totalAttendees;
 
-    public EventDetailsPresenter(Event initialEvent, IEventDetailView eventDetailView, IEventDataRepository eventRepository) {
-        this.initialEvent = initialEvent;
-        this.eventDetailView = eventDetailView;
+    @Inject
+    public EventDetailPresenter(IEventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 
     @Override
-    public void attach() {
+    public void attach(IEventDetailView eventDetailView, Event initialEvent) {
+        this.eventDetailView = eventDetailView;
+        this.initialEvent = initialEvent;
+    }
+
+    @Override
+    public void start() {
         showEventInfo(initialEvent);
         loadAttendees(initialEvent.getId(), false);
         loadTickets(initialEvent.getId(), false);

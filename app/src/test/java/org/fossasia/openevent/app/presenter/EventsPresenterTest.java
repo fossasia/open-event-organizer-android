@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.presenter;
 
-import org.fossasia.openevent.app.data.contract.IEventDataRepository;
+import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
@@ -26,7 +26,9 @@ import io.reactivex.Observable;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
@@ -39,7 +41,7 @@ public class EventsPresenterTest {
     IEventsView eventListView;
 
     @Mock
-    IEventDataRepository eventModel;
+    IEventRepository eventModel;
 
     @Mock
     ILoginModel loginModel;
@@ -56,18 +58,19 @@ public class EventsPresenterTest {
 
     @Before
     public void setUp() {
-        eventsActivityPresenter = new EventsPresenter(eventListView, eventModel, loginModel);
+        eventsActivityPresenter = new EventsPresenter(eventModel, loginModel);
+        eventsActivityPresenter.attach(eventListView);
     }
 
     @Test
     public void shouldLoadEventsAndOrganiserAutomatically() {
-        when(eventModel.getEvents(false))
-            .thenReturn(Observable.just(eventList));
-
         when(eventModel.getOrganiser(false))
             .thenReturn(Observable.just(organiser));
 
-        eventsActivityPresenter.attach();
+        when(eventModel.getEvents(false))
+            .thenReturn(Observable.just(eventList));
+
+        eventsActivityPresenter.start();
 
         verify(eventModel).getEvents(false);
         verify(eventModel).getOrganiser(false);
@@ -75,13 +78,6 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldDetachViewOnStop() {
-        when(eventModel.getEvents(false))
-            .thenReturn(Observable.just(eventList));
-        when(eventModel.getOrganiser(false))
-            .thenReturn(Observable.just(organiser));
-
-        eventsActivityPresenter.attach();
-
         assertNotNull(eventsActivityPresenter.getView());
 
         eventsActivityPresenter.detach();
@@ -105,7 +101,19 @@ public class EventsPresenterTest {
     }
 
     @Test
-    public void showLoadInitialEventFirstTimeIfTwoPane() {
+    public void shouldNotLoadInitialEventIfNotTwoPane() {
+        when(eventModel.getEvents(false))
+            .thenReturn(Observable.just(eventList));
+        when(eventListView.isTwoPane())
+            .thenReturn(false);
+
+        eventsActivityPresenter.loadUserEvents(false);
+
+        Mockito.verify(eventListView, never()).showInitialEvent();
+    }
+
+    @Test
+    public void shouldLoadInitialEventFirstTimeIfTwoPane() {
         when(eventModel.getEvents(false))
             .thenReturn(Observable.just(eventList));
         when(eventListView.isTwoPane())
@@ -117,7 +125,7 @@ public class EventsPresenterTest {
     }
 
     @Test
-    public void showNotLoadInitialEventSecondTimeIfTwoPane() {
+    public void shouldNotLoadInitialEventSecondTimeIfTwoPane() {
         when(eventModel.getEvents(false))
             .thenReturn(Observable.just(eventList));
         when(eventListView.isTwoPane())
@@ -225,7 +233,7 @@ public class EventsPresenterTest {
         eventsActivityPresenter.loadOrganiser(false);
         eventsActivityPresenter.logout();
 
-        Mockito.verifyNoMoreInteractions(eventListView);
+        verifyNoMoreInteractions(eventListView);
     }
 
 }

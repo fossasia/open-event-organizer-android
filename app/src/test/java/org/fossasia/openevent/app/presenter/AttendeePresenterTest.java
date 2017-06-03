@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.presenter;
 
-import org.fossasia.openevent.app.data.contract.IEventDataRepository;
+import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.event.attendees.AttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
@@ -41,7 +41,7 @@ public class AttendeePresenterTest {
     IAttendeesView attendeesView;
 
     @Mock
-    IEventDataRepository eventModel;
+    IEventRepository eventModel;
 
     private final long id = 42;
     private AttendeesPresenter attendeesPresenter;
@@ -58,7 +58,8 @@ public class AttendeePresenterTest {
 
     @Before
     public void setUp() {
-        attendeesPresenter = new AttendeesPresenter(id, attendeesView, eventModel);
+        attendeesPresenter = new AttendeesPresenter(eventModel);
+        attendeesPresenter.attach(id, attendeesView);
         attendeesPresenter.setAttendeeList(attendees);
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
@@ -76,7 +77,7 @@ public class AttendeePresenterTest {
         when(eventModel.getAttendees(id, false))
             .thenReturn(Observable.just(attendees));
 
-        attendeesPresenter.attach();
+        attendeesPresenter.start();
 
         verify(eventModel).getAttendees(id, false);
     }
@@ -86,7 +87,7 @@ public class AttendeePresenterTest {
         when(eventModel.getAttendees(id, false))
             .thenReturn(Observable.just(attendees));
 
-        attendeesPresenter.attach();
+        attendeesPresenter.start();
 
         assertNotNull(attendeesPresenter.getView());
 

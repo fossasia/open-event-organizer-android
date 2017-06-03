@@ -11,10 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.BaseFragment;
-import org.fossasia.openevent.app.data.EventDataRepository;
-import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailPresenter;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
@@ -23,15 +22,17 @@ import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EventDetailsFragment#newInstance} factory method to
+ * Use the {@link EventDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventDetailsFragment extends BaseFragment implements IEventDetailView {
+public class EventDetailFragment extends BaseFragment implements IEventDetailView {
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -52,11 +53,13 @@ public class EventDetailsFragment extends BaseFragment implements IEventDetailVi
     @BindView(R.id.progressAttendance)
     ProgressBar pbAttendees;
 
-    private IEventDetailPresenter eventDetailPresenter;
+    @Inject
+    Context context;
 
-    private Context context;
+    @Inject
+    IEventDetailPresenter eventDetailPresenter;
 
-    public EventDetailsFragment() {
+    public EventDetailFragment() {
         // Required empty public constructor
     }
 
@@ -65,10 +68,10 @@ public class EventDetailsFragment extends BaseFragment implements IEventDetailVi
      * this fragment using the provided parameters.
      *
      * @param event Event for which the Fragment is to be created.
-     * @return A new instance of fragment EventDetailsFragment.
+     * @return A new instance of fragment EventDetailFragment.
      */
-    public static EventDetailsFragment newInstance(Event event) {
-        EventDetailsFragment fragment = new EventDetailsFragment();
+    public static EventDetailFragment newInstance(Event event) {
+        EventDetailFragment fragment = new EventDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(EventListActivity.EVENT_KEY, event);
         fragment.setArguments(args);
@@ -77,13 +80,15 @@ public class EventDetailsFragment extends BaseFragment implements IEventDetailVi
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        OrgaApplication
+            .getAppComponent(getActivity())
+            .inject(this);
 
-        context = getActivity();
+        super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
             Event initialEvent = getArguments().getParcelable(EventListActivity.EVENT_KEY);
-            eventDetailPresenter = new EventDetailsPresenter(initialEvent, this, new EventDataRepository(new UtilModel(context)));
+            eventDetailPresenter.attach(this, initialEvent);
         }
     }
 
@@ -99,7 +104,7 @@ public class EventDetailsFragment extends BaseFragment implements IEventDetailVi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        eventDetailPresenter.attach();
+        eventDetailPresenter.start();
     }
 
     @Override
