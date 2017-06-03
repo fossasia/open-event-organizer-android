@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.qrscan;
 import android.Manifest;
 import android.Manifest.permission;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -89,6 +90,8 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_qr);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
 
         IUtilModel utilModel = new UtilModel(getApplicationContext());
         IEventDataRepository eventDataRepository = new EventDataRepository(utilModel);
