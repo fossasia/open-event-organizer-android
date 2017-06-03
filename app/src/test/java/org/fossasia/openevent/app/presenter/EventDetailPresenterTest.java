@@ -19,7 +19,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -27,10 +26,11 @@ import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
@@ -144,11 +144,13 @@ public class EventDetailPresenterTest {
 
         inOrder.verify(eventDetailView).showProgressBar(true);
         inOrder.verify(eventRepository).getEvent(id, false);
-        inOrder.verify(eventDetailView).showEventName("Event Name");
-        inOrder.verify(eventDetailView).showDates("2004-05-21", "2012-09-20");
-        inOrder.verify(eventDetailView).showTime("12:23:00");
-        inOrder.verify(eventDetailView).showTicketStats(0, 114);
+        inOrder.verify(eventDetailView).showEvent(event);
         inOrder.verify(eventDetailView).showProgressBar(false);
+
+        assertEquals("2004-05-21", event.startDate.get());
+        assertEquals("2012-09-20", event.endDate.get());
+        assertEquals("12:23:00", event.eventStartTime.get());
+        assertEquals(114, event.totalTickets.get());
     }
 
     @Test
@@ -166,20 +168,7 @@ public class EventDetailPresenterTest {
     }
 
     @Test
-    public void shouldLoadAttendeesSuccessfully() {
-        when(eventRepository.getAttendees(id, false))
-            .thenReturn(Observable.just(attendees));
-
-        InOrder inOrder = Mockito.inOrder(eventRepository, eventDetailView);
-
-        eventDetailPresenter.loadAttendees(id, false);
-
-        inOrder.verify(eventRepository).getAttendees(id, false);
-        inOrder.verify(eventDetailView).showAttendeeStats(3, 7);
-    }
-
-    @Test
-    public void shouldDisplayCorrectStats() {
+    public void shouldDisplayCorrectStats() throws Exception {
         when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.just(attendees));
 
@@ -189,39 +178,9 @@ public class EventDetailPresenterTest {
         // Load all info
         eventDetailPresenter.start();
 
-        Mockito.verify(eventDetailView, atLeastOnce()).showTicketStats(7, 114);
-        Mockito.verify(eventDetailView, atLeastOnce()).showAttendeeStats(3, 7);
-    }
-
-    @Test
-    public void shouldDisplayNormalizedAttendeeStats() {
-        when(eventRepository.getAttendees(id, false))
-            .thenReturn(Observable.just(Collections.emptyList()));
-
-        when(eventRepository.getEvent(id, false))
-            .thenReturn(Observable.just(event));
-
-        // Load all info
-        eventDetailPresenter.start();
-
-        Mockito.verify(eventDetailView, atLeastOnce()).showTicketStats(0, 114);
-        Mockito.verify(eventDetailView, atLeastOnce()).showAttendeeStats(0, 0);
-    }
-
-    @Test
-    public void shouldDisplayNormalizedTicketStats() {
-        when(eventRepository.getAttendees(id, false))
-            .thenReturn(Observable.just(attendees));
-
-        event.setTickets(null);
-        when(eventRepository.getEvent(id, false))
-            .thenReturn(Observable.just(event));
-
-        // Load all info
-        eventDetailPresenter.start();
-
-        Mockito.verify(eventDetailView, atLeastOnce()).showTicketStats(0, 0);
-        Mockito.verify(eventDetailView, atLeastOnce()).showAttendeeStats(3, 7);
+        assertEquals(114, event.totalTickets.get());
+        assertEquals(3, event.checkedIn.get());
+        assertEquals(7, event.totalAttendees.get());
     }
 
     @Test
@@ -231,6 +190,6 @@ public class EventDetailPresenterTest {
         eventDetailPresenter.loadTickets(id, false);
         eventDetailPresenter.loadAttendees(id, false);
 
-        Mockito.verifyZeroInteractions(eventDetailView);
+        verifyZeroInteractions(eventDetailView);
     }
 }

@@ -1,41 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="@dimen/activity_horizontal_margin"
-    android:orientation="horizontal"
-    android:gravity="center">
+<layout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
+    <data>
+        <import type="org.fossasia.openevent.app.utils.Utils" />
+
+        <variable
+            name="attendee"
+            type="org.fossasia.openevent.app.data.models.Attendee" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvName"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="@{Utils.formatOptionalString(&quot;%s %s&quot;, attendee.firstname, attendee.lastname)}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="@{attendee.email}" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnCheckedIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="@string/first_name_placeholder"/>
-
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="@string/email_placeholder"/>
+            android:text="@{attendee.checkedIn ? @string/checked_in : @string/check_in}"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@{attendee.checkedIn ? android.R.color.holo_green_light : android.R.color.holo_red_light}" />
 
     </LinearLayout>
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btnCheckedIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/check_in"
-        android:textAllCaps="true"
-        android:textColor="@android:color/white"
-        app:backgroundTint="@android:color/holo_red_light" />
-
-</LinearLayout>
+</layout>

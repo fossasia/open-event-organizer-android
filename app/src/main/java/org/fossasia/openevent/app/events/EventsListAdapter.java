@@ -5,24 +5,15 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.databinding.EventLayoutBinding;
 import org.fossasia.openevent.app.event.EventContainerFragment;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 
 class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder>{
 
@@ -31,7 +22,7 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
     private boolean isTwoPane;
 
-    public EventsListAdapter(List<Event> events, Context context, boolean isTwoPane) {
+    EventsListAdapter(List<Event> events, Context context, boolean isTwoPane) {
         this.events = events;
         this.context = context;
         this.isTwoPane = isTwoPane;
@@ -39,35 +30,16 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
     @Override
     public EventRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_layout, parent, false);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 
-        return new EventRecyclerViewHolder(itemView);
+        EventLayoutBinding binding = EventLayoutBinding.inflate(layoutInflater, parent, false);
+        return new EventRecyclerViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(final EventRecyclerViewHolder holder, int position) {
-
         final Event thisEvent = events.get(position);
-        holder.eventTitle.setText(thisEvent.getName());
-
-        String thumbnail = thisEvent.getThumbnail();
-
-        if(thumbnail != null && !TextUtils.isEmpty(thumbnail)) {
-            Picasso.with(context)
-                .load(thumbnail)
-                .into(holder.eventImage);
-        }
-
-        holder.itemView.setOnClickListener(view -> {
-            if (isTwoPane) {
-                showEvent(thisEvent);
-            } else {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, EventDetailActivity.class);
-                intent.putExtra(EventListActivity.EVENT_KEY, thisEvent);
-                context.startActivity(intent);
-            }
-        });
+        holder.bind(thisEvent);
     }
 
     private void showEvent(Event event) {
@@ -95,15 +67,31 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
     //view holder class
     class EventRecyclerViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.tvEventTitle)
-        TextView eventTitle;
-        @BindView(R.id.ivEventProfile)
-        ImageView eventImage;
+        private final EventLayoutBinding binding;
+        private final Context context;
+        private final Intent intent;
+        private Event event;
 
-        EventRecyclerViewHolder(View itemView) {
-            super(itemView);
+        EventRecyclerViewHolder(EventLayoutBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+            this.context = binding.getRoot().getContext();
+            this.intent = new Intent(context, EventDetailActivity.class);
 
-            ButterKnife.bind(this, itemView);
+            binding.getRoot().setOnClickListener(view -> {
+                if (isTwoPane) {
+                    showEvent(event);
+                } else {
+                    intent.putExtra(EventListActivity.EVENT_KEY, event);
+                    context.startActivity(intent);
+                }
+            });
+        }
+
+        public void bind(Event event) {
+            this.event = event;
+            binding.setEvent(event);
+            binding.executePendingBindings();
         }
 
     }

@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
-    android:orientation="horizontal"
-    android:padding="16dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/ivEventProfile"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher" />
+    <data>
+        <variable
+            name="event"
+            type="org.fossasia.openevent.app.data.models.Event" />
+    </data>
 
-    <TextView
-        android:id="@+id/tvEventTitle"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/event_title_here"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_medium" >
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:circleImageUrl="@{event.thumbnail}"
+            android:contentDescription="@string/event_thumbnail" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingEnd="16dp"
+            android:paddingLeft="@dimen/spacing_medium"
+            android:paddingRight="16dp"
+            android:paddingStart="16dp"
+            android:text="@{event.name}"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
+
+    </LinearLayout>
+</layout>

@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.data.models;
 
+import android.databinding.ObservableField;
+import android.databinding.ObservableLong;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -79,6 +81,15 @@ public class Event implements Parcelable {
     private String type;
     @SerializedName("version")
     private Version version;
+
+    // For Data Binding
+    public final ObservableField<String> startDate = new ObservableField<>();
+    public final ObservableField<String> endDate = new ObservableField<>();
+    public final ObservableField<String> eventStartTime = new ObservableField<>();
+
+    public final ObservableLong totalAttendees = new ObservableLong();
+    public final ObservableLong totalTickets = new ObservableLong();
+    public final ObservableLong checkedIn = new ObservableLong();
 
     public Event() {}
 
