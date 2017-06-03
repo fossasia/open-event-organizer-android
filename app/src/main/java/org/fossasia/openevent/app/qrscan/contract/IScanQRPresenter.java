@@ -4,7 +4,9 @@ import com.google.android.gms.vision.barcode.Barcode;
 
 public interface IScanQRPresenter {
 
-    void attach();
+    void attach(long eventId, IScanQRView scanQRView);
+
+    void start();
 
     void detach();
 

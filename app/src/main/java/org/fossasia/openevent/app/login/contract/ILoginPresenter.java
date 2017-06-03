@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.login.contract;
 
 public interface ILoginPresenter {
 
-    void attach();
+    void attach(ILoginView loginView);
 
     void detach();
 

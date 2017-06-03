@@ -19,8 +19,9 @@ public class LoginModel implements ILoginModel {
     private EventService eventService;
     private String token;
 
-    public LoginModel(IUtilModel utilModel) {
+    public LoginModel(IUtilModel utilModel, EventService eventService) {
         this.utilModel = utilModel;
+        this.eventService = eventService;
     }
 
     @Override
@@ -32,9 +33,6 @@ public class LoginModel implements ILoginModel {
         if(!utilModel.isConnected()) {
             return Observable.error(new RuntimeException(Constants.NO_NETWORK));
         }
-
-        if(eventService == null)
-            eventService = NetworkService.getEventService();
 
         return eventService
                 .login(new Login(username, password))

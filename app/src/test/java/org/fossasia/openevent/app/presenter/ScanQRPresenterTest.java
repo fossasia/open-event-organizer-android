@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.presenter;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
-import org.fossasia.openevent.app.data.contract.IEventDataRepository;
+import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Order;
 import org.fossasia.openevent.app.qrscan.ScanQRPresenter;
@@ -47,7 +47,7 @@ public class ScanQRPresenterTest {
     IScanQRView scanQRView;
 
     @Mock
-    IEventDataRepository eventDataRepository;
+    IEventRepository eventRepository;
 
     private int eventId = 32;
     private ScanQRPresenter scanQRPresenter;
@@ -80,7 +80,8 @@ public class ScanQRPresenterTest {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
-        scanQRPresenter = new ScanQRPresenter(eventId, scanQRView, eventDataRepository);
+        scanQRPresenter = new ScanQRPresenter(eventRepository);
+        scanQRPresenter.attach(eventId, scanQRView);
 
         barcode1.displayValue = "Test Barcode 1";
         barcode2.displayValue = "Test Barcode 2";
@@ -97,30 +98,30 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldLoadAttendeesAutomatically() {
-        when(eventDataRepository.getAttendees(eventId, false))
+        when(eventRepository.getAttendees(eventId, false))
             .thenReturn(Observable.just(attendees));
 
-        scanQRPresenter.attach();
+        scanQRPresenter.start();
 
-        verify(eventDataRepository).getAttendees(eventId, false);
+        verify(eventRepository).getAttendees(eventId, false);
     }
 
     @Test
     public void shouldLoadCameraAutomatically() {
-        when(eventDataRepository.getAttendees(eventId, false))
+        when(eventRepository.getAttendees(eventId, false))
             .thenReturn(Observable.just(attendees));
 
-        scanQRPresenter.attach();
+        scanQRPresenter.start();
 
         verify(scanQRView).loadCamera();
     }
 
     @Test
     public void shouldDetachViewOnStop() {
-        when(eventDataRepository.getAttendees(eventId, false))
+        when(eventRepository.getAttendees(eventId, false))
             .thenReturn(Observable.just(attendees));
 
-        scanQRPresenter.attach();
+        scanQRPresenter.start();
 
         assertNotNull(scanQRPresenter.getView());
 
@@ -133,7 +134,7 @@ public class ScanQRPresenterTest {
     public void shouldNotAccessViewAfterDetach() {
         scanQRPresenter.detach();
 
-        scanQRPresenter.attach();
+        scanQRPresenter.start();
         scanQRPresenter.onCameraLoaded();
         scanQRPresenter.cameraPermissionGranted(false);
         scanQRPresenter.cameraPermissionGranted(true);
@@ -188,11 +189,11 @@ public class ScanQRPresenterTest {
      */
     @Test
     public void shouldFollowFlowOnImplicitPermissionGrant() {
-        when(eventDataRepository.getAttendees(eventId, false))
+        when(eventRepository.getAttendees(eventId, false))
             .thenReturn(Observable.just(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(true);
 
-        scanQRPresenter.attach();
+        scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
         inOrder.verify(scanQRView).loadCamera();
@@ -202,11 +203,11 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionGrant() {
-        when(eventDataRepository.getAttendees(eventId, false))
+        when(eventRepository.getAttendees(eventId, false))
             .thenReturn(Observable.just(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(true);
 
-        scanQRPresenter.attach();
+        scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
         inOrder.verify(scanQRView).showProgressBar(true);
@@ -217,11 +218,11 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldFollowFlowOnImplicitPermissionDenyRequestGrant() {
-        when(eventDataRepository.getAttendees(eventId, false))
+        when(eventRepository.getAttendees(eventId, false))
             .thenReturn(Observable.just(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
-        scanQRPresenter.attach();
+        scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
         inOrder.verify(scanQRView).loadCamera();
@@ -233,11 +234,11 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionDenyRequestGrant() {
-        when(eventDataRepository.getAttendees(eventId, false))
+        when(eventRepository.getAttendees(eventId, false))
             .thenReturn(Observable.just(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
-        scanQRPresenter.attach();
+        scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
         inOrder.verify(scanQRView).showProgressBar(true);
@@ -249,11 +250,11 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldFollowFlowOnImplicitPermissionDenyRequestDeny() {
-        when(eventDataRepository.getAttendees(eventId, false))
+        when(eventRepository.getAttendees(eventId, false))
             .thenReturn(Observable.just(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
-        scanQRPresenter.attach();
+        scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
         inOrder.verify(scanQRView).loadCamera();
@@ -265,11 +266,11 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionDenyRequestDeny() {
-        when(eventDataRepository.getAttendees(eventId, false))
+        when(eventRepository.getAttendees(eventId, false))
             .thenReturn(Observable.just(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
-        scanQRPresenter.attach();
+        scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
         inOrder.verify(scanQRView).showProgressBar(true);

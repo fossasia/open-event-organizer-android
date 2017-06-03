@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.qrscan;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
-import org.fossasia.openevent.app.data.contract.IEventDataRepository;
+import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRPresenter;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRView;
@@ -10,6 +10,8 @@ import org.fossasia.openevent.app.qrscan.contract.IScanQRView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -21,16 +23,15 @@ public class ScanQRPresenter implements IScanQRPresenter {
     private long eventId;
 
     private IScanQRView scanQRView;
-    private IEventDataRepository eventDataRepository;
+    private IEventRepository eventRepository;
     private List<Attendee> attendees = new ArrayList<>();
 
     private PublishSubject<Boolean> detect = PublishSubject.create();
     private PublishSubject<String> data = PublishSubject.create();
 
-    public ScanQRPresenter(long eventId, IScanQRView scanQRView, IEventDataRepository eventDataRepository) {
-        this.eventId = eventId;
-        this.scanQRView = scanQRView;
-        this.eventDataRepository = eventDataRepository;
+    @Inject
+    public ScanQRPresenter(IEventRepository eventRepository) {
+        this.eventRepository = eventRepository;
 
         detect.distinctUntilChanged()
             .debounce(150, TimeUnit.MILLISECONDS)
@@ -65,9 +66,15 @@ public class ScanQRPresenter implements IScanQRPresenter {
     }
 
     @Override
-    public void attach() {
+    public void attach(long eventId, IScanQRView scanQRView) {
+        this.eventId = eventId;
+        this.scanQRView = scanQRView;
+    }
+
+    @Override
+    public void start() {
         if(scanQRView == null)
-            return;
+        return;
 
         loadAttendees();
 
@@ -81,7 +88,7 @@ public class ScanQRPresenter implements IScanQRPresenter {
     }
 
     private void loadAttendees() {
-        eventDataRepository.getAttendees(eventId, false)
+        eventRepository.getAttendees(eventId, false)
             .subscribe(attendeeList -> {
                 attendees.clear();
                 attendees.addAll(attendeeList);

@@ -1,27 +1,34 @@
 package org.fossasia.openevent.app.events;
 
-import org.fossasia.openevent.app.data.contract.IEventDataRepository;
+import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.utils.Utils;
 
+import javax.inject.Inject;
+
 public class EventsPresenter implements IEventsPresenter {
 
     private IEventsView eventsView;
-    private IEventDataRepository eventsDataRepository;
+    private IEventRepository eventsDataRepository;
     private ILoginModel loginModel;
 
     private boolean firstLoad = true;
 
-    public EventsPresenter(IEventsView eventsView, IEventDataRepository eventsDataRepository, ILoginModel loginModel) {
-        this.eventsView = eventsView;
+    @Inject
+    public EventsPresenter(IEventRepository eventsDataRepository, ILoginModel loginModel) {
         this.eventsDataRepository = eventsDataRepository;
         this.loginModel = loginModel;
     }
 
     @Override
-    public void attach() {
+    public void attach(IEventsView eventsView) {
+        this.eventsView = eventsView;
+    }
+
+    @Override
+    public void start() {
         loadUserEvents(false);
         loadOrganiser(false);
     }

@@ -4,18 +4,21 @@ import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
 
+import javax.inject.Inject;
+
 public class LoginPresenter implements ILoginPresenter {
 
     private ILoginView loginView;
     private ILoginModel loginModel;
 
-    public LoginPresenter(ILoginView loginView, ILoginModel loginDateRepository) {
-        this.loginView = loginView;
-        this.loginModel = loginDateRepository;
+    @Inject
+    public LoginPresenter(ILoginModel loginModel) {
+        this.loginModel = loginModel;
     }
 
     @Override
-    public void attach() {
+    public void attach(ILoginView loginView) {
+        this.loginView = loginView;
         if(loginView != null && loginModel.isLoggedIn())
             loginView.onLoginSuccess();
     }

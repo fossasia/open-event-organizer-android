@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.event.attendees;
 
-import org.fossasia.openevent.app.data.contract.IEventDataRepository;
+import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
@@ -9,6 +9,8 @@ import org.fossasia.openevent.app.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -16,14 +18,13 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
     private long eventId;
     private IAttendeesView attendeesView;
-    private IEventDataRepository eventDataRepository;
+    private IEventRepository eventRepository;
 
     private List<Attendee> attendeeList = new ArrayList<>();
 
-    public AttendeesPresenter(long eventId, IAttendeesView attendeesView, IEventDataRepository eventDataRepository) {
-        this.eventId = eventId;
-        this.attendeesView = attendeesView;
-        this.eventDataRepository = eventDataRepository;
+    @Inject
+    public AttendeesPresenter(IEventRepository eventRepository) {
+        this.eventRepository = eventRepository;
     }
 
     public void setAttendeeList(List<Attendee> attendeeList) {
@@ -32,7 +33,13 @@ public class AttendeesPresenter implements IAttendeesPresenter {
     }
 
     @Override
-    public void attach() {
+    public void attach(long eventId, IAttendeesView attendeesView) {
+        this.eventId = eventId;
+        this.attendeesView = attendeesView;
+    }
+
+    @Override
+    public void start() {
         loadAttendees(false);
     }
 
@@ -54,7 +61,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
         attendeesView.showProgressBar(true);
         attendeesView.showScanButton(false);
 
-        eventDataRepository.getAttendees(eventId, forceReload)
+        eventRepository.getAttendees(eventId, forceReload)
             .subscribe(attendees -> {
                 attendeeList.clear();
                 attendeeList.addAll(attendees);
@@ -77,7 +84,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
         attendeesView.showProgressBar(true);
 
-        eventDataRepository.toggleAttendeeCheckStatus(eventId, attendee.getId())
+        eventRepository.toggleAttendeeCheckStatus(eventId, attendee.getId())
             .subscribe(this::processUpdatedAttendee, throwable -> {
                 if(attendeesView == null)
                     return;

@@ -14,10 +14,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.BaseFragment;
-import org.fossasia.openevent.app.data.EventDataRepository;
-import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
@@ -27,6 +26,8 @@ import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +56,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     public static final int REQ_CODE = 123;
 
-    private IAttendeesPresenter attendeesPresenter;
+    @Inject
+    IAttendeesPresenter attendeesPresenter;
 
     public AttendeesFragment() {
         // Required empty public constructor
@@ -78,13 +80,17 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         context = getActivity();
+
+        OrgaApplication
+            .getAppComponent(context)
+            .inject(this);
+
+        super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
             eventId = getArguments().getLong(EventListActivity.EVENT_KEY);
-            attendeesPresenter = new AttendeesPresenter(eventId, this, new EventDataRepository(new UtilModel(context)));
+            attendeesPresenter.attach(eventId, this);
         }
     }
 
@@ -112,7 +118,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
             startActivityForResult(scanQr, REQ_CODE);
         });
 
-        attendeesPresenter.attach();
+        attendeesPresenter.start();
     }
 
     @Override

@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface IAttendeesPresenter {
 
-    void attach();
+    void attach(long eventId, IAttendeesView attendeesView);
+
+    void start();
 
     void detach();
 
