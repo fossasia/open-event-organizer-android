@@ -1,10 +1,14 @@
 package org.fossasia.openevent.app.data;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.fossasia.openevent.app.data.cache.ICacheModel;
 import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.Event_Table;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.data.network.NetworkService;
@@ -16,22 +20,24 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class EventRepository implements IEventRepository {
 
     public static final String ORGANIZER = "user";
-    public static final String EVENT = "event";
-    public static final String EVENTS = "events";
     public static final String ATTENDEES = "attendees";
 
+    private IDatabaseRepository databaseRepository;
     private ICacheModel cacheModel;
     private EventService eventService;
 
     private String authorization;
     private IUtilModel utilModel;
 
-    public EventRepository(IUtilModel utilModel, ICacheModel cacheModel, EventService eventService) {
+    public EventRepository(IUtilModel utilModel, IDatabaseRepository databaseRepository,
+                           ICacheModel cacheModel, EventService eventService) {
         this.utilModel = utilModel;
+        this.databaseRepository = databaseRepository;
         this.cacheModel = cacheModel;
         this.eventService = eventService;
 
@@ -63,6 +69,27 @@ public class EventRepository implements IEventRepository {
             .observeOn(AndroidSchedulers.mainThread());
     }
 
+    private <T extends BaseModel> Observable<T> getAbstractObservable(boolean reload, Observable<T> diskObservable, Observable<T> networkObservable) {
+        return
+            Observable.defer(() -> {
+                if (reload)
+                    return Observable.empty();
+                else
+                    return diskObservable
+                        .doOnNext(item -> Timber.d("Loaded %s From Disk", item.getClass()));
+            }).switchIfEmpty(
+                Observable.just(utilModel.isConnected())
+                    .flatMap(connected -> {
+                        if (connected)
+                            return networkObservable
+                                .doOnNext(item -> Timber.d("Loaded %s From Network", item.getClass()));
+                        else
+                            return Observable.error(new Throwable(Constants.NO_NETWORK));
+                    }))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     @Override
     public Observable<User> getOrganiser(boolean reload) {
         return getData(() -> eventService.getUser(authorization), ORGANIZER, reload);
@@ -70,19 +97,45 @@ public class EventRepository implements IEventRepository {
 
     @Override
     public Observable<Event> getEvent(long eventId, boolean reload) {
-        return getData(() -> eventService.getEvent(eventId), EVENT + eventId, reload);
+        Observable<Event> diskObservable = Observable.defer(() ->
+            databaseRepository
+                .getItem(Event.class, Event_Table.id.eq(eventId))
+        );
+
+        Observable<Event> networkObservable = Observable.defer(() ->
+            eventService
+                .getEvent(eventId)
+                .doOnNext(event ->
+                    databaseRepository
+                        .save(event)
+                        .subscribe()
+                )
+        );
+
+        return getAbstractObservable(reload, diskObservable, networkObservable);
+    }
+
+    @Override
+    public Observable<Event> getEvents(boolean reload) {
+        Observable<Event> diskObservable = Observable.defer(() ->
+            databaseRepository.getAllItems(Event.class)
+        );
+
+        Observable<Event> networkObservable = Observable.defer(() ->
+            eventService.getEvents(authorization)
+                    .flatMapIterable(events -> events)
+                    .doOnNext(event -> {
+                        event.setComplete(false);
+                        databaseRepository.save(event).subscribe();
+                    }));
+
+        return getAbstractObservable(reload, diskObservable, networkObservable);
     }
 
     @Override
     public Observable<List<Attendee>> getAttendees(long eventId, boolean reload) {
         return getData(() -> eventService.getAttendees(eventId, authorization), ATTENDEES + eventId, reload);
     }
-
-    @Override
-    public Observable<List<Event>> getEvents(boolean reload) {
-        return getData(() -> eventService.getEvents(authorization), EVENTS, reload);
-    }
-
 
     /**
      * Fully network oriented task, no fetching from cache, but saving in it is a must

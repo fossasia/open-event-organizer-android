@@ -5,6 +5,7 @@ import org.fossasia.openevent.app.data.cache.ICacheModel;
 import org.fossasia.openevent.app.data.cache.ObjectCache;
 import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.network.EventService;
 
 import javax.inject.Singleton;
@@ -23,7 +24,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    IEventRepository providesEventRepository(IUtilModel utilModel, ICacheModel cacheModel, EventService eventService) {
-        return new EventRepository(utilModel, cacheModel, eventService);
+    IEventRepository providesEventRepository(IUtilModel utilModel, IDatabaseRepository databaseRepository,
+                                             ICacheModel cacheModel, EventService eventService) {
+        return new EventRepository(utilModel, databaseRepository, cacheModel, eventService);
     }
 }

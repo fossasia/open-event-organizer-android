@@ -6,81 +6,100 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
 import java.util.List;
 
-public class Event implements Parcelable {
 
-    @SerializedName("background_image")
-    private String backgroundImage;
+@Table(database = OrgaDatabase.class, allFields = true)
+public class Event extends BaseModel implements Parcelable {
+
+    @PrimaryKey
+    @SerializedName("id")
+    private long id;
+
+    // Foreign Key Section - Lazy Load
+    // Need to explicitly associate the fields to save them
+
+    @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
     @SerializedName("call_for_papers")
     private CallForPapers callForPapers;
-    @SerializedName("code_of_conduct")
-    private String codeOfConduct;
-    @SerializedName("copyright")
+
+    @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
     private Copyright copyright;
-    @SerializedName("description")
+
+    @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
+    @SerializedName("licence_details")
+    private License licenseDetails;
+
+    @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
+    private Version version;
+
+    @ColumnIgnore
+    @SerializedName("social_links")
+    List<SocialLink> socialLinks;
+
+    @ColumnIgnore
+    List<Ticket> tickets;
+
+    // Images
+    @SerializedName("background_image")
+    private String backgroundImage;
+    private String logo;
+    private String large;
+    private String thumbnail;
+    @SerializedName("placeholder_url")
+    private String placeholderUrl;
+
+    // Event Info
+    private String identifier;
+    private String name;
     private String description;
-    @SerializedName("email")
     private String email;
+    private double latitude;
+
+    private double longitude;
+    @SerializedName("location_name")
+    private String locationName;
+    @SerializedName("searchable_location_name")
+    private String searchableLocationName;
+    @SerializedName("start_time")
+    private String startTime;
     @SerializedName("end_time")
     private String endTime;
+    private String timezone;
+    private String topic;
+    @SerializedName("sub_topic")
+    private String subTopic;
+    private String type;
+    private String state;
     @SerializedName("event_url")
     private String eventUrl;
     @SerializedName("has_session_speakers")
-    private Boolean hasSessionSpeakers;
-    @SerializedName("id")
-    private Long id;
-    @SerializedName("identifier")
-    private String identifier;
-    @SerializedName("large")
-    private String large;
-    @SerializedName("latitude")
-    private Double latitude;
-    @SerializedName("licence_details")
-    private License licenceDetails;
-    @SerializedName("location_name")
-    private String locationName;
-    @SerializedName("logo")
-    private String logo;
-    @SerializedName("longitude")
-    private Double longitude;
-    @SerializedName("name")
-    private String name;
+    private boolean hasSessionSpeakers;
+    @SerializedName("code_of_conduct")
+    private String codeOfConduct;
+    private String privacy;
+    @SerializedName("schedule_published_on")
+    private String schedulePublishedOn;
+    @SerializedName("ticket_url")
+    private String ticketUrl;
+
     @SerializedName("organizer_description")
     private String organizerDescription;
     @SerializedName("organizer_name")
     private String organizerName;
-    @SerializedName("placeholder_url")
-    private String placeholderUrl;
-    @SerializedName("privacy")
-    private String privacy;
-    @SerializedName("schedule_published_on")
-    private String schedulePublishedOn;
-    @SerializedName("searchable_location_name")
-    private String searchableLocationName;
-    @SerializedName("social_links")
-    private List<SocialLink> socialLinks;
-    @SerializedName("start_time")
-    private String startTime;
-    @SerializedName("state")
-    private String state;
-    @SerializedName("sub_topic")
-    private String subTopic;
-    @SerializedName("thumbnail")
-    private String thumbnail;
-    @SerializedName("ticket_url")
-    private String ticketUrl;
-    @SerializedName("tickets")
-    private List<Ticket> tickets;
-    @SerializedName("timezone")
-    private String timezone;
-    @SerializedName("topic")
-    private String topic;
-    @SerializedName("type")
-    private String type;
-    @SerializedName("version")
-    private Version version;
+
+    // Tells if the event saved is complete ( with tickets )
+    private boolean isComplete = true;
 
     // For Data Binding
     public final ObservableField<String> startDate = new ObservableField<>();
@@ -95,6 +114,17 @@ public class Event implements Parcelable {
 
     public Event(long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean save() {
+        associateCallForPapers();
+        associateCopyright();
+        associateLicenseDetails();
+        associateSocialLinks();
+        associateTickets();
+
+        return super.save();
     }
 
     public String getBackgroundImage() {
@@ -113,6 +143,11 @@ public class Event implements Parcelable {
         this.callForPapers = callForPapers;
     }
 
+    public void associateCallForPapers() {
+        if (callForPapers != null)
+            callForPapers.setId(id);
+    }
+
     public String getCodeOfConduct() {
         return codeOfConduct;
     }
@@ -127,6 +162,11 @@ public class Event implements Parcelable {
 
     public void setCopyright(Copyright copyright) {
         this.copyright = copyright;
+    }
+
+    public void associateCopyright() {
+        if (copyright != null)
+            copyright.setId(id);
     }
 
     public String getDescription() {
@@ -161,19 +201,19 @@ public class Event implements Parcelable {
         this.eventUrl = eventUrl;
     }
 
-    public Boolean getHasSessionSpeakers() {
+    public boolean getHasSessionSpeakers() {
         return hasSessionSpeakers;
     }
 
-    public void setHasSessionSpeakers(Boolean hasSessionSpeakers) {
+    public void setHasSessionSpeakers(boolean hasSessionSpeakers) {
         this.hasSessionSpeakers = hasSessionSpeakers;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -193,20 +233,37 @@ public class Event implements Parcelable {
         this.large = large;
     }
 
-    public Double getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public License getLicenceDetails() {
-        return licenceDetails;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLicenceDetails(License licenceDetails) {
-        this.licenceDetails = licenceDetails;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public boolean isHasSessionSpeakers() {
+        return hasSessionSpeakers;
+    }
+
+    public License getLicenseDetails() {
+        return licenseDetails;
+    }
+
+    public void setLicenseDetails(License licenseDetails) {
+        this.licenseDetails = licenseDetails;
+    }
+
+    public void associateLicenseDetails() {
+        if (licenseDetails != null)
+            licenseDetails.setId(id);
     }
 
     public String getLocationName() {
@@ -223,14 +280,6 @@ public class Event implements Parcelable {
 
     public void setLogo(String logo) {
         this.logo = logo;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
     }
 
     public String getName() {
@@ -297,6 +346,15 @@ public class Event implements Parcelable {
         this.socialLinks = socialLinks;
     }
 
+    public void associateSocialLinks() {
+        if (socialLinks == null)
+            return;
+
+        for(SocialLink socialLink : socialLinks) {
+            socialLink.setEvent(this);
+        }
+    }
+
     public String getStartTime() {
         return startTime;
     }
@@ -345,6 +403,15 @@ public class Event implements Parcelable {
         this.tickets = tickets;
     }
 
+    public void associateTickets() {
+        if (tickets == null)
+            return;
+
+        for (Ticket ticket : tickets) {
+            ticket.setEvent(this);
+        }
+    }
+
     public String getTimezone() {
         return timezone;
     }
@@ -380,24 +447,76 @@ public class Event implements Parcelable {
     @Override
     public String toString() {
         return "Event{" +
-            "backgroundImage='" + backgroundImage + '\'' +
+            "id=" + id +
+            ", callForPapers=" + callForPapers +
+            ", copyright=" + copyright +
+            ", licenseDetails=" + licenseDetails +
+            ", version=" + version +
+            ", socialLinks=" + socialLinks +
+            ", tickets=" + tickets +
+            ", backgroundImage='" + backgroundImage + '\'' +
+            ", logo='" + logo + '\'' +
+            ", large='" + large + '\'' +
+            ", thumbnail='" + thumbnail + '\'' +
+            ", placeholderUrl='" + placeholderUrl + '\'' +
+            ", identifier='" + identifier + '\'' +
+            ", name='" + name + '\'' +
             ", description='" + description + '\'' +
             ", email='" + email + '\'' +
-            ", endTime='" + endTime + '\'' +
-            ", eventUrl='" + eventUrl + '\'' +
-            ", id=" + id +
-            ", logo='" + logo + '\'' +
-            ", name='" + name + '\'' +
-            ", organizerName='" + organizerName + '\'' +
-            ", placeholderUrl='" + placeholderUrl + '\'' +
+            ", latitude=" + latitude +
+            ", longitude=" + longitude +
+            ", locationName='" + locationName + '\'' +
+            ", searchableLocationName='" + searchableLocationName + '\'' +
             ", startTime='" + startTime + '\'' +
-            ", thumbnail='" + thumbnail + '\'' +
-            ", ticketUrl='" + ticketUrl + '\'' +
-            ", tickets=" + tickets +
+            ", endTime='" + endTime + '\'' +
             ", timezone='" + timezone + '\'' +
+            ", topic='" + topic + '\'' +
+            ", subTopic='" + subTopic + '\'' +
             ", type='" + type + '\'' +
-            ", version=" + version +
+            ", state='" + state + '\'' +
+            ", eventUrl='" + eventUrl + '\'' +
+            ", hasSessionSpeakers=" + hasSessionSpeakers +
+            ", codeOfConduct='" + codeOfConduct + '\'' +
+            ", privacy='" + privacy + '\'' +
+            ", schedulePublishedOn='" + schedulePublishedOn + '\'' +
+            ", ticketUrl='" + ticketUrl + '\'' +
+            ", organizerDescription='" + organizerDescription + '\'' +
+            ", organizerName='" + organizerName + '\'' +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            ", eventStartTime=" + eventStartTime +
+            ", totalAttendees=" + totalAttendees +
+            ", totalTickets=" + totalTickets +
+            ", checkedIn=" + checkedIn +
             '}';
+    }
+
+    // One to Many implementation
+
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "tickets")
+    public List<Ticket> getEventTickets() {
+        if(tickets != null && !tickets.isEmpty())
+            return tickets;
+
+        tickets = SQLite.select()
+            .from(Ticket.class)
+            .where(Ticket_Table.event_id.eq(id))
+            .queryList();
+
+        return tickets;
+    }
+
+    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "socialLinks")
+    public List<SocialLink> getEventSocialLinks() {
+        if(socialLinks != null && !socialLinks.isEmpty())
+            return socialLinks;
+
+        socialLinks = SQLite.select()
+            .from(SocialLink.class)
+            .where(SocialLink_Table.event_id.eq(id))
+            .queryList();
+
+        return socialLinks;
     }
 
     // Parcelable Information - Only basic event info
@@ -435,7 +554,7 @@ public class Event implements Parcelable {
         this.email = in.readString();
         this.endTime = in.readString();
         this.eventUrl = in.readString();
-        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.id = (long) in.readValue(long.class.getClassLoader());
         this.large = in.readString();
         this.locationName = in.readString();
         this.logo = in.readString();
@@ -461,4 +580,12 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
+    }
 }

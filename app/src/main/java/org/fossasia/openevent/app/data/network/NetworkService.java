@@ -1,5 +1,9 @@
 package org.fossasia.openevent.app.data.network;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.fossasia.openevent.app.data.db.configuration.DbFlowExclusionStrategy;
 import org.fossasia.openevent.app.utils.Constants;
 
 import retrofit2.Retrofit;
@@ -11,10 +15,14 @@ public class NetworkService {
     private static EventService eventService;
 
     static {
+        Gson gson =new GsonBuilder()
+            .addDeserializationExclusionStrategy(new DbFlowExclusionStrategy())
+            .create();
+
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
 
         eventService = retrofit.create(EventService.class);

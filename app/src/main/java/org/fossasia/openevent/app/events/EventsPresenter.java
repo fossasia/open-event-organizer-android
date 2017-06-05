@@ -47,9 +47,11 @@ public class EventsPresenter implements IEventsPresenter {
 
         eventsDataRepository
             .getEvents(forceReload)
+            .toList()
             .subscribe(events -> {
                 if(eventsView == null)
                     return;
+
                 eventsView.showEvents(events);
                 if(eventsView.isTwoPane() && firstLoad)
                     eventsView.showInitialEvent();
@@ -59,6 +61,7 @@ public class EventsPresenter implements IEventsPresenter {
             }, throwable -> {
                 if(eventsView == null)
                     return;
+
                 eventsView.showEventError(throwable.getMessage());
                 eventsView.showProgressBar(false);
             });

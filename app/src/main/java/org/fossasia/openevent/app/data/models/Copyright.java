@@ -1,10 +1,18 @@
 package org.fossasia.openevent.app.data.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Copyright {
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
-    @SerializedName("holder")
+@Table(database = OrgaDatabase.class, allFields = true)
+public class Copyright extends BaseModel {
+
+    @PrimaryKey
+    public long id;
+
     private String holder;
     @SerializedName("holder_url")
     private String holderUrl;
@@ -12,10 +20,16 @@ public class Copyright {
     private String license;
     @SerializedName("licence_url")
     private String licenseUrl;
-    @SerializedName("logo")
     private String logo;
-    @SerializedName("year")
-    private Long year;
+    private long year;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getHolder() {
         return holder;
@@ -33,20 +47,20 @@ public class Copyright {
         this.holderUrl = holderUrl;
     }
 
-    public String getLicence() {
+    public String getLicense() {
         return license;
     }
 
-    public void setLicence(String licence) {
-        license = licence;
+    public void setLicense(String license) {
+        this.license = license;
     }
 
-    public String getLicenceUrl() {
+    public String getLicenseUrl() {
         return licenseUrl;
     }
 
-    public void setLicenceUrl(String licenceUrl) {
-        licenseUrl = licenceUrl;
+    public void setLicenseUrl(String licenseUrl) {
+        this.licenseUrl = licenseUrl;
     }
 
     public String getLogo() {
@@ -57,12 +71,24 @@ public class Copyright {
         this.logo = logo;
     }
 
-    public Long getYear() {
+    public long getYear() {
         return year;
     }
 
-    public void setYear(Long year) {
+    public void setYear(long year) {
         this.year = year;
     }
 
+    @Override
+    public String toString() {
+        return "Copyright{" +
+            "id=" + id +
+            ", holder='" + holder + '\'' +
+            ", holderUrl='" + holderUrl + '\'' +
+            ", license='" + license + '\'' +
+            ", licenseUrl='" + licenseUrl + '\'' +
+            ", logo='" + logo + '\'' +
+            ", year=" + year +
+            '}';
+    }
 }

@@ -3,8 +3,10 @@ package org.fossasia.openevent.app.model;
 import org.fossasia.openevent.app.data.EventRepository;
 import org.fossasia.openevent.app.data.cache.ObjectCache;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.Event_Table;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.data.network.NetworkService;
@@ -21,12 +23,19 @@ import org.mockito.junit.MockitoRule;
 import java.util.Arrays;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.observers.TestObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.refEq;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -41,13 +50,16 @@ public class EventRepositoryTest {
 
     private ObjectCache objectCache = ObjectCache.getInstance();
 
-    private EventRepository retrofitEventModel;
+    private EventRepository eventRepository;
 
     @Mock
     EventService eventService;
 
     @Mock
     IUtilModel utilModel;
+
+    @Mock
+    IDatabaseRepository databaseRepository;
 
     private String token = "TestToken";
     private String auth = NetworkService.formatToken(token);
@@ -56,7 +68,7 @@ public class EventRepositoryTest {
     public void setUp() {
         when(utilModel.getToken()).thenReturn(token);
 
-        retrofitEventModel = new EventRepository(utilModel, ObjectCache.getInstance(), eventService);
+        eventRepository = new EventRepository(utilModel, databaseRepository, ObjectCache.getInstance(), eventService);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -77,41 +89,43 @@ public class EventRepositoryTest {
         // Clear cache
         objectCache.clear();
 
-        Mockito.when(utilModel.isConnected()).thenReturn(false);
+        when(utilModel.isConnected()).thenReturn(false);
+        when(databaseRepository.getAllItems(any())).thenReturn(Observable.empty());
+        when(databaseRepository.getItem(any(), any())).thenReturn(Observable.empty());
 
-        retrofitEventModel.getEvents(false)
+        eventRepository.getEvents(false)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        retrofitEventModel.getEvents(true)
+        eventRepository.getEvents(true)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        retrofitEventModel.getEvent(21, false)
+        eventRepository.getEvent(21, false)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        retrofitEventModel.getEvent(21, true)
+        eventRepository.getEvent(21, true)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        retrofitEventModel.getOrganiser(false)
+        eventRepository.getOrganiser(false)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        retrofitEventModel.getOrganiser(true)
+        eventRepository.getOrganiser(true)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        retrofitEventModel.getAttendees(43, false)
+        eventRepository.getAttendees(43, false)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        retrofitEventModel.getAttendees(43, true)
+        eventRepository.getAttendees(43, true)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        retrofitEventModel.toggleAttendeeCheckStatus(43, 52)
+        eventRepository.toggleAttendeeCheckStatus(43, 52)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
@@ -129,7 +143,7 @@ public class EventRepositoryTest {
         when(eventService.getUser(auth)).thenReturn(Observable.just(user));
 
         // No force reload ensures use of cache
-        Observable<User> userObservable = retrofitEventModel.getOrganiser(false);
+        Observable<User> userObservable = eventRepository.getOrganiser(false);
 
         userObservable.test().assertNoErrors();
         userObservable.test().assertValue(user);
@@ -151,7 +165,7 @@ public class EventRepositoryTest {
         objectCache.saveObject(EventRepository.ORGANIZER, user);
 
         // No force reload ensures use of cache
-        Observable<User> userObservable = retrofitEventModel.getOrganiser(false);
+        Observable<User> userObservable = eventRepository.getOrganiser(false);
 
         userObservable.test().assertNoErrors();
         userObservable.test().assertValue(user);
@@ -171,7 +185,7 @@ public class EventRepositoryTest {
         when(eventService.getUser(auth)).thenReturn(Observable.just(user));
 
         // Force reload ensures no use of cache
-        Observable<User> userObservable = retrofitEventModel.getOrganiser(true);
+        Observable<User> userObservable = eventRepository.getOrganiser(true);
 
         userObservable.test().assertNoErrors();
         userObservable.test().assertValue(user);
@@ -182,143 +196,144 @@ public class EventRepositoryTest {
 
     @Test
     public void shouldSaveEventInCache() {
-        int id = 23;
-
-        // Clear cache
-        objectCache.clear();
+        long id = 23;
 
         Event event = new Event();
 
+        TestObserver testObserver = TestObserver.create();
+        Completable completable = Completable.complete()
+            .doOnSubscribe(testObserver::onSubscribe);
+
         when(utilModel.isConnected()).thenReturn(true);
+        when(databaseRepository.getItem(eq(Event.class), refEq(Event_Table.id.eq(id))))
+            .thenReturn(Observable.empty());
+        when(databaseRepository.save(event)).thenReturn(completable);
         when(eventService.getEvent(id)).thenReturn(Observable.just(event));
 
         // No force reload ensures use of cache
-        Observable<Event> userObservable = retrofitEventModel.getEvent(23, false);
+        Observable<Event> userObservable = eventRepository.getEvent(23, false);
 
-        userObservable.test().assertNoErrors();
-        userObservable.test().assertValue(event);
+        userObservable.test()
+            .assertSubscribed()
+            .assertNoErrors()
+            .assertValue(event);
+
+        testObserver.assertSubscribed();
 
         // Verify loads from network
         verify(eventService).getEvent(id);
-
-        Event stored = (Event) objectCache.getValue(EventRepository.EVENT + id);
-        assertEquals(stored, event);
+        verify(databaseRepository).save(event);
     }
 
     @Test
     public void shouldLoadEventFromCache() {
-        int id = 45;
-
-        // Clear cache
-        objectCache.clear();
+        long id = 45;
 
         Event event = new Event();
-        objectCache.saveObject(EventRepository.EVENT + id, event);
+        when(databaseRepository.getItem(eq(Event.class), refEq(Event_Table.id.eq(id))))
+            .thenReturn(Observable.just(event));
 
         // No force reload ensures use of cache
-        Observable<Event> userObservable = retrofitEventModel.getEvent(id, false);
+        Observable<Event> userObservable = eventRepository.getEvent(id, false);
 
         userObservable.test().assertNoErrors();
         userObservable.test().assertValue(event);
 
+        verify(databaseRepository, atLeastOnce()).getItem(eq(Event.class), refEq(Event_Table.id.eq(id)));
         verifyZeroInteractions(eventService);
     }
 
     @Test
     public void shouldFetchEventOnForceReload() {
-        int id = 45;
-
-        // Clear cache
-        objectCache.clear();
+        long id = 45;
 
         Event event = new Event();
-        objectCache.saveObject(EventRepository.EVENT + id, event);
-
+        when(databaseRepository.save(event)).thenReturn(Completable.complete());
         when(utilModel.isConnected()).thenReturn(true);
         when(eventService.getEvent(id)).thenReturn(Observable.just(event));
 
         // Force reload ensures no use of cache
-        Observable<Event> userObservable = retrofitEventModel.getEvent(id, true);
+        Observable<Event> userObservable = eventRepository.getEvent(id, true);
 
         userObservable.test().assertNoErrors();
         userObservable.test().assertValue(event);
 
         // Verify loads from network
-        verify(eventService).getEvent(id);
+        verify(eventService, atLeastOnce()).getEvent(id);
+        verify(databaseRepository, never()).getItem(any(), any());
     }
 
     @Test
     public void shouldSaveEventsInCache() {
-        // Clear cache
-        objectCache.clear();
-
         List<Event> events = Arrays.asList(
             new Event(12),
             new Event(21),
             new Event(52)
         );
 
+        when(databaseRepository.getAllItems(eq(Event.class)))
+            .thenReturn(Observable.empty());
+        when(databaseRepository.save(any(Event.class))).thenReturn(Completable.complete());
         when(utilModel.isConnected()).thenReturn(true);
         when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
 
         // No force reload ensures use of cache
-        Observable<List<Event>> userObservable = retrofitEventModel.getEvents(false);
+        Observable<Event> eventObservable = eventRepository.getEvents(false);
 
-        userObservable.test().assertNoErrors();
-        userObservable.test().assertValue(events);
+        eventObservable.test().assertNoErrors();
+        eventObservable.toList().test().assertValue(events);
 
         // Verify loads from network
         verify(utilModel).getToken();
-        verify(eventService).getEvents(auth);
+        verify(eventService, atLeastOnce()).getEvents(auth);
 
-        List<Event> stored = (List<Event>) objectCache.getValue(EventRepository.EVENTS);
-        assertEquals(stored, events);
+        for (Event event : events) {
+            assertEquals(event.isComplete(), false);
+            verify(databaseRepository, atLeastOnce()).save(event);
+        }
     }
 
     @Test
     public void shouldLoadEventsFromCache() {
-        // Clear cache
-        objectCache.clear();
-
         List<Event> events = Arrays.asList(
             new Event(12),
             new Event(21),
             new Event(52)
         );
-        objectCache.saveObject(EventRepository.EVENTS, events);
 
+        when(databaseRepository.getAllItems(eq(Event.class)))
+            .thenReturn(Observable.fromIterable(events));
         // No force reload ensures use of cache
-        Observable<List<Event>> eventsObservable = retrofitEventModel.getEvents(false);
+        Observable<Event> eventsObservable = eventRepository.getEvents(false);
 
         eventsObservable.test().assertNoErrors();
-        eventsObservable.test().assertValue(events);
+        eventsObservable.toList().test().assertValue(events);
 
+        verify(databaseRepository, atLeastOnce()).getAllItems(eq(Event.class));
         verifyZeroInteractions(eventService);
     }
 
     @Test
     public void shouldFetchEventsOnForceReload() {
-        // Clear cache
-        objectCache.clear();
-
         List<Event> events = Arrays.asList(
             new Event(12),
             new Event(21),
             new Event(52)
         );
-        objectCache.saveObject(EventRepository.EVENTS, events);
 
         when(utilModel.isConnected()).thenReturn(true);
+        when(databaseRepository.save(any(Event.class))).thenReturn(Completable.complete());
         when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
 
         // Force reload ensures no use of cache
-        Observable<List<Event>> eventsObservable = retrofitEventModel.getEvents(true);
+        Observable<Event> eventsObservable = eventRepository.getEvents(true);
 
         eventsObservable.test().assertNoErrors();
-        eventsObservable.test().assertValue(events);
+        eventsObservable.toList().test().assertValue(events);
 
         // Verify loads from network
-        verify(eventService).getEvents(auth);
+        verify(eventService, atLeastOnce()).getEvents(auth);
+        verify(databaseRepository, never()).getAllItems(eq(Event.class));
     }
 
     @Test
@@ -336,7 +351,7 @@ public class EventRepositoryTest {
         when(eventService.getAttendees(43, auth)).thenReturn(Observable.just(attendees));
 
         // No force reload ensures use of cache
-        Observable<List<Attendee>> attendeesObservable = retrofitEventModel.getAttendees(43, false);
+        Observable<List<Attendee>> attendeesObservable = eventRepository.getAttendees(43, false);
 
         attendeesObservable.test().assertNoErrors();
         attendeesObservable.test().assertValue(attendees);
@@ -362,7 +377,7 @@ public class EventRepositoryTest {
         objectCache.saveObject(EventRepository.ATTENDEES + 67, attendees);
 
         // No force reload ensures use of cache
-        Observable<List<Attendee>> attendeeObservable = retrofitEventModel.getAttendees(67, false);
+        Observable<List<Attendee>> attendeeObservable = eventRepository.getAttendees(67, false);
 
         attendeeObservable.test().assertNoErrors();
         attendeeObservable.test().assertValue(attendees);
@@ -386,7 +401,7 @@ public class EventRepositoryTest {
         when(eventService.getAttendees(23, auth)).thenReturn(Observable.just(attendees));
 
         // Force reload ensures no use of cache
-        Observable<List<Attendee>> attendeeObservable = retrofitEventModel.getAttendees(23, true);
+        Observable<List<Attendee>> attendeeObservable = eventRepository.getAttendees(23, true);
 
         attendeeObservable.test().assertNoErrors();
         attendeeObservable.test().assertValue(attendees);
@@ -417,7 +432,7 @@ public class EventRepositoryTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(eventService.toggleAttendeeCheckStatus(76, 89, auth)).thenReturn(Observable.just(attendee));
 
-        Observable<Attendee> attendeeObservable = retrofitEventModel.toggleAttendeeCheckStatus(76, 89);
+        Observable<Attendee> attendeeObservable = eventRepository.toggleAttendeeCheckStatus(76, 89);
 
         attendeeObservable.test().assertNoErrors();
         attendeeObservable.test().assertValue((Attendee::isCheckedIn));
