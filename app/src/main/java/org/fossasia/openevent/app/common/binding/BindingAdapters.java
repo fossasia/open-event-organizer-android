@@ -2,9 +2,11 @@ package org.fossasia.openevent.app.common.binding;
 
 import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
+import android.net.Uri;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -17,8 +19,11 @@ public class BindingAdapters {
 
     @BindingAdapter({"circleImageUrl"})
     public static void bindCircularImage(ImageView imageView, String url) {
+        if(TextUtils.isEmpty(url))
+            return;
+
         Picasso.with(imageView.getContext())
-            .load(url)
+            .load(Uri.parse(url))
             .error(R.drawable.ic_photo_shutter)
             .placeholder(R.drawable.ic_photo_shutter)
             .transform(new CircleTransform())
