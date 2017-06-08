@@ -5,14 +5,24 @@ import android.Manifest.permission;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+
+import android.util.DisplayMetrics;
 import android.util.SparseArray;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +68,18 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
+    @BindView(R.id.frame_corner_00)
+    FrameLayout frameCorner00;
+
+    @BindView(R.id.frame_corner_01)
+    FrameLayout frameCorner01;
+
+    @BindView(R.id.frame_corner_10)
+    FrameLayout frameCorner10;
+
+    @BindView(R.id.frame_corner_11)
+    FrameLayout frameCorner11;
+
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
 
@@ -76,6 +98,8 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         ButterKnife.bind(this);
+
+        setFrames();
 
         long eventId = getIntent().getLongExtra(EventListActivity.EVENT_KEY, -1);
 
@@ -116,6 +140,60 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     }
 
     // Lifecycle methods end
+
+    /**
+     * A method sets frame corners proportional to a screen dimensions.
+     * Reference screen width is taken as 480 pixels and found suitable dimensions for
+     * frame corners.
+     */
+    private void setFrames() {
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        int width = size.x < size.y ? size.x : size.y;
+        int frameCornerWidth = ViewUtils.convertDpToPixel(50 * width / 480, this);
+        int marginFromCenter = ViewUtils.convertDpToPixel(160 * width / 480, this);
+
+        //setting layout params to frame corners
+        CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(frameCornerWidth, frameCornerWidth);
+        lp.gravity = Gravity.CENTER;
+        lp.setMargins(0, 0, marginFromCenter, marginFromCenter);
+        frameCorner00.setLayoutParams(lp);
+        lp = new CoordinatorLayout.LayoutParams(frameCornerWidth, frameCornerWidth);
+        lp.gravity = Gravity.CENTER;
+        lp.setMargins(marginFromCenter, 0, 0, marginFromCenter);
+        frameCorner01.setLayoutParams(lp);
+        lp = new CoordinatorLayout.LayoutParams(frameCornerWidth, frameCornerWidth);
+        lp.gravity = Gravity.CENTER;
+        lp.setMargins(0, marginFromCenter, marginFromCenter, 0);
+        frameCorner10.setLayoutParams(lp);
+        lp = new CoordinatorLayout.LayoutParams(frameCornerWidth, frameCornerWidth);
+        lp.gravity = Gravity.CENTER;
+        lp.setMargins(marginFromCenter, marginFromCenter, 0, 0);
+        frameCorner11.setLayoutParams(lp);
+
+        //setting background
+
+        Drawable[] drawables = {ResourcesCompat.getDrawable(getResources(), R.drawable.bordered_rectangle, null)};
+        int px = ViewUtils.convertDpToPixel(2, this);
+        LayerDrawable ld = new LayerDrawable(drawables);
+        ld.setLayerInset(0, 0, 0, -px, -px);
+        frameCorner00.setBackground(ld.mutate());
+
+        ld = new LayerDrawable(drawables);
+        ld.setLayerInset(0, -px, 0, 0, -px);
+        frameCorner01.setBackground(ld.mutate());
+
+        ld = new LayerDrawable(drawables);
+        ld.setLayerInset(0, 0, -px, -px, 0);
+        frameCorner10.setBackground(ld.mutate());
+
+        ld = new LayerDrawable(drawables);
+        ld.setLayerInset(0, -px, -px, 0, 0);
+        frameCorner11.setBackground(ld.mutate());
+    }
 
     private void buildBarcodeDetector() {
         barcodeDetector = new BarcodeDetector.Builder(this)

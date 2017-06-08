@@ -20,6 +20,42 @@
         tools:visibility="visible"
         style="@style/TextCapsule"/>
 
+    <FrameLayout
+        android:id="@+id/frame_corner_00"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="160dp"
+        android:layout_marginRight="160dp"
+        android:background="@drawable/bordered_rectangle"/>
+
+    <FrameLayout
+        android:id="@+id/frame_corner_01"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="160dp"
+        android:layout_marginLeft="160dp"
+        android:background="@drawable/bordered_rectangle"/>
+
+    <FrameLayout
+        android:id="@+id/frame_corner_10"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="160dp"
+        android:layout_marginRight="160dp"
+        android:background="@drawable/bordered_rectangle"/>
+
+    <FrameLayout
+        android:id="@+id/frame_corner_11"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="160dp"
+        android:layout_marginLeft="160dp"
+        android:background="@drawable/bordered_rectangle"/>
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
