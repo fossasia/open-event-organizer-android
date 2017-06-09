@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data class="EventDetailBinding">
 
@@ -35,91 +36,143 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context=".event.detail.EventDetailsActivity">
 
-                <TextView
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:text="@{event.name}"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="8dp"
+                    android:elevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{event.totalAttendees + &quot;&quot;}"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{&quot;/&quot; + event.totalTickets + &quot;&quot;}"
+                                    android:textSize="12sp"/>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tickets Sold"
+                                android:textSize="16sp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="4dp"
+                                android:gravity="center_vertical">
+
+                                <ProgressBar
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:max="100"
+                                    android:progress="@{event.totalTickets == 0 ? 0 : (int) ((event.totalAttendees*100)/event.totalTickets)}" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{event.totalTickets == 0 ? 0 + &quot;%&quot; : (int) ((event.totalAttendees*100)/event.totalTickets) + &quot;%&quot;}"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginStart="4dp"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#808080"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{event.checkedIn + &quot;&quot;}"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{&quot;/&quot; + event.totalAttendees + &quot;&quot;}"
+                                    android:textSize="12sp"/>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Checked In"
+                                android:textSize="16sp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="4dp"
+                                android:gravity="center_vertical">
+
+                                <ProgressBar
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:max="100"
+                                    android:progress="@{event.totalAttendees == 0 ? 0 : (int) ((event.checkedIn*100)/event.totalAttendees)}" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="@{event.startDate + &quot; to &quot; + event.endDate + &quot; @ &quot;  + event.eventStartTime}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{event.totalAttendees == 0 ? 0 + &quot;%&quot; : (int) ((event.checkedIn*100)/event.totalAttendees) + &quot;%&quot;}"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginStart="4dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:paddingBottom="0dp"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:paddingTop="12dp"
-                    android:text="@string/tickets_sold"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                            </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:text="@{event.totalAttendees + &quot;/&quot; + event.totalTickets}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                        </LinearLayout>
 
-                <ProgressBar
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:max="100"
-                    android:maxHeight="10dip"
-                    android:minHeight="10dip"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:progress="@{event.totalTickets == 0 ? 0 : (int) ((event.totalAttendees*100)/event.totalTickets)}" />
+                    </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:paddingBottom="0dp"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:paddingTop="12dp"
-                    android:text="@string/attendance"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:text="@{event.checkedIn + &quot;/&quot; + event.totalAttendees}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-                <ProgressBar
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:max="100"
-                    android:maxHeight="10dip"
-                    android:minHeight="10dip"
-                    android:paddingBottom="12dp"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:progress="@{event.totalAttendees == 0 ? 0 : (int) ((event.checkedIn*100)/event.totalAttendees)}" />
+                </android.support.v7.widget.CardView>
 
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
