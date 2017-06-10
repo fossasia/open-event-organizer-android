@@ -19,8 +19,10 @@ public class BindingAdapters {
 
     @BindingAdapter({"circleImageUrl"})
     public static void bindCircularImage(ImageView imageView, String url) {
-        if(TextUtils.isEmpty(url))
+        if(TextUtils.isEmpty(url)) {
+            imageView.setImageResource(R.drawable.ic_photo_shutter);
             return;
+        }
 
         Picasso.with(imageView.getContext())
             .load(Uri.parse(url))
