@@ -30,12 +30,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/activity_horizontal_margin">
+            android:layout_marginTop="@dimen/spacing_normal">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp">
+                android:layout_margin="@dimen/spacing_medium">
 
                 <EditText
                     android:id="@+id/etEmail"
@@ -48,7 +48,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp">
+                android:layout_margin="@dimen/spacing_medium">
 
                 <EditText
                     android:id="@+id/etPassword"
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="12dp"
+                android:layout_margin="@dimen/spacing_medium"
                 android:background="@android:color/holo_red_light"
                 android:text="@string/login"
                 android:textColor="@android:color/white"
