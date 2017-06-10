@@ -13,7 +13,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_margin="@dimen/spacing_normal"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -26,13 +26,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:padding="@dimen/spacing_extra_small"
                 android:text="@{Utils.formatOptionalString(&quot;%s %s&quot;, attendee.firstname, attendee.lastname)}" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:padding="@dimen/spacing_extra_small"
                 android:text="@{attendee.email}" />
 
         </LinearLayout>
