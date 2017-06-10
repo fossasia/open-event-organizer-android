@@ -31,17 +31,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/spacing_normal"
+                android:paddingRight="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_normal"
                 tools:context=".event.detail.EventDetailsActivity">
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardUseCompatPadding="true"
-                    app:contentPadding="8dp"
-                    android:elevation="2dp">
+                    app:contentPadding="@dimen/spacing_small"
+                    android:elevation="@dimen/elevation">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{&quot;/&quot; + event.totalTickets + &quot;&quot;}"
-                                    android:textSize="12sp"/>
+                                    android:textSize="@dimen/text_size_small"/>
 
                             </LinearLayout>
 
@@ -79,13 +79,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Tickets Sold"
-                                android:textSize="16sp" />
+                                android:textSize="@dimen/text_size_normal" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_marginTop="4dp"
+                                android:layout_marginTop="@dimen/spacing_extra_small"
                                 android:gravity="center_vertical">
 
                                 <ProgressBar
@@ -99,8 +99,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{event.totalTickets == 0 ? 0 + &quot;%&quot; : (int) ((event.totalAttendees*100)/event.totalTickets) + &quot;%&quot;}"
-                                    android:layout_marginLeft="4dp"
-                                    android:layout_marginStart="4dp"/>
+                                    android:layout_marginLeft="@dimen/spacing_extra_small"
+                                    android:layout_marginStart="@dimen/spacing_extra_small"/>
 
                             </LinearLayout>
 
@@ -127,14 +127,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{event.checkedIn + &quot;&quot;}"
-                                    android:textSize="20sp"
+                                    android:textSize="@dimen/text_size_large"
                                     android:textStyle="bold"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{&quot;/&quot; + event.totalAttendees + &quot;&quot;}"
-                                    android:textSize="12sp"/>
+                                    android:textSize="@dimen/text_size_small"/>
 
                             </LinearLayout>
 
@@ -142,13 +142,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Checked In"
-                                android:textSize="16sp" />
+                                android:textSize="@dimen/text_size_normal" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_marginTop="4dp"
+                                android:layout_marginTop="@dimen/spacing_extra_small"
                                 android:gravity="center_vertical">
 
                                 <ProgressBar
@@ -163,8 +163,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{event.totalAttendees == 0 ? 0 + &quot;%&quot; : (int) ((event.checkedIn*100)/event.totalAttendees) + &quot;%&quot;}"
-                                    android:layout_marginLeft="4dp"
-                                    android:layout_marginStart="4dp"/>
+                                    android:layout_marginLeft="@dimen/spacing_extra_small"
+                                    android:layout_marginStart="@dimen/spacing_extra_small"/>
 
                             </LinearLayout>
 

@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#454545"
-            android:padding="20dp"
+            android:padding="@dimen/spacing_normal"
             android:text="@string/scan_qr_code"
             android:theme="@style/AppTheme.Button"
             android:visibility="gone"
