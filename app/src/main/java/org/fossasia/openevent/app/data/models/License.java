@@ -1,10 +1,19 @@
 package org.fossasia.openevent.app.data.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class License {
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
-    @SerializedName("description")
+@Table(database = OrgaDatabase.class, allFields = true)
+public class License extends BaseModel {
+
+    @PrimaryKey
+    private long id;
+
+    private String name;
     private String description;
     @SerializedName("licence_compact_logo")
     private String licenceCompactLogo;
@@ -14,8 +23,14 @@ public class License {
     private String licenseUrl;
     @SerializedName("long_name")
     private String longName;
-    @SerializedName("name")
-    private String name;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
@@ -33,20 +48,20 @@ public class License {
         this.licenceCompactLogo = licenceCompactLogo;
     }
 
-    public String getLicenceLogo() {
+    public String getLicenseLogo() {
         return licenseLogo;
     }
 
-    public void setLicenceLogo(String licenceLogo) {
-        licenseLogo = licenceLogo;
+    public void setLicenseLogo(String licenseLogo) {
+        this.licenseLogo = licenseLogo;
     }
 
-    public String getLicenceUrl() {
+    public String getLicenseUrl() {
         return licenseUrl;
     }
 
-    public void setLicenceUrl(String licenceUrl) {
-        licenseUrl = licenceUrl;
+    public void setLicenseUrl(String licenseUrl) {
+        this.licenseUrl = licenseUrl;
     }
 
     public String getLongName() {

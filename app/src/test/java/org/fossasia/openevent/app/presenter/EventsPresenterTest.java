@@ -68,7 +68,7 @@ public class EventsPresenterTest {
             .thenReturn(Observable.just(organiser));
 
         when(eventModel.getEvents(false))
-            .thenReturn(Observable.just(eventList));
+            .thenReturn(Observable.fromIterable(eventList));
 
         eventsActivityPresenter.start();
 
@@ -88,7 +88,7 @@ public class EventsPresenterTest {
     @Test
     public void shouldLoadEventsSuccessfully() {
         when(eventModel.getEvents(false))
-            .thenReturn(Observable.just(eventList));
+            .thenReturn(Observable.fromIterable(eventList));
 
         InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
 
@@ -103,7 +103,7 @@ public class EventsPresenterTest {
     @Test
     public void shouldNotLoadInitialEventIfNotTwoPane() {
         when(eventModel.getEvents(false))
-            .thenReturn(Observable.just(eventList));
+            .thenReturn(Observable.fromIterable(eventList));
         when(eventListView.isTwoPane())
             .thenReturn(false);
 
@@ -115,7 +115,7 @@ public class EventsPresenterTest {
     @Test
     public void shouldLoadInitialEventFirstTimeIfTwoPane() {
         when(eventModel.getEvents(false))
-            .thenReturn(Observable.just(eventList));
+            .thenReturn(Observable.fromIterable(eventList));
         when(eventListView.isTwoPane())
             .thenReturn(true);
 
@@ -127,7 +127,7 @@ public class EventsPresenterTest {
     @Test
     public void shouldNotLoadInitialEventSecondTimeIfTwoPane() {
         when(eventModel.getEvents(false))
-            .thenReturn(Observable.just(eventList));
+            .thenReturn(Observable.fromIterable(eventList));
         when(eventListView.isTwoPane())
             .thenReturn(true);
 

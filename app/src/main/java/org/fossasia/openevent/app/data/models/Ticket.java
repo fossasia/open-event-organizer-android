@@ -3,22 +3,27 @@ package org.fossasia.openevent.app.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Ticket implements Parcelable {
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
-    @SerializedName("description")
-    private String description;
-    @SerializedName("id")
+@Table(database = OrgaDatabase.class, allFields = true)
+public class Ticket extends BaseModel implements Parcelable {
+
+    @PrimaryKey
     private long id;
-    @SerializedName("name")
+
+    private String description;
     private String name;
-    @SerializedName("price")
     private float price;
-    @SerializedName("quantity")
     private long quantity;
-    @SerializedName("type")
     private String type;
+
+    @ForeignKey(stubbedRelationship = true)
+    private Event event;
 
     public Ticket() {}
 
@@ -73,6 +78,14 @@ public class Ticket implements Parcelable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     @Override

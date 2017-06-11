@@ -1,21 +1,28 @@
 package org.fossasia.openevent.app.data.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class SocialLink {
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
-    @SerializedName("id")
-    private Long id;
-    @SerializedName("link")
+@Table(database = OrgaDatabase.class, allFields = true)
+public class SocialLink extends BaseModel {
+
+    @PrimaryKey
+    private long id;
     private String link;
-    @SerializedName("name")
     private String name;
 
-    public Long getId() {
+    @ForeignKey(stubbedRelationship = true)
+    private Event event;
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -35,4 +42,21 @@ public class SocialLink {
         this.name = name;
     }
 
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    @Override
+    public String toString() {
+        return "SocialLink{" +
+            "id=" + id +
+            ", link='" + link + '\'' +
+            ", name='" + name + '\'' +
+            ", event=" + event +
+            '}';
+    }
 }

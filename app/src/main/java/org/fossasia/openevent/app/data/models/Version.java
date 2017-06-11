@@ -1,68 +1,86 @@
 package org.fossasia.openevent.app.data.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Version {
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
+@Table(database = OrgaDatabase.class, allFields = true)
+public class Version extends BaseModel {
+
+    @PrimaryKey
     @SerializedName("event_ver")
-    private Long eventVer;
+    private long eventVer;
     @SerializedName("microlocations_ver")
-    private Long microlocationsVer;
+    private long microlocationsVer;
     @SerializedName("sessions_ver")
-    private Long sessionsVer;
+    private long sessionsVer;
     @SerializedName("speakers_ver")
-    private Long speakersVer;
+    private long speakersVer;
     @SerializedName("sponsors_ver")
-    private Long sponsorsVer;
+    private long sponsorsVer;
     @SerializedName("tracks_ver")
-    private Long tracksVer;
+    private long tracksVer;
 
-    public Long getEventVer() {
+    public long getEventVer() {
         return eventVer;
     }
 
-    public void setEventVer(Long eventVer) {
+    public void setEventVer(long eventVer) {
         this.eventVer = eventVer;
     }
 
-    public Long getMicrolocationsVer() {
+    public long getMicrolocationsVer() {
         return microlocationsVer;
     }
 
-    public void setMicrolocationsVer(Long microlocationsVer) {
+    public void setMicrolocationsVer(long microlocationsVer) {
         this.microlocationsVer = microlocationsVer;
     }
 
-    public Long getSessionsVer() {
+    public long getSessionsVer() {
         return sessionsVer;
     }
 
-    public void setSessionsVer(Long sessionsVer) {
+    public void setSessionsVer(long sessionsVer) {
         this.sessionsVer = sessionsVer;
     }
 
-    public Long getSpeakersVer() {
+    public long getSpeakersVer() {
         return speakersVer;
     }
 
-    public void setSpeakersVer(Long speakersVer) {
+    public void setSpeakersVer(long speakersVer) {
         this.speakersVer = speakersVer;
     }
 
-    public Long getSponsorsVer() {
+    public long getSponsorsVer() {
         return sponsorsVer;
     }
 
-    public void setSponsorsVer(Long sponsorsVer) {
+    public void setSponsorsVer(long sponsorsVer) {
         this.sponsorsVer = sponsorsVer;
     }
 
-    public Long getTracksVer() {
+    public long getTracksVer() {
         return tracksVer;
     }
 
-    public void setTracksVer(Long tracksVer) {
+    public void setTracksVer(long tracksVer) {
         this.tracksVer = tracksVer;
     }
 
+    @Override
+    public String toString() {
+        return "Version{" +
+            "eventVer=" + eventVer +
+            ", microlocationsVer=" + microlocationsVer +
+            ", sessionsVer=" + sessionsVer +
+            ", speakersVer=" + speakersVer +
+            ", sponsorsVer=" + sponsorsVer +
+            ", tracksVer=" + tracksVer +
+            '}';
+    }
 }

@@ -7,6 +7,8 @@ import android.util.Log;
 
 import timber.log.Timber;
 
+import com.facebook.stetho.Stetho;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -20,6 +22,7 @@ public class OrgaApplication extends Application {
 
     private RefWatcher refWatcher;
     private AppComponent appComponent;
+    private static boolean isTestBuild;
 
     /**
      * Reference watcher to be used in detecting leaks in Fragments
@@ -36,9 +39,20 @@ public class OrgaApplication extends Application {
         return application.appComponent;
     }
 
+    public static void initializeDatabase(Context context) {
+        FlowManager.init(context);
+    }
+
+    public static void destroyDatabase() {
+        FlowManager.destroy();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        initializeDatabase(this);
+        Stetho.initializeWithDefaults(this);
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
@@ -48,16 +62,19 @@ public class OrgaApplication extends Application {
         refWatcher = LeakCanary.install(this);
 
         if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy
-                (new StrictMode.ThreadPolicy.Builder()
-                    .detectAll()
-                    .penaltyDeath()
-                    .build());
-            StrictMode.setVmPolicy
-                (new StrictMode.VmPolicy.Builder()
-                    .detectAll()
-                    .penaltyDeath()
-                    .build());
+
+            if (!isTestBuild()) {
+                StrictMode.setThreadPolicy
+                    (new StrictMode.ThreadPolicy.Builder()
+                        .detectAll()
+                        .penaltyDeath()
+                        .build());
+                StrictMode.setVmPolicy
+                    (new StrictMode.VmPolicy.Builder()
+                        .detectAll()
+                        .penaltyDeath()
+                        .build());
+            }
 
             Timber.plant(new Timber.DebugTree());
         } else {
@@ -66,9 +83,11 @@ public class OrgaApplication extends Application {
 
         appComponent = DaggerAppComponent.builder()
             .androidModule(new AndroidModule(this))
-            .dataModule(new DataModule())
-            .networkModule(new NetworkModule())
             .build();
+    }
+
+    public boolean isTestBuild() {
+        return false;
     }
 
     private static class ReleaseLogTree extends Timber.Tree {
