@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_attendee_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvAttendeeList"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="top"/>
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/image_small"
+            android:clipToPadding="false"/>
 
-        <Button
-            android:id="@+id/btnScanQr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#454545"
-            android:padding="@dimen/spacing_normal"
-            android:text="@string/scan_qr_code"
-            android:theme="@style/AppTheme.Button"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="@dimen/image_small"
+            android:layout_height="@dimen/image_small"
+            app:srcCompat="@drawable/qrcode_scan"
+            android:id="@+id/fabScanQr"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
