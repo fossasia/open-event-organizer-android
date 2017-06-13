@@ -95,4 +95,11 @@ public class UtilsTest {
             .assertValue(-1);
     }
 
+    @Test
+    public void shouldFormatToken() {
+        String token = "token";
+
+        assertEquals("JWT token", Utils.formatToken(token));
+    }
+
 }

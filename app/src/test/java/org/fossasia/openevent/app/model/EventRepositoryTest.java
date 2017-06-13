@@ -9,8 +9,8 @@ import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.Event_Table;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.EventService;
-import org.fossasia.openevent.app.data.network.NetworkService;
 import org.fossasia.openevent.app.utils.Constants;
+import org.fossasia.openevent.app.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -62,7 +62,7 @@ public class EventRepositoryTest {
     IDatabaseRepository databaseRepository;
 
     private String token = "TestToken";
-    private String auth = NetworkService.formatToken(token);
+    private String auth = Utils.formatToken(token);
 
     @Before
     public void setUp() {

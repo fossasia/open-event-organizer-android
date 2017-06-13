@@ -3,7 +3,6 @@ package org.fossasia.openevent.app.data;
 import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.LoginResponse;
 import org.fossasia.openevent.app.data.network.EventService;
-import org.fossasia.openevent.app.data.network.NetworkService;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.utils.Constants;

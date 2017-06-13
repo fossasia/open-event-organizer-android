@@ -11,7 +11,6 @@ import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.Event_Table;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.EventService;
-import org.fossasia.openevent.app.data.network.NetworkService;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.Utils;
 
@@ -41,7 +40,7 @@ public class EventRepository implements IEventRepository {
         this.cacheModel = cacheModel;
         this.eventService = eventService;
 
-        authorization = NetworkService.formatToken(utilModel.getToken());
+        authorization = Utils.formatToken(utilModel.getToken());
     }
 
     interface EventServiceOperation<T> {
@@ -76,13 +75,15 @@ public class EventRepository implements IEventRepository {
                     return Observable.empty();
                 else
                     return diskObservable
-                        .doOnNext(item -> Timber.d("Loaded %s From Disk", item.getClass()));
+                        .doOnNext(item -> Timber.d("Loaded %s From Disk on Thread %s",
+                            item.getClass(), Thread.currentThread().getName()));
             }).switchIfEmpty(
                 Observable.just(utilModel.isConnected())
                     .flatMap(connected -> {
                         if (connected)
                             return networkObservable
-                                .doOnNext(item -> Timber.d("Loaded %s From Network", item.getClass()));
+                                .doOnNext(item -> Timber.d("Loaded %s From Network on Thread %s",
+                                    item.getClass(), Thread.currentThread().getName()));
                         else
                             return Observable.error(new Throwable(Constants.NO_NETWORK));
                     }))

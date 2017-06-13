@@ -34,3 +34,5 @@
 -keepclassmembers class org.fossasia.openevent.app.data.models.** {
   *;
 }
+
+-keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }
