@@ -99,7 +99,7 @@ public class Event extends BaseModel implements Parcelable {
     private String organizerName;
 
     // Tells if the event saved is complete ( with tickets )
-    private boolean isComplete = true;
+    private boolean isComplete;
 
     // For Data Binding
     public final ObservableField<String> startDate = new ObservableField<>();

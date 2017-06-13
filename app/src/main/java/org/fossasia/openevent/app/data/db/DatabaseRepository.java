@@ -1,14 +1,21 @@
 package org.fossasia.openevent.app.data.db;
 
+import com.raizlabs.android.dbflow.config.DatabaseDefinition;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
 import com.raizlabs.android.dbflow.sql.language.SQLOperator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
+
+import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import timber.log.Timber;
 
 public class DatabaseRepository implements IDatabaseRepository {
 
@@ -31,6 +38,20 @@ public class DatabaseRepository implements IDatabaseRepository {
 
     @Override
     public <T extends BaseModel> Completable save(T item) {
-        return Completable.fromAction(item::save);
+        return Completable.fromAction(item::save)
+            .doOnComplete(() -> Timber.i("Saved item %s in database", item.getClass()));
+    }
+
+    @Override
+    public <T extends BaseModel> Completable saveList(Class<T> itemClass, List<T> items) {
+        return Completable.fromAction(() -> {
+            DatabaseDefinition database = FlowManager.getDatabase(OrgaDatabase.class);
+            FastStoreModelTransaction<T> transaction = FastStoreModelTransaction
+                .insertBuilder(FlowManager.getModelAdapter(itemClass))
+                .addAll(items)
+                .build();
+
+            database.executeTransaction(transaction);
+        }).doOnComplete(() -> Timber.i("Saved items of type %s in database", itemClass));
     }
 }

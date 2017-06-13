@@ -100,16 +100,18 @@ public class EventRepository implements IEventRepository {
         Observable<Event> diskObservable = Observable.defer(() ->
             databaseRepository
                 .getItem(Event.class, Event_Table.id.eq(eventId))
+                .filter(Event::isComplete)
         );
 
         Observable<Event> networkObservable = Observable.defer(() ->
             eventService
                 .getEvent(eventId)
-                .doOnNext(event ->
+                .doOnNext(event -> {
+                    event.setComplete(true);
                     databaseRepository
                         .save(event)
-                        .subscribe()
-                )
+                        .subscribe();
+                })
         );
 
         return getAbstractObservable(reload, diskObservable, networkObservable);
@@ -123,11 +125,9 @@ public class EventRepository implements IEventRepository {
 
         Observable<Event> networkObservable = Observable.defer(() ->
             eventService.getEvents(authorization)
-                    .flatMapIterable(events -> events)
-                    .doOnNext(event -> {
-                        event.setComplete(false);
-                        databaseRepository.save(event).subscribe();
-                    }));
+                .doOnNext(events -> databaseRepository.saveList(Event.class, events)
+                    .subscribe())
+                .flatMapIterable(events -> events));
 
         return getAbstractObservable(reload, diskObservable, networkObservable);
     }
