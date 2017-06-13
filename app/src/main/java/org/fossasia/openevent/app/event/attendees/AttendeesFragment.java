@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -42,8 +42,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     @BindView(R.id.rvAttendeeList)
     RecyclerView recyclerView;
 
-    @BindView(R.id.btnScanQr)
-    Button btnBarCodeScanner;
+    @BindView(R.id.fabScanQr)
+    FloatingActionButton fabBarcodeScanner;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -112,7 +112,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
         recyclerView.setAdapter(attendeeListAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
-        btnBarCodeScanner.setOnClickListener(v -> {
+        fabBarcodeScanner.setOnClickListener(v -> {
             Intent scanQr = new Intent(context, ScanQRActivity.class);
             scanQr.putExtra(EventListActivity.EVENT_KEY, eventId);
             startActivityForResult(scanQr, REQ_CODE);
@@ -145,7 +145,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @Override
     public void showScanButton(boolean show) {
-        ViewUtils.showView(btnBarCodeScanner, show);
+        if (show) fabBarcodeScanner.show();
+        else fabBarcodeScanner.hide();
     }
 
     @Override
