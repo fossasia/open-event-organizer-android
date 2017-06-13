@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.common.di.component;
 
+import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.di.module.AndroidModule;
 import org.fossasia.openevent.app.common.di.module.DataModule;
 import org.fossasia.openevent.app.common.di.module.DatabaseModule;
@@ -34,5 +35,7 @@ public interface AppComponent {
     void inject(AttendeesFragment attendeesFragment);
 
     void inject(ScanQRActivity scanQRActivity);
+
+    void inject(OrgaApplication orgaApplication);
 
 }

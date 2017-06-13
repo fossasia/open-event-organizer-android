@@ -30,7 +30,7 @@ public interface EventService {
     @GET("events/{id}?include=tickets")
     Observable<Event> getEvent(@Path("id") long id);
 
-    @GET("events/{id}/attendees")
+    @GET("events/{id}/attendees/")
     Observable<List<Attendee>> getAttendees(@Path("id") long id, @Header("Authorization") String authToken);
 
     @POST("events/{id}/attendees/check_in_toggle/{attendee_id}")

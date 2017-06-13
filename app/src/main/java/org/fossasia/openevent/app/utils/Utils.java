@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.utils;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -46,5 +48,9 @@ public class Utils {
             .takeWhile(thisItem -> !propertyMatcher.isEqual(thisItem, item))
             .count()
             .map(count -> count == items.size() ? -1 : count.intValue());
+    }
+
+    public static String formatToken(@NonNull String token) {
+        return String.format("JWT %s", token);
     }
 }

@@ -32,12 +32,13 @@
                     android:layout_height="wrap_content"
                     app:cardUseCompatPadding="true"
                     app:contentPadding="@dimen/spacing_small"
-                    android:elevation="@dimen/elevation">
+                    app:cardElevation="@dimen/elevation">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:baselineAligned="false">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -69,7 +70,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Tickets Sold"
+                                android:text="@string/tickets_sold"
                                 android:textSize="@dimen/text_size_normal" />
 
                             <LinearLayout
@@ -132,7 +133,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Checked In"
+                                android:text="@string/checked_in"
                                 android:textSize="@dimen/text_size_normal" />
 
                             <LinearLayout
