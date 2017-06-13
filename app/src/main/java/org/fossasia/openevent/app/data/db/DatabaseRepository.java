@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.data.db;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
+import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.SQLOperator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -53,5 +54,21 @@ public class DatabaseRepository implements IDatabaseRepository {
 
             database.executeTransaction(transaction);
         }).doOnComplete(() -> Timber.i("Saved items of type %s in database", itemClass));
+    }
+
+    @Override
+    public <T extends BaseModel> Completable delete(Class<T> typeClass, SQLOperator... conditions) {
+        return Completable.fromAction(() -> SQLite.delete(typeClass).where(conditions).execute());
+    }
+
+    @Override
+    public <T extends BaseModel> Completable deleteAll(Class<T> typeClass) {
+        return Completable.fromAction(() -> Delete.table(typeClass));
+    }
+
+    @SafeVarargs
+    @Override
+    public final Completable deleteAll(Class<? extends BaseModel>... typeClass) {
+        return Completable.fromAction(() -> Delete.tables((Class<?>[]) typeClass));
     }
 }

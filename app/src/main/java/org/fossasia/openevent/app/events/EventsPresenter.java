@@ -8,6 +8,8 @@ import org.fossasia.openevent.app.utils.Utils;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 public class EventsPresenter implements IEventsPresenter {
 
     private IEventsView eventsView;
@@ -92,9 +94,18 @@ public class EventsPresenter implements IEventsPresenter {
 
     @Override
     public void logout() {
-        loginModel.logout();
-        if(eventsView != null)
-            eventsView.onLogout();
+        if (eventsView == null)
+            return;
+
+        loginModel.logout()
+            .subscribe(() -> {
+                if (eventsView != null)
+                    eventsView.onLogout();
+            }, throwable -> {
+                Timber.e(throwable);
+                if (eventsView != null)
+                    eventsView.showEventError(throwable.getMessage());
+            });
     }
 
     public IEventsView getView() {

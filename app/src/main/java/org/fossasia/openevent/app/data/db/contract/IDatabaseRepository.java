@@ -18,4 +18,11 @@ public interface IDatabaseRepository {
 
     <T extends BaseModel> Completable saveList(Class<T> itemClass, List<T> items);
 
+    <T extends BaseModel> Completable delete(Class<T> typeClass, SQLOperator... conditions);
+
+    <T extends BaseModel> Completable deleteAll(Class<T> typeClass);
+
+    @SuppressWarnings("unchecked")
+    Completable deleteAll(Class<? extends BaseModel>... typeClass);
+
 }

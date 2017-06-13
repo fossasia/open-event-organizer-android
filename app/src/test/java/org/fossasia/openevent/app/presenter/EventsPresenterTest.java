@@ -21,7 +21,9 @@ import org.mockito.junit.MockitoRule;
 import java.util.Arrays;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.observers.TestObserver;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -219,8 +221,16 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldLogout() {
+
+        TestObserver testObserver = TestObserver.create();
+        Completable completable = Completable.complete()
+            .doOnSubscribe(testObserver::onSubscribe);
+
+        when(loginModel.logout()).thenReturn(completable);
+
         eventsActivityPresenter.logout();
 
+        testObserver.assertSubscribed();
         verify(loginModel).logout();
         verify(eventListView).onLogout();
     }
