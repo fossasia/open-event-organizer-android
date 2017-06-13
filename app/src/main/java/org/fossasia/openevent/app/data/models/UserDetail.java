@@ -1,8 +1,17 @@
 package org.fossasia.openevent.app.data.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class UserDetail {
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
+
+@Table(database = OrgaDatabase.class, allFields = true)
+public class UserDetail extends BaseModel {
+
+    @PrimaryKey(autoincrement = true)
+    private int id;
 
     private String contact;
     private String twitter;
@@ -13,6 +22,14 @@ public class UserDetail {
     @SerializedName("lastname")
     private String lastName;
     private String details;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getContact() {
         return contact;
@@ -73,7 +90,8 @@ public class UserDetail {
     @Override
     public String toString() {
         return "UserDetail{" +
-            "contact='" + contact + '\'' +
+            "id=" + id +
+            ", contact='" + contact + '\'' +
             ", twitter='" + twitter + '\'' +
             ", firstName='" + firstName + '\'' +
             ", avatar='" + avatar + '\'' +

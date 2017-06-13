@@ -13,6 +13,7 @@ import org.fossasia.openevent.app.data.LoginModel;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.db.configuration.DbFlowExclusionStrategy;
+import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.utils.Constants;
 
@@ -77,7 +78,7 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    ILoginModel providesLoginModel(IUtilModel utilModel, EventService eventService) {
-        return new LoginModel(utilModel, eventService);
+    ILoginModel providesLoginModel(IUtilModel utilModel, EventService eventService, IDatabaseRepository databaseRepository) {
+        return new LoginModel(utilModel, eventService, databaseRepository);
     }
 }

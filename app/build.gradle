@@ -43,7 +43,7 @@ repositories {
     }
 }
 
-def dbflow_version = "4.0.3"
+def dbflow_version = "4.0.4"
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -60,9 +60,9 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.google.android.gms:play-services-vision:10.2.0'
-    compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
-    compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
-    compile "com.github.Raizlabs.DBFlow:dbflow-rx2:${dbflow_version}"
+    compile "com.github.raizlabs.dbflow:dbflow-core:${dbflow_version}"
+    compile "com.github.raizlabs.dbflow:dbflow:${dbflow_version}"
+    compile "com.github.raizlabs.dbflow:dbflow-rx2:${dbflow_version}"
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -79,5 +79,5 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11-rc2'
-    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    annotationProcessor "com.github.raizlabs.dbflow:dbflow-processor:${dbflow_version}"
 }

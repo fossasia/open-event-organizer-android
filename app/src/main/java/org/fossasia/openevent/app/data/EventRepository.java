@@ -23,7 +23,6 @@ import timber.log.Timber;
 
 public class EventRepository implements IEventRepository {
 
-    public static final String ORGANIZER = "user";
     public static final String ATTENDEES = "attendees";
 
     private IDatabaseRepository databaseRepository;
@@ -93,7 +92,23 @@ public class EventRepository implements IEventRepository {
 
     @Override
     public Observable<User> getOrganiser(boolean reload) {
-        return getData(() -> eventService.getUser(authorization), ORGANIZER, reload);
+        Observable<User> diskObservable = Observable.defer(() ->
+            databaseRepository
+                .getAllItems(User.class)
+                .firstElement()
+                .toObservable()
+        );
+
+        Observable<User> networkObservable = Observable.defer(() ->
+            eventService
+                .getUser(authorization)
+                .doOnNext(user -> databaseRepository
+                    .save(user)
+                    .subscribe()
+                )
+        );
+
+        return getAbstractObservable(reload, diskObservable, networkObservable);
     }
 
     @Override
@@ -177,7 +192,4 @@ public class EventRepository implements IEventRepository {
             });
     }
 
-    public void setEventService(EventService eventService) {
-        this.eventService = eventService;
-    }
 }
