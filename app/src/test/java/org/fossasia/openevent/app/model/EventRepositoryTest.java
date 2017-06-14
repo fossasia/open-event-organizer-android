@@ -216,7 +216,8 @@ public class EventRepositoryTest {
         userObservable.test()
             .assertSubscribed()
             .assertNoErrors()
-            .assertValue(event);
+            .assertValue(event)
+            .assertValue(Event::isComplete);
 
         testObserver.assertSubscribed();
 
@@ -230,14 +231,15 @@ public class EventRepositoryTest {
         long id = 45;
 
         Event event = new Event();
+        event.setComplete(true);
         when(databaseRepository.getItem(eq(Event.class), refEq(Event_Table.id.eq(id))))
             .thenReturn(Observable.just(event));
 
         // No force reload ensures use of cache
-        Observable<Event> userObservable = eventRepository.getEvent(id, false);
+        Observable<Event> eventObservable = eventRepository.getEvent(id, false);
 
-        userObservable.test().assertNoErrors();
-        userObservable.test().assertValue(event);
+        eventObservable.test().assertNoErrors();
+        eventObservable.test().assertValue(event);
 
         verify(databaseRepository, atLeastOnce()).getItem(eq(Event.class), refEq(Event_Table.id.eq(id)));
         verifyZeroInteractions(eventService);
@@ -271,9 +273,13 @@ public class EventRepositoryTest {
             new Event(52)
         );
 
+        TestObserver testObserver = TestObserver.create();
+        Completable completable = Completable.complete()
+            .doOnSubscribe(testObserver::onSubscribe);
+
         when(databaseRepository.getAllItems(eq(Event.class)))
             .thenReturn(Observable.empty());
-        when(databaseRepository.save(any(Event.class))).thenReturn(Completable.complete());
+        when(databaseRepository.saveList(Event.class, events)).thenReturn(completable);
         when(utilModel.isConnected()).thenReturn(true);
         when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
 
@@ -287,10 +293,7 @@ public class EventRepositoryTest {
         verify(utilModel).getToken();
         verify(eventService, atLeastOnce()).getEvents(auth);
 
-        for (Event event : events) {
-            assertEquals(event.isComplete(), false);
-            verify(databaseRepository, atLeastOnce()).save(event);
-        }
+        testObserver.assertSubscribed();
     }
 
     @Test
@@ -322,7 +325,7 @@ public class EventRepositoryTest {
         );
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(databaseRepository.save(any(Event.class))).thenReturn(Completable.complete());
+        when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
         when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
 
         // Force reload ensures no use of cache
