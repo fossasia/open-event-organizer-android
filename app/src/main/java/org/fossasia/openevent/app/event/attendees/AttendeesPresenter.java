@@ -62,6 +62,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
         attendeesView.showScanButton(false);
 
         eventRepository.getAttendees(eventId, forceReload)
+            .toList()
             .subscribe(attendees -> {
                 attendeeList.clear();
                 attendeeList.addAll(attendees);

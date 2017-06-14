@@ -1,7 +1,8 @@
 package org.fossasia.openevent.app.model;
 
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+
 import org.fossasia.openevent.app.data.EventRepository;
-import org.fossasia.openevent.app.data.cache.ObjectCache;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
@@ -47,8 +48,6 @@ public class EventRepositoryTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    private ObjectCache objectCache = ObjectCache.getInstance();
-
     private EventRepository eventRepository;
 
     @Mock
@@ -67,7 +66,7 @@ public class EventRepositoryTest {
     public void setUp() {
         when(utilModel.getToken()).thenReturn(token);
 
-        eventRepository = new EventRepository(utilModel, databaseRepository, ObjectCache.getInstance(), eventService);
+        eventRepository = new EventRepository(utilModel, databaseRepository, eventService);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -85,12 +84,9 @@ public class EventRepositoryTest {
 
     @Test
     public void shouldSendErrorOnNetworkDown() {
-        // Clear cache
-        objectCache.clear();
-
         when(utilModel.isConnected()).thenReturn(false);
         when(databaseRepository.getAllItems(any())).thenReturn(Observable.empty());
-        when(databaseRepository.getItem(any(), any())).thenReturn(Observable.empty());
+        when(databaseRepository.getItems(any(), any())).thenReturn(Observable.empty());
 
         eventRepository.getEvents(false)
             .test()
@@ -200,7 +196,7 @@ public class EventRepositoryTest {
             .doOnSubscribe(testObserver::onSubscribe);
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(databaseRepository.getItem(eq(Event.class), refEq(Event_Table.id.eq(id))))
+        when(databaseRepository.getItems(eq(Event.class), refEq(Event_Table.id.eq(id))))
             .thenReturn(Observable.empty());
         when(databaseRepository.save(event)).thenReturn(completable);
         when(eventService.getEvent(id)).thenReturn(Observable.just(event));
@@ -226,7 +222,7 @@ public class EventRepositoryTest {
 
         Event event = new Event();
         event.setComplete(true);
-        when(databaseRepository.getItem(eq(Event.class), refEq(Event_Table.id.eq(id))))
+        when(databaseRepository.getItems(eq(Event.class), refEq(Event_Table.id.eq(id))))
             .thenReturn(Observable.just(event));
 
         // No force reload ensures use of cache
@@ -235,7 +231,7 @@ public class EventRepositoryTest {
             .test()
             .assertValue(event);
 
-        verify(databaseRepository).getItem(eq(Event.class), refEq(Event_Table.id.eq(id)));
+        verify(databaseRepository).getItems(eq(Event.class), refEq(Event_Table.id.eq(id)));
         verifyZeroInteractions(eventService);
     }
 
@@ -257,7 +253,7 @@ public class EventRepositoryTest {
 
         // Verify loads from network
         verify(eventService).getEvent(id);
-        verify(databaseRepository, never()).getItem(any(), any());
+        verify(databaseRepository, never()).getItems(any(), any());
     }
 
     @Test
@@ -342,73 +338,82 @@ public class EventRepositoryTest {
 
     @Test
     public void shouldSaveAttendeesInCache() {
-        // Clear cache
-        objectCache.clear();
-
         List<Attendee> attendees = Arrays.asList(
             new Attendee(),
             new Attendee(),
             new Attendee()
         );
 
+        TestObserver testObserver = TestObserver.create();
+        Completable completable = Completable.complete()
+            .doOnSubscribe(testObserver::onSubscribe);
+
         when(utilModel.isConnected()).thenReturn(true);
+        when(databaseRepository.getItems(eq(Attendee.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(completable);
         when(eventService.getAttendees(43, auth)).thenReturn(Observable.just(attendees));
 
         // No force reload ensures use of cache
-        Observable<List<Attendee>> attendeesObservable = eventRepository.getAttendees(43, false);
+        Observable<Attendee> attendeesObservable =
+            eventRepository.getAttendees(43, false);
 
-        attendeesObservable.test().assertNoErrors();
-        attendeesObservable.test().assertValue(attendees);
+        List<Attendee> actual = attendeesObservable.toList().blockingGet();
+
+        testObserver.assertSubscribed();
 
         // Verify loads from network
         verify(utilModel).getToken();
         verify(eventService).getAttendees(43, auth);
 
-        List<Attendee> stored = (List<Attendee>) objectCache.getValue(EventRepository.ATTENDEES + 43);
-        assertEquals(stored, attendees);
+        for (Attendee attendee : actual) {
+            assertEquals(43, attendee.getEventId());
+        }
     }
 
     @Test
     public void shouldLoadAttendeesFromCache() {
-        // Clear cache
-        objectCache.clear();
-
         List<Attendee> attendees = Arrays.asList(
             new Attendee(),
             new Attendee(),
             new Attendee()
         );
-        objectCache.saveObject(EventRepository.ATTENDEES + 67, attendees);
+
+        when(databaseRepository.getItems(eq(Attendee.class), any(SQLOperator.class)))
+            .thenReturn(Observable.fromIterable(attendees));
 
         // No force reload ensures use of cache
-        Observable<List<Attendee>> attendeeObservable = eventRepository.getAttendees(67, false);
+        Observable<Attendee> attendeeObservable = eventRepository.getAttendees(67, false);
 
-        attendeeObservable.test().assertNoErrors();
-        attendeeObservable.test().assertValue(attendees);
+        attendeeObservable
+            .toList()
+            .test()
+            .assertNoErrors()
+            .assertValue(attendees);
 
         verifyZeroInteractions(eventService);
     }
 
     @Test
     public void shouldFetchAttendeesOnForceReload() {
-        // Clear cache
-        objectCache.clear();
-
         List<Attendee> attendees = Arrays.asList(
             new Attendee(),
             new Attendee(),
             new Attendee()
         );
-        objectCache.saveObject(EventRepository.ATTENDEES + 76, attendees);
 
         when(utilModel.isConnected()).thenReturn(true);
+        when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(Completable.complete());
         when(eventService.getAttendees(23, auth)).thenReturn(Observable.just(attendees));
 
         // Force reload ensures no use of cache
-        Observable<List<Attendee>> attendeeObservable = eventRepository.getAttendees(23, true);
+        Observable<List<Attendee>> attendeeObservable = eventRepository.getAttendees(23, true)
+            .toList()
+            .toObservable();
 
-        attendeeObservable.test().assertNoErrors();
-        attendeeObservable.test().assertValue(attendees);
+        attendeeObservable.
+            test()
+            .assertNoErrors()
+            .assertValue(attendees);
 
         // Verify loads from network
         verify(eventService).getAttendees(23, auth);
@@ -416,38 +421,29 @@ public class EventRepositoryTest {
 
     @Test
     public void shouldSaveToggledAttendeeCheck() {
-        // Clear cache
-        objectCache.clear();
-
-        List<Attendee> attendees = Arrays.asList(
-            new Attendee(12),
-            new Attendee(89),
-            new Attendee(64)
-        );
-
-        Attendee attendee = attendees.get(1);
-
-        attendee.setCheckedIn(false);
-
-        objectCache.saveObject(EventRepository.ATTENDEES + 76, attendees);
+        Attendee attendee = new Attendee(89);
 
         attendee.setCheckedIn(true);
 
+        TestObserver testObserver = TestObserver.create();
+        Completable completable = Completable.complete()
+            .doOnSubscribe(testObserver::onSubscribe);
+
         when(utilModel.isConnected()).thenReturn(true);
+        when(databaseRepository.update(attendee)).thenReturn(completable);
         when(eventService.toggleAttendeeCheckStatus(76, 89, auth)).thenReturn(Observable.just(attendee));
 
         Observable<Attendee> attendeeObservable = eventRepository.toggleAttendeeCheckStatus(76, 89);
 
-        attendeeObservable.test().assertNoErrors();
-        attendeeObservable.test().assertValue((Attendee::isCheckedIn));
+        attendeeObservable
+            .test()
+            .assertNoErrors()
+            .assertValue((Attendee::isCheckedIn));
+
+        testObserver.assertSubscribed();
 
         // Verify loads from network
         verify(eventService).toggleAttendeeCheckStatus(76, 89, auth);
-
-        // Verify correct caching
-        List<Attendee> stored = (List<Attendee>) objectCache.getValue(EventRepository.ATTENDEES + 76);
-        assertEquals(stored.get(1).getId(), attendee.getId());
-        assertEquals(stored.get(1).isCheckedIn(), attendee.isCheckedIn());
     }
 
 }

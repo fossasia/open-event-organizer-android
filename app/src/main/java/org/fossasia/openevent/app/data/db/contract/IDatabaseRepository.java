@@ -10,13 +10,15 @@ import io.reactivex.Observable;
 
 public interface IDatabaseRepository {
 
-    <T extends BaseModel> Observable<T> getItem(Class<T> typeClass, SQLOperator... conditions);
+    <T extends BaseModel> Observable<T> getItems(Class<T> typeClass, SQLOperator... conditions);
 
     <T extends BaseModel> Observable<T> getAllItems(Class<T> typeClass);
 
     <T extends BaseModel> Completable save(T item);
 
     <T extends BaseModel> Completable saveList(Class<T> itemClass, List<T> items);
+
+    <T extends BaseModel> Completable update(T item);
 
     <T extends BaseModel> Completable delete(Class<T> typeClass, SQLOperator... conditions);
 

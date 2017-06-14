@@ -89,7 +89,7 @@ public class EventDetailPresenterTest {
     @Test
     public void shouldLoadEventAndAttendeesAutomatically() {
         when(eventRepository.getAttendees(id, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
 
         when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
@@ -103,7 +103,7 @@ public class EventDetailPresenterTest {
     @Test
     public void shouldDetachViewOnStop() {
         when(eventRepository.getAttendees(id, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
 
         when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
@@ -170,7 +170,7 @@ public class EventDetailPresenterTest {
     @Test
     public void shouldDisplayCorrectStats() throws Exception {
         when(eventRepository.getAttendees(id, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
 
         when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));

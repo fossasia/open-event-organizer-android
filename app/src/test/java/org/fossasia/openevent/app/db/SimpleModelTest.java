@@ -25,7 +25,7 @@ public class SimpleModelTest extends BaseUnitTest {
             .save(simpleModel)
             .subscribe();
 
-        databaseRepository.getItem(SimpleModel.class, SimpleModel_Table.id.eq(1L))
+        databaseRepository.getItems(SimpleModel.class, SimpleModel_Table.id.eq(1L))
             .test()
             .assertSubscribed()
             .assertValue(savedModel -> savedModel.equals(simpleModel));

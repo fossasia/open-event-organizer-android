@@ -99,7 +99,7 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldLoadAttendeesAutomatically() {
         when(eventRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
 
         scanQRPresenter.start();
 
@@ -109,7 +109,7 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldLoadCameraAutomatically() {
         when(eventRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
 
         scanQRPresenter.start();
 
@@ -119,7 +119,7 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldDetachViewOnStop() {
         when(eventRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
 
         scanQRPresenter.start();
 
@@ -190,7 +190,7 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldFollowFlowOnImplicitPermissionGrant() {
         when(eventRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(true);
 
         scanQRPresenter.start();
@@ -204,7 +204,7 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionGrant() {
         when(eventRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(true);
 
         scanQRPresenter.start();
@@ -219,7 +219,7 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldFollowFlowOnImplicitPermissionDenyRequestGrant() {
         when(eventRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
         scanQRPresenter.start();
@@ -235,7 +235,7 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionDenyRequestGrant() {
         when(eventRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
         scanQRPresenter.start();
@@ -251,7 +251,7 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldFollowFlowOnImplicitPermissionDenyRequestDeny() {
         when(eventRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
         scanQRPresenter.start();
@@ -267,7 +267,7 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionDenyRequestDeny() {
         when(eventRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
         scanQRPresenter.start();

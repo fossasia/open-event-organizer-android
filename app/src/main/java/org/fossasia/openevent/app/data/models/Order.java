@@ -4,16 +4,21 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Order implements Parcelable {
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
-    @SerializedName("amount")
-    private Long amount;
+@Table(database = OrgaDatabase.class, allFields = true)
+public class Order extends BaseModel implements Parcelable {
+
+    @PrimaryKey
+    private long id;
+
+    private long amount;
     @SerializedName("completed_at")
     private String completedAt;
-    @SerializedName("id")
-    private Long id;
-    @SerializedName("identifier")
     private String identifier;
     @SerializedName("invoice_number")
     private String invoiceNumber;
@@ -21,7 +26,6 @@ public class Order implements Parcelable {
     private String paidVia;
     @SerializedName("payment_mode")
     private String  paymentMode;
-    @SerializedName("status")
     private String status;
 
     public Order() {}
@@ -30,11 +34,11 @@ public class Order implements Parcelable {
         setIdentifier(identifier);
     }
 
-    public Long getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(long amount) {
         this.amount = amount;
     }
 
@@ -46,11 +50,11 @@ public class Order implements Parcelable {
         this.completedAt = completedAt;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -128,9 +132,9 @@ public class Order implements Parcelable {
     }
 
     protected Order(Parcel in) {
-        this.amount = (Long) in.readValue(Long.class.getClassLoader());
+        this.amount = (long) in.readValue(long.class.getClassLoader());
         this.completedAt = in.readString();
-        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.id = (long) in.readValue(long.class.getClassLoader());
         this.identifier = in.readString();
         this.invoiceNumber = in.readString();
         this.paidVia = in.readString();
