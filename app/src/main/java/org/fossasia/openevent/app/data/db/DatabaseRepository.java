@@ -21,12 +21,12 @@ import timber.log.Timber;
 public class DatabaseRepository implements IDatabaseRepository {
 
     @Override
-    public <T extends BaseModel> Observable<T> getItem(Class<T> typeClass, SQLOperator... conditions) {
+    public <T extends BaseModel> Observable<T> getItems(Class<T> typeClass, SQLOperator... conditions) {
         return RXSQLite.rx(SQLite.select()
             .from(typeClass)
             .where(conditions))
-            .querySingle()
-            .toObservable();
+            .queryList()
+            .flattenAsObservable(items -> items);
     }
 
     @Override
@@ -54,6 +54,12 @@ public class DatabaseRepository implements IDatabaseRepository {
 
             database.executeTransaction(transaction);
         }).doOnComplete(() -> Timber.i("Saved items of type %s in database", itemClass));
+    }
+
+    @Override
+    public <T extends BaseModel> Completable update(T item) {
+        return Completable.fromAction(item::update)
+            .doOnComplete(() -> Timber.i("Updated item of Type %s : ", item.getClass(), item));
     }
 
     @Override

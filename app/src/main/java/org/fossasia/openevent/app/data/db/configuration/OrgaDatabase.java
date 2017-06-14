@@ -6,7 +6,7 @@ import com.raizlabs.android.dbflow.annotation.Database;
 @Database(
     name = OrgaDatabase.NAME,
     version = OrgaDatabase.VERSION,
-    insertConflict = ConflictAction.IGNORE,
+    insertConflict = ConflictAction.REPLACE,
     updateConflict= ConflictAction.REPLACE,
     foreignKeyConstraintsEnforced = true
 )

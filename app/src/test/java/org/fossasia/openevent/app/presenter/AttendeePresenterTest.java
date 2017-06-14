@@ -75,7 +75,7 @@ public class AttendeePresenterTest {
     @Test
     public void shouldLoadAttendeesAutomatically() {
         when(eventModel.getAttendees(id, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
 
         attendeesPresenter.start();
 
@@ -85,7 +85,7 @@ public class AttendeePresenterTest {
     @Test
     public void shouldDetachViewOnStop() {
         when(eventModel.getAttendees(id, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
 
         attendeesPresenter.start();
 
@@ -116,7 +116,7 @@ public class AttendeePresenterTest {
     @Test
     public void shouldLoadAttendeesSuccessfully() {
         when(eventModel.getAttendees(id, false))
-            .thenReturn(Observable.just(attendees));
+            .thenReturn(Observable.fromIterable(attendees));
 
         InOrder inOrder = Mockito.inOrder(eventModel, attendeesView);
 

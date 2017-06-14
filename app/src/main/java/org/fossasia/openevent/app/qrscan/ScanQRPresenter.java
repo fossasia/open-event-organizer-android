@@ -89,6 +89,7 @@ public class ScanQRPresenter implements IScanQRPresenter {
 
     private void loadAttendees() {
         eventRepository.getAttendees(eventId, false)
+            .toList()
             .subscribe(attendeeList -> {
                 attendees.clear();
                 attendees.addAll(attendeeList);

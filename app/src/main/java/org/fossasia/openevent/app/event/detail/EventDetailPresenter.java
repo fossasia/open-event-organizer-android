@@ -111,6 +111,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
 
         eventRepository
             .getAttendees(eventId, forceReload)
+            .toList()
             .subscribe(this::processAttendeesAndDisplay,
                 throwable -> {
                     if(eventDetailView == null)

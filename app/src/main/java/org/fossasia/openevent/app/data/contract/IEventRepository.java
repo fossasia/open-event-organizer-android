@@ -4,8 +4,6 @@ import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 
 public interface IEventRepository {
@@ -14,7 +12,7 @@ public interface IEventRepository {
 
     Observable<Event> getEvent(long eventId, boolean reload);
 
-    Observable<List<Attendee>> getAttendees(long eventId, boolean reload);
+    Observable<Attendee> getAttendees(long eventId, boolean reload);
 
     Observable<Event> getEvents(boolean reload);
 
