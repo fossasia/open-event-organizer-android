@@ -115,6 +115,7 @@ public class EventContainerFragment extends BaseFragment {
         fm.beginTransaction()
             .replace(R.id.event_container, fg, tag)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .addToBackStack(null)
             .commit();
     }
 
