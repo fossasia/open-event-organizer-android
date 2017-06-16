@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ProgressBar;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
@@ -35,12 +33,16 @@ import org.fossasia.openevent.app.utils.ViewUtils;
 import java.io.IOException;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.Lazy;
 import io.reactivex.Completable;
+import io.reactivex.Notification;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
 import static org.fossasia.openevent.app.utils.ViewUtils.showView;
@@ -58,11 +60,20 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
+    @Inject
+    Lazy<CameraSource> cameraSourceProvider;
+    @Inject
+    Lazy<BarcodeDetector> barcodeDetectorProvider;
+
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
 
     @Inject
     IScanQRPresenter presenter;
+
+    @Inject
+    @Named("barcodeEmitter")
+    PublishSubject<Notification<Barcode>> barcodeEmitter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,32 +129,11 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     // Lifecycle methods end
 
     private void buildBarcodeDetector() {
-        barcodeDetector = new BarcodeDetector.Builder(this)
-            .setBarcodeFormats(Barcode.QR_CODE)
-            .build();
-
-        //for when it detects the barcode activity
-        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
-            @Override
-            public void release() {
-                // No action to be taken
-            }
-
-            @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
-                SparseArray<Barcode> barcodeSparseArray = detections.getDetectedItems();
-                presenter.onBarcodeDetected(barcodeSparseArray.size() == 0 ? null : barcodeSparseArray.valueAt(0));
-            }
-        });
+        barcodeDetector = barcodeDetectorProvider.get();
     }
 
     private void buildCameraSource() {
-        cameraSource = new CameraSource
-            .Builder(this, barcodeDetector)
-            .setRequestedPreviewSize(640, 480)
-            .setRequestedFps(15.0f)
-            .setAutoFocusEnabled(true)
-            .build();
+        cameraSource = cameraSourceProvider.get();
     }
 
     private void waitForSurface() {
@@ -234,6 +224,14 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
         Completable.fromAction(() -> {
             try {
                 cameraSource.start(surfaceView.getHolder());
+
+                barcodeEmitter.subscribe(barcodeNotification -> {
+                    if (barcodeNotification.isOnError()) {
+                        presenter.onBarcodeDetected(null);
+                    } else {
+                        presenter.onBarcodeDetected(barcodeNotification.getValue());
+                    }
+                });
             } catch (IOException ioe) {
                 Timber.e("Exception while starting camera");
             } catch (SecurityException se) {

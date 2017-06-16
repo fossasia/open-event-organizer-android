@@ -9,11 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
-import org.fossasia.openevent.app.data.LoginModel;
-import org.fossasia.openevent.app.data.contract.ILoginModel;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.db.configuration.DbFlowExclusionStrategy;
-import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.utils.Constants;
 
@@ -26,7 +22,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module
+@Module(includes = { AndroidModule.class, DatabaseModule.class })
 public class NetworkModule {
 
     @Provides
@@ -74,11 +70,5 @@ public class NetworkModule {
     @Singleton
     EventService providesEventService(Retrofit retrofit) {
         return retrofit.create(EventService.class);
-    }
-
-    @Provides
-    @Singleton
-    ILoginModel providesLoginModel(IUtilModel utilModel, EventService eventService, IDatabaseRepository databaseRepository) {
-        return new LoginModel(utilModel, eventService, databaseRepository);
     }
 }
