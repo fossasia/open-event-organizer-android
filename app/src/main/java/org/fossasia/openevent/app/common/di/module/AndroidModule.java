@@ -3,8 +3,6 @@ package org.fossasia.openevent.app.common.di.module;
 import android.content.Context;
 
 import org.fossasia.openevent.app.OrgaApplication;
-import org.fossasia.openevent.app.data.UtilModel;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
 
 import javax.inject.Singleton;
 
@@ -26,9 +24,4 @@ public class AndroidModule {
         return application;
     }
 
-    @Provides
-    @Singleton
-    IUtilModel providesUtilModel(Context context) {
-        return new UtilModel(context);
-    }
 }
