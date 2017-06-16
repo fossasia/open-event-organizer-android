@@ -29,6 +29,8 @@ import io.reactivex.schedulers.Schedulers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -127,10 +129,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.loadTickets(id, false);
 
-        inOrder.verify(eventDetailView).showProgressBar(true);
         inOrder.verify(eventRepository).getEvent(id, false);
         inOrder.verify(eventDetailView).showEventLoadError(error);
-        inOrder.verify(eventDetailView).showProgressBar(false);
     }
 
     @Test
@@ -142,10 +142,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.loadTickets(id, false);
 
-        inOrder.verify(eventDetailView).showProgressBar(true);
         inOrder.verify(eventRepository).getEvent(id, false);
         inOrder.verify(eventDetailView).showEvent(event);
-        inOrder.verify(eventDetailView).showProgressBar(false);
 
         assertEquals("2004-05-21", event.startDate.get());
         assertEquals("2012-09-20", event.endDate.get());
@@ -191,5 +189,23 @@ public class EventDetailPresenterTest {
         eventDetailPresenter.loadAttendees(id, false);
 
         verifyZeroInteractions(eventDetailView);
+    }
+
+    @Test
+    public void shouldHideProgressbarCorrectly() {
+        when(eventRepository.getAttendees(id, false))
+            .thenReturn(Observable.fromIterable(attendees));
+
+        when(eventRepository.getEvent(id, false))
+            .thenReturn(Observable.just(event));
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView);
+
+        eventDetailPresenter.start();
+
+        assertTrue(eventDetailPresenter.getProgress() >= 2);
+
+        inOrder.verify(eventDetailView, atLeast(1)).showProgressBar(true);
+        inOrder.verify(eventDetailView).showProgressBar(false);
     }
 }
