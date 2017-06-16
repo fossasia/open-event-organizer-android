@@ -38,9 +38,8 @@ android {
 }
 
 repositories {
-    maven {
-        url "https://jitpack.io"
-    }
+    maven { url "https://jitpack.io" }
+    maven { url "https://maven.google.com" }
 }
 
 def dbflow_version = "4.0.4"
