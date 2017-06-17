@@ -1,9 +1,8 @@
 package org.fossasia.openevent.app.common.di.component;
 
 import org.fossasia.openevent.app.OrgaApplication;
-import org.fossasia.openevent.app.common.di.module.AndroidModule;
+import org.fossasia.openevent.app.common.di.module.BarcodeModule;
 import org.fossasia.openevent.app.common.di.module.DataModule;
-import org.fossasia.openevent.app.common.di.module.DatabaseModule;
 import org.fossasia.openevent.app.common.di.module.NetworkModule;
 import org.fossasia.openevent.app.common.di.module.PresenterModule;
 import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
@@ -18,11 +17,10 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {
-    AndroidModule.class,
-    NetworkModule.class,
     DataModule.class,
-    DatabaseModule.class,
-    PresenterModule.class
+    NetworkModule.class,
+    PresenterModule.class,
+    BarcodeModule.class
 })
 public interface AppComponent {
 
