@@ -13,22 +13,27 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="@dimen/spacing_normal" >
+        android:paddingBottom="@dimen/spacing_small"
+        android:paddingEnd="@dimen/spacing_normal"
+        android:paddingLeft="@dimen/spacing_normal"
+        android:paddingRight="@dimen/spacing_normal"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_small">
 
         <ImageView
             android:layout_width="@dimen/image_small"
             android:layout_height="@dimen/image_small"
-            app:circleImageUrl="@{event.thumbnail}"
-            android:contentDescription="@string/event_thumbnail" />
+            android:contentDescription="@string/event_thumbnail"
+            app:circleImageUrl="@{event.thumbnail}" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:paddingLeft="@dimen/spacing_normal"
-            android:paddingRight="@dimen/spacing_normal"
-            android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_medium"
+            android:paddingLeft="@dimen/spacing_medium"
+            android:paddingRight="@dimen/spacing_medium"
+            android:paddingStart="@dimen/spacing_medium"
             android:text="@{event.name}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 

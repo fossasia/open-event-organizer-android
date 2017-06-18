@@ -13,7 +13,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_small"
+        android:paddingBottom="@dimen/spacing_small"
+        android:paddingLeft="@dimen/spacing_normal"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingRight="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_normal"
         android:gravity="center"
         android:orientation="horizontal"
         android:background="@color/color_top_surface">
