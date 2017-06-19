@@ -8,8 +8,8 @@ import org.fossasia.openevent.app.OrgaApplication;
 
 public abstract class BaseFragment extends Fragment {
 
-    @Override public void onDestroyView() {
-        super.onDestroyView();
+    @Override public void onDestroy() {
+        super.onDestroy();
         RefWatcher refWatcher = OrgaApplication.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }

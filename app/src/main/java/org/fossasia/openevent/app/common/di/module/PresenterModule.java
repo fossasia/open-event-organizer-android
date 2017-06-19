@@ -16,7 +16,7 @@ import org.fossasia.openevent.app.qrscan.contract.IScanQRPresenter;
 import dagger.Module;
 import dagger.Provides;
 
-@Module
+@Module(includes = { AndroidModule.class, DatabaseModule.class })
 public class PresenterModule {
 
     @Provides

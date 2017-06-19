@@ -38,9 +38,8 @@ android {
 }
 
 repositories {
-    maven {
-        url "https://jitpack.io"
-    }
+    maven { url "https://jitpack.io" }
+    maven { url "https://maven.google.com" }
 }
 
 def dbflow_version = "4.0.4"
@@ -61,7 +60,7 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile 'com.mikepenz:fastadapter:2.6.2'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
-    compile 'com.google.android.gms:play-services-vision:10.2.0'
+    compile 'com.google.android.gms:play-services-vision:10.2.6'
     compile "com.github.raizlabs.dbflow:dbflow-core:${dbflow_version}"
     compile "com.github.raizlabs.dbflow:dbflow:${dbflow_version}"
     compile "com.github.raizlabs.dbflow:dbflow-rx2:${dbflow_version}"

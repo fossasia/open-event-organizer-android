@@ -25,6 +25,14 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     private long totalAttendees;
     private long checkedInAttendees;
 
+    /**
+     * progress is parameter to check if complete data is loaded.
+     * we have two async processes loadAttendees and loadTickets.
+     * on completion of each one progress will be incremented
+     * hence progressbar will be hidden when progress is greater than equal to 2
+     */
+    private int progress = 0;
+
     @Inject
     public EventDetailPresenter(IEventRepository eventRepository) {
         this.eventRepository = eventRepository;
@@ -38,6 +46,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
 
     @Override
     public void start() {
+        progress = 0;
         showEventInfo(initialEvent);
 
         loadAttendees(initialEvent.getId(), false);
@@ -63,7 +72,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
                     if(eventDetailView == null)
                         return;
                     eventDetailView.showEventLoadError(throwable.getMessage());
-                    eventDetailView.showProgressBar(false);
+                    hideProgressbar();
                 });
     }
 
@@ -87,7 +96,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
         event.totalAttendees.set(totalAttendees);
         event.checkedIn.set(checkedInAttendees);
 
-        eventDetailView.showProgressBar(false);
+        hideProgressbar();
     }
 
     private void showEventInfo(Event event) {
@@ -109,6 +118,8 @@ public class EventDetailPresenter implements IEventDetailPresenter {
         if(eventDetailView == null)
             return;
 
+        eventDetailView.showProgressBar(true);
+
         eventRepository
             .getAttendees(eventId, forceReload)
             .toList()
@@ -117,6 +128,8 @@ public class EventDetailPresenter implements IEventDetailPresenter {
                     if(eventDetailView == null)
                         return;
                     eventDetailView.showEventLoadError(throwable.getMessage());
+
+                    hideProgressbar();
                 });
     }
 
@@ -143,7 +156,26 @@ public class EventDetailPresenter implements IEventDetailPresenter {
 
                 if(event != null)
                     event.checkedIn.set(checkedInAttendees);
+
+                hideProgressbar();
             });
+    }
+
+    /**
+     * checks if complete data is loaded
+     * and hides progressbar accordingly
+     */
+    private boolean hideProgressbar() {
+        progress ++;
+        if (progress >= 2) {
+            eventDetailView.showProgressBar(false);
+            return true;
+        }
+        return false;
+    }
+
+    public int getProgress() {
+        return progress;
     }
 
     public IEventDetailView getView() {
