@@ -7,12 +7,16 @@
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="spacing_extra_large">64dp</dimen>
 
-    <dimen name="elevation">2dp</dimen>
+    <dimen name="elevation">1dp</dimen>
 
-    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_extra_small">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="text_size_large">20sp</dimen>
 
     <dimen name="image_small">50dp</dimen>
+
+    <dimen name="check_in_button_width">100dp</dimen>
+    <dimen name="check_in_button_height">44dp</dimen>
 
 </resources>
