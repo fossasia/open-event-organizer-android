@@ -43,7 +43,7 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     }
 
     private void showEvent(Event event) {
-        EventContainerFragment fragment = EventContainerFragment.newInstance(event);
+        EventContainerFragment fragment = EventContainerFragment.newInstance(event.getId());
         FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
         fm.beginTransaction()
             .replace(R.id.event_detail_container, fragment)
@@ -82,7 +82,8 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
                 if (isTwoPane) {
                     showEvent(event);
                 } else {
-                    intent.putExtra(EventListActivity.EVENT_KEY, event);
+                    intent.putExtra(EventListActivity.EVENT_KEY, event.getId());
+                    intent.putExtra(EventListActivity.EVENT_NAME, event.getName());
                     context.startActivity(intent);
                 }
             });

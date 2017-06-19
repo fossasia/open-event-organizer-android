@@ -6,7 +6,7 @@ import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.SQLOperator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
@@ -21,7 +21,7 @@ import timber.log.Timber;
 public class DatabaseRepository implements IDatabaseRepository {
 
     @Override
-    public <T extends BaseModel> Observable<T> getItems(Class<T> typeClass, SQLOperator... conditions) {
+    public <T> Observable<T> getItems(Class<T> typeClass, SQLOperator... conditions) {
         return RXSQLite.rx(SQLite.select()
             .from(typeClass)
             .where(conditions))
@@ -30,7 +30,7 @@ public class DatabaseRepository implements IDatabaseRepository {
     }
 
     @Override
-    public <T extends BaseModel> Observable<T> getAllItems(Class<T> typeClass) {
+    public <T> Observable<T> getAllItems(Class<T> typeClass) {
         return RXSQLite.rx(SQLite.select()
             .from(typeClass))
             .queryList()
@@ -38,13 +38,16 @@ public class DatabaseRepository implements IDatabaseRepository {
     }
 
     @Override
-    public <T extends BaseModel> Completable save(T item) {
-        return Completable.fromAction(item::save)
+    public <T> Completable save(Class<T> classType, T item) {
+        return Completable.fromAction(() -> {
+            ModelAdapter<T> modelAdapter = FlowManager.getModelAdapter(classType);
+            modelAdapter.save(item);
+        })
             .doOnComplete(() -> Timber.i("Saved item %s in database", item.getClass()));
     }
 
     @Override
-    public <T extends BaseModel> Completable saveList(Class<T> itemClass, List<T> items) {
+    public <T> Completable saveList(Class<T> itemClass, List<T> items) {
         return Completable.fromAction(() -> {
             DatabaseDefinition database = FlowManager.getDatabase(OrgaDatabase.class);
             FastStoreModelTransaction<T> transaction = FastStoreModelTransaction
@@ -57,24 +60,26 @@ public class DatabaseRepository implements IDatabaseRepository {
     }
 
     @Override
-    public <T extends BaseModel> Completable update(T item) {
-        return Completable.fromAction(item::update)
+    public <T> Completable update(Class<T> classType, T item) {
+        return Completable.fromAction(() -> {
+            ModelAdapter<T> modelAdapter = FlowManager.getModelAdapter(classType);
+            modelAdapter.update(item);
+        })
             .doOnComplete(() -> Timber.i("Updated item of Type %s : ", item.getClass(), item));
     }
 
     @Override
-    public <T extends BaseModel> Completable delete(Class<T> typeClass, SQLOperator... conditions) {
+    public <T> Completable delete(Class<T> typeClass, SQLOperator... conditions) {
         return Completable.fromAction(() -> SQLite.delete(typeClass).where(conditions).execute());
     }
 
     @Override
-    public <T extends BaseModel> Completable deleteAll(Class<T> typeClass) {
+    public <T> Completable deleteAll(Class<T> typeClass) {
         return Completable.fromAction(() -> Delete.table(typeClass));
     }
 
-    @SafeVarargs
     @Override
-    public final Completable deleteAll(Class<? extends BaseModel>... typeClass) {
+    public Completable deleteAll(Class<?>... typeClass) {
         return Completable.fromAction(() -> Delete.tables((Class<?>[]) typeClass));
     }
 }

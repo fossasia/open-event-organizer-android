@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.EventContainerFragment;
 
 import butterknife.BindView;
@@ -25,8 +24,6 @@ public class EventDetailActivity extends AppCompatActivity {
     @BindView(R.id.detail_toolbar)
     Toolbar toolbar;
 
-    private Event initialEvent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +39,13 @@ public class EventDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        initialEvent = getIntent().getParcelableExtra(EventListActivity.EVENT_KEY);
+        Intent intent = getIntent();
 
-        setTitle(initialEvent.getName());
+        long initialEventId = intent.getLongExtra(EventListActivity.EVENT_KEY, -1);
+        String initialEventName = intent.getStringExtra(EventListActivity.EVENT_NAME);
+
+        if (initialEventName != null)
+            toolbar.setTitle(initialEventName);
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -58,7 +59,7 @@ public class EventDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            EventContainerFragment fg = EventContainerFragment.newInstance(initialEvent);
+            EventContainerFragment fg = EventContainerFragment.newInstance(initialEventId);
             getSupportFragmentManager().beginTransaction()
                 .add(R.id.event_detail_container, fg)
                 .commit();

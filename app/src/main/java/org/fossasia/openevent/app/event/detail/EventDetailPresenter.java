@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EventDetailPresenter implements IEventDetailPresenter {
 
-    private Event initialEvent;
+    private long initialEventId;
     private Event event;
     private IEventDetailView eventDetailView;
     private IEventRepository eventRepository;
@@ -39,18 +39,17 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     }
 
     @Override
-    public void attach(IEventDetailView eventDetailView, Event initialEvent) {
+    public void attach(IEventDetailView eventDetailView, long initialEventId) {
         this.eventDetailView = eventDetailView;
-        this.initialEvent = initialEvent;
+        this.initialEventId = initialEventId;
     }
 
     @Override
     public void start() {
         progress = 0;
-        showEventInfo(initialEvent);
 
-        loadAttendees(initialEvent.getId(), false);
-        loadTickets(initialEvent.getId(), false);
+        loadAttendees(initialEventId, false);
+        loadTickets(initialEventId, false);
     }
 
     @Override

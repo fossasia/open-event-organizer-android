@@ -1,41 +1,39 @@
 package org.fossasia.openevent.app.data.models;
 
-import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.gson.annotations.SerializedName;
-import com.mikepenz.fastadapter.IItem;
+import com.mikepenz.fastadapter.items.AbstractItem;
+import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
-import org.fossasia.openevent.app.databinding.AttendeeLayoutBinding;
 import org.fossasia.openevent.app.event.attendees.viewholders.AttendeeViewHolder;
 import org.fossasia.openevent.app.utils.Utils;
 
-import java.util.Collections;
 import java.util.List;
 
-@Table(database = OrgaDatabase.class, allFields = true)
-public class Attendee extends BaseModel implements Parcelable, Comparable<Attendee>, IItem<Attendee, AttendeeViewHolder> {
+@Table(database = OrgaDatabase.class)
+public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee> {
 
     @PrimaryKey
     private long id;
 
+    @Column
     @SerializedName("checked_in")
     private boolean checkedIn;
+    @Column
     private String email;
+    @Column
     @SerializedName("firstname")
     private String firstName;
+    @Column
     @SerializedName("lastname")
     private String lastName;
     @ForeignKey(
@@ -55,6 +53,7 @@ public class Attendee extends BaseModel implements Parcelable, Comparable<Attend
     private Ticket ticket;
 
     // To associate attendees and event
+    @Column
     private long eventId;
 
     public Attendee() {}
@@ -155,91 +154,11 @@ public class Attendee extends BaseModel implements Parcelable, Comparable<Attend
             '}';
     }
 
-    // Parcelable Implementation
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte(this.checkedIn ? (byte) 1 : (byte) 0);
-        dest.writeString(this.email);
-        dest.writeString(this.firstName);
-        dest.writeLong(this.id);
-        dest.writeString(this.lastName);
-        dest.writeParcelable(this.order, flags);
-        dest.writeParcelable(this.ticket, flags);
-    }
-
-    protected Attendee(Parcel in) {
-        this.checkedIn = in.readByte() != 0;
-        this.email = in.readString();
-        this.firstName = in.readString();
-        this.id = in.readLong();
-        this.lastName = in.readString();
-        this.order = in.readParcelable(Order.class.getClassLoader());
-        this.ticket = in.readParcelable(Ticket.class.getClassLoader());
-    }
-
-    public static final Parcelable.Creator<Attendee> CREATOR = new Parcelable.Creator<Attendee>() {
-        @Override
-        public Attendee createFromParcel(Parcel source) {
-            return new Attendee(source);
-        }
-
-        @Override
-        public Attendee[] newArray(int size) {
-            return new Attendee[size];
-        }
-    };
-
     @Override
     public int compareTo(@NonNull Attendee other) {
         int compareFirstName;
         int compareLastName;
         return (compareFirstName = firstName.toLowerCase().compareTo(other.getFirstName().toLowerCase())) == 0 ? (compareLastName = lastName.toLowerCase().compareTo(other.getLastName().toLowerCase())) == 0 ? email.toLowerCase().compareTo(other.getEmail().toLowerCase()) : compareLastName : compareFirstName;
-    }
-
-    @Override
-    public Object getTag() {
-        return null;
-    }
-
-    @Override
-    public Attendee withTag(Object o) {
-        return null;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
-    @Override
-    public Attendee withEnabled(boolean enabled) {
-        return null;
-    }
-
-    @Override
-    public boolean isSelected() {
-        return false;
-    }
-
-    @Override
-    public Attendee withSetSelected(boolean selected) {
-        return null;
-    }
-
-    @Override
-    public boolean isSelectable() {
-        return false;
-    }
-
-    @Override
-    public Attendee withSelectable(boolean selectable) {
-        return null;
     }
 
     @Override
@@ -253,83 +172,19 @@ public class Attendee extends BaseModel implements Parcelable, Comparable<Attend
     }
 
     @Override
-    public View generateView(Context context) {
-        AttendeeViewHolder holder = getViewHolder((ViewGroup) LayoutInflater.from(context).inflate(getLayoutRes(), null, false));
-
-        bindView(holder, Collections.EMPTY_LIST);
-
-        return holder.itemView;
-    }
-
-    @Override
-    public View generateView(Context context, ViewGroup parent) {
-        AttendeeViewHolder holder = getViewHolder(parent);
-
-        bindView(holder, Collections.EMPTY_LIST);
-
-        return holder.itemView;
-    }
-
-    @Override
-    public AttendeeViewHolder getViewHolder(ViewGroup parent) {
-        return new AttendeeViewHolder(AttendeeLayoutBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+    public AttendeeViewHolder getViewHolder(View view) {
+        return new AttendeeViewHolder(DataBindingUtil.bind(view));
     }
 
     @Override
     public void bindView(AttendeeViewHolder holder, List<Object> list) {
+        super.bindView(holder, list);
         holder.bindAttendee(this);
     }
 
     @Override
     public void unbindView(AttendeeViewHolder holder) {
+        super.unbindView(holder);
         holder.unbindAttendee();
     }
-
-    /**
-     * View got attached to the window
-     *
-     * @param holder
-     */
-    @Override
-    public void attachToWindow(AttendeeViewHolder holder) {
-
-    }
-
-    /**
-     * View got detached from the window
-     *
-     * @param holder
-     */
-    @Override
-    public void detachFromWindow(AttendeeViewHolder holder) {
-
-    }
-
-    /**
-     * When RecyclerView fails to recycle that viewHolder because it's in a transient state
-     * Implement this and clear any animations, to allow recycling. Return true in that case
-     * As our viewHolder not using any animations currently, returning false
-     *
-     * @param holder
-     */
-    @Override
-    public boolean failedToRecycle(AttendeeViewHolder holder) {
-        return false;
-    }
-
-    @Override
-    public boolean equals(int id) {
-        return this.id == id;
-    }
-
-    @Override
-    public Attendee withIdentifier(long id) {
-        return null;
-    }
-
-    @Override
-    public long getIdentifier() {
-        return id;
-    }
-
 }
