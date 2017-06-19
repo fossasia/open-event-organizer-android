@@ -122,6 +122,8 @@ public class AttendeePresenterTest {
 
         attendeesPresenter.loadAttendees(false);
 
+        Collections.sort(attendees);
+
         inOrder.verify(attendeesView).showProgressBar(true);
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(eventModel).getAttendees(id, false);

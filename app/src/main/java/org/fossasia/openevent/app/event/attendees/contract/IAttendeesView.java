@@ -16,4 +16,6 @@ public interface IAttendeesView {
 
     void showErrorMessage(String error);
 
+    void showToggleDialog(Attendee attendee);
+
 }

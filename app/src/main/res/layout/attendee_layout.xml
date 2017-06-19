@@ -13,9 +13,10 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_normal"
+        android:padding="@dimen/spacing_normal"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/color_top_surface">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -26,14 +27,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@android:color/black"
                 android:text="@{Utils.formatOptionalString(&quot;%s %s&quot;, attendee.firstName, attendee.lastName)}" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@{attendee.email}" />
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="@{attendee.email}"
+                android:textSize="@dimen/text_size_extra_small"/>
 
         </LinearLayout>
 
@@ -41,9 +45,12 @@
             android:id="@+id/btnCheckedIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="@dimen/check_in_button_height"
+            android:minWidth="@dimen/check_in_button_width"
             android:text="@{attendee.checkedIn ? @string/checked_in : @string/check_in}"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_extra_small"
             app:backgroundTint="@{attendee.checkedIn ? android.R.color.holo_green_light : android.R.color.holo_red_light}" />
 
     </LinearLayout>

@@ -53,4 +53,5 @@ public class Utils {
     public static String formatToken(@NonNull String token) {
         return String.format("JWT %s", token);
     }
+
 }
