@@ -34,5 +34,7 @@
     <string name="title_event_detail">Event Detail</string>
     <string name="subtitle_organizer">Organizer: %s</string>
     <string name="event_thumbnail">Event Thumbnail</string>
+    <string name="text_empty">Nothing to show here</string>
+    <string name="empty_view_icon">Empty View Icon</string>
 
 </resources>
