@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.data.models;
 
 import android.databinding.ObservableField;
+import android.databinding.ObservableFloat;
 import android.databinding.ObservableLong;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -109,6 +110,7 @@ public class Event extends BaseModel implements Parcelable {
     public final ObservableLong totalAttendees = new ObservableLong();
     public final ObservableLong totalTickets = new ObservableLong();
     public final ObservableLong checkedIn = new ObservableLong();
+    public final ObservableFloat totalSale = new ObservableFloat();
 
     public Event() {}
 
@@ -488,6 +490,7 @@ public class Event extends BaseModel implements Parcelable {
             ", totalAttendees=" + totalAttendees +
             ", totalTickets=" + totalTickets +
             ", checkedIn=" + checkedIn +
+            ", totalSales=" + totalSale +
             '}';
     }
 

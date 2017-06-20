@@ -16,7 +16,7 @@ public class Order extends BaseModel implements Parcelable {
     @PrimaryKey
     private long id;
 
-    private long amount;
+    private float amount;
     @SerializedName("completed_at")
     private String completedAt;
     private String identifier;
@@ -34,11 +34,11 @@ public class Order extends BaseModel implements Parcelable {
         setIdentifier(identifier);
     }
 
-    public long getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 

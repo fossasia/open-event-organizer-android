@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data class="EventDetailBinding">
-
         <variable
             name="event"
             type="org.fossasia.openevent.app.data.models.Event" />
@@ -26,6 +25,23 @@
                 android:paddingRight="@dimen/spacing_normal"
                 android:paddingTop="@dimen/spacing_normal"
                 tools:context=".event.detail.EventDetailsActivity">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/total_sales" />
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Display1"
+                    android:layout_width="@dimen/size_sale_box"
+                    android:layout_height="@dimen/size_sale_box"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_octagram"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text='@{"$" + String.format("%.2f", event.totalSale)}' />
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -55,14 +71,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@{event.totalAttendees + &quot;&quot;}"
+                                    android:text="@{event.totalAttendees}"
                                     android:textSize="20sp"
                                     android:textStyle="bold"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@{&quot;/&quot; + event.totalTickets + &quot;&quot;}"
+                                    android:text='@{"/" + event.totalTickets}'
                                     android:textSize="@dimen/text_size_small"/>
 
                             </LinearLayout>
@@ -90,7 +106,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@{event.totalTickets == 0 ? 0 + &quot;%&quot; : (int) ((event.totalAttendees*100)/event.totalTickets) + &quot;%&quot;}"
+                                    android:text='@{(event.totalTickets == 0 ? 0 : (int) ((event.totalAttendees*100)/event.totalTickets)) + "%"}'
                                     android:layout_marginLeft="@dimen/spacing_extra_small"
                                     android:layout_marginStart="@dimen/spacing_extra_small"/>
 
@@ -98,10 +114,10 @@
 
                         </LinearLayout>
 
-                        <RelativeLayout
+                        <FrameLayout
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="#808080"/>
+                            android:background="@color/grey_600"/>
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -118,14 +134,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@{event.checkedIn + &quot;&quot;}"
+                                    android:text="@{event.checkedIn}"
                                     android:textSize="@dimen/text_size_large"
                                     android:textStyle="bold"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@{&quot;/&quot; + event.totalAttendees + &quot;&quot;}"
+                                    android:text='@{"/" + event.totalAttendees}'
                                     android:textSize="@dimen/text_size_small"/>
 
                             </LinearLayout>
@@ -154,7 +170,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@{event.totalAttendees == 0 ? 0 + &quot;%&quot; : (int) ((event.checkedIn*100)/event.totalAttendees) + &quot;%&quot;}"
+                                    android:text='@{(event.totalAttendees == 0 ? 0 : (int) ((event.checkedIn*100)/event.totalAttendees)) + "%"}'
                                     android:layout_marginLeft="@dimen/spacing_extra_small"
                                     android:layout_marginStart="@dimen/spacing_extra_small"/>
 
