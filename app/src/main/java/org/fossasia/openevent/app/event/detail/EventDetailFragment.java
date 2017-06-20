@@ -15,7 +15,6 @@ import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailPresenter;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
-import org.fossasia.openevent.app.events.EventListActivity;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
 import javax.inject.Inject;
@@ -27,6 +26,7 @@ import javax.inject.Inject;
  */
 public class EventDetailFragment extends BaseFragment implements IEventDetailView {
 
+    private long initialEventId;
     private EventDetailBinding binding;
 
     @Inject
@@ -43,15 +43,17 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param event Event for which the Fragment is to be created.
+     * @param eventId Event for which the Fragment is to be created.
      * @return A new instance of fragment EventDetailFragment.
      */
-    public static EventDetailFragment newInstance(Event event) {
+    public static EventDetailFragment newInstance(long eventId) {
         EventDetailFragment fragment = new EventDetailFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(EventListActivity.EVENT_KEY, event);
-        fragment.setArguments(args);
+        fragment.setInitialEvent(eventId);
         return fragment;
+    }
+
+    public void setInitialEvent(long initialEventId) {
+        this.initialEventId = initialEventId;
     }
 
     @Override
@@ -62,9 +64,8 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
 
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            Event initialEvent = getArguments().getParcelable(EventListActivity.EVENT_KEY);
-            eventDetailPresenter.attach(this, initialEvent);
+        if (initialEventId != -1) {
+            eventDetailPresenter.attach(this, initialEventId);
         }
     }
 

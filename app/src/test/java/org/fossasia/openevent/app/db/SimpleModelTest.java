@@ -22,7 +22,7 @@ public class SimpleModelTest extends BaseUnitTest {
     public void testBasicRead() {
         SimpleModel simpleModel = new SimpleModel(1, "Title", "Greta Jones");
         databaseRepository
-            .save(simpleModel)
+            .save(SimpleModel.class, simpleModel)
             .subscribe();
 
         databaseRepository.getItems(SimpleModel.class, SimpleModel_Table.id.eq(1L))
@@ -47,7 +47,7 @@ public class SimpleModelTest extends BaseUnitTest {
         userDetail.setLastName("Chief");
         userDetail.setDetails("A detailed description about Master Chief");
 
-        databaseRepository.save(user).subscribe();
+        databaseRepository.save(User.class, user).subscribe();
 
         databaseRepository.deleteAll(User.class, UserDetail.class).subscribe();
     }

@@ -199,7 +199,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
         ViewUtils.setTint(barcodePanel, ContextCompat.getColor(this, R.color.green_a400));
 
         Intent resultIntent = new Intent();
-        resultIntent.putExtra(Constants.SCANNED_ATTENDEE, attendee);
+        resultIntent.putExtra(Constants.SCANNED_ATTENDEE, attendee.getId());
         setResult(AttendeesFragment.REQ_CODE, resultIntent);
         finish();
     }

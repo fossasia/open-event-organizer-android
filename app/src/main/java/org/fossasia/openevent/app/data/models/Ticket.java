@@ -1,8 +1,5 @@
 package org.fossasia.openevent.app.data.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -11,7 +8,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
 @Table(database = OrgaDatabase.class, allFields = true)
-public class Ticket extends BaseModel implements Parcelable {
+public class Ticket extends BaseModel {
 
     @PrimaryKey
     private long id;
@@ -99,42 +96,4 @@ public class Ticket extends BaseModel implements Parcelable {
             ", type='" + type + '\'' +
             '}';
     }
-
-    // Parcelable Implementation
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.description);
-        dest.writeLong(this.id);
-        dest.writeString(this.name);
-        dest.writeFloat(this.price);
-        dest.writeLong(this.quantity);
-        dest.writeString(this.type);
-    }
-
-    protected Ticket(Parcel in) {
-        this.description = in.readString();
-        this.id = in.readLong();
-        this.name = in.readString();
-        this.price = in.readFloat();
-        this.quantity = in.readLong();
-        this.type = in.readString();
-    }
-
-    public static final Creator<Ticket> CREATOR = new Creator<Ticket>() {
-        @Override
-        public Ticket createFromParcel(Parcel source) {
-            return new Ticket(source);
-        }
-
-        @Override
-        public Ticket[] newArray(int size) {
-            return new Ticket[size];
-        }
-    };
 }

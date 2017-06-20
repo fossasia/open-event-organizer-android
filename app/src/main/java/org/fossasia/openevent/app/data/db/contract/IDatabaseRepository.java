@@ -1,7 +1,6 @@
 package org.fossasia.openevent.app.data.db.contract;
 
 import com.raizlabs.android.dbflow.sql.language.SQLOperator;
-import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.List;
 
@@ -10,21 +9,21 @@ import io.reactivex.Observable;
 
 public interface IDatabaseRepository {
 
-    <T extends BaseModel> Observable<T> getItems(Class<T> typeClass, SQLOperator... conditions);
+    <T> Observable<T> getItems(Class<T> typeClass, SQLOperator... conditions);
 
-    <T extends BaseModel> Observable<T> getAllItems(Class<T> typeClass);
+    <T> Observable<T> getAllItems(Class<T> typeClass);
 
-    <T extends BaseModel> Completable save(T item);
+    <T> Completable save(Class<T> classType, T item);
 
-    <T extends BaseModel> Completable saveList(Class<T> itemClass, List<T> items);
+    <T> Completable saveList(Class<T> itemClass, List<T> items);
 
-    <T extends BaseModel> Completable update(T item);
+    <T> Completable update(Class<T> classType, T item);
 
-    <T extends BaseModel> Completable delete(Class<T> typeClass, SQLOperator... conditions);
+    <T> Completable delete(Class<T> typeClass, SQLOperator... conditions);
 
-    <T extends BaseModel> Completable deleteAll(Class<T> typeClass);
+    <T> Completable deleteAll(Class<T> typeClass);
 
     @SuppressWarnings("unchecked")
-    Completable deleteAll(Class<? extends BaseModel>... typeClass);
+    Completable deleteAll(Class<?>... typeClass);
 
 }
