@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FossAsia Orga Android App</string>
+    <string name="app_name">Open Event Organizer</string>
     <string name="checked_in">Checked In</string>
     <string name="check_in">Check In</string>
     <string name="event_title">Event Title</string>
@@ -11,7 +11,8 @@
     <string name="scan_qr_code">Scan QR COde</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
+    <string name="base_url">Base URL</string>
+    <string name="login">Log In</string>
     <string name="scan_the_barcode">Scan the BarCode</string>
     <string name="event_title_here">Event Title Here</string>
 

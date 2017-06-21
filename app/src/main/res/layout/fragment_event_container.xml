@@ -18,6 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
-        app:menu="@menu/event_bottom_navigation" />
+        app:menu="@menu/event_bottom_navigation"
+        app:itemIconTint="@drawable/bottom_nav_tint"
+        app:itemTextColor="@drawable/bottom_nav_tint"/>
 
 </LinearLayout>

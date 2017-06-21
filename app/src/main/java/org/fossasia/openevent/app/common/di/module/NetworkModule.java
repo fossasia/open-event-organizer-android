@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso;
 
 import org.fossasia.openevent.app.data.db.configuration.DbFlowExclusionStrategy;
 import org.fossasia.openevent.app.data.network.EventService;
+import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.utils.Constants;
 
 import javax.inject.Singleton;
@@ -41,8 +42,15 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    OkHttpClient providesOkHttpClient() {
+    HostSelectionInterceptor providesHostSelectionInterceptor() {
+        return new HostSelectionInterceptor();
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient providesOkHttpClient(HostSelectionInterceptor interceptor) {
         return new OkHttpClient.Builder()
+            .addInterceptor(interceptor)
             .addNetworkInterceptor(new StethoInterceptor())
             .build();
     }
@@ -57,18 +65,17 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    Retrofit providesRetrofit(Gson gson, OkHttpClient client) {
+    Retrofit.Builder providesRetrofitBuilder(Gson gson, OkHttpClient client) {
         return new Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
-            .build();
+            .baseUrl(Constants.BASE_URL);
     }
 
     @Provides
     @Singleton
-    EventService providesEventService(Retrofit retrofit) {
-        return retrofit.create(EventService.class);
+    EventService providesEventService(Retrofit.Builder builder) {
+        return builder.build().create(EventService.class);
     }
 }

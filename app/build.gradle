@@ -26,6 +26,13 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "DEFAULT_BASE_URL", '"https://www.eventyay.com/api/v1/"'
+            resValue "string", "default_base_url", '"https://www.eventyay.com/api/v1/"'
+        }
+        debug {
+            buildConfigField "String", "DEFAULT_BASE_URL", '"https://open-event-dev.herokuapp.com/api/v1/"'
+            resValue "string", "default_base_url", '"https://open-event-dev.herokuapp.com/api/v1/"'
         }
     }
     dataBinding {
