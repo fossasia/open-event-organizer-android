@@ -16,6 +16,9 @@ import org.fossasia.openevent.app.utils.NetworkUtils;
 import io.reactivex.Completable;
 import timber.log.Timber;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Utility class to be used by presenters and models for
  * Android Context based actions
@@ -54,6 +57,25 @@ public class UtilModel implements IUtilModel {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
         editor.apply();
+    }
+
+    @Override
+    public Set<String> getStringSet(String key, Set<String> defaultValue) {
+        return sharedPreferences.getStringSet(key, defaultValue);
+    }
+
+    @Override
+    public void saveStringSet(String key, Set<String> value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet(key, value);
+        editor.apply();
+    }
+
+    @Override
+    public void addStringSetElement(String key, String value) {
+        Set<String> set = getStringSet(key, new HashSet<>());
+        set.add(value);
+        saveStringSet(key, set);
     }
 
     @Override

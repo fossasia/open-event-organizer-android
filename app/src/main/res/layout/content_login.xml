@@ -18,13 +18,14 @@
         android:paddingRight="@dimen/spacing_normal">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal">
 
-            <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/etEmail"
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/email_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
