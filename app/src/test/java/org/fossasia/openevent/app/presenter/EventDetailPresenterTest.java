@@ -76,7 +76,7 @@ public class EventDetailPresenterTest {
         event.setTickets(tickets);
 
         eventDetailPresenter = new EventDetailPresenter(eventRepository);
-        eventDetailPresenter.attach(eventDetailView, event);
+        eventDetailPresenter.attach(eventDetailView, event.getId());
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
@@ -167,6 +167,14 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldDisplayCorrectStats() throws Exception {
+        tickets.get(1).setPrice(12.86f);
+        tickets.get(0).setPrice(5);
+
+        attendees.get(1).setTicket(tickets.get(1));
+        attendees.get(2).setTicket(tickets.get(1));
+        attendees.get(3).setTicket(tickets.get(0));
+        attendees.get(4).setTicket(tickets.get(1));
+
         when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.fromIterable(attendees));
 
@@ -179,6 +187,7 @@ public class EventDetailPresenterTest {
         assertEquals(114, event.totalTickets.get());
         assertEquals(3, event.checkedIn.get());
         assertEquals(7, event.totalAttendees.get());
+        assertEquals(43.58, event.totalSale.get(), 0.001);
     }
 
     @Test

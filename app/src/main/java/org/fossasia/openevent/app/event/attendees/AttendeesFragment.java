@@ -2,9 +2,9 @@ package org.fossasia.openevent.app.event.attendees;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,9 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.databinding.library.baseAdapters.BR;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.HeaderAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
@@ -26,6 +26,7 @@ import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.BaseFragment;
 import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.databinding.FragmentAttendeesBinding;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
 import org.fossasia.openevent.app.event.attendees.listeners.AttendeeItemCheckInEvent;
@@ -38,8 +39,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,26 +48,18 @@ import butterknife.ButterKnife;
  */
 public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
-    @BindView(R.id.rvAttendeeList)
-    RecyclerView recyclerView;
-
-    @BindView(R.id.fabScanQr)
-    FloatingActionButton fabBarcodeScanner;
-
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
-
     private Context context;
 
     private long eventId;
 
-    private FastAdapter fastAdapter;
-    private ItemAdapter itemAdapter;
+    private ItemAdapter<Attendee> itemAdapter;
 
     public static final int REQ_CODE = 123;
 
     @Inject
     IAttendeesPresenter attendeesPresenter;
+
+    private FragmentAttendeesBinding binding;
 
     public AttendeesFragment() {
         // Required empty public constructor
@@ -108,25 +100,27 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_attendees, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_attendees, container, false);
+
+        binding.setAttendees(attendeesPresenter.getAttendees());
+
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-        recyclerView.setLayoutManager(layoutManager);
+        RecyclerView recyclerView = binding.rvAttendeeList;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        fastAdapter = new FastAdapter();
+        FastAdapter<Attendee> fastAdapter = new FastAdapter<>();
 
         final StickyHeaderAdapter stickyHeaderAdapter = new StickyHeaderAdapter();
         final HeaderAdapter headerAdapter = new HeaderAdapter();
-        itemAdapter = new ItemAdapter();
+        itemAdapter = new ItemAdapter<>();
 
         fastAdapter.setHasStableIds(true);
         fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
@@ -143,7 +137,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
             }
         });
 
-        fabBarcodeScanner.setOnClickListener(v -> {
+        binding.fabScanQr.setOnClickListener(v -> {
             Intent scanQr = new Intent(context, ScanQRActivity.class);
             scanQr.putExtra(EventListActivity.EVENT_KEY, eventId);
             startActivityForResult(scanQr, REQ_CODE);
@@ -160,12 +154,13 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null)
+        if (data == null || requestCode != REQ_CODE)
             return;
-        if (requestCode == REQ_CODE) {
-            Attendee attendee = data.getParcelableExtra(Constants.SCANNED_ATTENDEE);
-            if (attendee != null)
-                showToggleDialog(attendee);
+        long attendeeId = data.getLongExtra(Constants.SCANNED_ATTENDEE, -1);
+
+        if (attendeeId != -1) {
+            attendeesPresenter.getAttendeeById(attendeeId)
+                .subscribe(this::showToggleDialog, Timber::e);
         }
     }
 
@@ -188,19 +183,24 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @Override
     public void showProgressBar(boolean show) {
-        ViewUtils.showView(progressBar, show);
+        ViewUtils.showView(binding.progressBar, show);
     }
 
     @Override
     public void showScanButton(boolean show) {
-        if (show) fabBarcodeScanner.show();
-        else fabBarcodeScanner.hide();
+        if (show)
+            binding.fabScanQr.show();
+        else
+            binding.fabScanQr.hide();
     }
 
     @Override
     public void showAttendees(List<Attendee> attendees) {
-        itemAdapter.clear();
-        itemAdapter.add(attendees);
+        // The list is loaded from presenter, so we just need
+        // to notify RecyclerView to update the data
+        itemAdapter.set(attendees);
+        binding.setVariable(BR.attendees, attendees);
+        binding.executePendingBindings();
     }
 
     @Override

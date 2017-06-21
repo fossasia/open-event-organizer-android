@@ -14,16 +14,18 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class EventDetailPresenter implements IEventDetailPresenter {
 
-    private Event initialEvent;
+    private long initialEventId;
     private Event event;
     private IEventDetailView eventDetailView;
     private IEventRepository eventRepository;
 
     private long totalAttendees;
     private long checkedInAttendees;
+    private float totalSales;
 
     /**
      * progress is parameter to check if complete data is loaded.
@@ -39,18 +41,17 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     }
 
     @Override
-    public void attach(IEventDetailView eventDetailView, Event initialEvent) {
+    public void attach(IEventDetailView eventDetailView, long initialEventId) {
         this.eventDetailView = eventDetailView;
-        this.initialEvent = initialEvent;
+        this.initialEventId = initialEventId;
     }
 
     @Override
     public void start() {
         progress = 0;
-        showEventInfo(initialEvent);
 
-        loadAttendees(initialEvent.getId(), false);
-        loadTickets(initialEvent.getId(), false);
+        loadAttendees(initialEventId, false);
+        loadTickets(initialEventId, false);
     }
 
     @Override
@@ -95,6 +96,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
         event.totalTickets.set(totalTickets);
         event.totalAttendees.set(totalAttendees);
         event.checkedIn.set(checkedInAttendees);
+        event.totalSale.set(totalSales);
 
         hideProgressbar();
     }
@@ -141,6 +143,19 @@ public class EventDetailPresenter implements IEventDetailPresenter {
 
         if(event != null)
             event.totalAttendees.set(totalAttendees);
+
+        Observable.fromIterable(attendees)
+            .filter(attendee -> attendee.getTicket() != null && attendee.getTicket().getPrice() != 0)
+            .map(attendee -> attendee.getTicket().getPrice())
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                price -> totalSales += price,
+                Timber::e,
+                () -> {
+                    if(event != null)
+                        event.totalSale.set(totalSales);
+                });
 
         Observable.fromIterable(attendees)
             .filter(Attendee::isCheckedIn)

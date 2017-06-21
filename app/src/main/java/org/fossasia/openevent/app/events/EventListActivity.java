@@ -1,22 +1,24 @@
 package org.fossasia.openevent.app.events;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.android.databinding.library.baseAdapters.BR;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.databinding.ActivityEventListBinding;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.login.LoginActivity;
@@ -28,8 +30,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import timber.log.Timber;
 
 /**
@@ -42,31 +42,25 @@ import timber.log.Timber;
  */
 public class EventListActivity extends AppCompatActivity implements IEventsView {
 
-    @BindView(R.id.event_list)
-    RecyclerView recyclerView;
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
-
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean isTwoPane;
 
-    private List<Event> events;
+    private final List<Event> events = new ArrayList<>();
     private EventsListAdapter eventListAdapter;
 
     public static final String EVENT_KEY = "event";
+    public static final String EVENT_NAME = "event_name";
 
     @Inject
     IUtilModel utilModel;
 
     @Inject
     IEventsPresenter presenter;
+
+    private ActivityEventListBinding binding;
 
     // Lifecycle methods start
 
@@ -77,25 +71,18 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
             .inject(this);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_list);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_event_list);
 
-        ButterKnife.bind(this);
+        setSupportActionBar(binding.toolbar);
+        binding.toolbar.setTitle(getTitle());
 
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+        isTwoPane = binding.eventListContainer.eventDetailContainer != null;
 
-        if (findViewById(R.id.event_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            isTwoPane = true;
-        }
-
-        events = new ArrayList<>();
+        binding.setEvents(events);
         eventListAdapter = new EventsListAdapter(events, this, isTwoPane);
 
-        assert recyclerView != null;
+        RecyclerView recyclerView = binding.eventListContainer.eventList.eventRecyclerview;
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(eventListAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this , DividerItemDecoration.VERTICAL));
@@ -139,7 +126,7 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
 
     @Override
     public void showProgressBar(boolean show) {
-        ViewUtils.showView(progressBar, show);
+        ViewUtils.showView(binding.eventListContainer.eventList.progressBar, show);
     }
 
     @Override
@@ -147,6 +134,8 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
         this.events.clear();
         this.events.addAll(events);
         eventListAdapter.notifyDataSetChanged();
+        binding.setVariable(BR.events, events);
+        binding.executePendingBindings();
     }
 
     @Override
@@ -156,7 +145,7 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
 
     @Override
     public void showOrganiserName(String name) {
-        toolbar.setSubtitle(Utils.formatOptionalString(
+        binding.toolbar.setSubtitle(Utils.formatOptionalString(
             utilModel.getResourceString(R.string.subtitle_organizer), name)
         );
     }

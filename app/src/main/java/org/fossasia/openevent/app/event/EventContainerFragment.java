@@ -12,10 +12,8 @@ import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.BaseFragment;
-import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
 import org.fossasia.openevent.app.event.detail.EventDetailFragment;
-import org.fossasia.openevent.app.events.EventListActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +28,7 @@ public class EventContainerFragment extends BaseFragment {
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
-    private Event initialEvent;
+    private long initialEventId;
 
     public static final String FRAG_DETAILS = "details";
     public static final String FRAG_ATTENDEES = "attendees";
@@ -57,23 +55,17 @@ public class EventContainerFragment extends BaseFragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param initialEvent an event for which the fragment is created.
+     * @param initialEventId an event id for which the fragment is created.
      * @return A new instance of fragment EventContainerFragment.
      */
-    public static EventContainerFragment newInstance(Event initialEvent) {
+    public static EventContainerFragment newInstance(long initialEventId) {
         EventContainerFragment fragment = new EventContainerFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(EventListActivity.EVENT_KEY, initialEvent);
-        fragment.setArguments(args);
+        fragment.setInitialEvent(initialEventId);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            initialEvent = getArguments().getParcelable(EventListActivity.EVENT_KEY);
-        }
+    public void setInitialEvent(long initialEventId) {
+        this.initialEventId = initialEventId;
     }
 
     @Override
@@ -102,13 +94,13 @@ public class EventContainerFragment extends BaseFragment {
         if(fg == null) {
             switch (tag) {
                 case FRAG_DETAILS:
-                    fg = EventDetailFragment.newInstance(initialEvent);
+                    fg = EventDetailFragment.newInstance(initialEventId);
                     break;
                 case FRAG_ATTENDEES:
-                    fg = AttendeesFragment.newInstance(initialEvent.getId());
+                    fg = AttendeesFragment.newInstance(initialEventId);
                     break;
                 default:
-                    fg = EventDetailFragment.newInstance(initialEvent);
+                    fg = EventDetailFragment.newInstance(initialEventId);
                     break;
             }
         }
