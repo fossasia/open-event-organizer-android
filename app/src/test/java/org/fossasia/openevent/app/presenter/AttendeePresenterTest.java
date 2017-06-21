@@ -16,7 +16,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -147,24 +146,6 @@ public class AttendeePresenterTest {
         inOrder.verify(eventModel).toggleAttendeeCheckStatus(id, 56);
         inOrder.verify(attendeesView).updateAttendee(2, attendees.get(2));
         inOrder.verify(attendeesView).showProgressBar(false);
-    }
-
-    @Test
-    public void shouldToggleSortedAttendeesSuccessfully() {
-        Attendee targetAttendee = attendees.get(3);
-
-        when(eventModel.toggleAttendeeCheckStatus(id, targetAttendee.getId()))
-            .thenReturn(Observable.just(targetAttendee));
-
-        // Set the shuffled list to search into
-        List<Attendee> shuffled = new ArrayList<>(attendees);
-        Collections.shuffle(shuffled);
-
-        attendeesPresenter.setAttendeeList(shuffled);
-        attendeesPresenter.toggleAttendeeCheckStatus(targetAttendee);
-
-
-        Mockito.verify(attendeesView).updateAttendee(shuffled.indexOf(targetAttendee), targetAttendee);
     }
 
     @Test

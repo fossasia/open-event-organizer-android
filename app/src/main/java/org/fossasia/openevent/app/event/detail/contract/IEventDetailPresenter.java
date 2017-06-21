@@ -1,10 +1,8 @@
 package org.fossasia.openevent.app.event.detail.contract;
 
-import org.fossasia.openevent.app.data.models.Event;
-
 public interface IEventDetailPresenter {
 
-    void attach(IEventDetailView eventDetailView, Event initialEvent);
+    void attach(IEventDetailView eventDetailView, long initialEventId);
 
     void start();
 

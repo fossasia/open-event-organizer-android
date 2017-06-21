@@ -52,6 +52,7 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
     private EventsListAdapter eventListAdapter;
 
     public static final String EVENT_KEY = "event";
+    public static final String EVENT_NAME = "event_name";
 
     @Inject
     IUtilModel utilModel;

@@ -137,7 +137,7 @@ public class EventRepositoryTest {
 
         when(utilModel.isConnected()).thenReturn(true);
         when(databaseRepository.getAllItems(User.class)).thenReturn(Observable.empty());
-        when(databaseRepository.save(user)).thenReturn(completable);
+        when(databaseRepository.save(User.class, user)).thenReturn(completable);
         when(eventService.getUser(auth)).thenReturn(Observable.just(user));
 
         // No force reload ensures use of cache
@@ -174,7 +174,7 @@ public class EventRepositoryTest {
         User user = new User();
 
         when(eventService.getUser(auth)).thenReturn(Observable.just(user));
-        when(databaseRepository.save(user)).thenReturn(Completable.complete());
+        when(databaseRepository.save(User.class, user)).thenReturn(Completable.complete());
         when(utilModel.isConnected()).thenReturn(true);
 
         // Force reload ensures no use of cache
@@ -198,7 +198,7 @@ public class EventRepositoryTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(databaseRepository.getItems(eq(Event.class), refEq(Event_Table.id.eq(id))))
             .thenReturn(Observable.empty());
-        when(databaseRepository.save(event)).thenReturn(completable);
+        when(databaseRepository.save(Event.class, event)).thenReturn(completable);
         when(eventService.getEvent(id)).thenReturn(Observable.just(event));
 
         // No force reload ensures use of cache
@@ -213,7 +213,7 @@ public class EventRepositoryTest {
 
         // Verify loads from network
         verify(eventService).getEvent(id);
-        verify(databaseRepository).save(event);
+        verify(databaseRepository).save(Event.class, event);
     }
 
     @Test
@@ -240,7 +240,7 @@ public class EventRepositoryTest {
         long id = 45;
 
         Event event = new Event();
-        when(databaseRepository.save(event)).thenReturn(Completable.complete());
+        when(databaseRepository.save(Event.class, event)).thenReturn(Completable.complete());
         when(utilModel.isConnected()).thenReturn(true);
         when(eventService.getEvent(id)).thenReturn(Observable.just(event));
 
@@ -430,7 +430,7 @@ public class EventRepositoryTest {
             .doOnSubscribe(testObserver::onSubscribe);
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(databaseRepository.update(attendee)).thenReturn(completable);
+        when(databaseRepository.update(Attendee.class, attendee)).thenReturn(completable);
         when(eventService.toggleAttendeeCheckStatus(76, 89, auth)).thenReturn(Observable.just(attendee));
 
         Observable<Attendee> attendeeObservable = eventRepository.toggleAttendeeCheckStatus(76, 89);

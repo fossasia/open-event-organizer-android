@@ -3,8 +3,6 @@ package org.fossasia.openevent.app.data.models;
 import android.databinding.ObservableField;
 import android.databinding.ObservableFloat;
 import android.databinding.ObservableLong;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
@@ -13,7 +11,6 @@ import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
@@ -21,7 +18,7 @@ import java.util.List;
 
 
 @Table(database = OrgaDatabase.class, allFields = true)
-public class Event extends BaseModel implements Parcelable {
+public class Event {
 
     @PrimaryKey
     @SerializedName("id")
@@ -118,15 +115,12 @@ public class Event extends BaseModel implements Parcelable {
         this.id = id;
     }
 
-    @Override
-    public boolean save() {
+    private void associateLinks() {
         associateCallForPapers();
         associateCopyright();
         associateLicenseDetails();
         associateSocialLinks();
         associateTickets();
-
-        return super.save();
     }
 
     public String getBackgroundImage() {
@@ -522,73 +516,13 @@ public class Event extends BaseModel implements Parcelable {
         return socialLinks;
     }
 
-    // Parcelable Information - Only basic event info
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.backgroundImage);
-        dest.writeString(this.description);
-        dest.writeString(this.email);
-        dest.writeString(this.endTime);
-        dest.writeString(this.eventUrl);
-        dest.writeValue(this.id);
-        dest.writeString(this.large);
-        dest.writeString(this.locationName);
-        dest.writeString(this.logo);
-        dest.writeString(this.name);
-        dest.writeString(this.organizerName);
-        dest.writeString(this.placeholderUrl);
-        dest.writeString(this.startTime);
-        dest.writeString(this.thumbnail);
-        dest.writeString(this.ticketUrl);
-        dest.writeString(this.timezone);
-        dest.writeString(this.topic);
-        dest.writeString(this.type);
-    }
-
-    protected Event(Parcel in) {
-        this.backgroundImage = in.readString();
-        this.description = in.readString();
-        this.email = in.readString();
-        this.endTime = in.readString();
-        this.eventUrl = in.readString();
-        this.id = (long) in.readValue(long.class.getClassLoader());
-        this.large = in.readString();
-        this.locationName = in.readString();
-        this.logo = in.readString();
-        this.name = in.readString();
-        this.organizerName = in.readString();
-        this.placeholderUrl = in.readString();
-        this.startTime = in.readString();
-        this.thumbnail = in.readString();
-        this.ticketUrl = in.readString();
-        this.timezone = in.readString();
-        this.topic = in.readString();
-        this.type = in.readString();
-    }
-
-    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
-        @Override
-        public Event createFromParcel(Parcel source) {
-            return new Event(source);
-        }
-
-        @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
-        }
-    };
-
     public boolean isComplete() {
         return isComplete;
     }
 
     public void setComplete(boolean complete) {
         isComplete = complete;
+        if (isComplete)
+            associateLinks();
     }
 }
