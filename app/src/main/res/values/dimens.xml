@@ -18,5 +18,6 @@
 
     <dimen name="check_in_button_width">100dp</dimen>
     <dimen name="check_in_button_height">44dp</dimen>
+    <dimen name="size_sale_box">160dp</dimen>
 
 </resources>

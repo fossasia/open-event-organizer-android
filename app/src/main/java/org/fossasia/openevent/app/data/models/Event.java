@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.data.models;
 
 import android.databinding.ObservableField;
+import android.databinding.ObservableFloat;
 import android.databinding.ObservableLong;
 
 import com.google.gson.annotations.SerializedName;
@@ -106,6 +107,7 @@ public class Event {
     public final ObservableLong totalAttendees = new ObservableLong();
     public final ObservableLong totalTickets = new ObservableLong();
     public final ObservableLong checkedIn = new ObservableLong();
+    public final ObservableFloat totalSale = new ObservableFloat();
 
     public Event() {}
 
@@ -482,6 +484,7 @@ public class Event {
             ", totalAttendees=" + totalAttendees +
             ", totalTickets=" + totalTickets +
             ", checkedIn=" + checkedIn +
+            ", totalSales=" + totalSale +
             '}';
     }
 
