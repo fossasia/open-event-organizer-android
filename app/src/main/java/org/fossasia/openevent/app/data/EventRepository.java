@@ -108,9 +108,21 @@ public class EventRepository implements IEventRepository {
 
         Observable<Event> networkObservable = Observable.defer(() ->
             eventService.getEvents(authorization)
-                .doOnNext(events -> databaseRepository.saveList(Event.class, events)
+                .doOnNext(events ->
+                    databaseRepository.saveList(Event.class, events)
                     .subscribe())
-                .flatMapIterable(events -> events));
+                .flatMapIterable(events -> events))
+                .doOnEach(eventNotification -> {
+                    // Download all complete events in one go
+                    if (!eventNotification.isOnNext())
+                        return;
+                    Event event = eventNotification.getValue();
+                    getEvent(event.getId(), false)
+                        .subscribe(
+                            eventDownloaded ->
+                                Timber.d("Downloaded complete event %s", eventDownloaded.getName()),
+                            Timber::e);
+                });
 
         return getAbstractObservable(reload, diskObservable, networkObservable);
     }

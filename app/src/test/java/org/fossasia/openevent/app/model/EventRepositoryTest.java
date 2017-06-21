@@ -35,7 +35,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.refEq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -287,6 +289,45 @@ public class EventRepositoryTest {
         verify(eventService).getEvents(auth);
 
         testObserver.assertSubscribed();
+    }
+
+    @Test
+    public void shouldStartCompleteEventDownloadOnPartialEvent() {
+        List<Event> events = Arrays.asList(
+            new Event(12),
+            new Event(21),
+            new Event(52)
+        );
+
+        EventRepository spiedRepository = spy(eventRepository);
+
+        TestObserver testObserver1 = TestObserver.create();
+        TestObserver testObserver2 = TestObserver.create();
+        TestObserver testObserver3 = TestObserver.create();
+        Observable ob1 = Observable.empty().doOnSubscribe(testObserver1::onSubscribe);
+        Observable ob2 = Observable.empty().doOnSubscribe(testObserver2::onSubscribe);
+        Observable ob3 = Observable.empty().doOnSubscribe(testObserver3::onSubscribe);
+
+        doReturn(ob1).when(spiedRepository).getEvent(12, false);
+        doReturn(ob2).when(spiedRepository).getEvent(21, false);
+        doReturn(ob3).when(spiedRepository).getEvent(52, false);
+
+        when(databaseRepository.getAllItems(eq(Event.class)))
+            .thenReturn(Observable.empty());
+        when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
+
+        // No force reload ensures use of cache
+        spiedRepository.getEvents(false).subscribe();
+
+        verify(spiedRepository).getEvent(12, false);
+        verify(spiedRepository).getEvent(21, false);
+        verify(spiedRepository).getEvent(52, false);
+
+        testObserver1.assertSubscribed();
+        testObserver2.assertSubscribed();
+        testObserver3.assertSubscribed();
     }
 
     @Test
