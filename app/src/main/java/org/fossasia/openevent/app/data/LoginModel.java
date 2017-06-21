@@ -42,7 +42,10 @@ public class LoginModel implements ILoginModel {
 
         return eventService
                 .login(new Login(username, password))
-                .doOnNext(loginResponse -> utilModel.saveToken(loginResponse.getAccessToken()))
+                .doOnNext(loginResponse -> {
+                    token = loginResponse.getAccessToken();
+                    utilModel.saveToken(token);
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -67,6 +70,7 @@ public class LoginModel implements ILoginModel {
     @Override
     public Completable logout() {
         return Completable.fromAction(() -> {
+            token = null;
             utilModel.saveToken(null);
             // Bug in foreign key relation, have to manually delete UserDetail
             //noinspection unchecked
