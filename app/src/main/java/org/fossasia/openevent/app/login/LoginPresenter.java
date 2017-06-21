@@ -1,8 +1,10 @@
 package org.fossasia.openevent.app.login;
 
 import org.fossasia.openevent.app.data.contract.ILoginModel;
+import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
+import org.fossasia.openevent.app.utils.Constants;
 
 import javax.inject.Inject;
 
@@ -47,6 +49,15 @@ public class LoginPresenter implements ILoginPresenter {
                     loginView.showProgressBar(false);
                 }
             });
+    }
+
+    @Override
+    public void setBaseUrl(HostSelectionInterceptor interceptor, String defaultUrl, String url, boolean shouldSetDefaultUrl) {
+        if (shouldSetDefaultUrl) {
+            interceptor.setInterceptor(defaultUrl);
+        } else {
+            interceptor.setInterceptor(url);
+        }
     }
 
     public ILoginView getView() {
