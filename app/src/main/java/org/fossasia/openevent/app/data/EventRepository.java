@@ -1,7 +1,5 @@
 package org.fossasia.openevent.app.data;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
@@ -35,7 +33,7 @@ public class EventRepository implements IEventRepository {
         authorization = Utils.formatToken(utilModel.getToken());
     }
 
-    private <T extends BaseModel> Observable<T> getAbstractObservable(boolean reload, Observable<T> diskObservable, Observable<T> networkObservable) {
+    private <T> Observable<T> getAbstractObservable(boolean reload, Observable<T> diskObservable, Observable<T> networkObservable) {
         return
             Observable.defer(() -> {
                 if (reload)
@@ -71,7 +69,7 @@ public class EventRepository implements IEventRepository {
             eventService
                 .getUser(authorization)
                 .doOnNext(user -> databaseRepository
-                    .save(user)
+                    .save(User.class, user)
                     .subscribe()
                 )
         );
@@ -94,7 +92,7 @@ public class EventRepository implements IEventRepository {
                 .doOnNext(event -> {
                     event.setComplete(true);
                     databaseRepository
-                        .save(event)
+                        .save(Event.class, event)
                         .subscribe();
                 })
         );
@@ -163,7 +161,7 @@ public class EventRepository implements IEventRepository {
             .map(attendee -> {
                 // Setting stubbed model to define relationship between event and attendee
                 attendee.setEventId(eventId);
-                databaseRepository.update(attendee).subscribe();
+                databaseRepository.update(Attendee.class, attendee).subscribe();
                 return attendee;
             })
             .subscribeOn(Schedulers.io())

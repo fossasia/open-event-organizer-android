@@ -39,6 +39,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AttendeesFragment#newInstance} factory method to
@@ -50,8 +52,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     private long eventId;
 
-    private FastAdapter fastAdapter;
-    private ItemAdapter itemAdapter;
+    private ItemAdapter<Attendee> itemAdapter;
 
     public static final int REQ_CODE = 123;
 
@@ -115,11 +116,11 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
         recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        fastAdapter = new FastAdapter();
+        FastAdapter<Attendee> fastAdapter = new FastAdapter<>();
 
         final StickyHeaderAdapter stickyHeaderAdapter = new StickyHeaderAdapter();
         final HeaderAdapter headerAdapter = new HeaderAdapter();
-        itemAdapter = new ItemAdapter();
+        itemAdapter = new ItemAdapter<>();
 
         fastAdapter.setHasStableIds(true);
         fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
@@ -153,12 +154,13 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null)
+        if (data == null || requestCode != REQ_CODE)
             return;
-        if (requestCode == REQ_CODE) {
-            Attendee attendee = data.getParcelableExtra(Constants.SCANNED_ATTENDEE);
-            if (attendee != null)
-                showToggleDialog(attendee);
+        long attendeeId = data.getLongExtra(Constants.SCANNED_ATTENDEE, -1);
+
+        if (attendeeId != -1) {
+            attendeesPresenter.getAttendeeById(attendeeId)
+                .subscribe(this::showToggleDialog, Timber::e);
         }
     }
 
