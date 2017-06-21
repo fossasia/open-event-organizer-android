@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -25,6 +27,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.BaseFragment;
+import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.databinding.FragmentAttendeesBinding;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
@@ -57,9 +60,15 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     public static final int REQ_CODE = 123;
 
     @Inject
+    IUtilModel utilModel;
+
+    @Inject
     IAttendeesPresenter attendeesPresenter;
 
+    private StickyHeaderAdapter stickyHeaderAdapter;
+    private RecyclerView.AdapterDataObserver adapterDataObserver;
     private FragmentAttendeesBinding binding;
+    private SwipeRefreshLayout refreshLayout;
 
     public AttendeesFragment() {
         // Required empty public constructor
@@ -79,6 +88,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
         fragment.setArguments(args);
         return fragment;
     }
+
+    // Lifecycle methods
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,31 +122,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        RecyclerView recyclerView = binding.rvAttendeeList;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        FastAdapter<Attendee> fastAdapter = new FastAdapter<>();
-
-        final StickyHeaderAdapter stickyHeaderAdapter = new StickyHeaderAdapter();
-        final HeaderAdapter headerAdapter = new HeaderAdapter();
-        itemAdapter = new ItemAdapter<>();
-
-        fastAdapter.setHasStableIds(true);
-        fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
-
-        recyclerView.setAdapter(stickyHeaderAdapter.wrap(itemAdapter.wrap(headerAdapter.wrap(fastAdapter))));
-
-        final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
-        recyclerView.addItemDecoration(decoration);
-
-        stickyHeaderAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                decoration.invalidateHeaders();
-            }
-        });
+        setupRecyclerView();
+        setupRefreshListener();
 
         binding.fabScanQr.setOnClickListener(v -> {
             Intent scanQr = new Intent(context, ScanQRActivity.class);
@@ -150,6 +138,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     public void onDetach() {
         super.onDetach();
         attendeesPresenter.detach();
+        refreshLayout.setOnRefreshListener(null);
+        stickyHeaderAdapter.unregisterAdapterDataObserver(adapterDataObserver);
     }
 
     @Override
@@ -163,6 +153,43 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
                 .subscribe(this::showToggleDialog, Timber::e);
         }
     }
+
+    private void setupRecyclerView() {
+        RecyclerView recyclerView = binding.rvAttendeeList;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        FastAdapter<Attendee> fastAdapter = new FastAdapter<>();
+
+        stickyHeaderAdapter = new StickyHeaderAdapter();
+        final HeaderAdapter headerAdapter = new HeaderAdapter();
+        itemAdapter = new ItemAdapter<>();
+
+        fastAdapter.setHasStableIds(true);
+        fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
+
+        recyclerView.setAdapter(stickyHeaderAdapter.wrap(itemAdapter.wrap(headerAdapter.wrap(fastAdapter))));
+
+        final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
+        recyclerView.addItemDecoration(decoration);
+
+        adapterDataObserver = new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                decoration.invalidateHeaders();
+            }
+        };
+        stickyHeaderAdapter.registerAdapterDataObserver(adapterDataObserver);
+    }
+
+    private void setupRefreshListener() {
+        refreshLayout = binding.swipeContainer;
+        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
+        refreshLayout.setOnRefreshListener(() -> attendeesPresenter.loadAttendees(true));
+    }
+
+    // View Implementation
 
     @Override
     public void showToggleDialog(Attendee attendee) {
@@ -184,6 +211,12 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     @Override
     public void showProgressBar(boolean show) {
         ViewUtils.showView(binding.progressBar, show);
+    }
+
+    @Override
+    public void onRefreshComplete() {
+        refreshLayout.setRefreshing(false);
+        Snackbar.make(binding.rvAttendeeList, R.string.refresh_complete, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

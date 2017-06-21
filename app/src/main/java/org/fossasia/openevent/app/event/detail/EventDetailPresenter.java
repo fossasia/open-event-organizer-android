@@ -27,6 +27,8 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     private long checkedInAttendees;
     private float totalSales;
 
+    private boolean refreshing;
+
     /**
      * progress is parameter to check if complete data is loaded.
      * we have two async processes loadAttendees and loadTickets.
@@ -46,12 +48,27 @@ public class EventDetailPresenter implements IEventDetailPresenter {
         this.initialEventId = initialEventId;
     }
 
+    private void loadAll(boolean refresh) {
+        if (eventDetailView == null)
+            return;
+
+        progress = 0;
+        totalSales = 0;
+        refreshing = refresh;
+
+        eventDetailView.showProgressBar(true);
+        loadAttendees(initialEventId, refresh);
+        loadTickets(initialEventId, refresh);
+    }
+
     @Override
     public void start() {
-        progress = 0;
+        loadAll(false);
+    }
 
-        loadAttendees(initialEventId, false);
-        loadTickets(initialEventId, false);
+    @Override
+    public void refresh() {
+        loadAll(true);
     }
 
     @Override
@@ -63,8 +80,6 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     public void loadTickets(long eventId, boolean forceReload) {
         if(eventDetailView == null)
             return;
-
-        eventDetailView.showProgressBar(true);
 
         eventRepository
             .getEvent(eventId, forceReload)
@@ -119,8 +134,6 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     public void loadAttendees(long eventId, boolean forceReload) {
         if(eventDetailView == null)
             return;
-
-        eventDetailView.showProgressBar(true);
 
         eventRepository
             .getAttendees(eventId, forceReload)
@@ -184,6 +197,9 @@ public class EventDetailPresenter implements IEventDetailPresenter {
         progress ++;
         if (progress >= 2) {
             eventDetailView.showProgressBar(false);
+
+            if (refreshing)
+                eventDetailView.onRefreshComplete();
             return true;
         }
         return false;

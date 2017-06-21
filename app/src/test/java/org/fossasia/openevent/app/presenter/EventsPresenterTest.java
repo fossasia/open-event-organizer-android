@@ -27,6 +27,7 @@ import io.reactivex.observers.TestObserver;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -100,6 +101,38 @@ public class EventsPresenterTest {
         inOrder.verify(eventModel).getEvents(false);
         inOrder.verify(eventListView).showEvents(eventList);
         inOrder.verify(eventListView).showProgressBar(false);
+    }
+
+    @Test
+    public void shouldRefreshEventsSuccessfully() {
+        when(eventModel.getEvents(true))
+            .thenReturn(Observable.fromIterable(eventList));
+
+        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+
+        eventsActivityPresenter.loadUserEvents(true);
+
+        inOrder.verify(eventListView).showProgressBar(true);
+        inOrder.verify(eventModel).getEvents(true);
+        inOrder.verify(eventListView).showEvents(eventList);
+        inOrder.verify(eventListView).showProgressBar(false);
+        inOrder.verify(eventListView).onRefreshComplete();
+    }
+
+    @Test
+    public void shouldRefreshEventsOnError() {
+        when(eventModel.getEvents(true))
+            .thenReturn(Observable.error(new Throwable("Error")));
+
+        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+
+        eventsActivityPresenter.loadUserEvents(true);
+
+        inOrder.verify(eventListView).showProgressBar(true);
+        inOrder.verify(eventModel).getEvents(true);
+        inOrder.verify(eventListView).showEventError(anyString());
+        inOrder.verify(eventListView).showProgressBar(false);
+        inOrder.verify(eventListView).onRefreshComplete();
     }
 
     @Test

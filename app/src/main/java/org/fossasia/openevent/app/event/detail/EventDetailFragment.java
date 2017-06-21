@@ -3,14 +3,19 @@ package org.fossasia.openevent.app.event.detail;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
+import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.BaseFragment;
+import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailPresenter;
@@ -26,6 +31,8 @@ import javax.inject.Inject;
  */
 public class EventDetailFragment extends BaseFragment implements IEventDetailView {
 
+    private static final String EVENT_ID = "event_id";
+
     private long initialEventId;
     private EventDetailBinding binding;
 
@@ -33,7 +40,13 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
     Context context;
 
     @Inject
+    IUtilModel utilModel;
+
+    @Inject
     IEventDetailPresenter eventDetailPresenter;
+
+    private CoordinatorLayout container;
+    private SwipeRefreshLayout refreshLayout;
 
     public EventDetailFragment() {
         // Required empty public constructor
@@ -48,13 +61,13 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
      */
     public static EventDetailFragment newInstance(long eventId) {
         EventDetailFragment fragment = new EventDetailFragment();
-        fragment.setInitialEvent(eventId);
+        Bundle args = new Bundle();
+        args.putLong(EVENT_ID, eventId);
+        fragment.setArguments(args);
         return fragment;
     }
 
-    public void setInitialEvent(long initialEventId) {
-        this.initialEventId = initialEventId;
-    }
+    // Lifecycle methods
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,15 +77,18 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
 
         super.onCreate(savedInstanceState);
 
-        if (initialEventId != -1) {
-            eventDetailPresenter.attach(this, initialEventId);
-        }
+        Bundle arguments = getArguments();
+        if (arguments != null)
+            initialEventId = arguments.getLong(EVENT_ID);
+
+        eventDetailPresenter.attach(this, initialEventId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = EventDetailBinding.inflate(inflater, container, false);
+        setupRefreshListener();
 
         return binding.getRoot();
     }
@@ -87,11 +103,29 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
     public void onDetach() {
         super.onDetach();
         eventDetailPresenter.detach();
+        refreshLayout.setOnRefreshListener(null);
     }
+
+    private void setupRefreshListener() {
+        container = binding.container;
+        refreshLayout = binding.swipeContainer;
+        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
+        refreshLayout.setOnRefreshListener(() ->
+            eventDetailPresenter.refresh()
+        );
+    }
+
+    // View implementation
 
     @Override
     public void showProgressBar(boolean show) {
         ViewUtils.showView(binding.progressBar, show);
+    }
+
+    @Override
+    public void onRefreshComplete() {
+        refreshLayout.setRefreshing(false);
+        Snackbar.make(container, R.string.refresh_complete, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

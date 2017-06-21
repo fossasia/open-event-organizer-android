@@ -6,6 +6,8 @@ public interface IEventDetailPresenter {
 
     void start();
 
+    void refresh();
+
     void detach();
 
     void loadTickets(long eventId, boolean forceReload);

@@ -29,8 +29,6 @@ import io.reactivex.schedulers.Schedulers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -106,15 +104,22 @@ public class EventDetailPresenterTest {
     public void shouldDetachViewOnStop() {
         when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.fromIterable(attendees));
-
         when(eventRepository.getEvent(id, false))
+            .thenReturn(Observable.just(event));
+        when(eventRepository.getAttendees(id, true))
+            .thenReturn(Observable.fromIterable(attendees));
+        when(eventRepository.getEvent(id, true))
             .thenReturn(Observable.just(event));
 
         eventDetailPresenter.start();
+        eventDetailPresenter.refresh();
 
         assertNotNull(eventDetailPresenter.getView());
 
         eventDetailPresenter.detach();
+
+        eventDetailPresenter.start();
+        eventDetailPresenter.refresh();
 
         assertNull(eventDetailPresenter.getView());
     }
@@ -212,9 +217,123 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.start();
 
-        assertTrue(eventDetailPresenter.getProgress() >= 2);
-
-        inOrder.verify(eventDetailView, atLeast(1)).showProgressBar(true);
+        inOrder.verify(eventDetailView).showProgressBar(true);
         inOrder.verify(eventDetailView).showProgressBar(false);
+    }
+
+    @Test
+    public void shouldHideProgressbarOnEventError() {
+        when(eventRepository.getAttendees(id, false))
+            .thenReturn(Observable.fromIterable(attendees));
+
+        when(eventRepository.getEvent(id, false))
+            .thenReturn(Observable.error(new Throwable()));
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView);
+
+        eventDetailPresenter.start();
+
+        inOrder.verify(eventDetailView).showProgressBar(true);
+        inOrder.verify(eventDetailView).showProgressBar(false);
+    }
+
+    @Test
+    public void shouldHideProgressbarOnAttendeeError() {
+        when(eventRepository.getAttendees(id, false))
+            .thenReturn(Observable.error(new Throwable()));
+
+        when(eventRepository.getEvent(id, false))
+            .thenReturn(Observable.just(event));
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView);
+
+        eventDetailPresenter.start();
+
+        inOrder.verify(eventDetailView).showProgressBar(true);
+        inOrder.verify(eventDetailView).showProgressBar(false);
+    }
+
+    @Test
+    public void shouldHideProgressbarOnCompleteError() {
+        when(eventRepository.getAttendees(id, false))
+            .thenReturn(Observable.error(new Throwable()));
+
+        when(eventRepository.getEvent(id, false))
+            .thenReturn(Observable.error(new Throwable()));
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView);
+
+        eventDetailPresenter.start();
+
+        inOrder.verify(eventDetailView).showProgressBar(true);
+        inOrder.verify(eventDetailView).showProgressBar(false);
+    }
+
+    @Test
+    public void shouldHideRefreshLayoutCorrectly() {
+        when(eventRepository.getAttendees(id, true))
+            .thenReturn(Observable.fromIterable(attendees));
+
+        when(eventRepository.getEvent(id, true))
+            .thenReturn(Observable.just(event));
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView);
+
+        eventDetailPresenter.refresh();
+
+        inOrder.verify(eventDetailView).showProgressBar(true);
+        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).onRefreshComplete();
+    }
+
+    @Test
+    public void shouldHideRefreshLayoutOnEventError() {
+        when(eventRepository.getAttendees(id, true))
+            .thenReturn(Observable.fromIterable(attendees));
+
+        when(eventRepository.getEvent(id, true))
+            .thenReturn(Observable.error(new Throwable()));
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView);
+
+        eventDetailPresenter.refresh();
+
+        inOrder.verify(eventDetailView).showProgressBar(true);
+        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).onRefreshComplete();
+    }
+
+    @Test
+    public void shouldHideRefreshLayoutOnAttendeeError() {
+        when(eventRepository.getAttendees(id, true))
+            .thenReturn(Observable.error(new Throwable()));
+
+        when(eventRepository.getEvent(id, true))
+            .thenReturn(Observable.just(event));
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView);
+
+        eventDetailPresenter.refresh();
+
+        inOrder.verify(eventDetailView).showProgressBar(true);
+        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).onRefreshComplete();
+    }
+
+    @Test
+    public void shouldHideRefreshLayoutOnCompleteError() {
+        when(eventRepository.getAttendees(id, true))
+            .thenReturn(Observable.error(new Throwable()));
+
+        when(eventRepository.getEvent(id, true))
+            .thenReturn(Observable.error(new Throwable()));
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView);
+
+        eventDetailPresenter.refresh();
+
+        inOrder.verify(eventDetailView).showProgressBar(true);
+        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).onRefreshComplete();
     }
 }

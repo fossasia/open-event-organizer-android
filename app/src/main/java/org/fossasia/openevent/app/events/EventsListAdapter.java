@@ -12,6 +12,7 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.EventLayoutBinding;
 import org.fossasia.openevent.app.event.EventContainerFragment;
+import org.fossasia.openevent.app.event.detail.EventDetailActivity;
 
 import java.util.List;
 

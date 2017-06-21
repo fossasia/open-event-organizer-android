@@ -8,6 +8,8 @@ public interface IAttendeesView {
 
     void showProgressBar(boolean show);
 
+    void onRefreshComplete();
+
     void showScanButton(boolean show);
 
     void showAttendees(List<Attendee> attendees);

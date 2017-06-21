@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.events;
+package org.fossasia.openevent.app.event.detail;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.event.EventContainerFragment;
+import org.fossasia.openevent.app.events.EventListActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +46,7 @@ public class EventDetailActivity extends AppCompatActivity {
         String initialEventName = intent.getStringExtra(EventListActivity.EVENT_NAME);
 
         if (initialEventName != null)
-            toolbar.setTitle(initialEventName);
+            getSupportActionBar().setTitle(initialEventName);
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity

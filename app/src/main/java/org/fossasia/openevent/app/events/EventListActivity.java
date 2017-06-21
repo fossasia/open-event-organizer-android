@@ -3,6 +3,8 @@ package org.fossasia.openevent.app.events;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -19,6 +21,7 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.ActivityEventListBinding;
+import org.fossasia.openevent.app.event.detail.EventDetailActivity;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.login.LoginActivity;
@@ -61,6 +64,8 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
     IEventsPresenter presenter;
 
     private ActivityEventListBinding binding;
+    private SwipeRefreshLayout refreshLayout;
+    private RecyclerView recyclerView;
 
     // Lifecycle methods start
 
@@ -78,15 +83,8 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
 
         isTwoPane = binding.eventListContainer.eventDetailContainer != null;
 
-        binding.setEvents(events);
-        eventListAdapter = new EventsListAdapter(events, this, isTwoPane);
-
-        RecyclerView recyclerView = binding.eventListContainer.eventList.eventRecyclerview;
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(eventListAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this , DividerItemDecoration.VERTICAL));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        setupRecyclerView();
+        setupRefreshListener();
 
         presenter.attach(this);
         presenter.start();
@@ -96,6 +94,7 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
     protected void onDestroy() {
         super.onDestroy();
         presenter.detach();
+        refreshLayout.setOnRefreshListener(null);
     }
 
     @Override
@@ -117,6 +116,24 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
 
     // Lifecycle methods end
 
+    private void setupRecyclerView() {
+        binding.setEvents(events);
+        eventListAdapter = new EventsListAdapter(events, this, isTwoPane);
+
+        recyclerView = binding.eventListContainer.eventList.eventRecyclerview;
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(eventListAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this , DividerItemDecoration.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    private void setupRefreshListener() {
+        refreshLayout = binding.eventListContainer.eventList.swipeContainer;
+        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
+        refreshLayout.setOnRefreshListener(() -> presenter.loadUserEvents(true));
+    }
+
     // View Implementation start
 
     @Override
@@ -127,6 +144,12 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
     @Override
     public void showProgressBar(boolean show) {
         ViewUtils.showView(binding.eventListContainer.eventList.progressBar, show);
+    }
+
+    @Override
+    public void onRefreshComplete() {
+        refreshLayout.setRefreshing(false);
+        Snackbar.make(recyclerView, R.string.refresh_complete, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

@@ -2,7 +2,10 @@ package org.fossasia.openevent.app.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.utils.Constants;
@@ -28,6 +31,12 @@ public class UtilModel implements IUtilModel {
     @Override
     public String getResourceString(@StringRes int stringId) {
         return context.getResources().getString(stringId);
+    }
+
+    @Override
+    @ColorInt
+    public int getResourceColor(@ColorRes int colorId) {
+        return ContextCompat.getColor(context, colorId);
     }
 
     @Override

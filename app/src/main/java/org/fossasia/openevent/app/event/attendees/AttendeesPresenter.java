@@ -64,6 +64,13 @@ public class AttendeesPresenter implements IAttendeesPresenter {
             .observeOn(AndroidSchedulers.mainThread());
     }
 
+    private void hideProgress(boolean forceReload) {
+        attendeesView.showProgressBar(false);
+
+        if (forceReload)
+            attendeesView.onRefreshComplete();
+    }
+
     @Override
     public void loadAttendees(boolean forceReload) {
         if(attendeesView == null)
@@ -81,12 +88,12 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
                 if (attendeesView == null) return;
                 attendeesView.showAttendees(attendees);
-                attendeesView.showProgressBar(false);
+                hideProgress(forceReload);
                 attendeesView.showScanButton(true);
             }, throwable -> {
                 if (attendeesView == null) return;
                 attendeesView.showErrorMessage(throwable.getMessage());
-                attendeesView.showProgressBar(false);
+                hideProgress(forceReload);
             });
     }
 
@@ -108,7 +115,6 @@ public class AttendeesPresenter implements IAttendeesPresenter {
     }
 
     private void processUpdatedAttendee(Attendee attendee) {
-        System.out.println(attendeeList);
         Utils.indexOf(attendeeList, attendee,
             (first, second) -> first.getId() == second.getId())
             .subscribeOn(Schedulers.computation())
