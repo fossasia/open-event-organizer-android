@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.data.contract;
 
+import io.reactivex.Completable;
+
 public interface IUtilModel {
 
     String getResourceString(int stringId);
@@ -13,5 +15,7 @@ public interface IUtilModel {
     void saveToken(String token);
 
     boolean isConnected();
+
+    Completable deleteDatabase();
 
 }

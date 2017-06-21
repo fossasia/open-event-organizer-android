@@ -26,6 +26,12 @@ public class User extends BaseModel {
     private UserDetail userDetail;
     private String email;
 
+    public User() {}
+
+    public User(String email) {
+        this.email = email;
+    }
+
     public int getId() {
         return id;
     }

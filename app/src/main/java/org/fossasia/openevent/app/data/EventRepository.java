@@ -22,15 +22,16 @@ public class EventRepository implements IEventRepository {
     private IDatabaseRepository databaseRepository;
     private EventService eventService;
 
-    private String authorization;
     private IUtilModel utilModel;
 
     public EventRepository(IUtilModel utilModel, IDatabaseRepository databaseRepository, EventService eventService) {
         this.utilModel = utilModel;
         this.databaseRepository = databaseRepository;
         this.eventService = eventService;
+    }
 
-        authorization = Utils.formatToken(utilModel.getToken());
+    private String getAuthorization() {
+        return Utils.formatToken(utilModel.getToken());
     }
 
     private <T> Observable<T> getAbstractObservable(boolean reload, Observable<T> diskObservable, Observable<T> networkObservable) {
@@ -67,7 +68,7 @@ public class EventRepository implements IEventRepository {
 
         Observable<User> networkObservable = Observable.defer(() ->
             eventService
-                .getUser(authorization)
+                .getUser(getAuthorization())
                 .doOnNext(user -> databaseRepository
                     .save(User.class, user)
                     .subscribe()
@@ -107,9 +108,8 @@ public class EventRepository implements IEventRepository {
         );
 
         Observable<Event> networkObservable = Observable.defer(() ->
-            eventService.getEvents(authorization)
-                .doOnNext(events ->
-                    databaseRepository.saveList(Event.class, events)
+            eventService.getEvents(getAuthorization())
+                .doOnNext(events -> databaseRepository.saveList(Event.class, events)
                     .subscribe())
                 .flatMapIterable(events -> events))
                 .doOnEach(eventNotification -> {
@@ -134,7 +134,7 @@ public class EventRepository implements IEventRepository {
         );
 
         Observable<Attendee> networkObservable = Observable.defer(() ->
-            eventService.getAttendees(eventId, authorization)
+            eventService.getAttendees(eventId, getAuthorization())
                 .flatMapIterable(attendees -> attendees)
                 .doOnNext(attendee -> attendee.setEventId(eventId))
                 .toList()
@@ -157,7 +157,7 @@ public class EventRepository implements IEventRepository {
             return Observable.error(new Throwable(Constants.NO_NETWORK));
         }
 
-        return eventService.toggleAttendeeCheckStatus(eventId, attendeeId, authorization)
+        return eventService.toggleAttendeeCheckStatus(eventId, attendeeId, getAuthorization())
             .map(attendee -> {
                 // Setting stubbed model to define relationship between event and attendee
                 attendee.setEventId(eventId);

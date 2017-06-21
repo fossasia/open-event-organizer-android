@@ -118,11 +118,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
 
     // Lifecycle methods end
 
-    public void startEventActivity(){
-        Intent i =  new Intent(LoginActivity.this, EventListActivity.class);
-        startActivity(i);
-    }
-
     // View Implementation start
 
     @Override
@@ -132,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
 
     @Override
     public void onLoginSuccess() {
-        startEventActivity();
+        startActivity(new Intent(LoginActivity.this, EventListActivity.class));
         finish();
     }
 
