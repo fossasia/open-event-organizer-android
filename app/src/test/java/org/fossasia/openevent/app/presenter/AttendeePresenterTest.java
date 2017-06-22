@@ -76,7 +76,7 @@ public class AttendeePresenterTest {
         when(eventModel.getAttendees(id, false))
             .thenReturn(Observable.fromIterable(attendees));
 
-        attendeesPresenter.start();
+        attendeesPresenter.start(false);
 
         verify(eventModel).getAttendees(id, false);
     }
@@ -86,7 +86,7 @@ public class AttendeePresenterTest {
         when(eventModel.getAttendees(id, false))
             .thenReturn(Observable.fromIterable(attendees));
 
-        attendeesPresenter.start();
+        attendeesPresenter.start(false);
 
         assertNotNull(attendeesPresenter.getView());
 

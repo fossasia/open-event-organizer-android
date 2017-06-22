@@ -96,7 +96,7 @@ public class EventDetailPresenterTest {
         when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
 
-        eventDetailPresenter.start();
+        eventDetailPresenter.start(false);
 
         verify(eventRepository).getEvent(id, false);
         verify(eventRepository).getAttendees(id, false);
@@ -110,7 +110,7 @@ public class EventDetailPresenterTest {
         when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
 
-        eventDetailPresenter.start();
+        eventDetailPresenter.start(false);
 
         assertNotNull(eventDetailPresenter.getView());
 
@@ -182,7 +182,7 @@ public class EventDetailPresenterTest {
             .thenReturn(Observable.just(event));
 
         // Load all info
-        eventDetailPresenter.start();
+        eventDetailPresenter.start(false);
 
         assertEquals(114, event.totalTickets.get());
         assertEquals(3, event.checkedIn.get());
@@ -210,7 +210,7 @@ public class EventDetailPresenterTest {
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
-        eventDetailPresenter.start();
+        eventDetailPresenter.start(false);
 
         assertTrue(eventDetailPresenter.getProgress() >= 2);
 

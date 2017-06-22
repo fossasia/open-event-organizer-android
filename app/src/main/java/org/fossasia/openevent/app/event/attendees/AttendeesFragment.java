@@ -1,6 +1,5 @@
 package org.fossasia.openevent.app.event.attendees;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -48,8 +47,6 @@ import timber.log.Timber;
  */
 public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
-    private Context context;
-
     private long eventId;
 
     private ItemAdapter<Attendee> itemAdapter;
@@ -74,26 +71,24 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
      */
     public static AttendeesFragment newInstance(long eventId) {
         AttendeesFragment fragment = new AttendeesFragment();
-        Bundle args = new Bundle();
-        args.putLong(EventListActivity.EVENT_KEY, eventId);
-        fragment.setArguments(args);
+        fragment.setEventId(eventId);
         return fragment;
+    }
+
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        context = getActivity();
 
         OrgaApplication
-            .getAppComponent(context)
+            .getAppComponent(getActivity())
             .inject(this);
 
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            eventId = getArguments().getLong(EventListActivity.EVENT_KEY);
-            attendeesPresenter.attach(eventId, this);
-        }
+        setRetainInstance(true);
     }
 
     @Override
@@ -112,8 +107,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
         super.onActivityCreated(savedInstanceState);
 
         RecyclerView recyclerView = binding.rvAttendeeList;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         FastAdapter<Attendee> fastAdapter = new FastAdapter<>();
@@ -138,12 +133,13 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
         });
 
         binding.fabScanQr.setOnClickListener(v -> {
-            Intent scanQr = new Intent(context, ScanQRActivity.class);
+            Intent scanQr = new Intent(getActivity(), ScanQRActivity.class);
             scanQr.putExtra(EventListActivity.EVENT_KEY, eventId);
             startActivityForResult(scanQr, REQ_CODE);
         });
 
-        attendeesPresenter.start();
+        attendeesPresenter.attach(eventId, this);
+        attendeesPresenter.start(false);
     }
 
     @Override
@@ -166,7 +162,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @Override
     public void showToggleDialog(Attendee attendee) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         String alertTitle;
         if(attendee.isCheckedIn())
@@ -210,6 +206,6 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @Override
     public void showErrorMessage(String error) {
-        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 }

@@ -10,7 +10,7 @@ public interface IAttendeesPresenter {
 
     void attach(long eventId, IAttendeesView attendeesView);
 
-    void start();
+    void start(boolean forceStart);
 
     void detach();
 

@@ -22,6 +22,8 @@ public class AttendeesPresenter implements IAttendeesPresenter {
     private IAttendeesView attendeesView;
     private IEventRepository eventRepository;
 
+    private int progress = 0;
+
     private List<Attendee> attendeeList = new ArrayList<>();
 
     @Inject
@@ -41,8 +43,14 @@ public class AttendeesPresenter implements IAttendeesPresenter {
     }
 
     @Override
-    public void start() {
-        loadAttendees(false);
+    public void start(boolean forceStart) {
+        if (forceStart)
+            progress = 0;
+        if (progress == 0) {
+            loadAttendees(false);
+        } else {
+            attendeesView.showAttendees(attendeeList);
+        }
     }
 
     @Override
@@ -81,11 +89,13 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
                 if (attendeesView == null) return;
                 attendeesView.showAttendees(attendees);
+                progress ++;
                 attendeesView.showProgressBar(false);
                 attendeesView.showScanButton(true);
             }, throwable -> {
                 if (attendeesView == null) return;
                 attendeesView.showErrorMessage(throwable.getMessage());
+                progress ++;
                 attendeesView.showProgressBar(false);
             });
     }
