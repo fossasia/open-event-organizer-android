@@ -4,7 +4,7 @@ public interface IEventDetailPresenter {
 
     void attach(IEventDetailView eventDetailView, long initialEventId);
 
-    void start();
+    void start(boolean forceStart);
 
     void detach();
 

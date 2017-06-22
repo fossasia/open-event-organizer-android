@@ -47,11 +47,15 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     }
 
     @Override
-    public void start() {
-        progress = 0;
-
-        loadAttendees(initialEventId, false);
-        loadTickets(initialEventId, false);
+    public void start(boolean forceStart) {
+        if (forceStart)
+            progress = 0;
+        if (progress == 0) {
+            loadAttendees(initialEventId, false);
+            loadTickets(initialEventId, false);
+        } else {
+            eventDetailView.showEvent(event);
+        }
     }
 
     @Override

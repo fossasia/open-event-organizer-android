@@ -1,6 +1,5 @@
 package org.fossasia.openevent.app.event.detail;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,9 +27,6 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
 
     private long initialEventId;
     private EventDetailBinding binding;
-
-    @Inject
-    Context context;
 
     @Inject
     IEventDetailPresenter eventDetailPresenter;
@@ -64,9 +60,7 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
 
         super.onCreate(savedInstanceState);
 
-        if (initialEventId != -1) {
-            eventDetailPresenter.attach(this, initialEventId);
-        }
+        setRetainInstance(true);
     }
 
     @Override
@@ -80,7 +74,10 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        eventDetailPresenter.start();
+        if (initialEventId != -1) {
+            eventDetailPresenter.attach(this, initialEventId);
+        }
+        eventDetailPresenter.start(false);
     }
 
     @Override
@@ -102,7 +99,7 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
 
     @Override
     public void showEventLoadError(String error) {
-        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 
 }
