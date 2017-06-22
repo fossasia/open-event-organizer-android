@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.data.contract;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
+import io.reactivex.Completable;
 
 public interface IUtilModel {
 
@@ -19,5 +20,7 @@ public interface IUtilModel {
     void saveToken(String token);
 
     boolean isConnected();
+
+    Completable deleteDatabase();
 
 }

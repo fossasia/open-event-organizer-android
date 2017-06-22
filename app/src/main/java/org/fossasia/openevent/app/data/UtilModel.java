@@ -7,9 +7,14 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 
+import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.NetworkUtils;
+
+import io.reactivex.Completable;
+import timber.log.Timber;
 
 /**
  * Utility class to be used by presenters and models for
@@ -53,18 +58,33 @@ public class UtilModel implements IUtilModel {
 
     @Override
     public String getToken() {
-        if(token != null)
+        if (token != null)
             return token;
+
         return getString(Constants.SHARED_PREFS_TOKEN, null);
     }
 
     @Override
     public void saveToken(String token) {
+        this.token = token;
         saveString(Constants.SHARED_PREFS_TOKEN, token);
     }
 
     @Override
     public boolean isConnected() {
         return NetworkUtils.isNetworkConnected(context);
+    }
+
+    @Override
+    public Completable deleteDatabase() {
+        String dbName = OrgaDatabase.NAME + ".db";
+
+        return Completable.fromAction(() -> {
+            OrgaApplication.destroyDatabase();
+            context.deleteDatabase(dbName);
+            OrgaApplication.initializeDatabase(context);
+        }).doOnComplete(() ->
+            Timber.d("Database %s deleted on Thread %s", dbName, Thread.currentThread().getName())
+        );
     }
 }
