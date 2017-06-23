@@ -38,5 +38,6 @@
     <string name="text_empty">Nothing to show here</string>
     <string name="empty_view_icon">Empty View Icon</string>
     <string name="total_sales">Total Sales</string>
+    <string name="refresh_complete">Refresh Complete</string>
 
 </resources>

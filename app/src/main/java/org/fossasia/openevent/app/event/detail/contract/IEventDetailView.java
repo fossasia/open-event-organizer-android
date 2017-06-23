@@ -6,6 +6,8 @@ public interface IEventDetailView {
 
     void showProgressBar(boolean show);
 
+    void onRefreshComplete();
+
     void showEvent(Event event);
 
     void showEventLoadError(String error);

@@ -17,7 +17,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -27,6 +26,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -121,14 +121,47 @@ public class AttendeePresenterTest {
 
         attendeesPresenter.loadAttendees(false);
 
-        Collections.sort(attendees);
-
         inOrder.verify(attendeesView).showProgressBar(true);
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(eventModel).getAttendees(id, false);
         inOrder.verify(attendeesView).showAttendees(attendees);
         inOrder.verify(attendeesView).showProgressBar(false);
         inOrder.verify(attendeesView).showScanButton(true);
+    }
+
+    @Test
+    public void shouldRefreshAttendeesSuccessfully() {
+        when(eventModel.getAttendees(id, true))
+            .thenReturn(Observable.fromIterable(attendees));
+
+        InOrder inOrder = Mockito.inOrder(eventModel, attendeesView);
+
+        attendeesPresenter.loadAttendees(true);
+
+        inOrder.verify(attendeesView).showProgressBar(true);
+        inOrder.verify(attendeesView).showScanButton(false);
+        inOrder.verify(eventModel).getAttendees(id, true);
+        inOrder.verify(attendeesView).showAttendees(attendees);
+        inOrder.verify(attendeesView).showProgressBar(false);
+        inOrder.verify(attendeesView).onRefreshComplete();
+        inOrder.verify(attendeesView).showScanButton(true);
+    }
+
+    @Test
+    public void shouldRefreshAttendeesOnError() {
+        when(eventModel.getAttendees(id, true))
+            .thenReturn(Observable.error(new Throwable("Error")));
+
+        InOrder inOrder = Mockito.inOrder(eventModel, attendeesView);
+
+        attendeesPresenter.loadAttendees(true);
+
+        inOrder.verify(attendeesView).showProgressBar(true);
+        inOrder.verify(attendeesView).showScanButton(false);
+        inOrder.verify(eventModel).getAttendees(id, true);
+        inOrder.verify(attendeesView).showErrorMessage(anyString());
+        inOrder.verify(attendeesView).showProgressBar(false);
+        inOrder.verify(attendeesView).onRefreshComplete();
     }
 
     @Test

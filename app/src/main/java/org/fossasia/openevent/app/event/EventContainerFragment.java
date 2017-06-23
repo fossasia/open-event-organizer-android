@@ -74,6 +74,9 @@ public class EventContainerFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_container, container, false);
         ButterKnife.bind(this, view);
+
+        setRetainInstance(true);
+
         return view;
     }
 

@@ -10,6 +10,8 @@ public interface IEventsView {
 
     void showProgressBar(boolean show);
 
+    void onRefreshComplete();
+
     void showEvents(List<Event> events);
 
     void showInitialEvent();

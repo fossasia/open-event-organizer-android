@@ -40,6 +40,13 @@ public class EventsPresenter implements IEventsPresenter {
         eventsView = null;
     }
 
+    private void hideProgress(boolean forceReload) {
+        eventsView.showProgressBar(false);
+
+        if (forceReload)
+            eventsView.onRefreshComplete();
+    }
+
     @Override
     public void loadUserEvents(boolean forceReload) {
         if(eventsView == null)
@@ -57,7 +64,7 @@ public class EventsPresenter implements IEventsPresenter {
                 eventsView.showEvents(events);
                 if(eventsView.isTwoPane() && firstLoad)
                     eventsView.showInitialEvent();
-                eventsView.showProgressBar(false);
+                hideProgress(forceReload);
 
                 firstLoad = false;
             }, throwable -> {
@@ -65,7 +72,7 @@ public class EventsPresenter implements IEventsPresenter {
                     return;
 
                 eventsView.showEventError(throwable.getMessage());
-                eventsView.showProgressBar(false);
+                hideProgress(forceReload);
             });
     }
 
