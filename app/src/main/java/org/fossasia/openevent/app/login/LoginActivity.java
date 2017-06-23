@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
@@ -25,6 +28,9 @@ import org.fossasia.openevent.app.events.EventListActivity;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -37,7 +43,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
     @BindView(R.id.btnLogin)
     Button btnLogin;
     @BindView(R.id.etEmail)
-    AppCompatEditText etEmail;
+    TextInputLayout etEmail;
+    @BindView(R.id.email_dropdown)
+    AutoCompleteTextView autoCompleteEmail;
     @BindView(R.id.etPassword)
     AppCompatEditText etPassword;
     @BindView(R.id.progressBar)
@@ -91,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
 
         btnLogin.setOnClickListener(v -> {
 
-            String email = etEmail.getText().toString();
+            String email = etEmail.getEditText().getText().toString();
             String password = etPassword.getText().toString();
             String url = etBaseUrl.getText().toString().trim();
 
@@ -104,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
 
     private void setEditTextListener() {
         etBaseUrl.setOnEditorActionListener(this);
-        etEmail.setOnEditorActionListener(this);
+        etEmail.getEditText().setOnEditorActionListener(this);
         etPassword.setOnEditorActionListener(this);
     }
 
@@ -153,6 +161,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
             view.clearFocus();
             manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    @Override
+    public void attachEmails(Set<String> emails) {
+        autoCompleteEmail.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
+            new ArrayList<String>(emails)));
     }
 
     // View Implementation end

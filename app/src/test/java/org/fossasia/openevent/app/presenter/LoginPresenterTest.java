@@ -5,6 +5,7 @@ import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.LoginResponse;
 import org.fossasia.openevent.app.login.LoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
+import org.fossasia.openevent.app.utils.Constants;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,6 +16,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.reactivex.Observable;
 
@@ -41,9 +46,11 @@ public class LoginPresenterTest {
     private String email = "test";
     private String password = "test";
 
+    private Set<String> savedEmails = new HashSet<>(Arrays.asList("email1", "email2", "email3"));
+
     @Before
     public void setUp() {
-        loginPresenter = new LoginPresenter(loginModel);
+        loginPresenter = new LoginPresenter(loginModel, utilModel);
     }
 
     @Test
@@ -90,7 +97,7 @@ public class LoginPresenterTest {
 
         loginPresenter.attach(loginView);
 
-        Mockito.verifyZeroInteractions(loginView);
+        Mockito.verify(loginView, Mockito.never()).onLoginSuccess();
     }
 
     @Test
@@ -136,4 +143,39 @@ public class LoginPresenterTest {
         Mockito.verifyNoMoreInteractions(loginView);
     }
 
+    @Test
+    public void shouldAttachEmailOnLoginSuccessfully() {
+        String authToken = "testToken";
+
+        Mockito.when(loginModel.login(email, password))
+            .thenReturn(Observable.just(new LoginResponse(authToken)));
+
+        Mockito.when(utilModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null))
+            .thenReturn(savedEmails);
+
+        loginPresenter.attach(loginView);
+        loginPresenter.login(email, password);
+
+        Mockito.verify(loginView).attachEmails(savedEmails);
+    }
+
+    @Test
+    public void shouldAttachEmailAutomatically() {
+        Mockito.when(utilModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(savedEmails);
+        Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
+
+        loginPresenter.attach(loginView);
+
+        Mockito.verify(loginView).attachEmails(savedEmails);
+    }
+
+    @Test
+    public void shouldNotAttachEmailAutomatically() {
+        Mockito.when(utilModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(null);
+        Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
+
+        loginPresenter.attach(loginView);
+
+        Mockito.verify(loginView, Mockito.never()).attachEmails(savedEmails);
+    }
 }
