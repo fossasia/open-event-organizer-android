@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
@@ -53,6 +54,7 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
 
     private final List<Event> events = new ArrayList<>();
     private EventsListAdapter eventListAdapter;
+    private RecyclerView.AdapterDataObserver adapterDataObserver;
 
     public static final String EVENT_KEY = "event";
     public static final String EVENT_NAME = "event_name";
@@ -95,6 +97,7 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
         super.onDestroy();
         presenter.detach();
         refreshLayout.setOnRefreshListener(null);
+        eventListAdapter.unregisterAdapterDataObserver(adapterDataObserver);
     }
 
     @Override
@@ -126,6 +129,16 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
         recyclerView.setAdapter(eventListAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this , DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(eventListAdapter);
+        recyclerView.addItemDecoration(decoration);
+
+        adapterDataObserver = new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                decoration.invalidateHeaders();
+            }
+        };
+        eventListAdapter.registerAdapterDataObserver(adapterDataObserver);
     }
 
     private void setupRefreshListener() {

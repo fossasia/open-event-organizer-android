@@ -8,6 +8,7 @@ import org.fossasia.openevent.app.utils.Utils;
 
 import javax.inject.Inject;
 
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class EventsPresenter implements IEventsPresenter {
@@ -56,7 +57,8 @@ public class EventsPresenter implements IEventsPresenter {
 
         eventsDataRepository
             .getEvents(forceReload)
-            .toList()
+            .toSortedList()
+            .subscribeOn(Schedulers.computation())
             .subscribe(events -> {
                 if(eventsView == null)
                     return;

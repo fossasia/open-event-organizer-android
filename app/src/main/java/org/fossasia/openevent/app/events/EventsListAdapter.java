@@ -8,15 +8,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.EventLayoutBinding;
+import org.fossasia.openevent.app.databinding.EventSubheaderLayoutBinding;
 import org.fossasia.openevent.app.event.EventContainerFragment;
 import org.fossasia.openevent.app.event.detail.EventDetailActivity;
+import org.fossasia.openevent.app.events.viewholders.EventsHeaderViewHolder;
+import org.fossasia.openevent.app.utils.DateUtils;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
-class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder>{
+class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder> implements StickyRecyclerHeadersAdapter<EventsHeaderViewHolder>{
 
     private List<Event> events;
     private Context context;
@@ -59,6 +66,65 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
             return;
 
         showEvent(events.get(0));
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        final long LIVE_EVENT = 1;
+        final long PAST_EVENT = 2;
+        final long UPCOMING_EVENT = 3;
+        Event event = events.get(position);
+        DateUtils dateUtils = new DateUtils();
+        try {
+            Date startDate = dateUtils.parse(event.getStartTime());
+            Date endDate = dateUtils.parse(event.getEndTime());
+            Date now = new Date();
+            if (now.after(startDate)) {
+                if (now.before(endDate)) {
+                    return LIVE_EVENT;
+                } else {
+                    return PAST_EVENT;
+                }
+            } else {
+                return UPCOMING_EVENT;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public EventsHeaderViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
+        return new EventsHeaderViewHolder(EventSubheaderLayoutBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
+    }
+
+    @Override
+    public void onBindHeaderViewHolder(EventsHeaderViewHolder holder, int position) {
+        final String LIVE = "LIVE";
+        final String PAST = "PAST";
+        final String UPCOMING = "UPCOMING";
+
+        Event event = events.get(position);
+        DateUtils dateUtils = new DateUtils();
+        try {
+            Date startDate = dateUtils.parse(event.getStartTime());
+            Date endDate = dateUtils.parse(event.getEndTime());
+            Date now = new Date();
+            if (now.after(startDate)) {
+                if (now.before(endDate)) {
+                    holder.bindHeader(LIVE);
+                } else {
+                    holder.bindHeader(PAST);
+                }
+            } else {
+                holder.bindHeader(UPCOMING);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.models.UserDetail;
 import org.fossasia.openevent.app.events.EventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
+import org.fossasia.openevent.app.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,6 +20,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -51,10 +53,13 @@ public class EventsPresenterTest {
 
     private EventsPresenter eventsActivityPresenter;
 
+    private DateUtils dateUtils = new DateUtils();
+    private String date = dateUtils.format(new Date());
+
     private List<Event> eventList = Arrays.asList(
-        new Event(12),
-        new Event(13),
-        new Event(14)
+        new Event(12, date, date),
+        new Event(13, date, date),
+        new Event(14, date, date)
     );
 
     private User organiser = new User();
