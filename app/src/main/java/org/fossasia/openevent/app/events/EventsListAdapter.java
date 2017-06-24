@@ -25,6 +25,10 @@ import java.util.List;
 
 class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder> implements StickyRecyclerHeadersAdapter<EventsHeaderViewHolder>{
 
+    private static final long LIVE_EVENT = 1;
+    private final long PAST_EVENT = 2;
+    private static final long UPCOMING_EVENT = 3;
+
     private List<Event> events;
     private Context context;
 
@@ -70,9 +74,6 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
     @Override
     public long getHeaderId(int position) {
-        final long LIVE_EVENT = 1;
-        final long PAST_EVENT = 2;
-        final long UPCOMING_EVENT = 3;
         Event event = events.get(position);
         DateUtils dateUtils = new DateUtils();
         try {

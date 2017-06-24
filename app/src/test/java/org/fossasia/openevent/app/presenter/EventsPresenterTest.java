@@ -8,6 +8,7 @@ import org.fossasia.openevent.app.data.models.UserDetail;
 import org.fossasia.openevent.app.events.EventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.utils.DateUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,6 +27,8 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -66,8 +69,15 @@ public class EventsPresenterTest {
 
     @Before
     public void setUp() {
+        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
+
         eventsActivityPresenter = new EventsPresenter(eventModel, loginModel);
         eventsActivityPresenter.attach(eventListView);
+    }
+
+    @After
+    public void tearDown() {
+        RxJavaPlugins.reset();
     }
 
     @Test
