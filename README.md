@@ -1,12 +1,13 @@
-![Open Event Frontend](https://storage.googleapis.com/eventyay.com/assets/branding/organizer_app_branding.png)
+![Open Event Organizer](https://storage.googleapis.com/eventyay.com/assets/branding/organizer_app_branding.png)
+
+
+## Open Event Organizer App
 
 [![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/master.svg?style=flat-square)](https://travis-ci.org/fossasia/open-event-orga-app)
+[![Codacy grade](https://img.shields.io/codacy/grade/e27821fb6289410b8f58338c7e0bc686.svg?style=flat-square)](https://www.codacy.com/app/mejariamol/open-event-orga-app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/open-event-orga-app&amp;utm_campaign=Badge_Grade)
 [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg?style=flat-square)](https://gitter.im/fossasia/open-event-orga-app)
 
-
-> Mobile App for Organizers and Entry Managers.
-
-The core features of this application are
+The core features of this Android Application are
 - Scan a QR code
 - Check-in attendees 
 - Data sync with the [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server/)
@@ -27,79 +28,40 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 ## Development
 
-
 - The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at [https://open-event-dev.herokuapp.com/api/v1](https://open-event-dev.herokuapp.com/api/v1/) .
-- This project uses [Ionic Framework v2.x](http://ionicframework.com/docs/v2).
 
-### Development environment setup
-- Install [Node.js](https://nodejs.org/en/). (v6.x.x recommended).
-    - **Linux/OS X Users** - You can use [Node Version Manager](https://github.com/creationix/nvm) to install and manage Node.js versions.
-    - **Windows Users** - You can download the lastest installer from [nodejs.org](https://nodejs.org/en/) and install it directly.
-- Install ionic framework CLI tool and apache cordova globally
-```
-npm install -g ionic cordova
-```
-- Fork this repository this repository into your account
-- Clone the forked repository
-```
-git clone https://github.com/<username>/open-event-orga-app.git
-```
-- From with the cloned repository, install all the Node.js dependencies using `npm`.
-```
-npm install
-```
-Depending on the platform you wish to build for (i.e Android or iOS) you will have to setup the required build tools and SDKs. 
+### Libraries:
+- [RxJava 2](https://github.com/ReactiveX/RxJava)
+- [Dagger 2](https://github.com/google/dagger)
+- [ButterKnife](https://github.com/JakeWharton/butterknife)
+- [Picasso](https://github.com/square/picasso)
+- [Retrofit](https://github.com/square/retrofit) + [Okhttp](https://github.com/square/okhttp)
+- [DBFlow](https://github.com/Raizlabs/DBFlow)
+- [FastAdapter](https://github.com/mikepenz/FastAdapter)
+- [Leakcanary](https://github.com/square/leakcanary)
+- [Timber](https://github.com/JakeWharton/timber)
+- Testing:
+  - [JUnit4](https://github.com/junit-team/junit4)
+  - [Mockito](https://github.com/mockito/mockito)
 
-#### Building for Android
-- Install [Java Development Kit (JDK) 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or later.
-- Install the [Android SDK Tools or Android Studio](https://developer.android.com/studio/index.html#downloads).
-- Install required Android SDK Packages from the SDK Manager
-	- Android Platform SDK for API 25
-	- Android SDK Build tools 25.x.x
-	- Android Support Repository
-- Setup required environment variables and PATH
-	- Set the `JAVA_HOME` environment variable to the location of your JDK installation
-	- Set the `ANDROID_HOME` environment variable to the location of your Android SDK installation
-	- Add the Android SDK's `tools` and `platform-tools` directories to your `PATH`
-- Create android platform specific build files for our Ionic app
-```
-ionic platform add android
-```
-- Generate the icon and splash screen resources
-```
-ionic resources
-```
-- Build the android application
-```
-ionic build android
-```
-- The app will have been built and located at `platforms/android/build/outputs/apk/android-debug.apk`
+### Development setup
+Before you begin, you should already have the Android Studio SDK downloaded and set up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio).
 
-#### Building for iOS
-- Install Xcode from the [App store](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
-- Once Xcode is installed, few command-line tools need to be enabled. From the command line, run:
-```
-xcode-select --install
-```
-- Create iOS platform specific build files for our Ionic app
-```
-ionic platform add ios
-```
-- Generate the icon and splash screen resources
-```
-ionic resources
-```
-- Build the iOS application
-```
-ionic build ios
-```
+1. Download the project [source](https://github.com/fossasia/open-event-orga-app). You can do this either by forking and cloning the repository (recommended if you plan on pushing changes) or by downloading it as a ZIP file and extracting it.
 
-## Technology Stack
+2. Open Android Studio, you will see a **Welcome to Android** window. Under Quick Start, select _Import Project (Eclipse ADT, Gradle, etc.)_
 
-* [Node.js v6.x](https://nodejs.org/en/)
-* [Ionic Framework v3.x](http://ionicframework.com/docs/v2/)
-* [Angular v4.0.x](https://angular.io/)
-* [Apache Cordova v6.5.x](https://cordova.apache.org/)
+3. Navigate to the directory where you saved the project, select the root folder of the project (the folder named "open-event-orga-app"), and hit OK. Android Studio should now begin building the project with Gradle.
+
+4. Once this process is complete and Android Studio opens, check the Console for any build errors.
+
+  - _Note:_ If you receive a Gradle sync error titled, "failed to find ...", you should click on the link below the error message (if avaliable) that says _Install missing platform(s) and sync project_ and allow Android studio to fetch you what is missing.
+
+5. Once all build errors have been resolved, you should be all set to build the app and test it.
+
+6. To Build the app, go to _Build>Make Project_ (or alternatively press the Make Project icon in the toolbar).
+
+7. If the app was built successfully, you can test it by running it on either a real device or an emulated one by going to _Run>Run 'app'_ or presing the Run icon in the toolbar.
 
 
 ## Contributions Best Practices
