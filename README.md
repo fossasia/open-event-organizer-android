@@ -1,5 +1,6 @@
 ![Open Event Frontend](https://storage.googleapis.com/eventyay.com/assets/branding/organizer_app_branding.png)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/48552eea0e5749978f771db8fd854a40)](https://www.codacy.com/app/mejariamol/open-event-orga-app?utm_source=github.com&utm_medium=referral&utm_content=fossasia/open-event-orga-app&utm_campaign=badger)
 [![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/master.svg?style=flat-square)](https://travis-ci.org/fossasia/open-event-orga-app)
 [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg?style=flat-square)](https://gitter.im/fossasia/open-event-orga-app)
 
