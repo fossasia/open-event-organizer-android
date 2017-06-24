@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.common.di.module;
 
 import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
+import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.event.attendees.AttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.detail.EventDetailPresenter;
@@ -20,8 +21,8 @@ import dagger.Provides;
 public class PresenterModule {
 
     @Provides
-    ILoginPresenter providesLoginPresenter(ILoginModel loginModel) {
-        return new LoginPresenter(loginModel);
+    ILoginPresenter providesLoginPresenter(ILoginModel loginModel, IUtilModel utilModel) {
+        return new LoginPresenter(loginModel, utilModel);
     }
 
     @Provides

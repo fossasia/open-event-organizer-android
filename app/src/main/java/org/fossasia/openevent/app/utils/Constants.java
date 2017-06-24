@@ -15,5 +15,7 @@ public class Constants {
     public static final String SCANNED_ATTENDEE = "attendee";
     //No network available string
     public static final String NO_NETWORK = "Network Not Available";
+    //Saved email for autocomplete
+    public static final String SHARED_PREFS_SAVED_EMAIL="saved_email";
 
 }
