@@ -7,6 +7,9 @@
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="spacing_extra_large">64dp</dimen>
 
+    <!-- Constant dimensions -->
+    <dimen name="const_normal">16dp</dimen>
+
     <dimen name="elevation">1dp</dimen>
 
     <dimen name="text_size_extra_small">12sp</dimen>
@@ -15,6 +18,7 @@
     <dimen name="text_size_large">20sp</dimen>
 
     <dimen name="image_small">50dp</dimen>
+    <dimen name="progressbar_large">70dp</dimen>
 
     <dimen name="check_in_button_width">100dp</dimen>
     <dimen name="check_in_button_height">44dp</dimen>

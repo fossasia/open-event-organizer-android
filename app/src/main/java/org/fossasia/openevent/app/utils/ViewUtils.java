@@ -7,13 +7,15 @@ import android.view.View;
 
 public class ViewUtils {
 
-    public static void showView(View view, boolean show) {
-        int mode = View.GONE;
-
+    public static void showView(View view, int mode, boolean show) {
         if(show)
             mode = View.VISIBLE;
 
         view.setVisibility(mode);
+    }
+
+    public static void showView(View view, boolean show) {
+        showView(view, View.GONE, show);
     }
 
     public static void setTint(View view, int color) {

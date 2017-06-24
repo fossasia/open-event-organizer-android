@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="org.fossasia.openevent.app.utils.Utils" />
@@ -9,8 +11,7 @@
             type="org.fossasia.openevent.app.data.models.Attendee" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/spacing_small"
@@ -21,7 +22,7 @@
         android:paddingEnd="@dimen/spacing_normal"
         android:gravity="center"
         android:orientation="horizontal"
-        android:background="@color/color_top_surface">
+        android:foreground="?selectableItemBackground">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -34,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_normal"
                 android:textColor="@android:color/black"
-                android:text="@{Utils.formatOptionalString(&quot;%s %s&quot;, attendee.firstName, attendee.lastName)}" />
+                android:text='@{Utils.formatOptionalString("%s %s", attendee.firstName, attendee.lastName)}' />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -46,17 +47,19 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnCheckedIn"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/check_in_button_height"
+            android:background="@drawable/rounded_rectangle"
             android:minWidth="@dimen/check_in_button_width"
-            android:text="@{attendee.checkedIn ? @string/checked_in : @string/check_in}"
+            android:gravity="center"
+            app:backgroundTint="@{ attendee.checkedIn ? @color/light_green_500 : @color/red_500 }"
+            android:padding="@dimen/spacing_small"
+            android:text="@{ attendee.checkedIn ? @string/checked_in : @string/checked_out }"
             android:textAllCaps="true"
+            android:textSize="12sp"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_extra_small"
-            app:backgroundTint="@{attendee.checkedIn ? android.R.color.holo_green_light : android.R.color.holo_red_light}" />
+            tools:text="CHECKED IN" />
 
     </LinearLayout>
 </layout>

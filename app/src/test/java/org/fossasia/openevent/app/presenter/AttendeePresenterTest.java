@@ -1,6 +1,10 @@
 package org.fossasia.openevent.app.presenter;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.fossasia.openevent.app.data.contract.IEventRepository;
+import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
+import org.fossasia.openevent.app.data.db.contract.IDatabaseChangeListener;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.event.attendees.AttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
@@ -23,6 +27,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -40,7 +45,10 @@ public class AttendeePresenterTest {
     IAttendeesView attendeesView;
 
     @Mock
-    IEventRepository eventModel;
+    IEventRepository eventRepository;
+
+    @Mock
+    IDatabaseChangeListener<Attendee> changeListener;
 
     private final long id = 42;
     private AttendeesPresenter attendeesPresenter;
@@ -57,7 +65,7 @@ public class AttendeePresenterTest {
 
     @Before
     public void setUp() {
-        attendeesPresenter = new AttendeesPresenter(eventModel);
+        attendeesPresenter = new AttendeesPresenter(eventRepository, changeListener);
         attendeesPresenter.attach(id, attendeesView);
         attendeesPresenter.setAttendeeList(attendees);
 
@@ -73,18 +81,20 @@ public class AttendeePresenterTest {
 
     @Test
     public void shouldLoadAttendeesAutomatically() {
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.fromIterable(attendees));
+        when(changeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         attendeesPresenter.start();
 
-        verify(eventModel).getAttendees(id, false);
+        verify(eventRepository).getAttendees(id, false);
     }
 
     @Test
     public void shouldDetachViewOnStop() {
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.fromIterable(attendees));
+        when(changeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         attendeesPresenter.start();
 
@@ -98,32 +108,32 @@ public class AttendeePresenterTest {
     @Test
     public void shouldShowAttendeeError() {
         String error = "Test Error";
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.error(new Throwable(error)));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, attendeesView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, attendeesView);
 
         attendeesPresenter.loadAttendees(false);
 
         inOrder.verify(attendeesView).showProgressBar(true);
         inOrder.verify(attendeesView).showScanButton(false);
-        inOrder.verify(eventModel).getAttendees(id, false);
+        inOrder.verify(eventRepository).getAttendees(id, false);
         inOrder.verify(attendeesView).showErrorMessage(error);
         inOrder.verify(attendeesView).showProgressBar(false);
     }
 
     @Test
     public void shouldLoadAttendeesSuccessfully() {
-        when(eventModel.getAttendees(id, false))
+        when(eventRepository.getAttendees(id, false))
             .thenReturn(Observable.fromIterable(attendees));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, attendeesView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, attendeesView);
 
         attendeesPresenter.loadAttendees(false);
 
         inOrder.verify(attendeesView).showProgressBar(true);
         inOrder.verify(attendeesView).showScanButton(false);
-        inOrder.verify(eventModel).getAttendees(id, false);
+        inOrder.verify(eventRepository).getAttendees(id, false);
         inOrder.verify(attendeesView).showAttendees(attendees);
         inOrder.verify(attendeesView).showProgressBar(false);
         inOrder.verify(attendeesView).showScanButton(true);
@@ -131,16 +141,16 @@ public class AttendeePresenterTest {
 
     @Test
     public void shouldRefreshAttendeesSuccessfully() {
-        when(eventModel.getAttendees(id, true))
+        when(eventRepository.getAttendees(id, true))
             .thenReturn(Observable.fromIterable(attendees));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, attendeesView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showProgressBar(true);
         inOrder.verify(attendeesView).showScanButton(false);
-        inOrder.verify(eventModel).getAttendees(id, true);
+        inOrder.verify(eventRepository).getAttendees(id, true);
         inOrder.verify(attendeesView).showAttendees(attendees);
         inOrder.verify(attendeesView).showProgressBar(false);
         inOrder.verify(attendeesView).onRefreshComplete();
@@ -149,16 +159,16 @@ public class AttendeePresenterTest {
 
     @Test
     public void shouldRefreshAttendeesOnError() {
-        when(eventModel.getAttendees(id, true))
+        when(eventRepository.getAttendees(id, true))
             .thenReturn(Observable.error(new Throwable("Error")));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, attendeesView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showProgressBar(true);
         inOrder.verify(attendeesView).showScanButton(false);
-        inOrder.verify(eventModel).getAttendees(id, true);
+        inOrder.verify(eventRepository).getAttendees(id, true);
         inOrder.verify(attendeesView).showErrorMessage(anyString());
         inOrder.verify(attendeesView).showProgressBar(false);
         inOrder.verify(attendeesView).onRefreshComplete();
@@ -166,51 +176,35 @@ public class AttendeePresenterTest {
 
     @Test
     public void shouldToggleAttendeesSuccessfully() {
-        when(eventModel.toggleAttendeeCheckStatus(id, 56))
-            .thenReturn(Observable.just(attendees.get(2)));
+        PublishSubject<DatabaseChangeListener.ModelChange<Attendee>> publishSubject = PublishSubject.create();
 
-        InOrder inOrder = Mockito.inOrder(eventModel, attendeesView);
+        when(eventRepository.getAttendees(id, false)).thenReturn(Observable.fromIterable(attendees));
+        when(changeListener.getNotifier()).thenReturn(publishSubject);
 
-        // Set the list to search into
-        attendeesPresenter.setAttendeeList(attendees);
-        attendeesPresenter.toggleAttendeeCheckStatus(attendees.get(2));
+        attendeesPresenter.start();
+        publishSubject.onNext(new DatabaseChangeListener.ModelChange<>(attendees.get(2), BaseModel.Action.UPDATE));
 
-        inOrder.verify(attendeesView).showProgressBar(true);
-        inOrder.verify(eventModel).toggleAttendeeCheckStatus(id, 56);
-        inOrder.verify(attendeesView).updateAttendee(2, attendees.get(2));
-        inOrder.verify(attendeesView).showProgressBar(false);
-    }
-
-    @Test
-    public void shouldFailOnToggleNetworkError() {
-        String error = "Test Error";
-        when(eventModel.toggleAttendeeCheckStatus(id, 56))
-            .thenReturn(Observable.error(new Throwable(error)));
-
-        InOrder inOrder = Mockito.inOrder(eventModel, attendeesView);
-
-        // Set the list to search into
-        attendeesPresenter.setAttendeeList(attendees);
-        attendeesPresenter.toggleAttendeeCheckStatus(attendees.get(2));
+        InOrder inOrder = Mockito.inOrder(eventRepository, attendeesView);
 
         inOrder.verify(attendeesView).showProgressBar(true);
-        inOrder.verify(eventModel).toggleAttendeeCheckStatus(id, 56);
-        inOrder.verify(attendeesView).showErrorMessage(error);
+        inOrder.verify(attendeesView).updateAttendee(4, attendees.get(2));
         inOrder.verify(attendeesView).showProgressBar(false);
     }
 
     @Test
     public void shouldShowErrorForItemNotFound() {
         String error = "Error in updating Attendee";
-        when(eventModel.toggleAttendeeCheckStatus(id, 56))
-            .thenReturn(Observable.just(new Attendee(23)));
+        PublishSubject<DatabaseChangeListener.ModelChange<Attendee>> publishSubject = PublishSubject.create();
 
-        InOrder inOrder = Mockito.inOrder(eventModel, attendeesView);
+        when(eventRepository.getAttendees(id, false)).thenReturn(Observable.fromIterable(attendees));
+        when(changeListener.getNotifier()).thenReturn(publishSubject);
 
-        attendeesPresenter.toggleAttendeeCheckStatus(attendees.get(2));
+        attendeesPresenter.start();
+        publishSubject.onNext(new DatabaseChangeListener.ModelChange<>(new Attendee(23), BaseModel.Action.UPDATE));
+
+        InOrder inOrder = Mockito.inOrder(eventRepository, attendeesView);
 
         inOrder.verify(attendeesView).showProgressBar(true);
-        inOrder.verify(eventModel).toggleAttendeeCheckStatus(id, 56);
         inOrder.verify(attendeesView).showErrorMessage(error);
         inOrder.verify(attendeesView).showProgressBar(false);
     }
@@ -220,7 +214,7 @@ public class AttendeePresenterTest {
         attendeesPresenter.detach();
 
         attendeesPresenter.loadAttendees(false);
-        attendeesPresenter.toggleAttendeeCheckStatus(attendees.get(1));
+        //attendeesPresenter.toggleAttendeeCheckStatus(attendees.get(1));
 
         Mockito.verifyZeroInteractions(attendeesView);
     }
