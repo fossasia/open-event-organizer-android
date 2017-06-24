@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/spacing_large"
-        android:padding="@dimen/spacing_normal"
-        app:srcCompat="@drawable/ic_empty"
-        android:contentDescription="@string/empty_view_icon" />
-
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_normal"
-        android:text="@string/text_empty"
-        android:paddingBottom="@dimen/spacing_large"
-        android:layout_gravity="center|bottom"
-        style="@style/TextAppearance.AppCompat.Large"/>
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="@dimen/image_small"
+            android:layout_height="@dimen/image_small"
+            app:srcCompat="@drawable/ic_empty"
+            android:contentDescription="@string/empty_view_icon"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_empty"
+            android:textSize="@dimen/text_size_large"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
 
 </FrameLayout>

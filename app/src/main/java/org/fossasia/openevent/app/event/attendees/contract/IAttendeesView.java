@@ -14,6 +14,8 @@ public interface IAttendeesView {
 
     void showAttendees(List<Attendee> attendees);
 
+    void showEmptyView(boolean show);
+
     void updateAttendee(int position, Attendee attendee);
 
     void showErrorMessage(String error);

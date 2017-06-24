@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -116,6 +117,55 @@ public class EventsPresenterTest {
         inOrder.verify(eventModel).getEvents(true);
         inOrder.verify(eventListView).showEvents(eventList);
         inOrder.verify(eventListView).showProgressBar(false);
+        inOrder.verify(eventListView).onRefreshComplete();
+    }
+
+    @Test
+    public void shouldShowEmptyViewOnNoItemAfterSwipeRefresh() {
+        ArrayList<Event> events = new ArrayList<>();
+        when(eventModel.getEvents(true))
+            .thenReturn(Observable.fromIterable(events));
+
+        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+
+        eventsActivityPresenter.loadUserEvents(true);
+
+        inOrder.verify(eventListView).showEmptyView(false);
+        inOrder.verify(eventModel).getEvents(true);
+        inOrder.verify(eventListView).showEvents(events);
+        inOrder.verify(eventListView).showEmptyView(true);
+        inOrder.verify(eventListView).onRefreshComplete();
+    }
+
+    @Test
+    public void shouldShowEmptyViewOnSwipeRefreshError() {
+        when(eventModel.getEvents(true))
+            .thenReturn(Observable.error(new Throwable("Error")));
+
+        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+
+        eventsActivityPresenter.loadUserEvents(true);
+
+        inOrder.verify(eventListView).showEmptyView(false);
+        inOrder.verify(eventModel).getEvents(true);
+        inOrder.verify(eventListView).showEventError(anyString());
+        inOrder.verify(eventListView).showEmptyView(true);
+        inOrder.verify(eventListView).onRefreshComplete();
+    }
+
+    @Test
+    public void shouldNotShowEmptyViewOnSwipeRefreshSuccess() {
+        when(eventModel.getEvents(true))
+            .thenReturn(Observable.fromIterable(eventList));
+
+        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+
+        eventsActivityPresenter.loadUserEvents(true);
+
+        inOrder.verify(eventListView).showEmptyView(false);
+        inOrder.verify(eventModel).getEvents(true);
+        inOrder.verify(eventListView).showEvents(eventList);
+        inOrder.verify(eventListView).showEmptyView(false);
         inOrder.verify(eventListView).onRefreshComplete();
     }
 

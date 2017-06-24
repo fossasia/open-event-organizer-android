@@ -66,6 +66,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
     private void hideProgress(boolean forceReload) {
         attendeesView.showProgressBar(false);
+        attendeesView.showEmptyView(attendeeList.size() == 0);
 
         if (forceReload)
             attendeesView.onRefreshComplete();
@@ -77,6 +78,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
             return;
 
         attendeesView.showProgressBar(true);
+        attendeesView.showEmptyView(false);
         attendeesView.showScanButton(false);
 
         eventRepository.getAttendees(eventId, forceReload)

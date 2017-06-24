@@ -44,8 +44,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{ attendees.isEmpty() ? View.VISIBLE : View.GONE }">
-
+            android:id="@+id/empty_view"
+            android:visibility="gone">
             <include layout="@layout/empty_layout" />
         </FrameLayout>
 
