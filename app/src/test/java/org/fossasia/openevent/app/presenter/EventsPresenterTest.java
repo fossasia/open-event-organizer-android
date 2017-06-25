@@ -50,7 +50,7 @@ public class EventsPresenterTest {
     IEventsView eventListView;
 
     @Mock
-    IEventRepository eventModel;
+    IEventRepository eventRepository;
 
     @Mock
     ILoginModel loginModel;
@@ -72,7 +72,7 @@ public class EventsPresenterTest {
     public void setUp() {
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
 
-        eventsActivityPresenter = new EventsPresenter(eventModel, loginModel);
+        eventsActivityPresenter = new EventsPresenter(eventRepository, loginModel);
         eventsActivityPresenter.attach(eventListView);
     }
 
@@ -83,16 +83,16 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldLoadEventsAndOrganiserAutomatically() {
-        when(eventModel.getOrganiser(false))
+        when(eventRepository.getOrganiser(false))
             .thenReturn(Observable.just(organiser));
 
-        when(eventModel.getEvents(false))
+        when(eventRepository.getEvents(false))
             .thenReturn(Observable.fromIterable(eventList));
 
         eventsActivityPresenter.start();
 
-        verify(eventModel).getEvents(false);
-        verify(eventModel).getOrganiser(false);
+        verify(eventRepository).getEvents(false);
+        verify(eventRepository).getOrganiser(false);
     }
 
     @Test
@@ -106,30 +106,30 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldLoadEventsSuccessfully() {
-        when(eventModel.getEvents(false))
+        when(eventRepository.getEvents(false))
             .thenReturn(Observable.fromIterable(eventList));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadUserEvents(false);
 
         inOrder.verify(eventListView).showProgressBar(true);
-        inOrder.verify(eventModel).getEvents(false);
+        inOrder.verify(eventRepository).getEvents(false);
         inOrder.verify(eventListView).showEvents(eventList);
         inOrder.verify(eventListView).showProgressBar(false);
     }
 
     @Test
     public void shouldRefreshEventsSuccessfully() {
-        when(eventModel.getEvents(true))
+        when(eventRepository.getEvents(true))
             .thenReturn(Observable.fromIterable(eventList));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showProgressBar(true);
-        inOrder.verify(eventModel).getEvents(true);
+        inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showEvents(eventList);
         inOrder.verify(eventListView).showProgressBar(false);
         inOrder.verify(eventListView).onRefreshComplete();
@@ -138,15 +138,15 @@ public class EventsPresenterTest {
     @Test
     public void shouldShowEmptyViewOnNoItemAfterSwipeRefresh() {
         ArrayList<Event> events = new ArrayList<>();
-        when(eventModel.getEvents(true))
+        when(eventRepository.getEvents(true))
             .thenReturn(Observable.fromIterable(events));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventModel).getEvents(true);
+        inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showEvents(events);
         inOrder.verify(eventListView).showEmptyView(true);
         inOrder.verify(eventListView).onRefreshComplete();
@@ -154,15 +154,15 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldShowEmptyViewOnSwipeRefreshError() {
-        when(eventModel.getEvents(true))
+        when(eventRepository.getEvents(true))
             .thenReturn(Observable.error(new Throwable("Error")));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventModel).getEvents(true);
+        inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showEventError(anyString());
         inOrder.verify(eventListView).showEmptyView(true);
         inOrder.verify(eventListView).onRefreshComplete();
@@ -170,15 +170,15 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldNotShowEmptyViewOnSwipeRefreshSuccess() {
-        when(eventModel.getEvents(true))
+        when(eventRepository.getEvents(true))
             .thenReturn(Observable.fromIterable(eventList));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventModel).getEvents(true);
+        inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showEvents(eventList);
         inOrder.verify(eventListView).showEmptyView(false);
         inOrder.verify(eventListView).onRefreshComplete();
@@ -186,15 +186,15 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldRefreshEventsOnError() {
-        when(eventModel.getEvents(true))
+        when(eventRepository.getEvents(true))
             .thenReturn(Observable.error(new Throwable("Error")));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showProgressBar(true);
-        inOrder.verify(eventModel).getEvents(true);
+        inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showEventError(anyString());
         inOrder.verify(eventListView).showProgressBar(false);
         inOrder.verify(eventListView).onRefreshComplete();
@@ -202,7 +202,7 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldNotLoadInitialEventIfNotTwoPane() {
-        when(eventModel.getEvents(false))
+        when(eventRepository.getEvents(false))
             .thenReturn(Observable.fromIterable(eventList));
         when(eventListView.isTwoPane())
             .thenReturn(false);
@@ -214,7 +214,7 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldLoadInitialEventFirstTimeIfTwoPane() {
-        when(eventModel.getEvents(false))
+        when(eventRepository.getEvents(false))
             .thenReturn(Observable.fromIterable(eventList));
         when(eventListView.isTwoPane())
             .thenReturn(true);
@@ -226,7 +226,7 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldNotLoadInitialEventSecondTimeIfTwoPane() {
-        when(eventModel.getEvents(false))
+        when(eventRepository.getEvents(false))
             .thenReturn(Observable.fromIterable(eventList));
         when(eventListView.isTwoPane())
             .thenReturn(true);
@@ -240,15 +240,15 @@ public class EventsPresenterTest {
     @Test
     public void shouldShowEventError() {
         String error = "Test Error";
-        when(eventModel.getEvents(false))
+        when(eventRepository.getEvents(false))
             .thenReturn(Observable.error(new Throwable(error)));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadUserEvents(false);
 
         inOrder.verify(eventListView).showProgressBar(true);
-        inOrder.verify(eventModel).getEvents(false);
+        inOrder.verify(eventRepository).getEvents(false);
         inOrder.verify(eventListView).showEventError(error);
         inOrder.verify(eventListView).showProgressBar(false);
     }
@@ -261,13 +261,13 @@ public class EventsPresenterTest {
 
         organiser.setUserDetail(userDetail);
 
-        when(eventModel.getOrganiser(false)).thenReturn(Observable.just(organiser));
+        when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(organiser));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadOrganiser(false);
 
-        inOrder.verify(eventModel).getOrganiser(false);
+        inOrder.verify(eventRepository).getOrganiser(false);
         inOrder.verify(eventListView).showOrganiserName("John Wick");
     }
 
@@ -279,7 +279,7 @@ public class EventsPresenterTest {
 
         organiser.setUserDetail(userDetail);
 
-        when(eventModel.getOrganiser(false)).thenReturn(Observable.just(organiser));
+        when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(organiser));
 
         eventsActivityPresenter.loadOrganiser(false);
         verify(eventListView).showOrganiserName("John Wick");
@@ -306,14 +306,14 @@ public class EventsPresenterTest {
     @Test
     public void shouldShowOrganiserError() {
         String error = "Test Error";
-        when(eventModel.getOrganiser(false))
+        when(eventRepository.getOrganiser(false))
             .thenReturn(Observable.error(new Throwable(error)));
 
-        InOrder inOrder = Mockito.inOrder(eventModel, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadOrganiser(false);
 
-        inOrder.verify(eventModel).getOrganiser(false);
+        inOrder.verify(eventRepository).getOrganiser(false);
         inOrder.verify(eventListView).showOrganiserLoadError(error);
     }
 
