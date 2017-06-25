@@ -25,9 +25,13 @@ import java.util.List;
 
 class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder> implements StickyRecyclerHeadersAdapter<EventsHeaderViewHolder>{
 
-    private static final long LIVE_EVENT = 1;
-    private final long PAST_EVENT = 2;
-    private static final long UPCOMING_EVENT = 3;
+    private static final int LIVE_EVENT = 1;
+    private static final int PAST_EVENT = 2;
+    private static final int UPCOMING_EVENT = 3;
+
+    private static final String HEADER_LIVE = "LIVE";
+    private static final String HEADER_PAST = "PAST";
+    private static final String HEADER_UPCOMING = "UPCOMING";
 
     private List<Event> events;
     private Context context;
@@ -75,21 +79,8 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     @Override
     public long getHeaderId(int position) {
         Event event = events.get(position);
-        DateUtils dateUtils = new DateUtils();
         try {
-            Date startDate = dateUtils.parse(event.getStartTime());
-            Date endDate = dateUtils.parse(event.getEndTime());
-            Date now = new Date();
-            if (now.after(startDate)) {
-                if (now.before(endDate)) {
-                    return LIVE_EVENT;
-                } else {
-                    return PAST_EVENT;
-                }
-            } else {
-                return UPCOMING_EVENT;
-            }
-
+            return getEventStatus(event);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -103,28 +94,41 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
     @Override
     public void onBindHeaderViewHolder(EventsHeaderViewHolder holder, int position) {
-        final String LIVE = "LIVE";
-        final String PAST = "PAST";
-        final String UPCOMING = "UPCOMING";
-
         Event event = events.get(position);
-        DateUtils dateUtils = new DateUtils();
         try {
-            Date startDate = dateUtils.parse(event.getStartTime());
-            Date endDate = dateUtils.parse(event.getEndTime());
-            Date now = new Date();
-            if (now.after(startDate)) {
-                if (now.before(endDate)) {
-                    holder.bindHeader(LIVE);
-                } else {
-                    holder.bindHeader(PAST);
-                }
-            } else {
-                holder.bindHeader(UPCOMING);
-            }
+            switch (getEventStatus(event)) {
+                case LIVE_EVENT:
+                    holder.bindHeader(HEADER_LIVE);
+                    break;
+                case PAST_EVENT:
+                    holder.bindHeader(HEADER_PAST);
+                    break;
+                case UPCOMING_EVENT:
+                    holder.bindHeader(HEADER_UPCOMING);
+                    break;
+                default:
+                    holder.bindHeader(HEADER_LIVE);
 
+            }
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+
+    }
+
+    private int getEventStatus(Event event) throws ParseException {
+        DateUtils dateUtils = new DateUtils();
+        Date startDate = dateUtils.parse(event.getStartTime());
+        Date endDate = dateUtils.parse(event.getEndTime());
+        Date now = new Date();
+        if (now.after(startDate)) {
+            if (now.before(endDate)) {
+                return LIVE_EVENT;
+            } else {
+                return PAST_EVENT;
+            }
+        } else {
+            return UPCOMING_EVENT;
         }
     }
 
