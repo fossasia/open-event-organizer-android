@@ -41,6 +41,7 @@ import dagger.Lazy;
 import io.reactivex.Completable;
 import io.reactivex.Notification;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
@@ -67,6 +68,8 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
+
+    private Disposable disposable;
 
     @Inject
     IScanQRPresenter presenter;
@@ -108,6 +111,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
         if (surfaceView != null) surfaceView.removeCallbacks(() -> Timber.d("Removed"));
         if (barcodeDetector != null) barcodeDetector.release();
+        if (disposable != null) disposable.dispose();
     }
 
     @Override
@@ -225,7 +229,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
             try {
                 cameraSource.start(surfaceView.getHolder());
 
-                barcodeEmitter.subscribe(barcodeNotification -> {
+                disposable = barcodeEmitter.subscribe(barcodeNotification -> {
                     if (barcodeNotification.isOnError()) {
                         presenter.onBarcodeDetected(null);
                     } else {
