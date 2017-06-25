@@ -237,6 +237,11 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     }
 
     @Override
+    public void showEmptyView(boolean show) {
+        ViewUtils.showView(binding.emptyView, show);
+    }
+
+    @Override
     public void updateAttendee(int position, Attendee attendee) {
         itemAdapter.set(position, attendee);
     }

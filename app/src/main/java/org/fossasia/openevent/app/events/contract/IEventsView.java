@@ -14,6 +14,8 @@ public interface IEventsView {
 
     void showEvents(List<Event> events);
 
+    void showEmptyView(boolean show);
+
     void showInitialEvent();
 
     void showOrganiserName(String name);

@@ -162,6 +162,11 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
     }
 
     @Override
+    public void showEmptyView(boolean show) {
+        ViewUtils.showView(binding.eventListContainer.eventList.emptyView, show);
+    }
+
+    @Override
     public void showInitialEvent() {
         eventListAdapter.showInitialEvent();
     }
