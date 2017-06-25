@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.data.models;
 import android.databinding.ObservableField;
 import android.databinding.ObservableFloat;
 import android.databinding.ObservableLong;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
@@ -13,12 +14,15 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
+import org.fossasia.openevent.app.utils.DateUtils;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 
 @Table(database = OrgaDatabase.class, allFields = true)
-public class Event {
+public class Event implements Comparable<Event> {
 
     @PrimaryKey
     @SerializedName("id")
@@ -113,6 +117,12 @@ public class Event {
 
     public Event(long id) {
         this.id = id;
+    }
+
+    public Event(long id, String startTime, String endTime) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     private void associateLinks() {
@@ -524,5 +534,40 @@ public class Event {
         isComplete = complete;
         if (isComplete)
             associateLinks();
+    }
+
+    /**
+     * Compare events for sorting
+     * the list will be in order of live events, upcoming events, past events
+     *
+     * for both live events latest will be before in list
+     * for both past events lately ended will be before in list
+     * for both upcoming lately started will be before in list
+     *
+     * @param otherEvent event on right side in comparision
+     * @return int
+     */
+    @Override
+    public int compareTo(@NonNull Event otherEvent) {
+        DateUtils dateUtils = new DateUtils();
+        Date now = new Date();
+        try {
+            Date startDate = dateUtils.parse(startTime);
+            Date endDate = dateUtils.parse(endTime);
+            Date otherStartDate = dateUtils.parse(otherEvent.startTime);
+            Date otherEndDate = dateUtils.parse(otherEvent.endTime);
+            if (endDate.before(now) || otherEndDate.before(now)) { // one of them is past and other can be past or live or upcoming
+                return endDate.after(otherEndDate) ? -1 : 1;
+            } else {
+                if (startDate.after(now) || otherStartDate.after(now)) { // one of them is upcoming other can be upcoming or live
+                    return startDate.before(otherStartDate) ? -1 : 1;
+                } else { // both are live
+                    return startDate.after(otherStartDate) ? -1 : 1;
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 1;
     }
 }

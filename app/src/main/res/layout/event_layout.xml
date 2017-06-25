@@ -18,7 +18,8 @@
         android:paddingLeft="@dimen/spacing_normal"
         android:paddingRight="@dimen/spacing_normal"
         android:paddingStart="@dimen/spacing_normal"
-        android:paddingTop="@dimen/spacing_small">
+        android:paddingTop="@dimen/spacing_small"
+        android:gravity="center_vertical">
 
         <ImageView
             android:layout_width="@dimen/image_small"
@@ -27,15 +28,15 @@
             app:circleImageUrl="@{event.thumbnail}" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:paddingEnd="@dimen/spacing_medium"
             android:paddingLeft="@dimen/spacing_medium"
             android:paddingRight="@dimen/spacing_medium"
             android:paddingStart="@dimen/spacing_medium"
             android:text="@{event.name}"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@android:color/black"/>
 
     </LinearLayout>
 </layout>
