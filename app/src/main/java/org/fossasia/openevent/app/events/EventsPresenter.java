@@ -18,6 +18,7 @@ public class EventsPresenter implements IEventsPresenter {
     private ILoginModel loginModel;
 
     private boolean firstLoad = true;
+    private boolean isListEmpty = true;
 
     @Inject
     public EventsPresenter(IEventRepository eventsDataRepository, ILoginModel loginModel) {
@@ -43,6 +44,7 @@ public class EventsPresenter implements IEventsPresenter {
 
     private void hideProgress(boolean forceReload) {
         eventsView.showProgressBar(false);
+        eventsView.showEmptyView(isListEmpty);
 
         if (forceReload)
             eventsView.onRefreshComplete();
@@ -54,6 +56,7 @@ public class EventsPresenter implements IEventsPresenter {
             return;
 
         eventsView.showProgressBar(true);
+        eventsView.showEmptyView(false);
 
         eventsDataRepository
             .getEvents(forceReload)
@@ -66,6 +69,7 @@ public class EventsPresenter implements IEventsPresenter {
                 eventsView.showEvents(events);
                 if(eventsView.isTwoPane() && firstLoad)
                     eventsView.showInitialEvent();
+                isListEmpty = events.size() == 0;
                 hideProgress(forceReload);
 
                 firstLoad = false;

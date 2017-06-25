@@ -23,7 +23,7 @@ public class AttendeeItemCheckInEvent extends ClickEventHook<Attendee> {
     @Override
     public List<View> onBindMany(@NonNull RecyclerView.ViewHolder viewHolder) {
         if (viewHolder instanceof AttendeeViewHolder) {
-            return EventHookUtil.toList(((AttendeeViewHolder) viewHolder).checkInButton);
+            return EventHookUtil.toList(((AttendeeViewHolder) viewHolder).getRoot());
         }
         return super.onBindMany(viewHolder);
     }
@@ -33,7 +33,7 @@ public class AttendeeItemCheckInEvent extends ClickEventHook<Attendee> {
     }
 
     @Override
-    public void onClick(View view, int i, FastAdapter<Attendee> fastAdapter, Attendee item) {
-        attendeesView.showToggleDialog(item);
+    public void onClick(View view, int position, FastAdapter<Attendee> fastAdapter, Attendee attendee) {
+        attendeesView.showToggleDialog(attendee.getId());
     }
 }

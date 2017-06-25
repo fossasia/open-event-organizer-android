@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +33,7 @@ import org.fossasia.openevent.app.databinding.FragmentAttendeesBinding;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
 import org.fossasia.openevent.app.event.attendees.listeners.AttendeeItemCheckInEvent;
+import org.fossasia.openevent.app.event.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.events.EventListActivity;
 import org.fossasia.openevent.app.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.utils.Constants;
@@ -41,8 +42,6 @@ import org.fossasia.openevent.app.utils.ViewUtils;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -148,10 +147,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
             return;
         long attendeeId = data.getLongExtra(Constants.SCANNED_ATTENDEE, -1);
 
-        if (attendeeId != -1) {
-            attendeesPresenter.getAttendeeById(attendeeId)
-                .subscribe(this::showToggleDialog, Timber::e);
-        }
+        if (attendeeId != -1)
+            showToggleDialog(attendeeId);
     }
 
     private void setupRecyclerView() {
@@ -192,20 +189,9 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     // View Implementation
 
     @Override
-    public void showToggleDialog(Attendee attendee) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        String alertTitle;
-        if(attendee.isCheckedIn())
-            alertTitle = Constants.ATTENDEE_CHECKING_OUT;
-        else
-            alertTitle = Constants.ATTENDEE_CHECKING_IN;
-
-        builder.setTitle(alertTitle).setMessage(attendee.getTicketMessage());
-        builder.setPositiveButton("OK", (dialog, which) -> attendeesPresenter.toggleAttendeeCheckStatus(attendee))
-            .setNegativeButton("CANCEL", (dialog, which) -> dialog.dismiss());
-
-        builder.show();
+    public void showToggleDialog(long attendeeId) {
+        BottomSheetDialogFragment bottomSheetDialogFragment = AttendeeCheckInFragment.newInstance(attendeeId);
+        bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 
     @Override
@@ -234,6 +220,11 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
         itemAdapter.set(attendees);
         binding.setVariable(BR.attendees, attendees);
         binding.executePendingBindings();
+    }
+
+    @Override
+    public void showEmptyView(boolean show) {
+        ViewUtils.showView(binding.emptyView, show);
     }
 
     @Override

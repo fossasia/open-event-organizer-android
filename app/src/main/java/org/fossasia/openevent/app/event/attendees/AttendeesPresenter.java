@@ -1,6 +1,10 @@
 package org.fossasia.openevent.app.event.attendees;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.fossasia.openevent.app.data.contract.IEventRepository;
+import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
+import org.fossasia.openevent.app.data.db.contract.IDatabaseChangeListener;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
@@ -21,12 +25,14 @@ public class AttendeesPresenter implements IAttendeesPresenter {
     private long eventId;
     private IAttendeesView attendeesView;
     private IEventRepository eventRepository;
+    private IDatabaseChangeListener<Attendee> attendeeListener;
 
-    private List<Attendee> attendeeList = new ArrayList<>();
+    private final List<Attendee> attendeeList = new ArrayList<>();
 
     @Inject
-    public AttendeesPresenter(IEventRepository eventRepository) {
+    public AttendeesPresenter(IEventRepository eventRepository, IDatabaseChangeListener<Attendee> attendeeListener) {
         this.eventRepository = eventRepository;
+        this.attendeeListener = attendeeListener;
     }
 
     public void setAttendeeList(List<Attendee> attendeeList) {
@@ -43,11 +49,13 @@ public class AttendeesPresenter implements IAttendeesPresenter {
     @Override
     public void start() {
         loadAttendees(false);
+        listenToModelChanges();
     }
 
     @Override
     public void detach() {
         attendeesView = null;
+        attendeeListener.stopListening();
     }
 
     @Override
@@ -66,6 +74,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
     private void hideProgress(boolean forceReload) {
         attendeesView.showProgressBar(false);
+        attendeesView.showEmptyView(attendeeList.size() == 0);
 
         if (forceReload)
             attendeesView.onRefreshComplete();
@@ -77,6 +86,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
             return;
 
         attendeesView.showProgressBar(true);
+        attendeesView.showEmptyView(false);
         attendeesView.showScanButton(false);
 
         eventRepository.getAttendees(eventId, forceReload)
@@ -97,21 +107,14 @@ public class AttendeesPresenter implements IAttendeesPresenter {
             });
     }
 
-    @Override
-    public void toggleAttendeeCheckStatus(Attendee attendee) {
-        if(attendeesView == null)
-            return;
+    private void listenToModelChanges() {
+        attendeeListener.startListening();
 
-        attendeesView.showProgressBar(true);
-
-        eventRepository.toggleAttendeeCheckStatus(eventId, attendee.getId())
-            .subscribe(this::processUpdatedAttendee, throwable -> {
-                if(attendeesView == null)
-                    return;
-
-                attendeesView.showErrorMessage(throwable.getMessage());
-                attendeesView.showProgressBar(false);
-            });
+        attendeeListener.getNotifier()
+            .filter(attendeeModelChange -> attendeeModelChange.getAction().equals(BaseModel.Action.UPDATE))
+            .distinctUntilChanged()
+            .map(DatabaseChangeListener.ModelChange::getModel)
+            .subscribe(this::processUpdatedAttendee, Throwable::printStackTrace);
     }
 
     private void processUpdatedAttendee(Attendee attendee) {
