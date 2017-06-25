@@ -8,15 +8,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.EventLayoutBinding;
+import org.fossasia.openevent.app.databinding.EventSubheaderLayoutBinding;
 import org.fossasia.openevent.app.event.EventContainerFragment;
 import org.fossasia.openevent.app.event.detail.EventDetailActivity;
+import org.fossasia.openevent.app.events.viewholders.EventsHeaderViewHolder;
+import org.fossasia.openevent.app.utils.DateUtils;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
-class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder>{
+class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder> implements StickyRecyclerHeadersAdapter<EventsHeaderViewHolder>{
+
+    private static final int LIVE_EVENT = 1;
+    private static final int PAST_EVENT = 2;
+    private static final int UPCOMING_EVENT = 3;
+
+    private static final String HEADER_LIVE = "LIVE";
+    private static final String HEADER_PAST = "PAST";
+    private static final String HEADER_UPCOMING = "UPCOMING";
 
     private List<Event> events;
     private Context context;
@@ -59,6 +74,62 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
             return;
 
         showEvent(events.get(0));
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        Event event = events.get(position);
+        try {
+            return getEventStatus(event);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public EventsHeaderViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
+        return new EventsHeaderViewHolder(EventSubheaderLayoutBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
+    }
+
+    @Override
+    public void onBindHeaderViewHolder(EventsHeaderViewHolder holder, int position) {
+        Event event = events.get(position);
+        try {
+            switch (getEventStatus(event)) {
+                case LIVE_EVENT:
+                    holder.bindHeader(HEADER_LIVE);
+                    break;
+                case PAST_EVENT:
+                    holder.bindHeader(HEADER_PAST);
+                    break;
+                case UPCOMING_EVENT:
+                    holder.bindHeader(HEADER_UPCOMING);
+                    break;
+                default:
+                    holder.bindHeader(HEADER_LIVE);
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private int getEventStatus(Event event) throws ParseException {
+        DateUtils dateUtils = new DateUtils();
+        Date startDate = dateUtils.parse(event.getStartTime());
+        Date endDate = dateUtils.parse(event.getEndTime());
+        Date now = new Date();
+        if (now.after(startDate)) {
+            if (now.before(endDate)) {
+                return LIVE_EVENT;
+            } else {
+                return PAST_EVENT;
+            }
+        } else {
+            return UPCOMING_EVENT;
+        }
     }
 
     @Override
