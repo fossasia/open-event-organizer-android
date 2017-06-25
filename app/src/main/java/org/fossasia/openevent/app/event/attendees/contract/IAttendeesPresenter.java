@@ -20,6 +20,4 @@ public interface IAttendeesPresenter {
 
     void loadAttendees(boolean forceReload);
 
-    void toggleAttendeeCheckStatus(Attendee attendee);
-
 }

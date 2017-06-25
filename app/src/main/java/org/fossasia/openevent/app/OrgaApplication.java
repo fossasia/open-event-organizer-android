@@ -6,7 +6,10 @@ import android.os.StrictMode;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
+import com.raizlabs.android.dbflow.config.DatabaseConfig;
+import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.runtime.DirectModelNotifier;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Picasso;
@@ -14,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import org.fossasia.openevent.app.common.di.component.AppComponent;
 import org.fossasia.openevent.app.common.di.component.DaggerAppComponent;
 import org.fossasia.openevent.app.common.di.module.AndroidModule;
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
 import javax.inject.Inject;
 
@@ -43,7 +47,12 @@ public class OrgaApplication extends Application {
     }
 
     public static void initializeDatabase(Context context) {
-        FlowManager.init(context);
+        FlowManager.init(new FlowConfig.Builder(context)
+            .addDatabaseConfig(
+                new DatabaseConfig.Builder(OrgaDatabase.class)
+                .modelNotifier(DirectModelNotifier.get())
+                .build()
+            ).build());
     }
 
     public static void destroyDatabase() {
