@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -15,13 +15,11 @@ public class License extends BaseModel {
 
     private String name;
     private String description;
-    @SerializedName("licence_compact_logo")
-    private String licenceCompactLogo;
-    @SerializedName("licence_logo")
-    private String licenseLogo;
-    @SerializedName("licence_url")
-    private String licenseUrl;
-    @SerializedName("long_name")
+    @JsonProperty("compact_logo")
+    private String compactLogo;
+    private String logo;
+    private String url;
+    @JsonProperty("long_name")
     private String longName;
 
     public long getId() {
@@ -40,28 +38,28 @@ public class License extends BaseModel {
         this.description = description;
     }
 
-    public String getLicenceCompactLogo() {
-        return licenceCompactLogo;
+    public String getCompactLogo() {
+        return compactLogo;
     }
 
-    public void setLicenceCompactLogo(String licenceCompactLogo) {
-        this.licenceCompactLogo = licenceCompactLogo;
+    public void setCompactLogo(String compactLogo) {
+        this.compactLogo = compactLogo;
     }
 
-    public String getLicenseLogo() {
-        return licenseLogo;
+    public String getLogo() {
+        return logo;
     }
 
-    public void setLicenseLogo(String licenseLogo) {
-        this.licenseLogo = licenseLogo;
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
-    public String getLicenseUrl() {
-        return licenseUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setLicenseUrl(String licenseUrl) {
-        this.licenseUrl = licenseUrl;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getLongName() {

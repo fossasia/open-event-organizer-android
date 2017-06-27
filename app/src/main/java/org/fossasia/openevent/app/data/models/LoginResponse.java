@@ -1,16 +1,20 @@
 package org.fossasia.openevent.app.data.models;
 
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LoginResponse {
 
-    @Expose
-    @SerializedName("access_token")
+    @JsonProperty("access_token")
     private String accessToken;
 
+    public LoginResponse() {}
+
     public LoginResponse(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 

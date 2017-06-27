@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -15,11 +15,11 @@ public class UserDetail extends BaseModel {
 
     private String contact;
     private String twitter;
-    @SerializedName("firstname")
+    @JsonProperty("firstname")
     private String firstName;
     private String avatar;
     private String facebook;
-    @SerializedName("lastname")
+    @JsonProperty("lastname")
     private String lastName;
     private String details;
 

@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -14,14 +14,14 @@ public class Order extends BaseModel {
     private long id;
 
     private float amount;
-    @SerializedName("completed_at")
+    @JsonProperty("completed_at")
     private String completedAt;
     private String identifier;
-    @SerializedName("invoice_number")
+    @JsonProperty("invoice_number")
     private String invoiceNumber;
-    @SerializedName("paid_via")
+    @JsonProperty("paid_via")
     private String paidVia;
-    @SerializedName("payment_mode")
+    @JsonProperty("payment_mode")
     private String  paymentMode;
     private String status;
 

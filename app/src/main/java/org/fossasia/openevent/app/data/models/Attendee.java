@@ -4,7 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
@@ -15,7 +15,6 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.event.attendees.viewholders.AttendeeViewHolder;
-import org.fossasia.openevent.app.utils.Utils;
 
 import java.util.List;
 
@@ -26,15 +25,15 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     private long id;
 
     @Column
-    @SerializedName("checked_in")
+    @JsonProperty("checked_in")
     private boolean checkedIn;
     @Column
     private String email;
     @Column
-    @SerializedName("firstname")
+    @JsonProperty("firstname")
     private String firstName;
     @Column
-    @SerializedName("lastname")
+    @JsonProperty("lastname")
     private String lastName;
     @ForeignKey(
         saveForeignKeyModel = true,
@@ -131,13 +130,6 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
 
     public void setEventId(long eventId) {
         this.eventId = eventId;
-    }
-
-    public String getTicketMessage() {
-        return Utils.formatOptionalString("%s %s \nTicket: %s",
-            getFirstName(),
-            getLastName(),
-            getTicket().getType());
     }
 
     @Override
