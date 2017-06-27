@@ -5,16 +5,14 @@ import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 
 import javax.inject.Singleton;
 
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
-@Module
-public class DatabaseModule {
+@Module(includes = ChangeListenerModule.class)
+public abstract class DatabaseModule {
 
-    @Provides
+    @Binds
     @Singleton
-    IDatabaseRepository providesDatabaseRepository() {
-        return new DatabaseRepository();
-    }
+    abstract IDatabaseRepository providesDatabaseRepository(DatabaseRepository databaseRepository);
 
 }

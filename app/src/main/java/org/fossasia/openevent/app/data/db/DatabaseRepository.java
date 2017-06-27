@@ -14,11 +14,16 @@ import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import timber.log.Timber;
 
 public class DatabaseRepository implements IDatabaseRepository {
+
+    @Inject
+    public DatabaseRepository() {}
 
     @Override
     public <T> Observable<T> getItems(Class<T> typeClass, SQLOperator... conditions) {

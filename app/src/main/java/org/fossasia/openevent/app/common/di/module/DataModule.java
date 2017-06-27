@@ -1,40 +1,30 @@
 package org.fossasia.openevent.app.common.di.module;
 
-import android.content.Context;
-
 import org.fossasia.openevent.app.data.EventRepository;
 import org.fossasia.openevent.app.data.LoginModel;
 import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
-import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
-import org.fossasia.openevent.app.data.network.EventService;
 
 import javax.inject.Singleton;
 
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
-@Module(includes = { AndroidModule.class, DatabaseModule.class, NetworkModule.class })
-public class DataModule {
+@Module
+public abstract class DataModule {
 
-    @Provides
+    @Binds
     @Singleton
-    IUtilModel providesUtilModel(Context context) {
-        return new UtilModel(context);
-    }
+    abstract IUtilModel bindsUtilModel(UtilModel utilModel);
 
-    @Provides
+    @Binds
     @Singleton
-    ILoginModel providesLoginModel(IUtilModel utilModel, EventService eventService, IDatabaseRepository databaseRepository) {
-        return new LoginModel(utilModel, eventService, databaseRepository);
-    }
+    abstract ILoginModel bindsLoginModule(LoginModel loginModel);
 
-    @Provides
+    @Binds
     @Singleton
-    IEventRepository providesEventRepository(IUtilModel utilModel, IDatabaseRepository databaseRepository, EventService eventService) {
-        return new EventRepository(utilModel, databaseRepository, eventService);
-    }
+    abstract IEventRepository bindsEventRepository(EventRepository eventRepository);
 
 }
