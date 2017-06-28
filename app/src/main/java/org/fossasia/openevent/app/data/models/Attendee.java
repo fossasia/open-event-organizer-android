@@ -154,6 +154,11 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     }
 
     @Override
+    public long getIdentifier() {
+        return id;
+    }
+
+    @Override
     public int getType() {
         return 0;
     }
