@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -14,10 +14,10 @@ public class CallForPapers extends BaseModel {
     private long id;
 
     private String announcement;
-    @SerializedName("end_date")
+    @JsonProperty("end_date")
     private String endDate;
     private String privacy;
-    @SerializedName("start_date")
+    @JsonProperty("start_date")
     private String startDate;
     private String timezone;
 

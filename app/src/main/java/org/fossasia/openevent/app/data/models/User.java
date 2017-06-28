@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -14,15 +14,15 @@ public class User extends BaseModel {
 
     @PrimaryKey
     private int id;
-    @SerializedName("last_access_time")
+    @JsonProperty("last_access_time")
     private String lastAccessTime;
-    @SerializedName("signup_time")
+    @JsonProperty("signup_time")
     private String signupTime;
     @ForeignKey(
         saveForeignKeyModel = true,
         deleteForeignKeyModel = true,
         onDelete = ForeignKeyAction.CASCADE)
-    @SerializedName("user_detail")
+    @JsonProperty("user_detail")
     private UserDetail userDetail;
     private String email;
 

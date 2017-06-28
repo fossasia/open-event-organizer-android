@@ -3,13 +3,9 @@ package org.fossasia.openevent.app.common.di.module;
 import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
-import org.fossasia.openevent.app.data.db.configuration.DbFlowExclusionStrategy;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.utils.Constants;
@@ -19,25 +15,25 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import retrofit2.CallAdapter;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 @Module(includes = { AndroidModule.class, DatabaseModule.class })
 public class NetworkModule {
 
     @Provides
     @Singleton
-    ExclusionStrategy providesExclusionStrategy() {
-        return new DbFlowExclusionStrategy();
+    Converter.Factory providesJacksonFactory() {
+        return JacksonConverterFactory.create();
     }
 
     @Provides
     @Singleton
-    Gson providesGson(ExclusionStrategy exclusionStrategy) {
-        return new GsonBuilder()
-            .addDeserializationExclusionStrategy(exclusionStrategy)
-            .create();
+    CallAdapter.Factory providesCallAdapterFactory() {
+        return RxJava2CallAdapterFactory.create();
     }
 
     @Provides
@@ -65,10 +61,10 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    Retrofit.Builder providesRetrofitBuilder(Gson gson, OkHttpClient client) {
+    Retrofit.Builder providesRetrofitBuilder(CallAdapter.Factory callAdapterFactory, Converter.Factory converterFactory, OkHttpClient client) {
         return new Retrofit.Builder()
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(callAdapterFactory)
+            .addConverterFactory(converterFactory)
             .client(client)
             .baseUrl(Constants.BASE_URL);
     }
