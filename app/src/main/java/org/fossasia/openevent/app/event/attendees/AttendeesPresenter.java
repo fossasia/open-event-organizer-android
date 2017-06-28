@@ -112,7 +112,6 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
         attendeeListener.getNotifier()
             .filter(attendeeModelChange -> attendeeModelChange.getAction().equals(BaseModel.Action.UPDATE))
-            .distinctUntilChanged()
             .map(DatabaseChangeListener.ModelChange::getModel)
             .subscribe(this::processUpdatedAttendee, Throwable::printStackTrace);
     }
