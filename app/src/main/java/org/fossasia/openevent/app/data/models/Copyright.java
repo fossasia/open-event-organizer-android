@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.models;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -14,11 +14,11 @@ public class Copyright extends BaseModel {
     public long id;
 
     private String holder;
-    @SerializedName("holder_url")
+    @JsonProperty("holder_url")
     private String holderUrl;
-    @SerializedName("licence")
+    @JsonProperty("licence")
     private String license;
-    @SerializedName("licence_url")
+    @JsonProperty("licence_url")
     private String licenseUrl;
     private String logo;
     private long year;

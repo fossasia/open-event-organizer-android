@@ -5,7 +5,7 @@ import android.databinding.ObservableFloat;
 import android.databinding.ObservableLong;
 import android.support.annotation.NonNull;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
@@ -25,40 +25,39 @@ import java.util.List;
 public class Event implements Comparable<Event> {
 
     @PrimaryKey
-    @SerializedName("id")
     private long id;
 
     // Foreign Key Section - Lazy Load
     // Need to explicitly associate the fields to save them
 
     @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
-    @SerializedName("call_for_papers")
+    @JsonProperty("call_for_papers")
     private CallForPapers callForPapers;
 
     @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
     private Copyright copyright;
 
     @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
-    @SerializedName("licence_details")
+    @JsonProperty("licence_details")
     private License licenseDetails;
 
     @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
     private Version version;
 
     @ColumnIgnore
-    @SerializedName("social_links")
+    @JsonProperty("social_links")
     List<SocialLink> socialLinks;
 
     @ColumnIgnore
     List<Ticket> tickets;
 
     // Images
-    @SerializedName("background_image")
+    @JsonProperty("background_image")
     private String backgroundImage;
     private String logo;
     private String large;
     private String thumbnail;
-    @SerializedName("placeholder_url")
+    @JsonProperty("placeholder_url")
     private String placeholderUrl;
 
     // Event Info
@@ -67,37 +66,36 @@ public class Event implements Comparable<Event> {
     private String description;
     private String email;
     private double latitude;
-
     private double longitude;
-    @SerializedName("location_name")
+    @JsonProperty("location_name")
     private String locationName;
-    @SerializedName("searchable_location_name")
+    @JsonProperty("searchable_location_name")
     private String searchableLocationName;
-    @SerializedName("start_time")
+    @JsonProperty("start_time")
     private String startTime;
-    @SerializedName("end_time")
+    @JsonProperty("end_time")
     private String endTime;
     private String timezone;
     private String topic;
-    @SerializedName("sub_topic")
+    @JsonProperty("sub_topic")
     private String subTopic;
     private String type;
     private String state;
-    @SerializedName("event_url")
+    @JsonProperty("event_url")
     private String eventUrl;
-    @SerializedName("has_session_speakers")
+    @JsonProperty("has_session_speakers")
     private boolean hasSessionSpeakers;
-    @SerializedName("code_of_conduct")
+    @JsonProperty("code_of_conduct")
     private String codeOfConduct;
     private String privacy;
-    @SerializedName("schedule_published_on")
+    @JsonProperty("schedule_published_on")
     private String schedulePublishedOn;
-    @SerializedName("ticket_url")
+    @JsonProperty("ticket_url")
     private String ticketUrl;
 
-    @SerializedName("organizer_description")
+    @JsonProperty("organizer_description")
     private String organizerDescription;
-    @SerializedName("organizer_name")
+    @JsonProperty("organizer_name")
     private String organizerName;
 
     // Tells if the event saved is complete ( with tickets )
