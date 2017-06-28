@@ -39,7 +39,8 @@
             app:fabSize="normal"
             app:layout_anchor="@id/rvAttendeeList"
             app:layout_anchorGravity="bottom|right"
-            app:srcCompat="@drawable/qrcode_scan" />
+            app:srcCompat="@drawable/qrcode_scan"
+            android:visibility="invisible"/>
 
         <FrameLayout
             android:layout_width="match_parent"
