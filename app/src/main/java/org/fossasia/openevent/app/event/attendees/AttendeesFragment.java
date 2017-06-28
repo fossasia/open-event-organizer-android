@@ -13,15 +13,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
-import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.HeaderAdapter;
-import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.fossasia.openevent.app.OrgaApplication;
@@ -37,6 +40,7 @@ import org.fossasia.openevent.app.event.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.events.EventListActivity;
 import org.fossasia.openevent.app.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.utils.Constants;
+import org.fossasia.openevent.app.utils.SearchUtils;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.util.List;
@@ -48,13 +52,11 @@ import javax.inject.Inject;
  * Use the {@link AttendeesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AttendeesFragment extends BaseFragment implements IAttendeesView {
+public class AttendeesFragment extends BaseFragment implements IAttendeesView, SearchView.OnQueryTextListener {
 
     private Context context;
 
     private long eventId;
-
-    private ItemAdapter<Attendee> itemAdapter;
 
     public static final int REQ_CODE = 123;
 
@@ -64,6 +66,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     @Inject
     IAttendeesPresenter attendeesPresenter;
 
+    private FastItemAdapter<Attendee> fastItemAdapter;
     private StickyHeaderAdapter stickyHeaderAdapter;
     private RecyclerView.AdapterDataObserver adapterDataObserver;
     private FragmentAttendeesBinding binding;
@@ -99,11 +102,21 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
             .inject(this);
 
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (getArguments() != null) {
             eventId = getArguments().getLong(EventListActivity.EVENT_KEY);
             attendeesPresenter.attach(eventId, this);
         }
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_attendees, menu);
+        MenuItem search = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) search.getActionView();
+        searchView.setQueryHint(getString(R.string.search_placeholder));
+        searchView.setOnQueryTextListener(this);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -151,22 +164,34 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
             showToggleDialog(attendeeId);
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        fastItemAdapter.filter(newText.trim());
+        return true;
+    }
+
     private void setupRecyclerView() {
+        fastItemAdapter = new FastItemAdapter<>();
+        fastItemAdapter.setHasStableIds(true);
+        fastItemAdapter.withPositionBasedStateManagement(false);
+        fastItemAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
+        fastItemAdapter.getItemFilter().withFilterPredicate(
+            (attendee, query) -> SearchUtils.shallFilter(query.toString(), attendee.getFirstName(), attendee.getLastName(), attendee.getEmail())
+        );
+
+        stickyHeaderAdapter = new StickyHeaderAdapter();
+        final HeaderAdapter headerAdapter = new HeaderAdapter();
+
         RecyclerView recyclerView = binding.rvAttendeeList;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        FastAdapter<Attendee> fastAdapter = new FastAdapter<>();
-
-        stickyHeaderAdapter = new StickyHeaderAdapter();
-        final HeaderAdapter headerAdapter = new HeaderAdapter();
-        itemAdapter = new ItemAdapter<>();
-
-        fastAdapter.setHasStableIds(true);
-        fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
-
-        recyclerView.setAdapter(stickyHeaderAdapter.wrap(itemAdapter.wrap(headerAdapter.wrap(fastAdapter))));
+        recyclerView.setAdapter(stickyHeaderAdapter.wrap((headerAdapter.wrap(fastItemAdapter))));
 
         final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
         recyclerView.addItemDecoration(decoration);
@@ -215,9 +240,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @Override
     public void showAttendees(List<Attendee> attendees) {
-        // The list is loaded from presenter, so we just need
-        // to notify RecyclerView to update the data
-        itemAdapter.set(attendees);
+        fastItemAdapter.setNewList(attendees);
         binding.setVariable(BR.attendees, attendees);
         binding.executePendingBindings();
     }
@@ -229,11 +252,13 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @Override
     public void updateAttendee(int position, Attendee attendee) {
-        itemAdapter.set(position, attendee);
+        position = fastItemAdapter.getAdapterPosition(attendee);
+        fastItemAdapter.getItemFilter().set(position, attendee);
     }
 
     @Override
     public void showErrorMessage(String error) {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
     }
+
 }
