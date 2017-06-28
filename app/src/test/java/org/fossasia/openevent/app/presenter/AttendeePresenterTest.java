@@ -163,15 +163,28 @@ public class AttendeePresenterTest {
         when(eventRepository.getAttendees(id, true))
             .thenReturn(Observable.fromIterable(attendees));
 
-        InOrder inOrder = Mockito.inOrder(eventRepository, attendeesView);
+        InOrder inOrder = Mockito.inOrder(attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showEmptyView(false);
-        inOrder.verify(eventRepository).getAttendees(id, true);
         inOrder.verify(attendeesView).showAttendees(attendees);
         inOrder.verify(attendeesView).showEmptyView(true);
+    }
+
+    @Test
+    public void shouldNotShowScanButtonOnNoItemAfterSwipeRefresh() {
+        ArrayList<Attendee> attendees = new ArrayList<>();
+        when(eventRepository.getAttendees(id, true))
+            .thenReturn(Observable.fromIterable(attendees));
+
+        InOrder inOrder = Mockito.inOrder(attendeesView);
+
+        attendeesPresenter.loadAttendees(true);
+
+        inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeesView).onRefreshComplete();
+        inOrder.verify(attendeesView).showScanButton(false);
     }
 
     @Test
@@ -180,34 +193,62 @@ public class AttendeePresenterTest {
         when(eventRepository.getAttendees(id, true))
             .thenReturn(Observable.error(new Throwable(error)));
 
-        InOrder inOrder = Mockito.inOrder(eventRepository, attendeesView);
+        InOrder inOrder = Mockito.inOrder(attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showEmptyView(false);
-        inOrder.verify(eventRepository).getAttendees(id, true);
         inOrder.verify(attendeesView).showErrorMessage(error);
         inOrder.verify(attendeesView).showEmptyView(true);
-        inOrder.verify(attendeesView).onRefreshComplete();
     }
 
     @Test
-    public void shouldNotShowEmptyViewIfNonEmptyAttendeesListOnSwipeRefreshError() {
+    public void shouldNotShowScanButtonOnSwipeRefreshError() {
+        String error = "Test Error";
+        when(eventRepository.getAttendees(id, true))
+            .thenReturn(Observable.error(new Throwable(error)));
+
+        InOrder inOrder = Mockito.inOrder(attendeesView);
+
+        attendeesPresenter.loadAttendees(true);
+
+        inOrder.verify(attendeesView).showScanButton(false);
+        inOrder.verify(attendeesView).onRefreshComplete();
+        inOrder.verify(attendeesView).showScanButton(false);
+    }
+
+    @Test
+    public void shouldNotShowEmptyViewIfNonEmptyAttendeeListOnSwipeRefreshError() {
         attendeesPresenter.setAttendeeList(attendees);
 
         String error = "Test Error";
         when(eventRepository.getAttendees(id, true))
             .thenReturn(Observable.error(new Throwable(error)));
 
-        InOrder inOrder = Mockito.inOrder(eventRepository, attendeesView);
+        InOrder inOrder = Mockito.inOrder(attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showEmptyView(false);
-        inOrder.verify(eventRepository).getAttendees(id, true);
         inOrder.verify(attendeesView).showErrorMessage(error);
         inOrder.verify(attendeesView).showEmptyView(false);
+    }
+
+    @Test
+    public void shouldShowScanButtonIfNonEmptyAttendeeListOnSwipeRefreshError() {
+        attendeesPresenter.setAttendeeList(attendees);
+
+        String error = "Test Error";
+        when(eventRepository.getAttendees(id, true))
+            .thenReturn(Observable.error(new Throwable(error)));
+
+        InOrder inOrder = Mockito.inOrder(attendeesView);
+
+        attendeesPresenter.loadAttendees(true);
+
+        inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeesView).onRefreshComplete();
+        inOrder.verify(attendeesView).showScanButton(true);
     }
 
     @Test
@@ -215,15 +256,27 @@ public class AttendeePresenterTest {
         when(eventRepository.getAttendees(id, true))
             .thenReturn(Observable.fromIterable(attendees));
 
-        InOrder inOrder = Mockito.inOrder(eventRepository, attendeesView);
+        InOrder inOrder = Mockito.inOrder(attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showEmptyView(false);
-        inOrder.verify(eventRepository).getAttendees(id, true);
         inOrder.verify(attendeesView).showAttendees(attendees);
         inOrder.verify(attendeesView).showEmptyView(false);
+    }
+
+    @Test
+    public void shouldShowScanButtonOnSwipeRefreshSuccess() {
+        when(eventRepository.getAttendees(id, true))
+            .thenReturn(Observable.fromIterable(attendees));
+
+        InOrder inOrder = Mockito.inOrder(attendeesView);
+
+        attendeesPresenter.loadAttendees(true);
+
+        inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeesView).onRefreshComplete();
+        inOrder.verify(attendeesView).showScanButton(true);
     }
 
     @Test

@@ -203,6 +203,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView, S
             }
         };
         stickyHeaderAdapter.registerAdapterDataObserver(adapterDataObserver);
+
+        ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.fabScanQr);
     }
 
     private void setupRefreshListener() {
