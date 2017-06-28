@@ -99,11 +99,12 @@ public class AttendeesPresenter implements IAttendeesPresenter {
                 if (attendeesView == null) return;
                 attendeesView.showAttendees(attendees);
                 hideProgress(forceReload);
-                attendeesView.showScanButton(true);
+                attendeesView.showScanButton(!attendeeList.isEmpty());
             }, throwable -> {
                 if (attendeesView == null) return;
                 attendeesView.showErrorMessage(throwable.getMessage());
                 hideProgress(forceReload);
+                attendeesView.showScanButton(!attendeeList.isEmpty());
             });
     }
 

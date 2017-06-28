@@ -141,15 +141,13 @@ public class EventsPresenterTest {
         when(eventRepository.getEvents(true))
             .thenReturn(Observable.fromIterable(events));
 
-        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventListView);
 
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showEvents(events);
         inOrder.verify(eventListView).showEmptyView(true);
-        inOrder.verify(eventListView).onRefreshComplete();
     }
 
     @Test
@@ -157,15 +155,13 @@ public class EventsPresenterTest {
         when(eventRepository.getEvents(true))
             .thenReturn(Observable.error(new Throwable("Error")));
 
-        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventListView);
 
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showEventError(anyString());
         inOrder.verify(eventListView).showEmptyView(true);
-        inOrder.verify(eventListView).onRefreshComplete();
     }
 
     @Test
@@ -173,15 +169,13 @@ public class EventsPresenterTest {
         when(eventRepository.getEvents(true))
             .thenReturn(Observable.fromIterable(eventList));
 
-        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
+        InOrder inOrder = Mockito.inOrder(eventListView);
 
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showEvents(eventList);
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventListView).onRefreshComplete();
     }
 
     @Test
