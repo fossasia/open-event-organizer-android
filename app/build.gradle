@@ -89,6 +89,7 @@ dependencies {
     compile 'com.google.dagger:dagger:2.11-rc2'
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+    compile 'com.mikhaellopez:circularprogressbar:1.1.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
