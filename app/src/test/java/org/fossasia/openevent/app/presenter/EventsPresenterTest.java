@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.presenter;
 
-import org.fossasia.openevent.app.data.contract.IEventRepository;
+import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;

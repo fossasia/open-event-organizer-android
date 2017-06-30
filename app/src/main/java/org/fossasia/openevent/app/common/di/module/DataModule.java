@@ -1,9 +1,11 @@
 package org.fossasia.openevent.app.common.di.module;
 
-import org.fossasia.openevent.app.data.EventRepository;
+import org.fossasia.openevent.app.data.repository.AttendeeRepository;
+import org.fossasia.openevent.app.data.repository.EventRepository;
 import org.fossasia.openevent.app.data.LoginModel;
 import org.fossasia.openevent.app.data.UtilModel;
-import org.fossasia.openevent.app.data.contract.IEventRepository;
+import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
+import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 
@@ -27,4 +29,7 @@ public abstract class DataModule {
     @Singleton
     abstract IEventRepository bindsEventRepository(EventRepository eventRepository);
 
+    @Binds
+    @Singleton
+    abstract IAttendeeRepository providesAttendeeRepository(AttendeeRepository attendeeRepository);
 }

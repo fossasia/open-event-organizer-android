@@ -2,8 +2,8 @@ package org.fossasia.openevent.app.qrscan;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
-import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRPresenter;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRView;
 
@@ -23,15 +23,15 @@ public class ScanQRPresenter implements IScanQRPresenter {
     private long eventId;
 
     private IScanQRView scanQRView;
-    private IEventRepository eventRepository;
+    private IAttendeeRepository attendeeRepository;
     private List<Attendee> attendees = new ArrayList<>();
 
     private PublishSubject<Boolean> detect = PublishSubject.create();
     private PublishSubject<String> data = PublishSubject.create();
 
     @Inject
-    public ScanQRPresenter(IEventRepository eventRepository) {
-        this.eventRepository = eventRepository;
+    public ScanQRPresenter(IAttendeeRepository attendeeRepository) {
+        this.attendeeRepository = attendeeRepository;
 
         detect.distinctUntilChanged()
             .debounce(150, TimeUnit.MILLISECONDS)
@@ -88,7 +88,7 @@ public class ScanQRPresenter implements IScanQRPresenter {
     }
 
     private void loadAttendees() {
-        eventRepository.getAttendees(eventId, false)
+        attendeeRepository.getAttendees(eventId, false)
             .toList()
             .subscribe(attendeeList -> {
                 attendees.clear();

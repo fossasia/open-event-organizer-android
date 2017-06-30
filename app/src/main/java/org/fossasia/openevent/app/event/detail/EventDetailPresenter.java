@@ -2,7 +2,8 @@ package org.fossasia.openevent.app.event.detail;
 
 import android.support.annotation.VisibleForTesting;
 
-import org.fossasia.openevent.app.data.contract.IEventRepository;
+import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
+import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailPresenter;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
@@ -15,12 +16,14 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     private Event event;
     private IEventDetailView eventDetailView;
     private IEventRepository eventRepository;
+    private IAttendeeRepository attendeeRepository;
     private TicketAnalyser ticketAnalyser;
 
     @Inject
-    public EventDetailPresenter(IEventRepository eventRepository, TicketAnalyser ticketAnalyser) {
+    public EventDetailPresenter(IEventRepository eventRepository, IAttendeeRepository attendeeRepository, TicketAnalyser ticketAnalyser) {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
+        this.attendeeRepository = attendeeRepository;
     }
 
     @Override
@@ -74,7 +77,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
         if(eventDetailView == null)
             return;
 
-        eventRepository
+        attendeeRepository
             .getAttendees(eventId, forceReload)
             .toList()
             .subscribe(
