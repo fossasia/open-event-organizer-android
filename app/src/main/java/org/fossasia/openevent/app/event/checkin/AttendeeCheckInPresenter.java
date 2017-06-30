@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.event.checkin;
 
+import android.support.annotation.VisibleForTesting;
+
 import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
@@ -57,6 +59,9 @@ public class AttendeeCheckInPresenter implements IAttendeeCheckInPresenter {
 
     @Override
     public void toggleCheckIn() {
+        if (attendeeCheckInView == null)
+            return;
+
         attendeeCheckInView.showProgress(true);
 
         eventRepository.toggleAttendeeCheckStatus(attendee.getEventId(), attendeeId)
@@ -78,5 +83,15 @@ public class AttendeeCheckInPresenter implements IAttendeeCheckInPresenter {
                 attendeeCheckInView.showProgress(false);
                 //attendeeCheckInView.dismiss();
             });
+    }
+
+    @VisibleForTesting
+    public void setAttendee(Attendee attendee) {
+        this.attendee = attendee;
+    }
+
+    @VisibleForTesting
+    public IAttendeeCheckInView getView() {
+        return attendeeCheckInView;
     }
 }
