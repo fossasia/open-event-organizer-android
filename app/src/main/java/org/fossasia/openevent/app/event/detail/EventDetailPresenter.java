@@ -31,7 +31,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
 
     /**
      * progress is parameter to check if complete data is loaded.
-     * we have two async processes loadAttendees and loadTickets.
+     * we have two async processes loadAttendees and loadEvent.
      * on completion of each one progress will be incremented
      * hence progressbar will be hidden when progress is greater than equal to 2
      */
@@ -57,8 +57,8 @@ public class EventDetailPresenter implements IEventDetailPresenter {
         refreshing = refresh;
 
         eventDetailView.showProgressBar(true);
+        loadEvent(initialEventId, refresh);
         loadAttendees(initialEventId, refresh);
-        loadTickets(initialEventId, refresh);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     }
 
     @Override
-    public void loadTickets(long eventId, boolean forceReload) {
+    public void loadEvent(long eventId, boolean forceReload) {
         if(eventDetailView == null)
             return;
 
@@ -108,6 +108,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
                 totalTickets += thisTicket.getQuantity();
         }
 
+        TicketAnalyser.analyseTotalTickets(event);
         event.totalTickets.set(totalTickets);
         event.totalAttendees.set(totalAttendees);
         event.checkedIn.set(checkedInAttendees);
@@ -152,6 +153,8 @@ public class EventDetailPresenter implements IEventDetailPresenter {
         if(eventDetailView == null)
             return;
 
+        if (event != null)
+            TicketAnalyser.analyseSoldTickets(event, attendees);
         totalAttendees = attendees.size();
 
         if(event != null)

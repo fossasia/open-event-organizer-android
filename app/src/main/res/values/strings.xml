@@ -42,5 +42,9 @@
     <string name="refresh_complete">Refresh Complete</string>
     <string name="search_title">Search</string>
     <string name="search_placeholder">Search Attendees</string>
+    <string name="tickets">Tickets</string>
+    <string name="ticket_free">Free</string>
+    <string name="ticket_paid">Paid</string>
+    <string name="ticket_donation">Donation</string>
 
 </resources>
