@@ -1,5 +1,6 @@
 <resources>
 
+    <dimen name="spacing_tiny">2dp</dimen>
     <dimen name="spacing_extra_small">4dp</dimen>
     <dimen name="spacing_small">8dp</dimen>
     <dimen name="spacing_medium">12dp</dimen>
@@ -23,5 +24,6 @@
     <dimen name="check_in_button_width">100dp</dimen>
     <dimen name="check_in_button_height">44dp</dimen>
     <dimen name="size_sale_box">160dp</dimen>
+    <dimen name="ticket_progress_size">80dp</dimen>
 
 </resources>

@@ -132,7 +132,7 @@ public class EventDetailPresenterTest {
 
         InOrder inOrder = Mockito.inOrder(eventRepository, eventDetailView);
 
-        eventDetailPresenter.loadTickets(id, false);
+        eventDetailPresenter.loadEvent(id, false);
 
         inOrder.verify(eventRepository).getEvent(id, false);
         inOrder.verify(eventDetailView).showEventLoadError(error);
@@ -145,7 +145,7 @@ public class EventDetailPresenterTest {
 
         InOrder inOrder = Mockito.inOrder(eventRepository, eventDetailView);
 
-        eventDetailPresenter.loadTickets(id, false);
+        eventDetailPresenter.loadEvent(id, false);
 
         inOrder.verify(eventRepository).getEvent(id, false);
         inOrder.verify(eventDetailView).showEvent(event);
@@ -199,7 +199,7 @@ public class EventDetailPresenterTest {
     public void shouldNotAccessView() {
         eventDetailPresenter.detach();
 
-        eventDetailPresenter.loadTickets(id, false);
+        eventDetailPresenter.loadEvent(id, false);
         eventDetailPresenter.loadAttendees(id, false);
 
         verifyZeroInteractions(eventDetailView);
