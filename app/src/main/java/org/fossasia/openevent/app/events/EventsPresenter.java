@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.events;
 
-import org.fossasia.openevent.app.data.contract.IEventRepository;
+import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.utils.Utils;

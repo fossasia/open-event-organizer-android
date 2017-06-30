@@ -2,10 +2,10 @@ package org.fossasia.openevent.app.event.attendees;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseChangeListener;
 import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
 import org.fossasia.openevent.app.utils.Utils;
@@ -24,14 +24,14 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
     private long eventId;
     private IAttendeesView attendeesView;
-    private IEventRepository eventRepository;
+    private IAttendeeRepository attendeeRepository;
     private IDatabaseChangeListener<Attendee> attendeeListener;
 
     private final List<Attendee> attendeeList = new ArrayList<>();
 
     @Inject
-    public AttendeesPresenter(IEventRepository eventRepository, IDatabaseChangeListener<Attendee> attendeeListener) {
-        this.eventRepository = eventRepository;
+    public AttendeesPresenter(IAttendeeRepository attendeeRepository, IDatabaseChangeListener<Attendee> attendeeListener) {
+        this.attendeeRepository = attendeeRepository;
         this.attendeeListener = attendeeListener;
     }
 
@@ -89,7 +89,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
         attendeesView.showEmptyView(false);
         attendeesView.showScanButton(false);
 
-        eventRepository.getAttendees(eventId, forceReload)
+        attendeeRepository.getAttendees(eventId, forceReload)
             .toSortedList()
             .subscribeOn(Schedulers.computation())
             .subscribe(attendees -> {

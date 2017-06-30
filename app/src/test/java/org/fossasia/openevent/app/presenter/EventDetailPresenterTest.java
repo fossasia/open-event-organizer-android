@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.presenter;
 
-import org.fossasia.openevent.app.data.contract.IEventRepository;
+import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
+import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.Ticket;
@@ -48,6 +49,9 @@ public class EventDetailPresenterTest {
     @Mock
     TicketAnalyser ticketAnalyser;
 
+    @Mock
+    IAttendeeRepository attendeeRepository;
+
     private final int id = 42;
     private EventDetailPresenter eventDetailPresenter;
 
@@ -76,7 +80,8 @@ public class EventDetailPresenterTest {
         event.setEndTime("2012-09-20T12:23:00");
         event.setTickets(tickets);
 
-        eventDetailPresenter = new EventDetailPresenter(eventRepository, ticketAnalyser);
+        eventDetailPresenter = new EventDetailPresenter(eventRepository, attendeeRepository, ticketAnalyser);
+
         eventDetailPresenter.attach(eventDetailView, event.getId());
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
@@ -91,7 +96,7 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldLoadEventAndAttendeesAutomatically() {
-        when(eventRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(id, false))
             .thenReturn(Observable.fromIterable(attendees));
 
         when(eventRepository.getEvent(id, false))
@@ -100,7 +105,7 @@ public class EventDetailPresenterTest {
         eventDetailPresenter.start();
 
         verify(eventRepository).getEvent(id, false);
-        verify(eventRepository).getAttendees(id, false);
+        verify(attendeeRepository).getAttendees(id, false);
     }
 
     @Test
@@ -142,7 +147,7 @@ public class EventDetailPresenterTest {
         String error = "Test Error";
         when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
-        when(eventRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(id, false))
             .thenReturn(Observable.error(new Throwable(error)));
 
         eventDetailPresenter.loadDetails(false);
@@ -152,7 +157,7 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldLoadAttendeesSuccessfully() {
-        when(eventRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(id, false))
             .thenReturn(Observable.fromIterable(attendees));
         when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
@@ -173,7 +178,7 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldHideProgressbarCorrectly() {
-        when(eventRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(id, false))
             .thenReturn(Observable.fromIterable(attendees));
 
         when(eventRepository.getEvent(id, false))
@@ -202,7 +207,7 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldHideProgressbarOnAttendeeError() {
-        when(eventRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(id, false))
             .thenReturn(Observable.error(new Throwable()));
 
         when(eventRepository.getEvent(id, false))
@@ -231,7 +236,7 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldHideRefreshLayoutCorrectly() {
-        when(eventRepository.getAttendees(id, true))
+        when(attendeeRepository.getAttendees(id, true))
             .thenReturn(Observable.fromIterable(attendees));
 
         when(eventRepository.getEvent(id, true))
@@ -262,7 +267,7 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldHideRefreshLayoutOnAttendeeError() {
-        when(eventRepository.getAttendees(id, true))
+        when(attendeeRepository.getAttendees(id, true))
             .thenReturn(Observable.error(new Throwable()));
 
         when(eventRepository.getEvent(id, true))
@@ -277,4 +282,17 @@ public class EventDetailPresenterTest {
         inOrder.verify(eventDetailView).onRefreshComplete();
     }
 
+    @Test
+    public void shouldHideRefreshLayoutOnCompleteError() {
+        when(eventRepository.getEvent(id, true))
+            .thenReturn(Observable.error(new Throwable()));
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView);
+
+        eventDetailPresenter.loadDetails(true);
+
+        inOrder.verify(eventDetailView).showProgressBar(true);
+        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).onRefreshComplete();
+    }
 }

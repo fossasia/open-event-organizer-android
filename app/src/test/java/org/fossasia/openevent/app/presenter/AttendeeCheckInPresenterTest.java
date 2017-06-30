@@ -1,10 +1,7 @@
 package org.fossasia.openevent.app.presenter;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
-
-import org.fossasia.openevent.app.data.contract.IEventRepository;
-import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.event.checkin.AttendeeCheckInPresenter;
 import org.fossasia.openevent.app.event.checkin.contract.IAttendeeCheckInView;
 import org.junit.After;
@@ -28,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.contains;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,10 +36,7 @@ public class AttendeeCheckInPresenterTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    IDatabaseRepository databaseRepository;
-
-    @Mock
-    IEventRepository eventRepository;
+    IAttendeeRepository attendeeRepository;
 
     @Mock
     IAttendeeCheckInView attendeeCheckInView;
@@ -54,7 +47,7 @@ public class AttendeeCheckInPresenterTest {
 
     @Before
     public void setUp() {
-        attendeeCheckInPresenter = new AttendeeCheckInPresenter(databaseRepository, eventRepository);
+        attendeeCheckInPresenter = new AttendeeCheckInPresenter(attendeeRepository);
         attendeeCheckInPresenter.attach(id, attendeeCheckInView);
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
@@ -69,12 +62,12 @@ public class AttendeeCheckInPresenterTest {
     }
 
     private void setLoadAttendeeBehaviour() {
-        when(databaseRepository.getItems(eq(Attendee.class), any(SQLOperator.class)))
+        when(attendeeRepository.getAttendee(id, false))
             .thenReturn(Observable.just(attendee));
     }
 
     private void setToggleAttendeeBehaviour(Observable<Attendee> attendeeObservable) {
-        when(eventRepository.toggleAttendeeCheckStatus(0, id)).thenReturn(attendeeObservable);
+        when(attendeeRepository.toggleAttendeeCheckStatus(0, id)).thenReturn(attendeeObservable);
     }
 
     private Attendee getAttendee(boolean checkedIn) {
@@ -109,7 +102,7 @@ public class AttendeeCheckInPresenterTest {
         setLoadAttendeeBehaviour();
         attendeeCheckInPresenter.start();
 
-        verify(databaseRepository).getItems(eq(Attendee.class), any(SQLOperator.class));
+        verify(attendeeRepository).getAttendee(id, false);
         verify(attendeeCheckInView).showAttendee(attendee);
     }
 

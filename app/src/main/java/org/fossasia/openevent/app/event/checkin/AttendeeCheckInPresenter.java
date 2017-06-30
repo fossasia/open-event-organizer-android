@@ -2,31 +2,24 @@ package org.fossasia.openevent.app.event.checkin;
 
 import android.support.annotation.VisibleForTesting;
 
-import org.fossasia.openevent.app.data.contract.IEventRepository;
-import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.models.Attendee_Table;
+import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.event.checkin.contract.IAttendeeCheckInPresenter;
 import org.fossasia.openevent.app.event.checkin.contract.IAttendeeCheckInView;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
 public class AttendeeCheckInPresenter implements IAttendeeCheckInPresenter {
 
     private long attendeeId;
     private IAttendeeCheckInView attendeeCheckInView;
-    private IEventRepository eventRepository;
-    private IDatabaseRepository databaseRepository;
+    private IAttendeeRepository attendeeRepository;
 
     private Attendee attendee;
 
     @Inject
-    public AttendeeCheckInPresenter(IDatabaseRepository databaseRepository, IEventRepository eventRepository) {
-        this.databaseRepository = databaseRepository;
-        this.eventRepository = eventRepository;
+    public AttendeeCheckInPresenter(IAttendeeRepository attendeeRepository) {
+        this.attendeeRepository = attendeeRepository;
     }
 
     @Override
@@ -46,10 +39,7 @@ public class AttendeeCheckInPresenter implements IAttendeeCheckInPresenter {
     }
 
     private void loadAttendee() {
-        databaseRepository.getItems(Attendee.class, Attendee_Table.id.eq(attendeeId))
-            .firstOrError()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        attendeeRepository.getAttendee(attendeeId, false)
             .subscribe(attendee -> {
                 this.attendee = attendee;
                 if (attendeeCheckInView != null)
@@ -64,7 +54,7 @@ public class AttendeeCheckInPresenter implements IAttendeeCheckInPresenter {
 
         attendeeCheckInView.showProgress(true);
 
-        eventRepository.toggleAttendeeCheckStatus(attendee.getEventId(), attendeeId)
+        attendeeRepository.toggleAttendeeCheckStatus(attendee.getEventId(), attendeeId)
             .subscribe(completed -> {
                 if (attendeeCheckInView == null)
                     return;

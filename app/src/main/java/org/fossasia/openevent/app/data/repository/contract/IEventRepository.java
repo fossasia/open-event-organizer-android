@@ -1,6 +1,5 @@
-package org.fossasia.openevent.app.data.contract;
+package org.fossasia.openevent.app.data.repository.contract;
 
-import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
 
@@ -12,10 +11,6 @@ public interface IEventRepository {
 
     Observable<Event> getEvent(long eventId, boolean reload);
 
-    Observable<Attendee> getAttendees(long eventId, boolean reload);
-
     Observable<Event> getEvents(boolean reload);
-
-    Observable<Attendee> toggleAttendeeCheckStatus(long eventId, long attendeeId);
 
 }

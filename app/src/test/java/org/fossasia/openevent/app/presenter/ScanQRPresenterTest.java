@@ -2,9 +2,9 @@ package org.fossasia.openevent.app.presenter;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
-import org.fossasia.openevent.app.data.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Order;
+import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.qrscan.ScanQRPresenter;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRView;
 import org.junit.Before;
@@ -47,7 +47,7 @@ public class ScanQRPresenterTest {
     IScanQRView scanQRView;
 
     @Mock
-    IEventRepository eventRepository;
+    IAttendeeRepository attendeeRepository;
 
     private int eventId = 32;
     private ScanQRPresenter scanQRPresenter;
@@ -80,7 +80,7 @@ public class ScanQRPresenterTest {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
-        scanQRPresenter = new ScanQRPresenter(eventRepository);
+        scanQRPresenter = new ScanQRPresenter(attendeeRepository);
         scanQRPresenter.attach(eventId, scanQRView);
 
         barcode1.displayValue = "Test Barcode 1";
@@ -98,17 +98,17 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldLoadAttendeesAutomatically() {
-        when(eventRepository.getAttendees(eventId, false))
+        when(attendeeRepository.getAttendees(eventId, false))
             .thenReturn(Observable.fromIterable(attendees));
 
         scanQRPresenter.start();
 
-        verify(eventRepository).getAttendees(eventId, false);
+        verify(attendeeRepository).getAttendees(eventId, false);
     }
 
     @Test
     public void shouldLoadCameraAutomatically() {
-        when(eventRepository.getAttendees(eventId, false))
+        when(attendeeRepository.getAttendees(eventId, false))
             .thenReturn(Observable.fromIterable(attendees));
 
         scanQRPresenter.start();
@@ -118,7 +118,7 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldDetachViewOnStop() {
-        when(eventRepository.getAttendees(eventId, false))
+        when(attendeeRepository.getAttendees(eventId, false))
             .thenReturn(Observable.fromIterable(attendees));
 
         scanQRPresenter.start();
@@ -189,7 +189,7 @@ public class ScanQRPresenterTest {
      */
     @Test
     public void shouldFollowFlowOnImplicitPermissionGrant() {
-        when(eventRepository.getAttendees(eventId, false))
+        when(attendeeRepository.getAttendees(eventId, false))
             .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(true);
 
@@ -203,7 +203,7 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionGrant() {
-        when(eventRepository.getAttendees(eventId, false))
+        when(attendeeRepository.getAttendees(eventId, false))
             .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(true);
 
@@ -218,7 +218,7 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldFollowFlowOnImplicitPermissionDenyRequestGrant() {
-        when(eventRepository.getAttendees(eventId, false))
+        when(attendeeRepository.getAttendees(eventId, false))
             .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
@@ -234,7 +234,7 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionDenyRequestGrant() {
-        when(eventRepository.getAttendees(eventId, false))
+        when(attendeeRepository.getAttendees(eventId, false))
             .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
@@ -250,7 +250,7 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldFollowFlowOnImplicitPermissionDenyRequestDeny() {
-        when(eventRepository.getAttendees(eventId, false))
+        when(attendeeRepository.getAttendees(eventId, false))
             .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
@@ -266,7 +266,7 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionDenyRequestDeny() {
-        when(eventRepository.getAttendees(eventId, false))
+        when(attendeeRepository.getAttendees(eventId, false))
             .thenReturn(Observable.fromIterable(attendees));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
