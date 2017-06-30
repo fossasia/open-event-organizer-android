@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.data.models;
 
+import android.support.annotation.VisibleForTesting;
+
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -24,9 +26,16 @@ public class Ticket extends BaseModel {
 
     public Ticket() {}
 
+    @VisibleForTesting
     public Ticket(long id, long quantity) {
         setId(id);
         setQuantity(quantity);
+    }
+
+    @VisibleForTesting
+    public Ticket(long quantity, String type) {
+        this.quantity = quantity;
+        this.type = type;
     }
 
     public String getDescription() {
