@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="event"
+            type="org.fossasia.openevent.app.data.models.Event" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Base.TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_extra_small"
+            android:text="@string/tickets"
+            android:textColor="@color/grey_800" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <include
+                layout="@layout/ticket_analytics_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:layout_weight="1"
+                bind:color='@{"blue"}'
+                bind:completed="@{event.soldFreeTickets}"
+                bind:ticketName="@{@string/ticket_free}"
+                bind:total="@{event.freeTickets}" />
+
+            <include
+                layout="@layout/ticket_analytics_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:layout_weight="1"
+                bind:color='@{"purple"}'
+                bind:completed="@{event.soldPaidTickets}"
+                bind:ticketName="@{@string/ticket_paid}"
+                bind:total="@{event.paidTickets}" />
+
+            <include
+                layout="@layout/ticket_analytics_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:layout_weight="1"
+                bind:color='@{"red"}'
+                bind:completed="@{event.soldDonationTickets}"
+                bind:ticketName="@{@string/ticket_donation}"
+                bind:total="@{event.donationTickets}" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,84 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="color"
+            type="String" />
+
+        <variable
+            name="ticketName"
+            type="String" />
+
+        <variable
+            name="total"
+            type="long" />
+
+        <variable
+            name="completed"
+            type="long" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/elevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_small">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_extra_small"
+                android:text="@{ticketName}" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                    android:layout_width="@dimen/ticket_progress_size"
+                    android:layout_height="@dimen/ticket_progress_size"
+                    app:circular_progress_color="@{color}"
+                    app:cpb_background_progressbar_width="5dp"
+                    app:cpb_progressbar_width="10dp"
+                    app:progress_with_animation="@{total == 0 ? 0 : (int) ((completed*100)/total)}" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{completed}"
+                        android:textSize="@dimen/text_size_large"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{"/" + total}'
+                        android:textSize="@dimen/text_size_small" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{(total == 0 ? 0 : (int) ((completed*100)/total)) + "%"}' />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</layout>

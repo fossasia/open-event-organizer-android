@@ -10,7 +10,7 @@ public interface IEventDetailPresenter {
 
     void detach();
 
-    void loadTickets(long eventId, boolean forceReload);
+    void loadEvent(long eventId, boolean forceReload);
 
     void loadAttendees(long eventId, boolean forceReload);
 
