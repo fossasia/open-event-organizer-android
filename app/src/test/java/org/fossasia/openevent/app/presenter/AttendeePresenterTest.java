@@ -336,7 +336,6 @@ public class AttendeePresenterTest {
         attendeesPresenter.detach();
 
         attendeesPresenter.loadAttendees(false);
-        //attendeesPresenter.toggleAttendeeCheckStatus(attendees.get(1));
 
         Mockito.verifyZeroInteractions(attendeesView);
     }
