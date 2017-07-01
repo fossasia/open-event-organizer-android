@@ -13,11 +13,13 @@ import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.NetworkUtils;
 
-import io.reactivex.Completable;
-import timber.log.Timber;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.inject.Inject;
+
+import io.reactivex.Completable;
+import timber.log.Timber;
 
 /**
  * Utility class to be used by presenters and models for
@@ -31,7 +33,8 @@ public class UtilModel implements IUtilModel {
     private SharedPreferences sharedPreferences;
     private String token;
 
-    public UtilModel(Context context) {
+    @Inject
+    UtilModel(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(Constants.FOSS_PREFS, Context.MODE_PRIVATE);
     }

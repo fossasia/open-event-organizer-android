@@ -10,6 +10,8 @@ import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.JWTUtils;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -21,6 +23,7 @@ public class LoginModel implements ILoginModel {
     private EventService eventService;
     private IDatabaseRepository databaseRepository;
 
+    @Inject
     public LoginModel(IUtilModel utilModel, EventService eventService, IDatabaseRepository databaseRepository) {
         this.utilModel = utilModel;
         this.eventService = eventService;

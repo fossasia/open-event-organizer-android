@@ -12,6 +12,8 @@ import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.Utils;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -24,6 +26,7 @@ public class EventRepository implements IEventRepository {
 
     private IUtilModel utilModel;
 
+    @Inject
     public EventRepository(IUtilModel utilModel, IDatabaseRepository databaseRepository, EventService eventService) {
         this.utilModel = utilModel;
         this.databaseRepository = databaseRepository;
