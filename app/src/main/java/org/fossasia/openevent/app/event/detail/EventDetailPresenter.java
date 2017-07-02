@@ -1,74 +1,37 @@
 package org.fossasia.openevent.app.event.detail;
 
+import android.support.annotation.VisibleForTesting;
+
 import org.fossasia.openevent.app.data.contract.IEventRepository;
-import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.models.Ticket;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailPresenter;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
 
-import java.util.List;
-
 import javax.inject.Inject;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 public class EventDetailPresenter implements IEventDetailPresenter {
 
-    private long initialEventId;
+    private long eventId;
     private Event event;
     private IEventDetailView eventDetailView;
     private IEventRepository eventRepository;
-
-    private long totalAttendees;
-    private long checkedInAttendees;
-    private float totalSales;
-
-    private boolean refreshing;
-
-    /**
-     * progress is parameter to check if complete data is loaded.
-     * we have two async processes loadAttendees and loadEvent.
-     * on completion of each one progress will be incremented
-     * hence progressbar will be hidden when progress is greater than equal to 2
-     */
-    private int progress = 0;
+    private TicketAnalyser ticketAnalyser;
 
     @Inject
-    public EventDetailPresenter(IEventRepository eventRepository) {
+    public EventDetailPresenter(IEventRepository eventRepository, TicketAnalyser ticketAnalyser) {
         this.eventRepository = eventRepository;
+        this.ticketAnalyser = ticketAnalyser;
     }
 
     @Override
     public void attach(IEventDetailView eventDetailView, long initialEventId) {
         this.eventDetailView = eventDetailView;
-        this.initialEventId = initialEventId;
-    }
-
-    private void loadAll(boolean refresh) {
-        if (eventDetailView == null)
-            return;
-
-        progress = 0;
-        totalSales = 0;
-        refreshing = refresh;
-
-        eventDetailView.showProgressBar(true);
-        loadEvent(initialEventId, refresh);
-        loadAttendees(initialEventId, refresh);
+        this.eventId = initialEventId;
     }
 
     @Override
     public void start() {
-        loadAll(false);
-    }
-
-    @Override
-    public void refresh() {
-        loadAll(true);
+        loadDetails(false);
     }
 
     @Override
@@ -77,19 +40,23 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     }
 
     @Override
-    public void loadEvent(long eventId, boolean forceReload) {
-        if(eventDetailView == null)
+    public void loadDetails(boolean forceReload) {
+        if (eventDetailView == null)
             return;
+
+        eventDetailView.showProgressBar(true);
 
         eventRepository
             .getEvent(eventId, forceReload)
+            .doOnComplete(() ->
+                loadAttendees(eventId, forceReload))
             .subscribe(this::processEventAndDisplay,
                 throwable -> {
                     if(eventDetailView == null)
                         return;
-                    eventDetailView.showEventLoadError(throwable.getMessage());
-                    hideProgressbar();
-                });
+                    eventDetailView.showError(throwable.getMessage());
+                    hideProgress(forceReload);
+            });
     }
 
     private void processEventAndDisplay(Event event) {
@@ -97,125 +64,47 @@ public class EventDetailPresenter implements IEventDetailPresenter {
             return;
 
         this.event = event;
-
-        showEventInfo(event);
-
-        List<Ticket> tickets = event.getTickets();
-
-        long totalTickets = 0;
-        if(tickets != null) {
-            for (Ticket thisTicket : tickets)
-                totalTickets += thisTicket.getQuantity();
-        }
-
-        TicketAnalyser.analyseTotalTickets(event);
-        event.totalTickets.set(totalTickets);
-        event.totalAttendees.set(totalAttendees);
-        event.checkedIn.set(checkedInAttendees);
-        event.totalSale.set(totalSales);
-
-        hideProgressbar();
-    }
-
-    private void showEventInfo(Event event) {
-        if(eventDetailView == null)
-            return;
-
         eventDetailView.showEvent(event);
+        // TODO: Add views for date of event and format it here
 
-        String[] startDate = event.getStartTime().split("T");
-        String[] endDate = event.getEndTime().split("T");
-
-        event.startDate.set(startDate[0]);
-        event.endDate.set(endDate[0]);
-        event.eventStartTime.set(endDate[1]);
+        ticketAnalyser.analyseTotalTickets(event);
     }
 
-    @Override
-    public void loadAttendees(long eventId, boolean forceReload) {
+    private void loadAttendees(long eventId, boolean forceReload) {
         if(eventDetailView == null)
             return;
 
         eventRepository
             .getAttendees(eventId, forceReload)
             .toList()
-            .subscribe(this::processAttendeesAndDisplay,
+            .subscribe(
+                attendees -> {
+                    if(eventDetailView == null)
+                        return;
+                    ticketAnalyser.analyseSoldTickets(event, attendees);
+                    hideProgress(forceReload);
+                },
                 throwable -> {
                     if(eventDetailView == null)
                         return;
-                    eventDetailView.showEventLoadError(throwable.getMessage());
-
-                    hideProgressbar();
+                    eventDetailView.showError(throwable.getMessage());
+                    hideProgress(forceReload);
                 });
     }
 
-    private void processAttendeesAndDisplay(List<Attendee> attendees) {
-        if(eventDetailView == null)
-            return;
+    private void hideProgress(boolean forceReload) {
+        eventDetailView.showProgressBar(false);
 
-        if (event != null)
-            TicketAnalyser.analyseSoldTickets(event, attendees);
-        totalAttendees = attendees.size();
-
-        if(event != null)
-            event.totalAttendees.set(totalAttendees);
-
-        Observable.fromIterable(attendees)
-            .filter(attendee -> attendee.getTicket() != null && attendee.getTicket().getPrice() != 0)
-            .map(attendee -> attendee.getTicket().getPrice())
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                price -> totalSales += price,
-                Timber::e,
-                () -> {
-                    if(event != null)
-                        event.totalSale.set(totalSales);
-                });
-
-        Observable.fromIterable(attendees)
-            .filter(Attendee::isCheckedIn)
-            .toList()
-            .map(List::size)
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(checkedIn -> {
-                if (eventDetailView == null)
-                    return;
-
-                checkedInAttendees = checkedIn;
-
-                if(event != null)
-                    event.checkedIn.set(checkedInAttendees);
-
-                hideProgressbar();
-            });
+        if (forceReload)
+            eventDetailView.onRefreshComplete();
     }
 
-    /**
-     * checks if complete data is loaded
-     * and hides progressbar accordingly
-     */
-    private boolean hideProgressbar() {
-        progress ++;
-        if (progress >= 2) {
-            eventDetailView.showProgressBar(false);
-
-            if (refreshing)
-                eventDetailView.onRefreshComplete();
-            return true;
-        }
-        return false;
-    }
-
-    public int getProgress() {
-        return progress;
-    }
-
+    @VisibleForTesting
     public IEventDetailView getView() {
         return eventDetailView;
     }
 
+    @VisibleForTesting
     public Event getEvent() {
         return event;
     }

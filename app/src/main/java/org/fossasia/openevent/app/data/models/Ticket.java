@@ -39,6 +39,12 @@ public class Ticket extends BaseModel {
         this.type = type;
     }
 
+    @VisibleForTesting
+    public Ticket price(float price) {
+        this.price = price;
+        return this;
+    }
+
     public String getDescription() {
         return description;
     }
