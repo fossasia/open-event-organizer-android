@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -55,6 +56,7 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
     private final List<Event> events = new ArrayList<>();
     private EventsListAdapter eventListAdapter;
     private RecyclerView.AdapterDataObserver adapterDataObserver;
+    private AlertDialog logoutDialog;
 
     public static final String EVENT_KEY = "event";
     public static final String EVENT_NAME = "event_name";
@@ -110,7 +112,7 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.logout:
-                presenter.logout();
+                showLogoutDialog();
                 return true;
             default:
                 return true;
@@ -118,6 +120,18 @@ public class EventListActivity extends AppCompatActivity implements IEventsView 
     }
 
     // Lifecycle methods end
+
+    private void showLogoutDialog() {
+        if (logoutDialog == null)
+            logoutDialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.logout_confirmation)
+                .setMessage(R.string.logout_confirmation_message)
+                .setPositiveButton(R.string.ok, (dialog, which) -> presenter.logout())
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .create();
+
+        logoutDialog.show();
+    }
 
     private void setupRecyclerView() {
         binding.setEvents(events);

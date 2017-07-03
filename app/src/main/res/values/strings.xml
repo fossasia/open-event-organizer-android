@@ -46,5 +46,9 @@
     <string name="ticket_free">Free</string>
     <string name="ticket_paid">Paid</string>
     <string name="ticket_donation">Donation</string>
+    <string name="logout_confirmation">Log Out</string>
+    <string name="logout_confirmation_message">Are you sure you want to log out?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
