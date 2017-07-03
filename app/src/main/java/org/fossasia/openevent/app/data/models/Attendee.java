@@ -68,6 +68,13 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
         setEmail("testEmail" + id + "@test.com");
     }
 
+    public static Attendee withTicket(Ticket ticket) {
+        Attendee attendee = new Attendee();
+        attendee.setTicket(ticket);
+
+        return attendee;
+    }
+
     public boolean isCheckedIn() {
         return checkedIn;
     }
