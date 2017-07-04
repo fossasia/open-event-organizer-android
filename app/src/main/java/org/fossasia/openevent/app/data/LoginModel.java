@@ -7,6 +7,7 @@ import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.LoginResponse;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.EventService;
+import org.fossasia.openevent.app.main.MainActivity;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.JWTUtils;
 
@@ -65,7 +66,11 @@ public class LoginModel implements ILoginModel {
 
     @Override
     public Completable logout() {
-        return Completable.fromAction(() -> utilModel.saveToken(null))
+        return Completable.fromAction(
+            () -> {
+                utilModel.saveToken(null);
+                utilModel.setLong(MainActivity.EVENT_KEY, -1);
+            })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }

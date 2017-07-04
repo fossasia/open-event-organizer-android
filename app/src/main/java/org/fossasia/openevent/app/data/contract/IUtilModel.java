@@ -1,10 +1,11 @@
 package org.fossasia.openevent.app.data.contract;
 
-import java.util.Set;
-
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
+
+import java.util.Set;
+
 import io.reactivex.Completable;
 
 public interface IUtilModel {
@@ -16,6 +17,10 @@ public interface IUtilModel {
     String getString(String key, String defaultValue);
 
     void saveString(String key, String value);
+
+    long getLong(String key, long defaultValue);
+
+    void setLong(String key, long value);
 
     Set<String> getStringSet(String key, Set<String> defaultValue);
 

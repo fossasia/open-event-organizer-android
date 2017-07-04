@@ -12,6 +12,4 @@ public interface IEventsPresenter {
 
     void loadOrganiser(boolean forceReload);
 
-    void logout();
-
 }

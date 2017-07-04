@@ -24,9 +24,9 @@ import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
-import org.fossasia.openevent.app.events.EventListActivity;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
+import org.fossasia.openevent.app.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
 
     @Override
     public void onLoginSuccess() {
-        startActivity(new Intent(LoginActivity.this, EventListActivity.class));
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }
 

@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface IEventsView {
 
-    boolean isTwoPane();
-
     void showProgressBar(boolean show);
 
     void onRefreshComplete();
@@ -16,14 +14,10 @@ public interface IEventsView {
 
     void showEmptyView(boolean show);
 
-    void showInitialEvent();
-
     void showOrganiserName(String name);
 
     void showEventError(String error);
 
     void showOrganiserLoadError(String error);
-
-    void onLogout();
 
 }

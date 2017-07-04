@@ -31,6 +31,7 @@
     <string name="title_activity_event_container">EventContainerActivity</string>
     <string name="title_details">Dashboard</string>
     <string name="title_attendees">Attendees</string>
+    <string name="title_activity_main">MainActivity</string>
 
     <string name="title_event_list">Events</string>
     <string name="title_event_detail">Event Detail</string>
@@ -50,5 +51,8 @@
     <string name="logout_confirmation_message">Are you sure you want to log out?</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>
