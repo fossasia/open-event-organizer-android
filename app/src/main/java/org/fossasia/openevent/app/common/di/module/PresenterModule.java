@@ -10,6 +10,8 @@ import org.fossasia.openevent.app.events.EventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.login.LoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
+import org.fossasia.openevent.app.main.MainPresenter;
+import org.fossasia.openevent.app.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.qrscan.ScanQRPresenter;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRPresenter;
 
@@ -21,6 +23,9 @@ public abstract class PresenterModule {
 
     @Binds
     abstract ILoginPresenter bindsLoginPresenter(LoginPresenter loginPresenter);
+
+    @Binds
+    abstract IMainPresenter bindsMainPresenter(MainPresenter mainPresenter);
 
     @Binds
     abstract IEventsPresenter bindsEventsPresenter(EventsPresenter eventsPresenter);

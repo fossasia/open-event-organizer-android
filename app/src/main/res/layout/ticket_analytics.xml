@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_tiny"
                 android:layout_weight="1"
-                bind:color='@{"blue"}'
+                bind:color='@{"light_blue"}'
                 bind:completed="@{event.soldFreeTickets}"
                 bind:ticketName="@{@string/ticket_free}"
                 bind:total="@{event.freeTickets}" />

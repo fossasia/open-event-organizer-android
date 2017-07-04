@@ -26,18 +26,9 @@
             android:name=".qrscan.ScanQRActivity"
             android:theme="@style/AppTheme.NoActionBar.Translucent" />
         <activity
-            android:name=".events.EventListActivity"
-            android:label="@string/title_event_list"
+            android:name=".main.MainActivity"
+            android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".event.detail.EventDetailActivity"
-            android:label="@string/title_event_detail"
-            android:parentActivityName=".events.EventListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.fossasia.openevent.app.events.EventListActivity" />
-        </activity>
     </application>
 
 </manifest>

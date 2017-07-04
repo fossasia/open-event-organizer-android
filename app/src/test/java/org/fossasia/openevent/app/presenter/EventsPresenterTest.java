@@ -25,17 +25,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.observers.TestObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.atMost;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -72,7 +68,7 @@ public class EventsPresenterTest {
     public void setUp() {
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
 
-        eventsActivityPresenter = new EventsPresenter(eventRepository, loginModel);
+        eventsActivityPresenter = new EventsPresenter(eventRepository);
         eventsActivityPresenter.attach(eventListView);
     }
 
@@ -195,43 +191,6 @@ public class EventsPresenterTest {
     }
 
     @Test
-    public void shouldNotLoadInitialEventIfNotTwoPane() {
-        when(eventRepository.getEvents(false))
-            .thenReturn(Observable.fromIterable(eventList));
-        when(eventListView.isTwoPane())
-            .thenReturn(false);
-
-        eventsActivityPresenter.loadUserEvents(false);
-
-        Mockito.verify(eventListView, never()).showInitialEvent();
-    }
-
-    @Test
-    public void shouldLoadInitialEventFirstTimeIfTwoPane() {
-        when(eventRepository.getEvents(false))
-            .thenReturn(Observable.fromIterable(eventList));
-        when(eventListView.isTwoPane())
-            .thenReturn(true);
-
-        eventsActivityPresenter.loadUserEvents(false);
-
-        Mockito.verify(eventListView).showInitialEvent();
-    }
-
-    @Test
-    public void shouldNotLoadInitialEventSecondTimeIfTwoPane() {
-        when(eventRepository.getEvents(false))
-            .thenReturn(Observable.fromIterable(eventList));
-        when(eventListView.isTwoPane())
-            .thenReturn(true);
-
-        eventsActivityPresenter.loadUserEvents(false);
-        eventsActivityPresenter.loadUserEvents(false);
-
-        Mockito.verify(eventListView, atMost(1)).showInitialEvent();
-    }
-
-    @Test
     public void shouldShowEventError() {
         String error = "Test Error";
         when(eventRepository.getEvents(false))
@@ -312,28 +271,11 @@ public class EventsPresenterTest {
     }
 
     @Test
-    public void shouldLogout() {
-
-        TestObserver testObserver = TestObserver.create();
-        Completable completable = Completable.complete()
-            .doOnSubscribe(testObserver::onSubscribe);
-
-        when(loginModel.logout()).thenReturn(completable);
-
-        eventsActivityPresenter.logout();
-
-        testObserver.assertSubscribed();
-        verify(loginModel).logout();
-        verify(eventListView).onLogout();
-    }
-
-    @Test
     public void shouldNotAccessView() {
         eventsActivityPresenter.detach();
 
         eventsActivityPresenter.loadUserEvents(false);
         eventsActivityPresenter.loadOrganiser(false);
-        eventsActivityPresenter.logout();
 
         verifyNoMoreInteractions(eventListView);
     }

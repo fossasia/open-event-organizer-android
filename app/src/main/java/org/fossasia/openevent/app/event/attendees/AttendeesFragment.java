@@ -37,7 +37,7 @@ import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
 import org.fossasia.openevent.app.event.attendees.listeners.AttendeeItemCheckInEvent;
 import org.fossasia.openevent.app.event.checkin.AttendeeCheckInFragment;
-import org.fossasia.openevent.app.events.EventListActivity;
+import org.fossasia.openevent.app.main.MainActivity;
 import org.fossasia.openevent.app.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.SearchUtils;
@@ -52,7 +52,7 @@ import javax.inject.Inject;
  * Use the {@link AttendeesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AttendeesFragment extends BaseFragment implements IAttendeesView, SearchView.OnQueryTextListener {
+public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     private Context context;
 
@@ -86,7 +86,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView, S
     public static AttendeesFragment newInstance(long eventId) {
         AttendeesFragment fragment = new AttendeesFragment();
         Bundle args = new Bundle();
-        args.putLong(EventListActivity.EVENT_KEY, eventId);
+        args.putLong(MainActivity.EVENT_KEY, eventId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -105,7 +105,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView, S
         setHasOptionsMenu(true);
 
         if (getArguments() != null) {
-            eventId = getArguments().getLong(EventListActivity.EVENT_KEY);
+            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
             attendeesPresenter.attach(eventId, this);
         }
     }
@@ -115,7 +115,18 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView, S
         MenuItem search = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) search.getActionView();
         searchView.setQueryHint(getString(R.string.search_placeholder));
-        searchView.setOnQueryTextListener(this);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                fastItemAdapter.filter(s.trim());
+                return true;
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -139,7 +150,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView, S
 
         binding.fabScanQr.setOnClickListener(v -> {
             Intent scanQr = new Intent(context, ScanQRActivity.class);
-            scanQr.putExtra(EventListActivity.EVENT_KEY, eventId);
+            scanQr.putExtra(MainActivity.EVENT_KEY, eventId);
             startActivityForResult(scanQr, REQ_CODE);
         });
 
@@ -162,17 +173,6 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView, S
 
         if (attendeeId != -1)
             showToggleDialog(attendeeId);
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        fastItemAdapter.filter(newText.trim());
-        return true;
     }
 
     private void setupRecyclerView() {

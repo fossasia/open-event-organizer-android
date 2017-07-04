@@ -1,7 +1,6 @@
 package org.fossasia.openevent.app.events;
 
 import org.fossasia.openevent.app.data.contract.IEventRepository;
-import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.utils.Utils;
@@ -9,21 +8,17 @@ import org.fossasia.openevent.app.utils.Utils;
 import javax.inject.Inject;
 
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 public class EventsPresenter implements IEventsPresenter {
 
     private IEventsView eventsView;
     private IEventRepository eventsDataRepository;
-    private ILoginModel loginModel;
 
-    private boolean firstLoad = true;
     private boolean isListEmpty = true;
 
     @Inject
-    public EventsPresenter(IEventRepository eventsDataRepository, ILoginModel loginModel) {
+    public EventsPresenter(IEventRepository eventsDataRepository) {
         this.eventsDataRepository = eventsDataRepository;
-        this.loginModel = loginModel;
     }
 
     @Override
@@ -65,14 +60,9 @@ public class EventsPresenter implements IEventsPresenter {
             .subscribe(events -> {
                 if(eventsView == null)
                     return;
-
                 eventsView.showEvents(events);
-                if(eventsView.isTwoPane() && firstLoad)
-                    eventsView.showInitialEvent();
                 isListEmpty = events.size() == 0;
                 hideProgress(forceReload);
-
-                firstLoad = false;
             }, throwable -> {
                 if(eventsView == null)
                     return;
@@ -102,22 +92,6 @@ public class EventsPresenter implements IEventsPresenter {
                 if(eventsView == null)
                     return;
                 eventsView.showOrganiserLoadError(throwable.getMessage());
-            });
-    }
-
-    @Override
-    public void logout() {
-        if (eventsView == null)
-            return;
-
-        loginModel.logout()
-            .subscribe(() -> {
-                if (eventsView != null)
-                    eventsView.onLogout();
-            }, throwable -> {
-                Timber.e(throwable);
-                if (eventsView != null)
-                    eventsView.showEventError(throwable.getMessage());
             });
     }
 
