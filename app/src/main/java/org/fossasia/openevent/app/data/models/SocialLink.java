@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.data.models;
 
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -15,7 +16,7 @@ public class SocialLink extends BaseModel {
     private String link;
     private String name;
 
-    @ForeignKey(stubbedRelationship = true)
+    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     private Event event;
 
     public long getId() {
