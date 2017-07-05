@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.data.models;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.view.View;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -68,11 +69,19 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
         setEmail("testEmail" + id + "@test.com");
     }
 
+    @VisibleForTesting
     public static Attendee withTicket(Ticket ticket) {
         Attendee attendee = new Attendee();
         attendee.setTicket(ticket);
 
         return attendee;
+    }
+
+    @VisibleForTesting
+    public Attendee checkedIn() {
+        this.checkedIn = true;
+
+        return this;
     }
 
     public boolean isCheckedIn() {

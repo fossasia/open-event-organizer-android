@@ -10,6 +10,6 @@ public interface IEventDetailView {
 
     void showEvent(Event event);
 
-    void showEventLoadError(String error);
+    void showError(String error);
 
 }

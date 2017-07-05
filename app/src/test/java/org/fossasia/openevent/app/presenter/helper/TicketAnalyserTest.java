@@ -24,13 +24,17 @@ public class TicketAnalyserTest {
     private Event event;
     private List<Attendee> attendees;
 
+    private TicketAnalyser ticketAnalyser;
+
     @Before
     public void setUp() {
+        ticketAnalyser = new TicketAnalyser();
+
         event = new Event();
         List<Ticket> tickets = Arrays.asList(
-            new Ticket(190, TicketAnalyser.TICKET_PAID),
-            new Ticket(50, TicketAnalyser.TICKET_PAID),
-            new Ticket(15, TicketAnalyser.TICKET_PAID),
+            new Ticket(190, TicketAnalyser.TICKET_PAID).price(3.45f),
+            new Ticket(50, TicketAnalyser.TICKET_PAID).price(4.56f),
+            new Ticket(15, TicketAnalyser.TICKET_PAID).price(1.34f),
             new Ticket(60, TicketAnalyser.TICKET_FREE),
             new Ticket(25, TicketAnalyser.TICKET_FREE),
             new Ticket(55, TicketAnalyser.TICKET_DONATION),
@@ -38,27 +42,27 @@ public class TicketAnalyserTest {
         );
         event.setTickets(tickets);
         attendees = Arrays.asList(
-            Attendee.withTicket(tickets.get(0)), // PAID
-            Attendee.withTicket(tickets.get(1)), // PAID
-            Attendee.withTicket(tickets.get(3)), // FREE
-            Attendee.withTicket(tickets.get(0)), // PAID
-            Attendee.withTicket(tickets.get(4)), // FREE
-            Attendee.withTicket(tickets.get(2)), // PAID
-            Attendee.withTicket(tickets.get(5)), // DONATION
-            Attendee.withTicket(tickets.get(0)), // PAID
-            Attendee.withTicket(tickets.get(5)), // DONATION
-            Attendee.withTicket(tickets.get(1)), // PAID
-            Attendee.withTicket(tickets.get(2)), // PAID
-            Attendee.withTicket(tickets.get(2)), // PAID
-            Attendee.withTicket(tickets.get(6)), // DONATION
-            Attendee.withTicket(tickets.get(3)), // FREE
-            Attendee.withTicket(tickets.get(4)), // FREE
-            Attendee.withTicket(tickets.get(6)), // DONATION
-            Attendee.withTicket(tickets.get(3)), // FREE
-            Attendee.withTicket(tickets.get(3)), // FREE
-            Attendee.withTicket(tickets.get(4)), // FREE
-            Attendee.withTicket(tickets.get(6)), // DONATION
-            Attendee.withTicket(tickets.get(1))  // PAID
+            Attendee.withTicket(tickets.get(0)).checkedIn(), // PAID
+            Attendee.withTicket(tickets.get(1)),             // PAID
+            Attendee.withTicket(tickets.get(3)).checkedIn(), // FREE
+            Attendee.withTicket(tickets.get(0)).checkedIn(), // PAID
+            Attendee.withTicket(tickets.get(4)),             // FREE
+            Attendee.withTicket(tickets.get(2)).checkedIn(), // PAID
+            Attendee.withTicket(tickets.get(5)).checkedIn(), // DONATION
+            Attendee.withTicket(tickets.get(0)),             // PAID
+            Attendee.withTicket(tickets.get(5)).checkedIn(), // DONATION
+            Attendee.withTicket(tickets.get(1)),             // PAID
+            Attendee.withTicket(tickets.get(2)).checkedIn(), // PAID
+            Attendee.withTicket(tickets.get(2)),             // PAID
+            Attendee.withTicket(tickets.get(6)).checkedIn(), // DONATION
+            Attendee.withTicket(tickets.get(3)).checkedIn(), // FREE
+            Attendee.withTicket(tickets.get(4)),             // FREE
+            Attendee.withTicket(tickets.get(6)),             // DONATION
+            Attendee.withTicket(tickets.get(3)).checkedIn(), // FREE
+            Attendee.withTicket(tickets.get(3)).checkedIn(), // FREE
+            Attendee.withTicket(tickets.get(4)),             // FREE
+            Attendee.withTicket(tickets.get(6)),             // DONATION
+            Attendee.withTicket(tickets.get(1)).checkedIn()  // PAID
         );
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
@@ -71,37 +75,61 @@ public class TicketAnalyserTest {
 
     @Test
     public void shouldSetTotalPaidTickets() {
-        TicketAnalyser.analyseTotalTickets(event);
+        ticketAnalyser.analyseTotalTickets(event);
         assertEquals(255, event.paidTickets.get());
     }
 
     @Test
     public void shouldSetTotalFreeTickets() {
-        TicketAnalyser.analyseTotalTickets(event);
+        ticketAnalyser.analyseTotalTickets(event);
         assertEquals(85, event.freeTickets.get());
     }
 
     @Test
     public void shouldSetTotalDonationTickets() {
-        TicketAnalyser.analyseTotalTickets(event);
+        ticketAnalyser.analyseTotalTickets(event);
         assertEquals(145, event.donationTickets.get());
     }
 
     @Test
+    public void shouldSetTotalTickets() {
+        ticketAnalyser.analyseTotalTickets(event);
+        assertEquals(485, event.totalTickets.get());
+    }
+
+    @Test
+    public void shouldSetTotalAttendees() {
+        ticketAnalyser.analyseSoldTickets(event, attendees);
+        assertEquals(attendees.size(), event.totalAttendees.get());
+    }
+
+    @Test
+    public void shouldSetCheckedInAttendees() {
+        ticketAnalyser.analyseSoldTickets(event, attendees);
+        assertEquals(12, event.checkedIn.get());
+    }
+
+    @Test
+    public void shouldSetTotalSales() {
+        ticketAnalyser.analyseSoldTickets(event, attendees);
+        assertEquals(28.05, event.totalSale.get(), 0.001);
+    }
+
+    @Test
     public void shouldSetSoldPaidTickets() {
-        TicketAnalyser.analyseSoldTickets(event, attendees);
+        ticketAnalyser.analyseSoldTickets(event, attendees);
         assertEquals(9, event.soldPaidTickets.get());
     }
 
     @Test
     public void shouldSetSoldFreeTickets() {
-        TicketAnalyser.analyseSoldTickets(event, attendees);
+        ticketAnalyser.analyseSoldTickets(event, attendees);
         assertEquals(7, event.soldFreeTickets.get());
     }
 
     @Test
     public void shouldSetSoldDonationTickets() {
-        TicketAnalyser.analyseSoldTickets(event, attendees);
+        ticketAnalyser.analyseSoldTickets(event, attendees);
         assertEquals(5, event.soldDonationTickets.get());
     }
 
