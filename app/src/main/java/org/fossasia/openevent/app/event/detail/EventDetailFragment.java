@@ -111,7 +111,7 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() ->
-            eventDetailPresenter.refresh()
+            eventDetailPresenter.loadDetails(true)
         );
     }
 
@@ -135,7 +135,7 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
     }
 
     @Override
-    public void showEventLoadError(String error) {
+    public void showError(String error) {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
     }
 
