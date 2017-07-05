@@ -49,7 +49,7 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
      * model should load instantly with attendee, making the relationship
      * NOT stubbed.
      */
-    @ForeignKey
+    @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
     private Ticket ticket;
 
     // To associate attendees and event

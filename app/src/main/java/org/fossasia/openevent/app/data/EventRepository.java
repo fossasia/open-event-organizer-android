@@ -112,7 +112,8 @@ public class EventRepository implements IEventRepository {
 
         Observable<Event> networkObservable = Observable.defer(() ->
             eventService.getEvents(getAuthorization())
-                .doOnNext(events -> databaseRepository.saveList(Event.class, events)
+                .doOnNext(events -> databaseRepository.deleteAll(Event.class)
+                    .concatWith(databaseRepository.saveList(Event.class, events))
                     .subscribe())
                 .flatMapIterable(events -> events))
                 .doOnEach(eventNotification -> {
@@ -142,7 +143,9 @@ public class EventRepository implements IEventRepository {
                 .doOnNext(attendee -> attendee.setEventId(eventId))
                 .toList()
                 .toObservable()
-                .doOnNext(attendees -> databaseRepository.saveList(Attendee.class, attendees).subscribe())
+                .doOnNext(attendees -> databaseRepository.deleteAll(Attendee.class)
+                    .concatWith(databaseRepository.saveList(Attendee.class, attendees))
+                    .subscribe())
                 .flatMapIterable(attendees -> attendees));
 
         return getAbstractObservable(reload, diskObservable, networkObservable);

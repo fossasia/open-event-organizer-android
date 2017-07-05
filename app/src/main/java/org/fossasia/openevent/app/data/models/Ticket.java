@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.data.models;
 import android.support.annotation.VisibleForTesting;
 
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -21,7 +22,7 @@ public class Ticket extends BaseModel {
     private long quantity;
     private String type;
 
-    @ForeignKey(stubbedRelationship = true)
+    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     private Event event;
 
     public Ticket() {}

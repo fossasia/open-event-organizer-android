@@ -276,6 +276,7 @@ public class EventRepositoryTest {
         when(databaseRepository.getAllItems(eq(Event.class)))
             .thenReturn(Observable.empty());
         when(databaseRepository.saveList(Event.class, events)).thenReturn(completable);
+        when(databaseRepository.deleteAll(Event.class)).thenReturn(completable);
         when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
 
         // No force reload ensures use of cache
@@ -317,6 +318,7 @@ public class EventRepositoryTest {
         when(databaseRepository.getAllItems(eq(Event.class)))
             .thenReturn(Observable.empty());
         when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
+        when(databaseRepository.deleteAll(Event.class)).thenReturn(Completable.complete());
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(token);
         when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
@@ -366,6 +368,7 @@ public class EventRepositoryTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(token);
         when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
+        when(databaseRepository.deleteAll(Event.class)).thenReturn(Completable.complete());
         when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
 
         // Force reload ensures no use of cache
@@ -397,6 +400,7 @@ public class EventRepositoryTest {
         when(utilModel.getToken()).thenReturn(token);
         when(databaseRepository.getItems(eq(Attendee.class), any(SQLOperator.class))).thenReturn(Observable.empty());
         when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(completable);
+        when(databaseRepository.deleteAll(Attendee.class)).thenReturn(completable);
         when(eventService.getAttendees(43, auth)).thenReturn(Observable.just(attendees));
 
         // No force reload ensures use of cache
@@ -451,6 +455,7 @@ public class EventRepositoryTest {
         when(utilModel.getToken()).thenReturn(token);
         when(eventService.getAttendees(23, auth)).thenReturn(Observable.just(attendees));
         when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(Completable.complete());
+        when(databaseRepository.deleteAll(Attendee.class)).thenReturn(Completable.complete());
 
         // Force reload ensures no use of cache
         Observable<List<Attendee>> attendeeObservable = eventRepository.getAttendees(23, true)
