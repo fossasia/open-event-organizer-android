@@ -28,6 +28,7 @@ import org.fossasia.openevent.app.login.LoginActivity;
 import org.fossasia.openevent.app.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.main.contract.IMainView;
 import org.fossasia.openevent.app.main.listeners.OnEventLoadedListener;
+import org.fossasia.openevent.app.utils.DateUtils;
 
 import javax.inject.Inject;
 
@@ -114,7 +115,6 @@ public class MainActivity extends AppCompatActivity
         backPressed = System.currentTimeMillis();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -164,7 +164,14 @@ public class MainActivity extends AppCompatActivity
     public void onEventLoaded(Event event, boolean loadFragment) {
         this.eventId = event.getId();
         utilModel.setLong(EVENT_KEY, eventId);
-        setDrawerHeader(event.getName(), event.getStartTime().split("T")[0]);
+
+        setDrawerHeader(event.getName(),
+            DateUtils.formatDateWithDefault(
+                DateUtils.FORMAT_DATE_COMPLETE,
+                event.getStartTime()
+            )
+        );
+
         if (loadFragment) {
             navigationView.setCheckedItem(R.id.nav_dashboard);
             loadFragment(R.id.nav_dashboard);

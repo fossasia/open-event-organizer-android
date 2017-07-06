@@ -162,7 +162,7 @@ public class EventListFragment extends BaseFragment implements IEventsView {
     }
 
     private void setupRecyclerView() {
-        eventListAdapter = new EventsListAdapter(events, context);
+        eventListAdapter = new EventsListAdapter(events);
 
         recyclerView = binding.eventRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
