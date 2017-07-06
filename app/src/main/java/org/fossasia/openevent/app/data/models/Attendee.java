@@ -166,7 +166,11 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     public int compareTo(@NonNull Attendee other) {
         int compareFirstName;
         int compareLastName;
-        return (compareFirstName = firstName.toLowerCase().compareTo(other.getFirstName().toLowerCase())) == 0 ? (compareLastName = lastName.toLowerCase().compareTo(other.getLastName().toLowerCase())) == 0 ? email.toLowerCase().compareTo(other.getEmail().toLowerCase()) : compareLastName : compareFirstName;
+        return (compareFirstName = firstName.trim().toLowerCase().compareTo(other.firstName.trim().toLowerCase())) == 0
+            ? (compareLastName = lastName.trim().toLowerCase().compareTo(other.lastName.trim().toLowerCase())) == 0
+            ? email.trim().toLowerCase().compareTo(other.email.trim().toLowerCase())
+            : compareLastName
+            : compareFirstName;
     }
 
     @Override

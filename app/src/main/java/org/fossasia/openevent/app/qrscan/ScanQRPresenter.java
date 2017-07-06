@@ -51,7 +51,8 @@ public class ScanQRPresenter implements IScanQRPresenter {
         Observable.fromIterable(attendees)
             .filter(attendee -> attendee.getOrder() != null)
             .filter(attendee -> (attendee.getOrder().getIdentifier() + "-" + attendee.getId()).equals(barcode))
-            .subscribeOn(Schedulers.computation())
+            // TODO: Will have to use Computation Scheduler instead
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(attendee -> {
                 if(scanQRView == null)

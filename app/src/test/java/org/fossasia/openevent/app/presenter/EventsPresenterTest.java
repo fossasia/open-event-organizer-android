@@ -27,7 +27,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -66,8 +65,7 @@ public class EventsPresenterTest {
 
     @Before
     public void setUp() {
-        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
-
+        // TODO: Will have to set Computation Scheduler Handler once Computation scheduler is used
         eventsActivityPresenter = new EventsPresenter(eventRepository);
         eventsActivityPresenter.attach(eventListView);
     }

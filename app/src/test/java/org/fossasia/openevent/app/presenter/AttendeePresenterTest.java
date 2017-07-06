@@ -69,7 +69,8 @@ public class AttendeePresenterTest {
         attendeesPresenter = new AttendeesPresenter(eventRepository, changeListener);
         attendeesPresenter.attach(id, attendeesView);
 
-        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
+        // TODO: Will have to change once Computation scheduler is used
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
 

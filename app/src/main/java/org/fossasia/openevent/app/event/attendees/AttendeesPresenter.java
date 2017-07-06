@@ -68,7 +68,8 @@ public class AttendeesPresenter implements IAttendeesPresenter {
         return Observable.fromIterable(attendeeList)
             .filter(attendee -> attendee.getId() == attendeeId)
             .firstOrError()
-            .subscribeOn(Schedulers.computation())
+            // TODO: Will have to use Computation Scheduler instead
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
 
@@ -91,7 +92,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
         eventRepository.getAttendees(eventId, forceReload)
             .toSortedList()
-            .subscribeOn(Schedulers.computation())
+            // TODO: Will have to use Computation Scheduler
             .subscribe(attendees -> {
                 attendeeList.clear();
                 attendeeList.addAll(attendees);
@@ -120,7 +121,8 @@ public class AttendeesPresenter implements IAttendeesPresenter {
     private void processUpdatedAttendee(Attendee attendee) {
         Utils.indexOf(attendeeList, attendee,
             (first, second) -> first.getId() == second.getId())
-            .subscribeOn(Schedulers.computation())
+            // TODO: Will have to use Computation Scheduler instead
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(position -> {
                 if(attendeesView == null)

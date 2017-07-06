@@ -7,8 +7,6 @@ import org.fossasia.openevent.app.utils.Utils;
 
 import javax.inject.Inject;
 
-import io.reactivex.schedulers.Schedulers;
-
 public class EventsPresenter implements IEventsPresenter {
 
     private IEventsView eventsView;
@@ -56,7 +54,7 @@ public class EventsPresenter implements IEventsPresenter {
         eventsDataRepository
             .getEvents(forceReload)
             .toSortedList()
-            .subscribeOn(Schedulers.computation())
+            // TODO: Will have to use Computation Scheduler
             .subscribe(events -> {
                 if(eventsView == null)
                     return;
