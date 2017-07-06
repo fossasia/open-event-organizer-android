@@ -360,7 +360,8 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldSendAttendeeOnCorrectBarcodeDetection() {
         // Somehow the setting in setUp is not working, a workaround till fix is found
-        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
+        // TODO: Will have to change once Computation scheduler is used
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
         scanQRPresenter.setAttendees(attendees);
 
