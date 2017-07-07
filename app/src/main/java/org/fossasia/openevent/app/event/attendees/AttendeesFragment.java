@@ -162,10 +162,11 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     @Override
     public void onDetach() {
         super.onDetach();
-        searchView.setOnQueryTextListener(null);
         attendeesPresenter.detach();
         refreshLayout.setOnRefreshListener(null);
         stickyHeaderAdapter.unregisterAdapterDataObserver(adapterDataObserver);
+        if (searchView != null)
+            searchView.setOnQueryTextListener(null);
     }
 
     @Override
