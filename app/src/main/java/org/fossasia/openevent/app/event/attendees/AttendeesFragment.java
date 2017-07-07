@@ -72,6 +72,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     private FragmentAttendeesBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
+    private SearchView searchView;
+
     public AttendeesFragment() {
         // Required empty public constructor
     }
@@ -113,7 +115,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_attendees, menu);
         MenuItem search = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) search.getActionView();
+        searchView = (SearchView) search.getActionView();
         searchView.setQueryHint(getString(R.string.search_placeholder));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -160,6 +162,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     @Override
     public void onDetach() {
         super.onDetach();
+        searchView.setOnQueryTextListener(null);
         attendeesPresenter.detach();
         refreshLayout.setOnRefreshListener(null);
         stickyHeaderAdapter.unregisterAdapterDataObserver(adapterDataObserver);
