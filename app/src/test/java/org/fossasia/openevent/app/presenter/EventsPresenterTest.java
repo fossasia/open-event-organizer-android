@@ -53,8 +53,7 @@ public class EventsPresenterTest {
 
     private EventsPresenter eventsActivityPresenter;
 
-    private DateUtils dateUtils = new DateUtils();
-    private String date = dateUtils.format(new Date());
+    private String date = DateUtils.formatDateToIso(new Date());
 
     private List<Event> eventList = Arrays.asList(
         new Event(12, date, date),

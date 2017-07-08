@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.View;
@@ -43,6 +44,11 @@ public class BindingAdapters {
             .into(imageView);
     }
 
+    @BindingAdapter("tint")
+    public static void setTintColor(ImageView imageView, @ColorInt int color) {
+        DrawableCompat.setTint(imageView.getDrawable(), color);
+    }
+
     @BindingAdapter("backgroundTint")
     public static void setBackgroundTintColor(View view, @ColorInt int color) {
         ViewCompat.setBackgroundTintList(view, ColorStateList.valueOf(color));
@@ -51,6 +57,11 @@ public class BindingAdapters {
     @BindingAdapter("srcCompat")
     public static void bindSrcCompat(FloatingActionButton fab, Drawable drawable){
         fab.setImageDrawable(drawable);
+    }
+
+    @BindingAdapter("srcCompat")
+    public static void bindSrcImageView(ImageView imageView, Drawable drawable){
+        imageView.setImageDrawable(drawable);
     }
 
     @BindingAdapter("progress_with_animation")

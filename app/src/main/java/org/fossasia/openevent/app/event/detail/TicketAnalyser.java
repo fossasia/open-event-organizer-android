@@ -97,10 +97,9 @@ public class TicketAnalyser {
     }
 
     private static void completeIfNotEmpty(Subject<?> subject) {
-        if (subject.isEmpty().blockingGet())
-            return;
-
-        subject.onComplete();
+        subject.isEmpty()
+            .filter(empty -> !empty)
+            .subscribe(empty -> subject.onComplete());
     }
 
     private static void completeIfNotEmpty(Subject<?>... subjects) {
@@ -111,7 +110,6 @@ public class TicketAnalyser {
     private static Observable<Ticket> splitByType(Observable<Ticket> ticketObservable, Subject<Ticket> free, Subject<Ticket> paid, Subject<Ticket> donation) {
         return ticketObservable
             .doOnNext(ticket -> {
-
                 switch (ticket.getType()) {
                     case TICKET_FREE:
                         free.onNext(ticket);
