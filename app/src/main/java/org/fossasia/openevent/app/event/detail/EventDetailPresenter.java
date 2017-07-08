@@ -13,21 +13,24 @@ import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.result;
 
 public class EventDetailPresenter extends BaseDetailPresenter<Long, IEventDetailView> implements IEventDetailPresenter {
 
     private Event event;
-    private IEventRepository eventRepository;
-    private IAttendeeRepository attendeeRepository;
-    private TicketAnalyser ticketAnalyser;
+    private final IEventRepository eventRepository;
+    private final IAttendeeRepository attendeeRepository;
+    private final TicketAnalyser ticketAnalyser;
+    private final ChartAnalyser chartAnalyser;
 
     @Inject
-    public EventDetailPresenter(IEventRepository eventRepository, IAttendeeRepository attendeeRepository, TicketAnalyser ticketAnalyser) {
+    public EventDetailPresenter(IEventRepository eventRepository, IAttendeeRepository attendeeRepository, TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser) {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
         this.attendeeRepository = attendeeRepository;
+        this.chartAnalyser = chartAnalyser;
     }
 
     @Override
@@ -49,6 +52,10 @@ public class EventDetailPresenter extends BaseDetailPresenter<Long, IEventDetail
     public void loadDetails(boolean forceReload) {
         if (getView() == null)
             return;
+
+        chartAnalyser.loadData(getId())
+            .compose(disposeCompletable(getDisposable()))
+            .subscribe(() -> chartAnalyser.showChart(getView().getChartView()), Logger::logError);
 
         eventRepository
             .getEvent(getId(), forceReload)

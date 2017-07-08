@@ -6,6 +6,7 @@ import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.Ticket;
+import org.fossasia.openevent.app.event.detail.ChartAnalyser;
 import org.fossasia.openevent.app.event.detail.EventDetailPresenter;
 import org.fossasia.openevent.app.event.detail.TicketAnalyser;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
@@ -24,6 +25,7 @@ import org.mockito.junit.MockitoRule;
 import java.util.Arrays;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -54,6 +56,9 @@ public class EventDetailPresenterTest {
     @Mock
     IAttendeeRepository attendeeRepository;
 
+    @Mock
+    ChartAnalyser chartAnalyser;
+
     private final int id = 42;
     private EventDetailPresenter eventDetailPresenter;
 
@@ -82,12 +87,14 @@ public class EventDetailPresenterTest {
         event.setEndTime("2012-09-20T12:23:00");
         event.setTickets(tickets);
 
-        eventDetailPresenter = new EventDetailPresenter(eventRepository, attendeeRepository, ticketAnalyser);
+        eventDetailPresenter = new EventDetailPresenter(eventRepository, attendeeRepository, ticketAnalyser, chartAnalyser);
 
         eventDetailPresenter.attach(event.getId(), eventDetailView);
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+
+        when(chartAnalyser.loadData(event.getId())).thenReturn(Completable.complete());
     }
 
     @After
