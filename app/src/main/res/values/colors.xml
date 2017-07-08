@@ -18,4 +18,6 @@
     <color name="translucent_dark">#11000000</color>
     <color name="color_top_surface">#EEEEEE</color>
     <color name="color_bottom_surface">#e6e6e6</color>
+    <color name="tint_drawer_item_icon">#8C000000</color>
+    <color name="color_drawer_item_text">#D9000000</color>
 </resources>
