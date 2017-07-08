@@ -12,28 +12,17 @@ import org.fossasia.openevent.app.databinding.EventLayoutBinding;
 import org.fossasia.openevent.app.databinding.EventSubheaderLayoutBinding;
 import org.fossasia.openevent.app.events.viewholders.EventsHeaderViewHolder;
 import org.fossasia.openevent.app.main.listeners.OnEventLoadedListener;
-import org.fossasia.openevent.app.utils.DateUtils;
+import org.fossasia.openevent.app.utils.DateService;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder> implements StickyRecyclerHeadersAdapter<EventsHeaderViewHolder>{
 
-    private static final int LIVE_EVENT = 1;
-    private static final int PAST_EVENT = 2;
-    private static final int UPCOMING_EVENT = 3;
-
-    private static final String HEADER_LIVE = "LIVE";
-    private static final String HEADER_PAST = "PAST";
-    private static final String HEADER_UPCOMING = "UPCOMING";
-
     private List<Event> events;
-    private Context context;
 
-    EventsListAdapter(List<Event> events, Context context) {
+    EventsListAdapter(List<Event> events) {
         this.events = events;
-        this.context = context;
     }
 
     @Override
@@ -54,7 +43,7 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     public long getHeaderId(int position) {
         Event event = events.get(position);
         try {
-            return getEventStatus(event);
+            return DateService.getEventStatus(event).hashCode();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -70,39 +59,9 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     public void onBindHeaderViewHolder(EventsHeaderViewHolder holder, int position) {
         Event event = events.get(position);
         try {
-            switch (getEventStatus(event)) {
-                case LIVE_EVENT:
-                    holder.bindHeader(HEADER_LIVE);
-                    break;
-                case PAST_EVENT:
-                    holder.bindHeader(HEADER_PAST);
-                    break;
-                case UPCOMING_EVENT:
-                    holder.bindHeader(HEADER_UPCOMING);
-                    break;
-                default:
-                    holder.bindHeader(HEADER_LIVE);
-
-            }
+            holder.bindHeader(DateService.getEventStatus(event));
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-
-    }
-
-    private int getEventStatus(Event event) throws ParseException {
-        DateUtils dateUtils = new DateUtils();
-        Date startDate = dateUtils.parse(event.getStartTime());
-        Date endDate = dateUtils.parse(event.getEndTime());
-        Date now = new Date();
-        if (now.after(startDate)) {
-            if (now.before(endDate)) {
-                return LIVE_EVENT;
-            } else {
-                return PAST_EVENT;
-            }
-        } else {
-            return UPCOMING_EVENT;
         }
     }
 

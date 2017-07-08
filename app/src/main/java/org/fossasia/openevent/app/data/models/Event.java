@@ -14,10 +14,8 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
-import org.fossasia.openevent.app.utils.DateUtils;
+import org.fossasia.openevent.app.utils.DateService;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 
@@ -555,25 +553,6 @@ public class Event implements Comparable<Event> {
      */
     @Override
     public int compareTo(@NonNull Event otherEvent) {
-        DateUtils dateUtils = new DateUtils();
-        Date now = new Date();
-        try {
-            Date startDate = dateUtils.parse(startTime);
-            Date endDate = dateUtils.parse(endTime);
-            Date otherStartDate = dateUtils.parse(otherEvent.startTime);
-            Date otherEndDate = dateUtils.parse(otherEvent.endTime);
-            if (endDate.before(now) || otherEndDate.before(now)) { // one of them is past and other can be past or live or upcoming
-                return endDate.after(otherEndDate) ? -1 : 1;
-            } else {
-                if (startDate.after(now) || otherStartDate.after(now)) { // one of them is upcoming other can be upcoming or live
-                    return startDate.before(otherStartDate) ? -1 : 1;
-                } else { // both are live
-                    return startDate.after(otherStartDate) ? -1 : 1;
-                }
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return 1;
+        return DateService.compareEventDates(this, otherEvent);
     }
 }
