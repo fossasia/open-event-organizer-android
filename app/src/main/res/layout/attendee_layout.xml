@@ -35,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_normal"
                 android:textColor="@android:color/black"
-                android:text='@{Utils.formatOptionalString("%s %s", attendee.firstName, attendee.lastName)}' />
+                android:text='@{attendee.firstName + " " + attendee.lastName}' />
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -43,6 +44,15 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:text="@{attendee.email}"
+                android:textSize="@dimen/text_size_extra_small"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textAllCaps="true"
+                android:text="@{attendee.ticket.type}"
                 android:textSize="@dimen/text_size_extra_small"/>
 
         </LinearLayout>
