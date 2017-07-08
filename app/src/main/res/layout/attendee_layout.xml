@@ -57,19 +57,16 @@
 
         </LinearLayout>
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_rectangle"
-            android:minWidth="@dimen/check_in_button_width"
             android:gravity="center"
+            android:padding="@dimen/spacing_extra_small"
             app:backgroundTint="@{ attendee.checkedIn ? @color/light_green_500 : @color/red_500 }"
-            android:padding="@dimen/spacing_small"
-            android:text="@{ attendee.checkedIn ? @string/checked_in : @string/checked_out }"
-            android:textAllCaps="true"
-            android:textSize="12sp"
-            android:textColor="@android:color/white"
-            tools:text="CHECKED IN" />
+            app:tint="@color/translucent_light"
+            app:srcCompat="@{ attendee.checkedIn ? @drawable/ic_check : @drawable/ic_close }"
+            android:contentDescription="@string/check_in_status" />
 
     </LinearLayout>
 </layout>
