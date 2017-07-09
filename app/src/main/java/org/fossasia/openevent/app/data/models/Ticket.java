@@ -6,24 +6,25 @@ import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
+import lombok.Data;
+
+@Data
 @Table(database = OrgaDatabase.class, allFields = true)
-public class Ticket extends BaseModel {
-
+public class Ticket {
     @PrimaryKey
-    private long id;
+    public long id;
 
-    private String description;
-    private String name;
-    private float price;
-    private long quantity;
-    private String type;
+    public String description;
+    public String name;
+    public float price;
+    public long quantity;
+    public String type;
 
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
-    private Event event;
+    public Event event;
 
     public Ticket() {}
 
@@ -43,73 +44,5 @@ public class Ticket extends BaseModel {
     public Ticket price(float price) {
         this.price = price;
         return this;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-    @Override
-    public String toString() {
-        return "Ticket{" +
-            "description='" + description + '\'' +
-            ", id=" + id +
-            ", name='" + name + '\'' +
-            ", price=" + price +
-            ", quantity=" + quantity +
-            ", type='" + type + '\'' +
-            '}';
     }
 }
