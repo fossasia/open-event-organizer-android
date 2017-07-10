@@ -15,6 +15,7 @@ public class DateUtils {
     public static final String FORMAT_12H = "hh:mm a";
     public static final String FORMAT_24H = "HH:mm";
     public static final String FORMAT_DATE_COMPLETE = "EE, dd MMM yyyy";
+    public static final String FORMAT_DAY_COMPLETE = "HH:mm, EE, dd MMM yyyy";
     public static final String FORMAT_DATE = "d MMM";
 
     private static boolean showLocalTimeZone;
@@ -37,6 +38,7 @@ public class DateUtils {
     private static SimpleDateFormat TIME_24H_FORMATTER ;
     private static SimpleDateFormat DATE_COMPLETE_FORMATTER;
     private static SimpleDateFormat DATE_SHORT_FORMATTER;
+    private static SimpleDateFormat DAY_COMPLETE_FORMATTER;
 
     static {
         instantiateFormatters();
@@ -51,6 +53,7 @@ public class DateUtils {
         TIME_24H_FORMATTER = new SimpleDateFormat(FORMAT_24H, defaultLocale);
         DATE_COMPLETE_FORMATTER = new SimpleDateFormat(FORMAT_DATE_COMPLETE, defaultLocale);
         DATE_SHORT_FORMATTER = new SimpleDateFormat(FORMAT_DATE, defaultLocale);
+        DAY_COMPLETE_FORMATTER = new SimpleDateFormat(FORMAT_DAY_COMPLETE, defaultLocale);
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -86,6 +89,8 @@ public class DateUtils {
                 return DATE_SHORT_FORMATTER;
             case FORMAT_DATE_COMPLETE:
                 return DATE_COMPLETE_FORMATTER;
+            case FORMAT_DAY_COMPLETE:
+                return DAY_COMPLETE_FORMATTER;
             default:
                 return new SimpleDateFormat(format, defaultLocale);
         }
