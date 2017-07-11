@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+        
+        navigationView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentManager = getSupportFragmentManager();
         loadFragment(R.id.nav_events);
 
@@ -118,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void loadDashboard(long eventId) {
+        navigationView.getMenu().setGroupVisible(R.id.subMenu, true);
         this.eventId = eventId;
         loadFragment(R.id.nav_dashboard);
     }
