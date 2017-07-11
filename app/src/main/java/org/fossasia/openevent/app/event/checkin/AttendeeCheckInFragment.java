@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.event.checkin;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,11 +21,14 @@ import org.fossasia.openevent.app.utils.ViewUtils;
 
 import javax.inject.Inject;
 
+import io.reactivex.functions.Action;
+
 public class AttendeeCheckInFragment extends BottomSheetDialogFragment implements IAttendeeCheckInView {
 
     private static final String ATTENDEE_ID = "attendee_id";
 
     private BottomsheetAttendeeCheckInBinding binding;
+    private Action onCancel;
 
     @Inject
     IAttendeeCheckInPresenter presenter;
@@ -70,6 +74,21 @@ public class AttendeeCheckInFragment extends BottomSheetDialogFragment implement
         presenter.detach();
     }
 
+    @Override
+    public void onCancel(DialogInterface dialog) throws IllegalStateException {
+        super.onCancel(dialog);
+        try {
+            if (onCancel != null)
+                onCancel.run();
+        } catch (Exception exception) {
+            throw new IllegalStateException(exception);
+        }
+    }
+
+    public void setOnCancelListener(Action onCancel) {
+        this.onCancel = onCancel;
+    }
+
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
@@ -94,4 +113,6 @@ public class AttendeeCheckInFragment extends BottomSheetDialogFragment implement
     public void onError(String message) {
         showToast(message);
     }
+
+
 }

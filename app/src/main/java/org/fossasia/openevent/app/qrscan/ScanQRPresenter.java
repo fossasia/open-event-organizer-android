@@ -20,6 +20,8 @@ import io.reactivex.subjects.PublishSubject;
 
 public class ScanQRPresenter implements IScanQRPresenter {
 
+    private static final String CLEAR_DISTINCT = "clear";
+
     private long eventId;
 
     private IScanQRView scanQRView;
@@ -28,6 +30,8 @@ public class ScanQRPresenter implements IScanQRPresenter {
 
     private PublishSubject<Boolean> detect = PublishSubject.create();
     private PublishSubject<String> data = PublishSubject.create();
+
+    private boolean paused;
 
     @Inject
     public ScanQRPresenter(IAttendeeRepository attendeeRepository) {
@@ -40,6 +44,8 @@ public class ScanQRPresenter implements IScanQRPresenter {
             .subscribe(receiving -> scanQRView.showBarcodePanel(!receiving));
 
         data.distinctUntilChanged()
+            .filter(barcode -> !paused)
+            .filter(barcode -> !barcode.equals(CLEAR_DISTINCT))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(this::processBarcode);
@@ -54,7 +60,7 @@ public class ScanQRPresenter implements IScanQRPresenter {
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(attendee -> {
-                if(scanQRView == null)
+                if (scanQRView == null)
                     return;
 
                 scanQRView.onScannedAttendee(attendee);
@@ -74,7 +80,7 @@ public class ScanQRPresenter implements IScanQRPresenter {
     @Override
     public void start() {
         if(scanQRView == null)
-        return;
+            return;
 
         loadAttendees();
 
@@ -85,6 +91,17 @@ public class ScanQRPresenter implements IScanQRPresenter {
     @Override
     public void detach() {
         scanQRView = null;
+    }
+
+    @Override
+    public void pauseScan() {
+        paused = true;
+    }
+
+    @Override
+    public void resumeScan() {
+        paused = false;
+        data.onNext(CLEAR_DISTINCT);
     }
 
     private void loadAttendees() {
