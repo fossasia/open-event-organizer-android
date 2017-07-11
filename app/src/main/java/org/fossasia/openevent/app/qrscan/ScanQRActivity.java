@@ -2,7 +2,6 @@ package org.fossasia.openevent.app.qrscan;
 
 import android.Manifest;
 import android.Manifest.permission;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -23,11 +22,10 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
+import org.fossasia.openevent.app.event.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.main.MainActivity;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRPresenter;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRView;
-import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.io.IOException;
@@ -200,12 +198,9 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
     @Override
     public void onScannedAttendee(Attendee attendee) {
+        presenter.pauseScan();
         ViewUtils.setTint(barcodePanel, ContextCompat.getColor(this, R.color.green_a400));
-
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(Constants.SCANNED_ATTENDEE, attendee.getId());
-        setResult(AttendeesFragment.REQ_CODE, resultIntent);
-        finish();
+        showToggleDialog(attendee.getId());
     }
 
     @Override
@@ -250,5 +245,14 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     @Override
     public void stopScan() {
         cameraSource.stop();
+    }
+
+    public void showToggleDialog(long attendeeId) {
+        AttendeeCheckInFragment bottomSheetDialogFragment = AttendeeCheckInFragment.newInstance(attendeeId);
+        bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+        bottomSheetDialogFragment.setOnCancelListener(() -> {
+            ViewUtils.setTint(barcodePanel, ContextCompat.getColor(this, R.color.light_blue_a400));
+            presenter.resumeScan();
+        });
     }
 }

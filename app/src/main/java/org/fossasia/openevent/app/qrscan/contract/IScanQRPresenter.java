@@ -10,6 +10,10 @@ public interface IScanQRPresenter {
 
     void detach();
 
+    void pauseScan();
+
+    void resumeScan();
+
     void cameraPermissionGranted(boolean granted);
 
     void onBarcodeDetected(Barcode barcode);
