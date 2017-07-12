@@ -1,111 +1,32 @@
 package org.fossasia.openevent.app.data.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
+import lombok.Data;
+
+@Data
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
-public class Order extends BaseModel {
-
+public class Order {
     @PrimaryKey
-    private long id;
+    public long id;
 
-    private float amount;
-    @JsonProperty("completed_at")
-    private String completedAt;
-    private String identifier;
-    @JsonProperty("invoice_number")
-    private String invoiceNumber;
-    @JsonProperty("paid_via")
-    private String paidVia;
-    @JsonProperty("payment_mode")
-    private String  paymentMode;
-    private String status;
+    public float amount;
+    public String completedAt;
+    public String identifier;
+    public String invoiceNumber;
+    public String paidVia;
+    public String  paymentMode;
+    public String status;
 
     public Order() {}
 
     public Order(String identifier) {
         setIdentifier(identifier);
-    }
-
-    public float getAmount() {
-        return amount;
-    }
-
-    public void setAmount(float amount) {
-        this.amount = amount;
-    }
-
-    public String getCompletedAt() {
-        return completedAt;
-    }
-
-    public void setCompletedAt(String completedAt) {
-        this.completedAt = completedAt;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
-
-    public String getPaidVia() {
-        return paidVia;
-    }
-
-    public void setPaidVia(String paidVia) {
-        this.paidVia = paidVia;
-    }
-
-    public String getPaymentMode() {
-        return paymentMode;
-    }
-
-    public void setPaymentMode(String paymentMode) {
-        this.paymentMode = paymentMode;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-            "amount=" + amount +
-            ", completedAt='" + completedAt + '\'' +
-            ", id=" + id +
-            ", identifier='" + identifier + '\'' +
-            ", invoiceNumber='" + invoiceNumber + '\'' +
-            ", paidVia='" + paidVia + '\'' +
-            ", paymentMode='" + paymentMode + '\'' +
-            ", status='" + status + '\'' +
-            '}';
     }
 }

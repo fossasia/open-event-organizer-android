@@ -6,6 +6,8 @@ import android.databinding.ObservableLong;
 import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
@@ -18,86 +20,72 @@ import org.fossasia.openevent.app.utils.DateService;
 
 import java.util.List;
 
+import lombok.Data;
 
+@Data
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 public class Event implements Comparable<Event> {
-
     @PrimaryKey
-    private long id;
+    public long id;
 
     // Foreign Key Section - Lazy Load
     // Need to explicitly associate the fields to save them
 
     @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
-    @JsonProperty("call_for_papers")
-    private CallForPapers callForPapers;
+    public CallForPapers callForPapers;
 
     @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
-    private Copyright copyright;
+    public Copyright copyright;
 
     @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
     @JsonProperty("licence_details")
-    private License licenseDetails;
+    public License licenseDetails;
 
     @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
-    private Version version;
+    public Version version;
 
     @ColumnIgnore
-    @JsonProperty("social_links")
     List<SocialLink> socialLinks;
 
     @ColumnIgnore
     List<Ticket> tickets;
 
     // Images
-    @JsonProperty("background_image")
-    private String backgroundImage;
-    private String logo;
-    private String large;
-    private String thumbnail;
-    @JsonProperty("placeholder_url")
-    private String placeholderUrl;
+    public String backgroundImage;
+    public String logo;
+    public String large;
+    public String thumbnail;
+    public String placeholderUrl;
 
     // Event Info
-    private String identifier;
-    private String name;
-    private String description;
-    private String email;
-    private double latitude;
-    private double longitude;
-    @JsonProperty("location_name")
-    private String locationName;
-    @JsonProperty("searchable_location_name")
-    private String searchableLocationName;
-    @JsonProperty("start_time")
-    private String startTime;
-    @JsonProperty("end_time")
-    private String endTime;
-    private String timezone;
-    private String topic;
-    @JsonProperty("sub_topic")
-    private String subTopic;
-    private String type;
-    private String state;
-    @JsonProperty("event_url")
-    private String eventUrl;
-    @JsonProperty("has_session_speakers")
-    private boolean hasSessionSpeakers;
-    @JsonProperty("code_of_conduct")
-    private String codeOfConduct;
-    private String privacy;
-    @JsonProperty("schedule_published_on")
-    private String schedulePublishedOn;
-    @JsonProperty("ticket_url")
-    private String ticketUrl;
+    public String identifier;
+    public String name;
+    public String description;
+    public String email;
+    public double latitude;
+    public double longitude;
+    public String locationName;
+    public String searchableLocationName;
+    public String startTime;
+    public String endTime;
+    public String timezone;
+    public String topic;
+    public String subTopic;
+    public String type;
+    public String state;
+    public String eventUrl;
+    public boolean hasSessionSpeakers;
+    public String codeOfConduct;
+    public String privacy;
+    public String schedulePublishedOn;
+    public String ticketUrl;
 
-    @JsonProperty("organizer_description")
-    private String organizerDescription;
-    @JsonProperty("organizer_name")
-    private String organizerName;
+    public String organizerDescription;
+    public String organizerName;
 
     // Tells if the event saved is complete ( with tickets )
-    private boolean isComplete;
+    public boolean isComplete;
 
     // For Data Binding
     public final ObservableField<String> startDate = new ObservableField<>();
@@ -137,226 +125,22 @@ public class Event implements Comparable<Event> {
         associateTickets();
     }
 
-    public String getBackgroundImage() {
-        return backgroundImage;
-    }
-
-    public void setBackgroundImage(String backgroundImage) {
-        this.backgroundImage = backgroundImage;
-    }
-
-    public CallForPapers getCallForPapers() {
-        return callForPapers;
-    }
-
-    public void setCallForPapers(CallForPapers callForPapers) {
-        this.callForPapers = callForPapers;
-    }
-
-    public void associateCallForPapers() {
+    private void associateCallForPapers() {
         if (callForPapers != null)
             callForPapers.setId(id);
     }
 
-    public String getCodeOfConduct() {
-        return codeOfConduct;
-    }
-
-    public void setCodeOfConduct(String codeOfConduct) {
-        this.codeOfConduct = codeOfConduct;
-    }
-
-    public Copyright getCopyright() {
-        return copyright;
-    }
-
-    public void setCopyright(Copyright copyright) {
-        this.copyright = copyright;
-    }
-
-    public void associateCopyright() {
+    private void associateCopyright() {
         if (copyright != null)
             copyright.setId(id);
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getEventUrl() {
-        return eventUrl;
-    }
-
-    public void setEventUrl(String eventUrl) {
-        this.eventUrl = eventUrl;
-    }
-
-    public boolean getHasSessionSpeakers() {
-        return hasSessionSpeakers;
-    }
-
-    public void setHasSessionSpeakers(boolean hasSessionSpeakers) {
-        this.hasSessionSpeakers = hasSessionSpeakers;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
-    public String getLarge() {
-        return large;
-    }
-
-    public void setLarge(String large) {
-        this.large = large;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public boolean isHasSessionSpeakers() {
-        return hasSessionSpeakers;
-    }
-
-    public License getLicenseDetails() {
-        return licenseDetails;
-    }
-
-    public void setLicenseDetails(License licenseDetails) {
-        this.licenseDetails = licenseDetails;
-    }
-
-    public void associateLicenseDetails() {
+    private void associateLicenseDetails() {
         if (licenseDetails != null)
             licenseDetails.setId(id);
     }
 
-    public String getLocationName() {
-        return locationName;
-    }
-
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getOrganizerDescription() {
-        return organizerDescription;
-    }
-
-    public void setOrganizerDescription(String organizerDescription) {
-        this.organizerDescription = organizerDescription;
-    }
-
-    public String getOrganizerName() {
-        return organizerName;
-    }
-
-    public void setOrganizerName(String organizerName) {
-        this.organizerName = organizerName;
-    }
-
-    public String getPlaceholderUrl() {
-        return placeholderUrl;
-    }
-
-    public void setPlaceholderUrl(String placeholderUrl) {
-        this.placeholderUrl = placeholderUrl;
-    }
-
-    public String getPrivacy() {
-        return privacy;
-    }
-
-    public void setPrivacy(String privacy) {
-        this.privacy = privacy;
-    }
-
-    public String getSchedulePublishedOn() {
-        return schedulePublishedOn;
-    }
-
-    public void setSchedulePublishedOn(String schedulePublishedOn) {
-        this.schedulePublishedOn = schedulePublishedOn;
-    }
-
-    public String getSearchableLocationName() {
-        return searchableLocationName;
-    }
-
-    public void setSearchableLocationName(String searchableLocationName) {
-        this.searchableLocationName = searchableLocationName;
-    }
-
-    public List<SocialLink> getSocialLinks() {
-        return socialLinks;
-    }
-
-    public void setSocialLinks(List<SocialLink> socialLinks) {
-        this.socialLinks = socialLinks;
-    }
-
-    public void associateSocialLinks() {
+    private void associateSocialLinks() {
         if (socialLinks == null)
             return;
 
@@ -365,55 +149,7 @@ public class Event implements Comparable<Event> {
         }
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getSubTopic() {
-        return subTopic;
-    }
-
-    public void setSubTopic(String subTopic) {
-        this.subTopic = subTopic;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public String getTicketUrl() {
-        return ticketUrl;
-    }
-
-    public void setTicketUrl(String ticketUrl) {
-        this.ticketUrl = ticketUrl;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-    }
-
-    public void associateTickets() {
+    private void associateTickets() {
         if (tickets == null)
             return;
 
@@ -421,91 +157,10 @@ public class Event implements Comparable<Event> {
             ticket.setEvent(this);
         }
     }
-
-    public String getTimezone() {
-        return timezone;
-    }
-
-    public void setTimezone(String timezone) {
-        this.timezone = timezone;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Version getVersion() {
-        return version;
-    }
-
-    public void setVersion(Version version) {
-        this.version = version;
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-            "id=" + id +
-            ", callForPapers=" + callForPapers +
-            ", copyright=" + copyright +
-            ", licenseDetails=" + licenseDetails +
-            ", version=" + version +
-            ", socialLinks=" + socialLinks +
-            ", tickets=" + tickets +
-            ", backgroundImage='" + backgroundImage + '\'' +
-            ", logo='" + logo + '\'' +
-            ", large='" + large + '\'' +
-            ", thumbnail='" + thumbnail + '\'' +
-            ", placeholderUrl='" + placeholderUrl + '\'' +
-            ", identifier='" + identifier + '\'' +
-            ", name='" + name + '\'' +
-            ", description='" + description + '\'' +
-            ", email='" + email + '\'' +
-            ", latitude=" + latitude +
-            ", longitude=" + longitude +
-            ", locationName='" + locationName + '\'' +
-            ", searchableLocationName='" + searchableLocationName + '\'' +
-            ", startTime='" + startTime + '\'' +
-            ", endTime='" + endTime + '\'' +
-            ", timezone='" + timezone + '\'' +
-            ", topic='" + topic + '\'' +
-            ", subTopic='" + subTopic + '\'' +
-            ", type='" + type + '\'' +
-            ", state='" + state + '\'' +
-            ", eventUrl='" + eventUrl + '\'' +
-            ", hasSessionSpeakers=" + hasSessionSpeakers +
-            ", codeOfConduct='" + codeOfConduct + '\'' +
-            ", privacy='" + privacy + '\'' +
-            ", schedulePublishedOn='" + schedulePublishedOn + '\'' +
-            ", ticketUrl='" + ticketUrl + '\'' +
-            ", organizerDescription='" + organizerDescription + '\'' +
-            ", organizerName='" + organizerName + '\'' +
-            ", startDate=" + startDate +
-            ", endDate=" + endDate +
-            ", eventStartTime=" + eventStartTime +
-            ", totalAttendees=" + totalAttendees +
-            ", totalTickets=" + totalTickets +
-            ", checkedIn=" + checkedIn +
-            ", totalSales=" + totalSale +
-            '}';
-    }
-
     // One to Many implementation
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "tickets")
-    public List<Ticket> getEventTickets() {
+    protected List<Ticket> getEventTickets() {
         if(tickets != null && !tickets.isEmpty())
             return tickets;
 
@@ -518,7 +173,7 @@ public class Event implements Comparable<Event> {
     }
 
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "socialLinks")
-    public List<SocialLink> getEventSocialLinks() {
+    protected List<SocialLink> getEventSocialLinks() {
         if(socialLinks != null && !socialLinks.isEmpty())
             return socialLinks;
 

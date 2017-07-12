@@ -42,27 +42,27 @@ public class TicketAnalyserTest {
         );
         event.setTickets(tickets);
         attendees = Arrays.asList(
-            Attendee.withTicket(tickets.get(0)).checkedIn(), // PAID
-            Attendee.withTicket(tickets.get(1)),             // PAID
-            Attendee.withTicket(tickets.get(3)).checkedIn(), // FREE
-            Attendee.withTicket(tickets.get(0)).checkedIn(), // PAID
-            Attendee.withTicket(tickets.get(4)),             // FREE
-            Attendee.withTicket(tickets.get(2)).checkedIn(), // PAID
-            Attendee.withTicket(tickets.get(5)).checkedIn(), // DONATION
-            Attendee.withTicket(tickets.get(0)),             // PAID
-            Attendee.withTicket(tickets.get(5)).checkedIn(), // DONATION
-            Attendee.withTicket(tickets.get(1)),             // PAID
-            Attendee.withTicket(tickets.get(2)).checkedIn(), // PAID
-            Attendee.withTicket(tickets.get(2)),             // PAID
-            Attendee.withTicket(tickets.get(6)).checkedIn(), // DONATION
-            Attendee.withTicket(tickets.get(3)).checkedIn(), // FREE
-            Attendee.withTicket(tickets.get(4)),             // FREE
-            Attendee.withTicket(tickets.get(6)),             // DONATION
-            Attendee.withTicket(tickets.get(3)).checkedIn(), // FREE
-            Attendee.withTicket(tickets.get(3)).checkedIn(), // FREE
-            Attendee.withTicket(tickets.get(4)),             // FREE
-            Attendee.withTicket(tickets.get(6)),             // DONATION
-            Attendee.withTicket(tickets.get(1)).checkedIn()  // PAID
+            Attendee.withTicket(tickets.get(0)).withCheckedIn(), // PAID
+            Attendee.withTicket(tickets.get(1)),                 // PAID
+            Attendee.withTicket(tickets.get(3)).withCheckedIn(), // FREE
+            Attendee.withTicket(tickets.get(0)).withCheckedIn(), // PAID
+            Attendee.withTicket(tickets.get(4)),                 // FREE
+            Attendee.withTicket(tickets.get(2)).withCheckedIn(), // PAID
+            Attendee.withTicket(tickets.get(5)).withCheckedIn(), // DONATION
+            Attendee.withTicket(tickets.get(0)),                 // PAID
+            Attendee.withTicket(tickets.get(5)).withCheckedIn(), // DONATION
+            Attendee.withTicket(tickets.get(1)),                 // PAID
+            Attendee.withTicket(tickets.get(2)).withCheckedIn(), // PAID
+            Attendee.withTicket(tickets.get(2)),                 // PAID
+            Attendee.withTicket(tickets.get(6)).withCheckedIn(), // DONATION
+            Attendee.withTicket(tickets.get(3)).withCheckedIn(), // FREE
+            Attendee.withTicket(tickets.get(4)),                 // FREE
+            Attendee.withTicket(tickets.get(6)),                 // DONATION
+            Attendee.withTicket(tickets.get(3)).withCheckedIn(), // FREE
+            Attendee.withTicket(tickets.get(3)).withCheckedIn(), // FREE
+            Attendee.withTicket(tickets.get(4)),                 // FREE
+            Attendee.withTicket(tickets.get(6)),                 // DONATION
+            Attendee.withTicket(tickets.get(1)).withCheckedIn()  // PAID
         );
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());

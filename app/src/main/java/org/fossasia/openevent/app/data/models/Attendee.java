@@ -6,6 +6,8 @@ import android.support.annotation.VisibleForTesting;
 import android.view.View;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
@@ -19,29 +21,34 @@ import org.fossasia.openevent.app.event.attendees.viewholders.AttendeeViewHolder
 
 import java.util.List;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@EqualsAndHashCode(callSuper = false)
 @Table(database = OrgaDatabase.class)
 public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee> {
 
     @PrimaryKey
-    private long id;
+    public long id;
 
     @Column
-    @JsonProperty("checked_in")
-    private boolean checkedIn;
+    public boolean checkedIn;
     @Column
-    private String email;
+    public String email;
     @Column
     @JsonProperty("firstname")
-    private String firstName;
+    public String firstName;
     @Column
     @JsonProperty("lastname")
-    private String lastName;
+    public String lastName;
     @ForeignKey(
         saveForeignKeyModel = true,
         deleteForeignKeyModel = true,
         onDelete = ForeignKeyAction.CASCADE,
         onUpdate = ForeignKeyAction.CASCADE)
-    private Order order;
+    public Order order;
 
     /**
      * The ticket itself should not be deleted if the Attendee is deleted
@@ -50,11 +57,11 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
      * NOT stubbed.
      */
     @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
-    private Ticket ticket;
+    public Ticket ticket;
 
     // To associate attendees and event
     @Column
-    private long eventId;
+    public long eventId;
 
     public Attendee() {}
 
@@ -78,95 +85,42 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     }
 
     @VisibleForTesting
-    public Attendee checkedIn() {
+    public Attendee withCheckedIn() {
         this.checkedIn = true;
 
         return this;
-    }
-
-    public boolean isCheckedIn() {
-        return checkedIn;
-    }
-
-    public void setCheckedIn(boolean checkedIn) {
-        this.checkedIn = checkedIn;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
-    public long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(long eventId) {
-        this.eventId = eventId;
-    }
-
-    @Override
-    public String toString() {
-        return "Attendee{" +
-            "id=" + id +
-            ", checkedIn=" + checkedIn +
-            ", email='" + email + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", order=" + order +
-            ", ticket=" + ticket +
-            ", eventId=" + eventId +
-            '}';
     }
 
     @Override
     public int compareTo(@NonNull Attendee other) {
         int compareFirstName;
         int compareLastName;
-        return (compareFirstName = firstName.toLowerCase().compareTo(other.getFirstName().toLowerCase())) == 0 ? (compareLastName = lastName.toLowerCase().compareTo(other.getLastName().toLowerCase())) == 0 ? email.toLowerCase().compareTo(other.getEmail().toLowerCase()) : compareLastName : compareFirstName;
+
+        // TODO: Reduce complexity and move logic outside the class
+        return
+            (compareFirstName = firstName
+                .toLowerCase()
+                .compareTo(
+                    other
+                        .getFirstName()
+                        .toLowerCase()
+                )
+            ) == 0 ? (compareLastName =
+                lastName
+                    .toLowerCase()
+                    .compareTo(
+                        other
+                            .getLastName()
+                            .toLowerCase()
+                    )
+            ) == 0 ?
+                email
+                    .toLowerCase()
+                    .compareTo(
+                        other
+                            .getEmail()
+                            .toLowerCase()
+                    ) : compareLastName : compareFirstName;
     }
 
     @Override
