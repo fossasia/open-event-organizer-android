@@ -1,83 +1,24 @@
 package org.fossasia.openevent.app.data.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
+import lombok.Data;
+
+@Data
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
-public class CallForPapers extends BaseModel {
-
+public class CallForPapers {
     @PrimaryKey
-    private long id;
+    public long id;
 
-    private String announcement;
-    @JsonProperty("end_date")
-    private String endDate;
-    private String privacy;
-    @JsonProperty("start_date")
-    private String startDate;
-    private String timezone;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getAnnouncement() {
-        return announcement;
-    }
-
-    public void setAnnouncement(String announcement) {
-        this.announcement = announcement;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getPrivacy() {
-        return privacy;
-    }
-
-    public void setPrivacy(String privacy) {
-        this.privacy = privacy;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getTimezone() {
-        return timezone;
-    }
-
-    public void setTimezone(String timezone) {
-        this.timezone = timezone;
-    }
-
-    @Override
-    public String toString() {
-        return "CallForPapers{" +
-            "id=" + id +
-            ", announcement='" + announcement + '\'' +
-            ", endDate='" + endDate + '\'' +
-            ", privacy='" + privacy + '\'' +
-            ", startDate='" + startDate + '\'' +
-            ", timezone='" + timezone + '\'' +
-            '}';
-    }
+    public String announcement;
+    public String endDate;
+    public String privacy;
+    public String startDate;
+    public String timezone;
 }

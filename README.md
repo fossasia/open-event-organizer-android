@@ -34,6 +34,7 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 - [RxJava 2](https://github.com/ReactiveX/RxJava)
 - [Dagger 2](https://github.com/google/dagger)
 - [ButterKnife](https://github.com/JakeWharton/butterknife)
+- [Lombok](https://projectlombok.org/)
 - [Picasso](https://github.com/square/picasso)
 - [Retrofit](https://github.com/square/retrofit) + [Okhttp](https://github.com/square/okhttp)
 - [DBFlow](https://github.com/Raizlabs/DBFlow)
@@ -62,6 +63,8 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 6. To Build the app, go to _Build>Make Project_ (or alternatively press the Make Project icon in the toolbar).
 
 7. If the app was built successfully, you can test it by running it on either a real device or an emulated one by going to _Run>Run 'app'_ or presing the Run icon in the toolbar.
+
+**Note: You will need to install Lombok Plugin in Android Studio in order to properly access generated methods of data classes**
 
 ### Project Conventions
 

@@ -90,9 +90,11 @@ dependencies {
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     compile 'com.mikhaellopez:circularprogressbar:1.1.1'
+    provided 'org.projectlombok:lombok:1.16.18'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11-rc2'
+    annotationProcessor 'org.projectlombok:lombok:1.16.18'
     annotationProcessor "com.github.raizlabs.dbflow:dbflow-processor:${dbflow_version}"
 }

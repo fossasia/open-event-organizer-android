@@ -39,7 +39,6 @@ import org.fossasia.openevent.app.event.attendees.listeners.AttendeeItemCheckInE
 import org.fossasia.openevent.app.event.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.main.MainActivity;
 import org.fossasia.openevent.app.qrscan.ScanQRActivity;
-import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.SearchUtils;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
@@ -153,7 +152,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
         binding.fabScanQr.setOnClickListener(v -> {
             Intent scanQr = new Intent(context, ScanQRActivity.class);
             scanQr.putExtra(MainActivity.EVENT_KEY, eventId);
-            startActivityForResult(scanQr, REQ_CODE);
+            startActivity(scanQr);
         });
 
         attendeesPresenter.start();
@@ -167,16 +166,6 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
         stickyHeaderAdapter.unregisterAdapterDataObserver(adapterDataObserver);
         if (searchView != null)
             searchView.setOnQueryTextListener(null);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null || requestCode != REQ_CODE)
-            return;
-        long attendeeId = data.getLongExtra(Constants.SCANNED_ATTENDEE, -1);
-
-        if (attendeeId != -1)
-            showToggleDialog(attendeeId);
     }
 
     private void setupRecyclerView() {
