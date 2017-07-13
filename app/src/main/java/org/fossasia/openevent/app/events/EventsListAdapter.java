@@ -1,17 +1,16 @@
 package org.fossasia.openevent.app.events;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
+import org.fossasia.openevent.app.data.contract.IBus;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.EventLayoutBinding;
 import org.fossasia.openevent.app.databinding.EventSubheaderLayoutBinding;
 import org.fossasia.openevent.app.events.viewholders.EventsHeaderViewHolder;
-import org.fossasia.openevent.app.main.listeners.OnEventLoadedListener;
 import org.fossasia.openevent.app.utils.DateService;
 
 import java.text.ParseException;
@@ -20,9 +19,11 @@ import java.util.List;
 class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder> implements StickyRecyclerHeadersAdapter<EventsHeaderViewHolder>{
 
     private List<Event> events;
+    private IBus bus;
 
-    EventsListAdapter(List<Event> events) {
+    EventsListAdapter(List<Event> events, IBus bus) {
         this.events = events;
+        this.bus = bus;
     }
 
     @Override
@@ -73,15 +74,15 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     //view holder class
     class EventRecyclerViewHolder extends RecyclerView.ViewHolder{
         private final EventLayoutBinding binding;
-        private final Context context;
         private Event event;
 
         EventRecyclerViewHolder(EventLayoutBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            this.context = binding.getRoot().getContext();
 
-            binding.getRoot().setOnClickListener(view -> ((OnEventLoadedListener)context).onEventLoaded(event, true));
+            binding
+                .getRoot()
+                .setOnClickListener(view -> bus.pushSelectedEvent(event));
         }
 
         public void bind(Event event) {

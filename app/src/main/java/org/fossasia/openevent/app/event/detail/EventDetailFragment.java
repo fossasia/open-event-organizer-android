@@ -20,7 +20,6 @@ import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailPresenter;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailView;
-import org.fossasia.openevent.app.main.listeners.OnEventLoadedListener;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
 import javax.inject.Inject;
@@ -45,8 +44,6 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
 
     @Inject
     IEventDetailPresenter eventDetailPresenter;
-
-    private OnEventLoadedListener listener;
 
     private CoordinatorLayout container;
     private SwipeRefreshLayout refreshLayout;
@@ -103,21 +100,9 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnEventLoadedListener) {
-            listener = (OnEventLoadedListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                + " must implement OnEventLoadedListener");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         eventDetailPresenter.detach();
-        listener = null;
         refreshLayout.setOnRefreshListener(null);
     }
 
@@ -145,7 +130,6 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
 
     @Override
     public void showEvent(Event event) {
-        listener.onEventLoaded(event, false);
         binding.setEvent(event);
         binding.executePendingBindings();
     }

@@ -21,12 +21,12 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.BaseFragment;
+import org.fossasia.openevent.app.data.contract.IBus;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.FragmentEventListBinding;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
-import org.fossasia.openevent.app.main.listeners.OnEventLoadedListener;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.util.ArrayList;
@@ -45,6 +45,9 @@ import timber.log.Timber;
 public class EventListFragment extends BaseFragment implements IEventsView {
     @Inject
     IUtilModel utilModel;
+
+    @Inject
+    IBus bus;
 
     @Inject
     IEventsPresenter presenter;
@@ -85,7 +88,6 @@ public class EventListFragment extends BaseFragment implements IEventsView {
         super.onCreate(savedInstanceState);
 
         presenter.attach(this);
-
     }
 
     @Override
@@ -104,15 +106,6 @@ public class EventListFragment extends BaseFragment implements IEventsView {
         setupRefreshListener();
 
         presenter.start();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (!(context instanceof OnEventLoadedListener)) {
-            throw new RuntimeException(context.toString()
-                + " must implement OnEventLoadedListener");
-        }
     }
 
     @Override
@@ -162,7 +155,7 @@ public class EventListFragment extends BaseFragment implements IEventsView {
     }
 
     private void setupRecyclerView() {
-        eventListAdapter = new EventsListAdapter(events);
+        eventListAdapter = new EventsListAdapter(events, bus);
 
         recyclerView = binding.eventRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));

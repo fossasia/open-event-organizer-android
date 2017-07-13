@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
 import org.fossasia.openevent.app.event.detail.EventDetailFragment;
@@ -27,7 +26,6 @@ import org.fossasia.openevent.app.events.EventListFragment;
 import org.fossasia.openevent.app.login.LoginActivity;
 import org.fossasia.openevent.app.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.main.contract.IMainView;
-import org.fossasia.openevent.app.main.listeners.OnEventLoadedListener;
 import org.fossasia.openevent.app.utils.DateUtils;
 
 import javax.inject.Inject;
@@ -35,8 +33,16 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener, IMainView, OnEventLoadedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IMainView {
+
+    public static final String EVENT_KEY = "event";
+    private static final int BACK_PRESS_RESET_TIME = 2000;
+    private long backPressed;
+    private long eventId = -1;
+
+    @Inject
+    IMainPresenter presenter;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.drawer_layout)
@@ -44,25 +50,10 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.nav_view)
     NavigationView navigationView;
 
-    View navHeader;
-    TextView tvEventName;
-    TextView tvEventTime;
-
-    @Inject
-    IUtilModel utilModel;
-
-    @Inject
-    IMainPresenter presenter;
+    private TextView tvEventName;
+    private TextView tvEventTime;
 
     private FragmentManager fragmentManager;
-
-    private long eventId = -1;
-
-    public static final String EVENT_KEY = "event";
-
-    private static final int BACK_PRESS_RESET_TIME = 2000;
-    private long backPressed;
-
     private AlertDialog logoutDialog;
 
     @Override
@@ -75,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        navHeader = navigationView.getHeaderView(0);
+        View navHeader = navigationView.getHeaderView(0);
         tvEventName = (TextView) navHeader.findViewById(R.id.tvEventName);
         tvEventTime = (TextView) navHeader.findViewById(R.id.tvEventTime);
 
@@ -87,20 +78,16 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-        eventId = utilModel.getLong(EVENT_KEY, -1);
-
-        int initialItemId = eventId == -1 ? R.id.nav_events : R.id.nav_dashboard;
         fragmentManager = getSupportFragmentManager();
-        loadFragment(initialItemId);
-        navigationView.setCheckedItem(initialItemId);
+        loadFragment(R.id.nav_events);
 
         presenter.attach(this);
     }
 
     @Override
     protected void onDestroy() {
-        presenter.detach();
         super.onDestroy();
+        presenter.detach();
     }
 
     @Override
@@ -119,15 +106,30 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_logout) {
+        if (id == R.id.nav_logout)
             showLogoutDialog();
-        } else if (eventId != -1) {
-            loadFragment(item.getItemId());
-        }
+        else if (eventId != -1)
+            loadFragment(id);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void loadDashboard(long eventId) {
+        this.eventId = eventId;
+        loadFragment(R.id.nav_dashboard);
+    }
+
+    @Override
+    public void showEvent(Event event) {
+        setDrawerHeader(event.getName(),
+            DateUtils.formatDateWithDefault(
+                DateUtils.FORMAT_DATE_COMPLETE,
+                event.getStartTime()
+            )
+        );
     }
 
     @Override
@@ -142,6 +144,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadFragment(int navItemId) {
+        navigationView.setCheckedItem(navItemId);
+
         Fragment fragment;
         switch (navItemId) {
             case R.id.nav_dashboard:
@@ -158,24 +162,6 @@ public class MainActivity extends AppCompatActivity
         }
         setTitle(navigationView.getMenu().findItem(navItemId).getTitle());
         fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
-    }
-
-    @Override
-    public void onEventLoaded(Event event, boolean loadFragment) {
-        this.eventId = event.getId();
-        utilModel.setLong(EVENT_KEY, eventId);
-
-        setDrawerHeader(event.getName(),
-            DateUtils.formatDateWithDefault(
-                DateUtils.FORMAT_DATE_COMPLETE,
-                event.getStartTime()
-            )
-        );
-
-        if (loadFragment) {
-            navigationView.setCheckedItem(R.id.nav_dashboard);
-            loadFragment(R.id.nav_dashboard);
-        }
     }
 
     private void setDrawerHeader(String eventName, String eventTime) {
