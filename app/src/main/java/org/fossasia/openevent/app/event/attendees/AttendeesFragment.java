@@ -181,8 +181,8 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
             (attendee, query) ->
                 SearchUtils.filter(
                     query.toString(),
-                    attendee.getFirstName(),
-                    attendee.getLastName(),
+                    attendee.getFirstname(),
+                    attendee.getLastname(),
                     attendee.getEmail())
         );
 

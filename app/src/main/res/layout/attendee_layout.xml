@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_normal"
                 android:textColor="@android:color/black"
-                android:text='@{attendee.firstName + " " + attendee.lastName}' />
+                android:text='@{attendee.firstname + " " + attendee.lastname}' />
 
 
             <TextView
@@ -63,9 +63,9 @@
             android:background="@drawable/rounded_rectangle"
             android:gravity="center"
             android:padding="@dimen/spacing_extra_small"
-            app:backgroundTint="@{ attendee.checkedIn ? @color/light_green_500 : @color/red_500 }"
+            app:backgroundTint="@{ attendee.isCheckedIn ? @color/light_green_500 : @color/red_500 }"
             app:tint="@color/translucent_light"
-            app:srcCompat="@{ attendee.checkedIn ? @drawable/ic_check : @drawable/ic_close }"
+            app:srcCompat="@{ attendee.isCheckedIn ? @drawable/ic_check : @drawable/ic_close }"
             android:contentDescription="@string/check_in_status" />
 
     </LinearLayout>

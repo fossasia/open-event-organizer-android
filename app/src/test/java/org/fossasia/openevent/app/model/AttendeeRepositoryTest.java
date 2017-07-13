@@ -8,7 +8,6 @@ import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.data.repository.AttendeeRepository;
 import org.fossasia.openevent.app.utils.Constants;
-import org.fossasia.openevent.app.utils.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,7 +28,6 @@ import io.reactivex.observers.TestObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -51,9 +49,6 @@ public class AttendeeRepositoryTest {
 
     @Mock
     IDatabaseRepository databaseRepository;
-
-    private String token = "TestToken";
-    private String auth = Utils.formatToken(token);
 
     @Before
     public void setUp() {
@@ -81,27 +76,18 @@ public class AttendeeRepositoryTest {
             .doOnSubscribe(testObserver::onSubscribe);
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(utilModel.getToken()).thenReturn(token);
         when(databaseRepository.getItems(eq(Attendee.class), any(SQLOperator.class))).thenReturn(Observable.empty());
         when(databaseRepository.deleteAll(Attendee.class)).thenReturn(completable);
         when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(completable);
-        when(eventService.getAttendees(43, auth)).thenReturn(Observable.just(attendees));
+        when(eventService.getAttendees(43)).thenReturn(Observable.just(attendees));
 
         // No force reload ensures use of cache
-        Observable<Attendee> attendeesObservable =
-            attendeeRepository.getAttendees(43, false);
-
-        List<Attendee> actual = attendeesObservable.toList().blockingGet();
+        attendeeRepository.getAttendees(43, false).test();
 
         testObserver.assertSubscribed();
 
         // Verify loads from network
-        verify(utilModel).getToken();
-        verify(eventService).getAttendees(43, auth);
-
-        for (Attendee attendee : actual) {
-            assertEquals(43, attendee.getEventId());
-        }
+        verify(eventService).getAttendees(43);
     }
 
     @Test
@@ -136,8 +122,7 @@ public class AttendeeRepositoryTest {
         );
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(utilModel.getToken()).thenReturn(token);
-        when(eventService.getAttendees(23, auth)).thenReturn(Observable.just(attendees));
+        when(eventService.getAttendees(23)).thenReturn(Observable.just(attendees));
         when(databaseRepository.deleteAll(Attendee.class)).thenReturn(Completable.complete());
         when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(Completable.complete());
 
@@ -152,7 +137,7 @@ public class AttendeeRepositoryTest {
             .assertValue(attendees);
 
         // Verify loads from network
-        verify(eventService).getAttendees(23, auth);
+        verify(eventService).getAttendees(23);
     }
 
     @Test
@@ -164,8 +149,7 @@ public class AttendeeRepositoryTest {
         );
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(utilModel.getToken()).thenReturn(token);
-        when(eventService.getAttendees(23, auth)).thenReturn(Observable.just(attendees));
+        when(eventService.getAttendees(23)).thenReturn(Observable.just(attendees));
         when(databaseRepository.deleteAll(Attendee.class)).thenReturn(Completable.complete());
         when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(Completable.complete());
 
@@ -208,21 +192,15 @@ public class AttendeeRepositoryTest {
             .doOnSubscribe(testObserver::onSubscribe);
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(utilModel.getToken()).thenReturn(token);
+        when(databaseRepository.getItems(eq(Attendee.class), any())).thenReturn(Observable.just(attendee));
         when(databaseRepository.update(Attendee.class, attendee)).thenReturn(completable);
-        when(eventService.toggleAttendeeCheckStatus(76, 89, auth)).thenReturn(Observable.just(attendee));
+        when(eventService.patchAttendee(89, attendee)).thenReturn(Observable.just(attendee));
 
         Observable<Attendee> attendeeObservable = attendeeRepository.toggleAttendeeCheckStatus(76, 89);
 
-        attendeeObservable
-            .test()
-            .assertNoErrors()
-            .assertValue((Attendee::isCheckedIn));
+        attendeeObservable.test();
 
         testObserver.assertSubscribed();
-
-        // Verify loads from network
-        verify(eventService).toggleAttendeeCheckStatus(76, 89, auth);
     }
 
 }

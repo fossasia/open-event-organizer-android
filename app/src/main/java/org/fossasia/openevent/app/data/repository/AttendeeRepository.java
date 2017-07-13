@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.data.repository;
 
 import android.support.annotation.NonNull;
 
+import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class AttendeeRepository extends Repository implements IAttendeeRepository {
 
@@ -43,18 +45,21 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
     @Override
     public Observable<Attendee> getAttendees(long eventId, boolean reload) {
         Observable<Attendee> diskObservable = Observable.defer(() ->
-            databaseRepository.getItems(Attendee.class, Attendee_Table.eventId.eq(eventId))
+            databaseRepository.getItems(Attendee.class, Attendee_Table.event_id.eq(eventId))
         );
 
         Observable<Attendee> networkObservable = Observable.defer(() ->
-            eventService.getAttendees(eventId, getAuthorization())
+            eventService.getAttendees(eventId)
                 .flatMapIterable(attendees -> attendees)
-                .doOnNext(attendee -> attendee.setEventId(eventId))
                 .toList()
                 .toObservable()
-                .doOnNext(attendees -> databaseRepository.deleteAll(Attendee.class)
+                .doOnNext(attendees -> {
+                    Timber.d(attendees.toString());
+
+                    databaseRepository.deleteAll(Attendee.class)
                     .concatWith(databaseRepository.saveList(Attendee.class, attendees))
-                    .subscribe())
+                    .subscribe(() -> Timber.d("Saved Attendees"), Logger::logError);
+                })
                 .flatMapIterable(attendees -> attendees));
 
         return new AbstractObservableBuilder<Attendee>(utilModel)
@@ -77,13 +82,22 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
             return Observable.error(new Throwable(Constants.NO_NETWORK));
         }
 
-        return eventService.toggleAttendeeCheckStatus(eventId, attendeeId, getAuthorization())
-            .map(attendee -> {
-                // Setting stubbed model to define relationship between event and attendee
-                attendee.setEventId(eventId);
-                databaseRepository.update(Attendee.class, attendee).subscribe();
-                return attendee;
+        return databaseRepository.getItems(Attendee.class, Attendee_Table.id.eq(attendeeId))
+            .take(1)
+            .flatMap(attendee -> {
+                // Remove relationships from attendee item
+                attendee.setEvent(null);
+                attendee.setTicket(null);
+                attendee.setOrder(null);
+
+                attendee.setCheckedIn(!attendee.isCheckedIn());
+
+                return eventService.patchAttendee(attendeeId, attendee);
             })
+            .doOnNext(attendee ->
+                databaseRepository
+                    .update(Attendee.class, attendee)
+                    .subscribe())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }

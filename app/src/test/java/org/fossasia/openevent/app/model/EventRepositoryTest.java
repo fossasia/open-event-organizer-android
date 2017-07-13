@@ -33,9 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.refEq;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -56,7 +54,7 @@ public class EventRepositoryTest {
     @Mock
     IDatabaseRepository databaseRepository;
 
-    private String token = "TestToken";
+    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE0OTU3NDU0MDAsImlhdCI6MTQ5NTc0NTQwMCwiZXhwIjoyNDk1ODMxODAwLCJpZGVudGl0eSI6MzQ0fQ.A_aC4hwK8sixZk4k9gzmzidO1wj2hjy_EH573uorK-E";
     private String auth = Utils.formatToken(token);
 
     @Before
@@ -122,7 +120,7 @@ public class EventRepositoryTest {
         when(utilModel.getToken()).thenReturn(token);
         when(databaseRepository.getAllItems(User.class)).thenReturn(Observable.empty());
         when(databaseRepository.save(User.class, user)).thenReturn(completable);
-        when(eventService.getUser(auth)).thenReturn(Observable.just(user));
+        when(eventService.getUser(344)).thenReturn(Observable.just(user));
 
         // No force reload ensures use of cache
         Observable<User> userObservable = eventRepository.getOrganiser(false);
@@ -133,7 +131,7 @@ public class EventRepositoryTest {
 
         // Verify loads from network
         verify(utilModel).getToken();
-        verify(eventService).getUser(auth);
+        verify(eventService).getUser(344);
         verify(databaseRepository).save(User.class, user);
         testObserver.assertSubscribed();
     }
@@ -159,7 +157,7 @@ public class EventRepositoryTest {
         User user = new User();
 
         when(utilModel.getToken()).thenReturn(token);
-        when(eventService.getUser(auth)).thenReturn(Observable.just(user));
+        when(eventService.getUser(344)).thenReturn(Observable.just(user));
         when(databaseRepository.save(User.class, user)).thenReturn(Completable.complete());
         when(utilModel.isConnected()).thenReturn(true);
 
@@ -167,7 +165,7 @@ public class EventRepositoryTest {
         eventRepository.getOrganiser(true).subscribe();
 
         // Verify loads from network
-        verify(eventService).getUser(auth);
+        verify(eventService).getUser(344);
         verify(databaseRepository, never()).getAllItems(User.class);
     }
 
@@ -192,8 +190,7 @@ public class EventRepositoryTest {
 
         userObservable.test()
             .assertSubscribed()
-            .assertValue(event)
-            .assertValue(Event::isComplete);
+            .assertValue(event);
 
         testObserver.assertSubscribed();
 
@@ -207,15 +204,12 @@ public class EventRepositoryTest {
         long id = 45;
 
         Event event = new Event();
-        event.setComplete(true);
         when(databaseRepository.getItems(eq(Event.class), refEq(Event_Table.id.eq(id))))
             .thenReturn(Observable.just(event));
 
         // No force reload ensures use of cache
         Observable<Event> eventObservable = eventRepository.getEvent(id, false);
-        eventObservable
-            .test()
-            .assertValue(event);
+        eventObservable.test();
 
         verify(databaseRepository).getItems(eq(Event.class), refEq(Event_Table.id.eq(id)));
         verifyZeroInteractions(eventService);
@@ -260,7 +254,7 @@ public class EventRepositoryTest {
             .thenReturn(Observable.empty());
         when(databaseRepository.saveList(Event.class, events)).thenReturn(completable);
         when(databaseRepository.deleteAll(Event.class)).thenReturn(completable);
-        when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
+        when(eventService.getEvents(344)).thenReturn(Observable.just(events));
 
         // No force reload ensures use of cache
         Observable<Event> eventObservable = eventRepository.getEvents(false);
@@ -272,50 +266,9 @@ public class EventRepositoryTest {
 
         // Verify loads from network
         verify(utilModel).getToken();
-        verify(eventService).getEvents(auth);
+        verify(eventService).getEvents(344);
 
         testObserver.assertSubscribed();
-    }
-
-    @Test
-    public void shouldStartCompleteEventDownloadOnPartialEvent() {
-        List<Event> events = Arrays.asList(
-            new Event(12),
-            new Event(21),
-            new Event(52)
-        );
-
-        EventRepository spiedRepository = spy(eventRepository);
-
-        TestObserver testObserver1 = TestObserver.create();
-        TestObserver testObserver2 = TestObserver.create();
-        TestObserver testObserver3 = TestObserver.create();
-        Observable ob1 = Observable.empty().doOnSubscribe(testObserver1::onSubscribe);
-        Observable ob2 = Observable.empty().doOnSubscribe(testObserver2::onSubscribe);
-        Observable ob3 = Observable.empty().doOnSubscribe(testObserver3::onSubscribe);
-
-        doReturn(ob1).when(spiedRepository).getEvent(12, false);
-        doReturn(ob2).when(spiedRepository).getEvent(21, false);
-        doReturn(ob3).when(spiedRepository).getEvent(52, false);
-
-        when(databaseRepository.getAllItems(eq(Event.class)))
-            .thenReturn(Observable.empty());
-        when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
-        when(databaseRepository.deleteAll(Event.class)).thenReturn(Completable.complete());
-        when(utilModel.isConnected()).thenReturn(true);
-        when(utilModel.getToken()).thenReturn(token);
-        when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
-
-        // No force reload ensures use of cache
-        spiedRepository.getEvents(false).subscribe();
-
-        verify(spiedRepository).getEvent(12, false);
-        verify(spiedRepository).getEvent(21, false);
-        verify(spiedRepository).getEvent(52, false);
-
-        testObserver1.assertSubscribed();
-        testObserver2.assertSubscribed();
-        testObserver3.assertSubscribed();
     }
 
     @Test
@@ -352,7 +305,7 @@ public class EventRepositoryTest {
         when(utilModel.getToken()).thenReturn(token);
         when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
         when(databaseRepository.deleteAll(Event.class)).thenReturn(Completable.complete());
-        when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
+        when(eventService.getEvents(344)).thenReturn(Observable.just(events));
 
         // Force reload ensures no use of cache
         Observable<Event> eventsObservable = eventRepository.getEvents(true);
@@ -363,7 +316,7 @@ public class EventRepositoryTest {
             .assertValue(events);
 
         // Verify loads from network
-        verify(eventService).getEvents(auth);
+        verify(eventService).getEvents(344);
         verify(databaseRepository, never()).getAllItems(eq(Event.class));
     }
 
@@ -379,7 +332,7 @@ public class EventRepositoryTest {
         when(utilModel.getToken()).thenReturn(token);
         when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
         when(databaseRepository.deleteAll(Event.class)).thenReturn(Completable.complete());
-        when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
+        when(eventService.getEvents(344)).thenReturn(Observable.just(events));
 
         InOrder inOrder = Mockito.inOrder(databaseRepository);
 

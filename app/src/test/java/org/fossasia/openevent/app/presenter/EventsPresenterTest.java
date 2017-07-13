@@ -5,7 +5,6 @@ import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
-import org.fossasia.openevent.app.data.models.UserDetail;
 import org.fossasia.openevent.app.events.EventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.utils.DateUtils;
@@ -212,11 +211,8 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldLoadOrganiserSuccessfully() {
-        UserDetail userDetail = new UserDetail();
-        userDetail.setFirstName("John");
-        userDetail.setLastName("Wick");
-
-        organiser.setUserDetail(userDetail);
+        organiser.setFirstName("John");
+        organiser.setLastName("Wick");
 
         when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(organiser));
 

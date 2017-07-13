@@ -1,6 +1,10 @@
 package org.fossasia.openevent.app.data.network;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -11,18 +15,21 @@ public final class HostSelectionInterceptor implements Interceptor {
     private String scheme;
     private String host;
 
-    public HostSelectionInterceptor(){
+    @Inject
+    public HostSelectionInterceptor() {
         //Intentionally left blank
     }
 
     public void setInterceptor(String url) {
         HttpUrl httpUrl = HttpUrl.parse(url);
+        if (httpUrl == null)
+            return;
         scheme = httpUrl.scheme();
         host = httpUrl.host();
     }
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
         Request original = chain.request();
 
         // If new Base URL is properly formatted than replace with old one

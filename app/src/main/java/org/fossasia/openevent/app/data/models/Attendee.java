@@ -5,9 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.view.View;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.github.jasminb.jsonapi.LongIdHandler;
+import com.github.jasminb.jsonapi.annotations.Id;
+import com.github.jasminb.jsonapi.annotations.Relationship;
+import com.github.jasminb.jsonapi.annotations.Type;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
@@ -30,44 +33,46 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Builder
+@Type("attendee")
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @EqualsAndHashCode(callSuper = false)
 @Table(database = OrgaDatabase.class)
 public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, IHeaderProvider {
-
+    @Id(LongIdHandler.class)
     @PrimaryKey
     public long id;
-
     @Column
-    public boolean checkedIn;
+    public String city;
+    @Column
+    public String firstname;
+    @Column
+    public String lastname;
+    @Column
+    public boolean isCheckedIn;
+    @Column
+    public String state;
+    @Column
+    public String address;
+    @Column
+    public String pdfUrl;
+    @Column
+    public String country;
     @Column
     public String email;
-    @Column
-    @JsonProperty("firstname")
-    public String firstName;
-    @Column
-    @JsonProperty("lastname")
-    public String lastName;
-    @ForeignKey(
-        saveForeignKeyModel = true,
-        deleteForeignKeyModel = true,
-        onDelete = ForeignKeyAction.CASCADE,
-        onUpdate = ForeignKeyAction.CASCADE)
-    public Order order;
 
-    /**
-     * The ticket itself should not be deleted if the Attendee is deleted
-     * Neither it should be inserted when inserting the attendee, but the
-     * model should load instantly with attendee, making the relationship
-     * NOT stubbed.
-     */
+    @Relationship("ticket")
     @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
     public Ticket ticket;
 
+    // Not in API yet
+    @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
+    public Order order;
+
     // To associate attendees and event
-    @Column
-    public long eventId;
+    @Relationship("event")
+    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
+    public Event event;
 
     public Attendee() {}
 
@@ -77,8 +82,8 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
 
     public Attendee(long id) {
         setId(id);
-        setFirstName("testFirstName" + id);
-        setLastName("testLastName" + id);
+        setFirstname("testFirstName" + id);
+        setLastname("testLastName" + id);
         setEmail("testEmail" + id + "@test.com");
     }
 
@@ -92,7 +97,7 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
 
     @VisibleForTesting
     public Attendee withCheckedIn() {
-        this.checkedIn = true;
+        this.isCheckedIn = true;
 
         return this;
     }
@@ -100,7 +105,7 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     @Override
     public int compareTo(@NonNull Attendee other) {
         return CompareUtils.compareCascading(this, other,
-            Attendee::getFirstName, Attendee::getLastName, Attendee::getEmail
+            Attendee::getFirstname, Attendee::getLastname, Attendee::getEmail
         );
     }
 
@@ -138,7 +143,7 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
 
     @Override
     public String getHeader() {
-        return getFirstName().substring(0, 1);
+        return getFirstname().substring(0, 1);
     }
 
     @Override

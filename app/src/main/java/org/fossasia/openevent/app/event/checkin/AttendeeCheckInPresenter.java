@@ -52,7 +52,7 @@ public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttende
         if (getView() == null)
             return;
 
-        attendeeRepository.toggleAttendeeCheckStatus(attendee.getEventId(), getId())
+        attendeeRepository.toggleAttendeeCheckStatus(attendee.getEvent().getId(), getId())
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneousResult(getView()))
             .subscribe(completed -> {

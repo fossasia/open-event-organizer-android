@@ -18,9 +18,7 @@ public class ContextManager {
 
     public void setOrganiser(User user) {
         Map<String, Object> userData = new HashMap<>();
-        userData.put("details", user.getUserDetail());
-        userData.put("last_access_time", user.getLastAccessTime());
-        userData.put("sign_up_time", user.getSignupTime());
+        userData.put("details", user);
 
         Timber.i("User logged in - %s", user);
         Sentry.getContext().setUser(
