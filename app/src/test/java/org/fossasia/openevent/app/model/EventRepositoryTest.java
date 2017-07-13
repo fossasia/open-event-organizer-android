@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
@@ -364,6 +365,28 @@ public class EventRepositoryTest {
         // Verify loads from network
         verify(eventService).getEvents(auth);
         verify(databaseRepository, never()).getAllItems(eq(Event.class));
+    }
+
+    @Test
+    public void shouldDeletePreviousDataOnForceReload() {
+        List<Event> events = Arrays.asList(
+            new Event(12),
+            new Event(21),
+            new Event(52)
+        );
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(utilModel.getToken()).thenReturn(token);
+        when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
+        when(databaseRepository.deleteAll(Event.class)).thenReturn(Completable.complete());
+        when(eventService.getEvents(auth)).thenReturn(Observable.just(events));
+
+        InOrder inOrder = Mockito.inOrder(databaseRepository);
+
+        eventRepository.getEvents(true).test();
+
+        inOrder.verify(databaseRepository).deleteAll(Event.class);
+        inOrder.verify(databaseRepository).saveList(Event.class, events);
     }
 
 }

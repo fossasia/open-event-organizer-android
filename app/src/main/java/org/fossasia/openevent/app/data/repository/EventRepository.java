@@ -80,7 +80,8 @@ public class EventRepository extends Repository implements IEventRepository {
 
         Observable<Event> networkObservable = Observable.defer(() ->
             eventService.getEvents(getAuthorization())
-                .doOnNext(events -> databaseRepository.saveList(Event.class, events)
+                .doOnNext(events -> databaseRepository.deleteAll(Event.class)
+                    .concatWith(databaseRepository.saveList(Event.class, events))
                     .subscribe())
                 .flatMapIterable(events -> events))
                 .doOnEach(eventNotification -> {

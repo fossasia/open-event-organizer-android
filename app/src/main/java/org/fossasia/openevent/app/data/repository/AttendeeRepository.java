@@ -52,7 +52,9 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
                 .doOnNext(attendee -> attendee.setEventId(eventId))
                 .toList()
                 .toObservable()
-                .doOnNext(attendees -> databaseRepository.saveList(Attendee.class, attendees).subscribe())
+                .doOnNext(attendees -> databaseRepository.deleteAll(Attendee.class)
+                    .concatWith(databaseRepository.saveList(Attendee.class, attendees))
+                    .subscribe())
                 .flatMapIterable(attendees -> attendees));
 
         return new AbstractObservableBuilder<Attendee>(utilModel)
