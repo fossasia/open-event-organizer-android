@@ -47,7 +47,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
         if (eventDetailView == null)
             return;
 
-        eventDetailView.showProgressBar(true);
+        eventDetailView.showProgress(true);
 
         eventRepository
             .getEvent(eventId, forceReload)
@@ -67,7 +67,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
             return;
 
         this.event = event;
-        eventDetailView.showEvent(event);
+        eventDetailView.showResult(event);
         // TODO: Add views for date of event and format it here
 
         ticketAnalyser.analyseTotalTickets(event);
@@ -96,7 +96,7 @@ public class EventDetailPresenter implements IEventDetailPresenter {
     }
 
     private void hideProgress(boolean forceReload) {
-        eventDetailView.showProgressBar(false);
+        eventDetailView.showProgress(false);
 
         if (forceReload)
             eventDetailView.onRefreshComplete();

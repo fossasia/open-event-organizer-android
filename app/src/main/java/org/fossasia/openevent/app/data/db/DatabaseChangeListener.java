@@ -8,7 +8,11 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.fossasia.openevent.app.data.db.contract.IDatabaseChangeListener;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
+import lombok.Data;
 
 public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
 
@@ -21,8 +25,10 @@ public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
         classType = modelClass;
     }
 
-    public PublishSubject<ModelChange<T>> getNotifier() {
-        return publishSubject;
+    public Observable<ModelChange<T>> getNotifier() {
+        return publishSubject
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 
     public void startListening() {
@@ -49,6 +55,7 @@ public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
 
     // Internal ModelChange
 
+    @Data
     public static class ModelChange<T> {
         private T model;
         private BaseModel.Action action;
@@ -64,32 +71,6 @@ public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
 
         public BaseModel.Action getAction() {
             return action;
-        }
-
-        @Override
-        public String toString() {
-            return "ModelChange{" +
-                "model=" + model +
-                ", action=" + action +
-                '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof ModelChange)) return false;
-
-            ModelChange<?> that = (ModelChange<?>) o;
-
-            return getModel() != null ? getModel().equals(that.getModel()) : that.getModel() == null && getAction() == that.getAction();
-
-        }
-
-        @Override
-        public int hashCode() {
-            int result = getModel() != null ? getModel().hashCode() : 0;
-            result = 31 * result + (getAction().name() != null ? getAction().name().hashCode() : 0);
-            return result;
         }
     }
 

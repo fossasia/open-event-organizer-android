@@ -31,7 +31,7 @@ public class LoginPresenter implements ILoginPresenter {
             return;
 
         if(loginModel.isLoggedIn()) {
-            loginView.onLoginSuccess();
+            loginView.onSuccess("Successfully logged in");
             return;
         }
 
@@ -49,19 +49,19 @@ public class LoginPresenter implements ILoginPresenter {
         if(loginView ==  null)
             return;
 
-        loginView.showProgressBar(true);
+        loginView.showProgress(true);
 
         loginModel.login(email, password)
             .subscribe(loginResponse -> {
                 if(loginView != null) {
-                    loginView.onLoginSuccess();
+                    loginView.onSuccess("Successfully Logged In");
                     saveEmail(email);
-                    loginView.showProgressBar(false);
+                    loginView.showProgress(false);
                 }
             }, throwable -> {
                 if(loginView != null) {
-                    loginView.onLoginError(throwable.getMessage());
-                    loginView.showProgressBar(false);
+                    loginView.showError(throwable.getMessage());
+                    loginView.showProgress(false);
                 }
             });
     }

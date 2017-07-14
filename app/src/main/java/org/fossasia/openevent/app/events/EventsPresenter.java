@@ -38,7 +38,7 @@ public class EventsPresenter implements IEventsPresenter {
     }
 
     private void hideProgress(boolean forceReload) {
-        eventsView.showProgressBar(false);
+        eventsView.showProgress(false);
         eventsView.showEmptyView(isListEmpty);
 
         if (forceReload)
@@ -50,7 +50,7 @@ public class EventsPresenter implements IEventsPresenter {
         if(eventsView == null)
             return;
 
-        eventsView.showProgressBar(true);
+        eventsView.showProgress(true);
         eventsView.showEmptyView(false);
 
         eventsDataRepository
@@ -60,14 +60,14 @@ public class EventsPresenter implements IEventsPresenter {
             .subscribe(events -> {
                 if(eventsView == null)
                     return;
-                eventsView.showEvents(events);
+                eventsView.showResults(events);
                 isListEmpty = events.size() == 0;
                 hideProgress(forceReload);
             }, throwable -> {
                 if(eventsView == null)
                     return;
 
-                eventsView.showEventError(throwable.getMessage());
+                eventsView.showError(throwable.getMessage());
                 hideProgress(forceReload);
             });
     }

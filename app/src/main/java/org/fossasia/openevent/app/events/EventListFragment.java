@@ -117,7 +117,7 @@ public class EventListFragment extends BaseFragment implements IEventsView {
     }
 
     @Override
-    public void showProgressBar(boolean show) {
+    public void showProgress(boolean show) {
         ViewUtils.showView(binding.progressBar, show);
     }
 
@@ -128,7 +128,7 @@ public class EventListFragment extends BaseFragment implements IEventsView {
     }
 
     @Override
-    public void showEvents(List<Event> events) {
+    public void showResults(List<Event> events) {
         this.events.clear();
         this.events.addAll(events);
         eventListAdapter.notifyDataSetChanged();
@@ -145,7 +145,7 @@ public class EventListFragment extends BaseFragment implements IEventsView {
     }
 
     @Override
-    public void showEventError(String error) {
+    public void showError(String error) {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
     }
 

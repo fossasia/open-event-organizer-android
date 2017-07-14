@@ -118,7 +118,7 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
     // View implementation
 
     @Override
-    public void showProgressBar(boolean show) {
+    public void showProgress(boolean show) {
         ViewUtils.showView(binding.progressBar, show);
     }
 
@@ -129,7 +129,7 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
     }
 
     @Override
-    public void showEvent(Event event) {
+    public void showResult(Event event) {
         binding.setEvent(event);
         binding.executePendingBindings();
     }

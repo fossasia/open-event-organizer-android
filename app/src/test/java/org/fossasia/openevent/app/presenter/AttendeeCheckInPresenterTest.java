@@ -103,7 +103,7 @@ public class AttendeeCheckInPresenterTest {
         attendeeCheckInPresenter.start();
 
         verify(attendeeRepository).getAttendee(id, false);
-        verify(attendeeCheckInView).showAttendee(attendee);
+        verify(attendeeCheckInView).showResult(attendee);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class AttendeeCheckInPresenterTest {
 
         attendeeCheckInPresenter.toggleCheckIn();
 
-        verify(attendeeCheckInView).showAttendee(toggled);
+        verify(attendeeCheckInView).showResult(toggled);
         verify(attendeeCheckInView).onSuccess(any());
     }
 
@@ -147,7 +147,7 @@ public class AttendeeCheckInPresenterTest {
 
         attendeeCheckInPresenter.toggleCheckIn();
 
-        verify(attendeeCheckInView).onError(any());
+        verify(attendeeCheckInView).showError(any());
     }
 
     @Test
@@ -160,7 +160,7 @@ public class AttendeeCheckInPresenterTest {
         InOrder inOrder = inOrder(attendeeCheckInView);
 
         inOrder.verify(attendeeCheckInView).showProgress(true);
-        inOrder.verify(attendeeCheckInView).showAttendee(any());
+        inOrder.verify(attendeeCheckInView).showResult(any());
         inOrder.verify(attendeeCheckInView).showProgress(false);
     }
 
@@ -174,7 +174,7 @@ public class AttendeeCheckInPresenterTest {
         InOrder inOrder = inOrder(attendeeCheckInView);
 
         inOrder.verify(attendeeCheckInView).showProgress(true);
-        inOrder.verify(attendeeCheckInView).onError(any());
+        inOrder.verify(attendeeCheckInView).showError(any());
         inOrder.verify(attendeeCheckInView).showProgress(false);
     }
 

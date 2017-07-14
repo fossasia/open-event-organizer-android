@@ -129,18 +129,18 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
     // View Implementation start
 
     @Override
-    public void showProgressBar(boolean show) {
+    public void showProgress(boolean show) {
         showView(progressBar, show);
     }
 
     @Override
-    public void onLoginSuccess() {
+    public void onSuccess(String message) {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }
 
     @Override
-    public void onLoginError(String error) {
+    public void showError(String error) {
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 

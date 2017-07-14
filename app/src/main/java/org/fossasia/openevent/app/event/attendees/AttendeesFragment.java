@@ -57,8 +57,6 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     private long eventId;
 
-    public static final int REQ_CODE = 123;
-
     @Inject
     IUtilModel utilModel;
 
@@ -215,7 +213,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     }
 
     @Override
-    public void showProgressBar(boolean show) {
+    public void showProgress(boolean show) {
         ViewUtils.showView(binding.progressBar, show);
     }
 
@@ -227,14 +225,11 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
     @Override
     public void showScanButton(boolean show) {
-        if (show)
-            binding.fabScanQr.show();
-        else
-            binding.fabScanQr.hide();
+        ViewUtils.showView(binding.fabScanQr, show);
     }
 
     @Override
-    public void showAttendees(List<Attendee> attendees) {
+    public void showResults(List<Attendee> attendees) {
         fastItemAdapter.setNewList(attendees);
         binding.setVariable(BR.attendees, attendees);
         binding.executePendingBindings();
@@ -246,13 +241,13 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     }
 
     @Override
-    public void updateAttendee(int position, Attendee attendee) {
-        position = fastItemAdapter.getAdapterPosition(attendee);
+    public void updateAttendee(Attendee attendee) {
+        int position = fastItemAdapter.getAdapterPosition(attendee);
         fastItemAdapter.getItemFilter().set(position, attendee);
     }
 
     @Override
-    public void showErrorMessage(String error) {
+    public void showError(String error) {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
     }
 

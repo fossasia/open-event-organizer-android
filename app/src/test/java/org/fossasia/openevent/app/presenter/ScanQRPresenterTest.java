@@ -210,10 +210,10 @@ public class ScanQRPresenterTest {
         scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
-        inOrder.verify(scanQRView).showProgressBar(true);
+        inOrder.verify(scanQRView).showProgress(true);
         scanQRPresenter.onCameraLoaded();
         scanQRPresenter.onScanStarted();
-        inOrder.verify(scanQRView).showProgressBar(false);
+        inOrder.verify(scanQRView).showProgress(false);
     }
 
     @Test
@@ -241,11 +241,11 @@ public class ScanQRPresenterTest {
         scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
-        inOrder.verify(scanQRView).showProgressBar(true);
+        inOrder.verify(scanQRView).showProgress(true);
         scanQRPresenter.onCameraLoaded();
         scanQRPresenter.cameraPermissionGranted(true);
         scanQRPresenter.onScanStarted();
-        inOrder.verify(scanQRView).showProgressBar(false);
+        inOrder.verify(scanQRView).showProgress(false);
     }
 
     @Test
@@ -273,10 +273,10 @@ public class ScanQRPresenterTest {
         scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
-        inOrder.verify(scanQRView).showProgressBar(true);
+        inOrder.verify(scanQRView).showProgress(true);
         scanQRPresenter.onCameraLoaded();
         scanQRPresenter.cameraPermissionGranted(false);
-        inOrder.verify(scanQRView).showProgressBar(false);
+        inOrder.verify(scanQRView).showProgress(false);
     }
 
     private void sendBarcodeBurst(Barcode barcode) {

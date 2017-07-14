@@ -1,22 +1,14 @@
 package org.fossasia.openevent.app.events.contract;
 
+import org.fossasia.openevent.app.common.contract.view.Emptiable;
+import org.fossasia.openevent.app.common.contract.view.Erroneous;
+import org.fossasia.openevent.app.common.contract.view.Progressive;
+import org.fossasia.openevent.app.common.contract.view.Refreshable;
 import org.fossasia.openevent.app.data.models.Event;
 
-import java.util.List;
-
-public interface IEventsView {
-
-    void showProgressBar(boolean show);
-
-    void onRefreshComplete();
-
-    void showEvents(List<Event> events);
-
-    void showEmptyView(boolean show);
+public interface IEventsView extends Progressive, Erroneous, Refreshable, Emptiable<Event> {
 
     void showOrganiserName(String name);
-
-    void showEventError(String error);
 
     void showOrganiserLoadError(String error);
 
