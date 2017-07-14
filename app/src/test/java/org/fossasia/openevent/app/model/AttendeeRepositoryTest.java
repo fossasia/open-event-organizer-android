@@ -13,7 +13,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -81,6 +83,7 @@ public class AttendeeRepositoryTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(token);
         when(databaseRepository.getItems(eq(Attendee.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(databaseRepository.deleteAll(Attendee.class)).thenReturn(completable);
         when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(completable);
         when(eventService.getAttendees(43, auth)).thenReturn(Observable.just(attendees));
 
@@ -135,6 +138,7 @@ public class AttendeeRepositoryTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(token);
         when(eventService.getAttendees(23, auth)).thenReturn(Observable.just(attendees));
+        when(databaseRepository.deleteAll(Attendee.class)).thenReturn(Completable.complete());
         when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(Completable.complete());
 
         // Force reload ensures no use of cache
@@ -149,6 +153,28 @@ public class AttendeeRepositoryTest {
 
         // Verify loads from network
         verify(eventService).getAttendees(23, auth);
+    }
+
+    @Test
+    public void shouldDeletePreviousDataOnForceReload() {
+        List<Attendee> attendees = Arrays.asList(
+            new Attendee(),
+            new Attendee(),
+            new Attendee()
+        );
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(utilModel.getToken()).thenReturn(token);
+        when(eventService.getAttendees(23, auth)).thenReturn(Observable.just(attendees));
+        when(databaseRepository.deleteAll(Attendee.class)).thenReturn(Completable.complete());
+        when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(Completable.complete());
+
+        InOrder inOrder = Mockito.inOrder(databaseRepository);
+
+        attendeeRepository.getAttendees(23, true).test();
+
+        inOrder.verify(databaseRepository).deleteAll(Attendee.class);
+        inOrder.verify(databaseRepository).saveList(Attendee.class, attendees);
     }
 
     @Test
