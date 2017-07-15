@@ -138,7 +138,7 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.loadDetails(false);
 
-        verify(eventDetailView).showEvent(event);
+        verify(eventDetailView).showResult(event);
         verify(ticketAnalyser).analyseTotalTickets(event);
     }
 
@@ -188,8 +188,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.start();
 
-        inOrder.verify(eventDetailView).showProgressBar(true);
-        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).showProgress(true);
+        inOrder.verify(eventDetailView).showProgress(false);
     }
 
     @Test
@@ -201,8 +201,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.start();
 
-        inOrder.verify(eventDetailView).showProgressBar(true);
-        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).showProgress(true);
+        inOrder.verify(eventDetailView).showProgress(false);
     }
 
     @Test
@@ -217,8 +217,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.start();
 
-        inOrder.verify(eventDetailView).showProgressBar(true);
-        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).showProgress(true);
+        inOrder.verify(eventDetailView).showProgress(false);
     }
 
     @Test
@@ -230,8 +230,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.start();
 
-        inOrder.verify(eventDetailView).showProgressBar(true);
-        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).showProgress(true);
+        inOrder.verify(eventDetailView).showProgress(false);
     }
 
     @Test
@@ -246,8 +246,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.loadDetails(true);
 
-        inOrder.verify(eventDetailView).showProgressBar(true);
-        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).showProgress(true);
+        inOrder.verify(eventDetailView).showProgress(false);
         inOrder.verify(eventDetailView).onRefreshComplete();
     }
 
@@ -260,8 +260,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.loadDetails(true);
 
-        inOrder.verify(eventDetailView).showProgressBar(true);
-        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).showProgress(true);
+        inOrder.verify(eventDetailView).showProgress(false);
         inOrder.verify(eventDetailView).onRefreshComplete();
     }
 
@@ -277,8 +277,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.loadDetails(true);
 
-        inOrder.verify(eventDetailView).showProgressBar(true);
-        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).showProgress(true);
+        inOrder.verify(eventDetailView).showProgress(false);
         inOrder.verify(eventDetailView).onRefreshComplete();
     }
 
@@ -291,8 +291,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter.loadDetails(true);
 
-        inOrder.verify(eventDetailView).showProgressBar(true);
-        inOrder.verify(eventDetailView).showProgressBar(false);
+        inOrder.verify(eventDetailView).showProgress(true);
+        inOrder.verify(eventDetailView).showProgress(false);
         inOrder.verify(eventDetailView).onRefreshComplete();
     }
 }

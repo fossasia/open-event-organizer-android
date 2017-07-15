@@ -24,6 +24,7 @@ import io.reactivex.Completable;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(JUnit4.class)
 public class LoginPresenterTest {
@@ -58,7 +59,7 @@ public class LoginPresenterTest {
 
         loginPresenter.attach(loginView);
 
-        Mockito.verify(loginView).onLoginSuccess();
+        Mockito.verify(loginView).onSuccess(any());
     }
 
     @Test
@@ -67,7 +68,7 @@ public class LoginPresenterTest {
 
         loginPresenter.attach(loginView);
 
-        Mockito.verify(loginView, Mockito.never()).onLoginSuccess();
+        Mockito.verify(loginView, Mockito.never()).onSuccess(any());
     }
 
     @Test
@@ -87,7 +88,7 @@ public class LoginPresenterTest {
 
         loginPresenter.attach(loginView);
 
-        Mockito.verify(loginView).onLoginSuccess();
+        Mockito.verify(loginView).onSuccess(any());
     }
 
     @Test
@@ -96,7 +97,7 @@ public class LoginPresenterTest {
 
         loginPresenter.attach(loginView);
 
-        Mockito.verify(loginView, Mockito.never()).onLoginSuccess();
+        Mockito.verify(loginView, Mockito.never()).onSuccess(any());
     }
 
     @Test
@@ -111,10 +112,10 @@ public class LoginPresenterTest {
         loginPresenter.attach(loginView);
         loginPresenter.login(email, password);
 
-        inOrder.verify(loginView).showProgressBar(true);
+        inOrder.verify(loginView).showProgress(true);
         inOrder.verify(loginModel).login(email, password);
-        inOrder.verify(loginView).onLoginSuccess();
-        inOrder.verify(loginView).showProgressBar(false);
+        inOrder.verify(loginView).onSuccess(any());
+        inOrder.verify(loginView).showProgress(false);
     }
 
     @Test
@@ -128,10 +129,10 @@ public class LoginPresenterTest {
         loginPresenter.attach(loginView);
         loginPresenter.login(email, password);
 
-        inOrder.verify(loginView).showProgressBar(true);
+        inOrder.verify(loginView).showProgress(true);
         inOrder.verify(loginModel).login(email, password);
-        inOrder.verify(loginView).onLoginError(error);
-        inOrder.verify(loginView).showProgressBar(false);
+        inOrder.verify(loginView).showError(error);
+        inOrder.verify(loginView).showProgress(false);
     }
 
     @Test

@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-        
+
         navigationView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentManager = getSupportFragmentManager();
         loadFragment(R.id.nav_events);
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void showEvent(Event event) {
+    public void showResult(Event event) {
         setDrawerHeader(event.getName(),
             DateUtils.formatDateWithDefault(
                 DateUtils.FORMAT_DATE_COMPLETE,

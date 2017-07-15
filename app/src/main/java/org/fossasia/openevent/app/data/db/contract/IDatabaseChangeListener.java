@@ -2,11 +2,11 @@ package org.fossasia.openevent.app.data.db.contract;
 
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.Observable;
 
 public interface IDatabaseChangeListener<T> {
 
-    PublishSubject<DatabaseChangeListener.ModelChange<T>> getNotifier();
+    Observable<DatabaseChangeListener.ModelChange<T>> getNotifier();
 
     void startListening();
 

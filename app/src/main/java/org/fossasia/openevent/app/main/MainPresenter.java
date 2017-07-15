@@ -44,14 +44,14 @@ public class MainPresenter implements IMainPresenter {
             mainView.loadDashboard(storedEventId);
 
             disposable.add(eventRepository.getEvent(storedEventId, false)
-                    .subscribe(mainView::showEvent));
+                    .subscribe(mainView::showResult));
         }
 
         disposable.add(bus.getSelectedEvent()
             .subscribe(event -> {
                 utilModel.setLong(EVENT_KEY, event.getId());
                 mainView.loadDashboard(event.getId());
-                mainView.showEvent(event);
+                mainView.showResult(event);
             }));
     }
 

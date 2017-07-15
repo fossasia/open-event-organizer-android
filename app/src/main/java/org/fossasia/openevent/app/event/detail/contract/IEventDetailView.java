@@ -1,15 +1,9 @@
 package org.fossasia.openevent.app.event.detail.contract;
 
+import org.fossasia.openevent.app.common.contract.view.Erroneous;
+import org.fossasia.openevent.app.common.contract.view.ItemResult;
+import org.fossasia.openevent.app.common.contract.view.Progressive;
+import org.fossasia.openevent.app.common.contract.view.Refreshable;
 import org.fossasia.openevent.app.data.models.Event;
 
-public interface IEventDetailView {
-
-    void showProgressBar(boolean show);
-
-    void onRefreshComplete();
-
-    void showEvent(Event event);
-
-    void showError(String error);
-
-}
+public interface IEventDetailView extends Progressive, Erroneous, Refreshable, ItemResult<Event> {}

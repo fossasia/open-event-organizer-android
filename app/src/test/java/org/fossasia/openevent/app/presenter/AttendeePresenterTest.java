@@ -70,6 +70,7 @@ public class AttendeePresenterTest {
         attendeesPresenter = new AttendeesPresenter(attendeeRepository, changeListener);
         attendeesPresenter.attach(id, attendeesView);
 
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -116,11 +117,11 @@ public class AttendeePresenterTest {
 
         attendeesPresenter.loadAttendees(false);
 
-        inOrder.verify(attendeesView).showProgressBar(true);
+        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(id, false);
-        inOrder.verify(attendeesView).showErrorMessage(error);
-        inOrder.verify(attendeesView).showProgressBar(false);
+        inOrder.verify(attendeesView).showError(error);
+        inOrder.verify(attendeesView).showProgress(false);
     }
 
     @Test
@@ -134,11 +135,11 @@ public class AttendeePresenterTest {
 
         // TODO: Fix flaky test for attendees
 
-        inOrder.verify(attendeesView).showProgressBar(true);
+        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(id, false);
-        inOrder.verify(attendeesView).showAttendees(any());
-        inOrder.verify(attendeesView).showProgressBar(false);
+        inOrder.verify(attendeesView).showResults(any());
+        inOrder.verify(attendeesView).showProgress(false);
         inOrder.verify(attendeesView).showScanButton(true);
     }
 
@@ -153,11 +154,11 @@ public class AttendeePresenterTest {
 
         // TODO: Fix flaky test for attendees
 
-        inOrder.verify(attendeesView).showProgressBar(true);
+        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(id, true);
-        inOrder.verify(attendeesView).showAttendees(any());
-        inOrder.verify(attendeesView).showProgressBar(false);
+        inOrder.verify(attendeesView).showResults(any());
+        inOrder.verify(attendeesView).showProgress(false);
         inOrder.verify(attendeesView).onRefreshComplete();
         inOrder.verify(attendeesView).showScanButton(true);
     }
@@ -173,7 +174,7 @@ public class AttendeePresenterTest {
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showEmptyView(false);
-        inOrder.verify(attendeesView).showAttendees(attendees);
+        inOrder.verify(attendeesView).showResults(attendees);
         inOrder.verify(attendeesView).showEmptyView(true);
     }
 
@@ -203,7 +204,7 @@ public class AttendeePresenterTest {
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showEmptyView(false);
-        inOrder.verify(attendeesView).showErrorMessage(error);
+        inOrder.verify(attendeesView).showError(error);
         inOrder.verify(attendeesView).showEmptyView(true);
     }
 
@@ -235,7 +236,7 @@ public class AttendeePresenterTest {
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showEmptyView(false);
-        inOrder.verify(attendeesView).showErrorMessage(error);
+        inOrder.verify(attendeesView).showError(error);
         inOrder.verify(attendeesView).showEmptyView(false);
     }
 
@@ -268,7 +269,7 @@ public class AttendeePresenterTest {
         // TODO: Fix flaky test for attendees
 
         inOrder.verify(attendeesView).showEmptyView(false);
-        inOrder.verify(attendeesView).showAttendees(any());
+        inOrder.verify(attendeesView).showResults(any());
         inOrder.verify(attendeesView).showEmptyView(false);
     }
 
@@ -295,11 +296,11 @@ public class AttendeePresenterTest {
 
         attendeesPresenter.loadAttendees(true);
 
-        inOrder.verify(attendeesView).showProgressBar(true);
+        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(id, true);
-        inOrder.verify(attendeesView).showErrorMessage(anyString());
-        inOrder.verify(attendeesView).showProgressBar(false);
+        inOrder.verify(attendeesView).showError(anyString());
+        inOrder.verify(attendeesView).showProgress(false);
         inOrder.verify(attendeesView).onRefreshComplete();
     }
 
@@ -313,29 +314,7 @@ public class AttendeePresenterTest {
         attendeesPresenter.start();
         publishSubject.onNext(new DatabaseChangeListener.ModelChange<>(attendees.get(2), BaseModel.Action.UPDATE));
 
-        InOrder inOrder = Mockito.inOrder(attendeeRepository, attendeesView);
-
-        inOrder.verify(attendeesView).showProgressBar(true);
-        inOrder.verify(attendeesView).updateAttendee(4, attendees.get(2));
-        inOrder.verify(attendeesView).showProgressBar(false);
-    }
-
-    @Test
-    public void shouldShowErrorForItemNotFound() {
-        String error = "Error in updating Attendee";
-        PublishSubject<DatabaseChangeListener.ModelChange<Attendee>> publishSubject = PublishSubject.create();
-
-        when(attendeeRepository.getAttendees(id, false)).thenReturn(Observable.fromIterable(attendees));
-        when(changeListener.getNotifier()).thenReturn(publishSubject);
-
-        attendeesPresenter.start();
-        publishSubject.onNext(new DatabaseChangeListener.ModelChange<>(new Attendee(23), BaseModel.Action.UPDATE));
-
-        InOrder inOrder = Mockito.inOrder(attendeeRepository, attendeesView);
-
-        inOrder.verify(attendeesView).showProgressBar(true);
-        inOrder.verify(attendeesView).showErrorMessage(error);
-        inOrder.verify(attendeesView).showProgressBar(false);
+        Mockito.verify(attendeesView).updateAttendee(attendees.get(2));
     }
 
     @Test

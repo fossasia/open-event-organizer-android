@@ -214,7 +214,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     }
 
     @Override
-    public void showProgressBar(boolean show) {
+    public void showProgress(boolean show) {
         ViewUtils.showView(progressBar, show);
     }
 

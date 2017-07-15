@@ -108,10 +108,10 @@ public class EventsPresenterTest {
 
         eventsActivityPresenter.loadUserEvents(false);
 
-        inOrder.verify(eventListView).showProgressBar(true);
+        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventRepository).getEvents(false);
-        inOrder.verify(eventListView).showEvents(eventList);
-        inOrder.verify(eventListView).showProgressBar(false);
+        inOrder.verify(eventListView).showResults(eventList);
+        inOrder.verify(eventListView).showProgress(false);
     }
 
     @Test
@@ -123,10 +123,10 @@ public class EventsPresenterTest {
 
         eventsActivityPresenter.loadUserEvents(true);
 
-        inOrder.verify(eventListView).showProgressBar(true);
+        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventRepository).getEvents(true);
-        inOrder.verify(eventListView).showEvents(eventList);
-        inOrder.verify(eventListView).showProgressBar(false);
+        inOrder.verify(eventListView).showResults(eventList);
+        inOrder.verify(eventListView).showProgress(false);
         inOrder.verify(eventListView).onRefreshComplete();
     }
 
@@ -141,7 +141,7 @@ public class EventsPresenterTest {
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventListView).showEvents(events);
+        inOrder.verify(eventListView).showResults(events);
         inOrder.verify(eventListView).showEmptyView(true);
     }
 
@@ -155,7 +155,7 @@ public class EventsPresenterTest {
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventListView).showEventError(anyString());
+        inOrder.verify(eventListView).showError(anyString());
         inOrder.verify(eventListView).showEmptyView(true);
     }
 
@@ -169,7 +169,7 @@ public class EventsPresenterTest {
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventListView).showEvents(eventList);
+        inOrder.verify(eventListView).showResults(eventList);
         inOrder.verify(eventListView).showEmptyView(false);
     }
 
@@ -182,10 +182,10 @@ public class EventsPresenterTest {
 
         eventsActivityPresenter.loadUserEvents(true);
 
-        inOrder.verify(eventListView).showProgressBar(true);
+        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventRepository).getEvents(true);
-        inOrder.verify(eventListView).showEventError(anyString());
-        inOrder.verify(eventListView).showProgressBar(false);
+        inOrder.verify(eventListView).showError(anyString());
+        inOrder.verify(eventListView).showProgress(false);
         inOrder.verify(eventListView).onRefreshComplete();
     }
 
@@ -199,10 +199,10 @@ public class EventsPresenterTest {
 
         eventsActivityPresenter.loadUserEvents(false);
 
-        inOrder.verify(eventListView).showProgressBar(true);
+        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventRepository).getEvents(false);
-        inOrder.verify(eventListView).showEventError(error);
-        inOrder.verify(eventListView).showProgressBar(false);
+        inOrder.verify(eventListView).showError(error);
+        inOrder.verify(eventListView).showProgress(false);
     }
 
     @Test

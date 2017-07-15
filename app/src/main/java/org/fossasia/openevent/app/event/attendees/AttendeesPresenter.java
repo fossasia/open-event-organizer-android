@@ -8,7 +8,6 @@ import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesView;
-import org.fossasia.openevent.app.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +72,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
     }
 
     private void hideProgress(boolean forceReload) {
-        attendeesView.showProgressBar(false);
+        attendeesView.showProgress(false);
         attendeesView.showEmptyView(attendeeList.size() == 0);
 
         if (forceReload)
@@ -85,7 +84,7 @@ public class AttendeesPresenter implements IAttendeesPresenter {
         if(attendeesView == null)
             return;
 
-        attendeesView.showProgressBar(true);
+        attendeesView.showProgress(true);
         attendeesView.showEmptyView(false);
         attendeesView.showScanButton(false);
 
@@ -97,12 +96,12 @@ public class AttendeesPresenter implements IAttendeesPresenter {
                 attendeeList.addAll(attendees);
 
                 if (attendeesView == null) return;
-                attendeesView.showAttendees(attendees);
+                attendeesView.showResults(attendees);
                 hideProgress(forceReload);
                 attendeesView.showScanButton(!attendeeList.isEmpty());
             }, throwable -> {
                 if (attendeesView == null) return;
-                attendeesView.showErrorMessage(throwable.getMessage());
+                attendeesView.showError(throwable.getMessage());
                 hideProgress(forceReload);
                 attendeesView.showScanButton(!attendeeList.isEmpty());
             });
@@ -114,25 +113,14 @@ public class AttendeesPresenter implements IAttendeesPresenter {
         attendeeListener.getNotifier()
             .filter(attendeeModelChange -> attendeeModelChange.getAction().equals(BaseModel.Action.UPDATE))
             .map(DatabaseChangeListener.ModelChange::getModel)
-            .subscribe(this::processUpdatedAttendee, Throwable::printStackTrace);
-    }
-
-    private void processUpdatedAttendee(Attendee attendee) {
-        Utils.indexOf(attendeeList, attendee,
-            (first, second) -> first.getId() == second.getId())
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(position -> {
-                if(attendeesView == null)
+            .subscribe(attendee -> {
+                if (attendeesView == null)
                     return;
-
-                if (position == -1)
-                    attendeesView.showErrorMessage("Error in updating Attendee");
-                else {
-                    attendeeList.set(position, attendee);
-                    attendeesView.updateAttendee(position, attendee);
-                }
-                attendeesView.showProgressBar(false);
+                attendeesView.updateAttendee(attendee);
+            }, throwable -> {
+                if (attendeesView == null)
+                    return;
+                attendeesView.showError(throwable.getMessage());
             });
     }
 

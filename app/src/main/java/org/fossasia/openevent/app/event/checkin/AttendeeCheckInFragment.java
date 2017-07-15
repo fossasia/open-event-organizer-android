@@ -94,7 +94,7 @@ public class AttendeeCheckInFragment extends BottomSheetDialogFragment implement
     }
 
     @Override
-    public void showAttendee(Attendee attendee) {
+    public void showResult(Attendee attendee) {
         binding.setCheckinAttendee(attendee);
     }
 
@@ -110,7 +110,7 @@ public class AttendeeCheckInFragment extends BottomSheetDialogFragment implement
     }
 
     @Override
-    public void onError(String message) {
+    public void showError(String message) {
         showToast(message);
     }
 

@@ -43,7 +43,7 @@ public class AttendeeCheckInPresenter implements IAttendeeCheckInPresenter {
             .subscribe(attendee -> {
                 this.attendee = attendee;
                 if (attendeeCheckInView != null)
-                    attendeeCheckInView.showAttendee(attendee);
+                    attendeeCheckInView.showResult(attendee);
             }, Throwable::printStackTrace);
     }
 
@@ -63,13 +63,13 @@ public class AttendeeCheckInPresenter implements IAttendeeCheckInPresenter {
 
                 String status = attendee.isCheckedIn() ? "Checked In" : "Checked Out";
 
-                attendeeCheckInView.showAttendee(attendee);
+                attendeeCheckInView.showResult(attendee);
                 attendeeCheckInView.onSuccess(status);
                 attendeeCheckInView.showProgress(false);
                 //attendeeCheckInView.dismiss();
             }, throwable -> {
                 throwable.printStackTrace();
-                attendeeCheckInView.onError(throwable.getMessage());
+                attendeeCheckInView.showError(throwable.getMessage());
                 attendeeCheckInView.showProgress(false);
                 //attendeeCheckInView.dismiss();
             });

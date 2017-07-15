@@ -84,7 +84,7 @@ public class ScanQRPresenter implements IScanQRPresenter {
 
         loadAttendees();
 
-        scanQRView.showProgressBar(true);
+        scanQRView.showProgress(true);
         scanQRView.loadCamera();
     }
 
@@ -121,7 +121,7 @@ public class ScanQRPresenter implements IScanQRPresenter {
         if(granted) {
             scanQRView.startScan();
         } else {
-            scanQRView.showProgressBar(false);
+            scanQRView.showProgress(false);
             scanQRView.showPermissionError("User denied permission");
         }
     }
@@ -144,7 +144,7 @@ public class ScanQRPresenter implements IScanQRPresenter {
         if(scanQRView == null)
             return;
 
-        scanQRView.showProgressBar(false);
+        scanQRView.showProgress(false);
     }
 
     @Override
