@@ -1,8 +1,10 @@
 package org.fossasia.openevent.app.login;
 
+import android.support.annotation.VisibleForTesting;
+
 import org.fossasia.openevent.app.data.contract.ILoginModel;
-import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
 import org.fossasia.openevent.app.utils.Constants;
@@ -52,10 +54,9 @@ public class LoginPresenter implements ILoginPresenter {
         loginView.showProgress(true);
 
         loginModel.login(email, password)
-            .subscribe(loginResponse -> {
+            .subscribe(() -> {
                 if(loginView != null) {
                     loginView.onSuccess("Successfully Logged In");
-                    saveEmail(email);
                     loginView.showProgress(false);
                 }
             }, throwable -> {
@@ -75,14 +76,11 @@ public class LoginPresenter implements ILoginPresenter {
         }
     }
 
-    private void saveEmail(String email) {
-        utilModel.addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, email);
-    }
-
     private Set<String> getEmailList() {
         return utilModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null);
     }
 
+    @VisibleForTesting
     public ILoginView getView() {
         return loginView;
     }

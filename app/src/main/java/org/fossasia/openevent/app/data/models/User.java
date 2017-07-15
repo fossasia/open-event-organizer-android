@@ -9,9 +9,15 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@Builder
+@AllArgsConstructor
+@EqualsAndHashCode(of = {"id", "email"})
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 public class User {
