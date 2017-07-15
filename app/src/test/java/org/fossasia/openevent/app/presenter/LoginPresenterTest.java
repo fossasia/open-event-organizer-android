@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.presenter;
 
+import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.login.LoginPresenter;
@@ -51,13 +52,14 @@ public class LoginPresenterTest {
     @Before
     public void setUp() {
         loginPresenter = new LoginPresenter(loginModel, utilModel);
+        loginPresenter.attach(loginView);
     }
 
     @Test
     public void shouldShowSuccessOnStart() {
         Mockito.when(loginModel.isLoggedIn()).thenReturn(true);
 
-        loginPresenter.attach(loginView);
+        loginPresenter.start();
 
         Mockito.verify(loginView).onSuccess(any());
     }
@@ -66,15 +68,13 @@ public class LoginPresenterTest {
     public void shouldNotShowSuccessOnStart() {
         Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
 
-        loginPresenter.attach(loginView);
+        loginPresenter.start();
 
         Mockito.verify(loginView, Mockito.never()).onSuccess(any());
     }
 
     @Test
     public void shouldDetachViewOnStop() {
-        loginPresenter.attach(loginView);
-
         assertNotNull(loginPresenter.getView());
 
         loginPresenter.detach();
@@ -86,7 +86,7 @@ public class LoginPresenterTest {
     public void shouldLoginAutomatically() {
         Mockito.when(loginModel.isLoggedIn()).thenReturn(true);
 
-        loginPresenter.attach(loginView);
+        loginPresenter.start();
 
         Mockito.verify(loginView).onSuccess(any());
     }
@@ -95,7 +95,7 @@ public class LoginPresenterTest {
     public void shouldNotLoginAutomatically() {
         Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
 
-        loginPresenter.attach(loginView);
+        loginPresenter.start();
 
         Mockito.verify(loginView, Mockito.never()).onSuccess(any());
     }
@@ -109,11 +109,11 @@ public class LoginPresenterTest {
 
         InOrder inOrder = Mockito.inOrder(loginModel, loginView);
 
-        loginPresenter.attach(loginView);
+        loginPresenter.start();
         loginPresenter.login(email, password);
 
-        inOrder.verify(loginView).showProgress(true);
         inOrder.verify(loginModel).login(email, password);
+        inOrder.verify(loginView).showProgress(true);
         inOrder.verify(loginView).onSuccess(any());
         inOrder.verify(loginView).showProgress(false);
     }
@@ -122,21 +122,22 @@ public class LoginPresenterTest {
     public void shouldShowLoginError() {
         String error = "Test Error";
         Mockito.when(loginModel.login(email, password))
-            .thenReturn(Completable.error(new Throwable(error)));
+            .thenReturn(Completable.error(Logger.TEST_ERROR));
 
         InOrder inOrder = Mockito.inOrder(loginModel, loginView);
 
-        loginPresenter.attach(loginView);
+        loginPresenter.start();
         loginPresenter.login(email, password);
 
-        inOrder.verify(loginView).showProgress(true);
         inOrder.verify(loginModel).login(email, password);
+        inOrder.verify(loginView).showProgress(true);
         inOrder.verify(loginView).showError(error);
         inOrder.verify(loginView).showProgress(false);
     }
 
     @Test
     public void shouldNotAccessView() {
+        loginPresenter.attach(loginView);
         loginPresenter.detach();
 
         loginPresenter.login(email, password);
@@ -149,7 +150,7 @@ public class LoginPresenterTest {
         Mockito.when(utilModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(savedEmails);
         Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
 
-        loginPresenter.attach(loginView);
+        loginPresenter.start();
 
         Mockito.verify(loginView).attachEmails(savedEmails);
     }
@@ -159,7 +160,7 @@ public class LoginPresenterTest {
         Mockito.when(utilModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(null);
         Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
 
-        loginPresenter.attach(loginView);
+        loginPresenter.start();
 
         Mockito.verify(loginView, Mockito.never()).attachEmails(savedEmails);
     }

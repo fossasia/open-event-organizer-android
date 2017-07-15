@@ -21,6 +21,7 @@ import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
+import static org.fossasia.openevent.app.presenter.Util.ERROR_OBSERVABLE;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -88,8 +89,6 @@ public class AttendeeCheckInPresenterTest {
 
     @Test
     public void shouldNotAccessView() {
-        setLoadAttendeeBehaviour();
-
         attendeeCheckInPresenter.detach();
         attendeeCheckInPresenter.start();
         attendeeCheckInPresenter.toggleCheckIn();
@@ -143,7 +142,7 @@ public class AttendeeCheckInPresenterTest {
     @Test
     public void shouldHandleTogglingError() {
         attendeeCheckInPresenter.setAttendee(attendee);
-        setToggleAttendeeBehaviour(Observable.error(new Throwable()));
+        setToggleAttendeeBehaviour(ERROR_OBSERVABLE);
 
         attendeeCheckInPresenter.toggleCheckIn();
 
@@ -167,7 +166,7 @@ public class AttendeeCheckInPresenterTest {
     @Test
     public void shouldShowProgressWhileTogglingError() {
         attendeeCheckInPresenter.setAttendee(attendee);
-        setToggleAttendeeBehaviour(Observable.error(new Throwable()));
+        setToggleAttendeeBehaviour(ERROR_OBSERVABLE);
 
         attendeeCheckInPresenter.toggleCheckIn();
 

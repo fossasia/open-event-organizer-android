@@ -1,7 +1,11 @@
 package org.fossasia.openevent.app.event.attendees;
 
+import android.support.annotation.VisibleForTesting;
+
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.fossasia.openevent.app.common.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseChangeListener;
 import org.fossasia.openevent.app.data.models.Attendee;
@@ -14,15 +18,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneous;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
-public class AttendeesPresenter implements IAttendeesPresenter {
+public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView> implements IAttendeesPresenter {
 
-    private long eventId;
-    private IAttendeesView attendeesView;
     private IAttendeeRepository attendeeRepository;
     private IDatabaseChangeListener<Attendee> attendeeListener;
 
@@ -34,15 +36,9 @@ public class AttendeesPresenter implements IAttendeesPresenter {
         this.attendeeListener = attendeeListener;
     }
 
-    public void setAttendeeList(List<Attendee> attendeeList) {
-        this.attendeeList.clear();
-        this.attendeeList.addAll(attendeeList);
-    }
-
     @Override
-    public void attach(long eventId, IAttendeesView attendeesView) {
-        this.eventId = eventId;
-        this.attendeesView = attendeesView;
+    public void attach(Long eventId, IAttendeesView attendeesView) {
+        super.attach(eventId, attendeesView);
     }
 
     @Override
@@ -53,8 +49,8 @@ public class AttendeesPresenter implements IAttendeesPresenter {
 
     @Override
     public void detach() {
-        attendeesView = null;
         attendeeListener.stopListening();
+        super.detach();
     }
 
     @Override
@@ -63,69 +59,41 @@ public class AttendeesPresenter implements IAttendeesPresenter {
     }
 
     @Override
-    public Single<Attendee> getAttendeeById(long attendeeId) {
-        return Observable.fromIterable(attendeeList)
-            .filter(attendee -> attendee.getId() == attendeeId)
-            .firstOrError()
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    private void hideProgress(boolean forceReload) {
-        attendeesView.showProgress(false);
-        attendeesView.showEmptyView(attendeeList.size() == 0);
-
-        if (forceReload)
-            attendeesView.onRefreshComplete();
-    }
-
-    @Override
     public void loadAttendees(boolean forceReload) {
-        if(attendeesView == null)
+        if(getView() == null)
             return;
 
-        attendeesView.showProgress(true);
-        attendeesView.showEmptyView(false);
-        attendeesView.showScanButton(false);
+        getView().showScanButton(false);
 
-        attendeeRepository.getAttendees(eventId, forceReload)
+        attendeeRepository.getAttendees(getId(), forceReload)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneousRefresh(getView(), forceReload))
             .toSortedList()
-            .subscribeOn(Schedulers.computation())
-            .subscribe(attendees -> {
-                attendeeList.clear();
-                attendeeList.addAll(attendees);
-
-                if (attendeesView == null) return;
-                attendeesView.showResults(attendees);
-                hideProgress(forceReload);
-                attendeesView.showScanButton(!attendeeList.isEmpty());
-            }, throwable -> {
-                if (attendeesView == null) return;
-                attendeesView.showError(throwable.getMessage());
-                hideProgress(forceReload);
-                attendeesView.showScanButton(!attendeeList.isEmpty());
-            });
+            .compose(emptiable(getView(), attendeeList))
+            .doFinally(() -> getView().showScanButton(!attendeeList.isEmpty()))
+            .subscribe(Logger::logSuccess, Logger::logError);
     }
 
     private void listenToModelChanges() {
         attendeeListener.startListening();
 
         attendeeListener.getNotifier()
+            .compose(dispose(getDisposable()))
+            .compose(erroneous(getView()))
             .filter(attendeeModelChange -> attendeeModelChange.getAction().equals(BaseModel.Action.UPDATE))
             .map(DatabaseChangeListener.ModelChange::getModel)
-            .subscribe(attendee -> {
-                if (attendeesView == null)
-                    return;
-                attendeesView.updateAttendee(attendee);
-            }, throwable -> {
-                if (attendeesView == null)
-                    return;
-                attendeesView.showError(throwable.getMessage());
-            });
+            .subscribe(attendee -> getView().updateAttendee(attendee), Logger::logError);
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     public IAttendeesView getView() {
-        return attendeesView;
+        return super.getView();
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    public void setAttendeeList(List<Attendee> attendeeList) {
+        this.attendeeList.clear();
+        this.attendeeList.addAll(attendeeList);
     }
 
 }

@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
 
         // Notify presenter to attach
         presenter.attach(this);
+        presenter.start();
 
         setEditTextListener();
 
@@ -107,7 +108,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
 
             presenter.login(email, password);
         });
-
     }
 
     private void setEditTextListener() {

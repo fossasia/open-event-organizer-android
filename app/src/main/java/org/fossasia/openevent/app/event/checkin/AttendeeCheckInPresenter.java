@@ -2,6 +2,8 @@ package org.fossasia.openevent.app.event.checkin;
 
 import android.support.annotation.VisibleForTesting;
 
+import org.fossasia.openevent.app.common.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.event.checkin.contract.IAttendeeCheckInPresenter;
@@ -9,10 +11,12 @@ import org.fossasia.openevent.app.event.checkin.contract.IAttendeeCheckInView;
 
 import javax.inject.Inject;
 
-public class AttendeeCheckInPresenter implements IAttendeeCheckInPresenter {
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousResult;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.result;
 
-    private long attendeeId;
-    private IAttendeeCheckInView attendeeCheckInView;
+public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttendeeCheckInView> implements IAttendeeCheckInPresenter {
+
     private IAttendeeRepository attendeeRepository;
 
     private Attendee attendee;
@@ -23,56 +27,39 @@ public class AttendeeCheckInPresenter implements IAttendeeCheckInPresenter {
     }
 
     @Override
-    public void attach(long attendeeId, IAttendeeCheckInView attendeeCheckInView) {
-        this.attendeeId = attendeeId;
-        this.attendeeCheckInView = attendeeCheckInView;
+    public void attach(Long attendeeId, IAttendeeCheckInView attendeeCheckInView) {
+        super.attach(attendeeId, attendeeCheckInView);
     }
 
     @Override
     public void start() {
-        loadAttendee();
+        if (getView() == null)
+            return;
+
+        attendeeRepository.getAttendee(getId(), false)
+            .compose(dispose(getDisposable()))
+            .compose(result(getView()))
+            .subscribe(attendee -> this.attendee = attendee, Logger::logError);
     }
 
     @Override
     public void detach() {
-        attendeeCheckInView = null;
-    }
-
-    private void loadAttendee() {
-        attendeeRepository.getAttendee(attendeeId, false)
-            .subscribe(attendee -> {
-                this.attendee = attendee;
-                if (attendeeCheckInView != null)
-                    attendeeCheckInView.showResult(attendee);
-            }, Throwable::printStackTrace);
+        super.detach();
     }
 
     @Override
     public void toggleCheckIn() {
-        if (attendeeCheckInView == null)
+        if (getView() == null)
             return;
 
-        attendeeCheckInView.showProgress(true);
-
-        attendeeRepository.toggleAttendeeCheckStatus(attendee.getEventId(), attendeeId)
+        attendeeRepository.toggleAttendeeCheckStatus(attendee.getEventId(), getId())
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneousResult(getView()))
             .subscribe(completed -> {
-                if (attendeeCheckInView == null)
-                    return;
-
                 attendee = completed;
-
                 String status = attendee.isCheckedIn() ? "Checked In" : "Checked Out";
-
-                attendeeCheckInView.showResult(attendee);
-                attendeeCheckInView.onSuccess(status);
-                attendeeCheckInView.showProgress(false);
-                //attendeeCheckInView.dismiss();
-            }, throwable -> {
-                throwable.printStackTrace();
-                attendeeCheckInView.showError(throwable.getMessage());
-                attendeeCheckInView.showProgress(false);
-                //attendeeCheckInView.dismiss();
-            });
+                getView().onSuccess(status);
+            }, Logger::logError);
     }
 
     @VisibleForTesting
@@ -82,6 +69,6 @@ public class AttendeeCheckInPresenter implements IAttendeeCheckInPresenter {
 
     @VisibleForTesting
     public IAttendeeCheckInView getView() {
-        return attendeeCheckInView;
+        return super.getView();
     }
 }

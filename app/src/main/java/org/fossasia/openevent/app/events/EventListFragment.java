@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.databinding.library.baseAdapters.BR;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.fossasia.openevent.app.OrgaApplication;
@@ -29,7 +30,6 @@ import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,7 +56,6 @@ public class EventListFragment extends BaseFragment implements IEventsView {
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
 
-    private final List<Event> events = new ArrayList<>();
     private EventsListAdapter eventListAdapter;
     private RecyclerView.AdapterDataObserver adapterDataObserver;
 
@@ -94,7 +93,7 @@ public class EventListFragment extends BaseFragment implements IEventsView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_event_list, container, false);
-        binding.setEvents(events);
+        binding.setEvents(presenter.getEvents());
         return binding.getRoot();
     }
 
@@ -129,8 +128,8 @@ public class EventListFragment extends BaseFragment implements IEventsView {
 
     @Override
     public void showResults(List<Event> events) {
-        this.events.clear();
-        this.events.addAll(events);
+        binding.setVariable(BR.events, events);
+        binding.executePendingBindings();
         eventListAdapter.notifyDataSetChanged();
     }
 
@@ -155,7 +154,7 @@ public class EventListFragment extends BaseFragment implements IEventsView {
     }
 
     private void setupRecyclerView() {
-        eventListAdapter = new EventsListAdapter(events, bus);
+        eventListAdapter = new EventsListAdapter(presenter.getEvents(), bus);
 
         recyclerView = binding.eventRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));

@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        presenter.attach(this);
+
         View navHeader = navigationView.getHeaderView(0);
         tvEventName = (TextView) navHeader.findViewById(R.id.tvEventName);
         tvEventTime = (TextView) navHeader.findViewById(R.id.tvEventTime);
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentManager = getSupportFragmentManager();
         loadFragment(R.id.nav_events);
 
-        presenter.attach(this);
+        presenter.start();
     }
 
     @Override
