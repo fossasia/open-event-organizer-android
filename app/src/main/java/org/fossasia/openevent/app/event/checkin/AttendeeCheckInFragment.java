@@ -96,6 +96,7 @@ public class AttendeeCheckInFragment extends BottomSheetDialogFragment implement
     @Override
     public void showAttendee(Attendee attendee) {
         binding.setCheckinAttendee(attendee);
+        binding.executePendingBindings();
     }
 
     @Override
