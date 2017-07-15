@@ -7,6 +7,7 @@ import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.LoginResponse;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.EventService;
+import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
@@ -19,15 +20,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.observers.TestObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -47,6 +47,9 @@ public class LoginModelTest {
     EventService eventService;
 
     @Mock
+    IEventRepository eventRepository;
+
+    @Mock
     IDatabaseRepository databaseRepository;
 
     private String token = "TestToken";
@@ -58,7 +61,7 @@ public class LoginModelTest {
 
     @Before
     public void setUp() {
-        loginModel = new LoginModel(utilModel, eventService, databaseRepository);
+        loginModel = new LoginModel(utilModel, eventService, eventRepository, databaseRepository);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -75,14 +78,8 @@ public class LoginModelTest {
         LoginModel spied = Mockito.spy(loginModel);
 
         doReturn(true).when(spied).isLoggedIn();
-        when(utilModel.getToken()).thenReturn(token);
 
-        Observable<LoginResponse> responseObservable = spied.login(email, password);
-
-        responseObservable
-            .map(LoginResponse::getAccessToken)
-            .test()
-            .assertValue(token);
+        spied.login(email, password).test();
 
         verifyNoMoreInteractions(eventService);
     }
@@ -90,15 +87,23 @@ public class LoginModelTest {
     @Test
     public void shouldCallServiceOnCacheMiss() {
         when(utilModel.isConnected()).thenReturn(true);
+        when(utilModel.getToken()).thenReturn(null);
         when(databaseRepository.getAllItems(User.class)).thenReturn(Observable.empty());
         when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.just(new LoginResponse(token)));
 
-        Observable<LoginResponse> responseObservable = loginModel.login(email, password);
+        loginModel.login(email, password).test();
 
-        responseObservable
-            .test()
-            .assertValue(loginResponse -> loginResponse.getAccessToken().equals(token));
+        verify(eventService).login(Mockito.any(Login.class));
+    }
+
+    @Test
+    public void shouldSaveTokenOnLoginResponse() {
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.login(Mockito.any(Login.class)))
+            .thenReturn(Observable.just(new LoginResponse(token)));
+
+        loginModel.login(email, password).test();
 
         verify(eventService).login(Mockito.any(Login.class));
         // Should save token on object return
@@ -111,20 +116,18 @@ public class LoginModelTest {
         when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.error(new Throwable("Error")));
 
-        Observable<LoginResponse> responseObservable = loginModel.login(email, password);
-        responseObservable.test().assertErrorMessage("Error");
+        loginModel.login(email, password).test().assertErrorMessage("Error");
 
         verify(eventService).login(Mockito.any(Login.class));
         // Should not save token on object return
-        verify(utilModel, Mockito.never()).saveString(Constants.SHARED_PREFS_TOKEN, token);
+        verify(utilModel, Mockito.never()).saveToken(anyString());
     }
 
     @Test
     public void shouldSendErrorOnNetworkDown() {
         when(utilModel.isConnected()).thenReturn(false);
 
-        Observable<LoginResponse> responseObservable = loginModel.login(email, password);
-        responseObservable.test().assertErrorMessage(Constants.NO_NETWORK);
+        loginModel.login(email, password).test().assertErrorMessage(Constants.NO_NETWORK);
 
         verifyNoMoreInteractions(eventService);
     }
@@ -141,8 +144,14 @@ public class LoginModelTest {
     public void shouldResetExpiredToken() {
         when(utilModel.getToken()).thenReturn(EXPIRED_TOKEN);
 
-        assertFalse(loginModel.isLoggedIn());
-        verify(utilModel).getToken();
+        when(utilModel.isConnected()).thenReturn(true);
+        when(databaseRepository.getAllItems(User.class)).thenReturn(Observable.empty());
+        when(eventService.login(Mockito.any(Login.class)))
+            .thenReturn(Observable.just(new LoginResponse(token)));
+
+        loginModel.login(email, password).test();
+
+        verify(utilModel).saveToken(token);
     }
 
     @Test
@@ -169,41 +178,40 @@ public class LoginModelTest {
         when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.empty());
 
-        loginModel.login(email, password).subscribe();
+        loginModel.login(email, password).test();
 
         verify(eventService).login(Mockito.any(Login.class));
         verify(utilModel, Mockito.never()).deleteDatabase();
     }
 
     @Test
-    public void shouldDeleteDatabaseOnExistingDifferentUser() {
-        TestObserver testObserver = TestObserver.create();
-        Completable completable = Completable.complete()
-            .doOnSubscribe(testObserver::onSubscribe);
-
+    public void shouldDeleteDatabaseOnDifferentUserLogin() {
         when(utilModel.isConnected()).thenReturn(true);
+        when(utilModel.getToken()).thenReturn(null);
         when(databaseRepository.getAllItems(User.class))
-            .thenReturn(Observable.just(new User(email + "test")));
+            .thenReturn(Observable.just(new User(email + "2")));
         when(eventService.login(Mockito.any(Login.class)))
-            .thenReturn(Observable.empty());
-        when(utilModel.deleteDatabase()).thenReturn(completable);
+            .thenReturn(Observable.just(new LoginResponse(token)));
+        when(eventRepository.getOrganiser(true)).thenReturn(Observable.just(new User(email + "3")));
 
-        loginModel.login(email, password).subscribe();
+        loginModel.login(email, password).test();
 
         verify(eventService).login(Mockito.any(Login.class));
         verify(utilModel).deleteDatabase();
-        testObserver.assertSubscribed();
     }
 
     @Test
-    public void shouldNotDeleteDatabaseOnErrorResponse() {
+    public void shouldSaveEmailOnLoginSuccessFully() {
         when(utilModel.isConnected()).thenReturn(true);
+        when(utilModel.getToken()).thenReturn(EXPIRED_TOKEN);
+        when(databaseRepository.getAllItems(User.class))
+            .thenReturn(Observable.just(new User(email + "old")));
         when(eventService.login(Mockito.any(Login.class)))
-            .thenReturn(Observable.error(new Throwable()));
+            .thenReturn(Observable.just(new LoginResponse(token)));
+        when(eventRepository.getOrganiser(true)).thenReturn(Observable.just(new User(email + "new")));
 
-        loginModel.login(email, password).test().assertSubscribed();
+        loginModel.login(email + "new", password).test();
 
-        verify(eventService).login(Mockito.any(Login.class));
-        verify(utilModel, Mockito.never()).deleteDatabase();
+        verify(utilModel).addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, email + "new");
     }
 }
