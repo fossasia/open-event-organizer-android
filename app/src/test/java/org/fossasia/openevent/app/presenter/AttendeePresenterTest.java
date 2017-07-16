@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.presenter;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseChangeListener;
 import org.fossasia.openevent.app.data.models.Attendee;
@@ -30,6 +31,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
+import static org.fossasia.openevent.app.presenter.Util.ERROR_OBSERVABLE;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -109,18 +111,17 @@ public class AttendeePresenterTest {
 
     @Test
     public void shouldShowAttendeeError() {
-        String error = "Test Error";
         when(attendeeRepository.getAttendees(id, false))
-            .thenReturn(Observable.error(new Throwable(error)));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeeRepository, attendeesView);
 
         attendeesPresenter.loadAttendees(false);
 
-        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(id, false);
-        inOrder.verify(attendeesView).showError(error);
+        inOrder.verify(attendeesView).showProgress(true);
+        inOrder.verify(attendeesView).showError(Logger.TEST_MESSAGE);
         inOrder.verify(attendeesView).showProgress(false);
     }
 
@@ -135,12 +136,12 @@ public class AttendeePresenterTest {
 
         // TODO: Fix flaky test for attendees
 
-        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(id, false);
+        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showResults(any());
-        inOrder.verify(attendeesView).showProgress(false);
         inOrder.verify(attendeesView).showScanButton(true);
+        inOrder.verify(attendeesView).showProgress(false);
     }
 
     @Test
@@ -154,13 +155,13 @@ public class AttendeePresenterTest {
 
         // TODO: Fix flaky test for attendees
 
-        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(id, true);
+        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showResults(any());
-        inOrder.verify(attendeesView).showProgress(false);
-        inOrder.verify(attendeesView).onRefreshComplete();
         inOrder.verify(attendeesView).showScanButton(true);
+        inOrder.verify(attendeesView).onRefreshComplete();
+        inOrder.verify(attendeesView).showProgress(false);
     }
 
     @Test
@@ -189,54 +190,51 @@ public class AttendeePresenterTest {
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showScanButton(false);
-        inOrder.verify(attendeesView).onRefreshComplete();
         inOrder.verify(attendeesView).showScanButton(false);
+        inOrder.verify(attendeesView).onRefreshComplete();
     }
 
     @Test
     public void shouldShowEmptyViewOnSwipeRefreshError() {
-        String error = "Test Error";
         when(attendeeRepository.getAttendees(id, true))
-            .thenReturn(Observable.error(new Throwable(error)));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showEmptyView(false);
-        inOrder.verify(attendeesView).showError(error);
+        inOrder.verify(attendeesView).showError(Logger.TEST_MESSAGE);
         inOrder.verify(attendeesView).showEmptyView(true);
     }
 
     @Test
     public void shouldNotShowScanButtonOnSwipeRefreshError() {
-        String error = "Test Error";
         when(attendeeRepository.getAttendees(id, true))
-            .thenReturn(Observable.error(new Throwable(error)));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showScanButton(false);
-        inOrder.verify(attendeesView).onRefreshComplete();
         inOrder.verify(attendeesView).showScanButton(false);
+        inOrder.verify(attendeesView).onRefreshComplete();
     }
 
     @Test
     public void shouldNotShowEmptyViewIfNonEmptyAttendeeListOnSwipeRefreshError() {
         attendeesPresenter.setAttendeeList(attendees);
 
-        String error = "Test Error";
         when(attendeeRepository.getAttendees(id, true))
-            .thenReturn(Observable.error(new Throwable(error)));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showEmptyView(false);
-        inOrder.verify(attendeesView).showError(error);
+        inOrder.verify(attendeesView).showError(Logger.TEST_MESSAGE);
         inOrder.verify(attendeesView).showEmptyView(false);
     }
 
@@ -244,17 +242,16 @@ public class AttendeePresenterTest {
     public void shouldShowScanButtonIfNonEmptyAttendeeListOnSwipeRefreshError() {
         attendeesPresenter.setAttendeeList(attendees);
 
-        String error = "Test Error";
         when(attendeeRepository.getAttendees(id, true))
-            .thenReturn(Observable.error(new Throwable(error)));
+            .thenReturn(Observable.error(Logger.TEST_ERROR));
 
         InOrder inOrder = Mockito.inOrder(attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showScanButton(false);
-        inOrder.verify(attendeesView).onRefreshComplete();
         inOrder.verify(attendeesView).showScanButton(true);
+        inOrder.verify(attendeesView).onRefreshComplete();
     }
 
     @Test
@@ -283,25 +280,25 @@ public class AttendeePresenterTest {
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showScanButton(false);
-        inOrder.verify(attendeesView).onRefreshComplete();
         inOrder.verify(attendeesView).showScanButton(true);
+        inOrder.verify(attendeesView).onRefreshComplete();
     }
 
     @Test
     public void shouldRefreshAttendeesOnError() {
         when(attendeeRepository.getAttendees(id, true))
-            .thenReturn(Observable.error(new Throwable("Error")));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeeRepository, attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
-        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(id, true);
+        inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showError(anyString());
-        inOrder.verify(attendeesView).showProgress(false);
         inOrder.verify(attendeesView).onRefreshComplete();
+        inOrder.verify(attendeesView).showProgress(false);
     }
 
     @Test

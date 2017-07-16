@@ -1,12 +1,8 @@
 package org.fossasia.openevent.app.event.detail.contract;
 
-public interface IEventDetailPresenter {
+import org.fossasia.openevent.app.common.contract.presenter.IDetailPresenter;
 
-    void attach(IEventDetailView eventDetailView, long eventId);
-
-    void start();
-
-    void detach();
+public interface IEventDetailPresenter extends IDetailPresenter<Long, IEventDetailView> {
 
     void loadDetails(boolean forceReload);
 

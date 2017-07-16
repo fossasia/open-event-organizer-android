@@ -1,20 +1,29 @@
 package org.fossasia.openevent.app.events;
 
+import android.support.annotation.VisibleForTesting;
+
+import org.fossasia.openevent.app.common.BasePresenter;
+import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsView;
 import org.fossasia.openevent.app.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
-import io.reactivex.schedulers.Schedulers;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
-public class EventsPresenter implements IEventsPresenter {
+public class EventsPresenter extends BasePresenter<IEventsView> implements IEventsPresenter {
 
-    private IEventsView eventsView;
+    private List<Event> events = new ArrayList<>();
+
     private IEventRepository eventsDataRepository;
-
-    private boolean isListEmpty = true;
 
     @Inject
     public EventsPresenter(IEventRepository eventsDataRepository) {
@@ -23,7 +32,7 @@ public class EventsPresenter implements IEventsPresenter {
 
     @Override
     public void attach(IEventsView eventsView) {
-        this.eventsView = eventsView;
+        super.attach(eventsView);
     }
 
     @Override
@@ -34,69 +43,48 @@ public class EventsPresenter implements IEventsPresenter {
 
     @Override
     public void detach() {
-        eventsView = null;
+        super.detach();
     }
 
-    private void hideProgress(boolean forceReload) {
-        eventsView.showProgress(false);
-        eventsView.showEmptyView(isListEmpty);
-
-        if (forceReload)
-            eventsView.onRefreshComplete();
+    @Override
+    public List<Event> getEvents() {
+        return events;
     }
 
     @Override
     public void loadUserEvents(boolean forceReload) {
-        if(eventsView == null)
+        if(getView() == null)
             return;
-
-        eventsView.showProgress(true);
-        eventsView.showEmptyView(false);
 
         eventsDataRepository
             .getEvents(forceReload)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneousRefresh(getView(), forceReload))
             .toSortedList()
-            .subscribeOn(Schedulers.computation())
-            .subscribe(events -> {
-                if(eventsView == null)
-                    return;
-                eventsView.showResults(events);
-                isListEmpty = events.size() == 0;
-                hideProgress(forceReload);
-            }, throwable -> {
-                if(eventsView == null)
-                    return;
-
-                eventsView.showError(throwable.getMessage());
-                hideProgress(forceReload);
-            });
+            .compose(emptiable(getView(), events))
+            .subscribe(Logger::logSuccess, Logger::logError);
     }
 
     /* Not dealing with progressbar here as main task is to show events */
     @Override
     public void loadOrganiser(boolean forceReload) {
-        if(eventsView == null)
+        if(getView() == null)
             return;
 
         eventsDataRepository.getOrganiser(false)
+            .compose(dispose(getDisposable()))
             .subscribe(user -> {
-                if(eventsView == null)
-                    return;
-
                 String name = Utils.formatOptionalString("%s %s",
                     user.getUserDetail().getFirstName(),
                     user.getUserDetail().getLastName());
 
-                eventsView.showOrganiserName(name.trim());
-            }, throwable -> {
-                if(eventsView == null)
-                    return;
-                eventsView.showOrganiserLoadError(throwable.getMessage());
-            });
+                getView().showOrganiserName(name.trim());
+            }, throwable -> getView().showOrganiserLoadError(throwable.getMessage()));
     }
 
+    @VisibleForTesting
     public IEventsView getView() {
-        return eventsView;
+        return super.getView();
     }
 
 }

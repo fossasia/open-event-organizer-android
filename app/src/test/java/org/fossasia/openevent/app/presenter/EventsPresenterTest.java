@@ -29,6 +29,7 @@ import io.reactivex.Observable;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
+import static org.fossasia.openevent.app.presenter.Util.ERROR_OBSERVABLE;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -108,8 +109,8 @@ public class EventsPresenterTest {
 
         eventsActivityPresenter.loadUserEvents(false);
 
-        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventRepository).getEvents(false);
+        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventListView).showResults(eventList);
         inOrder.verify(eventListView).showProgress(false);
     }
@@ -123,11 +124,11 @@ public class EventsPresenterTest {
 
         eventsActivityPresenter.loadUserEvents(true);
 
-        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventRepository).getEvents(true);
+        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventListView).showResults(eventList);
-        inOrder.verify(eventListView).showProgress(false);
         inOrder.verify(eventListView).onRefreshComplete();
+        inOrder.verify(eventListView).showProgress(false);
     }
 
     @Test
@@ -148,7 +149,7 @@ public class EventsPresenterTest {
     @Test
     public void shouldShowEmptyViewOnSwipeRefreshError() {
         when(eventRepository.getEvents(true))
-            .thenReturn(Observable.error(new Throwable("Error")));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventListView);
 
@@ -176,31 +177,31 @@ public class EventsPresenterTest {
     @Test
     public void shouldRefreshEventsOnError() {
         when(eventRepository.getEvents(true))
-            .thenReturn(Observable.error(new Throwable("Error")));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadUserEvents(true);
 
-        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventRepository).getEvents(true);
+        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventListView).showError(anyString());
-        inOrder.verify(eventListView).showProgress(false);
         inOrder.verify(eventListView).onRefreshComplete();
+        inOrder.verify(eventListView).showProgress(false);
     }
 
     @Test
     public void shouldShowEventError() {
         String error = "Test Error";
         when(eventRepository.getEvents(false))
-            .thenReturn(Observable.error(new Throwable(error)));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
         eventsActivityPresenter.loadUserEvents(false);
 
-        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventRepository).getEvents(false);
+        inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventListView).showError(error);
         inOrder.verify(eventListView).showProgress(false);
     }
@@ -224,42 +225,10 @@ public class EventsPresenterTest {
     }
 
     @Test
-    public void testOrganiserNameRendering() {
-        UserDetail userDetail = new UserDetail();
-        userDetail.setFirstName("John");
-        userDetail.setLastName("Wick");
-
-        organiser.setUserDetail(userDetail);
-
-        when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(organiser));
-
-        eventsActivityPresenter.loadOrganiser(false);
-        verify(eventListView).showOrganiserName("John Wick");
-
-        userDetail.setFirstName("John");
-        userDetail.setLastName(null);
-
-        eventsActivityPresenter.loadOrganiser(false);
-        verify(eventListView).showOrganiserName("John");
-
-        userDetail.setFirstName(null);
-        userDetail.setLastName("Wick");
-
-        eventsActivityPresenter.loadOrganiser(false);
-        verify(eventListView).showOrganiserName("Wick");
-
-        userDetail.setFirstName(null);
-        userDetail.setLastName(null);
-
-        eventsActivityPresenter.loadOrganiser(false);
-        verify(eventListView).showOrganiserName("");
-    }
-
-    @Test
     public void shouldShowOrganiserError() {
         String error = "Test Error";
         when(eventRepository.getOrganiser(false))
-            .thenReturn(Observable.error(new Throwable(error)));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 

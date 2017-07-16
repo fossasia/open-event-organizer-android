@@ -1,12 +1,8 @@
 package org.fossasia.openevent.app.event.checkin.contract;
 
-public interface IAttendeeCheckInPresenter {
+import org.fossasia.openevent.app.common.contract.presenter.IDetailPresenter;
 
-    void attach(long attendeeId, IAttendeeCheckInView attendeeCheckInView);
-
-    void start();
-
-    void detach();
+public interface IAttendeeCheckInPresenter extends IDetailPresenter<Long, IAttendeeCheckInView> {
 
     void toggleCheckIn();
 

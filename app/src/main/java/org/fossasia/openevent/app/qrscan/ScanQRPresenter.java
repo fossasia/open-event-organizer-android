@@ -1,7 +1,10 @@
 package org.fossasia.openevent.app.qrscan;
 
+import android.support.annotation.VisibleForTesting;
+
 import com.google.android.gms.vision.barcode.Barcode;
 
+import org.fossasia.openevent.app.common.BaseDetailPresenter;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRPresenter;
@@ -14,17 +17,15 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
-public class ScanQRPresenter implements IScanQRPresenter {
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.schedule;
+
+public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> implements IScanQRPresenter {
 
     private static final String CLEAR_DISTINCT = "clear";
 
-    private long eventId;
-
-    private IScanQRView scanQRView;
     private IAttendeeRepository attendeeRepository;
     private List<Attendee> attendees = new ArrayList<>();
 
@@ -39,32 +40,25 @@ public class ScanQRPresenter implements IScanQRPresenter {
 
         detect.distinctUntilChanged()
             .debounce(150, TimeUnit.MILLISECONDS)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(receiving -> scanQRView.showBarcodePanel(!receiving));
+            .compose(schedule())
+            .subscribe(receiving -> getView().showBarcodePanel(!receiving));
 
         data.distinctUntilChanged()
             .filter(barcode -> !paused)
             .filter(barcode -> !barcode.equals(CLEAR_DISTINCT))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .compose(schedule())
             .subscribe(this::processBarcode);
     }
 
     private void processBarcode(String barcode) {
-        scanQRView.showBarcodeData(barcode);
+        getView().showBarcodeData(barcode);
 
         Observable.fromIterable(attendees)
+            .compose(dispose(getDisposable()))
             .filter(attendee -> attendee.getOrder() != null)
             .filter(attendee -> (attendee.getOrder().getIdentifier() + "-" + attendee.getId()).equals(barcode))
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(attendee -> {
-                if (scanQRView == null)
-                    return;
-
-                scanQRView.onScannedAttendee(attendee);
-            });
+            .compose(schedule())
+            .subscribe(attendee -> getView().onScannedAttendee(attendee));
     }
 
     public void setAttendees(List<Attendee> attendees) {
@@ -72,25 +66,24 @@ public class ScanQRPresenter implements IScanQRPresenter {
     }
 
     @Override
-    public void attach(long eventId, IScanQRView scanQRView) {
-        this.eventId = eventId;
-        this.scanQRView = scanQRView;
+    public void attach(Long eventId, IScanQRView scanQRView) {
+        super.attach(eventId, scanQRView);
     }
 
     @Override
     public void start() {
-        if(scanQRView == null)
+        if(getView() == null)
             return;
 
         loadAttendees();
 
-        scanQRView.showProgress(true);
-        scanQRView.loadCamera();
+        getView().showProgress(true);
+        getView().loadCamera();
     }
 
     @Override
     public void detach() {
-        scanQRView = null;
+        super.detach();
     }
 
     @Override
@@ -105,7 +98,8 @@ public class ScanQRPresenter implements IScanQRPresenter {
     }
 
     private void loadAttendees() {
-        attendeeRepository.getAttendees(eventId, false)
+        attendeeRepository.getAttendees(getId(), false)
+            .compose(dispose(getDisposable()))
             .toList()
             .subscribe(attendeeList -> {
                 attendees.clear();
@@ -115,20 +109,20 @@ public class ScanQRPresenter implements IScanQRPresenter {
 
     @Override
     public void cameraPermissionGranted(boolean granted) {
-        if(scanQRView == null)
+        if(getView() == null)
             return;
 
         if(granted) {
-            scanQRView.startScan();
+            getView().startScan();
         } else {
-            scanQRView.showProgress(false);
-            scanQRView.showPermissionError("User denied permission");
+            getView().showProgress(false);
+            getView().showPermissionError("User denied permission");
         }
     }
 
     @Override
     public void onBarcodeDetected(Barcode barcode) {
-        if(scanQRView == null)
+        if(getView() == null)
             return;
 
         detect.onNext(barcode == null);
@@ -141,33 +135,34 @@ public class ScanQRPresenter implements IScanQRPresenter {
 
     @Override
     public void onScanStarted() {
-        if(scanQRView == null)
+        if(getView() == null)
             return;
 
-        scanQRView.showProgress(false);
+        getView().showProgress(false);
     }
 
     @Override
     public void onCameraLoaded() {
-        if(scanQRView == null)
+        if(getView() == null)
             return;
 
-        if(scanQRView.hasCameraPermission()) {
-            scanQRView.startScan();
+        if(getView().hasCameraPermission()) {
+            getView().startScan();
         } else {
-            scanQRView.requestCameraPermission();
+            getView().requestCameraPermission();
         }
     }
 
     @Override
     public void onCameraDestroyed() {
-        if(scanQRView == null)
+        if(getView() == null)
             return;
 
-        scanQRView.stopScan();
+        getView().stopScan();
     }
 
+    @VisibleForTesting
     public IScanQRView getView() {
-        return scanQRView;
+        return super.getView();
     }
 }

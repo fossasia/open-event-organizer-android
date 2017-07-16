@@ -2,6 +2,8 @@ package org.fossasia.openevent.app.login;
 
 import android.support.annotation.VisibleForTesting;
 
+import org.fossasia.openevent.app.common.BasePresenter;
+import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
@@ -13,9 +15,11 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-public class LoginPresenter implements ILoginPresenter {
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 
-    private ILoginView loginView;
+public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginPresenter {
+
     private ILoginModel loginModel;
     private IUtilModel utilModel;
 
@@ -27,44 +31,38 @@ public class LoginPresenter implements ILoginPresenter {
 
     @Override
     public void attach(ILoginView loginView) {
-        this.loginView = loginView;
+        super.attach(loginView);
+    }
 
-        if(loginView == null)
+    @Override
+    public void start() {
+        if(getView() == null)
             return;
 
         if(loginModel.isLoggedIn()) {
-            loginView.onSuccess("Successfully logged in");
+            getView().onSuccess("Successfully logged in");
             return;
         }
 
-        if(getEmailList() != null)
-            loginView.attachEmails(getEmailList());
+        Set<String> emailList = getEmailList();
+        if(emailList != null)
+            getView().attachEmails(emailList);
     }
 
     @Override
     public void detach() {
-        loginView = null;
+        super.detach();
     }
 
     @Override
     public void login(String email, String password) {
-        if(loginView ==  null)
+        if(getView() ==  null)
             return;
 
-        loginView.showProgress(true);
-
         loginModel.login(email, password)
-            .subscribe(() -> {
-                if(loginView != null) {
-                    loginView.onSuccess("Successfully Logged In");
-                    loginView.showProgress(false);
-                }
-            }, throwable -> {
-                if(loginView != null) {
-                    loginView.showError(throwable.getMessage());
-                    loginView.showProgress(false);
-                }
-            });
+            .compose(disposeCompletable(getDisposable()))
+            .compose(progressiveErroneousCompletable(getView()))
+            .subscribe(() -> getView().onSuccess("Successfully Logged In"), Logger::logError);
     }
 
     @Override
@@ -82,7 +80,7 @@ public class LoginPresenter implements ILoginPresenter {
 
     @VisibleForTesting
     public ILoginView getView() {
-        return loginView;
+        return super.getView();
     }
 
 }

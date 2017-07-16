@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.presenter;
 
+import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
@@ -28,6 +29,7 @@ import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
+import static org.fossasia.openevent.app.presenter.Util.ERROR_OBSERVABLE;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
@@ -82,7 +84,7 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter = new EventDetailPresenter(eventRepository, attendeeRepository, ticketAnalyser);
 
-        eventDetailPresenter.attach(eventDetailView, event.getId());
+        eventDetailPresenter.attach(event.getId(), eventDetailView);
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
@@ -122,19 +124,20 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldShowEventError() {
-        String error = "Test Error";
         when(eventRepository.getEvent(id, false))
-            .thenReturn(Observable.error(new Throwable(error)));
+            .thenReturn(ERROR_OBSERVABLE);
 
         eventDetailPresenter.loadDetails(false);
 
-        verify(eventDetailView).showError(error);
+        verify(eventDetailView).showError(Logger.TEST_MESSAGE);
     }
 
     @Test
     public void shouldLoadEventSuccessfully() {
         when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
+        when(attendeeRepository.getAttendees(id, false))
+            .thenReturn(ERROR_OBSERVABLE);
 
         eventDetailPresenter.loadDetails(false);
 
@@ -144,15 +147,14 @@ public class EventDetailPresenterTest {
 
     @Test
     public void shouldShowAttendeeError() {
-        String error = "Test Error";
         when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
         when(attendeeRepository.getAttendees(id, false))
-            .thenReturn(Observable.error(new Throwable(error)));
+            .thenReturn(ERROR_OBSERVABLE);
 
         eventDetailPresenter.loadDetails(false);
 
-        verify(eventDetailView).showError(error);
+        verify(eventDetailView).showError(Logger.TEST_MESSAGE);
     }
 
     @Test
@@ -195,7 +197,7 @@ public class EventDetailPresenterTest {
     @Test
     public void shouldHideProgressbarOnEventError() {
         when(eventRepository.getEvent(id, false))
-            .thenReturn(Observable.error(new Throwable()));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -208,7 +210,7 @@ public class EventDetailPresenterTest {
     @Test
     public void shouldHideProgressbarOnAttendeeError() {
         when(attendeeRepository.getAttendees(id, false))
-            .thenReturn(Observable.error(new Throwable()));
+            .thenReturn(ERROR_OBSERVABLE);
 
         when(eventRepository.getEvent(id, false))
             .thenReturn(Observable.just(event));
@@ -224,7 +226,7 @@ public class EventDetailPresenterTest {
     @Test
     public void shouldHideProgressbarOnCompleteError() {
         when(eventRepository.getEvent(id, false))
-            .thenReturn(Observable.error(new Throwable()));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -247,28 +249,28 @@ public class EventDetailPresenterTest {
         eventDetailPresenter.loadDetails(true);
 
         inOrder.verify(eventDetailView).showProgress(true);
-        inOrder.verify(eventDetailView).showProgress(false);
         inOrder.verify(eventDetailView).onRefreshComplete();
+        inOrder.verify(eventDetailView).showProgress(false);
     }
 
     @Test
     public void shouldHideRefreshLayoutOnEventError() {
         when(eventRepository.getEvent(id, true))
-            .thenReturn(Observable.error(new Throwable()));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
         eventDetailPresenter.loadDetails(true);
 
         inOrder.verify(eventDetailView).showProgress(true);
-        inOrder.verify(eventDetailView).showProgress(false);
         inOrder.verify(eventDetailView).onRefreshComplete();
+        inOrder.verify(eventDetailView).showProgress(false);
     }
 
     @Test
     public void shouldHideRefreshLayoutOnAttendeeError() {
         when(attendeeRepository.getAttendees(id, true))
-            .thenReturn(Observable.error(new Throwable()));
+            .thenReturn(ERROR_OBSERVABLE);
 
         when(eventRepository.getEvent(id, true))
             .thenReturn(Observable.just(event));
@@ -278,21 +280,21 @@ public class EventDetailPresenterTest {
         eventDetailPresenter.loadDetails(true);
 
         inOrder.verify(eventDetailView).showProgress(true);
-        inOrder.verify(eventDetailView).showProgress(false);
         inOrder.verify(eventDetailView).onRefreshComplete();
+        inOrder.verify(eventDetailView).showProgress(false);
     }
 
     @Test
     public void shouldHideRefreshLayoutOnCompleteError() {
         when(eventRepository.getEvent(id, true))
-            .thenReturn(Observable.error(new Throwable()));
+            .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
         eventDetailPresenter.loadDetails(true);
 
         inOrder.verify(eventDetailView).showProgress(true);
-        inOrder.verify(eventDetailView).showProgress(false);
         inOrder.verify(eventDetailView).onRefreshComplete();
+        inOrder.verify(eventDetailView).showProgress(false);
     }
 }

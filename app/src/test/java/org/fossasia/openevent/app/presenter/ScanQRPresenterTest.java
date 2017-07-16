@@ -49,7 +49,7 @@ public class ScanQRPresenterTest {
     @Mock
     IAttendeeRepository attendeeRepository;
 
-    private int eventId = 32;
+    private long eventId = 32;
     private ScanQRPresenter scanQRPresenter;
 
     private List<Attendee> attendees = Arrays.asList(
@@ -360,7 +360,7 @@ public class ScanQRPresenterTest {
     @Test
     public void shouldSendAttendeeOnCorrectBarcodeDetection() {
         // Somehow the setting in setUp is not working, a workaround till fix is found
-        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
         scanQRPresenter.setAttendees(attendees);
 

@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.main;
 
+import org.fossasia.openevent.app.common.BasePresenter;
+import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.contract.IBus;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
@@ -9,22 +11,20 @@ import org.fossasia.openevent.app.main.contract.IMainView;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
-
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneousCompletable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneousResult;
 import static org.fossasia.openevent.app.main.MainActivity.EVENT_KEY;
 
-public class MainPresenter implements IMainPresenter {
+public class MainPresenter extends BasePresenter<IMainView> implements IMainPresenter {
 
-    private IMainView mainView;
     private IUtilModel utilModel;
     private ILoginModel loginModel;
     private IEventRepository eventRepository;
     private IBus bus;
 
     private final long storedEventId;
-
-    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
     public MainPresenter(IUtilModel utilModel, ILoginModel loginModel, IEventRepository eventRepository, IBus bus) {
@@ -38,36 +38,40 @@ public class MainPresenter implements IMainPresenter {
 
     @Override
     public void attach(IMainView mainView) {
-        this.mainView = mainView;
+        super.attach(mainView);
+    }
 
+    @Override
+    public void start() {
         if (storedEventId != -1) {
-            mainView.loadDashboard(storedEventId);
+            getView().loadDashboard(storedEventId);
 
-            disposable.add(eventRepository.getEvent(storedEventId, false)
-                    .subscribe(mainView::showResult));
+            eventRepository
+                .getEvent(storedEventId, false)
+                .compose(dispose(getDisposable()))
+                .compose(erroneousResult(getView()))
+                .subscribe(Logger::logSuccess, Logger::logError);
         }
 
-        disposable.add(bus.getSelectedEvent()
+        bus.getSelectedEvent()
+            .compose(dispose(getDisposable()))
+            .compose(erroneousResult(getView()))
             .subscribe(event -> {
                 utilModel.setLong(EVENT_KEY, event.getId());
-                mainView.loadDashboard(event.getId());
-                mainView.showResult(event);
-            }));
+                getView().loadDashboard(event.getId());
+            }, Logger::logError);
     }
 
     @Override
     public void detach() {
-        mainView = null;
-        disposable.dispose();
+        super.detach();
     }
 
     @Override
     public void logout() {
-        disposable.add(loginModel.logout()
-            .subscribe(() -> mainView.onLogout(),
-                throwable -> {
-                    Timber.e(throwable);
-                    mainView.showError(throwable.getMessage());
-            }));
+        loginModel.logout()
+            .compose(disposeCompletable(getDisposable()))
+            .compose(erroneousCompletable(getView()))
+            .subscribe(() -> getView().onLogout(), Logger::logError);
     }
 }

@@ -1,10 +1,9 @@
 package org.fossasia.openevent.app.main.contract;
 
-public interface IMainPresenter {
+import org.fossasia.openevent.app.common.contract.presenter.IPresenter;
 
-    void attach(IMainView mainView);
-
-    void detach();
+public interface IMainPresenter extends IPresenter<IMainView> {
 
     void logout();
+
 }

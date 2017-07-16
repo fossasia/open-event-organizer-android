@@ -2,13 +2,9 @@ package org.fossasia.openevent.app.qrscan.contract;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
-public interface IScanQRPresenter {
+import org.fossasia.openevent.app.common.contract.presenter.IDetailPresenter;
 
-    void attach(long eventId, IScanQRView scanQRView);
-
-    void start();
-
-    void detach();
+public interface IScanQRPresenter extends IDetailPresenter<Long, IScanQRView> {
 
     void pauseScan();
 
