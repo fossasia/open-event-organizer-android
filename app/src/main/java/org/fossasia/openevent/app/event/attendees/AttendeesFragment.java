@@ -172,7 +172,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
         fastItemAdapter.withPositionBasedStateManagement(false);
         fastItemAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
         fastItemAdapter.getItemFilter().withFilterPredicate(
-            (attendee, query) -> SearchUtils.shallFilter(query.toString(), attendee.getFirstName(), attendee.getLastName(), attendee.getEmail())
+            (attendee, query) -> SearchUtils.filter(query.toString(), attendee.getFirstName(), attendee.getLastName(), attendee.getEmail())
         );
 
         stickyHeaderAdapter = new StickyHeaderAdapter();

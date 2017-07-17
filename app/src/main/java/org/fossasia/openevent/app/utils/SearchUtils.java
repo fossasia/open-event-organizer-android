@@ -13,9 +13,10 @@ public class SearchUtils {
      * @param keys set of strings use to filter the item
      * @return boolean saying filer or not
      */
-    public static boolean shallFilter(String query, String... keys) {
-        for(String key:keys) {
-            if (FuzzySearch.tokenSortPartialRatio(query.trim().toLowerCase(), key.trim().toLowerCase()) > 60) {
+    public static boolean filter(String query, String... keys) {
+        String queryNormalized = query.trim().toLowerCase();
+        for(String key : keys) {
+            if (FuzzySearch.tokenSortPartialRatio(queryNormalized, key.trim().toLowerCase()) > 60) {
                 return false;
             }
         }
