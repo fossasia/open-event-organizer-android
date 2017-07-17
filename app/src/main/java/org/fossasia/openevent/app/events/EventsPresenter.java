@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.events;
 import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.common.BasePresenter;
+import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
@@ -21,13 +22,15 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 
 public class EventsPresenter extends BasePresenter<IEventsView> implements IEventsPresenter {
 
-    private List<Event> events = new ArrayList<>();
+    private final List<Event> events = new ArrayList<>();
 
-    private IEventRepository eventsDataRepository;
+    private final IEventRepository eventsDataRepository;
+    private final ContextManager contextManager;
 
     @Inject
-    public EventsPresenter(IEventRepository eventsDataRepository) {
+    public EventsPresenter(IEventRepository eventsDataRepository, ContextManager contextManager) {
         this.eventsDataRepository = eventsDataRepository;
+        this.contextManager = contextManager;
     }
 
     @Override
@@ -73,7 +76,10 @@ public class EventsPresenter extends BasePresenter<IEventsView> implements IEven
 
         eventsDataRepository.getOrganiser(false)
             .compose(dispose(getDisposable()))
+            .doOnError(Logger::logError)
             .subscribe(user -> {
+                contextManager.setOrganiser(user);
+
                 String name = Utils.formatOptionalString("%s %s",
                     user.getUserDetail().getFirstName(),
                     user.getUserDetail().getLastName());

@@ -50,3 +50,4 @@
 
 # General
 -keepattributes SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,Signature,Exceptions,InnerClasses
+-keep class android.support.v7.widget.SearchView { *; }
