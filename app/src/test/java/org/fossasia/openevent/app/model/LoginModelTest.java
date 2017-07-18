@@ -7,7 +7,6 @@ import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.LoginResponse;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.EventService;
-import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.utils.Constants;
 import org.junit.After;
 import org.junit.Before;
@@ -47,9 +46,6 @@ public class LoginModelTest {
     EventService eventService;
 
     @Mock
-    IEventRepository eventRepository;
-
-    @Mock
     IDatabaseRepository databaseRepository;
 
     private String token = "TestToken";
@@ -61,7 +57,7 @@ public class LoginModelTest {
 
     @Before
     public void setUp() {
-        loginModel = new LoginModel(utilModel, eventService, eventRepository, databaseRepository);
+        loginModel = new LoginModel(utilModel, eventService, databaseRepository);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -173,8 +169,6 @@ public class LoginModelTest {
     @Test
     public void shouldLoginOnExistingSameUser() {
         when(utilModel.isConnected()).thenReturn(true);
-        when(databaseRepository.getAllItems(User.class))
-            .thenReturn(Observable.just(new User(email)));
         when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.empty());
 
@@ -189,10 +183,9 @@ public class LoginModelTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(null);
         when(databaseRepository.getAllItems(User.class))
-            .thenReturn(Observable.just(new User(email + "2")));
+            .thenReturn(Observable.just(User.builder().email(email).id(354).build()));
         when(eventService.login(Mockito.any(Login.class)))
-            .thenReturn(Observable.just(new LoginResponse(token)));
-        when(eventRepository.getOrganiser(true)).thenReturn(Observable.just(new User(email + "3")));
+            .thenReturn(Observable.just(new LoginResponse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE0OTU3NDU0MDAsImlhdCI6MTQ5NTc0NTQwMCwiZXhwIjoxNDk1NzQ1ODAwLCJpZGVudGl0eSI6MzQ0fQ.NlZ9mrmEPyGpzQ-aIqauhwliYLh9GMiz11sG-EUaQ6I")));
 
         loginModel.login(email, password).test();
 
@@ -205,10 +198,9 @@ public class LoginModelTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(EXPIRED_TOKEN);
         when(databaseRepository.getAllItems(User.class))
-            .thenReturn(Observable.just(new User(email + "old")));
+            .thenReturn(Observable.just(User.builder().id(344).email(email).build()));
         when(eventService.login(Mockito.any(Login.class)))
-            .thenReturn(Observable.just(new LoginResponse(token)));
-        when(eventRepository.getOrganiser(true)).thenReturn(Observable.just(new User(email + "new")));
+            .thenReturn(Observable.just(new LoginResponse("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE0OTU3NDU0MDAsImlhdCI6MTQ5NTc0NTQwMCwiZXhwIjoxNDk1NzQ1ODAwLCJpZGVudGl0eSI6MzQ0fQ.NlZ9mrmEPyGpzQ-aIqauhwliYLh9GMiz11sG-EUaQ6I")));
 
         loginModel.login(email + "new", password).test();
 
