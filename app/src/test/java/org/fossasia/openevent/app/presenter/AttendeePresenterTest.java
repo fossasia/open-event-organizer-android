@@ -70,7 +70,8 @@ public class AttendeePresenterTest {
     @Before
     public void setUp() {
         attendeesPresenter = new AttendeesPresenter(attendeeRepository, changeListener);
-        attendeesPresenter.attach(id, attendeesView);
+        attendeesPresenter.attach(attendeesView);
+        attendeesPresenter.attachKey(id);
 
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());

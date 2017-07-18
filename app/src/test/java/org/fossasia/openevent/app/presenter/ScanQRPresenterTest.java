@@ -81,7 +81,8 @@ public class ScanQRPresenterTest {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
         scanQRPresenter = new ScanQRPresenter(attendeeRepository);
-        scanQRPresenter.attach(eventId, scanQRView);
+        scanQRPresenter.attach(scanQRView);
+        scanQRPresenter.attachKey(eventId);
 
         barcode1.displayValue = "Test Barcode 1";
         barcode2.displayValue = "Test Barcode 2";

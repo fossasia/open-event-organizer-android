@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.common.contract.presenter;
 
-public interface IDetailPresenter<K, V> extends IBasePresenter {
+public interface IDetailPresenter<K, V> extends IBasePresenter<V> {
 
-    void attach(K key, V view);
+    void attachKey(K key);
 
 }

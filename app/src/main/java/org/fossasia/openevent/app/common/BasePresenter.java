@@ -2,11 +2,11 @@ package org.fossasia.openevent.app.common;
 
 import android.support.annotation.CallSuper;
 
-import org.fossasia.openevent.app.common.contract.presenter.IPresenter;
+import org.fossasia.openevent.app.common.contract.presenter.IBasePresenter;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public abstract class BasePresenter<V> implements IPresenter<V> {
+public abstract class BasePresenter<V> implements IBasePresenter<V> {
     private V view;
     private CompositeDisposable compositeDisposable;
 

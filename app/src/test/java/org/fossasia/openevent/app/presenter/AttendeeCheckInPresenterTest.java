@@ -49,7 +49,8 @@ public class AttendeeCheckInPresenterTest {
     @Before
     public void setUp() {
         attendeeCheckInPresenter = new AttendeeCheckInPresenter(attendeeRepository);
-        attendeeCheckInPresenter.attach(id, attendeeCheckInView);
+        attendeeCheckInPresenter.attach(attendeeCheckInView);
+        attendeeCheckInPresenter.attachKey(id);
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());

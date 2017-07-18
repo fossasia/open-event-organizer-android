@@ -27,8 +27,8 @@ public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttende
     }
 
     @Override
-    public void attach(Long attendeeId, IAttendeeCheckInView attendeeCheckInView) {
-        super.attach(attendeeId, attendeeCheckInView);
+    public void attach(IAttendeeCheckInView attendeeCheckInView) {
+        super.attach(attendeeCheckInView);
     }
 
     @Override

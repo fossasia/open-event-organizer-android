@@ -97,7 +97,8 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
             return;
         }
 
-        presenter.attach(eventId, this);
+        presenter.attach(this);
+        presenter.attachKey(eventId);
         presenter.start();
     }
 

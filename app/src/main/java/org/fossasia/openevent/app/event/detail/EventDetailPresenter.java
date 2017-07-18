@@ -31,8 +31,8 @@ public class EventDetailPresenter extends BaseDetailPresenter<Long, IEventDetail
     }
 
     @Override
-    public void attach(Long eventId, IEventDetailView eventDetailView) {
-        super.attach(eventId, eventDetailView);
+    public void attach(IEventDetailView eventDetailView) {
+        super.attach(eventDetailView);
     }
 
     @Override

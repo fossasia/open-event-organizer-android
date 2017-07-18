@@ -1,9 +1,11 @@
 package org.fossasia.openevent.app.common.contract.presenter;
 
-interface IBasePresenter {
+public interface IBasePresenter<V> {
 
     void start();
 
     void detach();
+
+    void attach(V view);
 
 }
