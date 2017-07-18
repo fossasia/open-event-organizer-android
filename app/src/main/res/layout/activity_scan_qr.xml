@@ -6,10 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".qrscan.ScanQRActivity">
 
-    <SurfaceView
-        android:id="@+id/svScanView"
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:keepScreenOn="true">
+
+        <org.fossasia.openevent.app.qrscan.widget.CameraSourcePreview
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <org.fossasia.openevent.app.qrscan.widget.GraphicOverlay
+                android:id="@+id/graphicOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </org.fossasia.openevent.app.qrscan.widget.CameraSourcePreview>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/barcodePanel"

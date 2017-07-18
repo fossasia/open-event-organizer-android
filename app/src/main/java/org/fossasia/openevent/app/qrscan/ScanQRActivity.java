@@ -9,8 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,13 +17,17 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.di.component.DaggerBarcodeComponent;
+import org.fossasia.openevent.app.common.di.module.AndroidModule;
+import org.fossasia.openevent.app.common.di.module.BarcodeModule;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.event.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.main.MainActivity;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRPresenter;
 import org.fossasia.openevent.app.qrscan.contract.IScanQRView;
+import org.fossasia.openevent.app.qrscan.widget.CameraSourcePreview;
+import org.fossasia.openevent.app.qrscan.widget.GraphicOverlay;
 import org.fossasia.openevent.app.utils.ViewUtils;
 
 import java.io.IOException;
@@ -50,8 +52,11 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
     public static final int PERM_REQ_CODE = 123;
 
-    @BindView(R.id.svScanView)
-    SurfaceView surfaceView;
+    @BindView(R.id.preview)
+    CameraSourcePreview preview;
+
+    @BindView(R.id.graphicOverlay)
+    GraphicOverlay<BarcodeGraphic> graphicOverlay;
 
     @BindView(R.id.barcodePanel)
     TextView barcodePanel;
@@ -78,16 +83,18 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        OrgaApplication
-            .getAppComponent(this)
-            .inject(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_qr);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         ButterKnife.bind(this);
+
+        DaggerBarcodeComponent.builder()
+            .androidModule(new AndroidModule(this))
+            .barcodeModule(new BarcodeModule(graphicOverlay))
+            .build()
+            .inject(this);
 
         long eventId = getIntent().getLongExtra(MainActivity.EVENT_KEY, -1);
 
@@ -102,12 +109,25 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (preview != null) {
+            preview.stop();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startCameraSource();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
         if (presenter != null) presenter.detach();
-
-        if (surfaceView != null) surfaceView.removeCallbacks(() -> Timber.d("Removed"));
+        if (preview != null) preview.release();
         if (barcodeDetector != null) barcodeDetector.release();
         if (disposable != null) disposable.dispose();
     }
@@ -138,29 +158,6 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
         cameraSource = cameraSourceProvider.get();
     }
 
-    private void waitForSurface() {
-        // Get callback from SurfaceView
-        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
-
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                Timber.d("surfaceCreated");
-                presenter.onCameraLoaded();
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                // No Action required
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-                Timber.d("surfaceDestroyed");
-                presenter.onCameraDestroyed();
-            }
-        });
-    }
-
     // View Implementation Start
 
     @Override
@@ -171,14 +168,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
         })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(() -> {
-                waitForSurface();
-
-                if(!surfaceView.getHolder().isCreating()) {
-                    Timber.d("Surface already created");
-                    presenter.onCameraLoaded();
-                }
-            });
+            .subscribe(() -> presenter.onCameraLoaded());
     }
 
     @Override
@@ -222,7 +212,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     public void startScan() {
         Completable.fromAction(() -> {
             try {
-                cameraSource.start(surfaceView.getHolder());
+                startCameraSource();
 
                 disposable = barcodeEmitter.subscribe(barcodeNotification -> {
                     if (barcodeNotification.isOnError()) {
@@ -231,8 +221,6 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
                         presenter.onBarcodeDetected(barcodeNotification.getValue());
                     }
                 });
-            } catch (IOException ioe) {
-                Timber.e("Exception while starting camera");
             } catch (SecurityException se) {
                 // Should never happen as we call this when we get our permission
                 Timber.e("Should never happen. Check %s", getClass().getName());
@@ -244,7 +232,24 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
     @Override
     public void stopScan() {
-        cameraSource.stop();
+        preview.stop();
+    }
+
+    /**
+     * Starts or restarts the camera source, if it exists.  If the camera source doesn't exist yet
+     * (e.g., because onResume was called before the camera source was created), this will be called
+     * again when the camera source is created.
+     */
+    private void startCameraSource() throws SecurityException {
+        if (cameraSource != null) {
+            try {
+                preview.start(cameraSource, graphicOverlay);
+            } catch (IOException e) {
+                Timber.e("Unable to start camera source.");
+                cameraSource.release();
+                cameraSource = null;
+            }
+        }
     }
 
     public void showToggleDialog(long attendeeId) {
