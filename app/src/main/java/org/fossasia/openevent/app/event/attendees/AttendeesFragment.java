@@ -105,7 +105,8 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
         if (getArguments() != null) {
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
-            attendeesPresenter.attach(eventId, this);
+            attendeesPresenter.attach(this);
+            attendeesPresenter.attachKey(eventId);
         }
     }
 

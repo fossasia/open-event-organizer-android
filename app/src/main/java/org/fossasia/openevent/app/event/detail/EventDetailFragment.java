@@ -81,7 +81,8 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
         if (arguments != null)
             initialEventId = arguments.getLong(EVENT_ID);
 
-        eventDetailPresenter.attach(initialEventId, this);
+        eventDetailPresenter.attach(this);
+        eventDetailPresenter.attachKey(initialEventId);
     }
 
     @Override

@@ -84,7 +84,8 @@ public class EventDetailPresenterTest {
 
         eventDetailPresenter = new EventDetailPresenter(eventRepository, attendeeRepository, ticketAnalyser);
 
-        eventDetailPresenter.attach(event.getId(), eventDetailView);
+        eventDetailPresenter.attach(eventDetailView);
+        eventDetailPresenter.attachKey(event.getId());
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());

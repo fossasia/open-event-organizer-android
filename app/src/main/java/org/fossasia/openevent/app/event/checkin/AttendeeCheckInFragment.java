@@ -54,7 +54,8 @@ public class AttendeeCheckInFragment extends BottomSheetDialogFragment implement
 
         if (args != null) {
             long attendeeId = args.getLong(ATTENDEE_ID);
-            presenter.attach(attendeeId, this);
+            presenter.attach(this);
+            presenter.attachKey(attendeeId);
         }
     }
 

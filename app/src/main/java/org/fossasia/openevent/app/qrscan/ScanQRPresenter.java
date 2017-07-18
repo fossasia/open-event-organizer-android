@@ -66,8 +66,8 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> impl
     }
 
     @Override
-    public void attach(Long eventId, IScanQRView scanQRView) {
-        super.attach(eventId, scanQRView);
+    public void attach(IScanQRView scanQRView) {
+        super.attach(scanQRView);
     }
 
     @Override
