@@ -9,7 +9,6 @@ import org.junit.runners.JUnit4;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
@@ -30,19 +29,25 @@ public class JWTUtilsTest {
     }
 
     @Test
-    public void shouldParseExpiry() {
-        try {
-            long timestamp1 = JWTUtils.getExpiry(token);
+    public void shouldParseExpiry() throws JSONException {
+        long timestamp1 = JWTUtils.getExpiry(token);
 
-            assertEquals(timestamp1, 1495745800, 0);
+        assertEquals(timestamp1, 1495745800, 0);
 
-            long timestamp2 = JWTUtils.getExpiry(unexpirableToken);
+        long timestamp2 = JWTUtils.getExpiry(unexpirableToken);
 
-            assertEquals(timestamp2, 2495831800.0, 0);
-        } catch (JSONException jse) {
-            fail("Exception Occurred while getting expiry");
-        }
+        assertEquals(timestamp2, 2495831800.0, 0);
+    }
 
+    @Test
+    public void shouldParseIdentity() throws JSONException {
+        int id = JWTUtils.getIdentity(token);
+
+        assertEquals(344, id);
+
+        int id2 = JWTUtils.getIdentity(unexpirableToken);
+
+        assertEquals(344, id2);
     }
 
     @Test

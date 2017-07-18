@@ -8,7 +8,6 @@ import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Login;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.EventService;
-import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.main.MainActivity;
 import org.fossasia.openevent.app.utils.Constants;
 import org.fossasia.openevent.app.utils.JWTUtils;
@@ -26,14 +25,12 @@ public class LoginModel implements ILoginModel {
 
     private final IUtilModel utilModel;
     private final EventService eventService;
-    private final IEventRepository eventRepository;
     private final IDatabaseRepository databaseRepository;
 
     @Inject
-    public LoginModel(IUtilModel utilModel, EventService eventService, IEventRepository eventRepository, IDatabaseRepository databaseRepository) {
+    public LoginModel(IUtilModel utilModel, EventService eventService, IDatabaseRepository databaseRepository) {
         this.utilModel = utilModel;
         this.eventService = eventService;
-        this.eventRepository = eventRepository;
         this.databaseRepository = databaseRepository;
     }
 
@@ -48,10 +45,11 @@ public class LoginModel implements ILoginModel {
         return eventService
             .login(new Login(username, password))
             .flatMapSingle(loginResponse -> {
-                utilModel.saveToken(loginResponse.getAccessToken());
+                String token = loginResponse.getAccessToken();
+                utilModel.saveToken(token);
                 utilModel.addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, username);
 
-                return isPreviousUser();
+                return isPreviousUser(token);
             })
             .flatMapCompletable(isPrevious -> {
                 if (!isPrevious)
@@ -64,18 +62,10 @@ public class LoginModel implements ILoginModel {
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    public Single<Boolean> isPreviousUser() {
+    public Single<Boolean> isPreviousUser(String token) {
         return databaseRepository.getAllItems(User.class)
             .first(EMPTY)
-            .flatMap(user -> {
-                if (user.equals(EMPTY))
-                    return Single.just(false);
-
-                return eventRepository.getOrganiser(true)
-                    .firstElement()
-                    .map(user::equals)
-                    .toSingle();
-            });
+            .map(user -> !user.equals(EMPTY) && user.getId() == JWTUtils.getIdentity(token));
     }
 
     @Override
