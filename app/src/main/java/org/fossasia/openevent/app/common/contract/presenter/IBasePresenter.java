@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.common.contract.presenter;
 
-interface IBasePresenter {
+public interface IBasePresenter {
 
     void start();
 

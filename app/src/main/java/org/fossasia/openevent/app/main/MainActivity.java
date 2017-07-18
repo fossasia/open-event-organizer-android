@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.BaseActivity;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
 import org.fossasia.openevent.app.event.detail.EventDetailFragment;
@@ -32,8 +33,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.Lazy;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IMainView {
+public class MainActivity extends BaseActivity<IMainPresenter> implements NavigationView.OnNavigationItemSelectedListener, IMainView {
 
     public static final String EVENT_KEY = "event";
     private static final int BACK_PRESS_RESET_TIME = 2000;
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private long eventId = -1;
 
     @Inject
-    IMainPresenter presenter;
+    Lazy<IMainPresenter> presenterProvider;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -66,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        presenter.attach(this);
-
         View navHeader = navigationView.getHeaderView(0);
         tvEventName = (TextView) navHeader.findViewById(R.id.tvEventName);
         tvEventTime = (TextView) navHeader.findViewById(R.id.tvEventTime);
@@ -84,14 +84,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentManager = getSupportFragmentManager();
         loadFragment(R.id.nav_events);
-
-        presenter.start();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.detach();
+    protected void onStart() {
+        super.onStart();
+        presenter.attach(this);
+        presenter.start();
     }
 
     @Override
@@ -118,6 +117,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected Lazy<IMainPresenter> getPresenterProvider() {
+        return presenterProvider;
+    }
+
+    @Override
+    protected int getLoaderId() {
+        return R.layout.activity_main;
     }
 
     @Override

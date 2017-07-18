@@ -46,12 +46,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AttendeesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AttendeesFragment extends BaseFragment implements IAttendeesView {
+public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> implements IAttendeesView {
 
     private Context context;
 
@@ -61,7 +63,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     IUtilModel utilModel;
 
     @Inject
-    IAttendeesPresenter attendeesPresenter;
+    Lazy<IAttendeesPresenter> presenterProvider;
 
     private FastItemAdapter<Attendee> fastItemAdapter;
     private StickyHeaderAdapter stickyHeaderAdapter;
@@ -102,11 +104,6 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        if (getArguments() != null) {
-            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
-            attendeesPresenter.attach(eventId, this);
-        }
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -134,15 +131,18 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_attendees, container, false);
-
-        binding.setAttendees(attendeesPresenter.getAttendees());
-
         return binding.getRoot();
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onStart() {
+        super.onStart();
+        if (getArguments() != null) {
+            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+            presenter.attach(eventId, this);
+        }
+        binding.setAttendees(presenter.getAttendees());
+        presenter.start();
 
         setupRecyclerView();
         setupRefreshListener();
@@ -152,18 +152,25 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
             scanQr.putExtra(MainActivity.EVENT_KEY, eventId);
             startActivity(scanQr);
         });
-
-        attendeesPresenter.start();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        attendeesPresenter.detach();
+    public void onStop() {
+        super.onStop();
         refreshLayout.setOnRefreshListener(null);
         stickyHeaderAdapter.unregisterAdapterDataObserver(adapterDataObserver);
         if (searchView != null)
             searchView.setOnQueryTextListener(null);
+    }
+
+    @Override
+    protected Lazy<IAttendeesPresenter> getPresenterProvider() {
+        return presenterProvider;
+    }
+
+    @Override
+    protected int getLoaderId() {
+        return R.layout.fragment_attendees;
     }
 
     private void setupRecyclerView() {
@@ -201,7 +208,7 @@ public class AttendeesFragment extends BaseFragment implements IAttendeesView {
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> attendeesPresenter.loadAttendees(true));
+        refreshLayout.setOnRefreshListener(() -> presenter.loadAttendees(true));
     }
 
     // View Implementation
