@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -66,7 +65,7 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     Lazy<IAttendeesPresenter> presenterProvider;
 
     private FastItemAdapter<Attendee> fastItemAdapter;
-    private StickyHeaderAdapter stickyHeaderAdapter;
+    private StickyHeaderAdapter<Attendee> stickyHeaderAdapter;
     private RecyclerView.AdapterDataObserver adapterDataObserver;
     private FragmentAttendeesBinding binding;
     private SwipeRefreshLayout refreshLayout;
@@ -179,10 +178,15 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
         fastItemAdapter.withPositionBasedStateManagement(false);
         fastItemAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
         fastItemAdapter.getItemFilter().withFilterPredicate(
-            (attendee, query) -> SearchUtils.filter(query.toString(), attendee.getFirstName(), attendee.getLastName(), attendee.getEmail())
+            (attendee, query) ->
+                SearchUtils.filter(
+                    query.toString(),
+                    attendee.getFirstName(),
+                    attendee.getLastName(),
+                    attendee.getEmail())
         );
 
-        stickyHeaderAdapter = new StickyHeaderAdapter();
+        stickyHeaderAdapter = new StickyHeaderAdapter<>();
         final HeaderAdapter headerAdapter = new HeaderAdapter();
 
         RecyclerView recyclerView = binding.rvAttendeeList;

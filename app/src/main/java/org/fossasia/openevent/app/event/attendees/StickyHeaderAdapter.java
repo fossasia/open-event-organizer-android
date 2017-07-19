@@ -8,27 +8,31 @@ import com.mikepenz.fastadapter.AbstractAdapter;
 import com.mikepenz.fastadapter.IItem;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
-import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.models.contract.IHeaderProvider;
 import org.fossasia.openevent.app.databinding.AttendeeSubheaderLayoutBinding;
 
 import java.util.List;
 
-public class StickyHeaderAdapter extends AbstractAdapter implements StickyRecyclerHeadersAdapter {
+class StickyHeaderAdapter<Item extends IItem & IHeaderProvider> extends AbstractAdapter<Item> implements StickyRecyclerHeadersAdapter<StickyHeaderAdapter.ViewHolder> {
     @Override
     public long getHeaderId(int position) {
-        IItem item = getItem(position);
+        return getItem(position).getHeaderId();
+    }
 
-        if(item instanceof Attendee && ((Attendee)item).getFirstName() != null) {
-            return ((Attendee) item).getFirstName().toUpperCase().charAt(0);
-        }
-        return -1;
+    @Override
+    public ViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
+        return new ViewHolder(AttendeeSubheaderLayoutBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
+    }
+
+    @Override
+    public void onBindHeaderViewHolder(StickyHeaderAdapter.ViewHolder viewHolder, int position) {
+        viewHolder.bindHeader(getItem(position).getHeader());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
         AttendeeSubheaderLayoutBinding binding;
 
-        public ViewHolder(AttendeeSubheaderLayoutBinding binding) {
+        ViewHolder(AttendeeSubheaderLayoutBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -36,20 +40,6 @@ public class StickyHeaderAdapter extends AbstractAdapter implements StickyRecycl
         void bindHeader(String header) {
             binding.setSubheading(header);
             binding.executePendingBindings();
-        }
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
-        return new ViewHolder(AttendeeSubheaderLayoutBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
-    }
-
-    @Override
-    public void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        IItem item = getItem(position);
-
-        if(item instanceof Attendee && ((Attendee) item).getFirstName() != null) {
-            ((ViewHolder) viewHolder).bindHeader(((Attendee) item).getFirstName().toUpperCase().substring(0, 1));
         }
     }
 
@@ -64,17 +54,17 @@ public class StickyHeaderAdapter extends AbstractAdapter implements StickyRecycl
     }
 
     @Override
-    public List getAdapterItems() {
+    public List<Item> getAdapterItems() {
         return null;
     }
 
     @Override
-    public IItem getAdapterItem(int i) {
+    public Item getAdapterItem(int i) {
         return null;
     }
 
     @Override
-    public int getAdapterPosition(IItem item) {
+    public int getAdapterPosition(Item item) {
         return -1;
     }
 
