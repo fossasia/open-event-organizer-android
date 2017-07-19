@@ -3,7 +3,6 @@ package org.fossasia.openevent.app.events;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,6 +33,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
 import timber.log.Timber;
 
 /**
@@ -42,7 +42,7 @@ import timber.log.Timber;
  * Use the {@link EventListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventListFragment extends BaseFragment implements IEventsView {
+public class EventListFragment extends BaseFragment<IEventsPresenter> implements IEventsView {
     @Inject
     IUtilModel utilModel;
 
@@ -50,7 +50,7 @@ public class EventListFragment extends BaseFragment implements IEventsView {
     IBus bus;
 
     @Inject
-    IEventsPresenter presenter;
+    Lazy<IEventsPresenter> presenterProvider;
 
     private FragmentEventListBinding binding;
     private RecyclerView recyclerView;
@@ -85,32 +85,39 @@ public class EventListFragment extends BaseFragment implements IEventsView {
             .getAppComponent(context)
             .inject(this);
         super.onCreate(savedInstanceState);
-
-        presenter.attach(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_event_list, container, false);
-        binding.setEvents(presenter.getEvents());
         return binding.getRoot();
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setupRecyclerView();
-        setupRefreshListener();
-
-        presenter.start();
+    protected Lazy<IEventsPresenter> getPresenterProvider() {
+        return presenterProvider;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        presenter.detach();
+    protected int getLoaderId() {
+        return R.layout.fragment_event_list;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.attach(this);
+        binding.setEvents(presenter.getEvents());
+        presenter.start();
+
+        setupRecyclerView();
+        setupRefreshListener();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         refreshLayout.setOnRefreshListener(null);
         eventListAdapter.unregisterAdapterDataObserver(adapterDataObserver);
     }

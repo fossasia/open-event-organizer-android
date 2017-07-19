@@ -18,6 +18,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.BaseActivity;
 import org.fossasia.openevent.app.common.di.component.DaggerBarcodeComponent;
 import org.fossasia.openevent.app.common.di.module.AndroidModule;
 import org.fossasia.openevent.app.common.di.module.BarcodeModule;
@@ -48,7 +49,7 @@ import timber.log.Timber;
 
 import static org.fossasia.openevent.app.utils.ViewUtils.showView;
 
-public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
+public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IScanQRView {
 
     public static final int PERM_REQ_CODE = 123;
 
@@ -75,7 +76,7 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     private Disposable disposable;
 
     @Inject
-    IScanQRPresenter presenter;
+    Lazy<IScanQRPresenter> presenterProvider;
 
     @Inject
     @Named("barcodeEmitter")
@@ -83,7 +84,6 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_qr);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -96,14 +96,19 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
             .build()
             .inject(this);
 
-        long eventId = getIntent().getLongExtra(MainActivity.EVENT_KEY, -1);
+        super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        long eventId = getIntent().getLongExtra(MainActivity.EVENT_KEY, -1);
         if (eventId == -1) {
             Timber.d("No Event ID provided. Exiting ...");
             finish();
             return;
         }
-
         presenter.attach(eventId, this);
         presenter.start();
     }
@@ -149,6 +154,16 @@ public class ScanQRActivity extends AppCompatActivity implements IScanQRView {
     }
 
     // Lifecycle methods end
+
+    @Override
+    protected Lazy<IScanQRPresenter> getPresenterProvider() {
+        return presenterProvider;
+    }
+
+    @Override
+    protected int getLoaderId() {
+        return R.layout.activity_scan_qr;
+    }
 
     private void buildBarcodeDetector() {
         barcodeDetector = barcodeDetectorProvider.get();

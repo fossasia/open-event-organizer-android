@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -23,6 +22,7 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.BaseActivity;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
@@ -35,10 +35,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.Lazy;
 
 import static org.fossasia.openevent.app.utils.ViewUtils.showView;
 
-public class LoginActivity extends AppCompatActivity implements ILoginView, AppCompatEditText.OnEditorActionListener {
+public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILoginView, AppCompatEditText.OnEditorActionListener {
 
     @BindView(R.id.btnLogin)
     Button btnLogin;
@@ -60,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
     AppCompatEditText etBaseUrl;
 
     @Inject
-    ILoginPresenter presenter;
+    Lazy<ILoginPresenter> presenterProvider;
 
     @Inject
     HostSelectionInterceptor interceptor;
@@ -81,8 +82,11 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+    }
 
-        // Notify presenter to attach
+    @Override
+    protected void onStart() {
+        super.onStart();
         presenter.attach(this);
         presenter.start();
 
@@ -116,15 +120,17 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, AppC
         etPassword.setOnEditorActionListener(this);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+    // Lifecycle methods end
 
-        // Detach view from presenter
-        presenter.detach();
+    @Override
+    protected Lazy<ILoginPresenter> getPresenterProvider() {
+        return presenterProvider;
     }
 
-    // Lifecycle methods end
+    @Override
+    protected int getLoaderId() {
+        return R.layout.activity_login;
+    }
 
     // View Implementation start
 

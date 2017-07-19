@@ -2,7 +2,6 @@ package org.fossasia.openevent.app.event.detail;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -24,12 +23,14 @@ import org.fossasia.openevent.app.utils.ViewUtils;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EventDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventDetailFragment extends BaseFragment implements IEventDetailView {
+public class EventDetailFragment extends BaseFragment<IEventDetailPresenter> implements IEventDetailView {
 
     private static final String EVENT_ID = "event_id";
 
@@ -43,7 +44,7 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
     IUtilModel utilModel;
 
     @Inject
-    IEventDetailPresenter eventDetailPresenter;
+    Lazy<IEventDetailPresenter> presenterProvider;
 
     private CoordinatorLayout container;
     private SwipeRefreshLayout refreshLayout;
@@ -80,30 +81,37 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
         Bundle arguments = getArguments();
         if (arguments != null)
             initialEventId = arguments.getLong(EVENT_ID);
-
-        eventDetailPresenter.attach(initialEventId, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = EventDetailBinding.inflate(inflater, container, false);
-        setupRefreshListener();
-
         return binding.getRoot();
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        eventDetailPresenter.start();
+    public void onStart() {
+        super.onStart();
+        presenter.attach(initialEventId, this);
+        setupRefreshListener();
+        presenter.start();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        eventDetailPresenter.detach();
+    public void onStop() {
+        super.onStop();
         refreshLayout.setOnRefreshListener(null);
+    }
+
+    @Override
+    protected Lazy<IEventDetailPresenter> getPresenterProvider() {
+        return presenterProvider;
+    }
+
+    @Override
+    protected int getLoaderId() {
+        return R.layout.fragment_event_details;
     }
 
     private void setupRefreshListener() {
@@ -111,7 +119,7 @@ public class EventDetailFragment extends BaseFragment implements IEventDetailVie
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() ->
-            eventDetailPresenter.loadDetails(true)
+            presenter.loadDetails(true)
         );
     }
 
