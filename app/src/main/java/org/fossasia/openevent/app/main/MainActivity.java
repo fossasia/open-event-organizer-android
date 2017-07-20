@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,14 +106,21 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
+        drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
 
-        if (id == R.id.nav_logout)
-            showLogoutDialog();
-        else if (eventId != -1)
-            loadFragment(id);
+                int id = item.getItemId();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (id == R.id.nav_logout)
+                    showLogoutDialog();
+                else if (eventId != -1)
+                    loadFragment(id);
+
+                drawer.removeDrawerListener(this);
+            }
+        });
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
