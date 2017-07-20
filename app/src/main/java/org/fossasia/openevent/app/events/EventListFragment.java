@@ -20,7 +20,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.BaseFragment;
+import org.fossasia.openevent.app.common.lifecycle.BaseFragment;
 import org.fossasia.openevent.app.data.contract.IBus;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
@@ -95,21 +95,21 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     }
 
     @Override
-    protected Lazy<IEventsPresenter> getPresenterProvider() {
+    public Lazy<IEventsPresenter> getPresenterProvider() {
         return presenterProvider;
     }
 
     @Override
-    protected int getLoaderId() {
+    public int getLoaderId() {
         return R.layout.fragment_event_list;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        presenter.attach(this);
-        binding.setEvents(presenter.getEvents());
-        presenter.start();
+        getPresenter().attach(this);
+        binding.setEvents(getPresenter().getEvents());
+        getPresenter().start();
 
         setupRecyclerView();
         setupRefreshListener();
@@ -161,7 +161,7 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     }
 
     private void setupRecyclerView() {
-        eventListAdapter = new EventsListAdapter(presenter.getEvents(), bus);
+        eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus);
 
         recyclerView = binding.eventRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -183,6 +183,6 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> presenter.loadUserEvents(true));
+        refreshLayout.setOnRefreshListener(() -> getPresenter().loadUserEvents(true));
     }
 }
