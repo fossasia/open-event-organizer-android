@@ -21,6 +21,9 @@ import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
 import javax.inject.Inject;
 
+import io.sentry.Sentry;
+import io.sentry.android.AndroidSentryClientFactory;
+import io.sentry.event.BreadcrumbBuilder;
 import timber.log.Timber;
 
 public class OrgaApplication extends Application {
@@ -81,6 +84,10 @@ public class OrgaApplication extends Application {
 
             Picasso.setSingletonInstance(picasso);
 
+            // Sentry DSN must be defined as environment variable
+            // https://docs.sentry.io/clients/java/config/#setting-the-dsn-data-source-name
+            Sentry.init(new AndroidSentryClientFactory(getApplicationContext()));
+
             if (BuildConfig.DEBUG) {
                 Stetho.initializeWithDefaults(this);
 
@@ -115,6 +122,19 @@ public class OrgaApplication extends Application {
 
             // Report to crashing SDK in future
             Timber.log(priority, tag, message, throwable);
+
+            if (priority == Log.INFO) {
+                Log.d("Sentry", "Sending sentry breadcrumb");
+                Sentry.getContext().recordBreadcrumb(new BreadcrumbBuilder().setMessage(message).build());
+            }
+
+            if (priority == Log.ERROR) {
+                if (throwable == null)
+                    Sentry.capture(message);
+                else
+                    Sentry.capture(throwable);
+                Log.d("Sentry", "Sending sentry error event " + message);
+            }
         }
     }
 
