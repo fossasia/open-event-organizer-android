@@ -43,9 +43,9 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
 
     @Override
     public void start() {
-        if (storedEventId != -1) {
-            getView().loadDashboard(storedEventId);
+        getView().loadInitialPage(storedEventId);
 
+        if (storedEventId != -1) {
             eventRepository
                 .getEvent(storedEventId, false)
                 .compose(dispose(getDisposable()))
@@ -58,7 +58,7 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
             .compose(erroneousResult(getView()))
             .subscribe(event -> {
                 utilModel.setLong(EVENT_KEY, event.getId());
-                getView().loadDashboard(event.getId());
+                getView().loadInitialPage(event.getId());
             }, Logger::logError);
     }
 
