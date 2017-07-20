@@ -40,6 +40,7 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 - [DBFlow](https://github.com/Raizlabs/DBFlow)
 - [FastAdapter](https://github.com/mikepenz/FastAdapter)
 - [Leakcanary](https://github.com/square/leakcanary)
+- [Sentry](https://github.com/getsentry/sentry-java)
 - [Timber](https://github.com/JakeWharton/timber)
 - Testing:
   - [JUnit4](https://github.com/junit-team/junit4)
@@ -65,6 +66,17 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 7. If the app was built successfully, you can test it by running it on either a real device or an emulated one by going to _Run>Run 'app'_ or presing the Run icon in the toolbar.
 
 **Note: You will need to install Lombok Plugin in Android Studio in order to properly access generated methods of data classes**
+
+**Note:** For release builds, you need to set up Sentry with DSN in environment variables and a sentry.properties file in project root containing these properties in order for sentry cli to automatically upload proguard mappings to your project:
+- defaults.project
+- defaults.org
+- auth.token
+
+Also, you need to enable the option by changing `autoUpload false` to true in order to enable this feature
+
+For more info, visit https://docs.sentry.io/clients/java/modules/android/
+
+You can alternatively disable proguard altogether
 
 ### Project Conventions
 

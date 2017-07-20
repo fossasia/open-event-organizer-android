@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +17,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.BaseActivity;
+import org.fossasia.openevent.app.common.lifecycle.BaseActivity;
 import org.fossasia.openevent.app.common.di.component.DaggerBarcodeComponent;
 import org.fossasia.openevent.app.common.di.module.AndroidModule;
 import org.fossasia.openevent.app.common.di.module.BarcodeModule;
@@ -109,8 +108,8 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
             finish();
             return;
         }
-        presenter.attach(eventId, this);
-        presenter.start();
+        getPresenter().attach(eventId, this);
+        getPresenter().start();
     }
 
     @Override
@@ -131,7 +130,7 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
     protected void onDestroy() {
         super.onDestroy();
 
-        if (presenter != null) presenter.detach();
+        if (getPresenter() != null) getPresenter().detach();
         if (preview != null) preview.release();
         if (barcodeDetector != null) barcodeDetector.release();
         if (disposable != null) disposable.dispose();
@@ -144,9 +143,9 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    presenter.cameraPermissionGranted(true);
+                    getPresenter().cameraPermissionGranted(true);
                 } else {
-                    presenter.cameraPermissionGranted(false);
+                    getPresenter().cameraPermissionGranted(false);
                 }
             }
         }
@@ -156,12 +155,12 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
     // Lifecycle methods end
 
     @Override
-    protected Lazy<IScanQRPresenter> getPresenterProvider() {
+    public Lazy<IScanQRPresenter> getPresenterProvider() {
         return presenterProvider;
     }
 
     @Override
-    protected int getLoaderId() {
+    public int getLoaderId() {
         return R.layout.activity_scan_qr;
     }
 
@@ -183,7 +182,7 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
         })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(() -> presenter.onCameraLoaded());
+            .subscribe(() -> getPresenter().onCameraLoaded());
     }
 
     @Override
@@ -203,7 +202,7 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
 
     @Override
     public void onScannedAttendee(Attendee attendee) {
-        presenter.pauseScan();
+        getPresenter().pauseScan();
         ViewUtils.setTint(barcodePanel, ContextCompat.getColor(this, R.color.green_a400));
         showToggleDialog(attendee.getId());
     }
@@ -231,9 +230,9 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
 
                 disposable = barcodeEmitter.subscribe(barcodeNotification -> {
                     if (barcodeNotification.isOnError()) {
-                        presenter.onBarcodeDetected(null);
+                        getPresenter().onBarcodeDetected(null);
                     } else {
-                        presenter.onBarcodeDetected(barcodeNotification.getValue());
+                        getPresenter().onBarcodeDetected(barcodeNotification.getValue());
                     }
                 });
             } catch (SecurityException se) {
@@ -242,7 +241,7 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
             }
         }).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(() -> presenter.onScanStarted());
+            .subscribe(() -> getPresenter().onScanStarted());
     }
 
     @Override
@@ -272,7 +271,7 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
         bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
         bottomSheetDialogFragment.setOnCancelListener(() -> {
             ViewUtils.setTint(barcodePanel, ContextCompat.getColor(this, R.color.light_blue_a400));
-            presenter.resumeScan();
+            getPresenter().resumeScan();
         });
     }
 }

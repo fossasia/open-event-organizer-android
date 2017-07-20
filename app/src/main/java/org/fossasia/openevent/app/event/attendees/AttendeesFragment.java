@@ -28,7 +28,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.BaseFragment;
+import org.fossasia.openevent.app.common.lifecycle.BaseFragment;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.databinding.FragmentAttendeesBinding;
@@ -138,10 +138,10 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
         super.onStart();
         if (getArguments() != null) {
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
-            presenter.attach(eventId, this);
+            getPresenter().attach(eventId, this);
         }
-        binding.setAttendees(presenter.getAttendees());
-        presenter.start();
+        binding.setAttendees(getPresenter().getAttendees());
+        getPresenter().start();
 
         setupRecyclerView();
         setupRefreshListener();
@@ -163,12 +163,12 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     }
 
     @Override
-    protected Lazy<IAttendeesPresenter> getPresenterProvider() {
+    public Lazy<IAttendeesPresenter> getPresenterProvider() {
         return presenterProvider;
     }
 
     @Override
-    protected int getLoaderId() {
+    public int getLoaderId() {
         return R.layout.fragment_attendees;
     }
 
@@ -212,7 +212,7 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> presenter.loadAttendees(true));
+        refreshLayout.setOnRefreshListener(() -> getPresenter().loadAttendees(true));
     }
 
     // View Implementation

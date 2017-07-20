@@ -18,7 +18,7 @@ public class Logger {
     }
 
     public static void logError(Throwable throwable) {
-        Timber.e(throwable);
+        Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
         if (!throwable.equals(TEST_ERROR))
             throwable.printStackTrace();
     }
