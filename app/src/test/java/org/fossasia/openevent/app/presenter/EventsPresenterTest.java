@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.presenter;
 
+import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.models.Event;
@@ -52,6 +53,9 @@ public class EventsPresenterTest {
     @Mock
     ILoginModel loginModel;
 
+    @Mock
+    ContextManager contextManager;
+
     private EventsPresenter eventsActivityPresenter;
 
     private String date = DateUtils.formatDateToIso(new Date());
@@ -68,7 +72,7 @@ public class EventsPresenterTest {
     public void setUp() {
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
 
-        eventsActivityPresenter = new EventsPresenter(eventRepository);
+        eventsActivityPresenter = new EventsPresenter(eventRepository, contextManager);
         eventsActivityPresenter.attach(eventListView);
     }
 
@@ -222,6 +226,15 @@ public class EventsPresenterTest {
 
         inOrder.verify(eventRepository).getOrganiser(false);
         inOrder.verify(eventListView).showOrganiserName("John Wick");
+    }
+
+    @Test
+    public void shouldSetSentryContext() {
+        when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(organiser));
+
+        eventsActivityPresenter.loadOrganiser(false);
+
+        verify(contextManager).setOrganiser(organiser);
     }
 
     @Test
