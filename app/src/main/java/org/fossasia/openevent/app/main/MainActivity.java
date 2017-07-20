@@ -82,7 +82,6 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
         navigationView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentManager = getSupportFragmentManager();
-        loadFragment(R.id.nav_events);
     }
 
     @Override
@@ -136,10 +135,14 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     }
 
     @Override
-    public void loadDashboard(long eventId) {
-        navigationView.getMenu().setGroupVisible(R.id.subMenu, true);
-        this.eventId = eventId;
-        loadFragment(R.id.nav_dashboard);
+    public void loadInitialPage(long eventId) {
+        if (eventId != -1) {
+            navigationView.getMenu().setGroupVisible(R.id.subMenu, true);
+            this.eventId = eventId;
+            loadFragment(R.id.nav_dashboard);
+        } else {
+            loadFragment(R.id.nav_events);
+        }
     }
 
     @Override
