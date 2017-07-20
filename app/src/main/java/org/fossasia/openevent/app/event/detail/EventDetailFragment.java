@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.BaseFragment;
+import org.fossasia.openevent.app.common.lifecycle.BaseFragment;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
@@ -93,9 +93,9 @@ public class EventDetailFragment extends BaseFragment<IEventDetailPresenter> imp
     @Override
     public void onStart() {
         super.onStart();
-        presenter.attach(initialEventId, this);
+        getPresenter().attach(initialEventId, this);
         setupRefreshListener();
-        presenter.start();
+        getPresenter().start();
     }
 
     @Override
@@ -105,12 +105,12 @@ public class EventDetailFragment extends BaseFragment<IEventDetailPresenter> imp
     }
 
     @Override
-    protected Lazy<IEventDetailPresenter> getPresenterProvider() {
+    public Lazy<IEventDetailPresenter> getPresenterProvider() {
         return presenterProvider;
     }
 
     @Override
-    protected int getLoaderId() {
+    public int getLoaderId() {
         return R.layout.fragment_event_details;
     }
 
@@ -119,7 +119,7 @@ public class EventDetailFragment extends BaseFragment<IEventDetailPresenter> imp
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() ->
-            presenter.loadDetails(true)
+            getPresenter().loadDetails(true)
         );
     }
 
