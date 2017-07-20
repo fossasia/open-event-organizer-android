@@ -22,7 +22,7 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.BaseActivity;
+import org.fossasia.openevent.app.common.lifecycle.BaseActivity;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
@@ -87,8 +87,8 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.attach(this);
-        presenter.start();
+        getPresenter().attach(this);
+        getPresenter().start();
 
         setEditTextListener();
 
@@ -108,9 +108,9 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
             String password = etPassword.getText().toString();
             String url = etBaseUrl.getText().toString().trim();
 
-            presenter.setBaseUrl(interceptor, DEFAULT_BASE_URL, url, checkBoxEnableUrl.isChecked());
+            getPresenter().setBaseUrl(interceptor, DEFAULT_BASE_URL, url, checkBoxEnableUrl.isChecked());
 
-            presenter.login(email, password);
+            getPresenter().login(email, password);
         });
     }
 
@@ -123,12 +123,12 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
     // Lifecycle methods end
 
     @Override
-    protected Lazy<ILoginPresenter> getPresenterProvider() {
+    public Lazy<ILoginPresenter> getPresenterProvider() {
         return presenterProvider;
     }
 
     @Override
-    protected int getLoaderId() {
+    public int getLoaderId() {
         return R.layout.activity_login;
     }
 

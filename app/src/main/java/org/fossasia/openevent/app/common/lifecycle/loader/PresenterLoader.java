@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.common.loader;
+package org.fossasia.openevent.app.common.lifecycle.loader;
 
 import android.content.Context;
 import android.support.v4.content.Loader;

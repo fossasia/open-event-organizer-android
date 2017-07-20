@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,7 @@ import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.BaseActivity;
+import org.fossasia.openevent.app.common.lifecycle.BaseActivity;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
 import org.fossasia.openevent.app.event.detail.EventDetailFragment;
@@ -88,8 +87,8 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.attach(this);
-        presenter.start();
+        getPresenter().attach(this);
+        getPresenter().start();
     }
 
     @Override
@@ -119,12 +118,12 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     }
 
     @Override
-    protected Lazy<IMainPresenter> getPresenterProvider() {
+    public Lazy<IMainPresenter> getPresenterProvider() {
         return presenterProvider;
     }
 
     @Override
-    protected int getLoaderId() {
+    public int getLoaderId() {
         return R.layout.activity_main;
     }
 
@@ -191,7 +190,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
             logoutDialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.logout_confirmation)
                 .setMessage(R.string.logout_confirmation_message)
-                .setPositiveButton(R.string.ok, (dialog, which) -> presenter.logout())
+                .setPositiveButton(R.string.ok, (dialog, which) -> getPresenter().logout())
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .create();
 
