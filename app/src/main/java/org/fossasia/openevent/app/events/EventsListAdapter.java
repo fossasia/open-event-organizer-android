@@ -19,11 +19,11 @@ import java.util.List;
 class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder> implements StickyRecyclerHeadersAdapter<EventsHeaderViewHolder>{
 
     private List<Event> events;
-    private IBus bus;
+    private IBus<Event> eventBus;
 
-    EventsListAdapter(List<Event> events, IBus bus) {
+    EventsListAdapter(List<Event> events, IBus<Event> bus) {
         this.events = events;
-        this.bus = bus;
+        this.eventBus = bus;
     }
 
     @Override
@@ -82,7 +82,7 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
             binding
                 .getRoot()
-                .setOnClickListener(view -> bus.pushSelectedEvent(event));
+                .setOnClickListener(view -> eventBus.pushItem(event));
         }
 
         public void bind(Event event) {

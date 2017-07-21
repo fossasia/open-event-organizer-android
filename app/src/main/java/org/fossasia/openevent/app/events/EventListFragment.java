@@ -47,7 +47,7 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     IUtilModel utilModel;
 
     @Inject
-    IBus bus;
+    IBus<Event> eventBus;
 
     @Inject
     Lazy<IEventsPresenter> presenterProvider;
@@ -161,7 +161,7 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     }
 
     private void setupRecyclerView() {
-        eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus);
+        eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), eventBus);
 
         recyclerView = binding.eventRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));

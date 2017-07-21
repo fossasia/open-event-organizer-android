@@ -6,6 +6,7 @@ import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.contract.IBus;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.repository.AttendeeRepository;
 import org.fossasia.openevent.app.data.repository.EventRepository;
 import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
@@ -21,7 +22,7 @@ public abstract class DataModule {
 
     @Binds
     @Singleton
-    abstract IBus bindsBus(Bus bus);
+    abstract IBus<Event> bindsEventBus(Bus<Event> eventBus);
 
     @Binds
     @Singleton

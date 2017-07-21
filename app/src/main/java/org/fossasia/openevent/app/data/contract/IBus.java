@@ -1,13 +1,11 @@
 package org.fossasia.openevent.app.data.contract;
 
-import org.fossasia.openevent.app.data.models.Event;
-
 import io.reactivex.Observable;
 
-public interface IBus {
+public interface IBus<T> {
 
-    void pushSelectedEvent(Event event);
+    void pushItem(T item);
 
-    Observable<Event> getSelectedEvent();
+    Observable<T> getItem();
 
 }
