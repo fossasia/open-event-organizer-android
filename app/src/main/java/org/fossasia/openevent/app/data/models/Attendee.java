@@ -17,18 +17,24 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
+import org.fossasia.openevent.app.data.models.contract.IHeaderProvider;
 import org.fossasia.openevent.app.event.attendees.viewholders.AttendeeViewHolder;
+import org.fossasia.openevent.app.utils.CompareUtils;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
+@Builder
+@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @EqualsAndHashCode(callSuper = false)
 @Table(database = OrgaDatabase.class)
-public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee> {
+public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, IHeaderProvider {
 
     @PrimaryKey
     public long id;
@@ -93,34 +99,9 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
 
     @Override
     public int compareTo(@NonNull Attendee other) {
-        int compareFirstName;
-        int compareLastName;
-
-        // TODO: Reduce complexity and move logic outside the class
-        return
-            (compareFirstName = firstName
-                .toLowerCase()
-                .compareTo(
-                    other
-                        .getFirstName()
-                        .toLowerCase()
-                )
-            ) == 0 ? (compareLastName =
-                lastName
-                    .toLowerCase()
-                    .compareTo(
-                        other
-                            .getLastName()
-                            .toLowerCase()
-                    )
-            ) == 0 ?
-                email
-                    .toLowerCase()
-                    .compareTo(
-                        other
-                            .getEmail()
-                            .toLowerCase()
-                    ) : compareLastName : compareFirstName;
+        return CompareUtils.compareCascading(this, other,
+            Attendee::getFirstName, Attendee::getLastName, Attendee::getEmail
+        );
     }
 
     @Override
@@ -153,5 +134,15 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     public void unbindView(AttendeeViewHolder holder) {
         super.unbindView(holder);
         holder.unbindAttendee();
+    }
+
+    @Override
+    public String getHeader() {
+        return getFirstName().substring(0, 1);
+    }
+
+    @Override
+    public long getHeaderId() {
+        return getHeader().charAt(0);
     }
 }
