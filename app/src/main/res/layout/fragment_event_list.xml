@@ -16,18 +16,24 @@
         android:layout_height="match_parent"
         tools:context="org.fossasia.openevent.app.events.EventListFragment">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeContainer"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/eventRecyclerView"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/event_layout" />
+                android:layout_height="match_parent">
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/eventRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/event_layout" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
