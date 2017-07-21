@@ -6,6 +6,7 @@ import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.contract.IBus;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.main.contract.IMainView;
@@ -23,17 +24,17 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
     private final IUtilModel utilModel;
     private final ILoginModel loginModel;
     private final IEventRepository eventRepository;
-    private final IBus bus;
+    private final IBus<Event> eventBus;
     private final ContextManager contextManager;
 
     private final long storedEventId;
 
     @Inject
-    public MainPresenter(IUtilModel utilModel, ILoginModel loginModel, IEventRepository eventRepository, IBus bus, ContextManager contextManager) {
+    public MainPresenter(IUtilModel utilModel, ILoginModel loginModel, IEventRepository eventRepository, IBus<Event> bus, ContextManager contextManager) {
         this.utilModel = utilModel;
         this.loginModel = loginModel;
         this.eventRepository = eventRepository;
-        this.bus = bus;
+        this.eventBus = bus;
         this.contextManager = contextManager;
 
         storedEventId = utilModel.getLong(EVENT_KEY, -1);
@@ -56,7 +57,7 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
                 .subscribe(Logger::logSuccess, Logger::logError);
         }
 
-        bus.getSelectedEvent()
+        eventBus.getItem()
             .compose(dispose(getDisposable()))
             .compose(erroneousResult(getView()))
             .subscribe(event -> {
