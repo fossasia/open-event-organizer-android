@@ -2,20 +2,17 @@ package org.fossasia.openevent.app.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +21,7 @@ import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.lifecycle.BaseActivity;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
+import org.fossasia.openevent.app.databinding.LoginActivityBinding;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
 import org.fossasia.openevent.app.main.MainActivity;
@@ -33,38 +31,21 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import br.com.ilhasoft.support.validation.Validator;
 import dagger.Lazy;
 
 import static org.fossasia.openevent.app.utils.ViewUtils.showView;
 
 public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILoginView, AppCompatEditText.OnEditorActionListener {
 
-    @BindView(R.id.btnLogin)
-    Button btnLogin;
-    @BindView(R.id.etEmail)
-    TextInputLayout etEmail;
-    @BindView(R.id.email_dropdown)
-    AutoCompleteTextView autoCompleteEmail;
-    @BindView(R.id.etPassword)
-    AppCompatEditText etPassword;
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.checkboxEnableUrl)
-    CheckBox checkBoxEnableUrl;
-    @BindView(R.id.addUrlContainer)
-    View addUrlContainer;
-    @BindView(R.id.etBaseUrl)
-    AppCompatEditText etBaseUrl;
-
     @Inject
     Lazy<ILoginPresenter> presenterProvider;
 
     @Inject
     HostSelectionInterceptor interceptor;
+
+    private LoginActivityBinding binding;
+    private Validator validator;
 
     private final String DEFAULT_BASE_URL = BuildConfig.DEFAULT_BASE_URL;
 
@@ -77,11 +58,10 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
             .inject(this);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = DataBindingUtil.setContentView(this, R.layout.login_activity);
+        validator = new Validator(binding);
 
-        ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
     }
 
     @Override
@@ -92,6 +72,8 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
 
         setEditTextListener();
 
+        CheckBox checkBoxEnableUrl = binding.loginContent.checkboxEnableUrl;
+        TextInputLayout addUrlContainer = binding.loginContent.addUrlContainer;
         checkBoxEnableUrl.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 checkBoxEnableUrl.setTextColor(Color.BLACK);
@@ -102,11 +84,13 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
             }
         });
 
-        btnLogin.setOnClickListener(v -> {
+        binding.loginContent.btnLogin.setOnClickListener(view -> {
+            if (!validator.validate())
+                return;
 
-            String email = etEmail.getEditText().getText().toString();
-            String password = etPassword.getText().toString();
-            String url = etBaseUrl.getText().toString().trim();
+            String email = binding.loginContent.emailDropdown.getText().toString();
+            String password = binding.loginContent.etPassword.getText().toString();
+            String url = binding.loginContent.etBaseUrl.getText().toString().trim();
 
             getPresenter().setBaseUrl(interceptor, DEFAULT_BASE_URL, url, checkBoxEnableUrl.isChecked());
 
@@ -115,9 +99,9 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
     }
 
     private void setEditTextListener() {
-        etBaseUrl.setOnEditorActionListener(this);
-        etEmail.getEditText().setOnEditorActionListener(this);
-        etPassword.setOnEditorActionListener(this);
+        binding.loginContent.etBaseUrl.setOnEditorActionListener(this);
+        binding.loginContent.emailDropdown.setOnEditorActionListener(this);
+        binding.loginContent.etPassword.setOnEditorActionListener(this);
     }
 
     // Lifecycle methods end
@@ -129,14 +113,14 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
 
     @Override
     public int getLoaderId() {
-        return R.layout.activity_login;
+        return R.layout.login_activity;
     }
 
     // View Implementation start
 
     @Override
     public void showProgress(boolean show) {
-        showView(progressBar, show);
+        showView(binding.loginContent.progressBar, show);
     }
 
     @Override
@@ -154,7 +138,7 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             hideKeyBoard();
-            btnLogin.performClick();
+            binding.loginContent.btnLogin.performClick();
             return true;
         }
         return false;
@@ -171,8 +155,9 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
 
     @Override
     public void attachEmails(Set<String> emails) {
-        autoCompleteEmail.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
-            new ArrayList<String>(emails)));
+        binding.loginContent.emailDropdown.setAdapter(
+            new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>(emails))
+        );
     }
 
     // View Implementation end
