@@ -26,5 +26,6 @@
     <dimen name="size_sale_box">160dp</dimen>
     <dimen name="ticket_progress_size">80dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="ticket_chart_height">200dp</dimen>
 
 </resources>

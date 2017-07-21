@@ -193,7 +193,9 @@
 
                     </android.support.v7.widget.CardView>
 
-                    <include layout="@layout/ticket_analytics"
+                    <include
+                        android:id="@+id/ticket_analytics"
+                        layout="@layout/ticket_analytics"
                         bind:event="@{event}" />
 
                 </LinearLayout>

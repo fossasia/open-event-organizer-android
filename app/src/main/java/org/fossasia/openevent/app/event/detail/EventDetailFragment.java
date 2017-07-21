@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.LineChart;
+
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.lifecycle.BaseFragment;
@@ -147,4 +149,8 @@ public class EventDetailFragment extends BaseFragment<IEventDetailPresenter> imp
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public LineChart getChartView() {
+        return binding.ticketAnalytics.chart;
+    }
 }
