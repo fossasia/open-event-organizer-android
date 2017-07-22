@@ -26,6 +26,7 @@ import org.fossasia.openevent.app.events.EventListFragment;
 import org.fossasia.openevent.app.login.LoginActivity;
 import org.fossasia.openevent.app.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.main.contract.IMainView;
+import org.fossasia.openevent.app.settings.SettingsFragment;
 import org.fossasia.openevent.app.utils.DateUtils;
 
 import javax.inject.Inject;
@@ -114,7 +115,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
                 if (id == R.id.nav_logout)
                     showLogoutDialog();
-                else if (eventId != -1)
+                else
                     loadFragment(id);
 
                 drawer.removeDrawerListener(this);
@@ -179,6 +180,9 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
                 break;
             case R.id.nav_events:
                 fragment = EventListFragment.newInstance();
+                break;
+            case R.id.nav_settings:
+                fragment = SettingsFragment.newInstance();
                 break;
             default:
                 fragment = EventDetailFragment.newInstance(eventId);
