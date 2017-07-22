@@ -144,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:padding="@dimen/spacing_extra_small"
-                        android:text="@{ DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, checkinAttendee.order.completedAt) }"
+                        android:text='@{ checkinAttendee.order.completedAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, checkinAttendee.order.completedAt) : "" }'
                         android:textAllCaps="true"
                         tools:text="free" />
                 </LinearLayout>
