@@ -2,11 +2,16 @@ package org.fossasia.openevent.app.data.repository;
 
 import android.support.annotation.NonNull;
 
+import com.raizlabs.android.dbflow.sql.language.Method;
+
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.db.QueryHelper;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Attendee_Table;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.Event_Table;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.utils.Constants;
@@ -50,9 +55,6 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
 
         Observable<Attendee> networkObservable = Observable.defer(() ->
             eventService.getAttendees(eventId)
-                .flatMapIterable(attendees -> attendees)
-                .toList()
-                .toObservable()
                 .doOnNext(attendees -> {
                     Timber.d(attendees.toString());
 
@@ -67,6 +69,19 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Long> getCheckedInAttendees(long eventId) {
+        return new QueryHelper<Attendee>()
+            .method(Method.count(), "sum")
+            .from(Attendee.class)
+            .equiJoin(Event.class, Event_Table.id, Attendee_Table.event_id)
+            .where(Attendee_Table.isCheckedIn.eq(true))
+            .and(Attendee_Table.event_id.eq(eventId))
+            .count()
+            .subscribeOn(Schedulers.io());
     }
 
     /**
