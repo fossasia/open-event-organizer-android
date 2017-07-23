@@ -3,6 +3,7 @@
     <color name="color_primary">#EEEEEE</color>
     <color name="color_primary_dark">#1976d2</color>
     <color name="color_accent">#2196f3</color>
+    <color name="preference_accent">@color/color_accent</color>
     <color name="blue_200">#90caf9</color>
     <color name="light_blue_100">#B3E5FC</color>
     <color name="light_blue_500">#03A9F4</color>

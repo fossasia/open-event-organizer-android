@@ -10,6 +10,7 @@ import org.fossasia.openevent.app.event.detail.EventDetailFragment;
 import org.fossasia.openevent.app.events.EventListFragment;
 import org.fossasia.openevent.app.login.LoginActivity;
 import org.fossasia.openevent.app.main.MainActivity;
+import org.fossasia.openevent.app.settings.SettingsFragment;
 
 import javax.inject.Singleton;
 
@@ -36,5 +37,7 @@ public interface AppComponent {
     void inject(AttendeeCheckInFragment attendeeCheckInFragment);
 
     void inject(OrgaApplication orgaApplication);
+
+    void inject(SettingsFragment settingsFragment);
 
 }
