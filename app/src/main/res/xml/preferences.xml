@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="App Settings">
+
+        <android.support.v7.preference.CheckBoxPreference
+            android:key="local_date"
+            android:title="Show dates in local timezone"
+            android:summaryOff="Dates are shown in Event Timezone now"
+            android:summaryOn="Dates are shown in Local Timezone now"
+            android:defaultValue="false"/>
+
+    </android.support.v7.preference.PreferenceCategory>
+
+</android.support.v7.preference.PreferenceScreen>
