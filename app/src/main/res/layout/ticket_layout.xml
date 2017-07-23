@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="ticket"
+            type="org.fossasia.openevent.app.data.models.Ticket" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        style="@style/ItemPadding" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{ ticket.name }'
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_normal" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text='@{ "$" + ticket.price }'
+            android:textSize="@dimen/text_size_extra_small"
+            android:visibility="@{ ticket.price == 0 ? View.GONE : View.VISIBLE }"/>
+
+    </LinearLayout>
+</layout>

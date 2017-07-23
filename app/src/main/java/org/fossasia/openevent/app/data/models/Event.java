@@ -18,8 +18,10 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
+import org.fossasia.openevent.app.data.models.contract.IHeaderProvider;
 import org.fossasia.openevent.app.utils.DateService;
 
+import java.text.ParseException;
 import java.util.List;
 
 import lombok.Data;
@@ -28,7 +30,7 @@ import lombok.Data;
 @Type("event")
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
-public class Event implements Comparable<Event> {
+public class Event implements Comparable<Event>, IHeaderProvider {
     @Id(LongIdHandler.class)
     @PrimaryKey
     public long id;
@@ -135,5 +137,21 @@ public class Event implements Comparable<Event> {
     @Override
     public int compareTo(@NonNull Event otherEvent) {
         return DateService.compareEventDates(this, otherEvent);
+    }
+
+    @Override
+    public String getHeader() {
+        try {
+            return DateService.getEventStatus(this);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "INVALID";
+    }
+
+    @Override
+    public long getHeaderId() {
+        return getHeader().hashCode();
     }
 }

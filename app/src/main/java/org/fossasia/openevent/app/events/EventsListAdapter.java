@@ -6,17 +6,15 @@ import android.view.ViewGroup;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
+import org.fossasia.openevent.app.common.HeaderViewHolder;
 import org.fossasia.openevent.app.data.contract.IBus;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.EventLayoutBinding;
-import org.fossasia.openevent.app.databinding.EventSubheaderLayoutBinding;
-import org.fossasia.openevent.app.events.viewholders.EventsHeaderViewHolder;
-import org.fossasia.openevent.app.utils.DateService;
+import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
 
-import java.text.ParseException;
 import java.util.List;
 
-class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder> implements StickyRecyclerHeadersAdapter<EventsHeaderViewHolder>{
+class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder> implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
 
     private List<Event> events;
     private IBus bus;
@@ -42,28 +40,17 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
     @Override
     public long getHeaderId(int position) {
-        Event event = events.get(position);
-        try {
-            return DateService.getEventStatus(event).hashCode();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return events.get(position).getHeaderId();
     }
 
     @Override
-    public EventsHeaderViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
-        return new EventsHeaderViewHolder(EventSubheaderLayoutBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
+    public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
+        return new HeaderViewHolder(HeaderLayoutBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
     }
 
     @Override
-    public void onBindHeaderViewHolder(EventsHeaderViewHolder holder, int position) {
-        Event event = events.get(position);
-        try {
-            holder.bindHeader(DateService.getEventStatus(event));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void onBindHeaderViewHolder(HeaderViewHolder headerViewHolder, int i) {
+        headerViewHolder.bindHeader(events.get(i).getHeader());
     }
 
     @Override
