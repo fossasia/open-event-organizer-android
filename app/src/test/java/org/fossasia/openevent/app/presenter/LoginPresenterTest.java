@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.presenter;
 
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.login.LoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
 import org.fossasia.openevent.app.utils.Constants;
@@ -34,7 +34,7 @@ public class LoginPresenterTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    IUtilModel utilModel;
+    ISharedPreferenceModel sharedPreferenceModel;
 
     @Mock
     ILoginView loginView;
@@ -51,7 +51,7 @@ public class LoginPresenterTest {
 
     @Before
     public void setUp() {
-        loginPresenter = new LoginPresenter(loginModel, utilModel);
+        loginPresenter = new LoginPresenter(loginModel, sharedPreferenceModel);
         loginPresenter.attach(loginView);
     }
 
@@ -145,7 +145,7 @@ public class LoginPresenterTest {
 
     @Test
     public void shouldAttachEmailAutomatically() {
-        Mockito.when(utilModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(savedEmails);
+        Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(savedEmails);
         Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
 
         loginPresenter.start();
@@ -155,7 +155,7 @@ public class LoginPresenterTest {
 
     @Test
     public void shouldNotAttachEmailAutomatically() {
-        Mockito.when(utilModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(null);
+        Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(null);
         Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
 
         loginPresenter.start();

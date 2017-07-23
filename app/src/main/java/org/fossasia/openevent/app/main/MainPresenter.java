@@ -5,7 +5,7 @@ import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.contract.IBus;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.main.contract.IMainView;
@@ -20,7 +20,7 @@ import static org.fossasia.openevent.app.main.MainActivity.EVENT_KEY;
 
 public class MainPresenter extends BasePresenter<IMainView> implements IMainPresenter {
 
-    private final IUtilModel utilModel;
+    private final ISharedPreferenceModel sharedPreferenceModel;
     private final ILoginModel loginModel;
     private final IEventRepository eventRepository;
     private final IBus bus;
@@ -29,14 +29,14 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
     private final long storedEventId;
 
     @Inject
-    public MainPresenter(IUtilModel utilModel, ILoginModel loginModel, IEventRepository eventRepository, IBus bus, ContextManager contextManager) {
-        this.utilModel = utilModel;
+    public MainPresenter(ISharedPreferenceModel sharedPreferenceModel, ILoginModel loginModel, IEventRepository eventRepository, IBus bus, ContextManager contextManager) {
+        this.sharedPreferenceModel = sharedPreferenceModel;
         this.loginModel = loginModel;
         this.eventRepository = eventRepository;
         this.bus = bus;
         this.contextManager = contextManager;
 
-        storedEventId = utilModel.getLong(EVENT_KEY, -1);
+        storedEventId = sharedPreferenceModel.getLong(EVENT_KEY, -1);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
             .compose(dispose(getDisposable()))
             .compose(erroneousResult(getView()))
             .subscribe(event -> {
-                utilModel.setLong(EVENT_KEY, event.getId());
+                sharedPreferenceModel.setLong(EVENT_KEY, event.getId());
                 getView().loadInitialPage(event.getId());
             }, Logger::logError);
     }
