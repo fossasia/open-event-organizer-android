@@ -2,9 +2,11 @@ package org.fossasia.openevent.app.common.di.module;
 
 import org.fossasia.openevent.app.data.Bus;
 import org.fossasia.openevent.app.data.LoginModel;
+import org.fossasia.openevent.app.data.SharedPreferenceModel;
 import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.data.contract.IBus;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
+import org.fossasia.openevent.app.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.repository.AttendeeRepository;
 import org.fossasia.openevent.app.data.repository.EventRepository;
@@ -26,6 +28,10 @@ public abstract class DataModule {
     @Binds
     @Singleton
     abstract IUtilModel bindsUtilModel(UtilModel utilModel);
+
+    @Binds
+    @Singleton
+    abstract ISharedPreferenceModel bindsSharedPreferenceModel(SharedPreferenceModel sharedPreferenceModel);
 
     @Binds
     @Singleton

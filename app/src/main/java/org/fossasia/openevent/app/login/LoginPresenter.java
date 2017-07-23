@@ -5,7 +5,7 @@ import android.support.annotation.VisibleForTesting;
 import org.fossasia.openevent.app.common.BasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.login.contract.ILoginView;
@@ -21,12 +21,12 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginPresenter {
 
     private ILoginModel loginModel;
-    private IUtilModel utilModel;
+    private ISharedPreferenceModel sharedPreferenceModel;
 
     @Inject
-    public LoginPresenter(ILoginModel loginModel, IUtilModel utilModel) {
+    public LoginPresenter(ILoginModel loginModel, ISharedPreferenceModel sharedPreferenceModel) {
         this.loginModel = loginModel;
-        this.utilModel = utilModel;
+        this.sharedPreferenceModel = sharedPreferenceModel;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
     }
 
     private Set<String> getEmailList() {
-        return utilModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null);
+        return sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null);
     }
 
     @VisibleForTesting

@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.data;
 import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.data.contract.ILoginModel;
+import org.fossasia.openevent.app.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Login;
@@ -23,13 +24,15 @@ public class LoginModel implements ILoginModel {
 
     private static final User EMPTY = new User();
 
+    private final ISharedPreferenceModel sharedPreferenceModel;
     private final IUtilModel utilModel;
     private final EventService eventService;
     private final IDatabaseRepository databaseRepository;
 
     @Inject
-    public LoginModel(IUtilModel utilModel, EventService eventService, IDatabaseRepository databaseRepository) {
+    public LoginModel(IUtilModel utilModel, ISharedPreferenceModel sharedPreferenceModel, EventService eventService, IDatabaseRepository databaseRepository) {
         this.utilModel = utilModel;
+        this.sharedPreferenceModel = sharedPreferenceModel;
         this.eventService = eventService;
         this.databaseRepository = databaseRepository;
     }
@@ -47,7 +50,7 @@ public class LoginModel implements ILoginModel {
             .flatMapSingle(loginResponse -> {
                 String token = loginResponse.getAccessToken();
                 utilModel.saveToken(token);
-                utilModel.addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, username);
+                sharedPreferenceModel.addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, username);
 
                 return isPreviousUser(token);
             })
@@ -80,7 +83,7 @@ public class LoginModel implements ILoginModel {
         return Completable.fromAction(
             () -> {
                 utilModel.saveToken(null);
-                utilModel.setLong(MainActivity.EVENT_KEY, -1);
+                sharedPreferenceModel.setLong(MainActivity.EVENT_KEY, -1);
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
