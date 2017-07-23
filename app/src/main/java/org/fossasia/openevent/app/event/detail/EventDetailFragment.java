@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.event.detail;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,7 @@ import com.github.mikephil.charting.charts.LineChart;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.chart.ChartActivity;
 import org.fossasia.openevent.app.common.lifecycle.BaseFragment;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
@@ -34,7 +36,7 @@ import dagger.Lazy;
  */
 public class EventDetailFragment extends BaseFragment<IEventDetailPresenter> implements IEventDetailView {
 
-    private static final String EVENT_ID = "event_id";
+    public static final String EVENT_ID = "event_id";
 
     private long initialEventId;
     private EventDetailBinding binding;
@@ -89,6 +91,13 @@ public class EventDetailFragment extends BaseFragment<IEventDetailPresenter> imp
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = EventDetailBinding.inflate(inflater, container, false);
+
+        binding.ticketAnalytics.btnChartFullScreen.setOnClickListener(
+            v -> {
+                Intent openChart = new Intent(getActivity(), ChartActivity.class);
+                openChart.putExtra(EVENT_ID, initialEventId);
+                startActivity(openChart);
+            });
         return binding.getRoot();
     }
 

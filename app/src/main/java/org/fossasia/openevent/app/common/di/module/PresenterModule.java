@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.common.di.module;
 
+import org.fossasia.openevent.app.chart.ChartPresenter;
+import org.fossasia.openevent.app.chart.contract.IChartPresenter;
 import org.fossasia.openevent.app.event.attendees.AttendeesPresenter;
 import org.fossasia.openevent.app.event.attendees.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.event.checkin.AttendeeCheckInPresenter;
@@ -32,6 +34,9 @@ public abstract class PresenterModule {
 
     @Binds
     abstract IEventDetailPresenter bindsEventDetailPresenter(EventDetailPresenter eventDetailPresenter);
+
+    @Binds
+    abstract IChartPresenter bindsChartPresenter(ChartPresenter chartPresenter);
 
     @Binds
     abstract IAttendeesPresenter bindsAttendeePresenter(AttendeesPresenter attendeesPresenter);

@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.common.di.component;
 
 import org.fossasia.openevent.app.OrgaApplication;
+import org.fossasia.openevent.app.chart.ChartActivity;
 import org.fossasia.openevent.app.common.di.module.DataModule;
 import org.fossasia.openevent.app.common.di.module.NetworkModule;
 import org.fossasia.openevent.app.common.di.module.PresenterModule;
@@ -39,5 +40,7 @@ public interface AppComponent {
     void inject(OrgaApplication orgaApplication);
 
     void inject(SettingsFragment settingsFragment);
+
+    void inject(ChartActivity chartActivity);
 
 }
