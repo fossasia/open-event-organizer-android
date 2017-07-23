@@ -165,7 +165,7 @@ public class ChartAnalyser {
         lineData.setDrawValues(false);
     }
 
-    protected void showChart (LineChart lineChart) {
+    public void showChart (LineChart lineChart) {
         lineChart.setData(lineData);
         lineChart.getXAxis().setEnabled(false);
         lineChart.getAxisRight().setEnabled(false);
