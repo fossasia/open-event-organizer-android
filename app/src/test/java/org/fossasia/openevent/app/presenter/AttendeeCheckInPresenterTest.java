@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.presenter;
 
 import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.event.checkin.AttendeeCheckInPresenter;
 import org.fossasia.openevent.app.event.checkin.contract.IAttendeeCheckInView;
@@ -48,6 +49,7 @@ public class AttendeeCheckInPresenterTest {
 
     @Before
     public void setUp() {
+        attendee.setEvent(new Event(id));
         attendeeCheckInPresenter = new AttendeeCheckInPresenter(attendeeRepository);
         attendeeCheckInPresenter.attach(id, attendeeCheckInView);
 
@@ -68,7 +70,7 @@ public class AttendeeCheckInPresenterTest {
     }
 
     private void setToggleAttendeeBehaviour(Observable<Attendee> attendeeObservable) {
-        when(attendeeRepository.toggleAttendeeCheckStatus(0, id)).thenReturn(attendeeObservable);
+        when(attendeeRepository.toggleAttendeeCheckStatus(id, id)).thenReturn(attendeeObservable);
     }
 
     private Attendee getAttendee(boolean checkedIn) {

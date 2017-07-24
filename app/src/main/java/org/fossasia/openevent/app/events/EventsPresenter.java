@@ -81,8 +81,8 @@ public class EventsPresenter extends BasePresenter<IEventsView> implements IEven
                 contextManager.setOrganiser(user);
 
                 String name = Utils.formatOptionalString("%s %s",
-                    user.getUserDetail().getFirstName(),
-                    user.getUserDetail().getLastName());
+                    user.getFirstName(),
+                    user.getLastName());
 
                 getView().showOrganiserName(name.trim());
             }, throwable -> getView().showOrganiserLoadError(throwable.getMessage()));

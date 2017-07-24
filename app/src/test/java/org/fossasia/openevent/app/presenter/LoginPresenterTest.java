@@ -104,8 +104,6 @@ public class LoginPresenterTest {
     public void shouldLoginSuccessfully() {
         Mockito.when(loginModel.login(email, password))
             .thenReturn(Completable.complete());
-        Mockito.when(utilModel.deleteDatabase())
-            .thenReturn(Completable.complete());
 
         InOrder inOrder = Mockito.inOrder(loginModel, loginView);
 

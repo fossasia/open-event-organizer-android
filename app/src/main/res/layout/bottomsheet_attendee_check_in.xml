@@ -45,7 +45,7 @@
                     android:layout_marginEnd="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
                     android:padding="@dimen/spacing_extra_small"
-                    android:text='@{Utils.formatOptionalString("%s %s", checkinAttendee.firstName, checkinAttendee.lastName)}'
+                    android:text='@{Utils.formatOptionalString("%s %s", checkinAttendee.firstname, checkinAttendee.lastname)}'
                     tools:text="Name" />
 
                 <TextView
@@ -60,9 +60,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small"
-                    android:text="@{ checkinAttendee.checkedIn ? @string/checked_in : @string/checked_out }"
+                    android:text="@{ checkinAttendee.isCheckedIn ? @string/checked_in : @string/checked_out }"
                     android:textAllCaps="true"
-                    android:textColor="@{ checkinAttendee.checkedIn ? @color/light_green_500 : @color/red_500 }"
+                    android:textColor="@{ checkinAttendee.isCheckedIn ? @color/light_green_500 : @color/red_500 }"
                     tools:text="CHECKED IN" />
 
                 <LinearLayout
@@ -208,9 +208,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:onClick="@{() -> presenter.toggleCheckIn() }"
-                app:backgroundTint="@{ checkinAttendee.checkedIn ? @color/red_500 : @color/light_green_500 }"
+                app:backgroundTint="@{ checkinAttendee.isCheckedIn ? @color/red_500 : @color/light_green_500 }"
                 app:fabSize="mini"
-                app:srcCompat="@{ checkinAttendee.checkedIn ? @drawable/ic_checkout : @drawable/ic_checkin }"
+                app:srcCompat="@{ checkinAttendee.isCheckedIn ? @drawable/ic_checkout : @drawable/ic_checkin }"
                 app:tint="@android:color/white" />
 
             <ProgressBar

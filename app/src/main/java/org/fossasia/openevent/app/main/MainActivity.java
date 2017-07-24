@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
         setDrawerHeader(event.getName(),
             DateUtils.formatDateWithDefault(
                 DateUtils.FORMAT_DATE_COMPLETE,
-                event.getStartTime()
+                event.getStartsAt()
             )
         );
     }

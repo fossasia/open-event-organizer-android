@@ -83,8 +83,8 @@ public class EventDetailPresenterTest {
     public void setUp() {
         // Event set up
         event.setName("Event Name");
-        event.setStartTime("2004-05-21T9:30:00");
-        event.setEndTime("2012-09-20T12:23:00");
+        event.setStartsAt("2004-05-21T9:30:00");
+        event.setEndsAt("2012-09-20T12:23:00");
         event.setTickets(tickets);
 
         eventDetailPresenter = new EventDetailPresenter(eventRepository, attendeeRepository, ticketAnalyser, chartAnalyser);

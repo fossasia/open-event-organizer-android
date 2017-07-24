@@ -16,6 +16,7 @@ import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.models.query.TypeQuantity;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
+import org.fossasia.openevent.app.utils.JWTUtils;
 
 import java.util.NoSuchElementException;
 
@@ -24,7 +25,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 public class EventRepository extends Repository implements IEventRepository {
 
@@ -44,7 +44,7 @@ public class EventRepository extends Repository implements IEventRepository {
 
         Observable<User> networkObservable = Observable.defer(() ->
             eventService
-                .getUser(getAuthorization())
+                .getUser(JWTUtils.getIdentity(getAuthorization()))
                 .doOnNext(user -> databaseRepository
                     .save(User.class, user)
                     .subscribe()
@@ -72,11 +72,12 @@ public class EventRepository extends Repository implements IEventRepository {
                 .getEvent(eventId)
                 .doOnNext(event -> {
                     event.setComplete(true);
+
                     databaseRepository
                         .save(Event.class, event)
                         .subscribe();
-                })
-        );
+                }
+        ));
 
         return new AbstractObservableBuilder<Event>(utilModel)
             .reload(reload)
@@ -92,22 +93,12 @@ public class EventRepository extends Repository implements IEventRepository {
         );
 
         Observable<Event> networkObservable = Observable.defer(() ->
-            eventService.getEvents(getAuthorization())
-                .doOnNext(events -> databaseRepository.deleteAll(Event.class)
+            eventService.getEvents(JWTUtils.getIdentity(getAuthorization()))
+                .doOnNext(events -> databaseRepository
+                    .deleteAll(Event.class)
                     .concatWith(databaseRepository.saveList(Event.class, events))
                     .subscribe())
-                .flatMapIterable(events -> events))
-                .doOnEach(eventNotification -> {
-                    // Download all complete events in one go
-                    if (!eventNotification.isOnNext())
-                        return;
-                    Event event = eventNotification.getValue();
-                    getEvent(event.getId(), false)
-                        .subscribe(
-                            eventDownloaded ->
-                                Timber.d("Downloaded complete event %s", eventDownloaded.getName()),
-                            Timber::e);
-                });
+                .flatMapIterable(events -> events));
 
         return new AbstractObservableBuilder<Event>(utilModel)
             .reload(reload)
@@ -134,8 +125,8 @@ public class EventRepository extends Repository implements IEventRepository {
             .method(Method.count(), "quantity")
             .from(Ticket.class)
             .equiJoin(Attendee.class, Attendee_Table.ticket_id, Ticket_Table.id)
-            .equiJoin(Event.class, Attendee_Table.eventId, Event_Table.id)
-            .where(Ticket_Table.event_id.eq(eventId))
+            .equiJoin(Event.class, Attendee_Table.event_id, Event_Table.id)
+            .where(Ticket_Table.event_id.withTable().eq(eventId))
             .group(Ticket_Table.type)
             .toCustomObservable(TypeQuantity.class)
             .subscribeOn(Schedulers.io());
@@ -145,9 +136,9 @@ public class EventRepository extends Repository implements IEventRepository {
         return new QueryHelper<Attendee>()
             .method(Method.count(), "sum")
             .from(Attendee.class)
-            .equiJoin(Event.class, Event_Table.id, Attendee_Table.eventId)
-            .where(Attendee_Table.checkedIn.eq(true))
-            .and(Attendee_Table.eventId.eq(eventId))
+            .equiJoin(Event.class, Event_Table.id, Attendee_Table.event_id)
+            .where(Attendee_Table.isCheckedIn.eq(true))
+            .and(Attendee_Table.event_id.withTable().eq(eventId))
             .count()
             .subscribeOn(Schedulers.io());
     }
@@ -159,7 +150,7 @@ public class EventRepository extends Repository implements IEventRepository {
                 .from(Ticket.class)
                 .equiJoin(Attendee.class, Attendee_Table.ticket_id, Ticket_Table.id)
                 .equiJoin(Event.class, Ticket_Table.event_id, Event_Table.id)
-                .where(Ticket_Table.event_id.eq(eventId))
+                .where(Ticket_Table.event_id.withTable().eq(eventId))
                 .build())
             .query()
             .map(cursor -> {

@@ -25,7 +25,7 @@
             android:layout_width="@dimen/image_small"
             android:layout_height="@dimen/image_small"
             android:contentDescription="@string/event_thumbnail"
-            app:circleImageUrl="@{event.thumbnail}" />
+            app:circleImageUrl="@{event.thumbnailImageUrl}" />
 
         <TextView
             android:layout_width="wrap_content"

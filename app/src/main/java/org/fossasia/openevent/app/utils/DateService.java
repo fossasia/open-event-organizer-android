@@ -11,13 +11,23 @@ public class DateService {
     private static final String PAST_EVENT = "PAST";
     private static final String UPCOMING_EVENT = "UPCOMING";
 
+    /**
+     * Compare events for sorting
+     * the list will be in order of live events, upcoming events, past events
+     *
+     * for both live events latest will be before in list
+     * for both past events lately ended will be before in list
+     * for both upcoming lately started will be before in list
+     *
+     * @return int
+     */
     public static int compareEventDates(Event one, Event two) {
         Date now = new Date();
         try {
-            Date startDate = DateUtils.getDate(one.getStartTime());
-            Date endDate = DateUtils.getDate(one.getEndTime());
-            Date otherStartDate = DateUtils.getDate(two.getStartTime());
-            Date otherEndDate = DateUtils.getDate(two.getEndTime());
+            Date startDate = DateUtils.getDate(one.getStartsAt());
+            Date endDate = DateUtils.getDate(one.getEndsAt());
+            Date otherStartDate = DateUtils.getDate(two.getEndsAt());
+            Date otherEndDate = DateUtils.getDate(two.getEndsAt());
             if (endDate.before(now) || otherEndDate.before(now)) {
                 // one of them is past and other can be past or live or upcoming
                 return endDate.after(otherEndDate) ? -1 : 1;
@@ -37,8 +47,8 @@ public class DateService {
     }
 
     public static String getEventStatus(Event event) throws ParseException {
-        Date startDate = DateUtils.getDate(event.getStartTime());
-        Date endDate = DateUtils.getDate(event.getEndTime());
+        Date startDate = DateUtils.getDate(event.getEndsAt());
+        Date endDate = DateUtils.getDate(event.getEndsAt());
         Date now = new Date();
         if (now.after(startDate)) {
             if (now.before(endDate)) {

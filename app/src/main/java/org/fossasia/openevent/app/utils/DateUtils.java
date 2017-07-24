@@ -100,6 +100,9 @@ public class DateUtils {
 
     @NonNull
     private static Date getDate(@NonNull SimpleDateFormat formatter, @NonNull String isoDateString) throws ParseException {
+        // TODO: Remove after order API is finalized
+        if (isoDateString == null)
+            return new Date();
         return formatter.parse(isoDateString);
     }
 

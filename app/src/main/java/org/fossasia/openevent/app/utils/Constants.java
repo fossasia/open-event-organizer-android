@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.utils;
 
 public class Constants {
     //url to login organiser
-    public static String BASE_URL = "https://open-event-dev.herokuapp.com/api/v1/";
+    public static String BASE_URL = "https://open-event-api.herokuapp.com/v1/";
     public static final String SHARED_PREFS_TOKEN = "token";
     //SharedPrefs db Name
     public static final String FOSS_PREFS = "FossPrefs";

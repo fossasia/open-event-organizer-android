@@ -7,11 +7,9 @@ import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Table(database = OrgaDatabase.class, allFields = true)
 public class SimpleModel {
     @PrimaryKey
@@ -20,5 +18,5 @@ public class SimpleModel {
     public String name;
     public String description;
 
-    public SimpleModel() {}
+    SimpleModel() {}
 }

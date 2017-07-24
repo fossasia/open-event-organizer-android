@@ -5,11 +5,13 @@ import android.databinding.ObservableFloat;
 import android.databinding.ObservableLong;
 import android.support.annotation.NonNull;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.github.jasminb.jsonapi.LongIdHandler;
+import com.github.jasminb.jsonapi.annotations.Id;
+import com.github.jasminb.jsonapi.annotations.Relationship;
+import com.github.jasminb.jsonapi.annotations.Type;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -23,69 +25,64 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@Type("event")
+@JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 public class Event implements Comparable<Event> {
+    @Id(LongIdHandler.class)
     @PrimaryKey
     public long id;
-
-    // Foreign Key Section - Lazy Load
-    // Need to explicitly associate the fields to save them
-
-    @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
-    public CallForPapers callForPapers;
-
-    @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
-    public Copyright copyright;
-
-    @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
-    @JsonProperty("licence_details")
-    public License licenseDetails;
-
-    @ForeignKey(stubbedRelationship = true, saveForeignKeyModel = true)
-    public Version version;
-
-    @ColumnIgnore
-    List<SocialLink> socialLinks;
-
-    @ColumnIgnore
-    List<Ticket> tickets;
-
-    // Images
-    public String backgroundImage;
-    public String logo;
-    public String large;
-    public String thumbnail;
-    public String placeholderUrl;
-
-    // Event Info
-    public String identifier;
-    public String name;
-    public String description;
-    public String email;
-    public double latitude;
-    public double longitude;
-    public String locationName;
-    public String searchableLocationName;
-    public String startTime;
-    public String endTime;
-    public String timezone;
-    public String topic;
-    public String subTopic;
-    public String type;
-    public String state;
-    public String eventUrl;
-    public boolean hasSessionSpeakers;
-    public String codeOfConduct;
-    public String privacy;
+    public String paymentCountry;
+    public String paypalEmail;
+    public String thumbnailImageUrl;
     public String schedulePublishedOn;
-    public String ticketUrl;
-
+    public String paymentCurrency;
     public String organizerDescription;
+    public boolean isMapShown;
+    public String originalImageUrl;
+    public String onsiteDetails;
     public String organizerName;
+    public boolean canPayByStripe;
+    public String largeImageUrl;
+    public String timezone;
+    public boolean canPayOnsite;
+    public String deletedAt;
+    public String ticketUrl;
+    public boolean canPayByPaypal;
+    public String locationName;
+    public boolean isSponsorsEnabled;
+    public boolean hasOrganizerInfo;
+    public boolean isSessionsSpeakersEnabled;
+    public String privacy;
+    public String codeOfConduct;
+    public String state;
+    public double latitude;
+    public String startsAt;
+    public String searchableLocationName;
+    public boolean isTicketingEnabled;
+    public boolean canPayByCheque;
+    public String description;
+    public String pentabarfUrl;
+    public String xcalUrl;
+    public String logoUrl;
+    public String externalEventUrl;
+    public boolean isTaxEnabled;
+    public String iconImageUrl;
+    public String icalUrl;
+    public String name;
+    public boolean canPayByBank;
+    public String endsAt;
+    public String createdAt;
+    public double longitude;
+    public String bankDetails;
+    public String chequeDetails;
+    public String identifier;
 
-    // Tells if the event saved is complete ( with tickets )
     public boolean isComplete;
+
+    @ColumnIgnore
+    @Relationship("tickets")
+    public List<Ticket> tickets;
 
     // For Data Binding
     public final ObservableField<String> startDate = new ObservableField<>();
@@ -113,56 +110,19 @@ public class Event implements Comparable<Event> {
 
     public Event(long id, String startTime, String endTime) {
         this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startsAt = startTime;
+        this.endsAt = endTime;
     }
 
-    private void associateLinks() {
-        associateCallForPapers();
-        associateCopyright();
-        associateLicenseDetails();
-        associateSocialLinks();
-        associateTickets();
-    }
-
-    private void associateCallForPapers() {
-        if (callForPapers != null)
-            callForPapers.setId(id);
-    }
-
-    private void associateCopyright() {
-        if (copyright != null)
-            copyright.setId(id);
-    }
-
-    private void associateLicenseDetails() {
-        if (licenseDetails != null)
-            licenseDetails.setId(id);
-    }
-
-    private void associateSocialLinks() {
-        if (socialLinks == null)
-            return;
-
-        for(SocialLink socialLink : socialLinks) {
-            socialLink.setEvent(this);
-        }
-    }
-
-    private void associateTickets() {
-        if (tickets == null)
-            return;
-
-        for (Ticket ticket : tickets) {
-            ticket.setEvent(this);
-        }
-    }
     // One to Many implementation
-
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "tickets")
-    protected List<Ticket> getEventTickets() {
-        if(tickets != null && !tickets.isEmpty())
+    List<Ticket> getEventTickets() {
+        if(tickets != null && !tickets.isEmpty()) {
+            for (Ticket ticket : tickets)
+                ticket.setEvent(this);
+
             return tickets;
+        }
 
         tickets = SQLite.select()
             .from(Ticket.class)
@@ -172,40 +132,6 @@ public class Event implements Comparable<Event> {
         return tickets;
     }
 
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "socialLinks")
-    protected List<SocialLink> getEventSocialLinks() {
-        if(socialLinks != null && !socialLinks.isEmpty())
-            return socialLinks;
-
-        socialLinks = SQLite.select()
-            .from(SocialLink.class)
-            .where(SocialLink_Table.event_id.eq(id))
-            .queryList();
-
-        return socialLinks;
-    }
-
-    public boolean isComplete() {
-        return isComplete;
-    }
-
-    public void setComplete(boolean complete) {
-        isComplete = complete;
-        if (isComplete)
-            associateLinks();
-    }
-
-    /**
-     * Compare events for sorting
-     * the list will be in order of live events, upcoming events, past events
-     *
-     * for both live events latest will be before in list
-     * for both past events lately ended will be before in list
-     * for both upcoming lately started will be before in list
-     *
-     * @param otherEvent event on right side in comparision
-     * @return int
-     */
     @Override
     public int compareTo(@NonNull Event otherEvent) {
         return DateService.compareEventDates(this, otherEvent);
