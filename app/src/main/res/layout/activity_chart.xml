@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/spacing_normal"
-    tools:context="org.fossasia.openevent.app.chart.ChartActivity">
+    tools:context="org.fossasia.openevent.app.module.event.chart.ChartActivity">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"

@@ -4,7 +4,7 @@
     android:id="@+id/activity_scan_qr"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".qrscan.ScanQRActivity">
+    tools:context=".module.attendee.qrscan.ScanQRActivity">
 
     <LinearLayout
         android:id="@+id/topLayout"
@@ -13,17 +13,17 @@
         android:layout_height="match_parent"
         android:keepScreenOn="true">
 
-        <org.fossasia.openevent.app.qrscan.widget.CameraSourcePreview
+        <org.fossasia.openevent.app.module.attendee.qrscan.widget.CameraSourcePreview
             android:id="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <org.fossasia.openevent.app.qrscan.widget.GraphicOverlay
+            <org.fossasia.openevent.app.module.attendee.qrscan.widget.GraphicOverlay
                 android:id="@+id/graphicOverlay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-        </org.fossasia.openevent.app.qrscan.widget.CameraSourcePreview>
+        </org.fossasia.openevent.app.module.attendee.qrscan.widget.CameraSourcePreview>
 
     </LinearLayout>
 

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".module.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,14 +23,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".qrscan.ScanQRActivity"
+            android:name=".module.attendee.qrscan.ScanQRActivity"
             android:theme="@style/AppTheme.NoActionBar.Translucent" />
         <activity
-            android:name=".main.MainActivity"
+            android:name=".module.main.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".chart.ChartActivity"
+            android:name=".module.event.chart.ChartActivity"
             android:theme="@style/AppTheme.NoActionBar.Translucent"/>
     </application>
 

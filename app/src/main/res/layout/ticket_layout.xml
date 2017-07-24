@@ -6,7 +6,7 @@
 
         <variable
             name="ticket"
-            type="org.fossasia.openevent.app.data.models.Ticket" />
+            type="org.fossasia.openevent.app.common.data.models.Ticket" />
     </data>
 
     <LinearLayout
