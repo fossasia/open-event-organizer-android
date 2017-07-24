@@ -39,7 +39,9 @@
     <string name="event_thumbnail">Event Thumbnail</string>
     <string name="text_empty">Nothing to show here</string>
     <string name="empty_view_icon">Empty View Icon</string>
-    <string name="total_sales">Total Sales</string>
+    <string name="event_summary">Event Summary</string>
+    <string name="gross_sales">Gross Sales</string>
+    <string name="sales_summary">Sales Summary</string>
     <string name="refresh_complete">Refresh Complete</string>
     <string name="search_title">Search</string>
     <string name="search_placeholder">Search Attendees</string>
