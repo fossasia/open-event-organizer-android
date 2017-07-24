@@ -8,6 +8,8 @@ import org.fossasia.openevent.app.event.checkin.AttendeeCheckInPresenter;
 import org.fossasia.openevent.app.event.checkin.contract.IAttendeeCheckInPresenter;
 import org.fossasia.openevent.app.event.detail.EventDetailPresenter;
 import org.fossasia.openevent.app.event.detail.contract.IEventDetailPresenter;
+import org.fossasia.openevent.app.event.tickets.TicketsPresenter;
+import org.fossasia.openevent.app.event.tickets.contract.ITicketsPresenter;
 import org.fossasia.openevent.app.events.EventsPresenter;
 import org.fossasia.openevent.app.events.contract.IEventsPresenter;
 import org.fossasia.openevent.app.login.LoginPresenter;
@@ -46,5 +48,8 @@ public abstract class PresenterModule {
 
     @Binds
     abstract IAttendeeCheckInPresenter bindsAttendeeCheckInPresenter(AttendeeCheckInPresenter attendeeCheckInPresenter);
+
+    @Binds
+    abstract ITicketsPresenter bindsTicketsPresenter(TicketsPresenter ticketsPresenter);
 
 }

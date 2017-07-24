@@ -22,6 +22,7 @@ import org.fossasia.openevent.app.common.lifecycle.BaseActivity;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.event.attendees.AttendeesFragment;
 import org.fossasia.openevent.app.event.detail.EventDetailFragment;
+import org.fossasia.openevent.app.event.tickets.TicketsFragment;
 import org.fossasia.openevent.app.events.EventListFragment;
 import org.fossasia.openevent.app.login.LoginActivity;
 import org.fossasia.openevent.app.main.contract.IMainPresenter;
@@ -177,6 +178,9 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
                 break;
             case R.id.nav_attendees:
                 fragment = AttendeesFragment.newInstance(eventId);
+                break;
+            case R.id.nav_tickets:
+                fragment = TicketsFragment.newInstance(eventId);
                 break;
             case R.id.nav_events:
                 fragment = EventListFragment.newInstance();

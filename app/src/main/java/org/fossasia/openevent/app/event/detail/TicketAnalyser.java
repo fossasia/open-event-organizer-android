@@ -6,7 +6,8 @@ import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.query.TypeQuantity;
-import org.fossasia.openevent.app.data.repository.EventRepository;
+import org.fossasia.openevent.app.data.repository.contract.IAttendeeRepository;
+import org.fossasia.openevent.app.data.repository.contract.ITicketRepository;
 
 import java.util.List;
 
@@ -16,18 +17,20 @@ public class TicketAnalyser {
     public static final String TICKET_FREE = "free";
     public static final String TICKET_PAID = "paid";
     public static final String TICKET_DONATION = "donation";
-    private EventRepository eventRepository;
+    private final ITicketRepository ticketRepository;
+    private final IAttendeeRepository attendeeRepository;
 
     @Inject
-    public TicketAnalyser(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
+    public TicketAnalyser(ITicketRepository ticketRepository, IAttendeeRepository attendeeRepository) {
+        this.ticketRepository = ticketRepository;
+        this.attendeeRepository = attendeeRepository;
     }
 
     public void analyseTotalTickets(@NonNull Event event) {
         if (event.getTickets() == null)
             return;
 
-        eventRepository.getTicketsQuantity(event.getId())
+        ticketRepository.getTicketsQuantity(event.getId())
             .doOnNext(typeQuantity -> {
                 switch (typeQuantity.getType()) {
                     case "free":
@@ -51,7 +54,7 @@ public class TicketAnalyser {
     public void analyseSoldTickets(@NonNull Event event, @NonNull List<Attendee> attendees) {
         event.totalAttendees.set(attendees.size());
 
-        eventRepository.getSoldTicketsQuantity(event.getId())
+        ticketRepository.getSoldTicketsQuantity(event.getId())
             .doOnNext(typeQuantity -> {
                 switch (typeQuantity.getType()) {
                     case "free":
@@ -71,10 +74,10 @@ public class TicketAnalyser {
             .reduce((one, two) -> one + two)
             .subscribe(Logger::logSuccess, Logger::logError);
 
-        eventRepository.getTotalSale(event.getId())
+        ticketRepository.getTotalSale(event.getId())
             .subscribe(event.totalSale::set, Logger::logError);
 
-        eventRepository.getCheckedInAttendees(event.getId())
+        attendeeRepository.getCheckedInAttendees(event.getId())
             .subscribe(event.checkedIn::set, Logger::logError);
     }
 

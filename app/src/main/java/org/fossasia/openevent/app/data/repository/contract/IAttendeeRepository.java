@@ -17,4 +17,7 @@ public interface IAttendeeRepository {
     @NonNull
     Observable<Attendee> toggleAttendeeCheckStatus(long eventId, long attendeeId);
 
+    @NonNull
+    Observable<Long> getCheckedInAttendees(long eventId);
+
 }

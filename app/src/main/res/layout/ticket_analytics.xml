@@ -15,25 +15,96 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <FrameLayout
+            android:id="@+id/chartBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sales_summary"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_size_small"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"/>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:layout_marginRight="@dimen/spacing_normal"
+                    android:layout_marginBottom="@dimen/spacing_normal"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_shadow"/>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_small"
+                        android:background="@color/color_bottom_surface"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_extra_small"
+                android:background="@color/grey_600"
+                android:alpha="0.6"
+                android:layout_gravity="end|top">
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/btnChartFullScreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_full_screen"
+                    android:background="@android:color/transparent" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
         <TextView
-            style="@style/Base.TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_extra_small"
             android:text="@string/tickets"
-            android:textColor="@color/grey_800" />
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_size_small"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/spacing_normal">
 
             <include
                 layout="@layout/ticket_analytics_item"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_tiny"
                 android:layout_weight="1"
                 bind:color='@{"light_blue"}'
                 bind:completed="@{event.soldFreeTickets}"
@@ -44,7 +115,6 @@
                 layout="@layout/ticket_analytics_item"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_tiny"
                 android:layout_weight="1"
                 bind:color='@{"purple"}'
                 bind:completed="@{event.soldPaidTickets}"
@@ -55,7 +125,6 @@
                 layout="@layout/ticket_analytics_item"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_tiny"
                 android:layout_weight="1"
                 bind:color='@{"red"}'
                 bind:completed="@{event.soldDonationTickets}"
@@ -63,41 +132,21 @@
                 bind:total="@{event.donationTickets}" />
         </LinearLayout>
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
-            app:cardElevation="@dimen/elevation">
+            android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="1dp"
+                android:background="@color/color_shadow"/>
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:background="@color/grey_600"
-                    android:alpha="0.6"
-                    android:layout_gravity="end|top">
-
-                <android.support.v7.widget.AppCompatImageButton
-                    android:id="@+id/btnChartFullScreen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_full_screen"
-                    android:background="@android:color/transparent" />
-
-                </LinearLayout>
-            </FrameLayout>
-
-        </android.support.v7.widget.CardView>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spacing_small"
+                android:background="@color/color_bottom_surface"/>
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

@@ -13,13 +13,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/spacing_small"
-        android:paddingEnd="@dimen/spacing_normal"
-        android:paddingLeft="@dimen/spacing_normal"
-        android:paddingRight="@dimen/spacing_normal"
-        android:paddingStart="@dimen/spacing_normal"
-        android:paddingTop="@dimen/spacing_small"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        style="@style/ItemPadding">
 
         <ImageView
             android:layout_width="@dimen/image_small"

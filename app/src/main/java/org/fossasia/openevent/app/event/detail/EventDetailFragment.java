@@ -162,4 +162,9 @@ public class EventDetailFragment extends BaseFragment<IEventDetailPresenter> imp
     public LineChart getChartView() {
         return binding.ticketAnalytics.chart;
     }
+
+    @Override
+    public void showChart(boolean show) {
+        ViewUtils.showView(binding.ticketAnalytics.chartBox, show);
+    }
 }

@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.model;
 
 import org.fossasia.openevent.app.data.LoginModel;
+import org.fossasia.openevent.app.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.data.contract.IUtilModel;
 import org.fossasia.openevent.app.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Login;
@@ -43,6 +44,9 @@ public class LoginModelTest {
     IUtilModel utilModel;
 
     @Mock
+    ISharedPreferenceModel sharedPreferenceModel;
+
+    @Mock
     EventService eventService;
 
     @Mock
@@ -57,7 +61,7 @@ public class LoginModelTest {
 
     @Before
     public void setUp() {
-        loginModel = new LoginModel(utilModel, eventService, databaseRepository);
+        loginModel = new LoginModel(utilModel, sharedPreferenceModel, eventService, databaseRepository);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -204,6 +208,6 @@ public class LoginModelTest {
 
         loginModel.login(email + "new", password).test();
 
-        verify(utilModel).addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, email + "new");
+        verify(sharedPreferenceModel).addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, email + "new");
     }
 }

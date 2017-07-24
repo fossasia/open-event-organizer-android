@@ -1,6 +1,5 @@
 package org.fossasia.openevent.app.event.attendees;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -8,39 +7,26 @@ import com.mikepenz.fastadapter.AbstractAdapter;
 import com.mikepenz.fastadapter.IItem;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
+import org.fossasia.openevent.app.common.HeaderViewHolder;
 import org.fossasia.openevent.app.data.models.contract.IHeaderProvider;
-import org.fossasia.openevent.app.databinding.AttendeeSubheaderLayoutBinding;
+import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
 
 import java.util.List;
 
-class StickyHeaderAdapter<Item extends IItem & IHeaderProvider> extends AbstractAdapter<Item> implements StickyRecyclerHeadersAdapter<StickyHeaderAdapter.ViewHolder> {
+class StickyHeaderAdapter<Item extends IItem & IHeaderProvider> extends AbstractAdapter<Item> implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
     @Override
     public long getHeaderId(int position) {
         return getItem(position).getHeaderId();
     }
 
     @Override
-    public ViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
-        return new ViewHolder(AttendeeSubheaderLayoutBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
+    public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
+        return new HeaderViewHolder(HeaderLayoutBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
     }
 
     @Override
-    public void onBindHeaderViewHolder(StickyHeaderAdapter.ViewHolder viewHolder, int position) {
+    public void onBindHeaderViewHolder(HeaderViewHolder viewHolder, int position) {
         viewHolder.bindHeader(getItem(position).getHeader());
-    }
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-        AttendeeSubheaderLayoutBinding binding;
-
-        ViewHolder(AttendeeSubheaderLayoutBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        void bindHeader(String header) {
-            binding.setSubheading(header);
-            binding.executePendingBindings();
-        }
     }
 
     @Override

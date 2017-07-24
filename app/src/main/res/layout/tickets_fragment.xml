@@ -2,20 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <import type="android.view.View" />
-        <import type="java.util.List" />
-
-        <variable
-            name="events"
-            type="List" />
-    </data>
-
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="org.fossasia.openevent.app.events.EventListFragment"
-        android:background="@color/color_top_surface">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -27,10 +16,11 @@
                 android:layout_height="match_parent">
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/eventRecyclerView"
+                    android:id="@+id/ticketsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/event_layout" />
+                    android:clipToPadding="false"
+                    tools:listitem="@layout/attendee_layout" />
 
             </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -39,9 +29,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/emptyView"
+            android:id="@+id/empty_view"
             android:visibility="gone">
-
             <include layout="@layout/empty_layout" />
         </FrameLayout>
 
@@ -53,6 +42,5 @@
             android:layout_gravity="center"
             android:visibility="gone"
             tools:visibility="visible" />
-
     </android.support.design.widget.CoordinatorLayout>
 </layout>

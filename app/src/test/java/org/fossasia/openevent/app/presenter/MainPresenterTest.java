@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.presenter;
 
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.data.contract.ILoginModel;
-import org.fossasia.openevent.app.data.contract.IUtilModel;
+import org.fossasia.openevent.app.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.main.MainPresenter;
 import org.fossasia.openevent.app.main.contract.IMainView;
 import org.junit.Before;
@@ -26,7 +26,7 @@ public class MainPresenterTest {
     ILoginModel loginModel;
 
     @Mock
-    IUtilModel utilModel;
+    ISharedPreferenceModel sharedPreferenceModel;
 
     @Mock
     IMainView mainView;
@@ -38,7 +38,7 @@ public class MainPresenterTest {
 
     @Before
     public void setUp() {
-        mainPresenter = new MainPresenter(utilModel, loginModel, null, null, contextManager);
+        mainPresenter = new MainPresenter(sharedPreferenceModel, loginModel, null, null, contextManager);
         mainPresenter.attach(mainView);
     }
 
