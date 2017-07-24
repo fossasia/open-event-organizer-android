@@ -6,10 +6,10 @@ import org.fossasia.openevent.app.data.models.Event;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.BehaviorSubject;
 
 public class Bus implements IBus {
-    private static PublishSubject<Event> eventIdPublisher = PublishSubject.create();
+    private static BehaviorSubject<Event> eventIdPublisher = BehaviorSubject.create();
 
     @Inject
     public Bus() {}

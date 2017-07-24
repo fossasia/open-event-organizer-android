@@ -4,6 +4,8 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data class="EventDetailBinding">
+        <import type="org.fossasia.openevent.app.common.ContextManager" />
+
         <variable
             name="event"
             type="org.fossasia.openevent.app.data.models.Event" />
@@ -49,7 +51,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{"$" + String.format("%.2f", event.totalSale)}'
+                        android:text='@{ContextManager.getCurrency() + String.format(" %.2f", event.totalSale)}'
                         android:textSize="@dimen/text_size_extra_large"
                         android:textColor="@color/color_accent"
                         android:layout_marginLeft="@dimen/spacing_normal"

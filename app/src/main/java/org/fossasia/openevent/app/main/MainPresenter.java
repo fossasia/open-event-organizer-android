@@ -9,11 +9,13 @@ import org.fossasia.openevent.app.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.main.contract.IMainView;
+import org.fossasia.openevent.app.utils.CurrencyUtils;
 
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneous;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneousCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneousResult;
 import static org.fossasia.openevent.app.main.MainActivity.EVENT_KEY;
@@ -52,8 +54,8 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
             eventRepository
                 .getEvent(storedEventId, false)
                 .compose(dispose(getDisposable()))
-                .compose(erroneousResult(getView()))
-                .subscribe(Logger::logSuccess, Logger::logError);
+                .compose(erroneous(getView()))
+                .subscribe(bus::pushSelectedEvent, Logger::logError);
         }
 
         bus.getSelectedEvent()
@@ -61,6 +63,9 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
             .compose(erroneousResult(getView()))
             .subscribe(event -> {
                 sharedPreferenceModel.setLong(EVENT_KEY, event.getId());
+                ContextManager.setCurrency(
+                    CurrencyUtils.getCurrencySymbol(event.getPaymentCurrency())
+                );
                 getView().loadInitialPage(event.getId());
             }, Logger::logError);
     }
