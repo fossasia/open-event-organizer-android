@@ -23,7 +23,6 @@ public class PresenterLoader<T extends IBasePresenter> extends Loader<T> {
     @Override
     protected void onReset() {
         super.onReset();
-        presenter.detach();
         presenter = null;
     }
 
