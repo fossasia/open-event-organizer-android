@@ -13,6 +13,8 @@ import timber.log.Timber;
 
 public class ContextManager {
 
+    private static String currency = "$";
+
     @Inject
     public ContextManager() {}
 
@@ -34,4 +36,11 @@ public class ContextManager {
         Sentry.clearContext();
     }
 
+    public static void setCurrency(String currency) {
+        ContextManager.currency = currency;
+    }
+
+    public static String getCurrency() {
+        return currency;
+    }
 }

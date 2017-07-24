@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="org.fossasia.openevent.app.common.ContextManager" />
         <import type="org.fossasia.openevent.app.utils.DateUtils" />
         <import type="org.fossasia.openevent.app.utils.Utils" />
         <import type="android.view.View" />
@@ -45,7 +46,7 @@
                     android:layout_marginEnd="@dimen/spacing_large"
                     android:layout_marginRight="@dimen/spacing_large"
                     android:padding="@dimen/spacing_extra_small"
-                    android:text='@{Utils.formatOptionalString("%s %s", checkinAttendee.firstname, checkinAttendee.lastname)}'
+                    android:text='@{ checkinAttendee.firstname + " " + checkinAttendee.lastname }'
                     tools:text="Name" />
 
                 <TextView
@@ -124,7 +125,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:padding="@dimen/spacing_extra_small"
-                        android:text='@{ "$" + checkinAttendee.ticket.price }'
+                        android:text='@{ ContextManager.getCurrency() + " " + checkinAttendee.ticket.price }'
                         tools:text="3.78" />
                 </LinearLayout>
 

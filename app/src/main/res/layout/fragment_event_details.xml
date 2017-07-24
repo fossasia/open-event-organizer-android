@@ -5,6 +5,8 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data class="EventDetailBinding">
+        <import type="org.fossasia.openevent.app.common.ContextManager" />
+
         <variable
             name="event"
             type="org.fossasia.openevent.app.data.models.Event" />
@@ -54,7 +56,7 @@
                         android:background="@drawable/ic_octagram"
                         android:gravity="center"
                         android:layout_marginBottom="@dimen/spacing_small"
-                        android:text='@{"$" + String.format("%.2f", event.totalSale)}' />
+                        android:text='@{ContextManager.getCurrency() + String.format(" %.2f", event.totalSale)}' />
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
