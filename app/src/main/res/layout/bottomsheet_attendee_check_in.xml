@@ -20,7 +20,8 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/color_top_surface">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"

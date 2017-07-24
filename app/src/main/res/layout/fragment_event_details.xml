@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data class="EventDetailBinding">
@@ -12,7 +11,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/color_top_surface">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeContainer"
@@ -34,166 +34,191 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/spacing_normal"
-                    android:paddingRight="@dimen/spacing_normal"
-                    android:paddingTop="@dimen/spacing_normal"
                     tools:context=".event.detail.EventDetailsActivity">
 
                     <TextView
-                        style="@style/TextAppearance.AppCompat.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/total_sales" />
+                        android:text="@string/gross_sales"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/text_size_small"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:layout_marginLeft="@dimen/spacing_normal"
+                        android:layout_marginStart="@dimen/spacing_normal"/>
 
                     <TextView
-                        style="@style/TextAppearance.AppCompat.Display1"
-                        android:layout_width="@dimen/size_sale_box"
-                        android:layout_height="@dimen/size_sale_box"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_octagram"
-                        android:gravity="center"
-                        android:layout_marginBottom="@dimen/spacing_small"
-                        android:text='@{"$" + String.format("%.2f", event.totalSale)}' />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{"$" + String.format("%.2f", event.totalSale)}'
+                        android:textSize="@dimen/text_size_extra_large"
+                        android:textColor="@color/color_accent"
+                        android:layout_marginLeft="@dimen/spacing_normal"
+                        android:layout_marginStart="@dimen/spacing_normal"
+                        android:layout_marginBottom="@dimen/spacing_normal"/>
 
-                    <android.support.v7.widget.CardView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardUseCompatPadding="true"
-                        app:contentPadding="@dimen/spacing_small"
-                        app:cardElevation="@dimen/elevation">
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/color_shadow"/>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_small"
+                            android:background="@color/color_bottom_surface"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:baselineAligned="false"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:layout_marginBottom="@dimen/spacing_normal">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:baselineAligned="false">
+                            android:layout_weight="0.5"
+                            android:orientation="vertical"
+                            android:gravity="center">
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.5"
-                                android:orientation="vertical"
-                                android:gravity="center">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@{event.totalAttendees}"
-                                        android:textSize="20sp"
-                                        android:textStyle="bold"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text='@{"/" + event.totalTickets}'
-                                        android:textSize="@dimen/text_size_small"/>
-
-                                </LinearLayout>
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/tickets_sold"
-                                    android:textSize="@dimen/text_size_normal" />
+                                    android:text="@{event.totalAttendees}"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"/>
 
-                                <LinearLayout
+                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:layout_marginTop="@dimen/spacing_extra_small"
-                                    android:gravity="center_vertical">
-
-                                    <ProgressBar
-                                        style="?android:attr/progressBarStyleHorizontal"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:max="100"
-                                        android:progress="@{event.totalTickets == 0 ? 0 : (int) ((event.totalAttendees*100)/event.totalTickets)}" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text='@{(event.totalTickets == 0 ? 0 : (int) ((event.totalAttendees*100)/event.totalTickets)) + "%"}'
-                                        android:layout_marginLeft="@dimen/spacing_extra_small"
-                                        android:layout_marginStart="@dimen/spacing_extra_small"/>
-
-                                </LinearLayout>
+                                    android:text='@{"/" + event.totalTickets}'
+                                    android:textSize="@dimen/text_size_small"/>
 
                             </LinearLayout>
 
-                            <FrameLayout
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:background="@color/grey_600"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tickets_sold"
+                                android:textSize="@dimen/text_size_normal" />
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.5"
-                                android:orientation="vertical"
-                                android:gravity="center">
+                                android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/spacing_extra_small"
+                                android:gravity="center_vertical">
 
-                                <LinearLayout
+                                <ProgressBar
+                                    style="?android:attr/progressBarStyleHorizontal"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@{event.checkedIn}"
-                                        android:textSize="@dimen/text_size_large"
-                                        android:textStyle="bold"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text='@{"/" + event.totalAttendees}'
-                                        android:textSize="@dimen/text_size_small"/>
-
-                                </LinearLayout>
+                                    android:max="100"
+                                    android:progress="@{event.totalTickets == 0 ? 0 : (int) ((event.totalAttendees*100)/event.totalTickets)}" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/checked_in"
-                                    android:textSize="@dimen/text_size_normal" />
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:layout_marginTop="@dimen/spacing_extra_small"
-                                    android:gravity="center_vertical">
-
-                                    <ProgressBar
-                                        style="?android:attr/progressBarStyleHorizontal"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:max="100"
-                                        android:progress="@{event.totalAttendees == 0 ? 0 : (int) ((event.checkedIn*100)/event.totalAttendees)}" />
-
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text='@{(event.totalAttendees == 0 ? 0 : (int) ((event.checkedIn*100)/event.totalAttendees)) + "%"}'
-                                        android:layout_marginLeft="@dimen/spacing_extra_small"
-                                        android:layout_marginStart="@dimen/spacing_extra_small"/>
-
-                                </LinearLayout>
+                                    android:text='@{(event.totalTickets == 0 ? 0 : (int) ((event.totalAttendees*100)/event.totalTickets)) + "%"}'
+                                    android:layout_marginLeft="@dimen/spacing_extra_small"
+                                    android:layout_marginStart="@dimen/spacing_extra_small"/>
 
                             </LinearLayout>
 
                         </LinearLayout>
 
-                    </android.support.v7.widget.CardView>
+                        <RelativeLayout
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/color_bottom_surface"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{event.checkedIn}"
+                                    android:textSize="@dimen/text_size_large"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text='@{"/" + event.totalAttendees}'
+                                    android:textSize="@dimen/text_size_small"/>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/checked_in"
+                                android:textSize="@dimen/text_size_normal" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/spacing_extra_small"
+                                android:gravity="center_vertical">
+
+                                <ProgressBar
+                                    style="?android:attr/progressBarStyleHorizontal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:max="100"
+                                    android:progress="@{event.totalAttendees == 0 ? 0 : (int) ((event.checkedIn*100)/event.totalAttendees)}" />
+
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text='@{(event.totalAttendees == 0 ? 0 : (int) ((event.checkedIn*100)/event.totalAttendees)) + "%"}'
+                                    android:layout_marginLeft="@dimen/spacing_extra_small"
+                                    android:layout_marginStart="@dimen/spacing_extra_small"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/color_shadow"/>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_small"
+                            android:background="@color/color_bottom_surface"/>
+                    </LinearLayout>
 
                     <include
                         android:id="@+id/ticket_analytics"

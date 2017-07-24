@@ -10,4 +10,6 @@ import org.fossasia.openevent.app.data.models.Event;
 
 public interface IEventDetailView extends Progressive, Erroneous, Refreshable, ItemResult<Event> {
     LineChart getChartView();
+
+    void showChart(boolean show);
 }

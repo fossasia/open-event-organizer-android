@@ -55,7 +55,10 @@ public class EventDetailPresenter extends BaseDetailPresenter<Long, IEventDetail
 
         chartAnalyser.loadData(getId())
             .compose(disposeCompletable(getDisposable()))
-            .subscribe(() -> chartAnalyser.showChart(getView().getChartView()), Logger::logError);
+            .subscribe(() -> {
+                getView().showChart(true);
+                chartAnalyser.showChart(getView().getChartView());
+            }, throwable -> getView().showChart(false));
 
         eventRepository
             .getEvent(getId(), forceReload)
