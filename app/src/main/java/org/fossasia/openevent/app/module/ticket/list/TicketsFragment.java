@@ -106,7 +106,7 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
     }
 
     private void setupRecyclerView() {
-        ticketsAdapter = new TicketsAdapter(getPresenter().getTickets());
+        ticketsAdapter = new TicketsAdapter(getPresenter());
 
         RecyclerView recyclerView = binding.ticketsRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -169,4 +169,8 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
         ViewUtils.showView(binding.emptyView, show);
     }
 
+    @Override
+    public void showTicketDeleted(String message) {
+        Snackbar.make(binding.ticketsRecyclerView, message, Snackbar.LENGTH_SHORT).show();
+    }
 }

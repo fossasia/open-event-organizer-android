@@ -46,6 +46,8 @@ public class Ticket implements Comparable<Ticket> {
     public String salesEndsAt;
     public Integer minOrder;
 
+    public final ObservableBoolean deleting = new ObservableBoolean();
+
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;

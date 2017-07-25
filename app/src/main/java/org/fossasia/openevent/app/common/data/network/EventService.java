@@ -9,8 +9,10 @@ import org.fossasia.openevent.app.common.data.models.dto.LoginResponse;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -36,7 +38,10 @@ public interface EventService {
     @GET("events/{id}/tickets?include=event&fields[event]=id")
     Observable<List<Ticket>> getTickets(@Path("id") long id);
 
-    @GET("events/{id}/attendees?include=ticket,event&fields[event]=id")
+    @DELETE("tickets/{id}")
+    Completable deleteTicket(@Path("id") long id);
+
+    @GET("events/{id}/attendees?include=ticket,event&fields[event]=id&fields[ticket]=id")
     Observable<List<Attendee>> getAttendees(@Path("id") long id);
 
     @PATCH("attendees/{attendee_id}?include=ticket,event&fields[event]=id")

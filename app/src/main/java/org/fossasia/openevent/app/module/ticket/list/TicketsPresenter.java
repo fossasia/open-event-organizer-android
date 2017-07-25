@@ -19,7 +19,9 @@ import javax.inject.Inject;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.emptiable;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.erroneousCompletable;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> implements ITicketsPresenter {
@@ -65,6 +67,20 @@ public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> im
             .toSortedList()
             .compose(emptiable(getView(), tickets))
             .subscribe(Logger::logSuccess, Logger::logError);
+    }
+
+    @Override
+    public void deleteTicket(Ticket ticket) {
+        ticketRepository
+            .deleteTicket(ticket.getId())
+            .compose(disposeCompletable(getDisposable()))
+            .compose(erroneousCompletable(getView()))
+            .doOnSubscribe(disposable -> ticket.getDeleting().set(true))
+            .doFinally(() -> ticket.getDeleting().set(false))
+            .subscribe(() -> {
+                getView().showTicketDeleted("Ticket Deleted. Refreshing Items");
+                loadTickets(true);
+            }, Logger::logError);
     }
 
     @Override
