@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <import type="android.view.View" />
+        <import type="org.fossasia.openevent.app.common.app.ContextManager" />
 
         <variable
             name="ticket"
@@ -13,25 +16,61 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="vertical"
-        style="@style/ItemPadding" >
+        android:baselineAligned="false">
 
-        <TextView
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            style="@style/ItemPadding" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{ ticket.name }'
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_normal" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text='@{ ContextManager.getCurrency() + " " + ticket.price }'
+                android:textSize="@dimen/text_size_extra_small"
+                android:visibility="@{ ticket.price == 0 ? View.GONE : View.VISIBLE }"/>
+
+        </LinearLayout>
+
+        <!-- Hidden for later use -->
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{ ticket.name }'
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_normal" />
+            android:visibility="gone">
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/deleteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_normal"
+                app:fabSize="mini"
+                app:tint="@android:color/white"
+                app:backgroundTint="@color/red_500"
+                app:srcCompat="@drawable/ic_close"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text='@{ "$" + ticket.price }'
-            android:textSize="@dimen/text_size_extra_small"
-            android:visibility="@{ ticket.price == 0 ? View.GONE : View.VISIBLE }"/>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/progressbar_large"
+                android:layout_height="@dimen/progressbar_large"
+                android:visibility="@{ ticket.deleting ? View.VISIBLE : View.INVISIBLE }"
+                tools:visibility="visible"
+                android:theme="@style/AppTheme" />
+
+        </FrameLayout>
 
     </LinearLayout>
+
 </layout>
