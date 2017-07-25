@@ -4,11 +4,11 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data class="EventDetailBinding">
-        <import type="org.fossasia.openevent.app.common.ContextManager" />
+        <import type="org.fossasia.openevent.app.common.app.ContextManager" />
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.models.Event" />
+            type="org.fossasia.openevent.app.common.data.models.Event" />
     </data>
 
     <FrameLayout

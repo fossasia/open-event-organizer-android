@@ -14,7 +14,6 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.fossasia.openevent.app.events.EventListFragment"
         android:background="@color/color_top_surface">
 
         <FrameLayout
