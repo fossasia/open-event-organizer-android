@@ -11,6 +11,9 @@ import io.reactivex.Single;
 public interface ITicketRepository {
 
     @NonNull
+    Observable<Ticket> createTicket(Ticket ticket);
+
+    @NonNull
     Observable<Ticket> getTickets(long eventId, boolean reload);
 
     @NonNull

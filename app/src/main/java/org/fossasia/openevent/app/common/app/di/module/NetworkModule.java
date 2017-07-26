@@ -6,10 +6,12 @@ import android.support.annotation.NonNull;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
@@ -17,7 +19,6 @@ import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.network.EventService;
 import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
-import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.utils.core.Utils;
 
 import java.io.IOException;
@@ -47,9 +48,9 @@ public class NetworkModule {
     @Provides
     @Singleton
     ObjectMapper providesObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return objectMapper;
+        return new ObjectMapper()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
     }
 
     @Provides

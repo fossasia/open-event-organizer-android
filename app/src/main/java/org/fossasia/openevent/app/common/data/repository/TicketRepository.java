@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class TicketRepository extends Repository implements ITicketRepository {
@@ -31,6 +32,20 @@ public class TicketRepository extends Repository implements ITicketRepository {
     @Inject
     TicketRepository(IUtilModel utilModel, IDatabaseRepository databaseRepository, EventService eventService) {
         super(utilModel, databaseRepository, eventService);
+    }
+
+    @NonNull
+    @Override
+    public Observable<Ticket> createTicket(Ticket ticket) {
+        return eventService
+            .postTicket(ticket.getEvent().getId(), ticket)
+            .doOnNext(created -> {
+                created.setEvent(ticket.getEvent());
+                databaseRepository.save(Ticket.class, created)
+                    .subscribe();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 
     @NonNull

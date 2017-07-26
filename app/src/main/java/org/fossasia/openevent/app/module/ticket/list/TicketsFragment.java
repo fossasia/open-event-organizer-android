@@ -1,12 +1,14 @@
-package org.fossasia.openevent.app.module.tickets;
+package org.fossasia.openevent.app.module.ticket.list;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,8 +26,9 @@ import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.TicketsFragmentBinding;
 import org.fossasia.openevent.app.module.main.MainActivity;
-import org.fossasia.openevent.app.module.tickets.contract.ITicketsPresenter;
-import org.fossasia.openevent.app.module.tickets.contract.ITicketsView;
+import org.fossasia.openevent.app.module.ticket.create.CreateTicketFragment;
+import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsPresenter;
+import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsView;
 
 import java.util.List;
 
@@ -88,6 +91,11 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
 
         setupRecyclerView();
         setupRefreshListener();
+
+        binding.createTicketFab.setOnClickListener(view -> {
+            BottomSheetDialogFragment bottomSheetDialogFragment = CreateTicketFragment.newInstance();
+            bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+        });
     }
 
     @Override
@@ -106,6 +114,7 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(ticketsAdapter);
         recyclerView.addItemDecoration(decoration);
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
 
         adapterDataObserver = new RecyclerView.AdapterDataObserver() {
             @Override
@@ -114,6 +123,8 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
             }
         };
         ticketsAdapter.registerAdapterDataObserver(adapterDataObserver);
+
+        ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createTicketFab);
     }
 
     private void setupRefreshListener() {

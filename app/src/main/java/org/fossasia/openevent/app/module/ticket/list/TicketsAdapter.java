@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.module.tickets;
+package org.fossasia.openevent.app.module.ticket.list;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +11,7 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.viewholder.HeaderViewHolder;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
-import org.fossasia.openevent.app.module.tickets.viewholder.TicketViewHolder;
+import org.fossasia.openevent.app.module.ticket.list.viewholder.TicketViewHolder;
 
 import java.util.List;
 
