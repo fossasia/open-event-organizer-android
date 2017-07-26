@@ -18,9 +18,11 @@ import android.widget.ImageView;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.utils.ui.CircleTransform;
+import org.fossasia.openevent.app.module.main.MainActivity;
 
 public class BindingAdapters {
 
@@ -29,18 +31,40 @@ public class BindingAdapters {
         return value != null ? String.valueOf(value) : "";
     }
 
-    @BindingAdapter({"circleImageUrl"})
+    @BindingAdapter(value = { "imageUrl", "placeholder" }, requireAll = false)
+    public static void bindDefaultImage(ImageView imageView, String url, Drawable drawable) {
+        if(TextUtils.isEmpty(url)) {
+            if (drawable != null)
+                imageView.setImageDrawable(drawable);
+            return;
+        }
+
+        RequestCreator requestCreator = Picasso.with().load(Uri.parse(url));
+
+        if (drawable != null) {
+            requestCreator
+                .placeholder(drawable)
+                .error(drawable);
+        }
+
+        requestCreator
+            .tag(MainActivity.class)
+            .into(imageView);
+    }
+
+    @BindingAdapter("circleImageUrl")
     public static void bindCircularImage(ImageView imageView, String url) {
         if(TextUtils.isEmpty(url)) {
             imageView.setImageResource(R.drawable.ic_photo_shutter);
             return;
         }
 
-        Picasso.with(imageView.getContext())
+        Picasso.with()
             .load(Uri.parse(url))
             .error(R.drawable.ic_photo_shutter)
             .placeholder(R.drawable.ic_photo_shutter)
             .transform(new CircleTransform())
+            .tag(MainActivity.class)
             .into(imageView);
     }
 

@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.module.main;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,17 +11,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseActivity;
 import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.utils.core.DateUtils;
+import org.fossasia.openevent.app.databinding.MainActivityBinding;
+import org.fossasia.openevent.app.databinding.MainNavHeaderBinding;
 import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
@@ -32,8 +34,6 @@ import org.fossasia.openevent.app.module.tickets.TicketsFragment;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import dagger.Lazy;
 
 public class MainActivity extends BaseActivity<IMainPresenter> implements NavigationView.OnNavigationItemSelectedListener, IMainView {
@@ -46,18 +46,11 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     @Inject
     Lazy<IMainPresenter> presenterProvider;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawer;
-    @BindView(R.id.nav_view)
-    NavigationView navigationView;
-
-    private TextView tvEventName;
-    private TextView tvEventTime;
-
     private FragmentManager fragmentManager;
     private AlertDialog logoutDialog;
+
+    private MainActivityBinding binding;
+    private MainNavHeaderBinding headerBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,23 +59,20 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
             .inject(this);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
-        View navHeader = navigationView.getHeaderView(0);
-        tvEventName = (TextView) navHeader.findViewById(R.id.tvEventName);
-        tvEventTime = (TextView) navHeader.findViewById(R.id.tvEventTime);
+        headerBinding = MainNavHeaderBinding.bind(binding.navView.getHeaderView(0));
 
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.main.toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+            this, binding.drawerLayout, binding.main.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView.setNavigationItemSelectedListener(this);
+        binding.navView.setNavigationItemSelectedListener(this);
 
-        navigationView.getMenu().setGroupVisible(R.id.subMenu, false);
+        binding.navView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentManager = getSupportFragmentManager();
     }
 
@@ -94,9 +84,15 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Picasso.with().cancelTag(MainActivity.class);
+    }
+
+    @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else if (backPressed + BACK_PRESS_RESET_TIME > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {
@@ -107,7 +103,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+        binding.drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -119,10 +115,10 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
                 else
                     loadFragment(id);
 
-                drawer.removeDrawerListener(this);
+                binding.drawerLayout.removeDrawerListener(this);
             }
         });
-        drawer.closeDrawer(GravityCompat.START);
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -133,13 +129,13 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
     @Override
     public int getLoaderId() {
-        return R.layout.activity_main;
+        return R.layout.main_activity;
     }
 
     @Override
     public void loadInitialPage(long eventId) {
         if (eventId != -1) {
-            navigationView.getMenu().setGroupVisible(R.id.subMenu, true);
+            binding.navView.getMenu().setGroupVisible(R.id.subMenu, true);
             this.eventId = eventId;
             loadFragment(R.id.nav_dashboard);
         } else {
@@ -149,12 +145,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
     @Override
     public void showResult(Event event) {
-        setDrawerHeader(event.getName(),
-            DateUtils.formatDateWithDefault(
-                DateUtils.FORMAT_DATE_COMPLETE,
-                event.getStartsAt()
-            )
-        );
+        headerBinding.setEvent(event);
     }
 
     @Override
@@ -169,7 +160,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     }
 
     private void loadFragment(int navItemId) {
-        navigationView.setCheckedItem(navItemId);
+        binding.navView.setCheckedItem(navItemId);
 
         Fragment fragment;
         switch (navItemId) {
@@ -191,13 +182,8 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
             default:
                 fragment = EventDashboardFragment.newInstance(eventId);
         }
-        setTitle(navigationView.getMenu().findItem(navItemId).getTitle());
-        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
-    }
-
-    private void setDrawerHeader(String eventName, String eventTime) {
-        tvEventName.setText(eventName);
-        tvEventTime.setText(eventTime);
+        setTitle(binding.navView.getMenu().findItem(navItemId).getTitle());
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 
     private void showLogoutDialog() {

@@ -7,9 +7,10 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
-import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
@@ -17,7 +18,6 @@ import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.network.EventService;
 import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
-import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.utils.core.Utils;
 
 import java.io.IOException;
@@ -136,9 +136,11 @@ public class NetworkModule {
     @Provides
     @Singleton
     Picasso providesPicasso(Context context, OkHttpClient client) {
-        return new Picasso.Builder(context)
+        Picasso picasso = new Picasso.Builder(context)
             .downloader(new OkHttp3Downloader(client))
             .build();
+        picasso.setLoggingEnabled(true);
+        return picasso;
     }
 
     @Provides
