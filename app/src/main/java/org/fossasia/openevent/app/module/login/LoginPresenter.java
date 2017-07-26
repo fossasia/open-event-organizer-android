@@ -30,11 +30,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
     }
 
     @Override
-    public void attach(ILoginView loginView) {
-        super.attach(loginView);
-    }
-
-    @Override
     public void start() {
         if(getView() == null)
             return;
@@ -47,11 +42,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
         Set<String> emailList = getEmailList();
         if(emailList != null)
             getView().attachEmails(emailList);
-    }
-
-    @Override
-    public void detach() {
-        super.detach();
     }
 
     @Override

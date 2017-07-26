@@ -36,18 +36,8 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
     }
 
     @Override
-    public void attach(Long eventId, IEventDashboardView eventDetailView) {
-        super.attach(eventId, eventDetailView);
-    }
-
-    @Override
     public void start() {
         loadDetails(false);
-    }
-
-    @Override
-    public void detach() {
-        super.detach();
     }
 
     @Override
