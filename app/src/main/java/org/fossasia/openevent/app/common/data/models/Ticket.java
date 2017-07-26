@@ -1,8 +1,10 @@
 package org.fossasia.openevent.app.common.data.models;
 
 import android.support.annotation.NonNull;
+import android.databinding.ObservableBoolean;
 import android.support.annotation.VisibleForTesting;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
@@ -28,25 +30,28 @@ import lombok.ToString;
 public class Ticket implements Comparable<Ticket> {
     @Id(LongIdHandler.class)
     @PrimaryKey
-    public long id;
+    public Long id;
 
     public String description;
     public String type;
-    public float price;
+    public Float price;
     public String name;
-    public int maxOrder;
-    public boolean isDescriptionVisible;
-    public boolean isFeeAbsorbed;
-    public int position;
-    public long quantity;
-    public boolean isHidden;
-    public String salesEndsAt;
-    public int minOrder;
+    public Integer maxOrder;
+    public Boolean isDescriptionVisible;
+    public Boolean isFeeAbsorbed;
+    public Integer position;
+    public Long quantity;
+    public Boolean isHidden;
     public String salesStartsAt;
+    public String salesEndsAt;
+    public Integer minOrder;
 
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;
+
+    @JsonIgnore
+    public final ObservableBoolean creating = new ObservableBoolean();
 
     public Ticket() {}
 
@@ -60,12 +65,6 @@ public class Ticket implements Comparable<Ticket> {
     public Ticket(long quantity, String type) {
         this.quantity = quantity;
         this.type = type;
-    }
-
-    @VisibleForTesting
-    public Ticket price(float price) {
-        this.price = price;
-        return this;
     }
 
     @Override

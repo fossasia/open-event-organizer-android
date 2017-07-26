@@ -12,7 +12,8 @@ import org.fossasia.openevent.app.module.event.list.EventListFragment;
 import org.fossasia.openevent.app.module.login.LoginActivity;
 import org.fossasia.openevent.app.module.main.MainActivity;
 import org.fossasia.openevent.app.module.settings.SettingsFragment;
-import org.fossasia.openevent.app.module.tickets.TicketsFragment;
+import org.fossasia.openevent.app.module.ticket.create.CreateTicketFragment;
+import org.fossasia.openevent.app.module.ticket.list.TicketsFragment;
 
 import javax.inject.Singleton;
 
@@ -45,5 +46,7 @@ public interface AppComponent {
     void inject(ChartActivity chartActivity);
 
     void inject(TicketsFragment ticketsFragment);
+
+    void inject(CreateTicketFragment createTicketFragment);
 
 }

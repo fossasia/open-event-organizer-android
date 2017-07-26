@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.module.tickets.contract;
+package org.fossasia.openevent.app.module.ticket.list.contract;
 
 
 import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Emptiable;

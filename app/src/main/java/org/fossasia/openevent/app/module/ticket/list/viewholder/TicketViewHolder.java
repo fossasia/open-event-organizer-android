@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.module.tickets.viewholder;
+package org.fossasia.openevent.app.module.ticket.list.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 
