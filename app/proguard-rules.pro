@@ -31,7 +31,7 @@
 
 -dontwarn javax.annotation**
 
--keepclassmembers class org.fossasia.openevent.app.data.models.** {
+-keep class org.fossasia.openevent.app.common.data.models.** {
   *;
 }
 
@@ -43,6 +43,7 @@
 -keep @com.fasterxml.jackson.annotation.JsonIgnoreProperties class * { *; }
 -keep class com.fasterxml.** { *; }
 -keep class org.codehaus.** { *; }
+-keep class com.github.jasminb.** { *; }
 -keepnames class com.fasterxml.jackson.** { *; }
 -keepclassmembers public final enum com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility {
     public static final com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility *;
