@@ -19,6 +19,7 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseActivity;
+import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
@@ -46,6 +47,9 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     @Inject
     Lazy<IMainPresenter> presenterProvider;
 
+    @Inject
+    ISharedPreferenceModel sharedPreferenceModel;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.drawer_layout)
@@ -58,6 +62,9 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
     private FragmentManager fragmentManager;
     private AlertDialog logoutDialog;
+
+    private String title;
+    public static final String TITLE = "title";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +91,17 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
         navigationView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentManager = getSupportFragmentManager();
+
+        if (savedInstanceState != null) {
+            setTitle(savedInstanceState.getString(TITLE));
+        }
+        loadInitialPage(sharedPreferenceModel.getLong(EVENT_KEY, -1), savedInstanceState == null);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(TITLE, title);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -137,13 +155,18 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     }
 
     @Override
-    public void loadInitialPage(long eventId) {
-        if (eventId != -1) {
+    public void loadInitialPage(long eventId, boolean reset) {
+        if (reset) {
+            if (eventId != -1) {
+                navigationView.getMenu().setGroupVisible(R.id.subMenu, true);
+                this.eventId = eventId;
+                loadFragment(R.id.nav_dashboard);
+            } else {
+                loadFragment(R.id.nav_events);
+            }
+        } else if (eventId != -1) {
             navigationView.getMenu().setGroupVisible(R.id.subMenu, true);
             this.eventId = eventId;
-            loadFragment(R.id.nav_dashboard);
-        } else {
-            loadFragment(R.id.nav_events);
         }
     }
 
@@ -191,7 +214,8 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
             default:
                 fragment = EventDashboardFragment.newInstance(eventId);
         }
-        setTitle(navigationView.getMenu().findItem(navItemId).getTitle());
+        title = navigationView.getMenu().findItem(navItemId).getTitle().toString();
+        setTitle(title);
         fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
