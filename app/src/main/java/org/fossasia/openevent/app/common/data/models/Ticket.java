@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.common.data.models;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -14,6 +15,7 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
+import org.fossasia.openevent.app.common.utils.core.CompareUtils;
 
 import lombok.Data;
 import lombok.ToString;
@@ -23,7 +25,7 @@ import lombok.ToString;
 @ToString(exclude = "event")
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
-public class Ticket {
+public class Ticket implements Comparable<Ticket> {
     @Id(LongIdHandler.class)
     @PrimaryKey
     public long id;
@@ -64,5 +66,10 @@ public class Ticket {
     public Ticket price(float price) {
         this.price = price;
         return this;
+    }
+
+    @Override
+    public int compareTo(@NonNull Ticket otherOne) {
+        return CompareUtils.compareCascading(this, otherOne, Ticket::getType);
     }
 }

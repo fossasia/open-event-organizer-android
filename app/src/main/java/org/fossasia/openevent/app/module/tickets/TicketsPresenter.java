@@ -38,7 +38,7 @@ public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> im
             .getTickets(getId(), refresh)
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneousRefresh(getView(), refresh))
-            .toList()
+            .toSortedList()
             .compose(emptiable(getView(), tickets))
             .subscribe(Logger::logSuccess, Logger::logError);
     }
