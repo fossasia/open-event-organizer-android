@@ -48,14 +48,14 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
 
     @Override
     public void start() {
-        getView().loadInitialPage(storedEventId);
-
         if (storedEventId != -1) {
             eventRepository
                 .getEvent(storedEventId, false)
                 .compose(dispose(getDisposable()))
                 .compose(erroneous(getView()))
                 .subscribe(bus::pushSelectedEvent, Logger::logError);
+        } else {
+            getView().loadInitialPage(storedEventId);
         }
 
         bus.getSelectedEvent()
@@ -63,9 +63,8 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
             .compose(erroneousResult(getView()))
             .subscribe(event -> {
                 sharedPreferenceModel.setLong(EVENT_KEY, event.getId());
-                ContextManager.setCurrency(
-                    CurrencyUtils.getCurrencySymbol(event.getPaymentCurrency())
-                );
+                CurrencyUtils.getCurrencySymbol(event.getPaymentCurrency())
+                    .subscribe(ContextManager::setCurrency);
                 getView().loadInitialPage(event.getId());
             }, Logger::logError);
     }

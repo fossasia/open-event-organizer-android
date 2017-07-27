@@ -84,10 +84,6 @@ public class OrgaApplication extends Application {
 
             Picasso.setSingletonInstance(picasso);
 
-            // Sentry DSN must be defined as environment variable
-            // https://docs.sentry.io/clients/java/config/#setting-the-dsn-data-source-name
-            Sentry.init(new AndroidSentryClientFactory(getApplicationContext()));
-
             if (BuildConfig.DEBUG) {
                 Stetho.initializeWithDefaults(this);
 
@@ -104,6 +100,10 @@ public class OrgaApplication extends Application {
 
                 Timber.plant(new Timber.DebugTree());
             } else {
+                // Sentry DSN must be defined as environment variable
+                // https://docs.sentry.io/clients/java/config/#setting-the-dsn-data-source-name
+                Sentry.init(new AndroidSentryClientFactory(getApplicationContext()));
+
                 Timber.plant(new ReleaseLogTree());
             }
         }
