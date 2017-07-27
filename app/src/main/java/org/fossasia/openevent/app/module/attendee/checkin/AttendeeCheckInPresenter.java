@@ -27,11 +27,6 @@ public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttende
     }
 
     @Override
-    public void attach(Long attendeeId, IAttendeeCheckInView attendeeCheckInView) {
-        super.attach(attendeeId, attendeeCheckInView);
-    }
-
-    @Override
     public void start() {
         if (getView() == null)
             return;
@@ -40,11 +35,6 @@ public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttende
             .compose(dispose(getDisposable()))
             .compose(result(getView()))
             .subscribe(attendee -> this.attendee = attendee, Logger::logError);
-    }
-
-    @Override
-    public void detach() {
-        super.detach();
     }
 
     @Override

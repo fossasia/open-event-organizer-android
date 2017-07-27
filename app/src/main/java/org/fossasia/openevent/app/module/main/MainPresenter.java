@@ -42,11 +42,6 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
     }
 
     @Override
-    public void attach(IMainView mainView) {
-        super.attach(mainView);
-    }
-
-    @Override
     public void start() {
         getView().loadInitialPage(storedEventId);
 
@@ -68,11 +63,6 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
                 );
                 getView().loadInitialPage(event.getId());
             }, Logger::logError);
-    }
-
-    @Override
-    public void detach() {
-        super.detach();
     }
 
     @Override

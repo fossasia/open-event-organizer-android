@@ -66,11 +66,6 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> impl
     }
 
     @Override
-    public void attach(Long eventId, IScanQRView scanQRView) {
-        super.attach(eventId, scanQRView);
-    }
-
-    @Override
     public void start() {
         if(getView() == null)
             return;
@@ -79,11 +74,6 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> impl
 
         getView().showProgress(true);
         getView().loadCamera();
-    }
-
-    @Override
-    public void detach() {
-        super.detach();
     }
 
     @Override
