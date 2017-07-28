@@ -34,19 +34,9 @@ public class EventsPresenter extends BasePresenter<IEventsView> implements IEven
     }
 
     @Override
-    public void attach(IEventsView eventsView) {
-        super.attach(eventsView);
-    }
-
-    @Override
     public void start() {
         loadUserEvents(false);
         loadOrganiser(false);
-    }
-
-    @Override
-    public void detach() {
-        super.detach();
     }
 
     @Override

@@ -17,7 +17,6 @@ public class CompareUtils {
                 Timber.wtf(e);
             }
         }
-
         return 0;
     }
 
