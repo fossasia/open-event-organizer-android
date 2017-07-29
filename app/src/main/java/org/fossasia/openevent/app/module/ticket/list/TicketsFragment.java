@@ -63,13 +63,12 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
         return fragment;
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         context = getContext();
-        OrgaApplication.getAppComponent(context)
+        OrgaApplication.getAppComponent()
             .inject(this);
     }
 

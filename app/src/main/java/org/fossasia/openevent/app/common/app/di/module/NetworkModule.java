@@ -1,6 +1,5 @@
 package org.fossasia.openevent.app.common.app.di.module;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -11,6 +10,7 @@ import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import org.fossasia.openevent.app.OrgaProvider;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Attendee;
@@ -136,8 +136,8 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    Picasso providesPicasso(Context context, OkHttpClient client) {
-        return new Picasso.Builder(context)
+    Picasso providesPicasso(OkHttpClient client) {
+        return new Picasso.Builder(OrgaProvider.context)
             .downloader(new OkHttp3Downloader(client))
             .build();
     }

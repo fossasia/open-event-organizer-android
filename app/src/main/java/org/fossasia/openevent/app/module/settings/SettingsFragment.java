@@ -38,7 +38,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         OrgaApplication
-            .getAppComponent(getContext())
+            .getAppComponent()
             .inject(this);
 
         View view = super.onCreateView(inflater, container, savedInstanceState);

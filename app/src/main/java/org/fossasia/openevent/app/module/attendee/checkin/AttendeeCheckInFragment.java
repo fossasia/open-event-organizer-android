@@ -45,7 +45,7 @@ public class AttendeeCheckInFragment extends BottomSheetDialogFragment implement
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         OrgaApplication
-            .getAppComponent(getContext())
+            .getAppComponent()
             .inject(this);
 
         super.onCreate(savedInstanceState);

@@ -29,7 +29,7 @@ import timber.log.Timber;
 public class OrgaApplication extends Application {
 
     private RefWatcher refWatcher;
-    private AppComponent appComponent;
+    private static AppComponent appComponent;
 
     @Inject
     Picasso picasso;
@@ -44,9 +44,8 @@ public class OrgaApplication extends Application {
         return application.refWatcher;
     }
 
-    public static AppComponent getAppComponent(Context context) {
-        OrgaApplication application = (OrgaApplication) context.getApplicationContext();
-        return application.appComponent;
+    public static AppComponent getAppComponent() {
+        return appComponent;
     }
 
     public static void initializeDatabase(Context context) {
@@ -77,7 +76,7 @@ public class OrgaApplication extends Application {
 
         if (!isTestBuild()) {
             appComponent = DaggerAppComponent.builder()
-                .androidModule(new AndroidModule(this))
+                .androidModule(new AndroidModule())
                 .build();
 
             appComponent.inject(this);

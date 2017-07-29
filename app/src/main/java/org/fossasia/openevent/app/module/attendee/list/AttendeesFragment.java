@@ -98,7 +98,7 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
         context = getActivity();
 
         OrgaApplication
-            .getAppComponent(context)
+            .getAppComponent()
             .inject(this);
 
         super.onCreate(savedInstanceState);

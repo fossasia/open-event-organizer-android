@@ -77,7 +77,7 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
     @Override
     public void onCreate(Bundle savedInstanceState) {
         OrgaApplication
-            .getAppComponent(getActivity())
+            .getAppComponent()
             .inject(this);
 
         super.onCreate(savedInstanceState);

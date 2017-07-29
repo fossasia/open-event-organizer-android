@@ -54,7 +54,7 @@ public class LoginActivity extends BaseActivity<ILoginPresenter> implements ILog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         OrgaApplication
-            .getAppComponent(this)
+            .getAppComponent()
             .inject(this);
 
         super.onCreate(savedInstanceState);

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
 
-import org.fossasia.openevent.app.OrgaApplication;
+import org.fossasia.openevent.app.OrgaProvider;
 import org.fossasia.openevent.app.common.Constants;
 
 import javax.inject.Singleton;
@@ -15,17 +15,11 @@ import dagger.Provides;
 
 @Module
 public class AndroidModule {
-    // Storing Application instead of Context to prevent memory leaks
-    private OrgaApplication application;
-
-    public AndroidModule(Context context) {
-        this.application = (OrgaApplication) context.getApplicationContext();
-    }
 
     @Provides
     @Singleton
     Context providesContext() {
-        return application;
+        return OrgaProvider.context;
     }
 
     @Provides
