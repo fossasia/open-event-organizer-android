@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="org.fossasia.openevent.app.common.utils.core.DateUtils" />
+
+        <variable
+            name="event"
+            type="org.fossasia.openevent.app.common.data.models.Event" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_header_height" >
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{ event.largeImageUrl }"
+            app:placeholder="@{ @drawable/header }"
+            android:contentDescription="@string/event_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            style="@style/ItemPadding" >
+
+            <TextView
+                android:id="@+id/event_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{ event.name }"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/event_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{ DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) }"/>
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</layout>
