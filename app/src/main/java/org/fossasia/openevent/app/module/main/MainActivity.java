@@ -30,7 +30,7 @@ import org.fossasia.openevent.app.module.login.LoginActivity;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainView;
 import org.fossasia.openevent.app.module.settings.SettingsFragment;
-import org.fossasia.openevent.app.module.tickets.TicketsFragment;
+import org.fossasia.openevent.app.module.ticket.list.TicketsFragment;
 
 import javax.inject.Inject;
 

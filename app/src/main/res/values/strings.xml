@@ -63,5 +63,11 @@
     <string name="log_out">Log Out</string>
     <string name="settings">Settings</string>
     <string name="event_background">Event Background</string>
+    <string name="create_ticket">Create Ticket</string>
+    <string name="ticket_name">Ticket Name</string>
+    <string name="quantity">Quantity</string>
+    <string name="price">Price</string>
+    <string name="sale_start_time">Sale start time</string>
+    <string name="sale_end_time">Sale end time</string>
 
 </resources>

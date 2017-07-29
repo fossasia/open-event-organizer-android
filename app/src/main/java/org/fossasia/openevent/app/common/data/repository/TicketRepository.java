@@ -22,8 +22,10 @@ import java.util.NoSuchElementException;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class TicketRepository extends Repository implements ITicketRepository {
@@ -31,6 +33,20 @@ public class TicketRepository extends Repository implements ITicketRepository {
     @Inject
     TicketRepository(IUtilModel utilModel, IDatabaseRepository databaseRepository, EventService eventService) {
         super(utilModel, databaseRepository, eventService);
+    }
+
+    @NonNull
+    @Override
+    public Observable<Ticket> createTicket(Ticket ticket) {
+        return eventService
+            .postTicket(ticket.getEvent().getId(), ticket)
+            .doOnNext(created -> {
+                created.setEvent(ticket.getEvent());
+                databaseRepository.save(Ticket.class, created)
+                    .subscribe();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 
     @NonNull
@@ -45,9 +61,6 @@ public class TicketRepository extends Repository implements ITicketRepository {
                 .doOnNext(tickets -> databaseRepository
                     .deleteAll(Ticket.class)
                     .concatWith(databaseRepository.saveList(Ticket.class, tickets))
-                    .concatWith(eventService.getAttendees(eventId)
-                        .flatMapCompletable(attendees ->
-                            databaseRepository.saveList(Attendee.class, attendees)))
                     .subscribe())
                 .flatMapIterable(tickets -> tickets));
 
@@ -56,6 +69,14 @@ public class TicketRepository extends Repository implements ITicketRepository {
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
+    }
+
+    @NonNull
+    @Override
+    public Completable deleteTicket(long id) {
+        return eventService.deleteTicket(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 
     @NonNull

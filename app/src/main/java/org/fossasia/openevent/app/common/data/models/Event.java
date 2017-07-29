@@ -5,6 +5,7 @@ import android.databinding.ObservableFloat;
 import android.databinding.ObservableLong;
 import android.support.annotation.NonNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
@@ -117,6 +118,7 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     }
 
     // One to Many implementation
+    @JsonIgnore
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "tickets")
     List<Ticket> getEventTickets() {
         if(tickets != null && !tickets.isEmpty()) {

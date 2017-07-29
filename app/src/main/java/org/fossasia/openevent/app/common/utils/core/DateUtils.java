@@ -112,9 +112,8 @@ public class DateUtils {
     }
 
     @NonNull
-    @VisibleForTesting
     public static String formatDateToIso(@NonNull Date date) {
-        return ISO_FORMATTER.format(date);
+        return ISO_TIMEZONE_FORMATTER.format(date);
     }
 
     // Public methods

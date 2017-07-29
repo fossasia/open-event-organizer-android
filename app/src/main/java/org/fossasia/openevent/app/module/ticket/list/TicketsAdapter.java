@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.module.tickets;
+package org.fossasia.openevent.app.module.ticket.list;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
@@ -11,21 +11,27 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.viewholder.HeaderViewHolder;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
-import org.fossasia.openevent.app.module.tickets.viewholder.TicketViewHolder;
+import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsPresenter;
+import org.fossasia.openevent.app.module.ticket.list.viewholder.TicketViewHolder;
 
 import java.util.List;
 
 public class TicketsAdapter extends RecyclerView.Adapter<TicketViewHolder> implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
 
     private final List<Ticket> tickets;
+    private final ITicketsPresenter ticketsPresenter;
 
-    public TicketsAdapter(List<Ticket> tickets) {
-        this.tickets = tickets;
+    public TicketsAdapter(ITicketsPresenter ticketsPresenter) {
+        this.ticketsPresenter = ticketsPresenter;
+        this.tickets = ticketsPresenter.getTickets();
     }
 
     @Override
     public TicketViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-        return new TicketViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.ticket_layout, viewGroup, false));
+        return new TicketViewHolder(
+            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.ticket_layout, viewGroup, false),
+            ticketsPresenter::deleteTicket
+        );
     }
 
     @Override
