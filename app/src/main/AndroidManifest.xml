@@ -18,8 +18,9 @@
             android:authorities="${applicationId}.org.fossasia.openevent.app"
             android:exported="false"/>
         <activity
-            android:name=".module.login.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".module.auth.AuthActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +33,7 @@
         <activity
             android:name=".module.main.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".module.event.chart.ChartActivity"
             android:theme="@style/AppTheme.NoActionBar.Translucent"/>

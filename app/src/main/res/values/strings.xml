@@ -10,10 +10,15 @@
     <string name="divide">/</string>
     <string name="attendance">Attendance</string>
     <string name="scan_qr_code">Scan QR COde</string>
+    <string name="first_name">First Name (Optional)</string>
+    <string name="last_name">Last Name (Optional)</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="base_url">Base URL</string>
     <string name="login">Log In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_link"><u>Sign Up For Open Event</u></string>
+    <string name="login_link"><u>Already have an account? Log In</u></string>
     <string name="scan_the_barcode">Scan the BarCode</string>
     <string name="event_title_here">Event Title Here</string>
 

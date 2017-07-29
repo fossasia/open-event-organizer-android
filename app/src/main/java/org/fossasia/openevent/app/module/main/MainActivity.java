@@ -21,12 +21,13 @@ import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseActivity;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.utils.ui.BackPressHandler;
 import org.fossasia.openevent.app.databinding.MainActivityBinding;
 import org.fossasia.openevent.app.databinding.MainNavHeaderBinding;
 import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
-import org.fossasia.openevent.app.module.login.LoginActivity;
+import org.fossasia.openevent.app.module.auth.AuthActivity;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainView;
 import org.fossasia.openevent.app.module.settings.SettingsFragment;
@@ -39,12 +40,12 @@ import dagger.Lazy;
 public class MainActivity extends BaseActivity<IMainPresenter> implements NavigationView.OnNavigationItemSelectedListener, IMainView {
 
     public static final String EVENT_KEY = "event";
-    private static final int BACK_PRESS_RESET_TIME = 2000;
-    private long backPressed;
     private long eventId = -1;
 
     @Inject
     Lazy<IMainPresenter> presenterProvider;
+    @Inject
+    BackPressHandler backPressHandler;
 
     private FragmentManager fragmentManager;
     private AlertDialog logoutDialog;
@@ -93,12 +94,9 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (backPressed + BACK_PRESS_RESET_TIME > System.currentTimeMillis()) {
-            super.onBackPressed();
         } else {
-            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            backPressHandler.onBackPressed(this, super::onBackPressed);
         }
-        backPressed = System.currentTimeMillis();
     }
 
     @Override
@@ -150,7 +148,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
     @Override
     public void onLogout() {
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, AuthActivity.class));
         finish();
     }
 
