@@ -39,7 +39,7 @@ public class TicketRepository extends Repository implements ITicketRepository {
     @Override
     public Observable<Ticket> createTicket(Ticket ticket) {
         return eventService
-            .postTicket(ticket.getEvent().getId(), ticket)
+            .postTicket(ticket)
             .doOnNext(created -> {
                 created.setEvent(ticket.getEvent());
                 databaseRepository.save(Ticket.class, created)
