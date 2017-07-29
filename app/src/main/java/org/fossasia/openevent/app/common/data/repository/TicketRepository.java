@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
 import com.raizlabs.android.dbflow.sql.language.Method;
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.db.QueryHelper;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
@@ -38,6 +39,10 @@ public class TicketRepository extends Repository implements ITicketRepository {
     @NonNull
     @Override
     public Observable<Ticket> createTicket(Ticket ticket) {
+        if(!utilModel.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
         return eventService
             .postTicket(ticket.getEvent().getId(), ticket)
             .doOnNext(created -> {
@@ -74,6 +79,10 @@ public class TicketRepository extends Repository implements ITicketRepository {
     @NonNull
     @Override
     public Completable deleteTicket(long id) {
+        if(!utilModel.isConnected()) {
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
         return eventService.deleteTicket(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
