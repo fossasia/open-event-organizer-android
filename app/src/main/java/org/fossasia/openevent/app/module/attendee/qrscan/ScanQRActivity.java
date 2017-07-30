@@ -90,7 +90,7 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
         ButterKnife.bind(this);
 
         DaggerBarcodeComponent.builder()
-            .androidModule(new AndroidModule(this))
+            .androidModule(new AndroidModule())
             .barcodeModule(new BarcodeModule(graphicOverlay))
             .build()
             .inject(this);

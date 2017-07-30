@@ -1,17 +1,19 @@
 package org.fossasia.openevent.app.common.data;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 
 import org.fossasia.openevent.app.OrgaApplication;
+import org.fossasia.openevent.app.OrgaProvider;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
-import org.fossasia.openevent.app.common.utils.core.service.NetworkUtils;
 
 import javax.inject.Inject;
 
@@ -26,13 +28,13 @@ import timber.log.Timber;
  */
 public class UtilModel implements IUtilModel {
 
-    private Context context;
-    private ISharedPreferenceModel sharedPreferenceModel;
+    private final Context context;
+    private final ISharedPreferenceModel sharedPreferenceModel;
     private String token;
 
     @Inject
-    UtilModel(Context context, ISharedPreferenceModel sharedPreferenceModel) {
-        this.context = context;
+    UtilModel(ISharedPreferenceModel sharedPreferenceModel) {
+        context = OrgaProvider.context;
         this.sharedPreferenceModel = sharedPreferenceModel;
     }
 
@@ -63,7 +65,13 @@ public class UtilModel implements IUtilModel {
 
     @Override
     public boolean isConnected() {
-        return NetworkUtils.isNetworkConnected(context);
+        ConnectivityManager connectivityManager = (ConnectivityManager) OrgaProvider.context
+            .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = null;
+        if (connectivityManager != null) {
+            info = connectivityManager.getActiveNetworkInfo();
+        }
+        return (info != null && info.isConnected());
     }
 
     @Override

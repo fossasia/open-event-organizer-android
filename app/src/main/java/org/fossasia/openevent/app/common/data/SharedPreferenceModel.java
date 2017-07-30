@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.common.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.fossasia.openevent.app.OrgaProvider;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 
@@ -15,8 +16,8 @@ public class SharedPreferenceModel implements ISharedPreferenceModel {
     private SharedPreferences sharedPreferences;
 
     @Inject
-    SharedPreferenceModel(Context context) {
-        sharedPreferences = context.getSharedPreferences(Constants.FOSS_PREFS, Context.MODE_PRIVATE);
+    SharedPreferenceModel() {
+        sharedPreferences = OrgaProvider.context.getSharedPreferences(Constants.FOSS_PREFS, Context.MODE_PRIVATE);
     }
 
     @Override

@@ -64,7 +64,7 @@ public class LoginModel implements ILoginModel {
             .observeOn(AndroidSchedulers.mainThread());
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    @VisibleForTesting
     public Single<Boolean> isPreviousUser(String token) {
         return databaseRepository.getAllItems(User.class)
             .first(EMPTY)

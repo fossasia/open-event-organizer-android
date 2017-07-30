@@ -37,7 +37,7 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        OrgaApplication.getAppComponent(getContext())
+        OrgaApplication.getAppComponent()
             .inject(this);
 
         super.onCreate(savedInstanceState);

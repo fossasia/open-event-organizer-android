@@ -7,6 +7,7 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.fossasia.openevent.app.OrgaProvider;
 import org.fossasia.openevent.app.module.attendee.qrscan.BarcodeGraphic;
 import org.fossasia.openevent.app.module.attendee.qrscan.BarcodeTrackerFactory;
 import org.fossasia.openevent.app.module.attendee.qrscan.widget.GraphicOverlay;
@@ -36,8 +37,8 @@ public class BarcodeModule {
     }
 
     @Provides
-    BarcodeDetector providesBarCodeDetector(Context context, @Named("barcodeEmitter") PublishSubject<Notification<Barcode>> barcodeEmitter) {
-        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context)
+    BarcodeDetector providesBarCodeDetector(@Named("barcodeEmitter") PublishSubject<Notification<Barcode>> barcodeEmitter) {
+        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(OrgaProvider.context)
             .setBarcodeFormats(Barcode.QR_CODE)
             .build();
 

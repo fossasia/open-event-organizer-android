@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         OrgaApplication
-            .getAppComponent(this)
+            .getAppComponent()
             .inject(this);
 
         super.onCreate(savedInstanceState);

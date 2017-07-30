@@ -40,7 +40,7 @@ public class ChartActivity extends BaseActivity<IChartPresenter> implements ICha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         OrgaApplication
-            .getAppComponent(this)
+            .getAppComponent()
             .inject(this);
         super.onCreate(savedInstanceState);
 

@@ -82,7 +82,7 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     public void onCreate(Bundle savedInstanceState) {
         context = getActivity();
         OrgaApplication
-            .getAppComponent(context)
+            .getAppComponent()
             .inject(this);
         super.onCreate(savedInstanceState);
     }
