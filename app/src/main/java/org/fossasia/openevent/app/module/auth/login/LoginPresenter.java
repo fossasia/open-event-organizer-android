@@ -1,15 +1,15 @@
-package org.fossasia.openevent.app.module.login;
+package org.fossasia.openevent.app.module.auth.login;
 
 import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
-import org.fossasia.openevent.app.common.data.contract.ILoginModel;
+import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
-import org.fossasia.openevent.app.module.login.contract.ILoginPresenter;
-import org.fossasia.openevent.app.module.login.contract.ILoginView;
+import org.fossasia.openevent.app.module.auth.login.contract.ILoginPresenter;
+import org.fossasia.openevent.app.module.auth.login.contract.ILoginView;
 
 import java.util.Set;
 
@@ -20,11 +20,11 @@ import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progress
 
 public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginPresenter {
 
-    private ILoginModel loginModel;
+    private IAuthModel loginModel;
     private ISharedPreferenceModel sharedPreferenceModel;
 
     @Inject
-    public LoginPresenter(ILoginModel loginModel, ISharedPreferenceModel sharedPreferenceModel) {
+    public LoginPresenter(IAuthModel loginModel, ISharedPreferenceModel sharedPreferenceModel) {
         this.loginModel = loginModel;
         this.sharedPreferenceModel = sharedPreferenceModel;
     }

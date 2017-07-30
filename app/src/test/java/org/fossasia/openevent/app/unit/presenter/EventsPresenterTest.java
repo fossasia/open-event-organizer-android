@@ -1,8 +1,8 @@
 package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.app.ContextManager;
+import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
-import org.fossasia.openevent.app.common.data.contract.ILoginModel;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.module.event.list.EventsPresenter;
@@ -50,7 +50,7 @@ public class EventsPresenterTest {
     IEventRepository eventRepository;
 
     @Mock
-    ILoginModel loginModel;
+    IAuthModel loginModel;
 
     @Mock
     ContextManager contextManager;

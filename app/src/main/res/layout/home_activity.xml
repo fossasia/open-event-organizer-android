@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/activity_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_top_surface">
@@ -21,9 +21,11 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include
-            android:id="@+id/login_content"
-            layout="@layout/login_content" />
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

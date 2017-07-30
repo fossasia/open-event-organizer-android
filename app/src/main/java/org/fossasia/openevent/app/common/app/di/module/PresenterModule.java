@@ -12,8 +12,10 @@ import org.fossasia.openevent.app.module.event.dashboard.EventDashboardPresenter
 import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardPresenter;
 import org.fossasia.openevent.app.module.event.list.EventsPresenter;
 import org.fossasia.openevent.app.module.event.list.contract.IEventsPresenter;
-import org.fossasia.openevent.app.module.login.LoginPresenter;
-import org.fossasia.openevent.app.module.login.contract.ILoginPresenter;
+import org.fossasia.openevent.app.module.auth.login.LoginPresenter;
+import org.fossasia.openevent.app.module.auth.login.contract.ILoginPresenter;
+import org.fossasia.openevent.app.module.auth.signup.SignUpPresenter;
+import org.fossasia.openevent.app.module.auth.signup.contract.ISignUpPresenter;
 import org.fossasia.openevent.app.module.main.MainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.module.ticket.create.CreateTicketPresenter;
@@ -26,6 +28,9 @@ import dagger.Module;
 
 @Module
 public abstract class PresenterModule {
+
+    @Binds
+    abstract ISignUpPresenter bindsSignUpPresenter(SignUpPresenter signUpPresenter);
 
     @Binds
     abstract ILoginPresenter bindsLoginPresenter(LoginPresenter loginPresenter);

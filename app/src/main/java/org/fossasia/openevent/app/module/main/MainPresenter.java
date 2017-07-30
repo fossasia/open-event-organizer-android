@@ -3,8 +3,8 @@ package org.fossasia.openevent.app.module.main;
 import org.fossasia.openevent.app.common.app.ContextManager;
 import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
+import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.IBus;
-import org.fossasia.openevent.app.common.data.contract.ILoginModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.common.utils.core.CurrencyUtils;
@@ -23,7 +23,7 @@ import static org.fossasia.openevent.app.module.main.MainActivity.EVENT_KEY;
 public class MainPresenter extends BasePresenter<IMainView> implements IMainPresenter {
 
     private final ISharedPreferenceModel sharedPreferenceModel;
-    private final ILoginModel loginModel;
+    private final IAuthModel loginModel;
     private final IEventRepository eventRepository;
     private final IBus bus;
     private final ContextManager contextManager;
@@ -31,7 +31,7 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
     private final long storedEventId;
 
     @Inject
-    public MainPresenter(ISharedPreferenceModel sharedPreferenceModel, ILoginModel loginModel, IEventRepository eventRepository, IBus bus, ContextManager contextManager) {
+    public MainPresenter(ISharedPreferenceModel sharedPreferenceModel, IAuthModel loginModel, IEventRepository eventRepository, IBus bus, ContextManager contextManager) {
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.loginModel = loginModel;
         this.eventRepository = eventRepository;

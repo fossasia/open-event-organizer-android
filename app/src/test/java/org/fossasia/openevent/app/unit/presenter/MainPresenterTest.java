@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.app.ContextManager;
-import org.fossasia.openevent.app.common.data.contract.ILoginModel;
+import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.module.main.MainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainView;
@@ -23,7 +23,7 @@ public class MainPresenterTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    ILoginModel loginModel;
+    IAuthModel loginModel;
 
     @Mock
     ISharedPreferenceModel sharedPreferenceModel;
