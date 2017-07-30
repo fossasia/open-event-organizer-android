@@ -52,6 +52,7 @@ android {
 repositories {
     maven { url "https://jitpack.io" }
     maven { url "https://maven.google.com" }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 sentry {
@@ -94,8 +95,7 @@ dependencies {
     compile "com.github.raizlabs.dbflow:dbflow-core:${dbflow_version}"
     compile "com.github.raizlabs.dbflow:dbflow:${dbflow_version}"
     compile "com.github.raizlabs.dbflow:dbflow-rx2:${dbflow_version}"
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    compile 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'

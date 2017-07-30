@@ -62,6 +62,7 @@
     <string name="events">Events</string>
     <string name="log_out">Log Out</string>
     <string name="settings">Settings</string>
+    <string name="event_background">Event Background</string>
     <string name="create_ticket">Create Ticket</string>
     <string name="ticket_name">Ticket Name</string>
     <string name="quantity">Quantity</string>
