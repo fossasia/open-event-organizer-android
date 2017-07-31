@@ -20,6 +20,9 @@ import retrofit2.http.Path;
 
 public interface EventService {
 
+    @POST("users")
+    Observable<User> signUp(@Body User user);
+
     @POST("../auth/session")
     Observable<LoginResponse> login(@Body Login login);
 

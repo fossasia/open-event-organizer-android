@@ -9,7 +9,9 @@ import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.module.event.chart.ChartActivity;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
-import org.fossasia.openevent.app.module.login.LoginActivity;
+import org.fossasia.openevent.app.module.auth.AuthActivity;
+import org.fossasia.openevent.app.module.auth.login.LoginFragment;
+import org.fossasia.openevent.app.module.auth.signup.SignUpFragment;
 import org.fossasia.openevent.app.module.main.MainActivity;
 import org.fossasia.openevent.app.module.settings.SettingsFragment;
 import org.fossasia.openevent.app.module.ticket.create.CreateTicketFragment;
@@ -26,8 +28,6 @@ import dagger.Component;
     PresenterModule.class
 })
 public interface AppComponent {
-
-    void inject(LoginActivity loginActivity);
 
     void inject(MainActivity mainActivity);
 
@@ -49,4 +49,9 @@ public interface AppComponent {
 
     void inject(CreateTicketFragment createTicketFragment);
 
+    void inject(LoginFragment loginFragment);
+
+    void inject(AuthActivity authActivity);
+
+    void inject(SignUpFragment signUpFragment);
 }

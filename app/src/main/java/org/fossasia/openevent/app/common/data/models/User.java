@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.IntegerIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Type;
+import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
@@ -34,6 +35,8 @@ public class User {
     public String createdAt;
     public String lastAccessedAt;
     public String email;
+    @ColumnIgnore
+    public String password;
     public String iconImageUrl;
     public String contact;
     public String deletedAt;

@@ -2,10 +2,10 @@ package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.app.rx.Logger;
-import org.fossasia.openevent.app.common.data.contract.ILoginModel;
+import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
-import org.fossasia.openevent.app.module.login.LoginPresenter;
-import org.fossasia.openevent.app.module.login.contract.ILoginView;
+import org.fossasia.openevent.app.module.auth.login.LoginPresenter;
+import org.fossasia.openevent.app.module.auth.login.contract.ILoginView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class LoginPresenterTest {
     ILoginView loginView;
 
     @Mock
-    ILoginModel loginModel;
+    IAuthModel loginModel;
 
     private LoginPresenter loginPresenter;
 

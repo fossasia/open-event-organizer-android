@@ -11,6 +11,7 @@
     <color name="purple_100">#E1BEE7</color>
     <color name="purple_500">#9C27B0</color>
     <color name="green_a400">#76FF03</color>
+    <color name="green_500"> #4caf50</color>
     <color name="light_green_500">#8BC34A</color>
     <color name="red_100">#ffcdd2</color>
     <color name="red_500">#f44336</color>

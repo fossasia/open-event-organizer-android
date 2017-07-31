@@ -3,7 +3,7 @@ package org.fossasia.openevent.app.common.data;
 import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.common.data.contract.ILoginModel;
+import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
@@ -16,11 +16,12 @@ import org.fossasia.openevent.app.module.main.MainActivity;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginModel implements ILoginModel {
+public class AuthModel implements IAuthModel {
 
     private static final User EMPTY = new User();
 
@@ -30,7 +31,7 @@ public class LoginModel implements ILoginModel {
     private final IDatabaseRepository databaseRepository;
 
     @Inject
-    public LoginModel(IUtilModel utilModel, ISharedPreferenceModel sharedPreferenceModel, EventService eventService, IDatabaseRepository databaseRepository) {
+    public AuthModel(IUtilModel utilModel, ISharedPreferenceModel sharedPreferenceModel, EventService eventService, IDatabaseRepository databaseRepository) {
         this.utilModel = utilModel;
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.eventService = eventService;
@@ -43,7 +44,7 @@ public class LoginModel implements ILoginModel {
             return Completable.complete();
 
         if(!utilModel.isConnected())
-            return Completable.error(new RuntimeException(Constants.NO_NETWORK));
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
 
         return eventService
             .login(new Login(username, password))
@@ -60,6 +61,17 @@ public class LoginModel implements ILoginModel {
 
                 return Completable.complete();
             })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<User> signUp(User newUser) {
+        if(!utilModel.isConnected())
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+
+        return eventService
+            .signUp(newUser)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
