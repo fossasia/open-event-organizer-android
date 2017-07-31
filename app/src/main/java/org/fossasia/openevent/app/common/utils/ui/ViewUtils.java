@@ -7,10 +7,15 @@ import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 public class ViewUtils {
+
+    public static int getVisibility(String string, int hidden) {
+        return TextUtils.isEmpty(string) ? hidden : View.VISIBLE;
+    }
 
     public static void showView(View view, int mode, boolean show) {
         if(show)

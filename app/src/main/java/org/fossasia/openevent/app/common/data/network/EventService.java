@@ -41,6 +41,9 @@ public interface EventService {
     @GET("events/{id}/tickets?include=event&fields[event]=id")
     Observable<List<Ticket>> getTickets(@Path("id") long id);
 
+    @GET("tickets/{id}")
+    Observable<Ticket> getTicket(@Path("id") long id);
+
     @DELETE("tickets/{id}")
     Completable deleteTicket(@Path("id") long id);
 

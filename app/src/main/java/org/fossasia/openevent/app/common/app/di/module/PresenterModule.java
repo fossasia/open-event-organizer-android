@@ -6,20 +6,22 @@ import org.fossasia.openevent.app.module.attendee.list.AttendeesPresenter;
 import org.fossasia.openevent.app.module.attendee.list.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.module.attendee.qrscan.ScanQRPresenter;
 import org.fossasia.openevent.app.module.attendee.qrscan.contract.IScanQRPresenter;
+import org.fossasia.openevent.app.module.auth.login.LoginPresenter;
+import org.fossasia.openevent.app.module.auth.login.contract.ILoginPresenter;
+import org.fossasia.openevent.app.module.auth.signup.SignUpPresenter;
+import org.fossasia.openevent.app.module.auth.signup.contract.ISignUpPresenter;
 import org.fossasia.openevent.app.module.event.chart.ChartPresenter;
 import org.fossasia.openevent.app.module.event.chart.contract.IChartPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardPresenter;
 import org.fossasia.openevent.app.module.event.list.EventsPresenter;
 import org.fossasia.openevent.app.module.event.list.contract.IEventsPresenter;
-import org.fossasia.openevent.app.module.auth.login.LoginPresenter;
-import org.fossasia.openevent.app.module.auth.login.contract.ILoginPresenter;
-import org.fossasia.openevent.app.module.auth.signup.SignUpPresenter;
-import org.fossasia.openevent.app.module.auth.signup.contract.ISignUpPresenter;
 import org.fossasia.openevent.app.module.main.MainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.module.ticket.create.CreateTicketPresenter;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketPresenter;
+import org.fossasia.openevent.app.module.ticket.detail.TicketDetailPresenter;
+import org.fossasia.openevent.app.module.ticket.detail.contract.ITicketDetailPresenter;
 import org.fossasia.openevent.app.module.ticket.list.TicketsPresenter;
 import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsPresenter;
 
@@ -61,5 +63,8 @@ public abstract class PresenterModule {
 
     @Binds
     abstract ICreateTicketPresenter bindsCreateTicketPresenter(CreateTicketPresenter createTicketPresenter);
+
+    @Binds
+    abstract ITicketDetailPresenter bindsTicketDetailPresenter(TicketDetailPresenter ticketDetailPresenter);
 
 }

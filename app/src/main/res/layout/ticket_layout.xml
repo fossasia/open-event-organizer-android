@@ -16,8 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:foreground="?selectableItemBackground"
         android:baselineAligned="false">
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -32,7 +32,6 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_normal" />
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,7 +40,6 @@
                 android:text='@{ ContextManager.getCurrency() + " " + ticket.price }'
                 android:textSize="@dimen/text_size_extra_small"
                 android:visibility="@{ ticket.price == 0 ? View.GONE : View.VISIBLE }"/>
-
         </LinearLayout>
 
         <!-- Hidden for later use -->
@@ -68,9 +66,6 @@
                 android:visibility="@{ ticket.deleting ? View.VISIBLE : View.INVISIBLE }"
                 tools:visibility="visible"
                 android:theme="@style/AppTheme" />
-
         </FrameLayout>
-
     </LinearLayout>
-
 </layout>

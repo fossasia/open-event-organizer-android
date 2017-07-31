@@ -15,6 +15,7 @@ import org.fossasia.openevent.app.module.auth.signup.SignUpFragment;
 import org.fossasia.openevent.app.module.main.MainActivity;
 import org.fossasia.openevent.app.module.settings.SettingsFragment;
 import org.fossasia.openevent.app.module.ticket.create.CreateTicketFragment;
+import org.fossasia.openevent.app.module.ticket.detail.TicketDetailFragment;
 import org.fossasia.openevent.app.module.ticket.list.TicketsFragment;
 
 import javax.inject.Singleton;
@@ -54,4 +55,6 @@ public interface AppComponent {
     void inject(AuthActivity authActivity);
 
     void inject(SignUpFragment signUpFragment);
+
+    void inject(TicketDetailFragment ticketDetailFragment);
 }
