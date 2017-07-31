@@ -14,6 +14,8 @@ import com.github.mikephil.charting.utils.EntryXComparator;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
+import org.fossasia.openevent.app.common.data.models.Attendee;
+import org.fossasia.openevent.app.common.data.models.Order;
 import org.fossasia.openevent.app.common.data.repository.AttendeeRepository;
 import org.fossasia.openevent.app.common.utils.core.DateUtils;
 
@@ -27,6 +29,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 
 public class ChartAnalyser {
     private final IUtilModel utilModel;
@@ -43,6 +46,9 @@ public class ChartAnalyser {
     private Map<String, Long> paidMap = new HashMap<>();
     private Map<String, Long> donationMap = new HashMap<>();
 
+    private List<Attendee> attendees;
+    private boolean error;
+
     @Inject
     protected ChartAnalyser(IUtilModel utilModel, AttendeeRepository attendeeRepository) {
         this.utilModel = utilModel;
@@ -53,7 +59,13 @@ public class ChartAnalyser {
         gridPaint.setStrokeWidth(5);
     }
 
+    public void reset() {
+        clearData();
+        attendees = null;
+    }
+
     private void clearData() {
+        error = false;
         freeMap.clear();
         paidMap.clear();
         donationMap.clear();
@@ -62,11 +74,24 @@ public class ChartAnalyser {
         maxTicketSale = 0;
     }
 
+    private Observable<Attendee> getAttendeeSource(long eventId) {
+        if (attendees != null)
+            return Observable.fromIterable(attendees);
+        else
+            return attendeeRepository.getAttendees(eventId, false);
+    }
+
     public Completable loadData(long eventId) {
         clearData();
-        return attendeeRepository.getAttendees(eventId, false)
+        return getAttendeeSource(eventId)
             .doOnNext(attendee -> {
-                String date = attendee.getOrder().getCompletedAt();
+                Order order = attendee.getOrder();
+                if (order == null) {
+                    error = true;
+                    return;
+                }
+
+                String date = order.getCompletedAt();
                 switch (attendee.getTicket().getType()) {
                     case TicketAnalyser.TICKET_FREE:
                         addDataPoint(freeMap, date);
@@ -82,8 +107,10 @@ public class ChartAnalyser {
                 }
             })
             .toList()
+            .doAfterSuccess(attendees -> this.attendees = attendees)
             .toCompletable()
             .doOnComplete(() -> {
+                if (error) throw new IllegalAccessException("No order found");
                 normalizeDataSet();
                 freeSet = setData(freeMap, "Free");
                 paidSet = setData(paidMap, "Paid");
