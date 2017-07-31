@@ -6,7 +6,11 @@ import org.fossasia.openevent.app.common.data.models.Event;
 
 public interface IMainView extends Erroneous, ItemResult<Event> {
 
-    void loadInitialPage(long eventId);
+    void setEventId(long eventId);
+
+    void showEventList();
+
+    void showDashboard();
 
     void onLogout();
 

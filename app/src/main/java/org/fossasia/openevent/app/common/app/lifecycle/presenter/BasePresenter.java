@@ -10,11 +10,14 @@ public abstract class BasePresenter<V> implements IPresenter<V> {
     private V view;
     private CompositeDisposable compositeDisposable;
 
+    private int attachCount;
+
     @Override
     @CallSuper
     public void attach(V view) {
         this.view = view;
         this.compositeDisposable = new CompositeDisposable();
+        attachCount++;
     }
 
     @Override
@@ -30,6 +33,10 @@ public abstract class BasePresenter<V> implements IPresenter<V> {
 
     protected CompositeDisposable getDisposable() {
         return compositeDisposable;
+    }
+
+    protected boolean isRotated() {
+        return attachCount > 1;
     }
 
 }
