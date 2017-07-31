@@ -13,7 +13,6 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseBottomSheetFragment;
-import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.databinding.TicketCreateLayoutBinding;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketPresenter;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketView;
@@ -27,7 +26,6 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
     @Inject
     Lazy<ICreateTicketPresenter> presenterProvider;
 
-    private Ticket ticket = new Ticket();
     private TicketCreateLayoutBinding binding;
     private TicketBinder ticketBinder;
 
@@ -48,8 +46,6 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         binding =  DataBindingUtil.inflate(localInflater, R.layout.ticket_create_layout, container, false);
-        binding.setTicket(ticket);
-        ticketBinder = new TicketBinder(ticket, binding.form);
         return binding.getRoot();
     }
 
@@ -57,11 +53,11 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
     public void onStart() {
         super.onStart();
         getPresenter().attach(this);
-        getPresenter().start();
+        ticketBinder = new TicketBinder(getPresenter().getTicket(), binding);
 
         binding.submit.setOnClickListener(view -> {
             if (ticketBinder.bound())
-                getPresenter().createTicket(ticket);
+                getPresenter().createTicket();
         });
     }
 
