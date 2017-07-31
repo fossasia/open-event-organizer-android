@@ -180,7 +180,6 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
             default:
                 fragment = EventDashboardFragment.newInstance(eventId);
         }
-        setTitle(binding.navView.getMenu().findItem(navItemId).getTitle());
         fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 

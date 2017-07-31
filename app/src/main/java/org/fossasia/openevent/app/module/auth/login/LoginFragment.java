@@ -102,6 +102,11 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
     }
 
     @Override
+    protected int getTitle() {
+        return R.string.login;
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         binding.emailDropdown.setAdapter(null);
