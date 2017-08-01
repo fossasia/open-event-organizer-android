@@ -154,6 +154,11 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     }
 
     @Override
+    protected int getTitle() {
+        return R.string.attendees;
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);

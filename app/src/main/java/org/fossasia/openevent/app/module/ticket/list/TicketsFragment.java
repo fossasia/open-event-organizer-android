@@ -99,6 +99,11 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
     }
 
     @Override
+    protected int getTitle() {
+        return R.string.tickets;
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);

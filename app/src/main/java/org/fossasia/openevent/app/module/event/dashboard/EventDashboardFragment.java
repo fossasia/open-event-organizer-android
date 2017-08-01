@@ -110,6 +110,11 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
     }
 
     @Override
+    protected int getTitle() {
+        return R.string.dashboard;
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);

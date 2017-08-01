@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.common.app;
 
 import android.databinding.ObservableField;
 
+import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.User;
 
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import timber.log.Timber;
 public class ContextManager {
 
     private static final ObservableField<String> currency = new ObservableField<>("$");
+    private static Event selectedEvent;
 
     @Inject
     public ContextManager() {}
@@ -44,5 +46,13 @@ public class ContextManager {
 
     public static ObservableField<String> getCurrency() {
         return currency;
+    }
+
+    public static void setSelectedEvent(Event event) {
+        selectedEvent = event;
+    }
+
+    public static Event getSelectedEvent() {
+        return selectedEvent;
     }
 }

@@ -15,8 +15,10 @@ import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.utils.core.DateUtils;
+import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 
 import javax.inject.Inject;
+
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -52,5 +54,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             .subscribe(DateUtils::setShowLocalTimeZone);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ViewUtils.setTitle(this, getString(R.string.settings));
     }
 }

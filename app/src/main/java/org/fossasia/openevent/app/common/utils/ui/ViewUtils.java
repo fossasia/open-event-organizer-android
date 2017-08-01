@@ -5,11 +5,16 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import timber.log.Timber;
 
 public class ViewUtils {
 
@@ -58,6 +63,24 @@ public class ViewUtils {
             if (manager != null) {
                 manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
+        }
+    }
+
+    public static void setTitle(AppCompatActivity activity, String title) {
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setTitle(title);
+        else
+            Timber.e("No ActionBar found in Activity %s", activity);
+    }
+
+    public static void setTitle(Fragment fragment, String title) {
+        Activity activity = fragment.getActivity();
+
+        if (activity != null && activity instanceof AppCompatActivity) {
+            setTitle((AppCompatActivity) activity, title);
+        } else {
+            Timber.e("Fragment %s is not attached to any Activity", fragment);
         }
     }
 
