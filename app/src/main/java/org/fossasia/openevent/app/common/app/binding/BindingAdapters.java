@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.BindingConversion;
+import android.databinding.InverseMethod;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.ColorInt;
@@ -27,8 +28,53 @@ import org.fossasia.openevent.app.module.main.MainActivity;
 public class BindingAdapters {
 
     @BindingConversion
+    @InverseMethod("strToLong")
     public static String longToStr(Long value) {
         return value != null ? String.valueOf(value) : "";
+    }
+
+    @BindingConversion
+    @InverseMethod("strToFloat")
+    public static String floatToStr(Float value) {
+        return value != null ? String.valueOf(value) : "";
+    }
+
+    public static Long strToLong(String value) {
+        return value != null ? Long.parseLong(value) : null;
+    }
+
+    public static Float strToFloat(String value) {
+        return value != null ? Float.parseFloat(value) : null;
+    }
+
+    @InverseMethod("getType")
+    public static int toId(String ticketType) {
+        if (ticketType == null)
+            return R.id.free;
+
+        switch (ticketType) {
+            case "free":
+                return R.id.free;
+            case "paid":
+                return R.id.paid;
+            case "donation":
+                return R.id.donation;
+            default:
+                return -1;
+        }
+    }
+
+    public static String getType(int id) {
+        switch (id) {
+            case R.id.free:
+                return "free";
+            case R.id.paid:
+                return "paid";
+            case R.id.donation:
+                return "donation";
+            default:
+                return "free";
+        }
     }
 
     @BindingAdapter(value = { "imageUrl", "placeholder" }, requireAll = false)
