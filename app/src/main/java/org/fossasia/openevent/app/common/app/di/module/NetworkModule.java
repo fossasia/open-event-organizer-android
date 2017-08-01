@@ -30,6 +30,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Authenticator;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -120,17 +121,27 @@ public class NetworkModule {
 
     @Provides
     @Singleton
+    Cache providesCache() {
+        int cacheSize = 10 * 1024 * 1024; // 10 MB
+
+        return new Cache(OrgaProvider.context.getCacheDir(), cacheSize);
+    }
+
+    @Provides
+    @Singleton
     OkHttpClient providesOkHttpClient(
         HostSelectionInterceptor hostSelectionInterceptor,
         HttpLoggingInterceptor loggingInterceptor,
         StethoInterceptor stethoInterceptor,
-        Authenticator authenticator
+        Authenticator authenticator,
+        Cache cache
     ) {
         return new OkHttpClient.Builder()
             .addInterceptor(hostSelectionInterceptor)
             .addInterceptor(loggingInterceptor)
             .addNetworkInterceptor(stethoInterceptor)
             .authenticator(authenticator)
+            .cache(cache)
             .build();
     }
 

@@ -6,6 +6,7 @@ import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.IBus;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
+import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.common.utils.core.CurrencyUtils;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
@@ -28,8 +29,6 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
     private final IBus bus;
     private final ContextManager contextManager;
 
-    private final long storedEventId;
-
     @Inject
     public MainPresenter(ISharedPreferenceModel sharedPreferenceModel, IAuthModel loginModel, IEventRepository eventRepository, IBus bus, ContextManager contextManager) {
         this.sharedPreferenceModel = sharedPreferenceModel;
@@ -37,31 +36,49 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
         this.eventRepository = eventRepository;
         this.bus = bus;
         this.contextManager = contextManager;
-
-        storedEventId = sharedPreferenceModel.getLong(EVENT_KEY, -1);
     }
 
     @Override
     public void start() {
-        if (storedEventId != -1) {
-            eventRepository
-                .getEvent(storedEventId, false)
-                .compose(dispose(getDisposable()))
-                .compose(erroneous(getView()))
-                .subscribe(bus::pushSelectedEvent, Logger::logError);
-        } else {
-            getView().loadInitialPage(storedEventId);
-        }
-
         bus.getSelectedEvent()
             .compose(dispose(getDisposable()))
             .compose(erroneousResult(getView()))
             .subscribe(event -> {
                 sharedPreferenceModel.setLong(EVENT_KEY, event.getId());
+                ContextManager.setSelectedEvent(event);
                 CurrencyUtils.getCurrencySymbol(event.getPaymentCurrency())
                     .subscribe(ContextManager::setCurrency);
-                getView().loadInitialPage(event.getId());
+                showEvent(event);
             }, Logger::logError);
+
+        long storedEventId = sharedPreferenceModel.getLong(EVENT_KEY, -1);
+
+        if (storedEventId == -1)
+            getView().showEventList();
+        else
+            showLoadedEvent(storedEventId);
+    }
+
+    private void showLoadedEvent(long storedEventId) {
+        getView().setEventId(storedEventId);
+        Event staticEvent = ContextManager.getSelectedEvent();
+
+        if (staticEvent != null) {
+            getView().showResult(staticEvent);
+            if (!isRotated()) showEvent(staticEvent);
+            return;
+        }
+
+        eventRepository
+            .getEvent(storedEventId, false)
+            .compose(dispose(getDisposable()))
+            .compose(erroneous(getView()))
+            .subscribe(bus::pushSelectedEvent, Logger::logError);
+    }
+
+    private void showEvent(Event event) {
+        getView().setEventId(event.getId());
+        getView().showDashboard();
     }
 
     @Override

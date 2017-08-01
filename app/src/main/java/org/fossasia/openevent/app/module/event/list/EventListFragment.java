@@ -116,6 +116,11 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     }
 
     @Override
+    protected int getTitle() {
+        return R.string.events;
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);

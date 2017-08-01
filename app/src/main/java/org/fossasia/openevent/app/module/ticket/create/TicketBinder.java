@@ -8,6 +8,7 @@ import android.widget.RadioGroup;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.databinding.TicketCreateFormBinding;
+import org.fossasia.openevent.app.databinding.TicketCreateLayoutBinding;
 
 import java.util.Date;
 
@@ -19,14 +20,15 @@ public class TicketBinder {
     private final TicketCreateFormBinding binding;
     private final Validator validator;
 
-    public TicketBinder(Ticket ticket, TicketCreateFormBinding binding) {
+    public TicketBinder(Ticket ticket, TicketCreateLayoutBinding binding) {
+        binding.setTicket(ticket);
         this.ticket = ticket;
-        this.binding = binding;
+        this.binding = binding.form;
         this.validator = new Validator(binding);
 
         Date current = new Date();
-        binding.salesStartTime.setText(DateUtils.formatDateToIso(current));
-        binding.salesEndTime.setText(DateUtils.formatDateToIso(current));
+        this.binding.salesStartTime.setText(DateUtils.formatDateToIso(current));
+        this.binding.salesEndTime.setText(DateUtils.formatDateToIso(current));
     }
 
     private String getString(TextInputEditText editText) {
