@@ -32,12 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/const_normal"
-                android:paddingBottom="@dimen/const_normal"
-                android:paddingLeft="@dimen/spacing_normal"
-                android:paddingStart="@dimen/spacing_normal"
-                android:paddingRight="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_normal">
+                style="@style/ItemPadding">
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Headline"
