@@ -5,6 +5,8 @@ import org.fossasia.openevent.app.common.data.models.Ticket;
 
 public interface ICreateTicketPresenter extends IPresenter<ICreateTicketView> {
 
-    void createTicket(Ticket ticket);
+    Ticket getTicket();
+
+    void createTicket();
 
 }
