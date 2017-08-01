@@ -33,7 +33,7 @@
         <activity
             android:name=".module.main.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.Translucent"/>
         <activity
             android:name=".module.event.chart.ChartActivity"
             android:theme="@style/AppTheme.NoActionBar.Translucent"/>
