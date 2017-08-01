@@ -19,6 +19,7 @@ import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.erroneou
 public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> implements ICreateTicketPresenter {
 
     private final ITicketRepository ticketRepository;
+    private final Ticket ticket = new Ticket();
     private final IBus bus;
     private Event selected;
 
@@ -40,7 +41,12 @@ public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> impl
     }
 
     @Override
-    public void createTicket(Ticket ticket) {
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    @Override
+    public void createTicket() {
         ticket.setEvent(selected);
 
         ticketRepository
