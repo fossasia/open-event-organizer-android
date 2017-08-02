@@ -39,7 +39,7 @@ public class AuthModel implements IAuthModel {
     }
 
     @Override
-    public Completable login(String username, String password) {
+    public Completable login(Login login) {
         if(isLoggedIn())
             return Completable.complete();
 
@@ -47,11 +47,11 @@ public class AuthModel implements IAuthModel {
             return Completable.error(new Throwable(Constants.NO_NETWORK));
 
         return eventService
-            .login(new Login(username, password))
+            .login(login)
             .flatMapSingle(loginResponse -> {
                 String token = loginResponse.getAccessToken();
                 utilModel.saveToken(token);
-                sharedPreferenceModel.addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, username);
+                sharedPreferenceModel.addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, login.getEmail());
 
                 return isPreviousUser(token);
             })

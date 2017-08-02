@@ -31,7 +31,7 @@ public class AuthActivity extends AppCompatActivity {
             .getAppComponent()
             .inject(this);
 
-        setContentView(R.layout.home_activity);
+        setContentView(R.layout.auth_activity);
 
         ButterKnife.bind(this);
 
@@ -39,7 +39,7 @@ public class AuthActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, new LoginFragment())
+                .replace(R.id.fragment_container, new LoginFragment())
                 .commit();
         }
     }
