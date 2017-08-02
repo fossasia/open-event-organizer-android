@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="org.fossasia.openevent.app.common.app.ContextManager" />
+        <import type="org.fossasia.openevent.app.common.utils.core.DateUtils" />
+        <import type="org.fossasia.openevent.app.common.utils.ui.ViewUtils" />
+        <import type="android.view.View" />
+
+        <variable
+            name="ticket"
+            type="org.fossasia.openevent.app.common.data.models.Ticket" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_top_surface">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                style="@style/ItemPadding">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/spacing_large"
+                    android:layout_marginRight="@dimen/spacing_large"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text='@{ ticket.name }'
+                    tools:text="Name" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@{ ticket.description }"
+                    android:visibility="@{ ViewUtils.getVisibility(ticket.description, View.GONE) }"
+                    tools:text="Ticket Description" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_ticket" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text="@{ ticket.type }"
+                        android:textAllCaps="true"
+                        tools:text="free" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_receipt" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text="@{ ticket.quantity }"
+                        tools:text="100" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility='@{ ticket.price != 0 ? View.VISIBLE : View.GONE }'>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_coin" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text='@{ ContextManager.getCurrency() + " " + ticket.price }'
+                        tools:text="3.78" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_clock" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text='@{ ticket.salesStartsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, ticket.salesStartsAt) : "" }'
+                        android:textAllCaps="true"
+                        tools:text="free" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_clock" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text='@{ ticket.salesEndsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, ticket.salesEndsAt) : "" }'
+                        android:textAllCaps="true"
+                        tools:text="free" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

@@ -84,6 +84,11 @@ public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> im
     }
 
     @Override
+    public void showDetails(Ticket ticket) {
+        getView().openTicketDetailFragment(ticket.getId());
+    }
+
+    @Override
     public List<Ticket> getTickets() {
         return tickets;
     }
