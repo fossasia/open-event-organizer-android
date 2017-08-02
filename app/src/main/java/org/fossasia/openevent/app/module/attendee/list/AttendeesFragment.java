@@ -38,8 +38,8 @@ import org.fossasia.openevent.app.module.attendee.checkin.AttendeeCheckInFragmen
 import org.fossasia.openevent.app.module.attendee.list.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.module.attendee.list.contract.IAttendeesView;
 import org.fossasia.openevent.app.module.attendee.list.listeners.AttendeeItemCheckInEvent;
-import org.fossasia.openevent.app.module.main.MainActivity;
 import org.fossasia.openevent.app.module.attendee.qrscan.ScanQRActivity;
+import org.fossasia.openevent.app.module.main.MainActivity;
 
 import java.util.List;
 
@@ -73,7 +73,9 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     private SearchView searchView;
 
     public AttendeesFragment() {
-        // Required empty public constructor
+        OrgaApplication
+            .getAppComponent()
+            .inject(this);
     }
 
     /**
@@ -95,14 +97,13 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        context = getActivity();
-
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
-
         super.onCreate(savedInstanceState);
+
+        context = getActivity();
         setHasOptionsMenu(true);
+
+        if (getArguments() != null)
+            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -130,27 +131,22 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_attendees, container, false);
+        setupRecyclerView();
+        setupRefreshListener();
+        binding.fabScanQr.setOnClickListener(v -> {
+            Intent scanQr = new Intent(context, ScanQRActivity.class);
+            scanQr.putExtra(MainActivity.EVENT_KEY, eventId);
+            startActivity(scanQr);
+        });
         return binding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (getArguments() != null) {
-            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
-            getPresenter().attach(eventId, this);
-        }
+        getPresenter().attach(eventId, this);
         binding.setAttendees(getPresenter().getAttendees());
         getPresenter().start();
-
-        setupRecyclerView();
-        setupRefreshListener();
-
-        binding.fabScanQr.setOnClickListener(v -> {
-            Intent scanQr = new Intent(context, ScanQRActivity.class);
-            scanQr.putExtra(MainActivity.EVENT_KEY, eventId);
-            startActivity(scanQr);
-        });
     }
 
     @Override

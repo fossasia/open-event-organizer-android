@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
@@ -59,14 +60,20 @@ public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> im
     }
 
     @Override
-    public void loadTickets(boolean refresh) {
-        ticketRepository
-            .getTickets(getId(), refresh)
+    public void loadTickets(boolean forceReload) {
+        getTicketSource(forceReload)
             .compose(dispose(getDisposable()))
-            .compose(progressiveErroneousRefresh(getView(), refresh))
+            .compose(progressiveErroneousRefresh(getView(), forceReload))
             .toSortedList()
             .compose(emptiable(getView(), tickets))
             .subscribe(Logger::logSuccess, Logger::logError);
+    }
+
+    private Observable<Ticket> getTicketSource(boolean forceReload) {
+        if (!forceReload && !tickets.isEmpty() && isRotated())
+            return Observable.fromIterable(tickets);
+        else
+            return ticketRepository.getTickets(getId(), forceReload);
     }
 
     @Override

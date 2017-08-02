@@ -24,10 +24,10 @@ import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
 import org.fossasia.openevent.app.common.data.contract.IBus;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.databinding.FragmentEventListBinding;
-import org.fossasia.openevent.app.module.event.list.contract.IEventsView;
-import org.fossasia.openevent.app.module.event.list.contract.IEventsPresenter;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
+import org.fossasia.openevent.app.databinding.FragmentEventListBinding;
+import org.fossasia.openevent.app.module.event.list.contract.IEventsPresenter;
+import org.fossasia.openevent.app.module.event.list.contract.IEventsView;
 
 import java.util.List;
 
@@ -62,7 +62,9 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     private Context context;
 
     public EventListFragment() {
-        // Required empty public constructor
+        OrgaApplication
+            .getAppComponent()
+            .inject(this);
     }
 
     /**
@@ -80,17 +82,15 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        context = getActivity();
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
         super.onCreate(savedInstanceState);
+        context = getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_event_list, container, false);
+        setupRefreshListener();
         return binding.getRoot();
     }
 
@@ -107,12 +107,10 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     @Override
     public void onStart() {
         super.onStart();
+        setupRecyclerView();
         getPresenter().attach(this);
         binding.setEvents(getPresenter().getEvents());
         getPresenter().start();
-
-        setupRecyclerView();
-        setupRefreshListener();
     }
 
     @Override

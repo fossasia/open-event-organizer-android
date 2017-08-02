@@ -2,19 +2,22 @@ package org.fossasia.openevent.app.module.event.list;
 
 import android.support.annotation.VisibleForTesting;
 
-import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.ContextManager;
+import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
-import org.fossasia.openevent.app.module.event.list.contract.IEventsView;
-import org.fossasia.openevent.app.module.event.list.contract.IEventsPresenter;
 import org.fossasia.openevent.app.common.utils.core.Utils;
+import org.fossasia.openevent.app.module.event.list.contract.IEventsPresenter;
+import org.fossasia.openevent.app.module.event.list.contract.IEventsView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.emptiable;
@@ -49,8 +52,7 @@ public class EventsPresenter extends BasePresenter<IEventsView> implements IEven
         if(getView() == null)
             return;
 
-        eventsDataRepository
-            .getEvents(forceReload)
+        getEventSource(forceReload)
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneousRefresh(getView(), forceReload))
             .toSortedList()
@@ -64,7 +66,7 @@ public class EventsPresenter extends BasePresenter<IEventsView> implements IEven
         if(getView() == null)
             return;
 
-        eventsDataRepository.getOrganiser(false)
+        getOrganiserSource(forceReload)
             .compose(dispose(getDisposable()))
             .doOnError(Logger::logError)
             .subscribe(user -> {
@@ -76,6 +78,21 @@ public class EventsPresenter extends BasePresenter<IEventsView> implements IEven
 
                 getView().showOrganiserName(name.trim());
             }, throwable -> getView().showOrganiserLoadError(throwable.getMessage()));
+    }
+
+    private Observable<Event> getEventSource(boolean forceReload) {
+        if (!forceReload && !events.isEmpty() && isRotated())
+            return Observable.fromIterable(events);
+        else
+            return eventsDataRepository.getEvents(forceReload);
+    }
+
+    private Observable<User> getOrganiserSource(boolean forceReload) {
+        User organiser = contextManager.getOrganiser();
+        if (!forceReload && organiser != null && isRotated())
+            return Observable.just(organiser);
+        else
+            return eventsDataRepository.getOrganiser(forceReload);
     }
 
     @VisibleForTesting
