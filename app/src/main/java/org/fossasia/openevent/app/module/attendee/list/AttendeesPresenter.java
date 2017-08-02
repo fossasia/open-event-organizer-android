@@ -18,6 +18,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.emptiable;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.erroneous;
@@ -60,13 +62,20 @@ public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView
 
         getView().showScanButton(false);
 
-        attendeeRepository.getAttendees(getId(), forceReload)
+        getAttendeeSource(forceReload)
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneousRefresh(getView(), forceReload))
             .toSortedList()
             .compose(emptiable(getView(), attendeeList))
             .doFinally(() -> getView().showScanButton(!attendeeList.isEmpty()))
             .subscribe(Logger::logSuccess, Logger::logError);
+    }
+
+    private Observable<Attendee> getAttendeeSource(boolean forceReload) {
+        if (!forceReload && !attendeeList.isEmpty() && isRotated())
+            return Observable.fromIterable(attendeeList);
+        else
+            return attendeeRepository.getAttendees(getId(), forceReload);
     }
 
     private void listenToModelChanges() {
@@ -85,7 +94,7 @@ public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView
         return super.getView();
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    @VisibleForTesting
     public void setAttendeeList(List<Attendee> attendeeList) {
         this.attendeeList.clear();
         this.attendeeList.addAll(attendeeList);

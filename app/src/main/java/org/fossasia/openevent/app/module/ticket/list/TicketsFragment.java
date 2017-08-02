@@ -40,6 +40,7 @@ import dagger.Lazy;
 public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements ITicketsView {
 
     private Context context;
+    private long eventId;
 
     @Inject
     IUtilModel utilModel;
@@ -53,7 +54,9 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
     private SwipeRefreshLayout refreshLayout;
 
     public TicketsFragment() {
-        // Required empty public constructor
+        OrgaApplication
+            .getAppComponent()
+            .inject(this);
     }
 
     public static TicketsFragment newInstance(long eventId) {
@@ -69,33 +72,28 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
         super.onCreate(savedInstanceState);
 
         context = getContext();
-        OrgaApplication.getAppComponent()
-            .inject(this);
+        if (getArguments() != null)
+            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.tickets_fragment, container, false);
+        setupRefreshListener();
+        binding.createTicketFab.setOnClickListener(view -> {
+            BottomSheetDialogFragment bottomSheetDialogFragment = CreateTicketFragment.newInstance();
+            bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+        });
         return binding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (getArguments() != null) {
-            long eventId = getArguments().getLong(MainActivity.EVENT_KEY);
-            getPresenter().attach(eventId, this);
-        }
-        getPresenter().start();
-
         setupRecyclerView();
-        setupRefreshListener();
-
-        binding.createTicketFab.setOnClickListener(view -> {
-            BottomSheetDialogFragment bottomSheetDialogFragment = CreateTicketFragment.newInstance();
-            bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
-        });
+        getPresenter().attach(eventId, this);
+        getPresenter().start();
     }
 
     @Override

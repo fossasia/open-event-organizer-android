@@ -19,10 +19,14 @@ public class ContextManager {
     private static final ObservableField<String> currency = new ObservableField<>("$");
     private static Event selectedEvent;
 
+    private User organiser;
+
     @Inject
     public ContextManager() {}
 
     public void setOrganiser(User user) {
+        this.organiser = user;
+
         Map<String, Object> userData = new HashMap<>();
         userData.put("details", user);
 
@@ -34,6 +38,10 @@ public class ContextManager {
             .setData(userData)
             .build()
         );
+    }
+
+    public User getOrganiser() {
+        return organiser;
     }
 
     public void clearOrganiser() {
