@@ -14,6 +14,8 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
@@ -103,6 +105,17 @@ public class BindingAdapters {
 
         circularProgressBar.setColor(color);
         circularProgressBar.setBackgroundColor(bgColor);
+    }
+
+    @BindingAdapter("go")
+    public static void doneAction(EditText editText, Runnable runnable) {
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                runnable.run();
+                return true;
+            }
+            return false;
+        });
     }
 
 }

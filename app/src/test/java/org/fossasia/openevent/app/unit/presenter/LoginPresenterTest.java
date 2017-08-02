@@ -4,6 +4,7 @@ import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
+import org.fossasia.openevent.app.common.data.models.dto.Login;
 import org.fossasia.openevent.app.module.auth.login.LoginPresenter;
 import org.fossasia.openevent.app.module.auth.login.contract.ILoginView;
 import org.junit.Before;
@@ -34,30 +35,33 @@ public class LoginPresenterTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    ISharedPreferenceModel sharedPreferenceModel;
+    private ISharedPreferenceModel sharedPreferenceModel;
 
     @Mock
-    ILoginView loginView;
+    private ILoginView loginView;
 
     @Mock
-    IAuthModel loginModel;
+    private IAuthModel authModel;
 
     private LoginPresenter loginPresenter;
 
     private String email = "test";
     private String password = "test";
+    private Login login = new Login(email, password);
 
     private Set<String> savedEmails = new HashSet<>(Arrays.asList("email1", "email2", "email3"));
 
     @Before
     public void setUp() {
-        loginPresenter = new LoginPresenter(loginModel, sharedPreferenceModel);
+        loginPresenter = new LoginPresenter(authModel, sharedPreferenceModel);
         loginPresenter.attach(loginView);
+        loginPresenter.getLogin().setEmail(email);
+        loginPresenter.getLogin().setPassword(password);
     }
 
     @Test
     public void shouldShowSuccessOnStart() {
-        Mockito.when(loginModel.isLoggedIn()).thenReturn(true);
+        Mockito.when(authModel.isLoggedIn()).thenReturn(true);
 
         loginPresenter.start();
 
@@ -66,7 +70,7 @@ public class LoginPresenterTest {
 
     @Test
     public void shouldNotShowSuccessOnStart() {
-        Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
+        Mockito.when(authModel.isLoggedIn()).thenReturn(false);
 
         loginPresenter.start();
 
@@ -84,7 +88,7 @@ public class LoginPresenterTest {
 
     @Test
     public void shouldLoginAutomatically() {
-        Mockito.when(loginModel.isLoggedIn()).thenReturn(true);
+        Mockito.when(authModel.isLoggedIn()).thenReturn(true);
 
         loginPresenter.start();
 
@@ -93,7 +97,7 @@ public class LoginPresenterTest {
 
     @Test
     public void shouldNotLoginAutomatically() {
-        Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
+        Mockito.when(authModel.isLoggedIn()).thenReturn(false);
 
         loginPresenter.start();
 
@@ -102,15 +106,15 @@ public class LoginPresenterTest {
 
     @Test
     public void shouldLoginSuccessfully() {
-        Mockito.when(loginModel.login(email, password))
+        Mockito.when(authModel.login(login))
             .thenReturn(Completable.complete());
 
-        InOrder inOrder = Mockito.inOrder(loginModel, loginView);
+        InOrder inOrder = Mockito.inOrder(authModel, loginView);
 
         loginPresenter.start();
-        loginPresenter.login(email, password);
+        loginPresenter.login();
 
-        inOrder.verify(loginModel).login(email, password);
+        inOrder.verify(authModel).login(login);
         inOrder.verify(loginView).showProgress(true);
         inOrder.verify(loginView).onSuccess(any());
         inOrder.verify(loginView).showProgress(false);
@@ -119,15 +123,15 @@ public class LoginPresenterTest {
     @Test
     public void shouldShowLoginError() {
         String error = "Test Error";
-        Mockito.when(loginModel.login(email, password))
+        Mockito.when(authModel.login(login))
             .thenReturn(Completable.error(Logger.TEST_ERROR));
 
-        InOrder inOrder = Mockito.inOrder(loginModel, loginView);
+        InOrder inOrder = Mockito.inOrder(authModel, loginView);
 
         loginPresenter.start();
-        loginPresenter.login(email, password);
+        loginPresenter.login();
 
-        inOrder.verify(loginModel).login(email, password);
+        inOrder.verify(authModel).login(login);
         inOrder.verify(loginView).showProgress(true);
         inOrder.verify(loginView).showError(error);
         inOrder.verify(loginView).showProgress(false);
@@ -138,7 +142,7 @@ public class LoginPresenterTest {
         loginPresenter.attach(loginView);
         loginPresenter.detach();
 
-        loginPresenter.login(email, password);
+        loginPresenter.start();
 
         Mockito.verifyNoMoreInteractions(loginView);
     }
@@ -146,7 +150,7 @@ public class LoginPresenterTest {
     @Test
     public void shouldAttachEmailAutomatically() {
         Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(savedEmails);
-        Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
+        Mockito.when(authModel.isLoggedIn()).thenReturn(false);
 
         loginPresenter.start();
 
@@ -156,7 +160,7 @@ public class LoginPresenterTest {
     @Test
     public void shouldNotAttachEmailAutomatically() {
         Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(null);
-        Mockito.when(loginModel.isLoggedIn()).thenReturn(false);
+        Mockito.when(authModel.isLoggedIn()).thenReturn(false);
 
         loginPresenter.start();
 
