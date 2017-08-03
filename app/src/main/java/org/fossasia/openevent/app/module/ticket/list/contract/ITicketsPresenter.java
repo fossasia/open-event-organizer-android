@@ -11,6 +11,8 @@ public interface ITicketsPresenter extends IDetailPresenter<Long, ITicketsView> 
 
     void deleteTicket(Ticket ticket);
 
+    void showDetails(Ticket ticket);
+
     List<Ticket> getTickets();
 
 }

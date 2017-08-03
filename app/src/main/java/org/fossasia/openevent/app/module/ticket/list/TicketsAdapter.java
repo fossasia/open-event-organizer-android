@@ -28,10 +28,13 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketViewHolder> imple
 
     @Override
     public TicketViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-        return new TicketViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.ticket_layout, viewGroup, false),
-            ticketsPresenter::deleteTicket
-        );
+        TicketViewHolder ticketViewHolder = new TicketViewHolder(
+            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
+            R.layout.ticket_layout, viewGroup, false));
+        ticketViewHolder.setDeleteAction(ticketsPresenter::deleteTicket);
+        ticketViewHolder.setClickAction(ticketsPresenter::showDetails);
+
+        return ticketViewHolder;
     }
 
     @Override
