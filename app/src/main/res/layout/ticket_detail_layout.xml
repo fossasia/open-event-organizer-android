@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -48,110 +47,64 @@
                     android:visibility="@{ ViewUtils.getVisibility(ticket.description, View.GONE) }"
                     tools:text="Ticket Description" />
 
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_ticket }"
+                    android:drawableStart="@{ @drawable/ic_ticket }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text="@{ ticket.type }"
+                    android:textAllCaps="true"
+                    tools:text="free" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_ticket" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text="@{ ticket.type }"
-                        android:textAllCaps="true"
-                        tools:text="free" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_receipt }"
+                    android:drawableStart="@{ @drawable/ic_receipt }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text="@{ ticket.quantity }"
+                    tools:text="100" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_receipt" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text="@{ ticket.quantity }"
-                        tools:text="100" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility='@{ ticket.price != 0 ? View.VISIBLE : View.GONE }'>
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_coin }"
+                    android:drawableStart="@{ @drawable/ic_coin }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text='@{ ContextManager.getCurrency() + " " + ticket.price }'
+                    android:visibility='@{ ticket.price != 0 ? View.VISIBLE : View.GONE }'
+                    tools:text="3.78" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_coin" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text='@{ ContextManager.getCurrency() + " " + ticket.price }'
-                        tools:text="3.78" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_clock }"
+                    android:drawableStart="@{ @drawable/ic_clock }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text='@{ ticket.salesStartsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, ticket.salesStartsAt) : "" }'
+                    android:textAllCaps="true"
+                    tools:text="free" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_clock" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text='@{ ticket.salesStartsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, ticket.salesStartsAt) : "" }'
-                        android:textAllCaps="true"
-                        tools:text="free" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_clock" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text='@{ ticket.salesEndsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, ticket.salesEndsAt) : "" }'
-                        android:textAllCaps="true"
-                        tools:text="free" />
-                </LinearLayout>
-
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_clock }"
+                    android:drawableStart="@{ @drawable/ic_clock }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text='@{ ticket.salesEndsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, ticket.salesEndsAt) : "" }'
+                    android:textAllCaps="true"
+                    tools:text="free" />
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
