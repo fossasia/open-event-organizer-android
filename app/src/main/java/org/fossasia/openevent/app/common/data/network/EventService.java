@@ -26,7 +26,7 @@ public interface EventService {
     @POST("../auth/session")
     Observable<LoginResponse> login(@Body Login login);
 
-    @GET("users/{id}/events")
+    @GET("users/{id}/events?page[size]=0")
     Observable<List<Event>> getEvents(@Path("id") long id);
 
     @GET("users/{id}")
@@ -38,7 +38,7 @@ public interface EventService {
     @POST("tickets")
     Observable<Ticket> postTicket(@Body Ticket ticket);
 
-    @GET("events/{id}/tickets?include=event&fields[event]=id")
+    @GET("events/{id}/tickets?include=event&fields[event]=id&page[size]=0")
     Observable<List<Ticket>> getTickets(@Path("id") long id);
 
     @GET("tickets/{id}")
@@ -47,7 +47,7 @@ public interface EventService {
     @DELETE("tickets/{id}")
     Completable deleteTicket(@Path("id") long id);
 
-    @GET("events/{id}/attendees?include=ticket,event&fields[event]=id&fields[ticket]=id")
+    @GET("events/{id}/attendees?include=ticket,event&fields[event]=id&fields[ticket]=id&page[size]=0")
     Observable<List<Attendee>> getAttendees(@Path("id") long id);
 
     @PATCH("attendees/{attendee_id}?include=ticket,event&fields[event]=id")
