@@ -1,8 +1,8 @@
 package org.fossasia.openevent.app;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
@@ -26,7 +26,7 @@ import io.sentry.android.AndroidSentryClientFactory;
 import io.sentry.event.BreadcrumbBuilder;
 import timber.log.Timber;
 
-public class OrgaApplication extends Application {
+public class OrgaApplication extends MultiDexApplication {
 
     private RefWatcher refWatcher;
     private static AppComponent appComponent;
