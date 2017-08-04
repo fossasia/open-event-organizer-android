@@ -5,8 +5,11 @@ import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.data.repository.contract.ITicketRepository;
+import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketPresenter;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketView;
+
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -21,6 +24,9 @@ public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> impl
     @Inject
     public CreateTicketPresenter(ITicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
+        Date current = new Date();
+        ticket.setSalesStartsAt(DateUtils.formatDateToIso(current));
+        ticket.setSalesEndsAt(DateUtils.formatDateToIso(current));
     }
 
     @Override

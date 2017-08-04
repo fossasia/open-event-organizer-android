@@ -19,6 +19,7 @@ import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketVie
 
 import javax.inject.Inject;
 
+import br.com.ilhasoft.support.validation.Validator;
 import dagger.Lazy;
 
 public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketPresenter> implements ICreateTicketView {
@@ -27,7 +28,7 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
     Lazy<ICreateTicketPresenter> presenterProvider;
 
     private TicketCreateLayoutBinding binding;
-    private TicketBinder ticketBinder;
+    private Validator validator;
 
     public static CreateTicketFragment newInstance() {
         return new CreateTicketFragment();
@@ -46,6 +47,13 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         binding =  DataBindingUtil.inflate(localInflater, R.layout.ticket_create_layout, container, false);
+        validator = new Validator(binding.form);
+
+        binding.submit.setOnClickListener(view -> {
+            if (validator.validate())
+                getPresenter().createTicket();
+        });
+
         return binding.getRoot();
     }
 
@@ -53,12 +61,7 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
     public void onStart() {
         super.onStart();
         getPresenter().attach(this);
-        ticketBinder = new TicketBinder(getPresenter().getTicket(), binding);
-
-        binding.submit.setOnClickListener(view -> {
-            if (ticketBinder.bound())
-                getPresenter().createTicket();
-        });
+        binding.setTicket(getPresenter().getTicket());
     }
 
     @Override
