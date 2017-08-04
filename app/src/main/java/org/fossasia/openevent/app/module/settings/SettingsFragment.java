@@ -51,7 +51,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         sharedPreferences.getBoolean(Constants.SHARED_PREFS_LOCAL_DATE)
             .asObservable()
             .distinctUntilChanged()
-            .subscribe(DateUtils::setShowLocalTimeZone);
+            .subscribe(DateUtils::setShowLocal);
 
         return view;
     }

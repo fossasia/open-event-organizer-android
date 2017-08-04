@@ -141,7 +141,7 @@ public class ChartAnalyser {
         List<Entry> entries = new ArrayList<>();
         for (Map.Entry<String, Long> entry : map.entrySet()) {
             String date = DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, entry.getKey());
-            float time = DateUtils.getDate(entry.getKey()).getTime();
+            float time = DateUtils.getDate(entry.getKey()).toEpochSecond();
 
             entries.add(new Entry(time, entry.getValue(), date));
         }
