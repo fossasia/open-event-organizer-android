@@ -2,11 +2,13 @@ package org.fossasia.openevent.app.module.auth.login;
 
 import android.support.annotation.VisibleForTesting;
 
+import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
+import org.fossasia.openevent.app.common.data.models.dto.Login;
 import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.module.auth.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.module.auth.login.contract.ILoginView;
@@ -20,8 +22,9 @@ import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progress
 
 public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginPresenter {
 
-    private IAuthModel loginModel;
-    private ISharedPreferenceModel sharedPreferenceModel;
+    private final IAuthModel loginModel;
+    private final ISharedPreferenceModel sharedPreferenceModel;
+    private final Login login = new Login();
 
     @Inject
     public LoginPresenter(IAuthModel loginModel, ISharedPreferenceModel sharedPreferenceModel) {
@@ -45,23 +48,22 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
     }
 
     @Override
-    public void login(String email, String password) {
-        if(getView() ==  null)
-            return;
+    public Login getLogin() {
+        return login;
+    }
 
-        loginModel.login(email, password)
+    @Override
+    public void login() {
+        loginModel.login(login)
             .compose(disposeCompletable(getDisposable()))
             .compose(progressiveErroneousCompletable(getView()))
             .subscribe(() -> getView().onSuccess("Successfully Logged In"), Logger::logError);
     }
 
     @Override
-    public void setBaseUrl(HostSelectionInterceptor interceptor, String defaultUrl, String url, boolean shouldSetDefaultUrl) {
-        if (shouldSetDefaultUrl) {
-            interceptor.setInterceptor(defaultUrl);
-        } else {
-            interceptor.setInterceptor(url);
-        }
+    public void setBaseUrl(HostSelectionInterceptor interceptor, String url, boolean shouldSetDefaultUrl) {
+        String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
+        interceptor.setInterceptor(baseUrl);
     }
 
     private Set<String> getEmailList() {

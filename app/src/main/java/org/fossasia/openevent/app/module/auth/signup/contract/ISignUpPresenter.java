@@ -6,8 +6,10 @@ import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
 
 public interface ISignUpPresenter extends IPresenter<ISignUpView> {
 
-    void signUp(User newUser);
+    User getUser();
 
-    void setBaseUrl(HostSelectionInterceptor interceptor, String defaultUrl, String url, boolean shouldSetDefaultUrl);
+    void signUp();
+
+    void setBaseUrl(HostSelectionInterceptor interceptor, String url, boolean shouldSetDefaultUrl);
 
 }
