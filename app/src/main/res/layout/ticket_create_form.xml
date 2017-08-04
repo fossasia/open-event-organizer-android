@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+        <import type="android.view.View" />
+        <import type="org.fossasia.openevent.app.common.app.binding.BindingAdapters" />
+
+        <variable
+            name="ticket"
+            type="org.fossasia.openevent.app.common.data.models.Ticket" />
+    </data>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         style="@style/ItemPadding"
@@ -42,6 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/ticket_name"
+                    android:text="@={ ticket.name }"
                     app:validateEmpty="@{true}" />
 
             </android.support.design.widget.TextInputLayout>
@@ -52,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:checkedButton="@+id/free"
+            android:checkedButton="@={ BindingAdapters.toId(ticket.type) }"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -64,11 +74,13 @@
                 android:text="@string/ticket_free" />
 
             <RadioButton
+                android:id="@+id/paid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ticket_paid" />
 
             <RadioButton
+                android:id="@+id/donation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ticket_donation" />
@@ -96,6 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/quantity"
+                    android:text="@={ BindingAdapters.longToStr(ticket.quantity) }"
                     android:inputType="number"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -105,7 +118,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="@{ paid.checked ? View.VISIBLE : View.GONE }">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -123,6 +137,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/price"
+                    android:text="@={ BindingAdapters.floatToStr(ticket.price) }"
                     android:inputType="numberDecimal" />
 
             </android.support.design.widget.TextInputLayout>
@@ -150,6 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/sale_start_time"
+                    android:text="@={ ticket.salesStartsAt }"
                     android:inputType="datetime"
                     app:validateEmpty="@{true}" />
 
@@ -179,6 +195,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/sale_end_time"
                     android:inputType="datetime"
+                    android:text="@={ ticket.salesEndsAt }"
                     app:validateEmpty="@{true}" />
 
             </android.support.design.widget.TextInputLayout>

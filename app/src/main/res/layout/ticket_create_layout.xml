@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View" />
 
@@ -21,10 +22,9 @@
 
             <include
                 android:id="@+id/form"
+                bind:ticket="@{ticket}"
                 layout="@layout/ticket_create_form" />
-
         </android.support.v4.widget.NestedScrollView>
-
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -51,7 +51,6 @@
                 android:visibility="@{ ticket.creating ? View.VISIBLE : View.INVISIBLE }"
                 tools:visibility="visible"
                 android:theme="@style/AppTheme" />
-
         </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
