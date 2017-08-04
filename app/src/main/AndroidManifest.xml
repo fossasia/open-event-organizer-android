@@ -19,7 +19,7 @@
             android:exported="false"/>
         <activity
             android:name=".module.auth.AuthActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar.Translucent"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

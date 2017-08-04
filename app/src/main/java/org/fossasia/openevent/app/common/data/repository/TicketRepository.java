@@ -56,6 +56,26 @@ public class TicketRepository extends Repository implements ITicketRepository {
 
     @NonNull
     @Override
+    public Observable<Ticket> getTicket(long ticketId, boolean reload) {
+        Observable<Ticket> diskObservable = Observable.defer(() ->
+            databaseRepository.getItems(Ticket.class, Ticket_Table.id.eq(ticketId)).take(1)
+        );
+
+        Observable<Ticket> networkObservable = Observable.defer(() ->
+            eventService.getTicket(ticketId)
+                .doOnNext(ticket -> databaseRepository
+                    .save(Ticket.class, ticket)
+                    .subscribe()));
+
+        return new AbstractObservableBuilder<Ticket>(utilModel)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
+    @NonNull
+    @Override
     public Observable<Ticket> getTickets(long eventId, boolean reload) {
         Observable<Ticket> diskObservable = Observable.defer(() ->
             databaseRepository.getItems(Ticket.class, Ticket_Table.event_id.eq(eventId))

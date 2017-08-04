@@ -27,6 +27,7 @@ import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.TicketsFragmentBinding;
 import org.fossasia.openevent.app.module.main.MainActivity;
 import org.fossasia.openevent.app.module.ticket.create.CreateTicketFragment;
+import org.fossasia.openevent.app.module.ticket.detail.TicketDetailFragment;
 import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsPresenter;
 import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsView;
 
@@ -174,5 +175,11 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
     @Override
     public void showTicketDeleted(String message) {
         Snackbar.make(binding.ticketsRecyclerView, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void openTicketDetailFragment(long ticketId) {
+        BottomSheetDialogFragment bottomSheetDialogFragment = TicketDetailFragment.newInstance(ticketId);
+        bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 }
