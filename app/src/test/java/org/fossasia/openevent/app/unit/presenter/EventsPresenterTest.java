@@ -2,12 +2,12 @@ package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.app.ContextManager;
 import org.fossasia.openevent.app.common.data.contract.IAuthModel;
-import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.User;
+import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
+import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.module.event.list.EventsPresenter;
 import org.fossasia.openevent.app.module.event.list.contract.IEventsView;
-import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,10 +19,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -57,7 +57,7 @@ public class EventsPresenterTest {
 
     private EventsPresenter eventsActivityPresenter;
 
-    private String date = DateUtils.formatDateToIso(new Date());
+    private String date = DateUtils.formatDateToIso(LocalDateTime.now());
 
     private List<Event> eventList = Arrays.asList(
         new Event(12, date, date),
