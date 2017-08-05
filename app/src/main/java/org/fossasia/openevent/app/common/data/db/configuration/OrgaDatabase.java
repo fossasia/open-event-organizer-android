@@ -25,7 +25,12 @@ import timber.log.Timber;
     updateConflict= ConflictAction.REPLACE,
     foreignKeyConstraintsEnforced = true
 )
-public class OrgaDatabase {
+public final class OrgaDatabase {
+
+    private OrgaDatabase() {
+        // Never Called
+    }
+
     public static final String NAME = "orga_database";
     // To be bumped after each schema change and migration addition
     public static final int VERSION = 4;

@@ -2,7 +2,11 @@ package org.fossasia.openevent.app.common.utils.core;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
-public class SearchUtils {
+public final class SearchUtils {
+
+    private SearchUtils() {
+        // Never Called
+    }
 
     /**
      * Token sort partial ratio returns a value in percentage about similarity

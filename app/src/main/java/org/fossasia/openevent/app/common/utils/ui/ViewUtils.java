@@ -16,7 +16,11 @@ import android.view.inputmethod.InputMethodManager;
 
 import timber.log.Timber;
 
-public class ViewUtils {
+public final class ViewUtils {
+
+    private ViewUtils() {
+        // Never Called
+    }
 
     public static int getVisibility(String string, int hidden) {
         return TextUtils.isEmpty(string) ? hidden : View.VISIBLE;

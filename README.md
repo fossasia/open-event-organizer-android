@@ -33,18 +33,26 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 ### Libraries:
 - [RxJava 2](https://github.com/ReactiveX/RxJava)
 - [Dagger 2](https://github.com/google/dagger)
+- [ThreeTenABP](https://github.com/JakeWharton/ThreeTenABP)
+- [Jackson](https://github.com/FasterXML/jackson)
+- [jsonapi-converter](https://github.com/jasminb/jsonapi-converter)
 - [ButterKnife](https://github.com/JakeWharton/butterknife)
 - [Lombok](https://projectlombok.org/)
 - [Picasso](https://github.com/square/picasso)
-- [Retrofit](https://github.com/square/retrofit) + [Okhttp](https://github.com/square/okhttp)
+- [Retrofit](https://github.com/square/retrofit) + [OkHttp](https://github.com/square/okhttp)
 - [DBFlow](https://github.com/Raizlabs/DBFlow)
 - [FastAdapter](https://github.com/mikepenz/FastAdapter)
+- [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
 - [Leakcanary](https://github.com/square/leakcanary)
+- [Stetho](https://github.com/facebook/stetho)
 - [Sentry](https://github.com/getsentry/sentry-java)
 - [Timber](https://github.com/JakeWharton/timber)
+- Static Analysis:
+  - [android-check](https://github.com/noveogroup/android-check) - Contains checkstyle, PMD and findbugs
 - Testing:
   - [JUnit4](https://github.com/junit-team/junit4)
   - [Mockito](https://github.com/mockito/mockito)
+  - [RoboElectric](https://github.com/robolectric/robolectric)
 
 ### Development setup
 Before you begin, you should already have the Android Studio SDK downloaded and set up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio).

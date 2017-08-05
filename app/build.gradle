@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'io.sentry.android.gradle'
+apply plugin: 'com.noveogroup.android.check'
 
 android {
     lintOptions {

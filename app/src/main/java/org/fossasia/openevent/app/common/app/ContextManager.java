@@ -16,7 +16,7 @@ import timber.log.Timber;
 
 public class ContextManager {
 
-    private static final ObservableField<String> currency = new ObservableField<>("$");
+    private static final ObservableField<String> CURRENCY = new ObservableField<>("$");
     private static Event selectedEvent;
 
     private User organiser;
@@ -49,11 +49,11 @@ public class ContextManager {
     }
 
     public static void setCurrency(String currency) {
-        ContextManager.currency.set(currency);
+        ContextManager.CURRENCY.set(currency);
     }
 
     public static ObservableField<String> getCurrency() {
-        return currency;
+        return CURRENCY;
     }
 
     public static void setSelectedEvent(Event event) {

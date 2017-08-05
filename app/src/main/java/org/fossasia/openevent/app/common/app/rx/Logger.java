@@ -4,7 +4,11 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class Logger {
+public final class Logger {
+
+    private Logger() {
+        // Never Called
+    }
 
     public static final String TEST_MESSAGE = "Test Error";
     public static final Throwable TEST_ERROR = new Throwable(TEST_MESSAGE);

@@ -1,6 +1,11 @@
 package org.fossasia.openevent.app.common;
 
-public class Constants {
+public final class Constants {
+
+    private Constants() {
+        // Never Called
+    }
+
     //url to login organiser
     public static String BASE_URL = "https://open-event-api.herokuapp.com/v1/";
     public static final String SHARED_PREFS_TOKEN = "token";

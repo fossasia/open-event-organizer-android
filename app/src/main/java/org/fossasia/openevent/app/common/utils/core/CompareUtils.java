@@ -3,7 +3,11 @@ package org.fossasia.openevent.app.common.utils.core;
 import io.reactivex.functions.Function;
 import timber.log.Timber;
 
-public class CompareUtils {
+public final class CompareUtils {
+
+    private CompareUtils() {
+        // Never Called
+    }
 
     @SafeVarargs
     public static <T> int compareCascading(T one, T two, Function<T, String>... mappers) {
