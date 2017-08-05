@@ -80,6 +80,7 @@ dependencies {
     testCompile 'org.json:json:20140107'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     testCompile 'org.robolectric:robolectric:3.3.2'
+    testCompile "org.robolectric:shadows-multidex:3.0"
     compile "com.android.support:appcompat-v7:${support_lib_version}"
     compile "com.android.support:cardview-v7:${support_lib_version}"
     compile "com.android.support:recyclerview-v7:${support_lib_version}"

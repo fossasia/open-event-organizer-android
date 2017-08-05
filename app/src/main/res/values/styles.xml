@@ -27,11 +27,6 @@
         <item name="android:background">@drawable/rounded_rectangle</item>
     </style>
 
-    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@android:color/holo_red_light</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

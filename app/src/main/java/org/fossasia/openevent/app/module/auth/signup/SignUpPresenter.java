@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.module.auth.signup;
 
+import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.contract.IAuthModel;
@@ -15,11 +16,12 @@ import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progress
 
 public class SignUpPresenter extends BasePresenter<ISignUpView> implements ISignUpPresenter {
 
-    private IAuthModel loginModel;
+    private final IAuthModel authModel;
+    private final User user = new User();
 
     @Inject
-    public SignUpPresenter(IAuthModel loginModel) {
-        this.loginModel = loginModel;
+    public SignUpPresenter(IAuthModel authModel) {
+        this.authModel = authModel;
     }
 
     @Override
@@ -28,22 +30,21 @@ public class SignUpPresenter extends BasePresenter<ISignUpView> implements ISign
     }
 
     @Override
-    public void signUp(User newUser) {
-        if(getView() ==  null)
-            return;
+    public User getUser() {
+        return user;
+    }
 
-        loginModel.signUp(newUser)
+    @Override
+    public void signUp() {
+        authModel.signUp(user)
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneous(getView()))
             .subscribe(user -> getView().onSuccess("Successfully Registered"), Logger::logError);
     }
 
     @Override
-    public void setBaseUrl(HostSelectionInterceptor interceptor, String defaultUrl, String url, boolean shouldSetDefaultUrl) {
-        if (shouldSetDefaultUrl) {
-            interceptor.setInterceptor(defaultUrl);
-        } else {
-            interceptor.setInterceptor(url);
-        }
+    public void setBaseUrl(HostSelectionInterceptor interceptor, String url, boolean shouldSetDefaultUrl) {
+        String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
+        interceptor.setInterceptor(baseUrl);
     }
 }
