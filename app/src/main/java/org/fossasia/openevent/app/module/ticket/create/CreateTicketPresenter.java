@@ -9,6 +9,7 @@ import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketPresenter;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketView;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 import javax.inject.Inject;
 
@@ -24,8 +25,11 @@ public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> impl
     public CreateTicketPresenter(ITicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
         LocalDateTime current = LocalDateTime.now();
-        ticket.setSalesStartsAt(DateUtils.formatDateToIso(current));
-        ticket.setSalesEndsAt(DateUtils.formatDateToIso(current));
+
+        String isoDate = DateUtils.formatDateToIso(current);
+        ticket.getSalesStartsAt().set(isoDate);
+        ticket.getSalesEndsAt().set(isoDate);
+        ticket.setType("free");
     }
 
     @Override
@@ -38,8 +42,23 @@ public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> impl
         return ticket;
     }
 
+    private boolean verify() {
+        ZonedDateTime start = DateUtils.getDate(ticket.getSalesStartsAt().get());
+        ZonedDateTime end = DateUtils.getDate(ticket.getSalesEndsAt().get());
+
+        if (!end.isAfter(start)) {
+            getView().showError("End time should be after start time");
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     public void createTicket() {
+        if (!verify())
+            return;
+
         ticket.setEvent(ContextManager.getSelectedEvent());
 
         ticketRepository

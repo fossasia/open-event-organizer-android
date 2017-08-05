@@ -144,6 +144,34 @@
         </LinearLayout>
 
         <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pick" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                app:date="@{ ticket.salesStartsAt }"
+                android:textColor="@color/purple_500"
+                style="?attr/borderlessButtonStyle"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:time="@{ ticket.salesStartsAt }"
+                android:textColor="@color/red_500"
+                style="?attr/borderlessButtonStyle"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -161,7 +189,6 @@
                 android:padding="@dimen/spacing_extra_small">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/sales_start_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/sale_start_time"
@@ -170,6 +197,34 @@
                     app:validateEmpty="@{true}" />
 
             </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pick" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                app:date="@{ ticket.salesEndsAt }"
+                android:textColor="@color/purple_500"
+                style="?attr/borderlessButtonStyle"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:time="@{ ticket.salesEndsAt }"
+                android:textColor="@color/red_500"
+                style="?attr/borderlessButtonStyle"/>
         </LinearLayout>
 
         <LinearLayout

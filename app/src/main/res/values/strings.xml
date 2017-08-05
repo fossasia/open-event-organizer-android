@@ -74,5 +74,6 @@
     <string name="price">Price</string>
     <string name="sale_start_time">Sale start time</string>
     <string name="sale_end_time">Sale end time</string>
+    <string name="pick">Pick :</string>
 
 </resources>
