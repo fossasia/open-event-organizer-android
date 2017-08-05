@@ -157,18 +157,19 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    Retrofit.Builder providesRetrofitBuilder(CallAdapter.Factory callAdapterFactory, @Named("jsonapi") Converter.Factory jsonApiConverter, @Named("jackson") Converter.Factory factory, OkHttpClient client) {
+    Retrofit providesRetrofit(CallAdapter.Factory callAdapterFactory, @Named("jsonapi") Converter.Factory jsonApiConverter, @Named("jackson") Converter.Factory factory, OkHttpClient client) {
         return new Retrofit.Builder()
             .addCallAdapterFactory(callAdapterFactory)
             .addConverterFactory(jsonApiConverter)
             .addConverterFactory(factory)
             .client(client)
-            .baseUrl(Constants.BASE_URL);
+            .baseUrl(Constants.BASE_URL)
+            .build();
     }
 
     @Provides
     @Singleton
-    EventService providesEventService(Retrofit.Builder retrofitBuilder) {
-        return retrofitBuilder.build().create(EventService.class);
+    EventService providesEventService(Retrofit retrofit) {
+        return retrofit.create(EventService.class);
     }
 }
