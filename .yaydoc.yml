@@ -1,0 +1,13 @@
+metadata:
+  projectname: Open Event Organizer App
+  author: FOSSASIA
+  version: development
+
+build:
+  source: docs
+  theme:
+    name: sphinx_fossasia_theme
+
+extras:
+  javadoc:
+    path: app/src
