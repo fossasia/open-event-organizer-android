@@ -62,133 +62,80 @@
                     android:textColor="@{ checkinAttendee.isCheckedIn ? @color/light_green_500 : @color/red_500 }"
                     tools:text="CHECKED IN" />
 
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_transfer }"
+                    android:drawableStart="@{ @drawable/ic_transfer }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text="@{ checkinAttendee.order.status }"
+                    android:textAllCaps="true"
+                    tools:text="free" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_transfer" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text="@{ checkinAttendee.order.status }"
-                        android:textAllCaps="true"
-                        tools:text="free" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_ticket }"
+                    android:drawableStart="@{ @drawable/ic_ticket }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text="@{ checkinAttendee.ticket.type }"
+                    android:textAllCaps="true"
+                    tools:text="free" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_ticket" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text="@{ checkinAttendee.ticket.type }"
-                        android:textAllCaps="true"
-                        tools:text="free" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility='@{ checkinAttendee.ticket.type.equalsIgnoreCase("paid") ? View.VISIBLE : View.GONE }'>
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_coin }"
+                    android:drawableStart="@{ @drawable/ic_coin }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text='@{ ContextManager.getCurrency() + " " + checkinAttendee.ticket.price }'
+                    android:visibility='@{ checkinAttendee.ticket.type.equalsIgnoreCase("paid") ? View.VISIBLE : View.GONE }'
+                    tools:text="3.78" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_coin" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text='@{ ContextManager.getCurrency() + " " + checkinAttendee.ticket.price }'
-                        tools:text="3.78" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_clock }"
+                    android:drawableStart="@{ @drawable/ic_clock }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text='@{ checkinAttendee.order.completedAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, checkinAttendee.order.completedAt) : "" }'
+                    android:textAllCaps="true"
+                    tools:text="free" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_clock" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text='@{ checkinAttendee.order.completedAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, checkinAttendee.order.completedAt) : "" }'
-                        android:textAllCaps="true"
-                        tools:text="free" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_receipt }"
+                    android:drawableStart="@{ @drawable/ic_receipt }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text="@{ checkinAttendee.order.invoiceNumber }"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    tools:text="free" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_receipt" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text="@{ checkinAttendee.order.invoiceNumber }"
-                        android:textAllCaps="true"
-                        android:textStyle="bold"
-                        tools:text="free" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility='@{ checkinAttendee.order.paidVia.equalsIgnoreCase("free") ? View.GONE : View.VISIBLE }'>
+                    android:layout_gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawableLeft="@{ @drawable/ic_ray }"
+                    android:drawableStart="@{ @drawable/ic_ray }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text="@{ checkinAttendee.order.paidVia }"
+                    android:visibility='@{ checkinAttendee.order.paidVia.equalsIgnoreCase("free") ? View.GONE : View.VISIBLE }'
+                    android:textAllCaps="true"
+                    tools:text="free" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_ray" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:text="@{ checkinAttendee.order.paidVia }"
-                        android:textAllCaps="true"
-                        tools:text="free" />
-                </LinearLayout>
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>

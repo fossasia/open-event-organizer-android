@@ -67,6 +67,12 @@ sentry {
     autoUpload false
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'com.android.support:multidex:1.0.2'
+    }
+}
+
 def dbflow_version = "4.0.4"
 def support_lib_version = "25.4.0"
 
@@ -82,6 +88,7 @@ dependencies {
     testCompile 'org.threeten:threetenbp:1.3.6'
     testCompile 'org.robolectric:robolectric:3.3.2'
     testCompile "org.robolectric:shadows-multidex:3.0"
+    compile 'com.android.support:multidex:1.0.2'
     compile "com.android.support:appcompat-v7:${support_lib_version}"
     compile "com.android.support:cardview-v7:${support_lib_version}"
     compile "com.android.support:recyclerview-v7:${support_lib_version}"
