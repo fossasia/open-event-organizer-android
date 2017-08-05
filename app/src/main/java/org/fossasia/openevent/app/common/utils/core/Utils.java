@@ -14,7 +14,11 @@ import io.reactivex.Single;
  * All static Android specific utility go into
  * ViewUtils and others to AndroidUtilModel
  */
-public class Utils {
+public final class Utils {
+
+    private Utils() {
+        // Never Called
+    }
 
     /**
      * Copy from TextUtils to use out of Android

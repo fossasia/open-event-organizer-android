@@ -11,7 +11,11 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Source: https://stackoverflow.com/a/15343675/3309666
  */
-public class CurrencyUtils {
+public final class CurrencyUtils {
+
+    private CurrencyUtils() {
+        // Never Called
+    }
 
     private static SortedMap<Currency, Locale> currencyLocaleMap;
 

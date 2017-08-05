@@ -14,7 +14,11 @@ import java.util.Map;
 
 import timber.log.Timber;
 
-public class DateUtils {
+public final class DateUtils {
+
+    private DateUtils() {
+        // Never Called
+    }
 
     public static final String FORMAT_12H = "hh:mm a";
     public static final String FORMAT_24H = "HH:mm";
@@ -22,15 +26,15 @@ public class DateUtils {
     public static final String FORMAT_DAY_COMPLETE = "HH:mm, EE, dd MMM yyyy";
 
     private static final String INVALID_DATE = "Invalid Date";
-    private static final Map<String, DateTimeFormatter> formatterMap = new HashMap<>();
+    private static final Map<String, DateTimeFormatter> FORMATTER_MAP = new HashMap<>();
 
     private static boolean showLocal = false;
 
     private static DateTimeFormatter getFormatter(@NonNull String format) {
-        if (!formatterMap.containsKey(format))
-            formatterMap.put(format, DateTimeFormatter.ofPattern(format));
+        if (!FORMATTER_MAP.containsKey(format))
+            FORMATTER_MAP.put(format, DateTimeFormatter.ofPattern(format));
 
-        return formatterMap.get(format);
+        return FORMATTER_MAP.get(format);
     }
 
     // Internal convenience methods to reduce boilerplate

@@ -138,18 +138,16 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERM_REQ_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getPresenter().cameraPermissionGranted(true);
-                } else {
-                    getPresenter().cameraPermissionGranted(false);
-                }
-            }
-        }
+        if (requestCode != PERM_REQ_CODE)
+            return;
 
+        // If request is cancelled, the result arrays are empty.
+        if (grantResults.length > 0
+            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            getPresenter().cameraPermissionGranted(true);
+        } else {
+            getPresenter().cameraPermissionGranted(false);
+        }
     }
 
     // Lifecycle methods end

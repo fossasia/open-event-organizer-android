@@ -6,7 +6,11 @@ import org.threeten.bp.ZonedDateTime;
 
 import java.text.ParseException;
 
-public class DateService {
+public final class DateService {
+
+    private DateService() {
+        // Never Called
+    }
 
     private static final String LIVE_EVENT = "LIVE";
     private static final String PAST_EVENT = "PAST";

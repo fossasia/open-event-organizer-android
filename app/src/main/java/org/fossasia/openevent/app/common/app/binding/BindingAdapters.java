@@ -27,7 +27,11 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.utils.ui.CircleTransform;
 import org.fossasia.openevent.app.module.main.MainActivity;
 
-public class BindingAdapters {
+public final class BindingAdapters {
+
+    private BindingAdapters() {
+        // Never Called
+    }
 
     @BindingConversion
     @InverseMethod("strToLong")

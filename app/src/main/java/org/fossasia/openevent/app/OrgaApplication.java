@@ -89,13 +89,13 @@ public class OrgaApplication extends MultiDexApplication {
             if (BuildConfig.DEBUG) {
                 Stetho.initializeWithDefaults(this);
 
-                StrictMode.setThreadPolicy
-                    (new StrictMode.ThreadPolicy.Builder()
+                StrictMode.setThreadPolicy(
+                    new StrictMode.ThreadPolicy.Builder()
                         .detectAll()
                         .penaltyDeath()
                         .build());
-                StrictMode.setVmPolicy
-                    (new StrictMode.VmPolicy.Builder()
+                StrictMode.setVmPolicy(
+                    new StrictMode.VmPolicy.Builder()
                         .detectAll()
                         .penaltyDeath()
                         .build());

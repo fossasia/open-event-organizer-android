@@ -15,7 +15,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ViewTransformers {
+public final class ViewTransformers {
+
+    private ViewTransformers() {
+        // Never Called
+    }
 
     public static <T> ObservableTransformer<T, T> schedule() {
         return observable -> observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());

@@ -21,7 +21,7 @@ public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
 
     private Class<T> classType;
 
-    public DatabaseChangeListener (Class<T> modelClass) {
+    public DatabaseChangeListener(Class<T> modelClass) {
         classType = modelClass;
     }
 
