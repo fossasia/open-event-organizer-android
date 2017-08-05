@@ -12,7 +12,6 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
-import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.databinding.LoginFragmentBinding;
 import org.fossasia.openevent.app.module.auth.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.module.auth.login.contract.ILoginView;
@@ -33,9 +32,6 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
 
     @Inject
     Lazy<ILoginPresenter> presenterProvider;
-
-    @Inject
-    HostSelectionInterceptor interceptor;
 
     private LoginFragmentBinding binding;
     private Validator validator;
@@ -69,7 +65,7 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
                 return;
 
             String url = binding.url.baseUrl.getText().toString().trim();
-            getPresenter().setBaseUrl(interceptor, url, binding.url.overrideUrl.isChecked());
+            getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
             getPresenter().login();
         });
 

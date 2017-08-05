@@ -24,12 +24,14 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
 
     private final IAuthModel loginModel;
     private final ISharedPreferenceModel sharedPreferenceModel;
+    private final HostSelectionInterceptor interceptor;
     private final Login login = new Login();
 
     @Inject
-    public LoginPresenter(IAuthModel loginModel, ISharedPreferenceModel sharedPreferenceModel) {
+    public LoginPresenter(IAuthModel loginModel, ISharedPreferenceModel sharedPreferenceModel, HostSelectionInterceptor interceptor) {
         this.loginModel = loginModel;
         this.sharedPreferenceModel = sharedPreferenceModel;
+        this.interceptor = interceptor;
     }
 
     @Override
@@ -61,7 +63,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
     }
 
     @Override
-    public void setBaseUrl(HostSelectionInterceptor interceptor, String url, boolean shouldSetDefaultUrl) {
+    public void setBaseUrl(String url, boolean shouldSetDefaultUrl) {
         String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
         interceptor.setInterceptor(baseUrl);
     }

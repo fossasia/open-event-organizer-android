@@ -17,11 +17,13 @@ import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progress
 public class SignUpPresenter extends BasePresenter<ISignUpView> implements ISignUpPresenter {
 
     private final IAuthModel authModel;
+    private final HostSelectionInterceptor interceptor;
     private final User user = new User();
 
     @Inject
-    public SignUpPresenter(IAuthModel authModel) {
+    public SignUpPresenter(IAuthModel authModel, HostSelectionInterceptor interceptor) {
         this.authModel = authModel;
+        this.interceptor = interceptor;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class SignUpPresenter extends BasePresenter<ISignUpView> implements ISign
     }
 
     @Override
-    public void setBaseUrl(HostSelectionInterceptor interceptor, String url, boolean shouldSetDefaultUrl) {
+    public void setBaseUrl(String url, boolean shouldSetDefaultUrl) {
         String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
         interceptor.setInterceptor(baseUrl);
     }

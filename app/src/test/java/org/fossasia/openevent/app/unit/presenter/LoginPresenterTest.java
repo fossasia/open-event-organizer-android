@@ -5,6 +5,7 @@ import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.models.dto.Login;
+import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.module.auth.login.LoginPresenter;
 import org.fossasia.openevent.app.module.auth.login.contract.ILoginView;
 import org.junit.Before;
@@ -37,6 +38,8 @@ public class LoginPresenterTest {
     @Mock
     private ISharedPreferenceModel sharedPreferenceModel;
 
+    private HostSelectionInterceptor interceptor = new HostSelectionInterceptor();
+
     @Mock
     private ILoginView loginView;
 
@@ -53,7 +56,7 @@ public class LoginPresenterTest {
 
     @Before
     public void setUp() {
-        loginPresenter = new LoginPresenter(authModel, sharedPreferenceModel);
+        loginPresenter = new LoginPresenter(authModel, sharedPreferenceModel, interceptor);
         loginPresenter.attach(loginView);
         loginPresenter.getLogin().setEmail(email);
         loginPresenter.getLogin().setPassword(password);

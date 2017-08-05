@@ -12,7 +12,6 @@ import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
-import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.databinding.SignUpFragmentBinding;
 import org.fossasia.openevent.app.module.auth.login.LoginFragment;
 import org.fossasia.openevent.app.module.auth.signup.contract.ISignUpPresenter;
@@ -29,9 +28,6 @@ public class SignUpFragment extends BaseFragment<ISignUpPresenter> implements IS
 
     @Inject
     Lazy<ISignUpPresenter> presenterProvider;
-
-    @Inject
-    HostSelectionInterceptor interceptor;
 
     @Inject
     IUtilModel utilModel;
@@ -67,7 +63,7 @@ public class SignUpFragment extends BaseFragment<ISignUpPresenter> implements IS
                 return;
 
             String url = binding.url.baseUrl.getText().toString().trim();
-            getPresenter().setBaseUrl(interceptor, url, binding.url.overrideUrl.isChecked());
+            getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
             getPresenter().signUp();
         });
         binding.loginLink.setOnClickListener(view -> openLoginPage());
