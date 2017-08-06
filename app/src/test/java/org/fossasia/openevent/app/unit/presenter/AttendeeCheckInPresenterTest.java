@@ -33,24 +33,19 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class AttendeeCheckInPresenterTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    IAttendeeRepository attendeeRepository;
-
-    @Mock
-    IAttendeeCheckInView attendeeCheckInView;
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock private IAttendeeRepository attendeeRepository;
+    @Mock private IAttendeeCheckInView attendeeCheckInView;
 
     private AttendeeCheckInPresenter attendeeCheckInPresenter;
-    private final long id = 42;
-    private Attendee attendee = new Attendee(id);
+    private static final long ID = 42;
+    private Attendee attendee = new Attendee(ID);
 
     @Before
     public void setUp() {
-        attendee.setEvent(new Event(id));
+        attendee.setEvent(new Event(ID));
         attendeeCheckInPresenter = new AttendeeCheckInPresenter(attendeeRepository);
-        attendeeCheckInPresenter.attach(id, attendeeCheckInView);
+        attendeeCheckInPresenter.attach(ID, attendeeCheckInView);
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
@@ -64,16 +59,16 @@ public class AttendeeCheckInPresenterTest {
     }
 
     private void setLoadAttendeeBehaviour() {
-        when(attendeeRepository.getAttendee(id, false))
+        when(attendeeRepository.getAttendee(ID, false))
             .thenReturn(Observable.just(attendee));
     }
 
     private void setToggleAttendeeBehaviour(Observable<Attendee> attendeeObservable) {
-        when(attendeeRepository.toggleAttendeeCheckStatus(id, id)).thenReturn(attendeeObservable);
+        when(attendeeRepository.toggleAttendeeCheckStatus(ID, ID)).thenReturn(attendeeObservable);
     }
 
     private Attendee getAttendee(boolean checkedIn) {
-        Attendee attendee = new Attendee(id);
+        Attendee attendee = new Attendee(ID);
         attendee.setCheckedIn(checkedIn);
 
         return attendee;
@@ -102,7 +97,7 @@ public class AttendeeCheckInPresenterTest {
         setLoadAttendeeBehaviour();
         attendeeCheckInPresenter.start();
 
-        verify(attendeeRepository).getAttendee(id, false);
+        verify(attendeeRepository).getAttendee(ID, false);
         verify(attendeeCheckInView).showResult(attendee);
     }
 

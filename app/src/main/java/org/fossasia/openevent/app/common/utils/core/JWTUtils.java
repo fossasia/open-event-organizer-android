@@ -5,6 +5,8 @@ import android.support.v4.util.SparseArrayCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+
 public final class JWTUtils {
 
     private JWTUtils() {
@@ -48,7 +50,12 @@ public final class JWTUtils {
 
     private static String getJson(String strEncoded) {
         byte[] decodedBytes = Base64Utils.decode(strEncoded);
-        return new String(decodedBytes);
+        try {
+            return new String(decodedBytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     /**

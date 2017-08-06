@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!--
+FindBugs exclude filter
+Severity: HARD
+-->
+<FindBugsFilter>
+    <Match>
+        <Class name="~.*\.BuildConfig" />
+    </Match>
+    <Match>
+        <Class name="~.*\.R" />
+    </Match>
+    <Match>
+        <Class name="~.*\.R\$.*" />
+    </Match>
+
+    <!-- Ignore generated database class -->
+    <Match>
+        <Class name="~.*_Table" />
+    </Match>
+
+    <!-- Ignore static write for Context -->
+    <Match>
+        <Class name="org.fossasia.openevent.app.OrgaApplication" />
+        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD " />
+    </Match>
+    <Match>
+        <Class name="org.fossasia.openevent.app.OrgaProvider" />
+        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD " />
+    </Match>
+
+
+    <!-- Don't complain about mockito in tests. -->
+    <Match>
+        <Field name="~.*mockitoRule"/>
+        <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+    </Match>
+</FindBugsFilter>

@@ -30,7 +30,7 @@ import timber.log.Timber;
 public class OrgaApplication extends MultiDexApplication {
 
     private RefWatcher refWatcher;
-    private static AppComponent appComponent;
+    private static volatile AppComponent appComponent;
 
     @Inject
     Picasso picasso;

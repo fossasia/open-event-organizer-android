@@ -19,20 +19,11 @@ import static org.mockito.Mockito.when;
 
 public class MainPresenterTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    IAuthModel loginModel;
-
-    @Mock
-    ISharedPreferenceModel sharedPreferenceModel;
-
-    @Mock
-    IMainView mainView;
-
-    @Mock
-    ContextManager contextManager;
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock private IAuthModel loginModel;
+    @Mock private ISharedPreferenceModel sharedPreferenceModel;
+    @Mock private IMainView mainView;
+    @Mock private ContextManager contextManager;
 
     private MainPresenter mainPresenter;
 

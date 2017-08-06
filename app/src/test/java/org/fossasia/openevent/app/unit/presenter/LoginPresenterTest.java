@@ -32,19 +32,11 @@ import static org.mockito.ArgumentMatchers.any;
 @RunWith(JUnit4.class)
 public class LoginPresenterTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private ISharedPreferenceModel sharedPreferenceModel;
-
-    private HostSelectionInterceptor interceptor = new HostSelectionInterceptor();
-
-    @Mock
-    private ILoginView loginView;
-
-    @Mock
-    private IAuthModel authModel;
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock private ISharedPreferenceModel sharedPreferenceModel;
+    @Mock private ILoginView loginView;
+    @Mock private IAuthModel authModel;
+    @Mock private HostSelectionInterceptor interceptor;
 
     private LoginPresenter loginPresenter;
 
