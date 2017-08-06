@@ -13,7 +13,11 @@
         <item name="windowActionBar">false</item>
     </style>
 
-    <style name="AppTheme.NoActionBar.Translucent" parent="AppTheme.NoActionBar">
+    <style name="AppTheme.Main" parent="AppTheme.NoActionBar">
+        <!-- Defined in v19/styles.xml -->
+    </style>
+
+    <style name="AppTheme.Main.Light" parent="AppTheme.NoActionBar">
         <!-- Defined in v21/styles.xml -->
     </style>
 
