@@ -8,8 +8,7 @@ import org.fossasia.openevent.app.common.data.repository.contract.ITicketReposit
 import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketPresenter;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketView;
-
-import java.util.Date;
+import org.threeten.bp.LocalDateTime;
 
 import javax.inject.Inject;
 
@@ -24,7 +23,7 @@ public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> impl
     @Inject
     public CreateTicketPresenter(ITicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
-        Date current = new Date();
+        LocalDateTime current = LocalDateTime.now();
         ticket.setSalesStartsAt(DateUtils.formatDateToIso(current));
         ticket.setSalesEndsAt(DateUtils.formatDateToIso(current));
     }

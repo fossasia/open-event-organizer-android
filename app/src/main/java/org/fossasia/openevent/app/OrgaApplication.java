@@ -6,6 +6,7 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.raizlabs.android.dbflow.config.DatabaseConfig;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -75,6 +76,8 @@ public class OrgaApplication extends MultiDexApplication {
         initializeDatabase(this);
 
         if (!isTestBuild()) {
+            AndroidThreeTen.init(this);
+
             appComponent = DaggerAppComponent.builder()
                 .androidModule(new AndroidModule())
                 .build();
