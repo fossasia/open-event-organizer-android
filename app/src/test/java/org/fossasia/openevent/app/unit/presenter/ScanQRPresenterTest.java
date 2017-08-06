@@ -81,7 +81,7 @@ public class ScanQRPresenterTest {
         barcode1.displayValue = "Test Barcode 1";
         barcode2.displayValue = "Test Barcode 2";
 
-        for(int i = 0; i < attendees.size(); i++)
+        for (int i = 0; i < attendees.size(); i++)
             attendees.get(i).setOrder(orders.get(i));
     }
 

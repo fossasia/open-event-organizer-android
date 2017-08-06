@@ -169,7 +169,7 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
         recyclerView = binding.eventRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(eventListAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(context , DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(eventListAdapter);
         recyclerView.addItemDecoration(decoration);

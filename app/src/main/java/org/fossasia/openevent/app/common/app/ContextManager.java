@@ -22,7 +22,7 @@ public class ContextManager {
     private User organiser;
 
     @Inject
-    public ContextManager() {}
+    public ContextManager() { }
 
     public void setOrganiser(User user) {
         this.organiser = user;

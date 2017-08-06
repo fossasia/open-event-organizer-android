@@ -64,7 +64,7 @@ public class Ticket implements Comparable<Ticket> {
     @JsonIgnore
     public final ObservableBoolean deleting = new ObservableBoolean();
 
-    public Ticket() {}
+    public Ticket() { }
 
     @VisibleForTesting
     public Ticket(long id, long quantity) {

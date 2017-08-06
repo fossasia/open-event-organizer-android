@@ -54,7 +54,9 @@ public class EventRepositoryTest {
     @Mock
     IDatabaseRepository databaseRepository;
 
-    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE0OTU3NDU0MDAsImlhdCI6MTQ5NTc0NTQwMCwiZXhwIjoyNDk1ODMxODAwLCJpZGVudGl0eSI6MzQ0fQ.A_aC4hwK8sixZk4k9gzmzidO1wj2hjy_EH573uorK-E";
+    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
+        ".eyJuYmYiOjE0OTU3NDU0MDAsImlhdCI6MTQ5NTc0NTQwMCwiZXhwIjoyNDk1ODMxODAwLCJpZGVudGl0eSI6MzQ0fQ" +
+        ".A_aC4hwK8sixZk4k9gzmzidO1wj2hjy_EH573uorK-E";
     private String auth = Utils.formatToken(token);
 
     @Before

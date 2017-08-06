@@ -31,7 +31,8 @@ public class AuthModel implements IAuthModel {
     private final IDatabaseRepository databaseRepository;
 
     @Inject
-    public AuthModel(IUtilModel utilModel, ISharedPreferenceModel sharedPreferenceModel, EventService eventService, IDatabaseRepository databaseRepository) {
+    public AuthModel(IUtilModel utilModel, ISharedPreferenceModel sharedPreferenceModel,
+                     EventService eventService, IDatabaseRepository databaseRepository) {
         this.utilModel = utilModel;
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.eventService = eventService;
@@ -40,10 +41,10 @@ public class AuthModel implements IAuthModel {
 
     @Override
     public Completable login(Login login) {
-        if(isLoggedIn())
+        if (isLoggedIn())
             return Completable.complete();
 
-        if(!utilModel.isConnected())
+        if (!utilModel.isConnected())
             return Completable.error(new Throwable(Constants.NO_NETWORK));
 
         return eventService
@@ -67,7 +68,7 @@ public class AuthModel implements IAuthModel {
 
     @Override
     public Observable<User> signUp(User newUser) {
-        if(!utilModel.isConnected())
+        if (!utilModel.isConnected())
             return Observable.error(new Throwable(Constants.NO_NETWORK));
 
         return eventService

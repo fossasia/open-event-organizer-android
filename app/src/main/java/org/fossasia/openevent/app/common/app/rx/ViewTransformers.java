@@ -82,13 +82,15 @@ public final class ViewTransformers {
             .compose(erroneousCompletable(view));
     }
 
-    public static <T, V extends Progressive & Erroneous & ItemResult<T>> ObservableTransformer<T, T> progressiveErroneousResult(V view) {
+    public static <T, V extends Progressive & Erroneous & ItemResult<T>> ObservableTransformer<T, T>
+    progressiveErroneousResult(V view) {
         return observable -> observable
             .compose(progressiveErroneous(view))
             .compose(result(view));
     }
 
-    public static <T, V extends Progressive & Erroneous & Refreshable> ObservableTransformer<T, T> progressiveErroneousRefresh(V view, boolean forceReload) {
+    public static <T, V extends Progressive & Erroneous & Refreshable> ObservableTransformer<T, T>
+    progressiveErroneousRefresh(V view, boolean forceReload) {
         return observable -> observable
             .compose(progressiveErroneous(view))
             .compose(refreshable(view, forceReload));

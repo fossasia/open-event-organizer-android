@@ -30,7 +30,7 @@ public final class CurrencyUtils {
                 try {
                     Currency currency = Currency.getInstance(locale);
                     currencyLocaleMap.put(currency, locale);
-                } catch (Exception e){
+                } catch (Exception e) {
                     // No action
                 }
             }

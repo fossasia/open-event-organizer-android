@@ -26,7 +26,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
      * this and implement the {@link Graphic#draw(Canvas)} method to define the
      * graphics element.  Add instances to the overlay using {@link GraphicOverlay#add(Graphic)}.
      */
-    public static abstract class Graphic {
+    public abstract static class Graphic {
         private GraphicOverlay graphicOverlay;
 
         public Graphic(GraphicOverlay overlay) {

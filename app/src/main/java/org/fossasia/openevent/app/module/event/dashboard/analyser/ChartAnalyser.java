@@ -149,7 +149,8 @@ public class ChartAnalyser {
         Collections.sort(entries, new EntryXComparator());
 
         // Add a starting date point ine day ago
-        entries.add(0, new Entry(entries.get(0).getX() - 60*60*24*1000, 0));
+        float dayMillis = 60 * 60 * 24 * 1000;
+        entries.add(0, new Entry(entries.get(0).getX() - dayMillis, 0));
         return new LineDataSet(entries, label);
     }
 
@@ -202,7 +203,7 @@ public class ChartAnalyser {
         yAxis.setGridLineWidth(1);
         yAxis.setGridColor(Color.parseColor("#992ecc71"));
         if (maxTicketSale > 5)
-            yAxis.setGranularity(maxTicketSale/5);
+            yAxis.setGranularity(maxTicketSale / 5);
 
         lineChart.animateY(1000);
     }

@@ -18,5 +18,5 @@ public class SimpleModel {
     public String name;
     public String description;
 
-    SimpleModel() {}
+    SimpleModel() { }
 }

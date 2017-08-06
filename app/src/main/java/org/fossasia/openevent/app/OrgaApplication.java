@@ -29,14 +29,15 @@ import timber.log.Timber;
 
 public class OrgaApplication extends MultiDexApplication {
 
-    private RefWatcher refWatcher;
     private static volatile AppComponent appComponent;
+    private RefWatcher refWatcher;
 
     @Inject
     Picasso picasso;
 
     /**
      * Reference watcher to be used in detecting leaks in Fragments
+     *
      * @param context Context needed to access Application
      * @return ReferenceWatcher used to catch leaks in fragments
      */
@@ -53,8 +54,8 @@ public class OrgaApplication extends MultiDexApplication {
         FlowManager.init(new FlowConfig.Builder(context)
             .addDatabaseConfig(
                 new DatabaseConfig.Builder(OrgaDatabase.class)
-                .modelNotifier(DirectModelNotifier.get())
-                .build()
+                    .modelNotifier(DirectModelNotifier.get())
+                    .build()
             ).build());
     }
 
@@ -119,7 +120,7 @@ public class OrgaApplication extends MultiDexApplication {
 
         @Override
         protected void log(int priority, String tag, String message, Throwable throwable) {
-            if(priority == Log.DEBUG || priority == Log.VERBOSE)
+            if (priority == Log.DEBUG || priority == Log.VERBOSE)
                 return;
 
             // Report to crashing SDK in future

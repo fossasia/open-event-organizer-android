@@ -22,7 +22,7 @@ import timber.log.Timber;
     name = OrgaDatabase.NAME,
     version = OrgaDatabase.VERSION,
     insertConflict = ConflictAction.REPLACE,
-    updateConflict= ConflictAction.REPLACE,
+    updateConflict = ConflictAction.REPLACE,
     foreignKeyConstraintsEnforced = true
 )
 public final class OrgaDatabase {

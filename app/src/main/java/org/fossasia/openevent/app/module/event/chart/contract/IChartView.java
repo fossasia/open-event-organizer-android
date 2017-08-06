@@ -5,7 +5,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Erroneous;
 import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Progressive;
 
-public interface IChartView extends Progressive, Erroneous{
+public interface IChartView extends Progressive, Erroneous {
 
     LineChart getChartView();
 

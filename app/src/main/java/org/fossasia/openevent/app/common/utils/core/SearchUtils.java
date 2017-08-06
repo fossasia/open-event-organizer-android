@@ -19,7 +19,7 @@ public final class SearchUtils {
      */
     public static boolean filter(String query, String... keys) {
         String queryNormalized = query.trim().toLowerCase();
-        for(String key : keys) {
+        for (String key : keys) {
             if (FuzzySearch.tokenSortPartialRatio(queryNormalized, key.trim().toLowerCase()) > 60) {
                 return false;
             }

@@ -83,9 +83,9 @@ public final class BindingAdapters {
         }
     }
 
-    @BindingAdapter(value = { "imageUrl", "placeholder" }, requireAll = false)
+    @BindingAdapter(value = {"imageUrl", "placeholder"}, requireAll = false)
     public static void bindDefaultImage(ImageView imageView, String url, Drawable drawable) {
-        if(TextUtils.isEmpty(url)) {
+        if (TextUtils.isEmpty(url)) {
             if (drawable != null)
                 imageView.setImageDrawable(drawable);
             return;
@@ -106,7 +106,7 @@ public final class BindingAdapters {
 
     @BindingAdapter("circleImageUrl")
     public static void bindCircularImage(ImageView imageView, String url) {
-        if(TextUtils.isEmpty(url)) {
+        if (TextUtils.isEmpty(url)) {
             imageView.setImageResource(R.drawable.ic_photo_shutter);
             return;
         }
@@ -131,12 +131,12 @@ public final class BindingAdapters {
     }
 
     @BindingAdapter("srcCompat")
-    public static void bindSrcCompat(FloatingActionButton fab, Drawable drawable){
+    public static void bindSrcCompat(FloatingActionButton fab, Drawable drawable) {
         fab.setImageDrawable(drawable);
     }
 
     @BindingAdapter("srcCompat")
-    public static void bindSrcImageView(ImageView imageView, Drawable drawable){
+    public static void bindSrcImageView(ImageView imageView, Drawable drawable) {
         imageView.setImageDrawable(drawable);
     }
 

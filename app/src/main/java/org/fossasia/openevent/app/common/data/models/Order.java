@@ -24,7 +24,7 @@ public class Order {
     public String  paymentMode;
     public String status;
 
-    public Order() {}
+    public Order() { }
 
     public Order(String identifier) {
         setIdentifier(identifier);

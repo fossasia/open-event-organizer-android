@@ -13,7 +13,8 @@ import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
 
 import java.util.List;
 
-class StickyHeaderAdapter<Item extends IItem & IHeaderProvider> extends AbstractAdapter<Item> implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
+class StickyHeaderAdapter<Item extends IItem & IHeaderProvider> extends AbstractAdapter<Item>
+    implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
     @Override
     public long getHeaderId(int position) {
         return getItem(position).getHeaderId();

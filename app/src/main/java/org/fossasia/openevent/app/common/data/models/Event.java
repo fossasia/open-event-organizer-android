@@ -105,7 +105,7 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     public final ObservableLong soldPaidTickets = new ObservableLong();
     public final ObservableLong soldDonationTickets = new ObservableLong();
 
-    public Event() {}
+    public Event() { }
 
     public Event(long id) {
         this.id = id;
@@ -121,7 +121,7 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     @JsonIgnore
     @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "tickets")
     List<Ticket> getEventTickets() {
-        if(tickets != null && !tickets.isEmpty()) {
+        if (tickets != null && !tickets.isEmpty()) {
             for (Ticket ticket : tickets)
                 ticket.setEvent(this);
 

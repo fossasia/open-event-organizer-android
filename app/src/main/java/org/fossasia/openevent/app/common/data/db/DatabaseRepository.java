@@ -23,7 +23,7 @@ import timber.log.Timber;
 public class DatabaseRepository implements IDatabaseRepository {
 
     @Inject
-    public DatabaseRepository() {}
+    public DatabaseRepository() { }
 
     @Override
     public <T> Observable<T> getItems(Class<T> typeClass, SQLOperator... conditions) {

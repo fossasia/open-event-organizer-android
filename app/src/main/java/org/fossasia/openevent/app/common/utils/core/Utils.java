@@ -36,7 +36,7 @@ public final class Utils {
     public static String formatOptionalString(String format, String... args) {
         String[] newArgs = new String[args.length];
 
-        for(int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             newArgs[i] = optionalString(args[i]);
         }
 

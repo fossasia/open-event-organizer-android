@@ -49,7 +49,7 @@ public class EventsPresenter extends BasePresenter<IEventsView> implements IEven
 
     @Override
     public void loadUserEvents(boolean forceReload) {
-        if(getView() == null)
+        if (getView() == null)
             return;
 
         getEventSource(forceReload)
@@ -63,7 +63,7 @@ public class EventsPresenter extends BasePresenter<IEventsView> implements IEven
     /* Not dealing with progressbar here as main task is to show events */
     @Override
     public void loadOrganiser(boolean forceReload) {
-        if(getView() == null)
+        if (getView() == null)
             return;
 
         getOrganiserSource(forceReload)
