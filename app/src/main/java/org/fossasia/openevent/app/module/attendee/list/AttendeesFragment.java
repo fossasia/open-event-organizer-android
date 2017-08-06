@@ -194,7 +194,7 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(stickyHeaderAdapter.wrap((headerAdapter.wrap(fastItemAdapter))));
+        recyclerView.setAdapter(stickyHeaderAdapter.wrap(headerAdapter.wrap(fastItemAdapter)));
 
         final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
         recyclerView.addItemDecoration(decoration);

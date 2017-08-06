@@ -5,8 +5,8 @@ import android.databinding.ObservableField;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.User;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
@@ -27,7 +27,7 @@ public class ContextManager {
     public void setOrganiser(User user) {
         this.organiser = user;
 
-        Map<String, Object> userData = new HashMap<>();
+        Map<String, Object> userData = new ConcurrentHashMap<>();
         userData.put("details", user);
 
         Timber.i("User logged in - %s", user);

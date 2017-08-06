@@ -23,7 +23,7 @@ import io.reactivex.subjects.PublishSubject;
 @Module(includes = AndroidModule.class)
 public class BarcodeModule {
 
-    private GraphicOverlay<BarcodeGraphic> graphicOverlay;
+    private final GraphicOverlay<BarcodeGraphic> graphicOverlay;
 
     public BarcodeModule(GraphicOverlay<BarcodeGraphic> graphicOverlay) {
         this.graphicOverlay = graphicOverlay;

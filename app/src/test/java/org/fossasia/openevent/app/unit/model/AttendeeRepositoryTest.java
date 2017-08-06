@@ -36,19 +36,13 @@ import static org.mockito.Mockito.when;
 
 public class AttendeeRepositoryTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private AttendeeRepository attendeeRepository;
 
-    @Mock
-    EventService eventService;
-
-    @Mock
-    IUtilModel utilModel;
-
-    @Mock
-    IDatabaseRepository databaseRepository;
+    @Mock private EventService eventService;
+    @Mock private IUtilModel utilModel;
+    @Mock private IDatabaseRepository databaseRepository;
 
     @Before
     public void setUp() {

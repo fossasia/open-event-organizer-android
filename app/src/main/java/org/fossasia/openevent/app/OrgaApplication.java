@@ -42,8 +42,7 @@ public class OrgaApplication extends MultiDexApplication {
      * @return ReferenceWatcher used to catch leaks in fragments
      */
     public static RefWatcher getRefWatcher(Context context) {
-        OrgaApplication application = (OrgaApplication) context.getApplicationContext();
-        return application.refWatcher;
+        return ((OrgaApplication) context.getApplicationContext()).refWatcher;
     }
 
     public static AppComponent getAppComponent() {

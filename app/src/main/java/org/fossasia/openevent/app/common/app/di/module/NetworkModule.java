@@ -62,7 +62,7 @@ public class NetworkModule {
     @Provides
     @Singleton
     @Named("jsonapi")
-    Converter.Factory providesJsonApiFactory(ObjectMapper objectMapper, Class[] mappedClasses) {
+    Converter.Factory providesJsonApiFactory(ObjectMapper objectMapper, Class... mappedClasses) {
         return new JSONAPIConverterFactory(objectMapper, mappedClasses);
     }
 

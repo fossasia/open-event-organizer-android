@@ -7,7 +7,7 @@ import org.fossasia.openevent.app.common.app.lifecycle.contract.presenter.IBaseP
 
 public class PresenterLoader<T extends IBasePresenter> extends Loader<T> {
 
-    private T presenter;
+    private final T presenter;
 
     public PresenterLoader(Context context, T presenter) {
         super(context);
@@ -24,7 +24,6 @@ public class PresenterLoader<T extends IBasePresenter> extends Loader<T> {
     protected void onReset() {
         super.onReset();
         presenter.detach();
-        presenter = null;
     }
 
     public T getPresenter() {

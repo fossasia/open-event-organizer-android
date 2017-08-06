@@ -26,11 +26,13 @@ import java.text.ParseException;
 import java.util.List;
 
 import lombok.Data;
+import timber.log.Timber;
 
 @Data
 @Type("event")
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
+@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Event implements Comparable<Event>, IHeaderProvider {
     @Id(LongIdHandler.class)
     @PrimaryKey
@@ -146,7 +148,7 @@ public class Event implements Comparable<Event>, IHeaderProvider {
         try {
             return DateService.getEventStatus(this);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
 
         return "INVALID";

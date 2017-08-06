@@ -36,21 +36,21 @@ public final class BindingAdapters {
     @BindingConversion
     @InverseMethod("strToLong")
     public static String longToStr(Long value) {
-        return value != null ? String.valueOf(value) : "";
+        return value == null ?  "" : String.valueOf(value);
     }
 
     @BindingConversion
     @InverseMethod("strToFloat")
     public static String floatToStr(Float value) {
-        return value != null ? String.valueOf(value) : "";
+        return value == null ?  "" : String.valueOf(value);
     }
 
     public static Long strToLong(String value) {
-        return value != null ? Long.parseLong(value) : null;
+        return value == null ?  null : Long.parseLong(value);
     }
 
     public static Float strToFloat(String value) {
-        return value != null ? Float.parseFloat(value) : null;
+        return value == null ?  null : Float.parseFloat(value);
     }
 
     @InverseMethod("getType")

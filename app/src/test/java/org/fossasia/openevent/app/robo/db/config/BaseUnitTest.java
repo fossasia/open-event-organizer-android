@@ -14,6 +14,7 @@ import org.robolectric.annotation.Config;
 @Config(constants = BuildConfig.class,
     application = TestOrgaApplication.class,
     assetDir = "build/intermediates/classes/test/")
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class BaseUnitTest {
 
     @Rule

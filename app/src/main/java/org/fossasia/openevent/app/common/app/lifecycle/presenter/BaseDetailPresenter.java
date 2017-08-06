@@ -4,7 +4,7 @@ import android.support.annotation.CallSuper;
 
 import org.fossasia.openevent.app.common.app.lifecycle.contract.presenter.IDetailPresenter;
 
-public  abstract class BaseDetailPresenter<K, V> extends BasePresenter<V> implements IDetailPresenter<K, V> {
+public abstract class BaseDetailPresenter<K, V> extends BasePresenter<V> implements IDetailPresenter<K, V> {
 
     private K id;
 

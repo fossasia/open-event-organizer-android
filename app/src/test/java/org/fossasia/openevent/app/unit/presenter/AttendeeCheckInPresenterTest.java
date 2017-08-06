@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -23,7 +22,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.inOrder;
@@ -37,13 +36,14 @@ public class AttendeeCheckInPresenterTest {
     @Mock private IAttendeeRepository attendeeRepository;
     @Mock private IAttendeeCheckInView attendeeCheckInView;
 
-    private AttendeeCheckInPresenter attendeeCheckInPresenter;
     private static final long ID = 42;
-    private Attendee attendee = new Attendee(ID);
+    private static final Attendee ATTENDEE = new Attendee(ID);
+
+    private AttendeeCheckInPresenter attendeeCheckInPresenter;
 
     @Before
     public void setUp() {
-        attendee.setEvent(new Event(ID));
+        ATTENDEE.setEvent(new Event(ID));
         attendeeCheckInPresenter = new AttendeeCheckInPresenter(attendeeRepository);
         attendeeCheckInPresenter.attach(ID, attendeeCheckInView);
 
@@ -60,7 +60,7 @@ public class AttendeeCheckInPresenterTest {
 
     private void setLoadAttendeeBehaviour() {
         when(attendeeRepository.getAttendee(ID, false))
-            .thenReturn(Observable.just(attendee));
+            .thenReturn(Observable.just(ATTENDEE));
     }
 
     private void setToggleAttendeeBehaviour(Observable<Attendee> attendeeObservable) {
@@ -80,16 +80,7 @@ public class AttendeeCheckInPresenterTest {
 
         attendeeCheckInPresenter.detach();
 
-        assertNull(attendeeCheckInPresenter.getView());
-    }
-
-    @Test
-    public void shouldNotAccessView() {
-        attendeeCheckInPresenter.detach();
-        attendeeCheckInPresenter.start();
-        attendeeCheckInPresenter.toggleCheckIn();
-
-        Mockito.verifyZeroInteractions(attendeeCheckInView);
+        assertTrue(attendeeCheckInPresenter.getDisposable().isDisposed());
     }
 
     @Test
@@ -98,12 +89,12 @@ public class AttendeeCheckInPresenterTest {
         attendeeCheckInPresenter.start();
 
         verify(attendeeRepository).getAttendee(ID, false);
-        verify(attendeeCheckInView).showResult(attendee);
+        verify(attendeeCheckInView).showResult(ATTENDEE);
     }
 
     @Test
     public void shouldHandleTogglingSuccess() {
-        attendeeCheckInPresenter.setAttendee(attendee);
+        attendeeCheckInPresenter.setAttendee(ATTENDEE);
         Attendee toggled = getAttendee(true);
         setToggleAttendeeBehaviour(Observable.just(toggled));
 
@@ -115,7 +106,7 @@ public class AttendeeCheckInPresenterTest {
 
     @Test
     public void shouldShowCheckedInAfterToggling() {
-        attendeeCheckInPresenter.setAttendee(attendee);
+        attendeeCheckInPresenter.setAttendee(ATTENDEE);
         Attendee toggled = getAttendee(true);
         setToggleAttendeeBehaviour(Observable.just(toggled));
 
@@ -126,7 +117,7 @@ public class AttendeeCheckInPresenterTest {
 
     @Test
     public void shouldShowCheckedOutAfterToggling() {
-        attendeeCheckInPresenter.setAttendee(attendee);
+        attendeeCheckInPresenter.setAttendee(ATTENDEE);
         Attendee toggled = getAttendee(false);
         setToggleAttendeeBehaviour(Observable.just(toggled));
 
@@ -137,7 +128,7 @@ public class AttendeeCheckInPresenterTest {
 
     @Test
     public void shouldHandleTogglingError() {
-        attendeeCheckInPresenter.setAttendee(attendee);
+        attendeeCheckInPresenter.setAttendee(ATTENDEE);
         setToggleAttendeeBehaviour(Util.ERROR_OBSERVABLE);
 
         attendeeCheckInPresenter.toggleCheckIn();
@@ -147,8 +138,8 @@ public class AttendeeCheckInPresenterTest {
 
     @Test
     public void shouldShowProgressWhileTogglingSuccess() {
-        attendeeCheckInPresenter.setAttendee(attendee);
-        setToggleAttendeeBehaviour(Observable.just(attendee));
+        attendeeCheckInPresenter.setAttendee(ATTENDEE);
+        setToggleAttendeeBehaviour(Observable.just(ATTENDEE));
 
         attendeeCheckInPresenter.toggleCheckIn();
 
@@ -161,7 +152,7 @@ public class AttendeeCheckInPresenterTest {
 
     @Test
     public void shouldShowProgressWhileTogglingError() {
-        attendeeCheckInPresenter.setAttendee(attendee);
+        attendeeCheckInPresenter.setAttendee(ATTENDEE);
         setToggleAttendeeBehaviour(Util.ERROR_OBSERVABLE);
 
         attendeeCheckInPresenter.toggleCheckIn();

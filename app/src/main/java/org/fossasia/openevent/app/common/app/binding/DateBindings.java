@@ -7,15 +7,18 @@ import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.widget.Button;
 
+import org.fossasia.openevent.app.common.contract.Function;
 import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZonedDateTime;
 
-import io.reactivex.functions.Function;
+public final class DateBindings {
 
-public class DateBindings {
+    private DateBindings() {
+        // Never Called
+    }
 
     private static void setPickedDate(LocalDateTime pickedDate, Button button, String format,
                                       ObservableField<String> date) {
@@ -31,11 +34,7 @@ public class DateBindings {
 
         button.setOnClickListener(view -> {
             ZonedDateTime zonedDateTime = DateUtils.getDate(isoDate);
-            try {
-                dialogProvider.apply(zonedDateTime).show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            dialogProvider.apply(zonedDateTime).show();
         });
     }
 

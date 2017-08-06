@@ -6,12 +6,12 @@ import timber.log.Timber;
 
 public final class Logger {
 
+    public static final String TEST_MESSAGE = "Test Error";
+    public static final Throwable TEST_ERROR = new Throwable(TEST_MESSAGE);
+
     private Logger() {
         // Never Called
     }
-
-    public static final String TEST_MESSAGE = "Test Error";
-    public static final Throwable TEST_ERROR = new Throwable(TEST_MESSAGE);
 
     public static <T> void logSuccess(T item) {
         Timber.i(item.getClass().getName() + " successfully loaded with value: " + item.toString());
@@ -23,8 +23,6 @@ public final class Logger {
 
     public static void logError(Throwable throwable) {
         Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
-        if (!throwable.equals(TEST_ERROR))
-            throwable.printStackTrace();
     }
 
 }

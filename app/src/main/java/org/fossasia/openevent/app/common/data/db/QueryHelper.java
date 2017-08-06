@@ -16,8 +16,8 @@ import java.util.List;
 import io.reactivex.Observable;
 
 public class QueryHelper<R> {
+    private final List<IProperty> properties = new ArrayList<>();
     private IProperty method;
-    private List<IProperty> properties = new ArrayList<>();
 
     private From<R> from;
     private Where<R> where;
@@ -63,10 +63,10 @@ public class QueryHelper<R> {
     }
 
     public QueryHelper<R> group(IProperty by) {
-        if (where != null)
-            where = where.groupBy(by.withTable());
-        else
+        if (where == null)
             where = from.groupBy(by.withTable());
+        else
+            where = where.groupBy(by.withTable());
         return this;
     }
 

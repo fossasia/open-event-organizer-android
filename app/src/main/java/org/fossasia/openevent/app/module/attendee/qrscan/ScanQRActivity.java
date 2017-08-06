@@ -48,6 +48,7 @@ import timber.log.Timber;
 
 import static org.fossasia.openevent.app.common.utils.ui.ViewUtils.showView;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IScanQRView {
 
     public static final int PERM_REQ_CODE = 123;
@@ -184,12 +185,12 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
 
     @Override
     public boolean hasCameraPermission() {
-        return ContextCompat.checkSelfPermission(ScanQRActivity.this, permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(this, permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
     public void requestCameraPermission() {
-        ActivityCompat.requestPermissions(ScanQRActivity.this, new String[]{Manifest.permission.CAMERA}, PERM_REQ_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERM_REQ_CODE);
     }
 
     @Override
@@ -216,7 +217,7 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
 
     @Override
     public void showProgress(boolean show) {
-        ViewUtils.showView(progressBar, show);
+        showView(progressBar, show);
     }
 
     @Override
@@ -258,7 +259,6 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
             } catch (IOException e) {
                 Timber.e("Unable to start camera source.");
                 cameraSource.release();
-                cameraSource = null;
             }
         }
     }

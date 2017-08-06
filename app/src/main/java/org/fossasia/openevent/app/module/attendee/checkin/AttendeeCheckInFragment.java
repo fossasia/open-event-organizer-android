@@ -22,14 +22,13 @@ import org.fossasia.openevent.app.module.attendee.checkin.contract.IAttendeeChec
 import javax.inject.Inject;
 
 import dagger.Lazy;
-import io.reactivex.functions.Action;
 
 public class AttendeeCheckInFragment extends BaseBottomSheetFragment<IAttendeeCheckInPresenter> implements IAttendeeCheckInView {
 
     private static final String ATTENDEE_ID = "attendee_id";
 
     private BottomsheetAttendeeCheckInBinding binding;
-    private Action onCancel;
+    private Runnable onCancelAction;
     private long attendeeId;
 
     @Inject
@@ -74,14 +73,10 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<IAttendeeCh
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) throws IllegalStateException {
+    public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-        try {
-            if (onCancel != null)
-                onCancel.run();
-        } catch (Exception exception) {
-            throw new IllegalStateException(exception);
-        }
+        if (onCancelAction != null)
+            onCancelAction.run();
     }
 
     @Override
@@ -94,8 +89,8 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<IAttendeeCh
         return R.layout.bottomsheet_attendee_check_in;
     }
 
-    public void setOnCancelListener(Action onCancel) {
-        this.onCancel = onCancel;
+    public void setOnCancelListener(Runnable onCancel) {
+        this.onCancelAction = onCancel;
     }
 
     private void showToast(String message) {

@@ -15,7 +15,7 @@ import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 
 public abstract class BaseFragment<P extends IBasePresenter> extends Fragment implements IPresenterProvider<P> {
 
-    private LoaderHandler<P> loaderHandler = new LoaderHandler<>();
+    private final LoaderHandler<P> loaderHandler = new LoaderHandler<>();
 
     protected abstract @StringRes int getTitle();
 

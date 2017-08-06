@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AttendeeItemCheckInEvent extends ClickEventHook<Attendee> {
 
-    private IAttendeesView attendeesView;
+    private final IAttendeesView attendeesView;
 
     @Nullable
     @Override

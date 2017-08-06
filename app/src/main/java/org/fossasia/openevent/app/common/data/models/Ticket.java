@@ -32,6 +32,7 @@ import lombok.ToString;
 @ToString(exclude = "event")
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
+@SuppressWarnings("PMD.TooManyFields")
 public class Ticket implements Comparable<Ticket> {
     @Id(LongIdHandler.class)
     @PrimaryKey

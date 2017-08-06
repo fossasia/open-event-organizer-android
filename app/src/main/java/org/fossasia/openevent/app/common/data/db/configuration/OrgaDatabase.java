@@ -27,13 +27,13 @@ import timber.log.Timber;
 )
 public final class OrgaDatabase {
 
-    private OrgaDatabase() {
-        // Never Called
-    }
-
     public static final String NAME = "orga_database";
     // To be bumped after each schema change and migration addition
     public static final int VERSION = 4;
+
+    private OrgaDatabase() {
+        // Never Called
+    }
 
     // Migration version is less than or equal to Database version
     // Older version migrations are not to be removed

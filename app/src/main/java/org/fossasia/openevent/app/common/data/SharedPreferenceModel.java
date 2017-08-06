@@ -13,7 +13,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 public class SharedPreferenceModel implements ISharedPreferenceModel {
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
     @Inject
     SharedPreferenceModel() {

@@ -7,19 +7,19 @@ import android.view.View;
 
 import com.google.android.gms.vision.CameraSource;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
     private final Object lock = new Object();
+    private final Set<T> graphics = new HashSet<>();
     private int previewWidth;
     private float widthScaleFactor = 1.0f;
     private int previewHeight;
     private float heightScaleFactor = 1.0f;
     private int facing = CameraSource.CAMERA_FACING_BACK;
-    private Set<T> graphics = new HashSet<>();
 
     /**
      * Base class for a custom graphics object to be rendered within the graphic overlay.  Subclass
@@ -27,7 +27,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
      * graphics element.  Add instances to the overlay using {@link GraphicOverlay#add(Graphic)}.
      */
     public abstract static class Graphic {
-        private GraphicOverlay graphicOverlay;
+        private final GraphicOverlay graphicOverlay;
 
         public Graphic(GraphicOverlay overlay) {
             graphicOverlay = overlay;
@@ -128,7 +128,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
      */
     public List<T> getGraphics() {
         synchronized (lock) {
-            return new Vector(graphics);
+            return new ArrayList<>(graphics);
         }
     }
 
@@ -167,7 +167,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
         super.onDraw(canvas);
 
         synchronized (lock) {
-            if ((previewWidth != 0) && (previewHeight != 0)) {
+            if (previewWidth != 0 && previewHeight != 0) {
                 widthScaleFactor = (float) canvas.getWidth() / (float) previewWidth;
                 heightScaleFactor = (float) canvas.getHeight() / (float) previewHeight;
             }

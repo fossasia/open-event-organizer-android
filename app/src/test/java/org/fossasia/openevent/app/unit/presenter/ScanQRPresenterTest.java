@@ -7,6 +7,7 @@ import org.fossasia.openevent.app.common.data.models.Order;
 import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.module.attendee.qrscan.ScanQRPresenter;
 import org.fossasia.openevent.app.module.attendee.qrscan.contract.IScanQRView;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,7 +27,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.matches;
@@ -34,20 +35,20 @@ import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
+@SuppressWarnings("PMD.TooManyMethods")
 public class ScanQRPresenterTest {
 
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock private IScanQRView scanQRView;
     @Mock private IAttendeeRepository attendeeRepository;
 
-    private long eventId = 32;
+    private static final long EVENT_ID = 32;
     private ScanQRPresenter scanQRPresenter;
 
-    private List<Attendee> attendees = Arrays.asList(
+    private static final List<Attendee> ATTENDEES = Arrays.asList(
         new Attendee(12),
         new Attendee(34),
         new Attendee(56),
@@ -57,7 +58,7 @@ public class ScanQRPresenterTest {
         new Attendee(123)
     );
 
-    private List<Order> orders = Arrays.asList(
+    private static final List<Order> ORDERS = Arrays.asList(
         new Order("test1"),
         null,
         new Order("test3"),
@@ -67,8 +68,8 @@ public class ScanQRPresenterTest {
         new Order("test6")
     );
 
-    private Barcode barcode1 = new Barcode();
-    private Barcode barcode2 = new Barcode();
+    private static final Barcode BARCODE_1 = new Barcode();
+    private static final Barcode BARCODE_2 = new Barcode();
 
     @Before
     public void setUp() {
@@ -76,16 +77,16 @@ public class ScanQRPresenterTest {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
         scanQRPresenter = new ScanQRPresenter(attendeeRepository);
-        scanQRPresenter.attach(eventId, scanQRView);
+        scanQRPresenter.attach(EVENT_ID, scanQRView);
 
-        barcode1.displayValue = "Test Barcode 1";
-        barcode2.displayValue = "Test Barcode 2";
+        BARCODE_1.displayValue = "Test Barcode 1";
+        BARCODE_2.displayValue = "Test Barcode 2";
 
-        for (int i = 0; i < attendees.size(); i++)
-            attendees.get(i).setOrder(orders.get(i));
+        for (int i = 0; i < ATTENDEES.size(); i++)
+            ATTENDEES.get(i).setOrder(ORDERS.get(i));
     }
 
-    @Before
+    @After
     public void tearDown() {
         RxJavaPlugins.reset();
         RxAndroidPlugins.reset();
@@ -93,18 +94,18 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldLoadAttendeesAutomatically() {
-        when(attendeeRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.fromIterable(attendees));
+        when(attendeeRepository.getAttendees(EVENT_ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         scanQRPresenter.start();
 
-        verify(attendeeRepository).getAttendees(eventId, false);
+        verify(attendeeRepository).getAttendees(EVENT_ID, false);
     }
 
     @Test
     public void shouldLoadCameraAutomatically() {
-        when(attendeeRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.fromIterable(attendees));
+        when(attendeeRepository.getAttendees(EVENT_ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         scanQRPresenter.start();
 
@@ -113,8 +114,8 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldDetachViewOnStop() {
-        when(attendeeRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.fromIterable(attendees));
+        when(attendeeRepository.getAttendees(EVENT_ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         scanQRPresenter.start();
 
@@ -122,22 +123,7 @@ public class ScanQRPresenterTest {
 
         scanQRPresenter.detach();
 
-        assertNull(scanQRPresenter.getView());
-    }
-
-    @Test
-    public void shouldNotAccessViewAfterDetach() {
-        scanQRPresenter.detach();
-
-        scanQRPresenter.start();
-        scanQRPresenter.onCameraLoaded();
-        scanQRPresenter.cameraPermissionGranted(false);
-        scanQRPresenter.cameraPermissionGranted(true);
-        scanQRPresenter.onScanStarted();
-        scanQRPresenter.onBarcodeDetected(barcode2);
-        scanQRPresenter.onCameraDestroyed();
-
-        verifyZeroInteractions(scanQRView);
+        assertTrue(scanQRPresenter.getDisposable().isDisposed());
     }
 
     @Test
@@ -184,8 +170,8 @@ public class ScanQRPresenterTest {
      */
     @Test
     public void shouldFollowFlowOnImplicitPermissionGrant() {
-        when(attendeeRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.fromIterable(attendees));
+        when(attendeeRepository.getAttendees(EVENT_ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
         when(scanQRView.hasCameraPermission()).thenReturn(true);
 
         scanQRPresenter.start();
@@ -198,8 +184,8 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionGrant() {
-        when(attendeeRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.fromIterable(attendees));
+        when(attendeeRepository.getAttendees(EVENT_ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
         when(scanQRView.hasCameraPermission()).thenReturn(true);
 
         scanQRPresenter.start();
@@ -213,8 +199,8 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldFollowFlowOnImplicitPermissionDenyRequestGrant() {
-        when(attendeeRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.fromIterable(attendees));
+        when(attendeeRepository.getAttendees(EVENT_ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
         scanQRPresenter.start();
@@ -229,8 +215,8 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionDenyRequestGrant() {
-        when(attendeeRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.fromIterable(attendees));
+        when(attendeeRepository.getAttendees(EVENT_ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
         scanQRPresenter.start();
@@ -245,8 +231,8 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldFollowFlowOnImplicitPermissionDenyRequestDeny() {
-        when(attendeeRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.fromIterable(attendees));
+        when(attendeeRepository.getAttendees(EVENT_ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
         scanQRPresenter.start();
@@ -261,8 +247,8 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldShowProgressInBetweenImplicitPermissionDenyRequestDeny() {
-        when(attendeeRepository.getAttendees(eventId, false))
-            .thenReturn(Observable.fromIterable(attendees));
+        when(attendeeRepository.getAttendees(EVENT_ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
         when(scanQRView.hasCameraPermission()).thenReturn(false);
 
         scanQRPresenter.start();
@@ -282,58 +268,58 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldSendSameBarcodeOnlyOnce() {
-        scanQRPresenter.setAttendees(attendees);
-        sendBarcodeBurst(barcode1);
+        scanQRPresenter.setAttendees(ATTENDEES);
+        sendBarcodeBurst(BARCODE_1);
 
-        verify(scanQRView, atMost(1)).showBarcodeData(barcode1.displayValue);
+        verify(scanQRView, atMost(1)).showBarcodeData(BARCODE_1.displayValue);
     }
 
     @Test
     public void shouldSendOnlyDistinctBarcode() {
-        scanQRPresenter.setAttendees(attendees);
+        scanQRPresenter.setAttendees(ATTENDEES);
 
         // Add bursts of barcodes to test only distinct gets transmitted
-        sendBarcodeBurst(barcode1);
-        sendBarcodeBurst(barcode2);
-        sendBarcodeBurst(barcode2);
-        sendBarcodeBurst(barcode1);
-        sendBarcodeBurst(barcode1);
-        sendBarcodeBurst(barcode2);
-        sendBarcodeBurst(barcode1);
-        sendBarcodeBurst(barcode1);
+        sendBarcodeBurst(BARCODE_1);
+        sendBarcodeBurst(BARCODE_2);
+        sendBarcodeBurst(BARCODE_2);
+        sendBarcodeBurst(BARCODE_1);
+        sendBarcodeBurst(BARCODE_1);
+        sendBarcodeBurst(BARCODE_2);
+        sendBarcodeBurst(BARCODE_1);
+        sendBarcodeBurst(BARCODE_1);
 
         InOrder inOrder = inOrder(scanQRView);
 
-        inOrder.verify(scanQRView).showBarcodeData(barcode1.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(barcode2.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(barcode1.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(barcode2.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(barcode1.displayValue);
+        inOrder.verify(scanQRView).showBarcodeData(BARCODE_1.displayValue);
+        inOrder.verify(scanQRView).showBarcodeData(BARCODE_2.displayValue);
+        inOrder.verify(scanQRView).showBarcodeData(BARCODE_1.displayValue);
+        inOrder.verify(scanQRView).showBarcodeData(BARCODE_2.displayValue);
+        inOrder.verify(scanQRView).showBarcodeData(BARCODE_1.displayValue);
         inOrder.verifyNoMoreInteractions();
     }
 
     private void sendNullInterleaved() {
-        sendBarcodeBurst(barcode1);
+        sendBarcodeBurst(BARCODE_1);
         sendBarcodeBurst(null);
-        sendBarcodeBurst(barcode1);
+        sendBarcodeBurst(BARCODE_1);
         sendBarcodeBurst(null);
-        sendBarcodeBurst(barcode2);
-        sendBarcodeBurst(barcode2);
+        sendBarcodeBurst(BARCODE_2);
+        sendBarcodeBurst(BARCODE_2);
         sendBarcodeBurst(null);
-        sendBarcodeBurst(barcode1);
+        sendBarcodeBurst(BARCODE_1);
         sendBarcodeBurst(null);
     }
 
     @Test
     public void shouldNotSendNullBarcode() {
-        scanQRPresenter.setAttendees(attendees);
+        scanQRPresenter.setAttendees(ATTENDEES);
         sendNullInterleaved();
 
         InOrder inOrder = inOrder(scanQRView);
 
-        inOrder.verify(scanQRView).showBarcodeData(barcode1.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(barcode2.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(barcode1.displayValue);
+        inOrder.verify(scanQRView).showBarcodeData(BARCODE_1.displayValue);
+        inOrder.verify(scanQRView).showBarcodeData(BARCODE_2.displayValue);
+        inOrder.verify(scanQRView).showBarcodeData(BARCODE_1.displayValue);
         inOrder.verify(scanQRView, never()).showBarcodeData(anyString());
     }
 
@@ -346,7 +332,7 @@ public class ScanQRPresenterTest {
 
     @Test
     public void shouldNotSendAttendeeOnWrongBarcodeDetection() {
-        scanQRPresenter.setAttendees(attendees);
+        scanQRPresenter.setAttendees(ATTENDEES);
         sendNullInterleaved();
 
         verify(scanQRView, never()).onScannedAttendee(any(Attendee.class));
@@ -357,12 +343,12 @@ public class ScanQRPresenterTest {
         // Somehow the setting in setUp is not working, a workaround till fix is found
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
 
-        scanQRPresenter.setAttendees(attendees);
+        scanQRPresenter.setAttendees(ATTENDEES);
 
-        barcode1.displayValue = "test4-91";
-        scanQRPresenter.onBarcodeDetected(barcode1);
+        BARCODE_1.displayValue = "test4-91";
+        scanQRPresenter.onBarcodeDetected(BARCODE_1);
 
-        verify(scanQRView).onScannedAttendee(attendees.get(3));
+        verify(scanQRView).onScannedAttendee(ATTENDEES.get(3));
     }
 
 }

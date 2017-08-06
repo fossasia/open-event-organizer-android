@@ -22,9 +22,9 @@ import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
@@ -33,19 +33,23 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public class ChartAnalyser {
+
+    private static final int TICKET_SALE_THRESHOLD = 5;
+
     private final IUtilModel utilModel;
     private final AttendeeRepository attendeeRepository;
+
+    private final Map<String, Long> freeMap = new ConcurrentHashMap<>();
+    private final Map<String, Long> paidMap = new ConcurrentHashMap<>();
+    private final Map<String, Long> donationMap = new ConcurrentHashMap<>();
+
+    private final LineData lineData = new LineData();
 
     private LineDataSet freeSet;
     private LineDataSet paidSet;
     private LineDataSet donationSet;
-    private LineData lineData = new LineData();
 
     private long maxTicketSale;
-
-    private Map<String, Long> freeMap = new HashMap<>();
-    private Map<String, Long> paidMap = new HashMap<>();
-    private Map<String, Long> donationMap = new HashMap<>();
 
     private List<Attendee> attendees;
     private boolean error;
@@ -62,7 +66,7 @@ public class ChartAnalyser {
 
     public void reset() {
         clearData();
-        attendees = null;
+        attendees.clear();
     }
 
     private void clearData() {
@@ -76,10 +80,10 @@ public class ChartAnalyser {
     }
 
     private Observable<Attendee> getAttendeeSource(long eventId) {
-        if (attendees != null)
-            return Observable.fromIterable(attendees);
-        else
+        if (attendees == null || attendees.isEmpty())
             return attendeeRepository.getAttendees(eventId, false);
+        else
+            return Observable.fromIterable(attendees);
     }
 
     public Completable loadData(long eventId) {
@@ -138,6 +142,7 @@ public class ChartAnalyser {
         normalizeDataSet(donationMap, paidMap, freeMap);
     }
 
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
     private LineDataSet setData(Map<String, Long> map, String label) throws ParseException {
         List<Entry> entries = new ArrayList<>();
         for (Map.Entry<String, Long> entry : map.entrySet()) {
@@ -202,8 +207,8 @@ public class ChartAnalyser {
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setGridLineWidth(1);
         yAxis.setGridColor(Color.parseColor("#992ecc71"));
-        if (maxTicketSale > 5)
-            yAxis.setGranularity(maxTicketSale / 5);
+        if (maxTicketSale > TICKET_SALE_THRESHOLD)
+            yAxis.setGranularity(maxTicketSale / TICKET_SALE_THRESHOLD);
 
         lineChart.animateY(1000);
     }

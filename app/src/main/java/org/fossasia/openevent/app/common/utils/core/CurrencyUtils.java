@@ -13,12 +13,13 @@ import io.reactivex.schedulers.Schedulers;
  */
 public final class CurrencyUtils {
 
+    private static SortedMap<Currency, Locale> currencyLocaleMap;
+
     private CurrencyUtils() {
         // Never Called
     }
 
-    private static SortedMap<Currency, Locale> currencyLocaleMap;
-
+    @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock" })
     private static Single<SortedMap<Currency, Locale>> getCurrecyMap() {
         if (currencyLocaleMap != null && !currencyLocaleMap.isEmpty())
             return Single.just(currencyLocaleMap);

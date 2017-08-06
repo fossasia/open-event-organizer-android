@@ -45,19 +45,14 @@ public class EventRepositoryTest {
 
     private EventRepository eventRepository;
 
-    @Mock
-    EventService eventService;
+    @Mock private EventService eventService;
+    @Mock private IUtilModel utilModel;
+    @Mock private IDatabaseRepository databaseRepository;
 
-    @Mock
-    IUtilModel utilModel;
-
-    @Mock
-    IDatabaseRepository databaseRepository;
-
-    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
+    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
         ".eyJuYmYiOjE0OTU3NDU0MDAsImlhdCI6MTQ5NTc0NTQwMCwiZXhwIjoyNDk1ODMxODAwLCJpZGVudGl0eSI6MzQ0fQ" +
         ".A_aC4hwK8sixZk4k9gzmzidO1wj2hjy_EH573uorK-E";
-    private String auth = Utils.formatToken(token);
+    private static final String AUTH = Utils.formatToken(TOKEN);
 
     @Before
     public void setUp() {
@@ -74,7 +69,7 @@ public class EventRepositoryTest {
 
     @Test
     public void testFormatToken() {
-        assertEquals(auth, "JWT " + token);
+        assertEquals(AUTH, "JWT " + TOKEN);
     }
 
     @Test
@@ -107,7 +102,7 @@ public class EventRepositoryTest {
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        Mockito.verifyZeroInteractions(eventService);
+        verifyZeroInteractions(eventService);
     }
 
     @Test
@@ -119,7 +114,7 @@ public class EventRepositoryTest {
             .doOnSubscribe(testObserver::onSubscribe);
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(utilModel.getToken()).thenReturn(token);
+        when(utilModel.getToken()).thenReturn(TOKEN);
         when(databaseRepository.getAllItems(User.class)).thenReturn(Observable.empty());
         when(databaseRepository.save(User.class, user)).thenReturn(completable);
         when(eventService.getUser(344)).thenReturn(Observable.just(user));
@@ -158,7 +153,7 @@ public class EventRepositoryTest {
     public void shouldFetchOrganizerOnForceReload() {
         User user = new User();
 
-        when(utilModel.getToken()).thenReturn(token);
+        when(utilModel.getToken()).thenReturn(TOKEN);
         when(eventService.getUser(344)).thenReturn(Observable.just(user));
         when(databaseRepository.save(User.class, user)).thenReturn(Completable.complete());
         when(utilModel.isConnected()).thenReturn(true);
@@ -251,7 +246,7 @@ public class EventRepositoryTest {
             .doOnSubscribe(testObserver::onSubscribe);
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(utilModel.getToken()).thenReturn(token);
+        when(utilModel.getToken()).thenReturn(TOKEN);
         when(databaseRepository.getAllItems(eq(Event.class)))
             .thenReturn(Observable.empty());
         when(databaseRepository.saveList(Event.class, events)).thenReturn(completable);
@@ -304,7 +299,7 @@ public class EventRepositoryTest {
         );
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(utilModel.getToken()).thenReturn(token);
+        when(utilModel.getToken()).thenReturn(TOKEN);
         when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
         when(databaseRepository.deleteAll(Event.class)).thenReturn(Completable.complete());
         when(eventService.getEvents(344)).thenReturn(Observable.just(events));
@@ -331,7 +326,7 @@ public class EventRepositoryTest {
         );
 
         when(utilModel.isConnected()).thenReturn(true);
-        when(utilModel.getToken()).thenReturn(token);
+        when(utilModel.getToken()).thenReturn(TOKEN);
         when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
         when(databaseRepository.deleteAll(Event.class)).thenReturn(Completable.complete());
         when(eventService.getEvents(344)).thenReturn(Observable.just(events));

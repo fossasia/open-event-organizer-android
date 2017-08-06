@@ -37,7 +37,7 @@ class LoaderHandler<P extends IBasePresenter> {
 
             @Override
             public void onLoaderReset(Loader<P> loader) {
-                LoaderHandler.this.presenter = null;
+                // Do Nothing
             }
         });
     }
