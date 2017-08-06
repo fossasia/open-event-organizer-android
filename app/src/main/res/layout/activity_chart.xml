@@ -20,19 +20,13 @@
         app:srcCompat="@drawable/ic_exit_full_screen"
         app:fabSize="normal" />
 
-    <LinearLayout
-        android:id="@+id/progressView"
+    <FrameLayout
+        android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_top_surface"
         android:visibility="gone">
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
 
-    </LinearLayout>
+        <include layout="@layout/progressbar_layout" />
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

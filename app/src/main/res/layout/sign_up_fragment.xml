@@ -11,113 +11,117 @@
             type="org.fossasia.openevent.app.common.data.models.User" />
     </data>
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="@dimen/spacing_normal"
         tools:context="org.fossasia.openevent.app.module.auth.signup.SignUpFragment">
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:paddingLeft="@dimen/spacing_normal"
-            android:paddingRight="@dimen/spacing_normal"
-            android:paddingStart="@dimen/spacing_normal">
+            android:clipToPadding="false"
+            android:padding="@dimen/spacing_normal">
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/spacing_normal">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingEnd="@dimen/spacing_normal"
+                android:paddingLeft="@dimen/spacing_normal"
+                android:paddingRight="@dimen/spacing_normal"
+                android:paddingStart="@dimen/spacing_normal">
 
-                <android.support.design.widget.TextInputEditText
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/first_name"
-                    android:text="@={ user.firstName }"
-                    android:inputType="text" />
-            </android.support.design.widget.TextInputLayout>
+                    android:paddingBottom="@dimen/spacing_normal">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/spacing_normal">
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/first_name"
+                        android:text="@={ user.firstName }"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/last_name"
-                    android:text="@={ user.lastName }"
-                    android:inputType="text" />
-            </android.support.design.widget.TextInputLayout>
+                    android:paddingBottom="@dimen/spacing_normal">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/spacing_normal">
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/last_name"
+                        android:text="@={ user.lastName }"
+                        android:inputType="text" />
+                </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/email"
-                    android:text="@={ user.email }"
-                    android:inputType="textEmailAddress"
-                    app:validateType='@{"email"}' />
-            </android.support.design.widget.TextInputLayout>
+                    android:paddingBottom="@dimen/spacing_normal">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true"
-                android:paddingBottom="@dimen/spacing_normal">
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email"
+                        android:text="@={ user.email }"
+                        android:inputType="textEmailAddress"
+                        app:validateType='@{"email"}' />
+                </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/password"
-                    android:text="@={ user.password }"
-                    android:inputType="textPassword"
-                    android:imeOptions="actionGo"
-                    app:validateMinLength="@{6}"
-                    app:go="@{() -> btnSignUp.performClick() }" />
-            </android.support.design.widget.TextInputLayout>
+                    app:passwordToggleEnabled="true"
+                    android:paddingBottom="@dimen/spacing_normal">
 
-            <include
-                android:id="@+id/url"
-                layout="@layout/auth_url_container" />
+                    <android.support.design.widget.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/password"
+                        android:text="@={ user.password }"
+                        android:inputType="textPassword"
+                        android:imeOptions="actionGo"
+                        app:validateMinLength="@{6}"
+                        app:go="@{() -> btnSignUp.performClick() }" />
+                </android.support.design.widget.TextInputLayout>
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btnSignUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:backgroundTint="@color/green_500"
-                android:text="@string/sign_up"
-                android:textColor="@android:color/white" />
+                <include
+                    android:id="@+id/url"
+                    layout="@layout/auth_url_container" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btnSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:backgroundTint="@color/green_500"
+                    android:text="@string/sign_up"
+                    android:textColor="@android:color/white" />
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/loginLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/login_link"
-                android:textColor="@color/color_accent"
-                style="?attr/borderlessButtonStyle" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/loginLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/login_link"
+                    android:textColor="@color/color_accent"
+                    style="?attr/borderlessButtonStyle" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/progressbar_layout" />
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>
