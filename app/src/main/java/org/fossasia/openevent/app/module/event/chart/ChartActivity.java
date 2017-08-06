@@ -29,7 +29,7 @@ public class ChartActivity extends BaseActivity<IChartPresenter> implements ICha
     @BindView(R.id.fabExit)
     FloatingActionButton fabExit;
 
-    @BindView(R.id.progressView)
+    @BindView(R.id.progressBar)
     View progressView;
 
     @Inject
