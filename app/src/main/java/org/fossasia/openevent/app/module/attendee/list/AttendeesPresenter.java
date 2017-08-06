@@ -27,8 +27,8 @@ import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progress
 
 public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView> implements IAttendeesPresenter {
 
-    private IAttendeeRepository attendeeRepository;
-    private IDatabaseChangeListener<Attendee> attendeeListener;
+    private final IAttendeeRepository attendeeRepository;
+    private final IDatabaseChangeListener<Attendee> attendeeListener;
 
     private final List<Attendee> attendeeList = new ArrayList<>();
 

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!--
+PMD Configuration
+Severity: HARD
+-->
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="ruleset"
+    xmlns="http://pmd.sf.net/ruleset/1.0.0"
+    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
+    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
+
+    <description>POM rule set file</description>
+
+    <rule ref="rulesets/java/android.xml" />
+
+    <rule ref="rulesets/java/basic.xml" />
+
+    <rule ref="rulesets/java/braces.xml">
+        <exclude name="IfStmtsMustUseBraces" />
+        <exclude name="IfElseStmtsMustUseBraces" />
+        <exclude name="ForLoopsMustUseBraces" />
+    </rule>
+
+    <rule ref="rulesets/java/clone.xml" />
+
+    <rule ref="rulesets/java/codesize.xml" />
+    <rule ref="rulesets/java/codesize.xml/CyclomaticComplexity" />
+    <rule ref="rulesets/java/codesize.xml/TooManyMethods">
+        <properties>
+            <property name="maxmethods" value="15" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/java/comments.xml">
+        <exclude name="CommentRequired" />
+        <exclude name="CommentDefaultAccessModifier" />
+    </rule>
+
+    <rule ref="rulesets/java/comments.xml/CommentSize">
+        <properties>
+            <property name="maxLineLength" value="100" />
+            <property name="maxLines" value="10" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/java/controversial.xml">
+        <!-- while ((x = update()) != null) { process(x); } -->
+        <exclude name="AtLeastOneConstructor" />
+        <exclude name="OnlyOneReturn" />
+        <exclude name="DefaultPackage" />
+        <exclude name="UnnecessaryConstructor" />
+        <exclude name="CallSuperInConstructor" />
+        <exclude name="AvoidUsingVolatile" />
+    </rule>
+
+    <!-- UR anomaly hits on for each loop -->
+    <rule ref="rulesets/java/controversial.xml/DataflowAnomalyAnalysis">
+        <properties>
+            <property name="violationSuppressRegex" value="^Found 'UR'-anomaly.*"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/java/coupling.xml">
+        <exclude name="ExcessiveImports" />
+        <exclude name="LawOfDemeter" />
+        <exclude name="LoosePackageCoupling" />
+    </rule>
+
+    <rule ref="rulesets/java/design.xml">
+        <exclude name="UncommentedEmptyConstructor" />
+        <exclude name="AccessorMethodGeneration" />
+    </rule>
+
+    <rule ref="rulesets/java/empty.xml" />
+
+    <rule ref="rulesets/java/finalizers.xml" />
+
+    <rule ref="rulesets/java/imports.xml" />
+
+    <rule ref="rulesets/java/imports.xml/TooManyStaticImports">
+        <properties>
+            <property name="maximumStaticImports" value="15" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/java/junit.xml">
+        <exclude name="JUnitTestsShouldIncludeAssert" />
+        <exclude name="JUnitTestContainsTooManyAsserts" />
+        <exclude name="JUnitAssertionsShouldIncludeMessage" />
+    </rule>
+
+    <rule ref="rulesets/java/logging-jakarta-commons.xml" />
+
+    <rule ref="rulesets/java/logging-java.xml" />
+
+    <rule ref="rulesets/java/migrating.xml" />
+
+    <rule ref="rulesets/java/naming.xml">
+        <exclude name="AbstractNaming" />
+        <exclude name="ShortClassName" />
+        <exclude name="ShortVariable" />
+        <exclude name="AvoidFieldNameMatchingMethodName" />
+    </rule>
+
+    <rule ref="rulesets/java/naming.xml/LongVariable">
+        <properties>
+            <property name="minimum" value="25" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/java/optimizations.xml">
+        <exclude name="LocalVariableCouldBeFinal" />
+        <exclude name="MethodArgumentCouldBeFinal" />
+    </rule>
+
+    <rule ref="rulesets/java/strictexception.xml" />
+
+    <rule ref="rulesets/java/strings.xml" />
+
+    <rule ref="rulesets/java/typeresolution.xml" />
+
+    <rule ref="rulesets/java/unnecessary.xml" />
+
+    <rule ref="rulesets/java/unusedcode.xml" />
+
+</ruleset>

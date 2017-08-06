@@ -1,7 +1,8 @@
 package org.fossasia.openevent.app.common.utils.core;
 
-import io.reactivex.functions.Function;
-import timber.log.Timber;
+import org.fossasia.openevent.app.common.contract.Function;
+
+import java.util.Locale;
 
 public final class CompareUtils {
 
@@ -9,17 +10,16 @@ public final class CompareUtils {
         // Never Called
     }
 
+    private static <T> String apply(Function<T, String> mapper, T item) {
+        return mapper.apply(item).toLowerCase(Locale.getDefault());
+    }
+
     @SafeVarargs
     public static <T> int compareCascading(T one, T two, Function<T, String>... mappers) {
         for (Function<T, String> mapper : mappers) {
-            try {
-                int current = mapper.apply(one).toLowerCase().compareTo(mapper.apply(two).toLowerCase());
-                if (current != 0)
-                    return current;
-            } catch (Exception e) {
-                // No-Op Can't happen
-                Timber.wtf(e);
-            }
+            int current = apply(mapper, one).compareTo(apply(mapper, two));
+            if (current != 0)
+                return current;
         }
         return 0;
     }

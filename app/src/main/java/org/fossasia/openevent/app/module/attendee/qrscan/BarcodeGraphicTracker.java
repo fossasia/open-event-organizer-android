@@ -18,10 +18,10 @@ import io.reactivex.subjects.PublishSubject;
  * goes away.
  */
 public class BarcodeGraphicTracker extends Tracker<Barcode> {
-    private GraphicOverlay<BarcodeGraphic> graphicOverlay;
-    private BarcodeGraphic graphic;
+    private final GraphicOverlay<BarcodeGraphic> graphicOverlay;
+    private final BarcodeGraphic graphic;
 
-    private PublishSubject<Notification<Barcode>> barcodeEmitter;
+    private final PublishSubject<Notification<Barcode>> barcodeEmitter;
 
     BarcodeGraphicTracker(GraphicOverlay<BarcodeGraphic> overlay, BarcodeGraphic graphic, PublishSubject<Notification<Barcode>> barcodeEmitter) {
         this.graphicOverlay = overlay;

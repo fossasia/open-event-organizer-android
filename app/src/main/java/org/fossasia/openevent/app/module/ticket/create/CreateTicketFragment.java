@@ -83,9 +83,4 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
     public void onSuccess(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
-    }
 }

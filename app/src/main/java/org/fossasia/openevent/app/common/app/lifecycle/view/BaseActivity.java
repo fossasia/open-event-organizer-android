@@ -11,7 +11,7 @@ import org.fossasia.openevent.app.common.app.lifecycle.view.loader.IPresenterPro
 
 public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatActivity implements IPresenterProvider<P> {
 
-    private LoaderHandler<P> loaderHandler = new LoaderHandler<>();
+    private final LoaderHandler<P> loaderHandler = new LoaderHandler<>();
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

@@ -75,12 +75,7 @@ configurations.all {
 }
 
 check {
-    checkstyle {
-        abortOnError true
-    }
-    findbugs {
-        abortOnError true
-    }
+    abortOnError true
 }
 
 def dbflow_version = "4.0.4"

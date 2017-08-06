@@ -26,11 +26,11 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> impl
 
     private static final String CLEAR_DISTINCT = "clear";
 
-    private IAttendeeRepository attendeeRepository;
-    private List<Attendee> attendees = new ArrayList<>();
+    private final IAttendeeRepository attendeeRepository;
+    private final List<Attendee> attendees = new ArrayList<>();
 
-    private PublishSubject<Boolean> detect = PublishSubject.create();
-    private PublishSubject<String> data = PublishSubject.create();
+    private final PublishSubject<Boolean> detect = PublishSubject.create();
+    private final PublishSubject<String> data = PublishSubject.create();
 
     private boolean paused;
 
@@ -61,8 +61,9 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> impl
             .subscribe(attendee -> getView().onScannedAttendee(attendee));
     }
 
-    public void setAttendees(List<Attendee> attendees) {
-        this.attendees = attendees;
+    public void setAttendees(List<Attendee> attendeeList) {
+        attendees.clear();
+        attendees.addAll(attendeeList);
     }
 
     @Override

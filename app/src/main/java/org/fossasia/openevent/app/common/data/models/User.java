@@ -23,6 +23,7 @@ import lombok.EqualsAndHashCode;
 @Type("user")
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
+@SuppressWarnings("PMD.TooManyFields")
 public class User {
     @Id(IntegerIdHandler.class)
     @PrimaryKey

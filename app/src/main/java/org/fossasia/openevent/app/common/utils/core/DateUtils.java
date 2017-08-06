@@ -9,16 +9,12 @@ import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.DateTimeParseException;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import timber.log.Timber;
 
 public final class DateUtils {
-
-    private DateUtils() {
-        // Never Called
-    }
 
     public static final String FORMAT_12H = "hh:mm a";
     public static final String FORMAT_24H = "HH:mm";
@@ -26,9 +22,13 @@ public final class DateUtils {
     public static final String FORMAT_DAY_COMPLETE = "HH:mm, EE, dd MMM yyyy";
 
     private static final String INVALID_DATE = "Invalid Date";
-    private static final Map<String, DateTimeFormatter> FORMATTER_MAP = new HashMap<>();
+    private static final Map<String, DateTimeFormatter> FORMATTER_MAP = new ConcurrentHashMap<>();
 
-    private static boolean showLocal = false;
+    private static boolean showLocal;
+
+    private DateUtils() {
+        // Never Called
+    }
 
     private static DateTimeFormatter getFormatter(@NonNull String format) {
         if (!FORMATTER_MAP.containsKey(format))
@@ -78,10 +78,8 @@ public final class DateUtils {
 
     @NonNull
     public static String formatDateWithDefault(@NonNull String format, @NonNull String isoString, @NonNull String defaultString) {
-        String formatted = defaultString;
-
         try {
-            formatted = formatDate(format, isoString);
+            return formatDate(format, isoString);
         } catch (DateTimeParseException pe) {
             Timber.e(pe);
             Timber.e("Error parsing date %s with format %s and default string %s",
@@ -90,7 +88,7 @@ public final class DateUtils {
                 defaultString);
         }
 
-        return formatted;
+        return defaultString;
     }
 
     @NonNull

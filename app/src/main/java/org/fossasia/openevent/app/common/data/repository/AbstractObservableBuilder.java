@@ -17,7 +17,7 @@ import timber.log.Timber;
 
 final class AbstractObservableBuilder<T> {
 
-    private IUtilModel utilModel;
+    private final IUtilModel utilModel;
     private boolean reload;
     private Observable<T> diskObservable;
     private Observable<T> networkObservable;

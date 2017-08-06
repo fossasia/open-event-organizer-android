@@ -184,6 +184,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
                 break;
             default:
                 fragment = EventDashboardFragment.newInstance(eventId);
+                break;
         }
         fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }

@@ -33,12 +33,12 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.unit.presenter.Util.ERROR_OBSERVABLE;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
+@SuppressWarnings("PMD.TooManyMethods")
 public class EventDashboardPresenterTest {
 
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -51,9 +51,9 @@ public class EventDashboardPresenterTest {
     private static final int ID = 42;
     private EventDashboardPresenter eventDashboardPresenter;
 
-    private Event event = new Event(ID);
+    private static final Event EVENT = new Event(ID);
 
-    private List<Attendee> attendees = Arrays.asList(
+    private static final List<Attendee> ATTENDEES = Arrays.asList(
         new Attendee(false),
         new Attendee(true),
         new Attendee(false),
@@ -63,7 +63,7 @@ public class EventDashboardPresenterTest {
         new Attendee(false)
     );
 
-    private List<Ticket> tickets = Arrays.asList(
+    private static final List<Ticket> TICKETS = Arrays.asList(
         new Ticket(1, 21),
         new Ticket(2, 50),
         new Ticket(3, 43));
@@ -71,19 +71,19 @@ public class EventDashboardPresenterTest {
     @Before
     public void setUp() {
         // Event set up
-        event.setName("Event Name");
-        event.setStartsAt("2004-05-21T9:30:00");
-        event.setEndsAt("2012-09-20T12:23:00");
-        event.setTickets(tickets);
+        EVENT.setName("Event Name");
+        EVENT.setStartsAt("2004-05-21T9:30:00");
+        EVENT.setEndsAt("2012-09-20T12:23:00");
+        EVENT.setTickets(TICKETS);
 
         eventDashboardPresenter = new EventDashboardPresenter(eventRepository, attendeeRepository, ticketAnalyser, chartAnalyser);
 
-        eventDashboardPresenter.attach(event.getId(), eventDetailView);
+        eventDashboardPresenter.attach(EVENT.getId(), eventDetailView);
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
-        when(chartAnalyser.loadData(event.getId())).thenReturn(Completable.complete());
+        when(chartAnalyser.loadData(EVENT.getId())).thenReturn(Completable.complete());
     }
 
     @After
@@ -95,10 +95,10 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldLoadEventAndAttendeesAutomatically() {
         when(attendeeRepository.getAttendees(ID, false))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         when(eventRepository.getEvent(ID, false))
-            .thenReturn(Observable.just(event));
+            .thenReturn(Observable.just(EVENT));
 
         eventDashboardPresenter.start();
 
@@ -112,10 +112,7 @@ public class EventDashboardPresenterTest {
 
         eventDashboardPresenter.detach();
 
-        eventDashboardPresenter.start();
-        eventDashboardPresenter.loadDetails(true);
-
-        assertNull(eventDashboardPresenter.getView());
+        assertTrue(eventDashboardPresenter.getDisposable().isDisposed());
     }
 
     @Test
@@ -131,20 +128,20 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldLoadEventSuccessfully() {
         when(eventRepository.getEvent(ID, false))
-            .thenReturn(Observable.just(event));
+            .thenReturn(Observable.just(EVENT));
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(ERROR_OBSERVABLE);
 
         eventDashboardPresenter.loadDetails(false);
 
-        verify(eventDetailView).showResult(event);
-        verify(ticketAnalyser).analyseTotalTickets(event);
+        verify(eventDetailView).showResult(EVENT);
+        verify(ticketAnalyser).analyseTotalTickets(EVENT);
     }
 
     @Test
     public void shouldShowAttendeeError() {
         when(eventRepository.getEvent(ID, false))
-            .thenReturn(Observable.just(event));
+            .thenReturn(Observable.just(EVENT));
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(ERROR_OBSERVABLE);
 
@@ -156,31 +153,22 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldLoadAttendeesSuccessfully() {
         when(attendeeRepository.getAttendees(ID, false))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
         when(eventRepository.getEvent(ID, false))
-            .thenReturn(Observable.just(event));
+            .thenReturn(Observable.just(EVENT));
 
         eventDashboardPresenter.start();
 
-        verify(ticketAnalyser).analyseSoldTickets(event, attendees);
-    }
-
-    @Test
-    public void shouldNotAccessView() {
-        eventDashboardPresenter.detach();
-
-        eventDashboardPresenter.loadDetails(false);
-
-        verifyZeroInteractions(eventDetailView);
+        verify(ticketAnalyser).analyseSoldTickets(EVENT, ATTENDEES);
     }
 
     @Test
     public void shouldHideProgressbarCorrectly() {
         when(attendeeRepository.getAttendees(ID, false))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         when(eventRepository.getEvent(ID, false))
-            .thenReturn(Observable.just(event));
+            .thenReturn(Observable.just(EVENT));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -209,7 +197,7 @@ public class EventDashboardPresenterTest {
             .thenReturn(ERROR_OBSERVABLE);
 
         when(eventRepository.getEvent(ID, false))
-            .thenReturn(Observable.just(event));
+            .thenReturn(Observable.just(EVENT));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -235,10 +223,10 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldHideRefreshLayoutCorrectly() {
         when(attendeeRepository.getAttendees(ID, true))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         when(eventRepository.getEvent(ID, true))
-            .thenReturn(Observable.just(event));
+            .thenReturn(Observable.just(EVENT));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -269,7 +257,7 @@ public class EventDashboardPresenterTest {
             .thenReturn(ERROR_OBSERVABLE);
 
         when(eventRepository.getEvent(ID, true))
-            .thenReturn(Observable.just(event));
+            .thenReturn(Observable.just(EVENT));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 

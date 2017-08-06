@@ -17,8 +17,8 @@ import java.util.List;
 class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder>
     implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
 
-    private List<Event> events;
-    private IBus bus;
+    private final List<Event> events;
+    private final IBus bus;
 
     EventsListAdapter(List<Event> events, IBus bus) {
         this.events = events;

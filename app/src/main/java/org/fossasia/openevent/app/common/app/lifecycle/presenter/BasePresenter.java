@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.common.app.lifecycle.presenter;
 
 import android.support.annotation.CallSuper;
+import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.common.app.lifecycle.contract.presenter.IPresenter;
 
@@ -23,7 +24,6 @@ public abstract class BasePresenter<V> implements IPresenter<V> {
     @Override
     @CallSuper
     public void detach() {
-        view = null;
         compositeDisposable.dispose();
     }
 
@@ -31,7 +31,8 @@ public abstract class BasePresenter<V> implements IPresenter<V> {
         return view;
     }
 
-    protected CompositeDisposable getDisposable() {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    public CompositeDisposable getDisposable() {
         return compositeDisposable;
     }
 

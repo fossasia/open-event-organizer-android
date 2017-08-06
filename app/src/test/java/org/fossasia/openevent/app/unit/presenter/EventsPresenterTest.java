@@ -30,10 +30,9 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.unit.presenter.Util.ERROR_OBSERVABLE;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
@@ -46,15 +45,15 @@ public class EventsPresenterTest {
 
     private EventsPresenter eventsActivityPresenter;
 
-    private String date = DateUtils.formatDateToIso(LocalDateTime.now());
+    private static final String DATE = DateUtils.formatDateToIso(LocalDateTime.now());
 
-    private List<Event> eventList = Arrays.asList(
-        new Event(12, date, date),
-        new Event(13, date, date),
-        new Event(14, date, date)
+    private static final List<Event> EVENT_LIST = Arrays.asList(
+        new Event(12, DATE, DATE),
+        new Event(13, DATE, DATE),
+        new Event(14, DATE, DATE)
     );
 
-    private User organiser = new User();
+    private static final User ORGANISER = new User();
 
     @Before
     public void setUp() {
@@ -72,10 +71,10 @@ public class EventsPresenterTest {
     @Test
     public void shouldLoadEventsAndOrganiserAutomatically() {
         when(eventRepository.getOrganiser(false))
-            .thenReturn(Observable.just(organiser));
+            .thenReturn(Observable.just(ORGANISER));
 
         when(eventRepository.getEvents(false))
-            .thenReturn(Observable.fromIterable(eventList));
+            .thenReturn(Observable.fromIterable(EVENT_LIST));
 
         eventsActivityPresenter.start();
 
@@ -89,13 +88,13 @@ public class EventsPresenterTest {
 
         eventsActivityPresenter.detach();
 
-        assertNull(eventsActivityPresenter.getView());
+        assertTrue(eventsActivityPresenter.getDisposable().isDisposed());
     }
 
     @Test
     public void shouldLoadEventsSuccessfully() {
         when(eventRepository.getEvents(false))
-            .thenReturn(Observable.fromIterable(eventList));
+            .thenReturn(Observable.fromIterable(EVENT_LIST));
 
         InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
@@ -103,14 +102,14 @@ public class EventsPresenterTest {
 
         inOrder.verify(eventRepository).getEvents(false);
         inOrder.verify(eventListView).showProgress(true);
-        inOrder.verify(eventListView).showResults(eventList);
+        inOrder.verify(eventListView).showResults(EVENT_LIST);
         inOrder.verify(eventListView).showProgress(false);
     }
 
     @Test
     public void shouldRefreshEventsSuccessfully() {
         when(eventRepository.getEvents(true))
-            .thenReturn(Observable.fromIterable(eventList));
+            .thenReturn(Observable.fromIterable(EVENT_LIST));
 
         InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
@@ -118,7 +117,7 @@ public class EventsPresenterTest {
 
         inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showProgress(true);
-        inOrder.verify(eventListView).showResults(eventList);
+        inOrder.verify(eventListView).showResults(EVENT_LIST);
         inOrder.verify(eventListView).onRefreshComplete();
         inOrder.verify(eventListView).showProgress(false);
     }
@@ -155,14 +154,14 @@ public class EventsPresenterTest {
     @Test
     public void shouldNotShowEmptyViewOnSwipeRefreshSuccess() {
         when(eventRepository.getEvents(true))
-            .thenReturn(Observable.fromIterable(eventList));
+            .thenReturn(Observable.fromIterable(EVENT_LIST));
 
         InOrder inOrder = Mockito.inOrder(eventListView);
 
         eventsActivityPresenter.loadUserEvents(true);
 
         inOrder.verify(eventListView).showEmptyView(false);
-        inOrder.verify(eventListView).showResults(eventList);
+        inOrder.verify(eventListView).showResults(EVENT_LIST);
         inOrder.verify(eventListView).showEmptyView(false);
     }
 
@@ -200,10 +199,10 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldLoadOrganiserSuccessfully() {
-        organiser.setFirstName("John");
-        organiser.setLastName("Wick");
+        ORGANISER.setFirstName("John");
+        ORGANISER.setLastName("Wick");
 
-        when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(organiser));
+        when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(ORGANISER));
 
         InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
 
@@ -215,11 +214,11 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldSetSentryContext() {
-        when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(organiser));
+        when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(ORGANISER));
 
         eventsActivityPresenter.loadOrganiser(false);
 
-        verify(contextManager).setOrganiser(organiser);
+        verify(contextManager).setOrganiser(ORGANISER);
     }
 
     @Test
@@ -237,13 +236,9 @@ public class EventsPresenterTest {
     }
 
     @Test
-    public void shouldNotAccessView() {
+    public void shouldDisposeOnDetach() {
         eventsActivityPresenter.detach();
-
-        eventsActivityPresenter.loadUserEvents(false);
-        eventsActivityPresenter.loadOrganiser(false);
-
-        verifyNoMoreInteractions(eventListView);
+        assertTrue(eventsActivityPresenter.getDisposable().isDisposed());
     }
 
 }

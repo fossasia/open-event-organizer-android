@@ -12,7 +12,7 @@ import io.reactivex.Single;
  * No Android specific code should be added
  *
  * All static Android specific utility go into
- * ViewUtils and others to AndroidUtilModel
+ * ui/ViewUtils and others to data/UtilModel
  */
 public final class Utils {
 
@@ -33,6 +33,7 @@ public final class Utils {
         return isEmpty(string) ? "" : string;
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly
     public static String formatOptionalString(String format, String... args) {
         String[] newArgs = new String[args.length];
 

@@ -6,6 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class SearchUtilsTest {
 
     @Test

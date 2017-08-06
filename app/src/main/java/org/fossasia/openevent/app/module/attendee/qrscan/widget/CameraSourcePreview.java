@@ -17,11 +17,12 @@ import java.io.IOException;
 
 import timber.log.Timber;
 
+@SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DU Anomaly
 public class CameraSourcePreview extends ViewGroup {
     private static final String TAG = "CameraSourcePreview";
 
-    private Context context;
-    private SurfaceView surfaceView;
+    private final Context context;
+    private final SurfaceView surfaceView;
     private boolean startRequested;
     private boolean isSurfaceAvailable;
     private CameraSource cameraSource;
@@ -68,7 +69,6 @@ public class CameraSourcePreview extends ViewGroup {
     public void release() {
         if (cameraSource != null) {
             cameraSource.release();
-            cameraSource = null;
         }
     }
 
@@ -100,9 +100,9 @@ public class CameraSourcePreview extends ViewGroup {
             try {
                 startIfReady();
             } catch (SecurityException se) {
-                Timber.e("Do not have permission to start the camera", se);
+                Timber.e(se, "Do not have permission to start the camera");
             } catch (IOException e) {
-                Timber.e("Could not start camera source.", e);
+                Timber.e(e, "Could not start camera source.");
             }
         }
 
@@ -173,7 +173,7 @@ public class CameraSourcePreview extends ViewGroup {
         } catch (IOException e) {
             Log.e(TAG, "Could not start camera source.", e);
         } catch (SecurityException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
 
     }

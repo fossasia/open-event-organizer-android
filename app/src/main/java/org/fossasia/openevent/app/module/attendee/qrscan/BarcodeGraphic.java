@@ -16,13 +16,13 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
 
     private int id;
 
-    private Paint rectPaint;
+    private final Paint rectPaint;
     private volatile Barcode barcode;
 
-    private Bitmap frameTopLeft;
-    private Bitmap frameTopRight;
-    private Bitmap frameBottomRight;
-    private Bitmap frameBottomLeft;
+    private final Bitmap frameTopLeft;
+    private final Bitmap frameTopRight;
+    private final Bitmap frameBottomRight;
+    private final Bitmap frameBottomLeft;
 
     BarcodeGraphic(GraphicOverlay overlay) {
         super(overlay);

@@ -17,7 +17,7 @@ import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.result;
 
 public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttendeeCheckInView> implements IAttendeeCheckInPresenter {
 
-    private IAttendeeRepository attendeeRepository;
+    private final IAttendeeRepository attendeeRepository;
 
     private Attendee attendee;
 

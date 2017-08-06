@@ -27,10 +27,7 @@ public final class ViewUtils {
     }
 
     public static void showView(View view, int mode, boolean show) {
-        if (show)
-            mode = View.VISIBLE;
-
-        view.setVisibility(mode);
+        view.setVisibility(show ? View.VISIBLE : mode);
     }
 
     public static void showView(View view, boolean show) {
@@ -72,16 +69,16 @@ public final class ViewUtils {
 
     public static void setTitle(AppCompatActivity activity, String title) {
         ActionBar actionBar = activity.getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setTitle(title);
-        else
+        if (actionBar == null)
             Timber.e("No ActionBar found in Activity %s", activity);
+        else
+            actionBar.setTitle(title);
     }
 
     public static void setTitle(Fragment fragment, String title) {
         Activity activity = fragment.getActivity();
 
-        if (activity != null && activity instanceof AppCompatActivity) {
+        if (activity instanceof AppCompatActivity) {
             setTitle((AppCompatActivity) activity, title);
         } else {
             Timber.e("Fragment %s is not attached to any Activity", fragment);

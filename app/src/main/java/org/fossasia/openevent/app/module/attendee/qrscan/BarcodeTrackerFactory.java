@@ -14,8 +14,8 @@ import io.reactivex.subjects.PublishSubject;
  * multi-processor uses this factory to create barcode trackers as needed -- one for each barcode.
  */
 public class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
-    private GraphicOverlay<BarcodeGraphic> graphicOverlay;
-    private PublishSubject<Notification<Barcode>> barcodeEmitter;
+    private final GraphicOverlay<BarcodeGraphic> graphicOverlay;
+    private final PublishSubject<Notification<Barcode>> barcodeEmitter;
 
     public BarcodeTrackerFactory(GraphicOverlay<BarcodeGraphic> barcodeGraphicOverlay, PublishSubject<Notification<Barcode>> barcodeEmitter) {
         this.graphicOverlay = barcodeGraphicOverlay;

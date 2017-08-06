@@ -6,15 +6,16 @@ import org.threeten.bp.ZonedDateTime;
 
 import java.text.ParseException;
 
+@SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Bug in PMD related to DU anomaly
 public final class DateService {
-
-    private DateService() {
-        // Never Called
-    }
 
     private static final String LIVE_EVENT = "LIVE";
     private static final String PAST_EVENT = "PAST";
     private static final String UPCOMING_EVENT = "UPCOMING";
+
+    private DateService() {
+        // Never Called
+    }
 
     /**
      * Compare events for sorting

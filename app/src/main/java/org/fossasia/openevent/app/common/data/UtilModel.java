@@ -67,11 +67,11 @@ public class UtilModel implements IUtilModel {
     public boolean isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) OrgaProvider.context
             .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = null;
         if (connectivityManager != null) {
-            info = connectivityManager.getActiveNetworkInfo();
+            NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+            return info != null && info.isConnected();
         }
-        return (info != null && info.isConnected());
+        return false;
     }
 
     @Override

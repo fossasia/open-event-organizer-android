@@ -8,22 +8,25 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class UtilsTest {
 
     @Test
     public void testIsEmpty() {
         String nullString = null;
 
-        assertEquals(Utils.isEmpty(nullString), true);
+        assertTrue(Utils.isEmpty(nullString));
 
         String emptyString = "";
 
-        assertEquals(Utils.isEmpty(emptyString), true);
+        assertTrue(Utils.isEmpty(emptyString));
 
         String nonEmptyString = "Full";
 
-        assertEquals(Utils.isEmpty(nonEmptyString), false);
+        assertFalse(Utils.isEmpty(nonEmptyString));
     }
 
     @Test

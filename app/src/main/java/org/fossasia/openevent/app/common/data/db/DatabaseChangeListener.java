@@ -16,10 +16,10 @@ import lombok.Data;
 
 public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
 
-    private PublishSubject<ModelChange<T>> publishSubject = PublishSubject.create();
-    private DirectModelNotifier.ModelChangedListener<T> modelModelChangedListener;
+    private final PublishSubject<ModelChange<T>> publishSubject = PublishSubject.create();
+    private final Class<T> classType;
 
-    private Class<T> classType;
+    private DirectModelNotifier.ModelChangedListener<T> modelModelChangedListener;
 
     public DatabaseChangeListener(Class<T> modelClass) {
         classType = modelClass;
@@ -57,8 +57,8 @@ public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
 
     @Data
     public static class ModelChange<T> {
-        private T model;
-        private BaseModel.Action action;
+        private final T model;
+        private final BaseModel.Action action;
 
         public ModelChange(T model, BaseModel.Action action) {
             this.model = model;

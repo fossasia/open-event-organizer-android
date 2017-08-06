@@ -4,11 +4,11 @@ import org.fossasia.openevent.app.common.app.rx.Logger;
 
 import io.reactivex.Observable;
 
-public final class Util {
+final class Util {
+
+    static final Observable ERROR_OBSERVABLE = Observable.error(Logger.TEST_ERROR);
 
     private Util() {
         // Never Called
     }
-
-    public static final Observable ERROR_OBSERVABLE = Observable.error(Logger.TEST_ERROR);
 }

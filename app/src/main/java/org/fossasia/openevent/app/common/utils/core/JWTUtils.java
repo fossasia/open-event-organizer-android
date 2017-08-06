@@ -7,6 +7,9 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+import timber.log.Timber;
+
+@SuppressWarnings("PMD.UseUtilityClass") // This class is already Utility class
 public final class JWTUtils {
 
     private JWTUtils() {
@@ -37,15 +40,11 @@ public final class JWTUtils {
     }
 
     public static boolean isExpired(String token) {
-        long expiry;
-
         try {
-            expiry = getExpiry(token);
+            return System.currentTimeMillis() / 1000 >= getExpiry(token);
         } catch (JSONException jse) {
             return true;
         }
-
-        return System.currentTimeMillis() / 1000 >= expiry;
     }
 
     private static String getJson(String strEncoded) {
@@ -53,7 +52,7 @@ public final class JWTUtils {
         try {
             return new String(decodedBytes, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Timber.e(e);
             return "";
         }
     }
@@ -61,6 +60,7 @@ public final class JWTUtils {
     /**
      * Base64 class because we can't test Android class and this is faster
      */
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private static class Base64Utils {
 
         private static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();

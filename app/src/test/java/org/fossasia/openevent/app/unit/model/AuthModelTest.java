@@ -34,28 +34,20 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class AuthModelTest {
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private AuthModel authModel;
+    @Mock private IUtilModel utilModel;
+    @Mock private ISharedPreferenceModel sharedPreferenceModel;
+    @Mock private EventService eventService;
+    @Mock private IDatabaseRepository databaseRepository;
 
-    @Mock
-    private IUtilModel utilModel;
-
-    @Mock
-    private ISharedPreferenceModel sharedPreferenceModel;
-
-    @Mock
-    private EventService eventService;
-
-    @Mock
-    private IDatabaseRepository databaseRepository;
-
-    private String token = "TestToken";
-    private String email = "test";
-    private String password = "test";
-    private Login login = new Login(email, password);
+    private static final String TOKEN = "TestToken";
+    private static final String EMAIL = "test";
+    private static final String PASSWORD = "test";
+    private static final Login LOGIN = new Login(EMAIL, PASSWORD);
 
     private static final String EXPIRED_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
         ".eyJuYmYiOjE0OTU3NDU0MDAsImlhdCI6MTQ5NTc0NTQwMCwiZXhwIjoxNDk1NzQ1ODAwLCJpZGVudGl0eSI6MzQ0fQ" +
@@ -84,7 +76,7 @@ public class AuthModelTest {
 
         doReturn(true).when(spied).isLoggedIn();
 
-        spied.login(login).test();
+        spied.login(LOGIN).test();
 
         verifyNoMoreInteractions(eventService);
     }
@@ -95,9 +87,9 @@ public class AuthModelTest {
         when(utilModel.getToken()).thenReturn(null);
         when(databaseRepository.getAllItems(User.class)).thenReturn(Observable.empty());
         when(eventService.login(Mockito.any(Login.class)))
-            .thenReturn(Observable.just(new LoginResponse(token)));
+            .thenReturn(Observable.just(new LoginResponse(TOKEN)));
 
-        authModel.login(login).test();
+        authModel.login(LOGIN).test();
 
         verify(eventService).login(Mockito.any(Login.class));
     }
@@ -106,13 +98,13 @@ public class AuthModelTest {
     public void shouldSaveTokenOnLoginResponse() {
         when(utilModel.isConnected()).thenReturn(true);
         when(eventService.login(Mockito.any(Login.class)))
-            .thenReturn(Observable.just(new LoginResponse(token)));
+            .thenReturn(Observable.just(new LoginResponse(TOKEN)));
 
-        authModel.login(login).test();
+        authModel.login(LOGIN).test();
 
         verify(eventService).login(Mockito.any(Login.class));
-        // Should save token on object return
-        verify(utilModel).saveToken(token);
+        // Should save TOKEN on object return
+        verify(utilModel).saveToken(TOKEN);
     }
 
     @Test
@@ -121,10 +113,10 @@ public class AuthModelTest {
         when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.error(new Throwable("Error")));
 
-        authModel.login(login).test().assertErrorMessage("Error");
+        authModel.login(LOGIN).test().assertErrorMessage("Error");
 
         verify(eventService).login(Mockito.any(Login.class));
-        // Should not save token on object return
+        // Should not save TOKEN on object return
         verify(utilModel, Mockito.never()).saveToken(anyString());
     }
 
@@ -132,7 +124,7 @@ public class AuthModelTest {
     public void shouldSendErrorOnNetworkDown() {
         when(utilModel.isConnected()).thenReturn(false);
 
-        authModel.login(login).test().assertErrorMessage(Constants.NO_NETWORK);
+        authModel.login(LOGIN).test().assertErrorMessage(Constants.NO_NETWORK);
 
         verifyNoMoreInteractions(eventService);
     }
@@ -152,11 +144,11 @@ public class AuthModelTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(databaseRepository.getAllItems(User.class)).thenReturn(Observable.empty());
         when(eventService.login(Mockito.any(Login.class)))
-            .thenReturn(Observable.just(new LoginResponse(token)));
+            .thenReturn(Observable.just(new LoginResponse(TOKEN)));
 
-        authModel.login(login).test();
+        authModel.login(LOGIN).test();
 
-        verify(utilModel).saveToken(token);
+        verify(utilModel).saveToken(TOKEN);
     }
 
     @Test
@@ -181,7 +173,7 @@ public class AuthModelTest {
         when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.empty());
 
-        authModel.login(login).test();
+        authModel.login(LOGIN).test();
 
         verify(eventService).login(Mockito.any(Login.class));
         verify(utilModel, Mockito.never()).deleteDatabase();
@@ -192,7 +184,7 @@ public class AuthModelTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(null);
         when(databaseRepository.getAllItems(User.class))
-            .thenReturn(Observable.just(User.builder().email(email).id(354).build()));
+            .thenReturn(Observable.just(User.builder().email(EMAIL).id(354).build()));
         when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.just(new LoginResponse(
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
@@ -200,7 +192,7 @@ public class AuthModelTest {
                     ".NlZ9mrmEPyGpzQ-aIqauhwliYLh9GMiz11sG-EUaQ6I"
             )));
 
-        authModel.login(login).test();
+        authModel.login(LOGIN).test();
 
         verify(eventService).login(Mockito.any(Login.class));
         verify(utilModel).deleteDatabase();
@@ -211,7 +203,7 @@ public class AuthModelTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(EXPIRED_TOKEN);
         when(databaseRepository.getAllItems(User.class))
-            .thenReturn(Observable.just(User.builder().id(344).email(email).build()));
+            .thenReturn(Observable.just(User.builder().id(344).email(EMAIL).build()));
         when(eventService.login(Mockito.any(Login.class)))
             .thenReturn(Observable.just(new LoginResponse(
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
@@ -219,8 +211,8 @@ public class AuthModelTest {
                     ".NlZ9mrmEPyGpzQ-aIqauhwliYLh9GMiz11sG-EUaQ6I"
             )));
 
-        authModel.login(new Login(email + "new", password)).test();
+        authModel.login(new Login(EMAIL + "new", PASSWORD)).test();
 
-        verify(sharedPreferenceModel).addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, email + "new");
+        verify(sharedPreferenceModel).addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, EMAIL + "new");
     }
 }

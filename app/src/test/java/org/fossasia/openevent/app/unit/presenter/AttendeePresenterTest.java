@@ -33,13 +33,14 @@ import io.reactivex.subjects.PublishSubject;
 
 import static org.fossasia.openevent.app.unit.presenter.Util.ERROR_OBSERVABLE;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
+@SuppressWarnings("PMD.TooManyMethods")
 public class AttendeePresenterTest {
 
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -50,7 +51,7 @@ public class AttendeePresenterTest {
     private static final long ID = 42;
     private AttendeesPresenter attendeesPresenter;
 
-    private List<Attendee> attendees = Arrays.asList(
+    private static final List<Attendee> ATTENDEES = Arrays.asList(
         new Attendee(12),
         new Attendee(34),
         new Attendee(56),
@@ -79,7 +80,7 @@ public class AttendeePresenterTest {
     @Test
     public void shouldLoadAttendeesAutomatically() {
         when(attendeeRepository.getAttendees(ID, false))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
         when(changeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         attendeesPresenter.start();
@@ -90,7 +91,7 @@ public class AttendeePresenterTest {
     @Test
     public void shouldDetachViewOnStop() {
         when(attendeeRepository.getAttendees(ID, false))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
         when(changeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         attendeesPresenter.start();
@@ -99,7 +100,7 @@ public class AttendeePresenterTest {
 
         attendeesPresenter.detach();
 
-        assertNull(attendeesPresenter.getView());
+        assertTrue(attendeesPresenter.getDisposable().isDisposed());
     }
 
     @Test
@@ -121,13 +122,13 @@ public class AttendeePresenterTest {
     @Test
     public void shouldLoadAttendeesSuccessfully() {
         when(attendeeRepository.getAttendees(ID, false))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         InOrder inOrder = Mockito.inOrder(attendeeRepository, attendeesView);
 
         attendeesPresenter.loadAttendees(false);
 
-        // TODO: Fix flaky test for attendees
+        // TODO: Fix flaky test for ATTENDEES
 
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(ID, false);
@@ -140,13 +141,13 @@ public class AttendeePresenterTest {
     @Test
     public void shouldRefreshAttendeesSuccessfully() {
         when(attendeeRepository.getAttendees(ID, true))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         InOrder inOrder = Mockito.inOrder(attendeeRepository, attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
-        // TODO: Fix flaky test for attendees
+        // TODO: Fix flaky test for ATTENDEES
 
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(ID, true);
@@ -217,7 +218,7 @@ public class AttendeePresenterTest {
 
     @Test
     public void shouldNotShowEmptyViewIfNonEmptyAttendeeListOnSwipeRefreshError() {
-        attendeesPresenter.setAttendeeList(attendees);
+        attendeesPresenter.setAttendeeList(ATTENDEES);
 
         when(attendeeRepository.getAttendees(ID, true))
             .thenReturn(ERROR_OBSERVABLE);
@@ -233,7 +234,7 @@ public class AttendeePresenterTest {
 
     @Test
     public void shouldShowScanButtonIfNonEmptyAttendeeListOnSwipeRefreshError() {
-        attendeesPresenter.setAttendeeList(attendees);
+        attendeesPresenter.setAttendeeList(ATTENDEES);
 
         when(attendeeRepository.getAttendees(ID, true))
             .thenReturn(Observable.error(Logger.TEST_ERROR));
@@ -250,13 +251,13 @@ public class AttendeePresenterTest {
     @Test
     public void shouldNotShowEmptyViewOnSwipeRefreshSuccess() {
         when(attendeeRepository.getAttendees(ID, true))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         InOrder inOrder = Mockito.inOrder(attendeesView);
 
         attendeesPresenter.loadAttendees(true);
 
-        // TODO: Fix flaky test for attendees
+        // TODO: Fix flaky test for ATTENDEES
 
         inOrder.verify(attendeesView).showEmptyView(false);
         inOrder.verify(attendeesView).showResults(any());
@@ -266,7 +267,7 @@ public class AttendeePresenterTest {
     @Test
     public void shouldShowScanButtonOnSwipeRefreshSuccess() {
         when(attendeeRepository.getAttendees(ID, true))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         InOrder inOrder = Mockito.inOrder(attendeesView);
 
@@ -298,21 +299,13 @@ public class AttendeePresenterTest {
     public void shouldToggleAttendeesSuccessfully() {
         PublishSubject<DatabaseChangeListener.ModelChange<Attendee>> publishSubject = PublishSubject.create();
 
-        when(attendeeRepository.getAttendees(ID, false)).thenReturn(Observable.fromIterable(attendees));
+        when(attendeeRepository.getAttendees(ID, false)).thenReturn(Observable.fromIterable(ATTENDEES));
         when(changeListener.getNotifier()).thenReturn(publishSubject);
 
         attendeesPresenter.start();
-        publishSubject.onNext(new DatabaseChangeListener.ModelChange<>(attendees.get(2), BaseModel.Action.UPDATE));
+        publishSubject.onNext(new DatabaseChangeListener.ModelChange<>(ATTENDEES.get(2), BaseModel.Action.UPDATE));
 
-        Mockito.verify(attendeesView).updateAttendee(attendees.get(2));
+        verify(attendeesView).updateAttendee(ATTENDEES.get(2));
     }
 
-    @Test
-    public void shouldNotAccessView() {
-        attendeesPresenter.detach();
-
-        attendeesPresenter.loadAttendees(false);
-
-        Mockito.verifyZeroInteractions(attendeesView);
-    }
 }
