@@ -157,7 +157,9 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    Retrofit providesRetrofit(CallAdapter.Factory callAdapterFactory, @Named("jsonapi") Converter.Factory jsonApiConverter, @Named("jackson") Converter.Factory factory, OkHttpClient client) {
+    Retrofit providesRetrofitBuilder(CallAdapter.Factory callAdapterFactory,
+                                     @Named("jsonapi") Converter.Factory jsonApiConverter,
+                                     @Named("jackson") Converter.Factory factory, OkHttpClient client) {
         return new Retrofit.Builder()
             .addCallAdapterFactory(callAdapterFactory)
             .addConverterFactory(jsonApiConverter)

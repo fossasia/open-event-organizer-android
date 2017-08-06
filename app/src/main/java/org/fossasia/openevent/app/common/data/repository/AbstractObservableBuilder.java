@@ -23,7 +23,7 @@ final class AbstractObservableBuilder<T> {
     private Observable<T> networkObservable;
 
     @Inject
-    public AbstractObservableBuilder(IUtilModel utilModel) {
+    AbstractObservableBuilder(IUtilModel utilModel) {
         this.utilModel = utilModel;
     }
 

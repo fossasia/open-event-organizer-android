@@ -30,7 +30,8 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
     private final ContextManager contextManager;
 
     @Inject
-    public MainPresenter(ISharedPreferenceModel sharedPreferenceModel, IAuthModel loginModel, IEventRepository eventRepository, IBus bus, ContextManager contextManager) {
+    public MainPresenter(ISharedPreferenceModel sharedPreferenceModel, IAuthModel loginModel,
+                         IEventRepository eventRepository, IBus bus, ContextManager contextManager) {
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.loginModel = loginModel;
         this.eventRepository = eventRepository;

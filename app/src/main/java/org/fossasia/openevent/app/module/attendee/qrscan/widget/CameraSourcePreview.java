@@ -15,6 +15,8 @@ import com.google.android.gms.vision.CameraSource;
 
 import java.io.IOException;
 
+import timber.log.Timber;
+
 public class CameraSourcePreview extends ViewGroup {
     private static final String TAG = "CameraSourcePreview";
 
@@ -98,9 +100,9 @@ public class CameraSourcePreview extends ViewGroup {
             try {
                 startIfReady();
             } catch (SecurityException se) {
-                Log.e(TAG,"Do not have permission to start the camera", se);
+                Timber.e("Do not have permission to start the camera", se);
             } catch (IOException e) {
-                Log.e(TAG, "Could not start camera source.", e);
+                Timber.e("Could not start camera source.", e);
             }
         }
 

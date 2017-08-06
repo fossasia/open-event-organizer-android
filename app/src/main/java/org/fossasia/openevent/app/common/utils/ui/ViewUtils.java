@@ -27,7 +27,7 @@ public final class ViewUtils {
     }
 
     public static void showView(View view, int mode, boolean show) {
-        if(show)
+        if (show)
             mode = View.VISIBLE;
 
         view.setVisibility(mode);
@@ -52,7 +52,7 @@ public final class ViewUtils {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
                     fab.hide();
-                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE){
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
                     fab.show();
                 }
             }

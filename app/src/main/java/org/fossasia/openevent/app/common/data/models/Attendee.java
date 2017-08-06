@@ -74,7 +74,7 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;
 
-    public Attendee() {}
+    public Attendee() { }
 
     public Attendee(boolean checkedIn) {
         setCheckedIn(checkedIn);

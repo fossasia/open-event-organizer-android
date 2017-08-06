@@ -93,7 +93,7 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
     @NonNull
     @Override
     public Observable<Attendee> toggleAttendeeCheckStatus(long eventId, long attendeeId) {
-        if(!utilModel.isConnected()) {
+        if (!utilModel.isConnected()) {
             return Observable.error(new Throwable(Constants.NO_NETWORK));
         }
 

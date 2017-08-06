@@ -12,7 +12,7 @@ public class Bus implements IBus {
     private static PublishSubject<Event> eventPublisher = PublishSubject.create();
 
     @Inject
-    public Bus() {}
+    Bus() { }
 
     @Override
     public void pushSelectedEvent(Event event) {

@@ -34,7 +34,8 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
     private final ChartAnalyser chartAnalyser;
 
     @Inject
-    public EventDashboardPresenter(IEventRepository eventRepository, IAttendeeRepository attendeeRepository, TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser) {
+    public EventDashboardPresenter(IEventRepository eventRepository, IAttendeeRepository attendeeRepository,
+                                   TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser) {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
         this.attendeeRepository = attendeeRepository;

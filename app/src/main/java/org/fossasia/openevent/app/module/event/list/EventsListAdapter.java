@@ -14,7 +14,8 @@ import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
 
 import java.util.List;
 
-class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder> implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
+class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder>
+    implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
 
     private List<Event> events;
     private IBus bus;
@@ -45,7 +46,8 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
     @Override
     public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup viewGroup) {
-        return new HeaderViewHolder(HeaderLayoutBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
+        return new HeaderViewHolder(HeaderLayoutBinding.inflate(
+            LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
     }
 
     @Override
@@ -59,7 +61,7 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     }
 
     //view holder class
-    class EventRecyclerViewHolder extends RecyclerView.ViewHolder{
+    class EventRecyclerViewHolder extends RecyclerView.ViewHolder {
         private final EventLayoutBinding binding;
         private Event event;
 

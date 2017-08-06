@@ -57,7 +57,7 @@ public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView
 
     @Override
     public void loadAttendees(boolean forceReload) {
-        if(getView() == null)
+        if (getView() == null)
             return;
 
         getView().showScanButton(false);

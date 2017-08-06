@@ -49,7 +49,7 @@ public class User {
     public String twitterUrl;
     public String googlePlusUrl;
 
-    public User() {}
+    public User() { }
 
     public User(String email) {
         this.email = email;

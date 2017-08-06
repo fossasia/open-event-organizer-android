@@ -39,7 +39,7 @@ public class TicketRepository extends Repository implements ITicketRepository {
     @NonNull
     @Override
     public Observable<Ticket> createTicket(Ticket ticket) {
-        if(!utilModel.isConnected()) {
+        if (!utilModel.isConnected()) {
             return Observable.error(new Throwable(Constants.NO_NETWORK));
         }
 
@@ -99,7 +99,7 @@ public class TicketRepository extends Repository implements ITicketRepository {
     @NonNull
     @Override
     public Completable deleteTicket(long id) {
-        if(!utilModel.isConnected()) {
+        if (!utilModel.isConnected()) {
             return Completable.error(new Throwable(Constants.NO_NETWORK));
         }
 

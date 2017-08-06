@@ -77,8 +77,8 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
         rect.right = translateX(rect.right);
         rect.bottom = translateY(rect.bottom);
 
-        int width = (int) ((rect.right - rect.left)/3);
-        int height = (int) ((rect.top - rect.bottom)/3);
+        int width = (int) ((rect.right - rect.left) / 3);
+        int height = (int) ((rect.top - rect.bottom) / 3);
 
         canvas.drawBitmap(Bitmap.createScaledBitmap(frameBottomLeft, width, height, false), rect.left, rect.top, null);
         canvas.drawBitmap(Bitmap.createScaledBitmap(frameBottomRight, width, height, false), rect.right - width, rect.top, null);

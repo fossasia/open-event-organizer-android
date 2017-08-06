@@ -11,7 +11,7 @@ public class BackPressHandler {
     private long backPressed;
 
     @Inject
-    public BackPressHandler() {}
+    public BackPressHandler() { }
 
     public void onBackPressed(Activity activity, Runnable action) {
         if (backPressed + BACK_PRESS_RESET_TIME > System.currentTimeMillis()) {

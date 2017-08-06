@@ -6,4 +6,4 @@ import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Progressive
 import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Successful;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 
-public interface IAttendeeCheckInView extends Progressive, Successful, Erroneous, ItemResult<Attendee> {}
+public interface IAttendeeCheckInView extends Progressive, Successful, Erroneous, ItemResult<Attendee> { }

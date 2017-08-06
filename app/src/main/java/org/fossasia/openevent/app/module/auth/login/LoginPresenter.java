@@ -36,16 +36,16 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
 
     @Override
     public void start() {
-        if(getView() == null)
+        if (getView() == null)
             return;
 
-        if(loginModel.isLoggedIn()) {
+        if (loginModel.isLoggedIn()) {
             getView().onSuccess("Successfully logged in");
             return;
         }
 
         Set<String> emailList = getEmailList();
-        if(emailList != null)
+        if (emailList != null)
             getView().attachEmails(emailList);
     }
 
