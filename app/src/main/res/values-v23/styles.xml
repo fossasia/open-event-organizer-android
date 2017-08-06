@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme.NoActionBar.Translucent" parent="AppTheme.NoActionBar">
+    <style name="AppTheme.Main.Light" parent="AppTheme.Main">
+        <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>

@@ -19,7 +19,7 @@
             android:exported="false"/>
         <activity
             android:name=".module.auth.AuthActivity"
-            android:theme="@style/AppTheme.NoActionBar.Translucent"
+            android:theme="@style/AppTheme.Main.Light"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,14 +29,14 @@
         </activity>
         <activity
             android:name=".module.attendee.qrscan.ScanQRActivity"
-            android:theme="@style/AppTheme.NoActionBar.Translucent" />
+            android:theme="@style/AppTheme.Main" />
         <activity
             android:name=".module.main.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar.Translucent"/>
+            android:theme="@style/AppTheme.Main.Light"/>
         <activity
             android:name=".module.event.chart.ChartActivity"
-            android:theme="@style/AppTheme.NoActionBar.Translucent"/>
+            android:theme="@style/AppTheme.Main.Light"/>
     </application>
 
 </manifest>
