@@ -1,13 +1,13 @@
 package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.app.rx.Logger;
-import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
-import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.Ticket;
-import org.fossasia.openevent.app.module.event.dashboard.analyser.ChartAnalyser;
+import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
+import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardPresenter;
+import org.fossasia.openevent.app.module.event.dashboard.analyser.ChartAnalyser;
 import org.fossasia.openevent.app.module.event.dashboard.analyser.TicketAnalyser;
 import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardView;
 import org.junit.After;
@@ -41,28 +41,17 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class EventDashboardPresenterTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock private IEventDashboardView eventDetailView;
+    @Mock private IEventRepository eventRepository;
+    @Mock private TicketAnalyser ticketAnalyser;
+    @Mock private IAttendeeRepository attendeeRepository;
+    @Mock private ChartAnalyser chartAnalyser;
 
-    @Mock
-    IEventDashboardView eventDetailView;
-
-    @Mock
-    IEventRepository eventRepository;
-
-    @Mock
-    TicketAnalyser ticketAnalyser;
-
-    @Mock
-    IAttendeeRepository attendeeRepository;
-
-    @Mock
-    ChartAnalyser chartAnalyser;
-
-    private final int id = 42;
+    private static final int ID = 42;
     private EventDashboardPresenter eventDashboardPresenter;
 
-    private Event event = new Event(id);
+    private Event event = new Event(ID);
 
     private List<Attendee> attendees = Arrays.asList(
         new Attendee(false),
@@ -105,16 +94,16 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldLoadEventAndAttendeesAutomatically() {
-        when(attendeeRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(attendees));
 
-        when(eventRepository.getEvent(id, false))
+        when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(event));
 
         eventDashboardPresenter.start();
 
-        verify(eventRepository).getEvent(id, false);
-        verify(attendeeRepository).getAttendees(id, false);
+        verify(eventRepository).getEvent(ID, false);
+        verify(attendeeRepository).getAttendees(ID, false);
     }
 
     @Test
@@ -131,7 +120,7 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldShowEventError() {
-        when(eventRepository.getEvent(id, false))
+        when(eventRepository.getEvent(ID, false))
             .thenReturn(ERROR_OBSERVABLE);
 
         eventDashboardPresenter.loadDetails(false);
@@ -141,9 +130,9 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldLoadEventSuccessfully() {
-        when(eventRepository.getEvent(id, false))
+        when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(event));
-        when(attendeeRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(ERROR_OBSERVABLE);
 
         eventDashboardPresenter.loadDetails(false);
@@ -154,9 +143,9 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldShowAttendeeError() {
-        when(eventRepository.getEvent(id, false))
+        when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(event));
-        when(attendeeRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(ERROR_OBSERVABLE);
 
         eventDashboardPresenter.loadDetails(false);
@@ -166,9 +155,9 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldLoadAttendeesSuccessfully() {
-        when(attendeeRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(attendees));
-        when(eventRepository.getEvent(id, false))
+        when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(event));
 
         eventDashboardPresenter.start();
@@ -187,10 +176,10 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideProgressbarCorrectly() {
-        when(attendeeRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(attendees));
 
-        when(eventRepository.getEvent(id, false))
+        when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(event));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
@@ -203,7 +192,7 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideProgressbarOnEventError() {
-        when(eventRepository.getEvent(id, false))
+        when(eventRepository.getEvent(ID, false))
             .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
@@ -216,10 +205,10 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideProgressbarOnAttendeeError() {
-        when(attendeeRepository.getAttendees(id, false))
+        when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(ERROR_OBSERVABLE);
 
-        when(eventRepository.getEvent(id, false))
+        when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(event));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
@@ -232,7 +221,7 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideProgressbarOnCompleteError() {
-        when(eventRepository.getEvent(id, false))
+        when(eventRepository.getEvent(ID, false))
             .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
@@ -245,10 +234,10 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideRefreshLayoutCorrectly() {
-        when(attendeeRepository.getAttendees(id, true))
+        when(attendeeRepository.getAttendees(ID, true))
             .thenReturn(Observable.fromIterable(attendees));
 
-        when(eventRepository.getEvent(id, true))
+        when(eventRepository.getEvent(ID, true))
             .thenReturn(Observable.just(event));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
@@ -262,7 +251,7 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideRefreshLayoutOnEventError() {
-        when(eventRepository.getEvent(id, true))
+        when(eventRepository.getEvent(ID, true))
             .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
@@ -276,10 +265,10 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideRefreshLayoutOnAttendeeError() {
-        when(attendeeRepository.getAttendees(id, true))
+        when(attendeeRepository.getAttendees(ID, true))
             .thenReturn(ERROR_OBSERVABLE);
 
-        when(eventRepository.getEvent(id, true))
+        when(eventRepository.getEvent(ID, true))
             .thenReturn(Observable.just(event));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
@@ -293,7 +282,7 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideRefreshLayoutOnCompleteError() {
-        when(eventRepository.getEvent(id, true))
+        when(eventRepository.getEvent(ID, true))
             .thenReturn(ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);

@@ -12,11 +12,8 @@ import org.mockito.junit.MockitoRule;
 
 public class ViewUtilsTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    View view;
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock private View view;
 
     @Test
     public void shouldShowView() {

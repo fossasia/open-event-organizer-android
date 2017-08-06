@@ -40,14 +40,9 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class ScanQRPresenterTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    IScanQRView scanQRView;
-
-    @Mock
-    IAttendeeRepository attendeeRepository;
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock private IScanQRView scanQRView;
+    @Mock private IAttendeeRepository attendeeRepository;
 
     private long eventId = 32;
     private ScanQRPresenter scanQRPresenter;

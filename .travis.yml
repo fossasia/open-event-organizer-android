@@ -18,8 +18,7 @@ cache:
       - "$HOME/.gradle/caches/"
       - "$HOME/.gradle/wrapper/"
 script:
-  - ./gradlew build
-  - ./gradlew assembleRelease
+  - ./gradlew check
 after_failure:
   # tests
   - cat app/build/reports/tests/testDebugUnitTest/index.html

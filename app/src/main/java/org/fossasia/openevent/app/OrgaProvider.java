@@ -13,11 +13,7 @@ public class OrgaProvider extends ContentProvider {
 
     // This is not a static field leak as the Context is of Application Scope
     @SuppressLint("StaticFieldLeak")
-    public static Context context;
-
-    public static void setContext(Context context) {
-        OrgaProvider.context = context;
-    }
+    public static volatile Context context;
 
     @Override
     public boolean onCreate() {

@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 
@@ -188,6 +189,9 @@ public class ChartAnalyser {
         lineData.setDrawValues(false);
     }
 
+    @SuppressFBWarnings(
+        value = "ICAST_IDIV_CAST_TO_DOUBLE",
+        justification = "We want granularity to be integer")
     public void showChart(LineChart lineChart) {
         lineChart.setData(lineData);
         lineChart.getXAxis().setEnabled(false);

@@ -1,7 +1,6 @@
 package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.app.ContextManager;
-import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
@@ -40,20 +39,10 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class EventsPresenterTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    IEventsView eventListView;
-
-    @Mock
-    IEventRepository eventRepository;
-
-    @Mock
-    IAuthModel loginModel;
-
-    @Mock
-    ContextManager contextManager;
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock private IEventsView eventListView;
+    @Mock private IEventRepository eventRepository;
+    @Mock private ContextManager contextManager;
 
     private EventsPresenter eventsActivityPresenter;
 
