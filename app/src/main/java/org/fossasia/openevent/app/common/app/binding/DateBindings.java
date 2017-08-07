@@ -29,6 +29,9 @@ public final class DateBindings {
 
     private static void bindTemporal(Button button, ObservableField<String> date, String format,
                                      Function<ZonedDateTime, AlertDialog> dialogProvider) {
+        if (date == null)
+            return;
+
         String isoDate = date.get();
         button.setText(DateUtils.formatDateWithDefault(format, isoDate));
 

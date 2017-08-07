@@ -35,6 +35,10 @@ public class SignUpFragment extends BaseFragment<ISignUpPresenter> implements IS
     private SignUpFragmentBinding binding;
     private Validator validator;
 
+    public static SignUpFragment newInstance() {
+        return new SignUpFragment();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

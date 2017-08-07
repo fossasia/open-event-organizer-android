@@ -36,6 +36,10 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
     private LoginFragmentBinding binding;
     private Validator validator;
 
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

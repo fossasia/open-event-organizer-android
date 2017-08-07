@@ -13,7 +13,9 @@ Severity: HARD
 
     <rule ref="rulesets/java/android.xml" />
 
-    <rule ref="rulesets/java/basic.xml" />
+    <rule ref="rulesets/java/basic.xml">
+        <exclude name="OverrideBothEqualsAndHashcode" />
+    </rule>
 
     <rule ref="rulesets/java/braces.xml">
         <exclude name="IfStmtsMustUseBraces" />

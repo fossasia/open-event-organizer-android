@@ -20,6 +20,8 @@ import org.fossasia.openevent.app.common.app.di.component.DaggerAppComponent;
 import org.fossasia.openevent.app.common.app.di.module.AndroidModule;
 import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.inject.Inject;
 
 import io.sentry.Sentry;
@@ -28,6 +30,8 @@ import io.sentry.event.BreadcrumbBuilder;
 import timber.log.Timber;
 
 public class OrgaApplication extends MultiDexApplication {
+
+    private static final AtomicBoolean CREATED = new AtomicBoolean();
 
     private static volatile AppComponent appComponent;
     private RefWatcher refWatcher;
@@ -73,18 +77,19 @@ public class OrgaApplication extends MultiDexApplication {
         }
         refWatcher = LeakCanary.install(this);
 
-        initializeDatabase(this);
+        if (CREATED.getAndSet(true))
+            return;
+
+        appComponent = DaggerAppComponent.builder()
+            .androidModule(new AndroidModule())
+            .build();
+        appComponent.inject(this);
+
+        Picasso.setSingletonInstance(picasso);
 
         if (!isTestBuild()) {
+            initializeDatabase(this);
             AndroidThreeTen.init(this);
-
-            appComponent = DaggerAppComponent.builder()
-                .androidModule(new AndroidModule())
-                .build();
-
-            appComponent.inject(this);
-
-            Picasso.setSingletonInstance(picasso);
 
             if (BuildConfig.DEBUG) {
                 Stetho.initializeWithDefaults(this);
@@ -111,7 +116,7 @@ public class OrgaApplication extends MultiDexApplication {
         }
     }
 
-    public boolean isTestBuild() {
+    protected boolean isTestBuild() {
         return false;
     }
 

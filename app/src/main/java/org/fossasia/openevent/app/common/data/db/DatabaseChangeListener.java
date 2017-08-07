@@ -11,12 +11,13 @@ import org.fossasia.openevent.app.common.data.db.contract.IDatabaseChangeListene
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
-import lombok.Data;
+import io.reactivex.subjects.ReplaySubject;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
 
-    private final PublishSubject<ModelChange<T>> publishSubject = PublishSubject.create();
+    private final ReplaySubject<ModelChange<T>> publishSubject = ReplaySubject.create();
     private final Class<T> classType;
 
     private DirectModelNotifier.ModelChangedListener<T> modelModelChangedListener;
@@ -36,7 +37,7 @@ public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
 
             @Override
             public void onTableChanged(@Nullable Class<?> aClass, @NonNull BaseModel.Action action) {
-                // No action to be taken
+                publishSubject.onNext(new ModelChange<>(null, action));
             }
 
             @Override
@@ -51,26 +52,20 @@ public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
     public void stopListening() {
         if (modelModelChangedListener != null)
             DirectModelNotifier.get().unregisterForModelChanges(classType, modelModelChangedListener);
+        publishSubject.onComplete();
     }
 
     // Internal ModelChange
 
-    @Data
+    @Getter
+    @AllArgsConstructor
     public static class ModelChange<T> {
         private final T model;
         private final BaseModel.Action action;
 
-        public ModelChange(T model, BaseModel.Action action) {
-            this.model = model;
-            this.action = action;
-        }
-
-        public T getModel() {
-            return model;
-        }
-
-        public BaseModel.Action getAction() {
-            return action;
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof ModelChange && ((ModelChange) obj).action.equals(action) && ((ModelChange) obj).model.equals(model);
         }
     }
 

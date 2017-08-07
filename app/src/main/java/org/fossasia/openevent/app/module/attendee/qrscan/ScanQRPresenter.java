@@ -5,6 +5,7 @@ import android.support.annotation.VisibleForTesting;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import org.fossasia.openevent.app.common.app.lifecycle.presenter.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.module.attendee.qrscan.contract.IScanQRPresenter;
@@ -68,9 +69,6 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> impl
 
     @Override
     public void start() {
-        if (getView() == null)
-            return;
-
         loadAttendees();
 
         getView().showProgress(true);
@@ -95,14 +93,11 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> impl
             .subscribe(attendeeList -> {
                 attendees.clear();
                 attendees.addAll(attendeeList);
-            });
+            }, Logger::logError);
     }
 
     @Override
     public void cameraPermissionGranted(boolean granted) {
-        if (getView() == null)
-            return;
-
         if (granted) {
             getView().startScan();
         } else {
@@ -113,9 +108,6 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> impl
 
     @Override
     public void onBarcodeDetected(Barcode barcode) {
-        if (getView() == null)
-            return;
-
         detect.onNext(barcode == null);
 
         if (barcode == null || attendees.isEmpty())
@@ -126,17 +118,11 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> impl
 
     @Override
     public void onScanStarted() {
-        if (getView() == null)
-            return;
-
         getView().showProgress(false);
     }
 
     @Override
     public void onCameraLoaded() {
-        if (getView() == null)
-            return;
-
         if (getView().hasCameraPermission()) {
             getView().startScan();
         } else {
@@ -146,9 +132,6 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> impl
 
     @Override
     public void onCameraDestroyed() {
-        if (getView() == null)
-            return;
-
         getView().stopScan();
     }
 
