@@ -102,7 +102,9 @@ Severity: HARD
         <module name="EmptyForIteratorPad" />
         <module name="GenericWhitespace" />
         <module name="MethodParamPad" />
-        <module name="NoWhitespaceAfter" />
+        <module name="NoWhitespaceAfter">
+            <property name="tokens" value="INC, DEC, UNARY_MINUS, UNARY_PLUS, BNOT, LNOT, DOT, ARRAY_DECLARATOR, INDEX_OP" />
+        </module>
         <module name="NoWhitespaceBefore" />
         <module name="OperatorWrap">
             <property name="option" value="eol"/>
@@ -137,7 +139,9 @@ Severity: HARD
         <!-- Checks for common coding problems               -->
         <!-- See http://checkstyle.sourceforge.net/config_coding.html -->
         <module name="EmptyStatement" />
-        <module name="EqualsHashCode" />
+        <module name="EqualsHashCode">
+            <property name="severity" value="ignore" />
+        </module>
         <module name="HiddenField">
             <property name="severity" value="ignore" />
         </module>
