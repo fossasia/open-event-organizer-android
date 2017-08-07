@@ -22,18 +22,25 @@ Severity: HARD
 
     <!-- Ignore static write for Context -->
     <Match>
-        <Class name="org.fossasia.openevent.app.OrgaApplication" />
         <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD " />
     </Match>
+    <!-- No need to force hashCode for simple models -->
     <Match>
-        <Class name="org.fossasia.openevent.app.OrgaProvider" />
-        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD " />
+        <Bug pattern="HE_EQUALS_USE_HASHCODE " />
     </Match>
 
-
-    <!-- Don't complain about mockito in tests. -->
+    <!-- Don't complain about rules in tests. -->
     <Match>
         <Field name="~.*mockitoRule"/>
         <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+    </Match>
+    <Match>
+        <Field name="~.*rule"/>
+        <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+    </Match>
+
+    <!-- This is a buggy pattern -->
+    <Match>
+        <Bug pattern="MS_MUTABLE_COLLECTION_PKGPROTECT" />
     </Match>
 </FindBugsFilter>

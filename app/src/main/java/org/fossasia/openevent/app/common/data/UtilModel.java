@@ -32,10 +32,20 @@ public class UtilModel implements IUtilModel {
     private final ISharedPreferenceModel sharedPreferenceModel;
     private String token;
 
+    private static boolean blockNetwork;
+
     @Inject
     UtilModel(ISharedPreferenceModel sharedPreferenceModel) {
         context = OrgaProvider.context;
         this.sharedPreferenceModel = sharedPreferenceModel;
+    }
+
+    public static void blockNetwork() {
+        UtilModel.blockNetwork = true;
+    }
+
+    public static void releaseNetwork() {
+        UtilModel.blockNetwork = false;
     }
 
     @Override
@@ -65,6 +75,9 @@ public class UtilModel implements IUtilModel {
 
     @Override
     public boolean isConnected() {
+        if (blockNetwork)
+            return false;
+
         ConnectivityManager connectivityManager = (ConnectivityManager) OrgaProvider.context
             .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {

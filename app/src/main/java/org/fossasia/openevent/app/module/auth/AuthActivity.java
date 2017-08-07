@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 public class AuthActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    public Toolbar toolbar;
 
     @Inject
     BackPressHandler backPressHandler;

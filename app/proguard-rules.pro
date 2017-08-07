@@ -35,6 +35,10 @@
   *;
 }
 
+-keep class org.fossasia.openevent.app.common.utils.json.** {
+  *;
+}
+
 -keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }
 
 # Jackson

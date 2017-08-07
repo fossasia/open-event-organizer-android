@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.robo.db.config;
+package org.fossasia.openevent.app.robo.rule;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.junit.rules.TestRule;
@@ -6,7 +6,11 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.robolectric.RuntimeEnvironment;
 
-public class DatabaseTestRule implements TestRule {
+public final class DatabaseTestRule implements TestRule {
+
+    private DatabaseTestRule() {
+        // Never Called
+    }
 
     public static DatabaseTestRule create() {
         return new DatabaseTestRule();

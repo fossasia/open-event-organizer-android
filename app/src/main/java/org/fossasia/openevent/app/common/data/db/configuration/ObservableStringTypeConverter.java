@@ -9,7 +9,7 @@ public class ObservableStringTypeConverter extends TypeConverter<String, Observa
 
     @Override
     public String getDBValue(ObservableString observableString) {
-        return observableString.get();
+        return observableString == null ? null : observableString.get();
     }
 
     @Override
