@@ -274,7 +274,7 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
 
     @Override
     public void showError(String error) {
-        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+        ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
 }

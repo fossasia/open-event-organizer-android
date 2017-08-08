@@ -10,20 +10,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.module.event.chart.ChartActivity;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
+import org.fossasia.openevent.app.module.event.chart.ChartActivity;
 import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardView;
-import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -160,7 +159,7 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
 
     @Override
     public void showError(String error) {
-        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+        ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
     @Override

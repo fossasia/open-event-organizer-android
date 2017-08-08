@@ -5,6 +5,7 @@ import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Erroneous;
 import org.fossasia.openevent.app.common.app.lifecycle.contract.view.ItemResult;
 import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Progressive;
 import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Refreshable;
+import org.fossasia.openevent.app.common.utils.core.ErrorUtils;
 
 import java.util.List;
 
@@ -34,11 +35,11 @@ public final class ViewTransformers {
     }
 
     public static <T, V extends Erroneous> ObservableTransformer<T, T> erroneous(V view) {
-        return observable -> observable.doOnError(throwable -> view.showError(throwable.getMessage()));
+        return observable -> observable.doOnError(throwable -> view.showError(ErrorUtils.getMessage(throwable)));
     }
 
     public static <V extends Erroneous> CompletableTransformer erroneousCompletable(V view) {
-        return completable -> completable.doOnError(throwable -> view.showError(throwable.getMessage()));
+        return completable -> completable.doOnError(throwable -> view.showError(ErrorUtils.getMessage(throwable)));
     }
 
     private static <T, V extends Progressive> ObservableTransformer<T, T> progressive(V view) {

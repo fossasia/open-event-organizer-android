@@ -12,6 +12,7 @@ import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
+import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.SignUpFragmentBinding;
 import org.fossasia.openevent.app.module.auth.login.LoginFragment;
 import org.fossasia.openevent.app.module.auth.signup.contract.ISignUpPresenter;
@@ -82,7 +83,7 @@ public class SignUpFragment extends BaseFragment<ISignUpPresenter> implements IS
 
     @Override
     public void showError(String error) {
-        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+        ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
     @Override

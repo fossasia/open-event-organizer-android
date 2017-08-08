@@ -6,12 +6,12 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.common.data.models.Ticket;
+import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.TicketDetailLayoutBinding;
 import org.fossasia.openevent.app.module.ticket.detail.contract.ITicketDetailPresenter;
 import org.fossasia.openevent.app.module.ticket.detail.contract.ITicketDetailView;
@@ -78,7 +78,7 @@ public class TicketDetailFragment extends BaseBottomSheetFragment<ITicketDetailP
 
     @Override
     public void showError(String error) {
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+        ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
     @Override
