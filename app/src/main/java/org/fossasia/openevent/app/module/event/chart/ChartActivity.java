@@ -4,17 +4,16 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.app.lifecycle.view.BaseActivity;
+import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.module.event.chart.contract.IChartPresenter;
 import org.fossasia.openevent.app.module.event.chart.contract.IChartView;
-import org.fossasia.openevent.app.common.app.lifecycle.view.BaseActivity;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
-import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -82,7 +81,7 @@ public class ChartActivity extends BaseActivity<IChartPresenter> implements ICha
 
     @Override
     public void showError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        ViewUtils.showSnackbar(chart, error);
     }
 
     @Override

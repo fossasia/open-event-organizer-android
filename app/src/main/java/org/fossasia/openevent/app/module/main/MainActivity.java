@@ -13,7 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -22,12 +21,13 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseActivity;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.utils.ui.BackPressHandler;
+import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.MainActivityBinding;
 import org.fossasia.openevent.app.databinding.MainNavHeaderBinding;
 import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
+import org.fossasia.openevent.app.module.auth.AuthActivity;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
-import org.fossasia.openevent.app.module.auth.AuthActivity;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainView;
 import org.fossasia.openevent.app.module.settings.SettingsFragment;
@@ -159,7 +159,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
     @Override
     public void showError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
     private void loadFragment(int navItemId) {
