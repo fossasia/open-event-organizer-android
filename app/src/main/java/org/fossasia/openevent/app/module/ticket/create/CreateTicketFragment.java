@@ -4,15 +4,16 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseBottomSheetFragment;
+import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.TicketCreateLayoutBinding;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketPresenter;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketView;
@@ -76,11 +77,11 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
 
     @Override
     public void showError(String error) {
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+        ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
     @Override
     public void onSuccess(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
     }
 }

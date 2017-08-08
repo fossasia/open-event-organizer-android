@@ -93,10 +93,6 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<IAttendeeCh
         this.onCancelAction = onCancel;
     }
 
-    private void showToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void showResult(Attendee attendee) {
         binding.setCheckinAttendee(attendee);
@@ -111,12 +107,12 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<IAttendeeCh
     @Override
     public void onSuccess(String message) {
         binding.notifyPropertyChanged(BR.checkinAttendee);
-        showToast(message);
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showError(String message) {
-        showToast(message);
+    public void showError(String error) {
+        ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
 }

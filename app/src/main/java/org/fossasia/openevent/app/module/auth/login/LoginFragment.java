@@ -7,11 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
+import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.LoginFragmentBinding;
 import org.fossasia.openevent.app.module.auth.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.module.auth.login.contract.ILoginView;
@@ -96,7 +96,7 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
 
     @Override
     public void showError(String error) {
-        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+        ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
     @Override
