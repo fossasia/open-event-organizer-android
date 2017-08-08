@@ -69,8 +69,9 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     private RecyclerView.AdapterDataObserver adapterDataObserver;
     private FragmentAttendeesBinding binding;
     private SwipeRefreshLayout refreshLayout;
-
     private SearchView searchView;
+
+    private boolean initialized;
 
     public AttendeesFragment() {
         OrgaApplication
@@ -110,19 +111,7 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
         inflater.inflate(R.menu.menu_attendees, menu);
         MenuItem search = menu.findItem(R.id.search);
         searchView = (SearchView) search.getActionView();
-        searchView.setQueryHint(getString(R.string.search_placeholder));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                fastItemAdapter.filter(s.trim());
-                return true;
-            }
-        });
+        setupSearchListener();
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -131,8 +120,6 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_attendees, container, false);
-        setupRecyclerView();
-        setupRefreshListener();
         binding.fabScanQr.setOnClickListener(v -> {
             Intent scanQr = new Intent(context, ScanQRActivity.class);
             scanQr.putExtra(MainActivity.EVENT_KEY, eventId);
@@ -144,9 +131,14 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     @Override
     public void onStart() {
         super.onStart();
+        setupSearchListener();
+        setupRefreshListener();
+        setupRecyclerView();
         getPresenter().attach(eventId, this);
         binding.setAttendees(getPresenter().getAttendees());
         getPresenter().start();
+
+        initialized = true;
     }
 
     @Override
@@ -173,41 +165,63 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
         return R.layout.fragment_attendees;
     }
 
-    private void setupRecyclerView() {
-        fastItemAdapter = new FastItemAdapter<>();
-        fastItemAdapter.setHasStableIds(true);
-        fastItemAdapter.withPositionBasedStateManagement(false);
-        fastItemAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
-        fastItemAdapter.getItemFilter().withFilterPredicate(
-            (attendee, query) ->
-                SearchUtils.filter(
-                    query.toString(),
-                    attendee.getFirstname(),
-                    attendee.getLastname(),
-                    attendee.getEmail())
-        );
+    private void setupSearchListener() {
+        if (searchView == null)
+            return;
 
-        stickyHeaderAdapter = new StickyHeaderAdapter<>();
-        final HeaderAdapter headerAdapter = new HeaderAdapter();
-
-        RecyclerView recyclerView = binding.rvAttendeeList;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(stickyHeaderAdapter.wrap(headerAdapter.wrap(fastItemAdapter)));
-
-        final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
-        recyclerView.addItemDecoration(decoration);
-
-        adapterDataObserver = new RecyclerView.AdapterDataObserver() {
+        searchView.setQueryHint(getString(R.string.search_placeholder));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onChanged() {
-                decoration.invalidateHeaders();
+            public boolean onQueryTextSubmit(String s) {
+                return false;
             }
-        };
-        stickyHeaderAdapter.registerAdapterDataObserver(adapterDataObserver);
 
-        ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.fabScanQr);
+            @Override
+            public boolean onQueryTextChange(String s) {
+                fastItemAdapter.filter(s.trim());
+                return true;
+            }
+        });
+    }
+
+    private void setupRecyclerView() {
+        if (!initialized) {
+            fastItemAdapter = new FastItemAdapter<>();
+            fastItemAdapter.setHasStableIds(true);
+            fastItemAdapter.withPositionBasedStateManagement(false);
+            fastItemAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
+            fastItemAdapter.getItemFilter().withFilterPredicate(
+                (attendee, query) ->
+                    SearchUtils.filter(
+                        query.toString(),
+                        attendee.getFirstname(),
+                        attendee.getLastname(),
+                        attendee.getEmail())
+            );
+
+            stickyHeaderAdapter = new StickyHeaderAdapter<>();
+            final HeaderAdapter headerAdapter = new HeaderAdapter();
+
+            RecyclerView recyclerView = binding.rvAttendeeList;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(stickyHeaderAdapter.wrap(headerAdapter.wrap(fastItemAdapter)));
+
+            final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
+            recyclerView.addItemDecoration(decoration);
+
+            adapterDataObserver = new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    decoration.invalidateHeaders();
+                }
+            };
+
+            ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.fabScanQr);
+        }
+
+        stickyHeaderAdapter.registerAdapterDataObserver(adapterDataObserver);
     }
 
     private void setupRefreshListener() {
