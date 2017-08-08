@@ -59,6 +59,7 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     private RecyclerView.AdapterDataObserver adapterDataObserver;
 
     private Context context;
+    private boolean initialized;
 
     public EventListFragment() {
         OrgaApplication
@@ -89,7 +90,6 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_event_list, container, false);
-        setupRefreshListener();
         return binding.getRoot();
     }
 
@@ -107,9 +107,12 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     public void onStart() {
         super.onStart();
         setupRecyclerView();
+        setupRefreshListener();
         getPresenter().attach(this);
         binding.setEvents(getPresenter().getEvents());
         getPresenter().start();
+
+        initialized = true;
     }
 
     @Override
@@ -122,6 +125,35 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
         eventListAdapter.unregisterAdapterDataObserver(adapterDataObserver);
+    }
+
+    private void setupRecyclerView() {
+        if (!initialized) {
+            eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus);
+
+            recyclerView = binding.eventRecyclerView;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(eventListAdapter);
+            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(eventListAdapter);
+            recyclerView.addItemDecoration(decoration);
+
+            adapterDataObserver = new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    decoration.invalidateHeaders();
+                }
+            };
+        }
+
+        eventListAdapter.registerAdapterDataObserver(adapterDataObserver);
+    }
+
+    private void setupRefreshListener() {
+        refreshLayout = binding.swipeContainer;
+        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
+        refreshLayout.setOnRefreshListener(() -> getPresenter().loadUserEvents(true));
     }
 
     @Override
@@ -160,31 +192,5 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     @Override
     public void showOrganiserLoadError(String error) {
         Timber.d(error);
-    }
-
-    private void setupRecyclerView() {
-        eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus);
-
-        recyclerView = binding.eventRecyclerView;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(eventListAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(eventListAdapter);
-        recyclerView.addItemDecoration(decoration);
-
-        adapterDataObserver = new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                decoration.invalidateHeaders();
-            }
-        };
-        eventListAdapter.registerAdapterDataObserver(adapterDataObserver);
-    }
-
-    private void setupRefreshListener() {
-        refreshLayout = binding.swipeContainer;
-        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> getPresenter().loadUserEvents(true));
     }
 }
