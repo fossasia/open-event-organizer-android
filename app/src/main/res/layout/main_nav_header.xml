@@ -41,7 +41,7 @@
                 android:id="@+id/event_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{ DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) }"/>
+                android:text='@{ event.startsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) : "" }'/>
         </LinearLayout>
 
     </FrameLayout>
