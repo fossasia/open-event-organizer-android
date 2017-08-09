@@ -117,8 +117,8 @@ public class EventsPresenterTest {
 
         inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showProgress(true);
+        inOrder.verify(eventListView).onRefreshComplete(true);
         inOrder.verify(eventListView).showResults(EVENT_LIST);
-        inOrder.verify(eventListView).onRefreshComplete();
         inOrder.verify(eventListView).showProgress(false);
     }
 
@@ -177,7 +177,7 @@ public class EventsPresenterTest {
         inOrder.verify(eventRepository).getEvents(true);
         inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventListView).showError(anyString());
-        inOrder.verify(eventListView).onRefreshComplete();
+        inOrder.verify(eventListView).onRefreshComplete(false);
         inOrder.verify(eventListView).showProgress(false);
     }
 

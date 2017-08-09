@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.mikepenz.fastadapter.adapters.HeaderAdapter;
@@ -244,9 +242,10 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     }
 
     @Override
-    public void onRefreshComplete() {
+    public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        Snackbar.make(binding.rvAttendeeList, R.string.refresh_complete, Snackbar.LENGTH_SHORT).show();
+        if (success)
+            ViewUtils.showSnackbar(binding.rvAttendeeList, R.string.refresh_complete);
     }
 
     @Override
