@@ -10,6 +10,7 @@ import org.fossasia.openevent.app.common.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseChangeListener;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
+import org.fossasia.openevent.app.common.utils.core.Utils;
 import org.fossasia.openevent.app.module.attendee.list.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.module.attendee.list.contract.IAttendeesView;
 
@@ -19,6 +20,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.emptiable;
@@ -78,6 +80,12 @@ public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView
             return attendeeRepository.getAttendees(getId(), forceReload);
     }
 
+    private void updateLocal(Attendee attendee) {
+        Utils.indexOf(attendeeList, attendee, (first, second) -> first.getId() == second.getId())
+            .subscribeOn(Schedulers.computation())
+            .subscribe(index -> attendeeList.set(index, attendee), Logger::logError);
+    }
+
     private void listenToModelChanges() {
         attendeeListener.startListening();
 
@@ -86,7 +94,10 @@ public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView
             .compose(erroneous(getView()))
             .filter(attendeeModelChange -> attendeeModelChange.getAction().equals(BaseModel.Action.UPDATE))
             .map(DatabaseChangeListener.ModelChange::getModel)
-            .subscribe(attendee -> getView().updateAttendee(attendee), Logger::logError);
+            .subscribe(attendee -> {
+                getView().updateAttendee(attendee);
+                updateLocal(attendee);
+            }, Logger::logError);
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)

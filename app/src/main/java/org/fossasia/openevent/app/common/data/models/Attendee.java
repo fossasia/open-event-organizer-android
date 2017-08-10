@@ -1,8 +1,8 @@
 package org.fossasia.openevent.app.common.data.models;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.view.View;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -19,10 +19,11 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.data.db.configuration.ObservableBooleanTypeConverter;
 import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.common.data.models.contract.IHeaderProvider;
-import org.fossasia.openevent.app.module.attendee.list.viewholders.AttendeeViewHolder;
 import org.fossasia.openevent.app.common.utils.core.CompareUtils;
+import org.fossasia.openevent.app.module.attendee.list.viewholders.AttendeeViewHolder;
 
 import java.util.List;
 
@@ -61,6 +62,9 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     @Column
     public String email;
 
+    @Column(typeConverter = ObservableBooleanTypeConverter.class)
+    public ObservableBoolean checking = new ObservableBoolean();
+
     @Relationship("ticket")
     @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
     public Ticket ticket;
@@ -85,21 +89,6 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
         setFirstname("testFirstName" + id);
         setLastname("testLastName" + id);
         setEmail("testEmail" + id + "@test.com");
-    }
-
-    @VisibleForTesting
-    public static Attendee withTicket(Ticket ticket) {
-        Attendee attendee = new Attendee();
-        attendee.setTicket(ticket);
-
-        return attendee;
-    }
-
-    @VisibleForTesting
-    public Attendee withCheckedIn() {
-        this.isCheckedIn = true;
-
-        return this;
     }
 
     @Override

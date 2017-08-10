@@ -10,6 +10,7 @@ import org.fossasia.openevent.app.common.data.db.contract.IDatabaseChangeListene
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.ReplaySubject;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,9 @@ import lombok.Getter;
 
 public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
 
-    private final ReplaySubject<ModelChange<T>> publishSubject = ReplaySubject.create();
     private final Class<T> classType;
+    private ReplaySubject<ModelChange<T>> replaySubject;
+    private Disposable disposable;
 
     private DirectModelNotifier.ModelChangedListener<T> modelModelChangedListener;
 
@@ -27,22 +29,26 @@ public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
     }
 
     public Observable<ModelChange<T>> getNotifier() {
-        return publishSubject
+        return replaySubject
+            .doOnSubscribe(disposable -> this.disposable = disposable)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
 
     public void startListening() {
+        if (disposable == null || disposable.isDisposed())
+            replaySubject = ReplaySubject.create();
+
         modelModelChangedListener = new DirectModelNotifier.ModelChangedListener<T>() {
 
             @Override
             public void onTableChanged(@Nullable Class<?> aClass, @NonNull BaseModel.Action action) {
-                publishSubject.onNext(new ModelChange<>(null, action));
+                replaySubject.onNext(new ModelChange<>(null, action));
             }
 
             @Override
             public void onModelChanged(@NonNull T model, @NonNull BaseModel.Action action) {
-                publishSubject.onNext(new ModelChange<>(model, action));
+                replaySubject.onNext(new ModelChange<>(model, action));
             }
         };
 
@@ -52,7 +58,7 @@ public class DatabaseChangeListener<T> implements IDatabaseChangeListener<T> {
     public void stopListening() {
         if (modelModelChangedListener != null)
             DirectModelNotifier.get().unregisterForModelChanges(classType, modelModelChangedListener);
-        publishSubject.onComplete();
+        replaySubject.onComplete();
     }
 
     // Internal ModelChange

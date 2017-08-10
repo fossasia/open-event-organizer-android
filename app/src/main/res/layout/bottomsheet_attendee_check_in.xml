@@ -162,7 +162,7 @@
                 android:layout_gravity="center"
                 android:layout_width="@dimen/progressbar_large"
                 android:layout_height="@dimen/progressbar_large"
-                android:visibility="invisible"
+                android:visibility="@{ checkinAttendee.checking ? View.VISIBLE : View.INVISIBLE }"
                 tools:visibility="visible"
                 android:theme="@style/AppTheme" />
 

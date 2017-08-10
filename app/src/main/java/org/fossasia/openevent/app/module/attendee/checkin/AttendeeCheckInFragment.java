@@ -100,11 +100,6 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<IAttendeeCh
     }
 
     @Override
-    public void showProgress(boolean show) {
-        ViewUtils.showView(binding.progressBar, View.INVISIBLE, show);
-    }
-
-    @Override
     public void onSuccess(String message) {
         binding.notifyPropertyChanged(BR.checkinAttendee);
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();

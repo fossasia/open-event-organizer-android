@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="attendee"
             type="org.fossasia.openevent.app.common.data.models.Attendee" />
@@ -29,7 +31,6 @@
                 android:textColor="@android:color/black"
                 android:text='@{attendee.firstname + " " + attendee.lastname}' />
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,6 +49,13 @@
                 android:textSize="@dimen/text_size_extra_small"/>
 
         </LinearLayout>
+
+        <ProgressBar
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:paddingRight="@dimen/spacing_small"
+            android:visibility="@{ attendee.checking ? View.VISIBLE : View.INVISIBLE }"
+            style="@style/AppTheme" />
 
         <ImageView
             android:layout_width="wrap_content"

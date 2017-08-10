@@ -1,5 +1,9 @@
 package org.fossasia.openevent.app.unit.presenter;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import org.fossasia.openevent.app.common.data.db.DatabaseChangeListener;
+import org.fossasia.openevent.app.common.data.db.contract.IDatabaseChangeListener;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
@@ -11,21 +15,21 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.contains;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,6 +39,8 @@ public class AttendeeCheckInPresenterTest {
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock private IAttendeeRepository attendeeRepository;
     @Mock private IAttendeeCheckInView attendeeCheckInView;
+    @Mock private IDatabaseChangeListener<Attendee> databaseChangeListener;
+    private PublishSubject<DatabaseChangeListener.ModelChange<Attendee>> notifier;
 
     private static final long ID = 42;
     private static final Attendee ATTENDEE = new Attendee(ID);
@@ -44,8 +50,9 @@ public class AttendeeCheckInPresenterTest {
     @Before
     public void setUp() {
         ATTENDEE.setEvent(new Event(ID));
-        attendeeCheckInPresenter = new AttendeeCheckInPresenter(attendeeRepository);
+        attendeeCheckInPresenter = new AttendeeCheckInPresenter(attendeeRepository, databaseChangeListener);
         attendeeCheckInPresenter.attach(ID, attendeeCheckInView);
+        notifier = PublishSubject.create();
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
@@ -59,17 +66,14 @@ public class AttendeeCheckInPresenterTest {
     }
 
     private void setLoadAttendeeBehaviour() {
+        when(databaseChangeListener.getNotifier()).thenReturn(notifier);
         when(attendeeRepository.getAttendee(ID, false))
             .thenReturn(Observable.just(ATTENDEE));
     }
 
-    private void setToggleAttendeeBehaviour(Observable<Attendee> attendeeObservable) {
-        when(attendeeRepository.toggleAttendeeCheckStatus(ID, ID)).thenReturn(attendeeObservable);
-    }
-
-    private Attendee getAttendee(boolean checkedIn) {
+    private Attendee getCheckedInAttendee() {
         Attendee attendee = new Attendee(ID);
-        attendee.setCheckedIn(checkedIn);
+        attendee.setCheckedIn(true);
 
         return attendee;
     }
@@ -93,12 +97,31 @@ public class AttendeeCheckInPresenterTest {
     }
 
     @Test
-    public void shouldHandleTogglingSuccess() {
-        attendeeCheckInPresenter.setAttendee(ATTENDEE);
-        Attendee toggled = getAttendee(true);
-        setToggleAttendeeBehaviour(Observable.just(toggled));
+    public void shouldStartListeningAutomatically() {
+        setLoadAttendeeBehaviour();
+        attendeeCheckInPresenter.start();
 
-        attendeeCheckInPresenter.toggleCheckIn();
+        verify(databaseChangeListener).startListening();
+    }
+
+    @Test
+    public void shouldStopListeningOnDetach() {
+        attendeeCheckInPresenter.detach();
+
+        verify(databaseChangeListener).stopListening();
+    }
+
+    @Test
+    public void shouldHandleAttendeeChange() {
+        attendeeCheckInPresenter.setAttendee(ATTENDEE);
+        Attendee toggled = getCheckedInAttendee();
+        when(databaseChangeListener.getNotifier()).thenReturn(notifier);
+        when(attendeeRepository.getAttendee(ID, false)).thenReturn(Observable.empty());
+
+        attendeeCheckInPresenter.start();
+
+        notifier.onNext(new DatabaseChangeListener.ModelChange<>(ATTENDEE, BaseModel.Action.UPDATE));
+        notifier.onNext(new DatabaseChangeListener.ModelChange<>(toggled, BaseModel.Action.UPDATE));
 
         verify(attendeeCheckInView).showResult(toggled);
         verify(attendeeCheckInView).onSuccess(any());
@@ -107,21 +130,29 @@ public class AttendeeCheckInPresenterTest {
     @Test
     public void shouldShowCheckedInAfterToggling() {
         attendeeCheckInPresenter.setAttendee(ATTENDEE);
-        Attendee toggled = getAttendee(true);
-        setToggleAttendeeBehaviour(Observable.just(toggled));
+        Attendee toggled = getCheckedInAttendee();
+        when(databaseChangeListener.getNotifier()).thenReturn(notifier);
+        when(attendeeRepository.getAttendee(ID, false)).thenReturn(Observable.empty());
 
-        attendeeCheckInPresenter.toggleCheckIn();
+        attendeeCheckInPresenter.start();
+
+        notifier.onNext(new DatabaseChangeListener.ModelChange<>(ATTENDEE, BaseModel.Action.UPDATE));
+        notifier.onNext(new DatabaseChangeListener.ModelChange<>(toggled, BaseModel.Action.UPDATE));
 
         verify(attendeeCheckInView).onSuccess(contains("Checked In"));
     }
 
     @Test
     public void shouldShowCheckedOutAfterToggling() {
-        attendeeCheckInPresenter.setAttendee(ATTENDEE);
-        Attendee toggled = getAttendee(false);
-        setToggleAttendeeBehaviour(Observable.just(toggled));
+        Attendee toggled = getCheckedInAttendee();
+        attendeeCheckInPresenter.setAttendee(toggled);
+        when(databaseChangeListener.getNotifier()).thenReturn(notifier);
+        when(attendeeRepository.getAttendee(ID, false)).thenReturn(Observable.empty());
 
-        attendeeCheckInPresenter.toggleCheckIn();
+        attendeeCheckInPresenter.start();
+
+        notifier.onNext(new DatabaseChangeListener.ModelChange<>(toggled, BaseModel.Action.UPDATE));
+        notifier.onNext(new DatabaseChangeListener.ModelChange<>(ATTENDEE, BaseModel.Action.UPDATE));
 
         verify(attendeeCheckInView).onSuccess(contains("Checked Out"));
     }
@@ -129,39 +160,11 @@ public class AttendeeCheckInPresenterTest {
     @Test
     public void shouldHandleTogglingError() {
         attendeeCheckInPresenter.setAttendee(ATTENDEE);
-        setToggleAttendeeBehaviour(Util.ERROR_OBSERVABLE);
+        when(attendeeRepository.scheduleToggle(ATTENDEE)).thenReturn(Completable.error(new Throwable()));
 
         attendeeCheckInPresenter.toggleCheckIn();
 
         verify(attendeeCheckInView).showError(any());
-    }
-
-    @Test
-    public void shouldShowProgressWhileTogglingSuccess() {
-        attendeeCheckInPresenter.setAttendee(ATTENDEE);
-        setToggleAttendeeBehaviour(Observable.just(ATTENDEE));
-
-        attendeeCheckInPresenter.toggleCheckIn();
-
-        InOrder inOrder = inOrder(attendeeCheckInView);
-
-        inOrder.verify(attendeeCheckInView).showProgress(true);
-        inOrder.verify(attendeeCheckInView).showResult(any());
-        inOrder.verify(attendeeCheckInView).showProgress(false);
-    }
-
-    @Test
-    public void shouldShowProgressWhileTogglingError() {
-        attendeeCheckInPresenter.setAttendee(ATTENDEE);
-        setToggleAttendeeBehaviour(Util.ERROR_OBSERVABLE);
-
-        attendeeCheckInPresenter.toggleCheckIn();
-
-        InOrder inOrder = inOrder(attendeeCheckInView);
-
-        inOrder.verify(attendeeCheckInView).showProgress(true);
-        inOrder.verify(attendeeCheckInView).showError(any());
-        inOrder.verify(attendeeCheckInView).showProgress(false);
     }
 
 }
