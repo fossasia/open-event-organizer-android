@@ -93,4 +93,21 @@ public class DatabaseChangeListenerTest {
             );
     }
 
+    @Test
+    public void testDisposed() {
+        List<DatabaseChangeListener.ModelChange<SimpleModel>> changes = new ArrayList<>();
+        changes.add(new DatabaseChangeListener.ModelChange<>(DatabaseRepositoryTest.MODEL, BaseModel.Action.INSERT));
+        changes.add(new DatabaseChangeListener.ModelChange<>(DatabaseRepositoryTest.MODEL, BaseModel.Action.SAVE));
+
+        databaseChangeListener.stopListening();
+        notifier.subscribe().dispose();
+        databaseChangeListener.startListening();
+        databaseRepository.save(SimpleModel.class, DatabaseRepositoryTest.MODEL).subscribe();
+        databaseChangeListener.stopListening();
+
+        databaseChangeListener.getNotifier()
+            .test()
+            .assertValueSequence(changes);
+    }
+
 }

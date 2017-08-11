@@ -44,6 +44,12 @@ public class AttendeeRepositoryTest {
     @Mock private IUtilModel utilModel;
     @Mock private IDatabaseRepository databaseRepository;
 
+    private static final List<Attendee> ATTENDEES = Arrays.asList(
+        new Attendee(),
+        new Attendee(),
+        new Attendee()
+    );
+
     @Before
     public void setUp() {
         attendeeRepository = new AttendeeRepository(utilModel, databaseRepository, eventService);
@@ -59,12 +65,6 @@ public class AttendeeRepositoryTest {
 
     @Test
     public void shouldSaveAttendeesInCache() {
-        List<Attendee> attendees = Arrays.asList(
-            new Attendee(),
-            new Attendee(),
-            new Attendee()
-        );
-
         TestObserver testObserver = TestObserver.create();
         Completable completable = Completable.complete()
             .doOnSubscribe(testObserver::onSubscribe);
@@ -72,8 +72,8 @@ public class AttendeeRepositoryTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(databaseRepository.getItems(eq(Attendee.class), any(SQLOperator.class))).thenReturn(Observable.empty());
         when(databaseRepository.deleteAll(Attendee.class)).thenReturn(completable);
-        when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(completable);
-        when(eventService.getAttendees(43)).thenReturn(Observable.just(attendees));
+        when(databaseRepository.saveList(Attendee.class, ATTENDEES)).thenReturn(completable);
+        when(eventService.getAttendees(43)).thenReturn(Observable.just(ATTENDEES));
 
         // No force reload ensures use of cache
         attendeeRepository.getAttendees(43, false).test();
@@ -86,14 +86,8 @@ public class AttendeeRepositoryTest {
 
     @Test
     public void shouldLoadAttendeesFromCache() {
-        List<Attendee> attendees = Arrays.asList(
-            new Attendee(),
-            new Attendee(),
-            new Attendee()
-        );
-
         when(databaseRepository.getItems(eq(Attendee.class), any(SQLOperator.class)))
-            .thenReturn(Observable.fromIterable(attendees));
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         // No force reload ensures use of cache
         Observable<Attendee> attendeeObservable = attendeeRepository.getAttendees(67, false);
@@ -102,23 +96,17 @@ public class AttendeeRepositoryTest {
             .toList()
             .test()
             .assertNoErrors()
-            .assertValue(attendees);
+            .assertValue(ATTENDEES);
 
         verifyZeroInteractions(eventService);
     }
 
     @Test
     public void shouldFetchAttendeesOnForceReload() {
-        List<Attendee> attendees = Arrays.asList(
-            new Attendee(),
-            new Attendee(),
-            new Attendee()
-        );
-
         when(utilModel.isConnected()).thenReturn(true);
-        when(eventService.getAttendees(23)).thenReturn(Observable.just(attendees));
+        when(eventService.getAttendees(23)).thenReturn(Observable.just(ATTENDEES));
         when(databaseRepository.deleteAll(Attendee.class)).thenReturn(Completable.complete());
-        when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(Completable.complete());
+        when(databaseRepository.saveList(Attendee.class, ATTENDEES)).thenReturn(Completable.complete());
 
         // Force reload ensures no use of cache
         Observable<List<Attendee>> attendeeObservable = attendeeRepository.getAttendees(23, true)
@@ -128,7 +116,7 @@ public class AttendeeRepositoryTest {
         attendeeObservable.
             test()
             .assertNoErrors()
-            .assertValue(attendees);
+            .assertValue(ATTENDEES);
 
         // Verify loads from network
         verify(eventService).getAttendees(23);
@@ -136,23 +124,17 @@ public class AttendeeRepositoryTest {
 
     @Test
     public void shouldDeletePreviousDataOnForceReload() {
-        List<Attendee> attendees = Arrays.asList(
-            new Attendee(),
-            new Attendee(),
-            new Attendee()
-        );
-
         when(utilModel.isConnected()).thenReturn(true);
-        when(eventService.getAttendees(23)).thenReturn(Observable.just(attendees));
+        when(eventService.getAttendees(23)).thenReturn(Observable.just(ATTENDEES));
         when(databaseRepository.deleteAll(Attendee.class)).thenReturn(Completable.complete());
-        when(databaseRepository.saveList(Attendee.class, attendees)).thenReturn(Completable.complete());
+        when(databaseRepository.saveList(Attendee.class, ATTENDEES)).thenReturn(Completable.complete());
 
         InOrder inOrder = Mockito.inOrder(databaseRepository);
 
         attendeeRepository.getAttendees(23, true).test();
 
         inOrder.verify(databaseRepository).deleteAll(Attendee.class);
-        inOrder.verify(databaseRepository).saveList(Attendee.class, attendees);
+        inOrder.verify(databaseRepository).saveList(Attendee.class, ATTENDEES);
     }
 
     @Test
@@ -168,7 +150,7 @@ public class AttendeeRepositoryTest {
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        attendeeRepository.toggleAttendeeCheckStatus(43, 52)
+        attendeeRepository.toggleAttendeeCheckStatus(ATTENDEES.get(0))
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
@@ -190,7 +172,7 @@ public class AttendeeRepositoryTest {
         when(databaseRepository.update(Attendee.class, attendee)).thenReturn(completable);
         when(eventService.patchAttendee(89, attendee)).thenReturn(Observable.just(attendee));
 
-        Observable<Attendee> attendeeObservable = attendeeRepository.toggleAttendeeCheckStatus(76, 89);
+        Observable<Attendee> attendeeObservable = attendeeRepository.toggleAttendeeCheckStatus(attendee);
 
         attendeeObservable.test();
 

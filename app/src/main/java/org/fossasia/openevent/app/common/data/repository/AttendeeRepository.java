@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.common.data.repository;
 
+import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
 import com.raizlabs.android.dbflow.sql.language.Method;
@@ -15,9 +16,11 @@ import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.Event_Table;
 import org.fossasia.openevent.app.common.data.network.EventService;
 import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
+import org.fossasia.openevent.app.module.attendee.checkin.job.AttendeeCheckInJob;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -84,20 +87,26 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
             .subscribeOn(Schedulers.io());
     }
 
-    /**
-     * Fully network oriented task, no fetching from cache, but saving in it is a must
-     * @param eventId The ID of event for which we want to change the attendee
-     * @param attendeeId The ID of the attendee of whom the check is to be toggled
-     * @return Observable defining the process of toggling
-     */
+    public Completable scheduleToggle(Attendee attendee) {
+        attendee.checking.set(true);
+        return databaseRepository
+            .update(Attendee.class, attendee)
+            .concatWith(completableObserver -> {
+                AttendeeCheckInJob.scheduleJob();
+                if (!utilModel.isConnected())
+                    completableObserver.onError(new Exception("No network present. Added to job queue"));
+            })
+            .subscribeOn(Schedulers.io());
+    }
+
     @NonNull
     @Override
-    public Observable<Attendee> toggleAttendeeCheckStatus(long eventId, long attendeeId) {
+    public Observable<Attendee> toggleAttendeeCheckStatus(Attendee transitAttendee) {
         if (!utilModel.isConnected()) {
             return Observable.error(new Throwable(Constants.NO_NETWORK));
         }
 
-        return databaseRepository.getItems(Attendee.class, Attendee_Table.id.eq(attendeeId))
+        return databaseRepository.getItems(Attendee.class, Attendee_Table.id.eq(transitAttendee.getId()))
             .take(1)
             .flatMap(attendee -> {
                 // Remove relationships from attendee item
@@ -107,14 +116,26 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
 
                 attendee.setCheckedIn(!attendee.isCheckedIn());
 
-                return eventService.patchAttendee(attendeeId, attendee);
+                return eventService.patchAttendee(attendee.getId(), attendee);
             })
             .doOnNext(attendee ->
                 databaseRepository
                     .update(Attendee.class, attendee)
                     .subscribe())
+            .doOnError(throwable -> scheduleToggle(transitAttendee))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * A synchronous method for getting pending attendee check ins
+     * @return Pending attendee check ins
+     */
+    @NonNull
+    @Override
+    public Observable<Attendee> getPendingCheckIns() {
+        return databaseRepository
+            .getItems(Attendee.class, Attendee_Table.checking.eq(new ObservableBoolean(true)));
     }
 
 }

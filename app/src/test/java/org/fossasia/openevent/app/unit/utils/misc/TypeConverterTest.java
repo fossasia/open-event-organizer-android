@@ -1,10 +1,13 @@
 package org.fossasia.openevent.app.unit.utils.misc;
 
+import android.databinding.ObservableBoolean;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import org.fossasia.openevent.app.common.data.db.configuration.ObservableBooleanTypeConverter;
 import org.fossasia.openevent.app.common.data.db.configuration.ObservableStringTypeConverter;
 import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
 import org.fossasia.openevent.app.common.utils.json.ObservableStringDeserializer;
@@ -18,13 +21,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class TypeConverterTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final ObservableStringTypeConverter CONVERTER = new ObservableStringTypeConverter();
+    private static final ObservableStringTypeConverter STRING_CONVERTER = new ObservableStringTypeConverter();
+    private static final ObservableBooleanTypeConverter BOOLEAN_CONVERTER = new ObservableBooleanTypeConverter();
 
     @Data
     @NoArgsConstructor
@@ -59,7 +65,7 @@ public class TypeConverterTest {
     public void testStringToObservableStringDbConversion() {
         String value = "Ferris Bueller";
 
-        assertEquals(value, CONVERTER.getModelValue(value).get());
+        assertEquals(value, STRING_CONVERTER.getModelValue(value).get());
     }
 
     @Test
@@ -67,13 +73,47 @@ public class TypeConverterTest {
         String value = "John Wick";
         ObservableString observableString = new ObservableString(value);
 
-        assertEquals(value, CONVERTER.getDBValue(observableString));
+        assertEquals(value, STRING_CONVERTER.getDBValue(observableString));
     }
 
     @Test
-    public void testNullConversion() {
-        assertNull(CONVERTER.getDBValue(null));
-        assertNotNull(CONVERTER.getModelValue(null));
+    public void testNullStringConversion() {
+        assertNull(STRING_CONVERTER.getDBValue(null));
+        assertNotNull(STRING_CONVERTER.getModelValue(null));
+    }
+
+    @Test
+    public void testBooleanToObservableBooleanConversionTrue() {
+        assertTrue(BOOLEAN_CONVERTER.getModelValue(1).get());
+    }
+
+    @Test
+    public void testBooleanToObservableBooleanConversionFalse() {
+        assertTrue(BOOLEAN_CONVERTER.getModelValue(1).get());
+    }
+
+    @Test
+    public void testObservableBooleanToBooleanConversionTrue() {
+        ObservableBoolean observableBoolean = new ObservableBoolean(true);
+        assertEquals((Integer) 1, BOOLEAN_CONVERTER.getDBValue(observableBoolean));
+    }
+
+    @Test
+    public void testObservableBooleanToBooleanConversionFalse() {
+        ObservableBoolean observableBoolean = new ObservableBoolean(false);
+        assertEquals((Integer) 0, BOOLEAN_CONVERTER.getDBValue(observableBoolean));
+    }
+
+    @Test
+    public void testObservableBooleanToBooleanConversion() {
+        ObservableBoolean observableBoolean = new ObservableBoolean();
+        assertEquals((Integer) 0, BOOLEAN_CONVERTER.getDBValue(observableBoolean));
+    }
+
+    @Test
+    public void testNullBooleanConversion() {
+        assertEquals((Integer) 0, BOOLEAN_CONVERTER.getDBValue(null));
+        assertFalse(BOOLEAN_CONVERTER.getModelValue(null).get());
     }
 
 }

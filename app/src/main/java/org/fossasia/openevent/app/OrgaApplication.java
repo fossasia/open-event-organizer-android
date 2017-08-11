@@ -5,6 +5,7 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
+import com.evernote.android.job.JobManager;
 import com.facebook.stetho.Stetho;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.raizlabs.android.dbflow.config.DatabaseConfig;
@@ -88,6 +89,7 @@ public class OrgaApplication extends MultiDexApplication {
         Picasso.setSingletonInstance(picasso);
 
         if (!isTestBuild()) {
+            JobManager.create(this).addJobCreator(new OrgaJobCreator());
             initializeDatabase(this);
             AndroidThreeTen.init(this);
 

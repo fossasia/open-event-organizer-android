@@ -6,6 +6,8 @@ import com.raizlabs.android.dbflow.annotation.ConflictAction;
 import com.raizlabs.android.dbflow.annotation.Database;
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.SQLiteType;
+import com.raizlabs.android.dbflow.sql.migration.AlterTableMigration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
@@ -29,7 +31,7 @@ public final class OrgaDatabase {
 
     public static final String NAME = "orga_database";
     // To be bumped after each schema change and migration addition
-    public static final int VERSION = 4;
+    public static final int VERSION = 5;
 
     private OrgaDatabase() {
         // Never Called
@@ -55,6 +57,20 @@ public final class OrgaDatabase {
 
             for (String delete: deleted)
                 databaseWrapper.execSQL("DROP TABLE IF EXISTS " + delete);
+        }
+    }
+
+    @Migration(version = 5, database = OrgaDatabase.class)
+    public static class MigrationTo5 extends AlterTableMigration<Attendee> {
+
+        public MigrationTo5(Class<Attendee> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            super.onPreMigrate();
+            addColumn(SQLiteType.INTEGER, "checking");
         }
     }
 }
