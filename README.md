@@ -3,19 +3,25 @@
 
 ## Open Event Organizer App
 
-[![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/master.svg?style=flat-square)](https://travis-ci.org/fossasia/open-event-orga-app)
-[![Codacy Grade](https://img.shields.io/codacy/grade/e27821fb6289410b8f58338c7e0bc686.svg?style=flat-square)](https://www.codacy.com/app/mb/open-event-orga-app)
-[![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg?style=flat-square)](https://gitter.im/fossasia/open-event-orga-app)
+[![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/master.svg)](https://travis-ci.org/fossasia/open-event-orga-app)
+[![Codacy Grade](https://img.shields.io/codacy/grade/9a25fb73a9054144b384b5c6d62243f4.svg)](https://www.codacy.com/app/mb/open-event-orga-app)
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
+[![Appetize Preview](https://img.shields.io/badge/Preview-appetize.io-673AB7.svg)](https://appetize.io/app/t8hace1jdrybzvwwrfw5p1ayuw)
+[![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg)](https://gitter.im/fossasia/open-event-orga-app)
+> Event management app for organizers using Open Event Platform
+
+<img height="256px" src="https://user-images.githubusercontent.com/3874064/29111547-5814a318-7d08-11e7-8c86-0a10a640825e.png" />
 
 The core features of this Android Application are
 - Scan a QR code
 - Check-in attendees 
+- Overview of sales 
+- Ticket Management
 - Data sync with the [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server/)
 
 ## Roadmap
 
 Planned features & enhancements are:
-- Overview of sales
 - Overview of tracks and sessions
 - Quick session re-scheduling
 - Push notifications for certain triggers
@@ -28,7 +34,7 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 ## Development
 
-- The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at [https://open-event-dev.herokuapp.com/api/v1](https://open-event-dev.herokuapp.com/api/v1/) .
+- The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at https://open-event-api.herokuapp.com/ .
 
 ### Libraries:
 - [RxJava 2](https://github.com/ReactiveX/RxJava)
