@@ -233,7 +233,7 @@ public class EventDashboardPresenterTest {
         eventDashboardPresenter.loadDetails(true);
 
         inOrder.verify(eventDetailView).showProgress(true);
-        inOrder.verify(eventDetailView).onRefreshComplete();
+        inOrder.verify(eventDetailView).onRefreshComplete(true);
         inOrder.verify(eventDetailView).showProgress(false);
     }
 
@@ -247,7 +247,7 @@ public class EventDashboardPresenterTest {
         eventDashboardPresenter.loadDetails(true);
 
         inOrder.verify(eventDetailView).showProgress(true);
-        inOrder.verify(eventDetailView).onRefreshComplete();
+        inOrder.verify(eventDetailView).onRefreshComplete(false);
         inOrder.verify(eventDetailView).showProgress(false);
     }
 
@@ -264,7 +264,7 @@ public class EventDashboardPresenterTest {
         eventDashboardPresenter.loadDetails(true);
 
         inOrder.verify(eventDetailView).showProgress(true);
-        inOrder.verify(eventDetailView).onRefreshComplete();
+        inOrder.verify(eventDetailView).onRefreshComplete(false);
         inOrder.verify(eventDetailView).showProgress(false);
     }
 
@@ -278,7 +278,7 @@ public class EventDashboardPresenterTest {
         eventDashboardPresenter.loadDetails(true);
 
         inOrder.verify(eventDetailView).showProgress(true);
-        inOrder.verify(eventDetailView).onRefreshComplete();
+        inOrder.verify(eventDetailView).onRefreshComplete(false);
         inOrder.verify(eventDetailView).showProgress(false);
     }
 }

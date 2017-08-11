@@ -152,9 +152,9 @@ public class AttendeePresenterTest {
         inOrder.verify(attendeesView).showScanButton(false);
         inOrder.verify(attendeeRepository).getAttendees(ID, true);
         inOrder.verify(attendeesView).showProgress(true);
+        inOrder.verify(attendeesView).onRefreshComplete(true);
         inOrder.verify(attendeesView).showResults(any());
         inOrder.verify(attendeesView).showScanButton(true);
-        inOrder.verify(attendeesView).onRefreshComplete();
         inOrder.verify(attendeesView).showProgress(false);
     }
 
@@ -184,8 +184,8 @@ public class AttendeePresenterTest {
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showScanButton(false);
+        inOrder.verify(attendeesView).onRefreshComplete(true);
         inOrder.verify(attendeesView).showScanButton(false);
-        inOrder.verify(attendeesView).onRefreshComplete();
     }
 
     @Test
@@ -212,8 +212,8 @@ public class AttendeePresenterTest {
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showScanButton(false);
+        inOrder.verify(attendeesView).onRefreshComplete(false);
         inOrder.verify(attendeesView).showScanButton(false);
-        inOrder.verify(attendeesView).onRefreshComplete();
     }
 
     @Test
@@ -244,8 +244,8 @@ public class AttendeePresenterTest {
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showScanButton(false);
+        inOrder.verify(attendeesView).onRefreshComplete(false);
         inOrder.verify(attendeesView).showScanButton(true);
-        inOrder.verify(attendeesView).onRefreshComplete();
     }
 
     @Test
@@ -274,8 +274,8 @@ public class AttendeePresenterTest {
         attendeesPresenter.loadAttendees(true);
 
         inOrder.verify(attendeesView).showScanButton(false);
+        inOrder.verify(attendeesView).onRefreshComplete(true);
         inOrder.verify(attendeesView).showScanButton(true);
-        inOrder.verify(attendeesView).onRefreshComplete();
     }
 
     @Test
@@ -291,7 +291,7 @@ public class AttendeePresenterTest {
         inOrder.verify(attendeeRepository).getAttendees(ID, true);
         inOrder.verify(attendeesView).showProgress(true);
         inOrder.verify(attendeesView).showError(anyString());
-        inOrder.verify(attendeesView).onRefreshComplete();
+        inOrder.verify(attendeesView).onRefreshComplete(false);
         inOrder.verify(attendeesView).showProgress(false);
     }
 
