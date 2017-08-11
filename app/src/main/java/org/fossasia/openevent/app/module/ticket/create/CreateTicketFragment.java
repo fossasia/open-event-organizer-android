@@ -4,7 +4,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +81,6 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
 
     @Override
     public void onSuccess(String message) {
-        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
+        ViewUtils.showSnackbar(binding.getRoot(), message);
     }
 }

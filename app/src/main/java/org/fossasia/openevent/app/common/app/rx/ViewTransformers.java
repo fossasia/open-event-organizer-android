@@ -60,9 +60,13 @@ public final class ViewTransformers {
 
     private static <T, V extends Refreshable> ObservableTransformer<T, T> refreshable(V view, boolean forceReload) {
         return observable ->
-            observable.doFinally(() -> {
-                if (forceReload) view.onRefreshComplete();
-            });
+            observable
+                .doOnComplete(() -> {
+                    if (forceReload) view.onRefreshComplete(true);
+                })
+                .doOnError(throwable -> {
+                    if (forceReload) view.onRefreshComplete(false);
+                });
     }
 
     public static <T, V extends ItemResult<T> & Erroneous> ObservableTransformer<T, T> erroneousResult(V view) {

@@ -23,6 +23,7 @@ import java.util.List;
 import io.reactivex.Observable;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -79,7 +80,7 @@ public class ViewTransformersTest {
             .compose(ViewTransformers.progressiveErroneousRefresh(view, false))
             .subscribe(Logger::logSuccess, Logger::logError);
 
-        verify(view, never()).onRefreshComplete();
+        verify(view, never()).onRefreshComplete(anyBoolean());
     }
 
     @Test
@@ -88,7 +89,7 @@ public class ViewTransformersTest {
             .compose(ViewTransformers.progressiveErroneousRefresh(view, true))
             .subscribe(Logger::logSuccess, Logger::logError);
 
-        verify(view).onRefreshComplete();
+        verify(view).onRefreshComplete(true);
     }
 
     @Test

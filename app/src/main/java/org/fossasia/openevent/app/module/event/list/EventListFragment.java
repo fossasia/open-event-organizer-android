@@ -3,7 +3,6 @@ package org.fossasia.openevent.app.module.event.list;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -162,9 +161,10 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     }
 
     @Override
-    public void onRefreshComplete() {
+    public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        Snackbar.make(recyclerView, R.string.refresh_complete, Snackbar.LENGTH_SHORT).show();
+        if (success)
+            ViewUtils.showSnackbar(recyclerView, R.string.refresh_complete);
     }
 
     @Override

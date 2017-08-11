@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -163,9 +162,10 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
     }
 
     @Override
-    public void onRefreshComplete() {
+    public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        Snackbar.make(binding.ticketsRecyclerView, R.string.refresh_complete, Snackbar.LENGTH_SHORT).show();
+        if (success)
+            ViewUtils.showSnackbar(binding.ticketsRecyclerView, R.string.refresh_complete);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
 
     @Override
     public void showTicketDeleted(String message) {
-        Snackbar.make(binding.ticketsRecyclerView, message, Snackbar.LENGTH_SHORT).show();
+        ViewUtils.showSnackbar(binding.ticketsRecyclerView, message);
     }
 
     @Override
