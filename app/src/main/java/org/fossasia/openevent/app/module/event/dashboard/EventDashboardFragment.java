@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -146,9 +145,10 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
     }
 
     @Override
-    public void onRefreshComplete() {
+    public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        Snackbar.make(container, R.string.refresh_complete, Snackbar.LENGTH_SHORT).show();
+        if (success)
+            ViewUtils.showSnackbar(container, R.string.refresh_complete);
     }
 
     @Override
