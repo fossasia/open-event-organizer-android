@@ -107,6 +107,8 @@ public class AttendeeRepositoryTest {
         when(eventService.getAttendees(23)).thenReturn(Observable.just(ATTENDEES));
         when(databaseRepository.deleteAll(Attendee.class)).thenReturn(Completable.complete());
         when(databaseRepository.saveList(Attendee.class, ATTENDEES)).thenReturn(Completable.complete());
+        when(databaseRepository.getItems(eq(Attendee.class), any(SQLOperator.class)))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
 
         // Force reload ensures no use of cache
         Observable<List<Attendee>> attendeeObservable = attendeeRepository.getAttendees(23, true)

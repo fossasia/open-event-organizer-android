@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.unit.model;
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.common.data.models.Event;
@@ -7,7 +8,6 @@ import org.fossasia.openevent.app.common.data.models.Event_Table;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.network.EventService;
 import org.fossasia.openevent.app.common.data.repository.EventRepository;
-import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.utils.core.Utils;
 import org.junit.After;
 import org.junit.Before;
@@ -33,7 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.refEq;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -115,7 +115,9 @@ public class EventRepositoryTest {
 
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(TOKEN);
-        when(databaseRepository.getAllItems(User.class)).thenReturn(Observable.empty());
+        when(databaseRepository.getAllItems(User.class))
+            .thenReturn(Observable.empty())
+            .thenReturn(Observable.just(user));
         when(databaseRepository.save(User.class, user)).thenReturn(completable);
         when(eventService.getUser(344)).thenReturn(Observable.just(user));
 
@@ -156,6 +158,7 @@ public class EventRepositoryTest {
         when(utilModel.getToken()).thenReturn(TOKEN);
         when(eventService.getUser(344)).thenReturn(Observable.just(user));
         when(databaseRepository.save(User.class, user)).thenReturn(Completable.complete());
+        when(databaseRepository.getAllItems(User.class)).thenReturn(Observable.just(user));
         when(utilModel.isConnected()).thenReturn(true);
 
         // Force reload ensures no use of cache
@@ -163,7 +166,7 @@ public class EventRepositoryTest {
 
         // Verify loads from network
         verify(eventService).getUser(344);
-        verify(databaseRepository, never()).getAllItems(User.class);
+        verify(databaseRepository).getAllItems(User.class);
     }
 
     @Test
@@ -178,7 +181,8 @@ public class EventRepositoryTest {
 
         when(utilModel.isConnected()).thenReturn(true);
         when(databaseRepository.getItems(eq(Event.class), refEq(Event_Table.id.eq(id))))
-            .thenReturn(Observable.empty());
+            .thenReturn(Observable.empty())
+            .thenReturn(Observable.just(event));
         when(databaseRepository.save(Event.class, event)).thenReturn(completable);
         when(eventService.getEvent(id)).thenReturn(Observable.just(event));
 
@@ -218,6 +222,8 @@ public class EventRepositoryTest {
 
         Event event = new Event();
         when(databaseRepository.save(Event.class, event)).thenReturn(Completable.complete());
+        when(databaseRepository.getItems(eq(Event.class), refEq(Event_Table.id.eq(id))))
+            .thenReturn(Observable.just(event));
         when(utilModel.isConnected()).thenReturn(true);
         when(eventService.getEvent(id)).thenReturn(Observable.just(event));
 
@@ -230,7 +236,6 @@ public class EventRepositoryTest {
 
         // Verify loads from network
         verify(eventService).getEvent(id);
-        verify(databaseRepository, never()).getItems(any(), any());
     }
 
     @Test
@@ -248,7 +253,8 @@ public class EventRepositoryTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(TOKEN);
         when(databaseRepository.getAllItems(eq(Event.class)))
-            .thenReturn(Observable.empty());
+            .thenReturn(Observable.empty())
+            .thenReturn(Observable.fromIterable(events));
         when(databaseRepository.saveList(Event.class, events)).thenReturn(completable);
         when(databaseRepository.deleteAll(Event.class)).thenReturn(completable);
         when(eventService.getEvents(344)).thenReturn(Observable.just(events));
@@ -286,7 +292,7 @@ public class EventRepositoryTest {
             .test()
             .assertValue(events);
 
-        verify(databaseRepository).getAllItems(eq(Event.class));
+        verify(databaseRepository, times(2)).getAllItems(eq(Event.class));
         verifyZeroInteractions(eventService);
     }
 
@@ -301,6 +307,8 @@ public class EventRepositoryTest {
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(TOKEN);
         when(databaseRepository.saveList(Event.class, events)).thenReturn(Completable.complete());
+        when(databaseRepository.getAllItems(eq(Event.class)))
+            .thenReturn(Observable.fromIterable(events));
         when(databaseRepository.deleteAll(Event.class)).thenReturn(Completable.complete());
         when(eventService.getEvents(344)).thenReturn(Observable.just(events));
 
@@ -314,7 +322,7 @@ public class EventRepositoryTest {
 
         // Verify loads from network
         verify(eventService).getEvents(344);
-        verify(databaseRepository, never()).getAllItems(eq(Event.class));
+        verify(databaseRepository).getAllItems(eq(Event.class));
     }
 
     @Test
