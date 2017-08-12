@@ -75,5 +75,8 @@
     <string name="sale_start_time">Sale start time</string>
     <string name="sale_end_time">Sale end time</string>
     <string name="pick">Pick :</string>
+    <string name="about">About</string>
+    <string name="title_activity_about_event">AboutEventActivity</string>
+    <string name="details">Details</string>
 
 </resources>

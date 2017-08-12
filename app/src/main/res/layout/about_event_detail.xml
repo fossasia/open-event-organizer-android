@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <import type="android.view.View" />
+
+        <import type="org.fossasia.openevent.app.common.utils.core.DateUtils" />
+
+        <variable
+            name="event"
+            type="org.fossasia.openevent.app.common.data.models.Event" />
+    </data>
+
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#dedede"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_medium"
+                android:visibility="@{ event.hasOrganizerInfo ? View.VISIBLE : View.GONE }">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{ "Organizer: " + event.organizerName }' />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ event.organizerDescription }"
+                    android:visibility="@{ (event.organizerDescription != null) ? View.VISIBLE : View.GONE }" />
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_small"
+                        android:text="@string/details"
+                        android:background="#dedede"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textColor="?android:textColorSecondary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_clock }"
+                        android:drawableStart="@{ @drawable/ic_clock }"
+                        android:text='@{ "Starts: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_clock }"
+                        android:drawableStart="@{ @drawable/ic_clock }"
+                        android:text='@{ "Ends: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.endsAt) }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_time }"
+                        android:drawableStart="@{ @drawable/ic_time }"
+                        android:text='@{ event.timezone }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_earth }"
+                        android:drawableStart="@{ @drawable/ic_earth }"
+                        android:text='@{ event.paymentCountry }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_coin }"
+                        android:drawableStart="@{ @drawable/ic_coin }"
+                        android:text='@{ event.paymentCurrency }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_location }"
+                        android:drawableStart="@{ @drawable/ic_location }"
+                        android:text='@{ event.latitude + " " + event.longitude }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_info }"
+                        android:drawableStart="@{ @drawable/ic_info }"
+                        android:text='@{ event.description }' />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</layout>

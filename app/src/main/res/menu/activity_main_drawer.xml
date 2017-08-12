@@ -15,6 +15,11 @@
             android:id="@+id/nav_tickets"
             android:icon="@drawable/ic_ticket"
             android:title="@string/tickets" />
+
+        <item
+            android:id="@+id/nav_about_event"
+            android:icon="@drawable/ic_info"
+            android:title="@string/about" />
     </group>
 
     <group android:id="@+id/eventsMenu" android:checkableBehavior="single">
