@@ -82,6 +82,9 @@ final class AbstractObservableBuilder<T> {
         return Observable
                 .defer(getReloadCallable())
                 .switchIfEmpty(getConnectionObservable())
+                .toList()
+                .flatMap(items -> diskObservable.toList())
+                .flattenAsObservable(items -> items)
                 .compose(applySchedulers());
     }
 
