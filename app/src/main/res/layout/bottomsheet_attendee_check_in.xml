@@ -52,15 +52,28 @@
                     android:text="@{ checkinAttendee.email }"
                     tools:text="xyz@example.com" />
 
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Small"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:text="@{ checkinAttendee.isCheckedIn ? @string/checked_in : @string/checked_out }"
-                    android:textAllCaps="true"
-                    android:textColor="@{ checkinAttendee.isCheckedIn ? @color/light_green_500 : @color/red_500 }"
-                    tools:text="CHECKED IN" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text="@{ checkinAttendee.isCheckedIn ? @string/checked_in : @string/checked_out }"
+                        android:textAllCaps="true"
+                        android:textColor="@{ checkinAttendee.isCheckedIn ? @color/light_green_500 : @color/red_500 }"
+                        tools:text="CHECKED IN" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        app:srcCompat="@{ checkinAttendee.checking ? @drawable/ic_local_sync : @drawable/ic_server_sync }"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -145,7 +158,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal">
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal">
 
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
@@ -156,15 +170,6 @@
                 app:fabSize="mini"
                 app:srcCompat="@{ checkinAttendee.isCheckedIn ? @drawable/ic_checkout : @drawable/ic_checkin }"
                 app:tint="@android:color/white" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_gravity="center"
-                android:layout_width="@dimen/progressbar_large"
-                android:layout_height="@dimen/progressbar_large"
-                android:visibility="@{ checkinAttendee.checking ? View.VISIBLE : View.INVISIBLE }"
-                tools:visibility="visible"
-                android:theme="@style/AppTheme" />
 
         </FrameLayout>
 

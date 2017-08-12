@@ -39,8 +39,6 @@ public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttende
             .compose(dispose(getDisposable()))
             .map(DatabaseChangeListener.ModelChange::getModel)
             .filter(filterAttendee -> filterAttendee.getId() == attendee.getId())
-            .distinctUntilChanged(Attendee::isCheckedIn)
-            .skip(1)
             .compose(erroneousResult(getView()))
             .subscribe(attendee -> {
                 this.attendee = attendee;
