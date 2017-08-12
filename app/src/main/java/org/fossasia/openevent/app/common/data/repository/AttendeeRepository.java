@@ -89,6 +89,7 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
 
     public Completable scheduleToggle(Attendee attendee) {
         attendee.checking.set(true);
+        attendee.isCheckedIn = !attendee.isCheckedIn;
         return databaseRepository
             .update(Attendee.class, attendee)
             .concatWith(completableObserver -> {
@@ -114,14 +115,13 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
                 attendee.setTicket(null);
                 attendee.setOrder(null);
 
-                attendee.setCheckedIn(!attendee.isCheckedIn());
-
                 return eventService.patchAttendee(attendee.getId(), attendee);
             })
-            .doOnNext(attendee ->
+            .doOnNext(attendee -> {
                 databaseRepository
                     .update(Attendee.class, attendee)
-                    .subscribe())
+                    .subscribe();
+            })
             .doOnError(throwable -> scheduleToggle(transitAttendee))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());

@@ -30,6 +30,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -124,7 +125,7 @@ public class AttendeeCheckInPresenterTest {
         notifier.onNext(new DatabaseChangeListener.ModelChange<>(toggled, BaseModel.Action.UPDATE));
 
         verify(attendeeCheckInView).showResult(toggled);
-        verify(attendeeCheckInView).onSuccess(any());
+        verify(attendeeCheckInView, atLeast(2)).onSuccess(any());
     }
 
     @Test
