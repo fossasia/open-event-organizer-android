@@ -153,25 +153,16 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-        <FrameLayout
+        <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
-            android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal"
-            android:layout_marginTop="@dimen/spacing_normal">
-
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="@{() -> presenter.toggleCheckIn() }"
-                app:backgroundTint="@{ checkinAttendee.isCheckedIn ? @color/red_500 : @color/light_green_500 }"
-                app:fabSize="mini"
-                app:srcCompat="@{ checkinAttendee.isCheckedIn ? @drawable/ic_checkout : @drawable/ic_checkin }"
-                app:tint="@android:color/white" />
-
-        </FrameLayout>
+            android:layout_margin="@dimen/spacing_large"
+            android:onClick="@{() -> presenter.toggleCheckIn() }"
+            app:backgroundTint="@{ checkinAttendee.isCheckedIn ? @color/red_500 : @color/light_green_500 }"
+            app:fabSize="mini"
+            app:srcCompat="@{ checkinAttendee.isCheckedIn ? @drawable/ic_checkout : @drawable/ic_checkin }"
+            app:tint="@android:color/white" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
