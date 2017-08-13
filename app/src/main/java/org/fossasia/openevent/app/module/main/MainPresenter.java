@@ -7,12 +7,15 @@ import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.IBus;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.common.utils.core.CurrencyUtils;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainView;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.disposeCompletable;
@@ -28,6 +31,8 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
     private final IEventRepository eventRepository;
     private final IBus bus;
     private final ContextManager contextManager;
+
+    private User organizer;
 
     @Inject
     public MainPresenter(ISharedPreferenceModel sharedPreferenceModel, IAuthModel loginModel,
@@ -50,6 +55,13 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
                 CurrencyUtils.getCurrencySymbol(event.getPaymentCurrency())
                     .subscribe(ContextManager::setCurrency);
                 showEvent(event);
+            }, Logger::logError);
+
+        getOrganizerObservable()
+            .compose(dispose(getDisposable()))
+            .subscribe(user -> {
+                this.organizer = user;
+                getView().showOrganizer(user);
             }, Logger::logError);
 
         long storedEventId = sharedPreferenceModel.getLong(EVENT_KEY, -1);
@@ -80,6 +92,13 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
     private void showEvent(Event event) {
         getView().setEventId(event.getId());
         getView().showDashboard();
+    }
+
+    private Observable<User> getOrganizerObservable() {
+        if (organizer != null && isRotated())
+            return Observable.just(organizer);
+        else
+            return eventRepository.getOrganiser(false);
     }
 
     @Override

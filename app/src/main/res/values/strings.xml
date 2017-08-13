@@ -78,5 +78,10 @@
     <string name="about">About</string>
     <string name="title_activity_about_event">AboutEventActivity</string>
     <string name="details">Details</string>
+    <string name="title_activity_organizer_detail">OrganizerDetailActivity</string>
+    <string name="verified">Verified</string>
+    <string name="not_verified">Not Verified</string>
+    <string name="contact">Contact</string>
+    <string name="profile_picture">Profile Picture</string>
 
 </resources>

@@ -11,6 +11,7 @@ import org.fossasia.openevent.app.module.auth.AuthActivity;
 import org.fossasia.openevent.app.module.event.about.AboutEventActivity;
 import org.fossasia.openevent.app.module.event.chart.ChartActivity;
 import org.fossasia.openevent.app.module.main.MainActivity;
+import org.fossasia.openevent.app.module.organizer.detail.OrganizerDetailActivity;
 import org.fossasia.openevent.app.robo.TestApplication;
 import org.fossasia.openevent.app.robo.rule.DatabaseTestRule;
 import org.junit.AfterClass;
@@ -61,7 +62,8 @@ public class ActivityInstanceTest<T extends Activity> {
             { ScanQRActivity.class, MainActivity.EVENT_KEY, 1L },
             { MainActivity.class, null, null },
             { ChartActivity.class, null, null },
-            {AboutEventActivity.class, AboutEventActivity.EVENT_ID, 1L }
+            { AboutEventActivity.class, AboutEventActivity.EVENT_ID, 1L },
+            { OrganizerDetailActivity.class, null, null }
         });
     }
 

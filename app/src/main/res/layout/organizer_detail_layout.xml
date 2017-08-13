@@ -3,12 +3,11 @@
 
     <data>
         <import type="android.view.View" />
-
         <import type="org.fossasia.openevent.app.common.utils.core.DateUtils" />
 
         <variable
-            name="event"
-            type="org.fossasia.openevent.app.common.data.models.Event" />
+            name="user"
+            type="org.fossasia.openevent.app.common.data.models.User" />
     </data>
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,25 +21,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#dedede"
-                android:orientation="vertical"
-                android:padding="@dimen/spacing_medium"
-                android:visibility="@{ event.hasOrganizerInfo ? View.VISIBLE : View.GONE }">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{ "Organizer: " + event.organizerName }' />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{ event.organizerDescription }"
-                    android:visibility="@{ (event.organizerDescription != null) ? View.VISIBLE : View.GONE }" />
-            </LinearLayout>
+            <ImageView
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:layout_gravity="center"
+                app:circleImageUrl="@{ user.avatarUrl }"
+                android:layout_margin="@dimen/spacing_medium"
+                app:placeholder="@{ @drawable/ic_account_circle }"
+                android:contentDescription="@string/profile_picture" />
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -69,7 +57,7 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_clock }"
                         android:drawableStart="@{ @drawable/ic_clock }"
-                        android:text='@{ "Starts: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) }' />
+                        android:text='@{ "Joined: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, user.createdAt) }' />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -77,9 +65,9 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
                         android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_clock }"
-                        android:drawableStart="@{ @drawable/ic_clock }"
-                        android:text='@{ "Ends: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.endsAt) }' />
+                        android:drawableLeft="@{ @drawable/ic_email }"
+                        android:drawableStart="@{ @drawable/ic_email }"
+                        android:text='@{ user.email }' />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -87,39 +75,9 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
                         android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_time }"
-                        android:drawableStart="@{ @drawable/ic_time }"
-                        android:text='@{ event.timezone }' />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_earth }"
-                        android:drawableStart="@{ @drawable/ic_earth }"
-                        android:text='@{ event.paymentCountry }' />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_coin }"
-                        android:drawableStart="@{ @drawable/ic_coin }"
-                        android:text='@{ event.paymentCurrency }' />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_location }"
-                        android:drawableStart="@{ @drawable/ic_location }"
-                        android:text='@{ event.latitude + " " + event.longitude }' />
+                        android:drawableLeft="@{ @drawable/ic_server_sync }"
+                        android:drawableStart="@{ @drawable/ic_server_sync }"
+                        android:text='@{ user.isVerified ? @string/verified : @string/not_verified }' />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -129,7 +87,80 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_info }"
                         android:drawableStart="@{ @drawable/ic_info }"
-                        android:text='@{ event.description }' />
+                        android:text='@{ user.details }' />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_small"
+                        android:text="@string/contact"
+                        android:background="#dedede"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textColor="?android:textColorSecondary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_contact }"
+                        android:drawableStart="@{ @drawable/ic_contact }"
+                        android:text='@{ user.contact }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_facebook }"
+                        android:drawableStart="@{ @drawable/ic_facebook }"
+                        android:text='@{ user.facebookUrl }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_twitter }"
+                        android:drawableStart="@{ @drawable/ic_twitter }"
+                        android:text='@{ user.twitterUrl }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_google_plus }"
+                        android:drawableStart="@{ @drawable/ic_google_plus }"
+                        android:text='@{ user.googlePlusUrl }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableLeft="@{ @drawable/ic_instagram }"
+                        android:drawableStart="@{ @drawable/ic_instagram }"
+                        android:text='@{ user.instagramUrl }' />
 
                 </LinearLayout>
 
