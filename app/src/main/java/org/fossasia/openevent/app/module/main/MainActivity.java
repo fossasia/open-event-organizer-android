@@ -20,6 +20,7 @@ import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseActivity;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.utils.ui.BackPressHandler;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.MainActivityBinding;
@@ -31,6 +32,7 @@ import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainView;
+import org.fossasia.openevent.app.module.organizer.detail.OrganizerDetailActivity;
 import org.fossasia.openevent.app.module.settings.SettingsFragment;
 import org.fossasia.openevent.app.module.ticket.list.TicketsFragment;
 
@@ -76,6 +78,8 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentManager = getSupportFragmentManager();
+
+        headerBinding.profile.setOnClickListener(view -> startActivity(new Intent(this, OrganizerDetailActivity.class)));
     }
 
     @Override
@@ -149,6 +153,11 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     @Override
     public void showDashboard() {
         loadFragment(R.id.nav_dashboard);
+    }
+
+    @Override
+    public void showOrganizer(User organizer) {
+        headerBinding.setUser(organizer);
     }
 
     @Override
