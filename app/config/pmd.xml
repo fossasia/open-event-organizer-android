@@ -71,6 +71,7 @@ Severity: HARD
     <rule ref="rulesets/java/design.xml">
         <exclude name="UncommentedEmptyConstructor" />
         <exclude name="AccessorMethodGeneration" />
+        <exclude name="TooFewBranchesForASwitchStatement" />
     </rule>
 
     <rule ref="rulesets/java/empty.xml" />
@@ -106,7 +107,7 @@ Severity: HARD
 
     <rule ref="rulesets/java/naming.xml/LongVariable">
         <properties>
-            <property name="minimum" value="25" />
+            <property name="minimum" value="30" />
         </properties>
     </rule>
 

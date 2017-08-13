@@ -7,6 +7,7 @@ import android.graphics.Paint;
 
 import com.squareup.picasso.Transformation;
 
+@SuppressWarnings("PMD.CompareObjectsWithEquals") // Equals method crashes the app
 public class CircleTransform implements Transformation {
 
     @Override
@@ -17,7 +18,7 @@ public class CircleTransform implements Transformation {
         int y = (source.getHeight() - size) / 2;
 
         Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
-        if (squaredBitmap.equals(source)) {
+        if (squaredBitmap != source) {
             source.recycle();
         }
 

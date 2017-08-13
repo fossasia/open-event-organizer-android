@@ -44,4 +44,7 @@
         <item name="android:paddingEnd" tools:targetApi="jelly_bean_mr1">@dimen/spacing_normal</item>\
     </style>
 
+    <style name="ExpandedAppBar" parent="@style/TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

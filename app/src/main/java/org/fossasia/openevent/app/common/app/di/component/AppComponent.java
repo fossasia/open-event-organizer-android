@@ -10,6 +10,7 @@ import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.module.auth.AuthActivity;
 import org.fossasia.openevent.app.module.auth.login.LoginFragment;
 import org.fossasia.openevent.app.module.auth.signup.SignUpFragment;
+import org.fossasia.openevent.app.module.event.about.AboutEventFragment;
 import org.fossasia.openevent.app.module.event.chart.ChartActivity;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
@@ -29,6 +30,7 @@ import dagger.Component;
     NetworkModule.class,
     PresenterModule.class
 })
+@SuppressWarnings("PMD.TooManyMethods") // Will contain entry for all injectable classes
 public interface AppComponent {
 
     void inject(MainActivity mainActivity);
@@ -60,4 +62,6 @@ public interface AppComponent {
     void inject(TicketDetailFragment ticketDetailFragment);
 
     void inject(AttendeeCheckInJob attendeeCheckInJob);
+
+    void inject(AboutEventFragment aboutEventFragment);
 }
