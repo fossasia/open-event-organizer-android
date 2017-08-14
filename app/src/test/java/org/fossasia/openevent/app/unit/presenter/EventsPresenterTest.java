@@ -48,9 +48,9 @@ public class EventsPresenterTest {
     private static final String DATE = DateUtils.formatDateToIso(LocalDateTime.now());
 
     private static final List<Event> EVENT_LIST = Arrays.asList(
-        new Event(12, DATE, DATE),
-        new Event(13, DATE, DATE),
-        new Event(14, DATE, DATE)
+        Event.builder().id(12).startsAt(DATE).endsAt(DATE).build(),
+        Event.builder().id(13).startsAt(DATE).endsAt(DATE).build(),
+        Event.builder().id(14).startsAt(DATE).endsAt(DATE).build()
     );
 
     private static final User ORGANISER = new User();

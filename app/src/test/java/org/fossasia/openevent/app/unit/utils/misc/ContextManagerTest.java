@@ -53,7 +53,7 @@ public class ContextManagerTest {
     @Test
     public void shouldSetOrganiser() {
         when(client.getContext()).thenReturn(context);
-        User user = new User("test@example.com");
+        User user = User.builder().email("test@example.com").build();
         user.setId(32);
 
         Map<String, Object> data = new ConcurrentHashMap<>();

@@ -161,7 +161,7 @@ public class AttendeeRepositoryTest {
 
     @Test
     public void shouldSaveToggledAttendeeCheck() {
-        Attendee attendee = new Attendee(89);
+        Attendee attendee = Attendee.builder().id(89).build();
 
         attendee.setCheckedIn(true);
 

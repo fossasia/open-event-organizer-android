@@ -51,7 +51,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{ContextManager.getCurrency() + String.format(" %.2f", event.totalSale)}'
+                        android:text='@{ContextManager.getCurrency() + String.format(" %.2f", event.analytics.totalSale)}'
                         android:textSize="@dimen/text_size_extra_large"
                         android:textColor="@color/color_accent"
                         android:layout_marginLeft="@dimen/spacing_normal"
@@ -97,14 +97,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@{event.totalAttendees}"
+                                    android:text="@{event.analytics.totalAttendees}"
                                     android:textSize="20sp"
                                     android:textStyle="bold"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text='@{"/" + event.totalTickets}'
+                                    android:text='@{"/" + event.analytics.totalTickets}'
                                     android:textSize="@dimen/text_size_small"/>
 
                             </LinearLayout>
@@ -127,12 +127,12 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:max="100"
-                                    android:progress="@{event.totalTickets == 0 ? 0 : (int) ((event.totalAttendees*100)/event.totalTickets)}" />
+                                    android:progress="@{event.analytics.totalTickets == 0 ? 0 : (int) ((event.analytics.totalAttendees*100)/event.analytics.totalTickets)}" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text='@{(event.totalTickets == 0 ? 0 : (int) ((event.totalAttendees*100)/event.totalTickets)) + "%"}'
+                                    android:text='@{(event.analytics.totalTickets == 0 ? 0 : (int) ((event.analytics.totalAttendees*100)/event.analytics.totalTickets)) + "%"}'
                                     android:layout_marginLeft="@dimen/spacing_extra_small"
                                     android:layout_marginStart="@dimen/spacing_extra_small"/>
 
@@ -160,14 +160,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@{event.checkedIn}"
+                                    android:text="@{event.analytics.checkedIn}"
                                     android:textSize="@dimen/text_size_large"
                                     android:textStyle="bold"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text='@{"/" + event.totalAttendees}'
+                                    android:text='@{"/" + event.analytics.totalAttendees}'
                                     android:textSize="@dimen/text_size_small"/>
 
                             </LinearLayout>
@@ -190,13 +190,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:max="100"
-                                    android:progress="@{event.totalAttendees == 0 ? 0 : (int) ((event.checkedIn*100)/event.totalAttendees)}" />
+                                    android:progress="@{event.analytics.totalAttendees == 0 ? 0 : (int) ((event.analytics.checkedIn*100)/event.analytics.totalAttendees)}" />
 
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text='@{(event.totalAttendees == 0 ? 0 : (int) ((event.checkedIn*100)/event.totalAttendees)) + "%"}'
+                                    android:text='@{(event.analytics.totalAttendees == 0 ? 0 : (int) ((event.analytics.checkedIn*100)/event.analytics.totalAttendees)) + "%"}'
                                     android:layout_marginLeft="@dimen/spacing_extra_small"
                                     android:layout_marginStart="@dimen/spacing_extra_small"/>
 

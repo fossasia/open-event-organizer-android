@@ -41,41 +41,49 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("PMD.TooManyMethods")
 public class EventDashboardPresenterTest {
 
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Mock private IEventDashboardView eventDetailView;
-    @Mock private IEventRepository eventRepository;
-    @Mock private TicketAnalyser ticketAnalyser;
-    @Mock private IAttendeeRepository attendeeRepository;
-    @Mock private ChartAnalyser chartAnalyser;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock
+    private IEventDashboardView eventDetailView;
+    @Mock
+    private IEventRepository eventRepository;
+    @Mock
+    private TicketAnalyser ticketAnalyser;
+    @Mock
+    private IAttendeeRepository attendeeRepository;
+    @Mock
+    private ChartAnalyser chartAnalyser;
 
     private static final int ID = 42;
     private EventDashboardPresenter eventDashboardPresenter;
 
-    private static final Event EVENT = new Event(ID);
+    private static final Event EVENT = Event.builder().id(ID).build();
 
     private static final List<Attendee> ATTENDEES = Arrays.asList(
-        new Attendee(false),
-        new Attendee(true),
-        new Attendee(false),
-        new Attendee(false),
-        new Attendee(true),
-        new Attendee(true),
-        new Attendee(false)
+        Attendee.builder().isCheckedIn(false).build(),
+        Attendee.builder().isCheckedIn(true).build(),
+        Attendee.builder().isCheckedIn(false).build(),
+        Attendee.builder().isCheckedIn(false).build(),
+        Attendee.builder().isCheckedIn(true).build(),
+        Attendee.builder().isCheckedIn(true).build(),
+        Attendee.builder().isCheckedIn(false).build()
     );
 
     private static final List<Ticket> TICKETS = Arrays.asList(
-        new Ticket(1, 21),
-        new Ticket(2, 50),
-        new Ticket(3, 43));
+        Ticket.builder().id(1L).quantity(21L).build(),
+        Ticket.builder().id(2L).quantity(50L).build(),
+        Ticket.builder().id(3L).quantity(43L).build());
 
-    @Before
-    public void setUp() {
+    static {
         // Event set up
         EVENT.setName("Event Name");
         EVENT.setStartsAt("2004-05-21T9:30:00");
         EVENT.setEndsAt("2012-09-20T12:23:00");
         EVENT.setTickets(TICKETS);
+    }
 
+    @Before
+    public void setUp() {
         eventDashboardPresenter = new EventDashboardPresenter(eventRepository, attendeeRepository, ticketAnalyser, chartAnalyser);
 
         eventDashboardPresenter.attach(EVENT.getId(), eventDetailView);
