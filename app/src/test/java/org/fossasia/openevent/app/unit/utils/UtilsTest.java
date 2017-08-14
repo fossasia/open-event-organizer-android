@@ -64,14 +64,14 @@ public class UtilsTest {
     @Test
     public void shouldFindIndex() {
         List<Attendee> attendees = Arrays.asList(
-            new Attendee(12),
-            new Attendee(34),
-            new Attendee(10),
-            new Attendee(90),
-            new Attendee(3)
+            Attendee.builder().id(12).build(),
+            Attendee.builder().id(34).build(),
+            Attendee.builder().id(10).build(),
+            Attendee.builder().id(90).build(),
+            Attendee.builder().id(3).build()
         );
 
-        Attendee newAttendee = new Attendee(10);
+        Attendee newAttendee = Attendee.builder().id(10).build();
 
         Utils.PropertyMatcher<Attendee> idEqual = (first, second) -> first.getId() == second.getId();
 

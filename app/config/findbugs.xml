@@ -28,6 +28,9 @@ Severity: HARD
     <Match>
         <Bug pattern="HE_EQUALS_USE_HASHCODE " />
     </Match>
+    <Match>
+        <Bug pattern="EQ_COMPARETO_USE_OBJECT_EQUALS" />
+    </Match>
 
     <!-- Don't complain about rules in tests. -->
     <Match>

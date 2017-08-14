@@ -107,9 +107,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 bind:color='@{"light_blue"}'
-                bind:completed="@{event.soldFreeTickets}"
+                bind:completed="@{event.analytics.soldFreeTickets}"
                 bind:ticketName="@{@string/ticket_free}"
-                bind:total="@{event.freeTickets}" />
+                bind:total="@{event.analytics.freeTickets}" />
 
             <include
                 layout="@layout/ticket_analytics_item"
@@ -117,9 +117,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 bind:color='@{"purple"}'
-                bind:completed="@{event.soldPaidTickets}"
+                bind:completed="@{event.analytics.soldPaidTickets}"
                 bind:ticketName="@{@string/ticket_paid}"
-                bind:total="@{event.paidTickets}" />
+                bind:total="@{event.analytics.paidTickets}" />
 
             <include
                 layout="@layout/ticket_analytics_item"
@@ -127,9 +127,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 bind:color='@{"red"}'
-                bind:completed="@{event.soldDonationTickets}"
+                bind:completed="@{event.analytics.soldDonationTickets}"
                 bind:ticketName="@{@string/ticket_donation}"
-                bind:total="@{event.donationTickets}" />
+                bind:total="@{event.analytics.donationTickets}" />
         </LinearLayout>
 
         <LinearLayout

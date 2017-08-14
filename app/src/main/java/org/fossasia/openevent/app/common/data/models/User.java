@@ -51,8 +51,4 @@ public class User {
     public String googlePlusUrl;
 
     public User() { }
-
-    public User(String email) {
-        this.email = email;
-    }
 }

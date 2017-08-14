@@ -7,9 +7,13 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
+@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 public class Order {
@@ -25,8 +29,4 @@ public class Order {
     public String status;
 
     public Order() { }
-
-    public Order(String identifier) {
-        setIdentifier(identifier);
-    }
 }

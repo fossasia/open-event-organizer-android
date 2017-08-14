@@ -1,8 +1,6 @@
 package org.fossasia.openevent.app.common.data.models;
 
 import android.databinding.ObservableBoolean;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -19,21 +17,30 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
+import org.fossasia.openevent.app.common.data.models.delegates.TicketDelegate;
 import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
-import org.fossasia.openevent.app.common.utils.core.CompareUtils;
 import org.fossasia.openevent.app.common.utils.json.ObservableStringDeserializer;
 import org.fossasia.openevent.app.common.utils.json.ObservableStringSerializer;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Delegate;
 
 @Data
+@Builder
 @Type("ticket")
+@AllArgsConstructor
 @ToString(exclude = "event")
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @SuppressWarnings("PMD.TooManyFields")
 public class Ticket implements Comparable<Ticket> {
+
+    @Delegate
+    private final TicketDelegate ticketDelegate = new TicketDelegate(this);
+
     @Id(LongIdHandler.class)
     @PrimaryKey
     public Long id;
@@ -66,21 +73,4 @@ public class Ticket implements Comparable<Ticket> {
     public final ObservableBoolean deleting = new ObservableBoolean();
 
     public Ticket() { }
-
-    @VisibleForTesting
-    public Ticket(long id, long quantity) {
-        setId(id);
-        setQuantity(quantity);
-    }
-
-    @VisibleForTesting
-    public Ticket(long quantity, String type) {
-        this.quantity = quantity;
-        this.type = type;
-    }
-
-    @Override
-    public int compareTo(@NonNull Ticket otherOne) {
-        return CompareUtils.compareCascading(this, otherOne, Ticket::getType);
-    }
 }

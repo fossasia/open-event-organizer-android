@@ -1,10 +1,5 @@
 package org.fossasia.openevent.app.common.data.models;
 
-import android.databinding.ObservableField;
-import android.databinding.ObservableFloat;
-import android.databinding.ObservableLong;
-import android.support.annotation.NonNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -16,24 +11,35 @@ import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.common.data.models.contract.IHeaderProvider;
-import org.fossasia.openevent.app.common.utils.core.service.DateService;
+import org.fossasia.openevent.app.common.data.models.delegates.EventAnalyticsDelegate;
+import org.fossasia.openevent.app.common.data.models.delegates.EventDelegate;
+import org.fossasia.openevent.app.common.data.models.delegates.contract.IEventDelegate;
 
-import java.text.ParseException;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import timber.log.Timber;
+import lombok.experimental.Delegate;
 
 @Data
+@Builder
 @Type("event")
+@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Event implements Comparable<Event>, IHeaderProvider {
+
+    @Delegate(types = IEventDelegate.class, excludes = Excluding.class)
+    private final EventDelegate eventDelegate = new EventDelegate(this);
+
+    @Delegate(types = EventAnalyticsDelegate.class)
+    public final EventAnalyticsDelegate analytics = new EventAnalyticsDelegate();
+
     @Id(LongIdHandler.class)
     @PrimaryKey
     public long id;
@@ -89,73 +95,16 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     @Relationship("tickets")
     public List<Ticket> tickets;
 
-    // For Data Binding
-    public final ObservableField<String> startDate = new ObservableField<>();
-    public final ObservableField<String> endDate = new ObservableField<>();
-    public final ObservableField<String> eventStartTime = new ObservableField<>();
-
-    public final ObservableLong totalAttendees = new ObservableLong();
-    public final ObservableLong totalTickets = new ObservableLong();
-    public final ObservableLong checkedIn = new ObservableLong();
-    public final ObservableFloat totalSale = new ObservableFloat();
-
-    public final ObservableLong freeTickets = new ObservableLong();
-    public final ObservableLong paidTickets = new ObservableLong();
-    public final ObservableLong donationTickets = new ObservableLong();
-
-    public final ObservableLong soldFreeTickets = new ObservableLong();
-    public final ObservableLong soldPaidTickets = new ObservableLong();
-    public final ObservableLong soldDonationTickets = new ObservableLong();
-
     public Event() { }
-
-    public Event(long id) {
-        this.id = id;
-    }
-
-    public Event(long id, String startTime, String endTime) {
-        this.id = id;
-        this.startsAt = startTime;
-        this.endsAt = endTime;
-    }
 
     // One to Many implementation
     @JsonIgnore
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "tickets")
+    @OneToMany(methods = {OneToMany.Method.SAVE}, variableName = "tickets")
     List<Ticket> getEventTickets() {
-        if (tickets != null && !tickets.isEmpty()) {
-            for (Ticket ticket : tickets)
-                ticket.setEvent(this);
-
-            return tickets;
-        }
-
-        tickets = SQLite.select()
-            .from(Ticket.class)
-            .where(Ticket_Table.event_id.eq(id))
-            .queryList();
-
-        return tickets;
+        return eventDelegate.getEventTickets();
     }
 
-    @Override
-    public int compareTo(@NonNull Event otherEvent) {
-        return DateService.compareEventDates(this, otherEvent);
-    }
-
-    @Override
-    public String getHeader() {
-        try {
-            return DateService.getEventStatus(this);
-        } catch (ParseException e) {
-            Timber.e(e);
-        }
-
-        return "INVALID";
-    }
-
-    @Override
-    public long getHeaderId() {
-        return getHeader().hashCode();
+    private interface Excluding {
+        List<Ticket> getEventTickets();
     }
 }
