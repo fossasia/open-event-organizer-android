@@ -27,6 +27,10 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.utils.ui.CircleTransform;
 import org.fossasia.openevent.app.module.main.MainActivity;
 
+import io.reactivex.functions.Consumer;
+import timber.log.Timber;
+
+@SuppressWarnings("PMD.AvoidCatchingGenericException")
 public final class BindingAdapters {
 
     private BindingAdapters() {
@@ -83,8 +87,7 @@ public final class BindingAdapters {
         }
     }
 
-    @BindingAdapter(value = {"imageUrl", "placeholder"}, requireAll = false)
-    public static void bindDefaultImage(ImageView imageView, String url, Drawable drawable) {
+    private static void setPicassoImage(ImageView imageView, String url, Drawable drawable, Consumer<RequestCreator> consumer) {
         if (TextUtils.isEmpty(url)) {
             if (drawable != null)
                 imageView.setImageDrawable(drawable);
@@ -99,25 +102,25 @@ public final class BindingAdapters {
                 .error(drawable);
         }
 
+        try {
+            if (consumer != null) consumer.accept(requestCreator);
+        } catch (Exception exception) {
+            Timber.e(exception);
+        }
+
         requestCreator
             .tag(MainActivity.class)
             .into(imageView);
     }
 
-    @BindingAdapter("circleImageUrl")
-    public static void bindCircularImage(ImageView imageView, String url) {
-        if (TextUtils.isEmpty(url)) {
-            imageView.setImageResource(R.drawable.ic_photo_shutter);
-            return;
-        }
+    @BindingAdapter(value = {"imageUrl", "placeholder"}, requireAll = false)
+    public static void bindDefaultImage(ImageView imageView, String url, Drawable drawable) {
+        setPicassoImage(imageView, url, drawable, null);
+    }
 
-        Picasso.with()
-            .load(Uri.parse(url))
-            .error(R.drawable.ic_photo_shutter)
-            .placeholder(R.drawable.ic_photo_shutter)
-            .transform(new CircleTransform())
-            .tag(MainActivity.class)
-            .into(imageView);
+    @BindingAdapter(value = {"circleImageUrl", "placeholder"}, requireAll = false)
+    public static void bindCircularImage(ImageView imageView, String url, Drawable drawable) {
+        setPicassoImage(imageView, url, drawable, requestCreator -> requestCreator.transform(new CircleTransform()));
     }
 
     @BindingAdapter("tint")

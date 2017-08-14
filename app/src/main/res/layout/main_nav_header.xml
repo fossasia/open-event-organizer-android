@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="org.fossasia.openevent.app.common.utils.core.DateUtils" />
 
         <variable
+            name="user"
+            type="org.fossasia.openevent.app.common.data.models.User" />
+        <variable
             name="event"
             type="org.fossasia.openevent.app.common.data.models.Event" />
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_height" >
 
@@ -21,6 +25,33 @@
             app:imageUrl="@{ event.largeImageUrl }"
             app:placeholder="@{ @drawable/header }"
             android:contentDescription="@string/event_background" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/spacing_big"
+            android:layout_marginRight="@dimen/spacing_medium"
+            android:layout_marginEnd="@dimen/spacing_medium">
+
+            <ImageView
+                android:id="@+id/profile"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:circleImageUrl="@{ user.avatarUrl }"
+                app:placeholder="@{ @drawable/ic_account_circle }"
+                android:contentDescription="@string/profile_picture" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/spacing_small"
+                android:text='@{ user.firstName + " " + user.lastName }'
+                android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
