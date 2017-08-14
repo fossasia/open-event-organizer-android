@@ -1,7 +1,5 @@
 package org.fossasia.openevent.app.common.app.di.module;
 
-import android.support.annotation.NonNull;
-
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,20 +19,15 @@ import org.fossasia.openevent.app.common.data.network.EventService;
 import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.common.utils.core.Utils;
 
-import java.io.IOException;
-
-import javax.annotation.Nullable;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.Authenticator;
 import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
@@ -96,26 +89,24 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    Authenticator authenticator(IUtilModel utilModel) {
-        return new Authenticator() {
-            @Nullable
-            @Override
-            public Request authenticate(@NonNull Route route, @NonNull Response response) throws IOException {
-                if (response.request().header("Authorization") != null) {
-                    return null; // Give up, we've already failed to authenticate.
-                }
+    @Named("authenticator")
+    Interceptor authenticator(IUtilModel utilModel) {
+        return chain -> {
+            Request original = chain.request();
 
-                String token = utilModel.getToken();
+            String token = utilModel.getToken();
 
-                if (token == null) {
-                    Timber.wtf("Someone tried to access authenticated resource without auth token");
-                    return null;
-                }
-
-                return response.request().newBuilder()
-                    .header("Authorization", Utils.formatToken(token))
-                    .build();
+            if (token == null) {
+                Timber.wtf("Someone tried to access resources without auth token. Maybe auth request?");
+                return chain.proceed(original);
             }
+
+            Request request = original.newBuilder()
+                .header("Authorization", Utils.formatToken(token))
+                .method(original.method(), original.body())
+                .build();
+
+            return chain.proceed(request);
         };
     }
 
@@ -133,14 +124,14 @@ public class NetworkModule {
         HostSelectionInterceptor hostSelectionInterceptor,
         HttpLoggingInterceptor loggingInterceptor,
         StethoInterceptor stethoInterceptor,
-        Authenticator authenticator,
+        @Named("authenticator") Interceptor authenticator,
         Cache cache
     ) {
         return new OkHttpClient.Builder()
             .addInterceptor(hostSelectionInterceptor)
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(authenticator)
             .addNetworkInterceptor(stethoInterceptor)
-            .authenticator(authenticator)
             .cache(cache)
             .build();
     }
