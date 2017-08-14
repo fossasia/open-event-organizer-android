@@ -15,6 +15,8 @@ public interface IMainView extends Erroneous, ItemResult<Event> {
 
     void showOrganizer(User organizer);
 
+    void invalidateDateViews();
+
     void onLogout();
 
 }

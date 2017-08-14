@@ -1,5 +1,8 @@
 package org.fossasia.openevent.app.module.main;
 
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
+
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.app.ContextManager;
 import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
@@ -10,6 +13,7 @@ import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.common.utils.core.CurrencyUtils;
+import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainView;
 
@@ -29,6 +33,7 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
     private final ISharedPreferenceModel sharedPreferenceModel;
     private final IAuthModel loginModel;
     private final IEventRepository eventRepository;
+    private final RxSharedPreferences sharedPreferences;
     private final IBus bus;
     private final ContextManager contextManager;
 
@@ -36,16 +41,24 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
 
     @Inject
     public MainPresenter(ISharedPreferenceModel sharedPreferenceModel, IAuthModel loginModel,
-                         IEventRepository eventRepository, IBus bus, ContextManager contextManager) {
+                         IEventRepository eventRepository, IBus bus, RxSharedPreferences sharedPreferences, ContextManager contextManager) {
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.loginModel = loginModel;
         this.eventRepository = eventRepository;
         this.bus = bus;
+        this.sharedPreferences = sharedPreferences;
         this.contextManager = contextManager;
     }
 
     @Override
     public void start() {
+        sharedPreferences.getBoolean(Constants.SHARED_PREFS_LOCAL_DATE)
+            .asObservable()
+            .compose(dispose(getDisposable()))
+            .distinctUntilChanged()
+            .doOnNext(changed -> getView().invalidateDateViews())
+            .subscribe(DateUtils::setShowLocal);
+
         bus.getSelectedEvent()
             .compose(dispose(getDisposable()))
             .compose(erroneousResult(getView()))

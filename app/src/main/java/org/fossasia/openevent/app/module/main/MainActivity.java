@@ -161,6 +161,11 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     }
 
     @Override
+    public void invalidateDateViews() {
+        headerBinding.invalidateAll();
+    }
+
+    @Override
     public void showResult(Event event) {
         headerBinding.setEvent(event);
     }
