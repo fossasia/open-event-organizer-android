@@ -67,3 +67,6 @@
 -keep public class com.evernote.android.job.v14.PlatformAlarmReceiver
 -keep public class com.evernote.android.job.JobBootReceiver
 -keep public class com.evernote.android.job.JobRescheduleService
+
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
