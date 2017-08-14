@@ -14,7 +14,6 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.runtime.DirectModelNotifier;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
-import com.squareup.picasso.Picasso;
 
 import org.fossasia.openevent.app.common.app.di.component.AppComponent;
 import org.fossasia.openevent.app.common.app.di.component.DaggerAppComponent;
@@ -22,8 +21,6 @@ import org.fossasia.openevent.app.common.app.di.module.AndroidModule;
 import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.inject.Inject;
 
 import io.sentry.Sentry;
 import io.sentry.android.AndroidSentryClientFactory;
@@ -36,9 +33,6 @@ public class OrgaApplication extends MultiDexApplication {
 
     private static volatile AppComponent appComponent;
     private RefWatcher refWatcher;
-
-    @Inject
-    Picasso picasso;
 
     /**
      * Reference watcher to be used in detecting leaks in Fragments
@@ -84,9 +78,6 @@ public class OrgaApplication extends MultiDexApplication {
         appComponent = DaggerAppComponent.builder()
             .androidModule(new AndroidModule())
             .build();
-        appComponent.inject(this);
-
-        Picasso.setSingletonInstance(picasso);
 
         if (!isTestBuild()) {
             JobManager.create(this).addJobCreator(new OrgaJobCreator());

@@ -55,7 +55,6 @@ android {
 repositories {
     maven { url "https://jitpack.io" }
     maven { url "https://maven.google.com" }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 sentry {
@@ -101,6 +100,12 @@ dependencies {
     compile "com.android.support:cardview-v7:${support_lib_version}"
     compile "com.android.support:recyclerview-v7:${support_lib_version}"
     compile "com.android.support:design:${support_lib_version}"
+    compile "com.github.bumptech.glide:glide:4.0.0"
+    compile "com.github.bumptech.glide:okhttp3-integration:4.0.0"
+    compile ("com.github.bumptech.glide:recyclerview-integration:4.0.0") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
     compile "com.takisoft.fix:preference-v7:${support_lib_version}.3"
     compile('com.mikepenz:fastadapter:2.6.2@aar') {
         transitive = true
@@ -112,7 +117,6 @@ dependencies {
     compile "com.github.raizlabs.dbflow:dbflow-core:${dbflow_version}"
     compile "com.github.raizlabs.dbflow:dbflow:${dbflow_version}"
     compile "com.github.raizlabs.dbflow:dbflow-rx2:${dbflow_version}"
-    compile 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
@@ -140,4 +144,5 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11-rc2'
     annotationProcessor 'org.projectlombok:lombok:1.16.18'
     annotationProcessor "com.github.raizlabs.dbflow:dbflow-processor:${dbflow_version}"
+    annotationProcessor "com.github.bumptech.glide:compiler:4.0.0"
 }
