@@ -2,7 +2,6 @@ package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.app.ContextManager;
 import org.fossasia.openevent.app.common.data.contract.IAuthModel;
-import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.module.main.MainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainView;
 import org.junit.Before;
@@ -21,7 +20,6 @@ public class MainPresenterTest {
 
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock private IAuthModel loginModel;
-    @Mock private ISharedPreferenceModel sharedPreferenceModel;
     @Mock private IMainView mainView;
     @Mock private ContextManager contextManager;
 
@@ -29,7 +27,7 @@ public class MainPresenterTest {
 
     @Before
     public void setUp() {
-        mainPresenter = new MainPresenter(sharedPreferenceModel, loginModel, null, null, contextManager);
+        mainPresenter = new MainPresenter(null, loginModel, null, null, null, contextManager);
         mainPresenter.attach(mainView);
     }
 
