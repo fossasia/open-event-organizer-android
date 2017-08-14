@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.BindingConversion;
 import android.databinding.InverseMethod;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.ColorInt;
@@ -19,16 +20,16 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.utils.ui.CircleTransform;
-import org.fossasia.openevent.app.module.main.MainActivity;
+import org.fossasia.openevent.app.common.app.glide.GlideApp;
+import org.fossasia.openevent.app.common.app.glide.GlideRequest;
 
-import io.reactivex.functions.Consumer;
-import timber.log.Timber;
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 @SuppressWarnings("PMD.AvoidCatchingGenericException")
 public final class BindingAdapters {
@@ -87,40 +88,36 @@ public final class BindingAdapters {
         }
     }
 
-    private static void setPicassoImage(ImageView imageView, String url, Drawable drawable, Consumer<RequestCreator> consumer) {
+    private static void setGlideImage(ImageView imageView, String url, Drawable drawable, Transformation<Bitmap> transformation) {
         if (TextUtils.isEmpty(url)) {
             if (drawable != null)
                 imageView.setImageDrawable(drawable);
             return;
         }
-
-        RequestCreator requestCreator = Picasso.with().load(Uri.parse(url));
+        GlideRequest<Drawable> request = GlideApp
+            .with(imageView.getContext())
+            .load(Uri.parse(url));
 
         if (drawable != null) {
-            requestCreator
+            request
                 .placeholder(drawable)
                 .error(drawable);
         }
-
-        try {
-            if (consumer != null) consumer.accept(requestCreator);
-        } catch (Exception exception) {
-            Timber.e(exception);
-        }
-
-        requestCreator
-            .tag(MainActivity.class)
+        request
+            .centerCrop()
+            .transition(withCrossFade())
+            .transform(transformation == null ? new CenterCrop() : transformation)
             .into(imageView);
     }
 
     @BindingAdapter(value = {"imageUrl", "placeholder"}, requireAll = false)
     public static void bindDefaultImage(ImageView imageView, String url, Drawable drawable) {
-        setPicassoImage(imageView, url, drawable, null);
+        setGlideImage(imageView, url, drawable, null);
     }
 
     @BindingAdapter(value = {"circleImageUrl", "placeholder"}, requireAll = false)
     public static void bindCircularImage(ImageView imageView, String url, Drawable drawable) {
-        setPicassoImage(imageView, url, drawable, requestCreator -> requestCreator.transform(new CircleTransform()));
+        setGlideImage(imageView, url, drawable, new CircleCrop());
     }
 
     @BindingAdapter("tint")
