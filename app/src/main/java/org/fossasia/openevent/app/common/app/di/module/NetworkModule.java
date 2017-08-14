@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
-import com.squareup.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
 
 import org.fossasia.openevent.app.OrgaProvider;
 import org.fossasia.openevent.app.common.Constants;
@@ -134,16 +132,6 @@ public class NetworkModule {
             .addNetworkInterceptor(stethoInterceptor)
             .cache(cache)
             .build();
-    }
-
-    @Provides
-    @Singleton
-    Picasso providesPicasso(OkHttpClient client) {
-        Picasso picasso = new Picasso.Builder(OrgaProvider.context)
-            .downloader(new OkHttp3Downloader(client))
-            .build();
-        picasso.setLoggingEnabled(true);
-        return picasso;
     }
 
     @Provides

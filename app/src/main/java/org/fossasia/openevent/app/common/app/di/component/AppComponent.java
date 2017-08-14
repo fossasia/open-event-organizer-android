@@ -1,11 +1,10 @@
 package org.fossasia.openevent.app.common.app.di.component;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.app.di.module.DataModule;
 import org.fossasia.openevent.app.common.app.di.module.NetworkModule;
 import org.fossasia.openevent.app.common.app.di.module.PresenterModule;
-import org.fossasia.openevent.app.module.attendee.checkin.job.AttendeeCheckInJob;
 import org.fossasia.openevent.app.module.attendee.checkin.AttendeeCheckInFragment;
+import org.fossasia.openevent.app.module.attendee.checkin.job.AttendeeCheckInJob;
 import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.module.auth.AuthActivity;
 import org.fossasia.openevent.app.module.auth.login.LoginFragment;
@@ -44,8 +43,6 @@ public interface AppComponent {
 
     void inject(AttendeeCheckInFragment attendeeCheckInFragment);
 
-    void inject(OrgaApplication orgaApplication);
-
     void inject(SettingsFragment settingsFragment);
 
     void inject(ChartActivity chartActivity);
@@ -67,5 +64,4 @@ public interface AppComponent {
     void inject(AboutEventFragment aboutEventFragment);
 
     void inject(OrganizerDetailFragment organizerDetailFragment);
-
 }
