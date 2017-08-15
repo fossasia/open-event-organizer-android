@@ -18,6 +18,9 @@ import org.fossasia.openevent.app.common.data.models.Order;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.data.models.User;
 
+import java.util.Arrays;
+import java.util.List;
+
 import timber.log.Timber;
 
 @Database(
@@ -31,7 +34,7 @@ public final class OrgaDatabase {
 
     public static final String NAME = "orga_database";
     // To be bumped after each schema change and migration addition
-    public static final int VERSION = 5;
+    public static final int VERSION = 6;
 
     private OrgaDatabase() {
         // Never Called
@@ -71,6 +74,24 @@ public final class OrgaDatabase {
         public void onPreMigrate() {
             super.onPreMigrate();
             addColumn(SQLiteType.INTEGER, "checking");
+        }
+    }
+
+    @Migration(version = 6, database = OrgaDatabase.class)
+    public static class MigrationTo6 extends AlterTableMigration<Order> {
+
+        public MigrationTo6(Class<Order> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            super.onPreMigrate();
+            List<String> addedColumns = Arrays.asList("address", "zipcode", "city", "state", "country",
+                "expMonth", "expYear", "transactionId", "discountCodeId", "brand", "last4");
+
+            for (String column : addedColumns)
+                addColumn(SQLiteType.TEXT, column);
         }
     }
 }

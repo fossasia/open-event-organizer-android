@@ -131,7 +131,7 @@
                     android:drawableLeft="@{ @drawable/ic_receipt }"
                     android:drawableStart="@{ @drawable/ic_receipt }"
                     android:drawablePadding="@dimen/spacing_small"
-                    android:text="@{ checkinAttendee.order.invoiceNumber }"
+                    android:text="@{ checkinAttendee.order.transactionId }"
                     android:textAllCaps="true"
                     android:textStyle="bold"
                     tools:text="free" />
