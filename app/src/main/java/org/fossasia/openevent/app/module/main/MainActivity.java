@@ -14,8 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.squareup.picasso.Picasso;
-
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseActivity;
@@ -90,12 +88,6 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        Picasso.with().cancelTag(MainActivity.class);
-    }
-
-    @Override
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
@@ -158,6 +150,11 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     @Override
     public void showOrganizer(User organizer) {
         headerBinding.setUser(organizer);
+    }
+
+    @Override
+    public void invalidateDateViews() {
+        headerBinding.invalidateAll();
     }
 
     @Override
