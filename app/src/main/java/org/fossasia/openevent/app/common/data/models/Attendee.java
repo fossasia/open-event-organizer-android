@@ -1,9 +1,6 @@
 package org.fossasia.openevent.app.common.data.models;
 
-import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
-import android.support.annotation.NonNull;
-import android.view.View;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -18,19 +15,18 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
-import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.data.db.configuration.ObservableBooleanTypeConverter;
 import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.common.data.models.contract.IHeaderProvider;
-import org.fossasia.openevent.app.common.utils.core.CompareUtils;
+import org.fossasia.openevent.app.common.data.models.delegates.AttendeeDelegate;
+import org.fossasia.openevent.app.common.data.models.delegates.contract.IAttendeeDelegate;
 import org.fossasia.openevent.app.module.attendee.list.viewholders.AttendeeViewHolder;
-
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Delegate;
 
 @Data
 @Builder
@@ -40,6 +36,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Table(database = OrgaDatabase.class)
 public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, IHeaderProvider {
+
+    @Delegate(types = IAttendeeDelegate.class)
+    private final AttendeeDelegate attendeeDelegate = new AttendeeDelegate(this);
+
     @Id(LongIdHandler.class)
     @PrimaryKey
     public long id;
@@ -79,64 +79,4 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     public Event event;
 
     public Attendee() { }
-
-    public Attendee(boolean checkedIn) {
-        setCheckedIn(checkedIn);
-    }
-
-    public Attendee(long id) {
-        setId(id);
-        setFirstname("testFirstName" + id);
-        setLastname("testLastName" + id);
-        setEmail("testEmail" + id + "@test.com");
-    }
-
-    @Override
-    public int compareTo(@NonNull Attendee other) {
-        return CompareUtils.compareCascading(this, other,
-            Attendee::getFirstname, Attendee::getLastname, Attendee::getEmail
-        );
-    }
-
-    @Override
-    public long getIdentifier() {
-        return id;
-    }
-
-    @Override
-    public int getType() {
-        return 0;
-    }
-
-    @Override
-    public int getLayoutRes() {
-        return R.layout.attendee_layout;
-    }
-
-    @Override
-    public AttendeeViewHolder getViewHolder(View view) {
-        return new AttendeeViewHolder(DataBindingUtil.bind(view));
-    }
-
-    @Override
-    public void bindView(AttendeeViewHolder holder, List<Object> list) {
-        super.bindView(holder, list);
-        holder.bindAttendee(this);
-    }
-
-    @Override
-    public void unbindView(AttendeeViewHolder holder) {
-        super.unbindView(holder);
-        holder.unbindAttendee();
-    }
-
-    @Override
-    public String getHeader() {
-        return getFirstname().substring(0, 1);
-    }
-
-    @Override
-    public long getHeaderId() {
-        return getHeader().charAt(0);
-    }
 }

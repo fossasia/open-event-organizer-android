@@ -34,13 +34,13 @@ public class TicketAnalyser {
             .doOnNext(typeQuantity -> {
                 switch (typeQuantity.getType()) {
                     case "free":
-                        event.freeTickets.set(typeQuantity.getQuantity());
+                        event.analytics.freeTickets.set(typeQuantity.getQuantity());
                         break;
                     case "paid":
-                        event.paidTickets.set(typeQuantity.getQuantity());
+                        event.analytics.paidTickets.set(typeQuantity.getQuantity());
                         break;
                     case "donation":
-                        event.donationTickets.set(typeQuantity.getQuantity());
+                        event.analytics.donationTickets.set(typeQuantity.getQuantity());
                         break;
                     default:
                         // Nothing
@@ -48,23 +48,23 @@ public class TicketAnalyser {
             })
             .map(TypeQuantity::getQuantity)
             .reduce((one, two) -> one + two)
-            .subscribe(event.totalTickets::set, Logger::logError);
+            .subscribe(event.analytics.totalTickets::set, Logger::logError);
     }
 
     public void analyseSoldTickets(@NonNull Event event, @NonNull List<Attendee> attendees) {
-        event.totalAttendees.set(attendees.size());
+        event.analytics.totalAttendees.set(attendees.size());
 
         ticketRepository.getSoldTicketsQuantity(event.getId())
             .doOnNext(typeQuantity -> {
                 switch (typeQuantity.getType()) {
                     case "free":
-                        event.soldFreeTickets.set(typeQuantity.getQuantity());
+                        event.analytics.soldFreeTickets.set(typeQuantity.getQuantity());
                         break;
                     case "paid":
-                        event.soldPaidTickets.set(typeQuantity.getQuantity());
+                        event.analytics.soldPaidTickets.set(typeQuantity.getQuantity());
                         break;
                     case "donation":
-                        event.soldDonationTickets.set(typeQuantity.getQuantity());
+                        event.analytics.soldDonationTickets.set(typeQuantity.getQuantity());
                         break;
                     default:
                         // Nothing
@@ -75,10 +75,10 @@ public class TicketAnalyser {
             .subscribe(Logger::logSuccess, Logger::logError);
 
         ticketRepository.getTotalSale(event.getId())
-            .subscribe(event.totalSale::set, Logger::logError);
+            .subscribe(event.analytics.totalSale::set, Logger::logError);
 
         attendeeRepository.getCheckedInAttendees(event.getId())
-            .subscribe(event.checkedIn::set, Logger::logError);
+            .subscribe(event.analytics.checkedIn::set, Logger::logError);
     }
 
 }

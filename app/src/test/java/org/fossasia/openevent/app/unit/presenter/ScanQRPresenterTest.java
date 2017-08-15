@@ -49,23 +49,23 @@ public class ScanQRPresenterTest {
     private ScanQRPresenter scanQRPresenter;
 
     private static final List<Attendee> ATTENDEES = Arrays.asList(
-        new Attendee(12),
-        new Attendee(34),
-        new Attendee(56),
-        new Attendee(91),
-        new Attendee(29),
-        new Attendee(90),
-        new Attendee(123)
+        Attendee.builder().id(12).build(),
+        Attendee.builder().id(34).build(),
+        Attendee.builder().id(56).build(),
+        Attendee.builder().id(91).build(),
+        Attendee.builder().id(29).build(),
+        Attendee.builder().id(90).build(),
+        Attendee.builder().id(123).build()
     );
 
     private static final List<Order> ORDERS = Arrays.asList(
-        new Order("test1"),
+        Order.builder().identifier("test1").build(),
         null,
-        new Order("test3"),
-        new Order("test4"),
-        new Order("test5"),
+        Order.builder().identifier("test3").build(),
+        Order.builder().identifier("test4").build(),
+        Order.builder().identifier("test5").build(),
         null,
-        new Order("test6")
+        Order.builder().identifier("test6").build()
     );
 
     private static final Barcode BARCODE_1 = new Barcode();

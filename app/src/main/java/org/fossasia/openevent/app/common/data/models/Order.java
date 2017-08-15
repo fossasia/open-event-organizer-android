@@ -10,10 +10,14 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Type("order")
+@Builder
+@AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
@@ -46,8 +50,4 @@ public class Order {
     public String last4;
 
     public Order() { }
-
-    public Order(String identifier) {
-        setIdentifier(identifier);
-    }
 }
