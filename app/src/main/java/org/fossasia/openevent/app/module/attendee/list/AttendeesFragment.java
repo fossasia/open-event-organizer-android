@@ -71,6 +71,8 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
 
     private boolean initialized;
 
+    private static final String FILTER_SYNC = "FILTER_SYNC";
+
     public AttendeesFragment() {
         OrgaApplication
             .getAppComponent()
@@ -111,6 +113,20 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
         searchView = (SearchView) search.getActionView();
         setupSearchListener();
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.filterByNone:
+                fastItemAdapter.filter("");
+                return true;
+            case R.id.filterBySync:
+                fastItemAdapter.filter(FILTER_SYNC);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -189,12 +205,16 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
             fastItemAdapter.withPositionBasedStateManagement(false);
             fastItemAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
             fastItemAdapter.getItemFilter().withFilterPredicate(
-                (attendee, query) ->
-                    SearchUtils.filter(
+                (attendee, query) -> {
+                    if (query.equals(FILTER_SYNC)) {
+                        return !attendee.checking.get();
+                    }
+                    return SearchUtils.filter(
                         query.toString(),
                         attendee.getFirstname(),
                         attendee.getLastname(),
-                        attendee.getEmail())
+                        attendee.getEmail());
+                }
             );
 
             stickyHeaderAdapter = new StickyHeaderAdapter<>();

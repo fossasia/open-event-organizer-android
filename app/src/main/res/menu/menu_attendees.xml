@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item android:id="@+id/search"
         android:title="@string/search_title"
         android:icon="@drawable/ic_search"
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item android:id="@+id/filter"
+        android:title="@string/filter"
+        android:icon="@drawable/ic_filter"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item android:id="@+id/filterByNone"
+                android:title="@string/filter_by_none" />
+            <item android:id="@+id/filterBySync"
+                android:title="@string/filter_by_sync" />
+        </menu>
+    </item>
+
 </menu>
