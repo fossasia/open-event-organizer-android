@@ -32,7 +32,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.Lazy;
-import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -180,17 +179,8 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     }
 
     @Override
-    public void showOrganiserName(String name) {
-        // TODO: Decide where to show organizer's name and implement accordingly.
-    }
-
-    @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
-    @Override
-    public void showOrganiserLoadError(String error) {
-        Timber.d(error);
-    }
 }

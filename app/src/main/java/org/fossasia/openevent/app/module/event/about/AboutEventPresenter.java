@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
-import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.result;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneousResultRefresh;
 
 public class AboutEventPresenter extends BaseDetailPresenter<Long, IAboutEventVew> implements IAboutEventPresenter {
 
@@ -26,17 +26,22 @@ public class AboutEventPresenter extends BaseDetailPresenter<Long, IAboutEventVe
 
     @Override
     public void start() {
-        getEventSource()
+        loadEvent(false);
+    }
+
+    @Override
+    public void loadEvent(boolean forceReload) {
+        getEventSource(forceReload)
             .compose(dispose(getDisposable()))
-            .compose(result(getView()))
+            .compose(progressiveErroneousResultRefresh(getView(), forceReload))
             .subscribe(loadedEvent -> this.event = loadedEvent, Logger::logError);
     }
 
-    private Observable<Event> getEventSource() {
-        if (event != null && isRotated()) {
+    private Observable<Event> getEventSource(boolean forceReload) {
+        if (event != null && !forceReload && isRotated()) {
             return Observable.just(event);
         } else {
-            return eventRepository.getEvent(getId(), false);
+            return eventRepository.getEvent(getId(), forceReload);
         }
     }
 }
