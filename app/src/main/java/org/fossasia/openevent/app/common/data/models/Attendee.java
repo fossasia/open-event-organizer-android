@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.common.data.models;
 
 import android.databinding.ObservableBoolean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
@@ -62,6 +63,7 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     @Column
     public String email;
 
+    @JsonIgnore
     @Column(typeConverter = ObservableBooleanTypeConverter.class)
     public ObservableBoolean checking = new ObservableBoolean();
 
@@ -69,8 +71,8 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
     public Ticket ticket;
 
-    // Not in API yet
-    @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
+    @Relationship("order")
+    @ForeignKey(onDelete = ForeignKeyAction.CASCADE, saveForeignKeyModel = true)
     public Order order;
 
     // To associate attendees and event

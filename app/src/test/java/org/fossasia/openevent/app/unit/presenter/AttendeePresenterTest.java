@@ -308,6 +308,7 @@ public class AttendeePresenterTest {
         PublishSubject<DatabaseChangeListener.ModelChange<Attendee>> publishSubject = PublishSubject.create();
 
         when(attendeeRepository.getAttendees(ID, false)).thenReturn(Observable.fromIterable(ATTENDEES));
+        when(attendeeRepository.getAttendee(ATTENDEES.get(2).getId(), false)).thenReturn(Observable.just(ATTENDEES.get(2)));
         when(changeListener.getNotifier()).thenReturn(publishSubject);
 
         attendeesPresenter.start();
