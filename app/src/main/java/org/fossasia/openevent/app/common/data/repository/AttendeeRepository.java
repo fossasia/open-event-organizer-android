@@ -59,8 +59,6 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
         Observable<Attendee> networkObservable = Observable.defer(() ->
             eventService.getAttendees(eventId)
                 .doOnNext(attendees -> {
-                    Timber.d(attendees.toString());
-
                     databaseRepository.deleteAll(Attendee.class)
                     .concatWith(databaseRepository.saveList(Attendee.class, attendees))
                     .subscribe(() -> Timber.d("Saved Attendees"), Logger::logError);
@@ -107,8 +105,11 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
             return Observable.error(new Throwable(Constants.NO_NETWORK));
         }
 
-        return databaseRepository.getItems(Attendee.class, Attendee_Table.id.eq(transitAttendee.getId()))
-            .take(1)
+        Observable<Attendee> diskObservable = databaseRepository
+            .getItems(Attendee.class, Attendee_Table.id.eq(transitAttendee.getId()))
+            .take(1);
+
+        return diskObservable
             .flatMap(attendee -> {
                 // Remove relationships from attendee item
                 attendee.setEvent(null);
@@ -117,10 +118,12 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
 
                 return eventService.patchAttendee(attendee.getId(), attendee);
             })
-            .doOnNext(attendee -> {
+            .flatMap(attendee -> {
                 databaseRepository
                     .update(Attendee.class, attendee)
                     .subscribe();
+
+                return diskObservable;
             })
             .doOnError(throwable -> scheduleToggle(transitAttendee))
             .subscribeOn(Schedulers.io())
