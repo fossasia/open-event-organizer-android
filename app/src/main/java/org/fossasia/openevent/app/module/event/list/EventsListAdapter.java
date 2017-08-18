@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
+import org.fossasia.openevent.app.common.app.ContextManager;
 import org.fossasia.openevent.app.common.app.viewholder.HeaderViewHolder;
 import org.fossasia.openevent.app.common.data.contract.IBus;
 import org.fossasia.openevent.app.common.data.models.Event;
@@ -64,6 +65,7 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     class EventRecyclerViewHolder extends RecyclerView.ViewHolder {
         private final EventLayoutBinding binding;
         private Event event;
+        private final long selectedEventId;
 
         EventRecyclerViewHolder(EventLayoutBinding binding) {
             super(binding.getRoot());
@@ -72,11 +74,15 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
             binding
                 .getRoot()
                 .setOnClickListener(view -> bus.pushSelectedEvent(event));
+
+            final Event selectedEvent = ContextManager.getSelectedEvent();
+            selectedEventId = selectedEvent == null ? -1 : selectedEvent.id;
         }
 
         public void bind(Event event) {
             this.event = event;
             binding.setEvent(event);
+            binding.setSelectedEventId(selectedEventId);
             binding.executePendingBindings();
         }
 

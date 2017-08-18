@@ -3,9 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="event"
             type="org.fossasia.openevent.app.common.data.models.Event" />
+        <variable
+            name="selectedEventId"
+            type="Long" />
     </data>
 
     <LinearLayout
@@ -33,6 +37,18 @@
             android:text="@{event.name}"
             android:textSize="@dimen/text_size_normal"
             android:textColor="@android:color/black"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_check"
+                android:layout_gravity="end"
+                android:visibility="@{ event.id == selectedEventId ? View.VISIBLE : View.GONE }"/>
+        </FrameLayout>
 
     </LinearLayout>
 </layout>

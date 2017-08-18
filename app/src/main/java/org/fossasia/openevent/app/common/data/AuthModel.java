@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.common.data;
 import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.common.app.ContextManager;
 import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
@@ -97,6 +98,7 @@ public class AuthModel implements IAuthModel {
             () -> {
                 utilModel.saveToken(null);
                 sharedPreferenceModel.setLong(MainActivity.EVENT_KEY, -1);
+                ContextManager.setSelectedEvent(null);
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
