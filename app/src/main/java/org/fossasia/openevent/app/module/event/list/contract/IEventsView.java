@@ -6,10 +6,4 @@ import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Progressive
 import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Refreshable;
 import org.fossasia.openevent.app.common.data.models.Event;
 
-public interface IEventsView extends Progressive, Erroneous, Refreshable, Emptiable<Event> {
-
-    void showOrganiserName(String name);
-
-    void showOrganiserLoadError(String error);
-
-}
+public interface IEventsView extends Progressive, Erroneous, Refreshable, Emptiable<Event> { }

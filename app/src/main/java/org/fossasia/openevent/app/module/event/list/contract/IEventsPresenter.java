@@ -11,6 +11,4 @@ public interface IEventsPresenter extends IPresenter<IEventsView> {
 
     void loadUserEvents(boolean forceReload);
 
-    void loadOrganiser(boolean forceReload);
-
 }

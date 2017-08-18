@@ -1,6 +1,5 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.app.ContextManager;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
@@ -41,7 +40,6 @@ public class EventsPresenterTest {
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock private IEventsView eventListView;
     @Mock private IEventRepository eventRepository;
-    @Mock private ContextManager contextManager;
 
     private EventsPresenter eventsActivityPresenter;
 
@@ -59,7 +57,7 @@ public class EventsPresenterTest {
     public void setUp() {
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
 
-        eventsActivityPresenter = new EventsPresenter(eventRepository, contextManager);
+        eventsActivityPresenter = new EventsPresenter(eventRepository);
         eventsActivityPresenter.attach(eventListView);
     }
 
@@ -79,7 +77,6 @@ public class EventsPresenterTest {
         eventsActivityPresenter.start();
 
         verify(eventRepository).getEvents(false);
-        verify(eventRepository).getOrganiser(false);
     }
 
     @Test
@@ -195,44 +192,6 @@ public class EventsPresenterTest {
         inOrder.verify(eventListView).showProgress(true);
         inOrder.verify(eventListView).showError(error);
         inOrder.verify(eventListView).showProgress(false);
-    }
-
-    @Test
-    public void shouldLoadOrganiserSuccessfully() {
-        ORGANISER.setFirstName("John");
-        ORGANISER.setLastName("Wick");
-
-        when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(ORGANISER));
-
-        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
-
-        eventsActivityPresenter.loadOrganiser(false);
-
-        inOrder.verify(eventRepository).getOrganiser(false);
-        inOrder.verify(eventListView).showOrganiserName("John Wick");
-    }
-
-    @Test
-    public void shouldSetSentryContext() {
-        when(eventRepository.getOrganiser(false)).thenReturn(Observable.just(ORGANISER));
-
-        eventsActivityPresenter.loadOrganiser(false);
-
-        verify(contextManager).setOrganiser(ORGANISER);
-    }
-
-    @Test
-    public void shouldShowOrganiserError() {
-        String error = "Test Error";
-        when(eventRepository.getOrganiser(false))
-            .thenReturn(ERROR_OBSERVABLE);
-
-        InOrder inOrder = Mockito.inOrder(eventRepository, eventListView);
-
-        eventsActivityPresenter.loadOrganiser(false);
-
-        inOrder.verify(eventRepository).getOrganiser(false);
-        inOrder.verify(eventListView).showOrganiserLoadError(error);
     }
 
     @Test

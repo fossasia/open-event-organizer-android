@@ -65,9 +65,27 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include
-            bind:event="@{ event }"
-            layout="@layout/about_event_detail" />
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+            <include
+                android:id="@+id/detail"
+                bind:event="@{ event }"
+                layout="@layout/about_event_detail" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <FrameLayout
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/progressbar_layout" />
+        </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
