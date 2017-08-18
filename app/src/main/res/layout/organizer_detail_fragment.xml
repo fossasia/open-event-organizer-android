@@ -37,11 +37,28 @@
 
             </android.support.design.widget.AppBarLayout>
 
-            <include
-                layout="@layout/organizer_detail_layout"
-                bind:user="@{ user }" />
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include
+                    android:id="@+id/detail"
+                    layout="@layout/organizer_detail_layout"
+                    bind:user="@{ user }" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
 
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/progressbar_layout" />
+        </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

@@ -16,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
+@SuppressWarnings("PMD.TooManyMethods") // Will break cohesion if refactored
 public final class ViewTransformers {
 
     private ViewTransformers() {
@@ -98,6 +99,13 @@ public final class ViewTransformers {
     progressiveErroneousRefresh(V view, boolean forceReload) {
         return observable -> observable
             .compose(progressiveErroneous(view))
+            .compose(refreshable(view, forceReload));
+    }
+
+    public static <T, V extends Progressive & Erroneous & Refreshable & ItemResult<T>> ObservableTransformer<T, T>
+    progressiveErroneousResultRefresh(V view, boolean forceReload) {
+        return observable -> observable
+            .compose(progressiveErroneousResult(view))
             .compose(refreshable(view, forceReload));
     }
 

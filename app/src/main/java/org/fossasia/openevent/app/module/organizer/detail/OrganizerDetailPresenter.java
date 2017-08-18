@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
-import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.result;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneousResultRefresh;
 
 public class OrganizerDetailPresenter extends BasePresenter<IOrganizerDetailView> implements IOrganizerDetailPresenter {
 
@@ -27,18 +27,25 @@ public class OrganizerDetailPresenter extends BasePresenter<IOrganizerDetailView
 
     @Override
     public void start() {
-        getOrganizerSource()
-            .compose(dispose(getDisposable()))
-            .compose(result(getView()))
-            .subscribe(loadedUser -> this.user = loadedUser, Logger::logError);
+        loadOrganizer(false);
     }
 
-    private Observable<User> getOrganizerSource() {
-        if (user != null && isRotated()) {
+    @Override
+    public void loadOrganizer(boolean forceReload) {
+        getOrganizerSource(forceReload)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneousResultRefresh(getView(), forceReload))
+            .subscribe(loadedUser -> {
+                this.user = loadedUser;
+                getView().showResult(user);
+            }, Logger::logError);
+    }
+
+    private Observable<User> getOrganizerSource(boolean forceReload) {
+        if (user != null && !forceReload && isRotated()) {
             return Observable.just(user);
         } else {
-            return eventRepository.getOrganiser(false);
+            return eventRepository.getOrganiser(forceReload);
         }
     }
-
 }
