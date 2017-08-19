@@ -64,7 +64,8 @@
 
                 <include
                     android:id="@+id/url"
-                    layout="@layout/auth_url_container" />
+                    layout="@layout/auth_url_container"
+                    app:action="@{ () -> btnLogin.performClick() }"/>
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btnLogin"
