@@ -57,10 +57,9 @@ public final class ViewUtils {
         });
     }
 
-    public static void hideKeyboard(Activity activity) {
-        View view = activity.getCurrentFocus();
+    public static void hideKeyboard(View view) {
         if (view != null) {
-            InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager manager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             view.clearFocus();
             if (manager != null) {
                 manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
