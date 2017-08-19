@@ -29,4 +29,5 @@ after_failure:
   - cat app/build/reports/lint-results.html
 after_success:
     - bash <(curl -s https://codecov.io/bash)
+    - bash scripts/prep-key.sh
     - bash scripts/update-apk.sh
