@@ -66,7 +66,7 @@ public class ChartAnalyser {
 
     public void reset() {
         clearData();
-        attendees.clear();
+        if (attendees != null) attendees.clear();
     }
 
     private void clearData() {

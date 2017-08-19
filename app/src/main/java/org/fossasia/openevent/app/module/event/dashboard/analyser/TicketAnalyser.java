@@ -27,9 +27,6 @@ public class TicketAnalyser {
     }
 
     public void analyseTotalTickets(@NonNull Event event) {
-        if (event.getTickets() == null)
-            return;
-
         ticketRepository.getTicketsQuantity(event.getId())
             .doOnNext(typeQuantity -> {
                 switch (typeQuantity.getType()) {
