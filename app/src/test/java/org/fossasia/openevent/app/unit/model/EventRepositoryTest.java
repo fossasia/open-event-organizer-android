@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.unit.model;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.common.data.models.Event;
@@ -25,6 +26,7 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.internal.operators.observable.ObservableLift;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
@@ -59,6 +61,9 @@ public class EventRepositoryTest {
         Event.builder().id(21).build(),
         Event.builder().id(52).build()
     );
+    private static final int ID = 4;
+    private static final Event EVENT = Event.builder().id(ID).state(Event.STATE_PUBLISHED).build();
+    private static final Event UPDATED_EVENT = Event.builder().id(ID).state(Event.STATE_PUBLISHED).build();
 
     @Before
     public void setUp() {
@@ -327,6 +332,38 @@ public class EventRepositoryTest {
 
         inOrder.verify(databaseRepository).deleteAll(Event.class);
         inOrder.verify(databaseRepository).saveList(Event.class, EVENTS);
+    }
+
+    @Test
+    public void shouldUpdateToggledEventToDatabaseOnSuccess() {
+        TestObserver testObserver = TestObserver.create();
+        Completable completable = Completable.complete()
+            .doOnSubscribe(testObserver::onSubscribe);
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(utilModel.getToken()).thenReturn(TOKEN);
+        when(eventService.patchEvent(EVENT.id, EVENT)).thenReturn(Observable.just(UPDATED_EVENT));
+        when(databaseRepository.update(Event.class, UPDATED_EVENT)).thenReturn(completable);
+
+        eventRepository.updateEvent(EVENT).test();
+
+        testObserver.assertSubscribed();
+    }
+
+    @Test
+    public void shouldNotUpdateToggledEventOnError() {
+        TestObserver testObserver = TestObserver.create();
+        Completable completable = Completable.complete()
+            .doOnSubscribe(testObserver::onSubscribe);
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(utilModel.getToken()).thenReturn(TOKEN);
+        when(eventService.patchEvent(EVENT.id, EVENT)).thenReturn(ObservableLift.error(Logger.TEST_ERROR));
+        when(databaseRepository.update(Event.class, UPDATED_EVENT)).thenReturn(completable);
+
+        eventRepository.updateEvent(EVENT).test();
+
+        testObserver.assertNotSubscribed();
     }
 
 }

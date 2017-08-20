@@ -127,4 +127,9 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
     public Event getEvent() {
         return event;
     }
+
+    @VisibleForTesting
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 }
