@@ -34,6 +34,9 @@ import lombok.experimental.Delegate;
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Event implements Comparable<Event>, IHeaderProvider {
 
+    public static final String STATE_DRAFT = "draft";
+    public static final String STATE_PUBLISHED = "published";
+
     @Delegate(types = IEventDelegate.class, excludes = Excluding.class)
     private final EventDelegate eventDelegate = new EventDelegate(this);
 

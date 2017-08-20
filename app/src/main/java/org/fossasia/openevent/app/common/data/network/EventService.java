@@ -35,6 +35,9 @@ public interface EventService {
     @GET("events/{id}?include=tickets")
     Observable<Event> getEvent(@Path("id") long id);
 
+    @PATCH("events/{id}")
+    Observable<Event> patchEvent(@Path("id") long id, @Body Event event);
+
     @POST("tickets")
     Observable<Ticket> postTicket(@Body Ticket ticket);
 

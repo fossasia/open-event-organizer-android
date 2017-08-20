@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.app.rx.Logger;
+import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.Ticket;
@@ -53,6 +54,8 @@ public class EventDashboardPresenterTest {
     private IAttendeeRepository attendeeRepository;
     @Mock
     private ChartAnalyser chartAnalyser;
+    @Mock
+    private IUtilModel utilModel;
 
     private static final int ID = 42;
     private EventDashboardPresenter eventDashboardPresenter;
@@ -84,7 +87,7 @@ public class EventDashboardPresenterTest {
 
     @Before
     public void setUp() {
-        eventDashboardPresenter = new EventDashboardPresenter(eventRepository, attendeeRepository, ticketAnalyser, chartAnalyser);
+        eventDashboardPresenter = new EventDashboardPresenter(eventRepository, attendeeRepository, ticketAnalyser, chartAnalyser, utilModel);
 
         eventDashboardPresenter.attach(EVENT.getId(), eventDetailView);
 
