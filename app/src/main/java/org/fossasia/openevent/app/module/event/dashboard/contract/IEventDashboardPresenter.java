@@ -6,4 +6,5 @@ public interface IEventDashboardPresenter extends IDetailPresenter<Long, IEventD
 
     void loadDetails(boolean forceReload);
 
+    void toggleState();
 }
