@@ -29,8 +29,6 @@ import io.reactivex.subjects.PublishSubject;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.contains;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -117,45 +115,15 @@ public class AttendeeCheckInPresenterTest {
         attendeeCheckInPresenter.setAttendee(ATTENDEE);
         Attendee toggled = getCheckedInAttendee();
         when(databaseChangeListener.getNotifier()).thenReturn(notifier);
-        when(attendeeRepository.getAttendee(ID, false)).thenReturn(Observable.empty());
+        when(attendeeRepository.getAttendee(ID, false))
+            .thenReturn(Observable.empty())
+            .thenReturn(Observable.just(toggled));
 
         attendeeCheckInPresenter.start();
 
         notifier.onNext(new DatabaseChangeListener.ModelChange<>(ATTENDEE, BaseModel.Action.UPDATE));
-        notifier.onNext(new DatabaseChangeListener.ModelChange<>(toggled, BaseModel.Action.UPDATE));
 
         verify(attendeeCheckInView).showResult(toggled);
-        verify(attendeeCheckInView, atLeast(2)).onSuccess(any());
-    }
-
-    @Test
-    public void shouldShowCheckedInAfterToggling() {
-        attendeeCheckInPresenter.setAttendee(ATTENDEE);
-        Attendee toggled = getCheckedInAttendee();
-        when(databaseChangeListener.getNotifier()).thenReturn(notifier);
-        when(attendeeRepository.getAttendee(ID, false)).thenReturn(Observable.empty());
-
-        attendeeCheckInPresenter.start();
-
-        notifier.onNext(new DatabaseChangeListener.ModelChange<>(ATTENDEE, BaseModel.Action.UPDATE));
-        notifier.onNext(new DatabaseChangeListener.ModelChange<>(toggled, BaseModel.Action.UPDATE));
-
-        verify(attendeeCheckInView).onSuccess(contains("Checked In"));
-    }
-
-    @Test
-    public void shouldShowCheckedOutAfterToggling() {
-        Attendee toggled = getCheckedInAttendee();
-        attendeeCheckInPresenter.setAttendee(toggled);
-        when(databaseChangeListener.getNotifier()).thenReturn(notifier);
-        when(attendeeRepository.getAttendee(ID, false)).thenReturn(Observable.empty());
-
-        attendeeCheckInPresenter.start();
-
-        notifier.onNext(new DatabaseChangeListener.ModelChange<>(toggled, BaseModel.Action.UPDATE));
-        notifier.onNext(new DatabaseChangeListener.ModelChange<>(ATTENDEE, BaseModel.Action.UPDATE));
-
-        verify(attendeeCheckInView).onSuccess(contains("Checked Out"));
     }
 
     @Test

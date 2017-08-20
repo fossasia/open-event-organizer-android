@@ -32,6 +32,7 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.glide.GlideApp;
 import org.fossasia.openevent.app.common.app.glide.GlideRequest;
+import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -198,6 +199,7 @@ public final class BindingAdapters {
     public static void doneAction(EditText editText, Runnable runnable) {
         editText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO) {
+                ViewUtils.hideKeyboard(editText);
                 runnable.run();
                 return true;
             }

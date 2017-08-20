@@ -94,6 +94,7 @@ public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView
             .compose(erroneous(getView()))
             .filter(attendeeModelChange -> attendeeModelChange.getAction().equals(BaseModel.Action.UPDATE))
             .map(DatabaseChangeListener.ModelChange::getModel)
+            .flatMap(filterAttendee -> attendeeRepository.getAttendee(filterAttendee.getId(), false))
             .subscribe(attendee -> {
                 getView().updateAttendee(attendee);
                 updateLocal(attendee);
