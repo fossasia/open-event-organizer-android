@@ -1,5 +1,8 @@
 package org.fossasia.openevent.app.common.data.repository;
 
+import android.support.annotation.NonNull;
+
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.common.data.models.Event;
@@ -12,6 +15,8 @@ import org.fossasia.openevent.app.common.utils.core.JWTUtils;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class EventRepository extends Repository implements IEventRepository {
 
@@ -94,4 +99,19 @@ public class EventRepository extends Repository implements IEventRepository {
             .build();
     }
 
+    @NonNull
+    @Override
+    public Observable<Event> updateEvent(Event event) {
+        if (!utilModel.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        event.setTickets(null);
+        return eventService.patchEvent(event.getId(), event)
+            .doOnNext(updatedEvent -> databaseRepository
+                .update(Event.class, updatedEvent)
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
 }
