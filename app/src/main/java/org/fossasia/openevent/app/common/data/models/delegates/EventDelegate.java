@@ -45,8 +45,8 @@ public class EventDelegate implements IEventDelegate {
         return getHeader().hashCode();
     }
 
-    @JsonIgnore
     @Override
+    @JsonIgnore
     public List<Ticket> getEventTickets() {
         List<Ticket> tickets = event.getTickets();
         if (tickets != null && !tickets.isEmpty()) {

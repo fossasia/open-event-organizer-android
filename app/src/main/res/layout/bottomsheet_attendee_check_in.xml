@@ -78,7 +78,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_time }"
                     android:drawableStart="@{ @drawable/ic_time }"
@@ -90,7 +90,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_ticket }"
                     android:drawableStart="@{ @drawable/ic_ticket }"
@@ -102,7 +102,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_coin }"
                     android:drawableStart="@{ @drawable/ic_coin }"
@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_clock }"
                     android:drawableStart="@{ @drawable/ic_clock }"
@@ -126,7 +126,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_receipt }"
                     android:drawableStart="@{ @drawable/ic_receipt }"
@@ -139,7 +139,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_ray }"
                     android:drawableStart="@{ @drawable/ic_ray }"

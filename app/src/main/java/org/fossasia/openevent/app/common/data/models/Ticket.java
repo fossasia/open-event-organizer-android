@@ -25,6 +25,7 @@ import org.fossasia.openevent.app.common.utils.json.ObservableStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Delegate;
 
@@ -35,6 +36,7 @@ import lombok.experimental.Delegate;
 @ToString(exclude = "event")
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
+@EqualsAndHashCode(exclude = { "ticketDelegate", "creating", "deleting" })
 @SuppressWarnings("PMD.TooManyFields")
 public class Ticket implements Comparable<Ticket> {
 
@@ -66,6 +68,8 @@ public class Ticket implements Comparable<Ticket> {
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;
+
+    // Non model entities
 
     @JsonIgnore
     public final ObservableBoolean creating = new ObservableBoolean();

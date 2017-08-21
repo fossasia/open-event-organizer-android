@@ -23,7 +23,7 @@
         <FrameLayout
             android:layout_width="@dimen/spacing_small"
             android:layout_height="match_parent"
-            android:background="@{ event.id == selectedEventId ? @color/color_accent_dark : @color/color_top_surface }"/>
+            android:background="@{ event.id == selectedEventId ? @color/color_accent : @color/color_top_surface }"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,9 +64,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/event_state_draft"
                     android:textSize="@dimen/text_size_small"
-                    android:textColor="@android:color/black"
                     android:background="@drawable/rounded_rectangle"
-                    android:backgroundTint="@color/grey_400"
+                    app:backgroundTint="@color/grey_400"
+                    android:gravity="end"
                     android:layout_gravity="end"
                     android:paddingLeft="@dimen/spacing_small"
                     android:paddingStart="@dimen/spacing_small"

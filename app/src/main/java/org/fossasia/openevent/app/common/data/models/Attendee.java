@@ -34,7 +34,7 @@ import lombok.experimental.Delegate;
 @Type("attendee")
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = { "attendeeDelegate", "checking" })
 @Table(database = OrgaDatabase.class)
 public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, IHeaderProvider {
 
@@ -63,10 +63,6 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     @Column
     public String email;
 
-    @JsonIgnore
-    @Column(typeConverter = ObservableBooleanTypeConverter.class)
-    public ObservableBoolean checking = new ObservableBoolean();
-
     @Relationship("ticket")
     @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
     public Ticket ticket;
@@ -79,6 +75,12 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;
+
+    // Non model entities
+
+    @JsonIgnore
+    @Column(typeConverter = ObservableBooleanTypeConverter.class)
+    public ObservableBoolean checking = new ObservableBoolean();
 
     public Attendee() { }
 }
