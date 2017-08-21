@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.unit.presenter;
 
+import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Attendee;
@@ -33,8 +34,12 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.unit.presenter.Util.ERROR_OBSERVABLE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -60,7 +65,8 @@ public class EventDashboardPresenterTest {
     private static final int ID = 42;
     private EventDashboardPresenter eventDashboardPresenter;
 
-    private static final Event EVENT = Event.builder().id(ID).build();
+    private static final Event EVENT = Event.builder().id(ID).state(Event.STATE_PUBLISHED).build();
+    private static final Event TOGGLED_EVENT = Event.builder().id(ID).state(Event.STATE_DRAFT).build();
 
     private static final List<Attendee> ATTENDEES = Arrays.asList(
         Attendee.builder().isCheckedIn(false).build(),
@@ -290,6 +296,89 @@ public class EventDashboardPresenterTest {
 
         inOrder.verify(eventDetailView).showProgress(true);
         inOrder.verify(eventDetailView).onRefreshComplete(false);
+        inOrder.verify(eventDetailView).showProgress(false);
+    }
+
+    @Test
+    public void shouldToggleEventStateSuccessfully() {
+        when(eventRepository.updateEvent(any(Event.class))).thenReturn(Observable.just(TOGGLED_EVENT));
+
+        eventDashboardPresenter.setEvent(EVENT);
+        eventDashboardPresenter.toggleState();
+
+        assertEquals(EVENT.state, TOGGLED_EVENT.state);
+    }
+
+    @Test
+    public void shouldNotToggleEventStateOnError() {
+        when(eventRepository.updateEvent(any(Event.class))).thenReturn(ERROR_OBSERVABLE);
+
+        // Defined locally as a work around for unexpected failureg
+        Event event = Event.builder().id(6).state(Event.STATE_PUBLISHED).build();
+
+        eventDashboardPresenter.setEvent(event);
+        eventDashboardPresenter.toggleState();
+
+        assertNotEquals(event.state, Event.STATE_DRAFT);
+    }
+
+    @Test
+    public void shouldShowSuccessMessageOnToggleSuccess() {
+        when(eventRepository.updateEvent(any(Event.class))).thenReturn(Observable.just(TOGGLED_EVENT));
+
+        eventDashboardPresenter.setEvent(EVENT);
+        eventDashboardPresenter.toggleState();
+
+        verify(eventDetailView).onSuccess(utilModel.getResourceString(R.string.publish_success));
+    }
+
+    @Test
+    public void shouldShowErrorMessageOnToggleError() {
+        when(eventRepository.updateEvent(any(Event.class))).thenReturn(ERROR_OBSERVABLE);
+
+        eventDashboardPresenter.setEvent(EVENT);
+        eventDashboardPresenter.toggleState();
+
+        verify(eventDetailView).showError(anyString());
+    }
+
+    @Test
+    public void shouldShowProgressbarOnToggle() {
+        when(eventRepository.updateEvent(any(Event.class))).thenReturn(Observable.just(TOGGLED_EVENT));
+
+        eventDashboardPresenter.setEvent(EVENT);
+        eventDashboardPresenter.toggleState();
+
+        verify(eventDetailView).showProgress(true);
+    }
+
+    @Test
+    public void shouldHideProgressbarOnToggleSuccess() {
+        when(eventRepository.updateEvent(any(Event.class))).thenReturn(Observable.just(TOGGLED_EVENT));
+
+        eventDashboardPresenter.setEvent(EVENT);
+        eventDashboardPresenter.toggleState();
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView, eventRepository);
+
+        inOrder.verify(eventRepository).updateEvent(any(Event.class));
+        inOrder.verify(eventDetailView).showProgress(true);
+        inOrder.verify(eventDetailView).showResult(any(Event.class));
+        inOrder.verify(eventDetailView).showProgress(false);
+    }
+
+    @Test
+    public void shouldHideProgressbarOnToggleError() {
+        when(eventRepository.updateEvent(any(Event.class))).thenReturn(Observable.error(Logger.TEST_ERROR));
+
+        eventDashboardPresenter.setEvent(EVENT);
+        eventDashboardPresenter.toggleState();
+
+        InOrder inOrder = Mockito.inOrder(eventDetailView, eventRepository);
+
+        inOrder.verify(eventRepository).updateEvent(any(Event.class));
+        inOrder.verify(eventDetailView).showProgress(true);
+        inOrder.verify(eventDetailView).showResult(any(Event.class));
         inOrder.verify(eventDetailView).showProgress(false);
     }
 }
