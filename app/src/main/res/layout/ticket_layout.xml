@@ -37,9 +37,9 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text='@{ ContextManager.getCurrency() + " " + ticket.price }'
+                android:text='@{ ContextManager.getCurrency() + " " + safeUnbox(ticket.price) }'
                 android:textSize="@dimen/text_size_extra_small"
-                android:visibility="@{ ticket.price == 0 ? View.GONE : View.VISIBLE }"/>
+                android:visibility="@{ safeUnbox(ticket.price) == 0 ? View.GONE : View.VISIBLE }"/>
         </LinearLayout>
 
         <!-- Hidden for later use -->

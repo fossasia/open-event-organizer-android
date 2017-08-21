@@ -23,6 +23,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Delegate;
 
 @Data
@@ -31,6 +32,7 @@ import lombok.experimental.Delegate;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
+@EqualsAndHashCode(exclude = { "eventDelegate", "analytics" })
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Event implements Comparable<Event>, IHeaderProvider {
 
