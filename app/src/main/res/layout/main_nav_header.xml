@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.github.florent37.glidepalette.BitmapPalette.Profile" />
         <import type="org.fossasia.openevent.app.common.utils.core.DateUtils" />
-        <import type="android.view.View" />
         <import type="org.fossasia.openevent.app.R" />
+        <import type="android.view.View" />
 
         <variable
             name="user"
@@ -18,11 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:paletteImageUrl="@{ event.largeImageUrl }"
-        app:placeholder="@{ @drawable/header }"
-        app:imageId="@{ R.id.image }"
-        app:paletteId="@{ R.id.eventDetailPalette }">
+        android:orientation="vertical" >
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -33,6 +30,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
+                app:paletteProfile="@{ Profile.MUTED }"
+                app:paletteImageUrl="@{ event.largeImageUrl }"
+                app:paletteKey='@{ "event_header" }'
+                app:placeholder="@{ @drawable/header }"
                 android:contentDescription="@string/event_background" />
 
             <LinearLayout
@@ -69,6 +70,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="@{ event == null ? View.GONE : View.VISIBLE }"
+            app:paletteHeader='@{ "event_header" }'
             style="@style/ItemPadding" >
 
             <TextView
@@ -76,12 +78,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{ event.name }"
+                app:paletteText='@{ "event_header" }'
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <TextView
                 android:id="@+id/event_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:paletteText='@{ "event_header" }'
                 android:text='@{ event.startsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) : "" }'/>
         </LinearLayout>
     </LinearLayout>
