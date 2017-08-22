@@ -54,6 +54,8 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     private MainActivityBinding binding;
     private MainNavHeaderBinding headerBinding;
 
+    private int lastSelectedNavItemId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         OrgaApplication
@@ -174,7 +176,11 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     }
 
     private void loadFragment(int navItemId) {
+        if (lastSelectedNavItemId == navItemId)
+            return;
+
         binding.navView.setCheckedItem(navItemId);
+        lastSelectedNavItemId = navItemId;
 
         Fragment fragment;
         switch (navItemId) {
