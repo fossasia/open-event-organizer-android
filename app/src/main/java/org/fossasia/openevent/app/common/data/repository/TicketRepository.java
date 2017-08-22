@@ -32,7 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 public class TicketRepository extends Repository implements ITicketRepository {
 
     @Inject
-    TicketRepository(IUtilModel utilModel, IDatabaseRepository databaseRepository, EventService eventService) {
+    public TicketRepository(IUtilModel utilModel, IDatabaseRepository databaseRepository, EventService eventService) {
         super(utilModel, databaseRepository, eventService);
     }
 
