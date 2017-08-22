@@ -37,14 +37,13 @@
                 android:contentDescription="@string/event_background" />
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/spacing_big"
-                android:layout_marginRight="@dimen/spacing_medium"
-                android:layout_marginEnd="@dimen/spacing_medium">
+                android:orientation="vertical"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_marginStart="@dimen/spacing_normal">
 
                 <ImageView
                     android:id="@+id/profile"
@@ -52,15 +51,16 @@
                     android:layout_height="60dp"
                     app:circleImageUrl="@{ user.avatarUrl }"
                     app:placeholder="@{ @drawable/ic_account_circle }"
-                    android:contentDescription="@string/profile_picture" />
+                    android:contentDescription="@string/profile_picture"
+                    android:background="@drawable/circle_placeholder" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="@dimen/spacing_small"
                     android:text='@{ user.firstName + " " + user.lastName }'
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse" />
+                    android:textColor="@android:color/white"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_marginTop="@dimen/spacing_normal"/>
             </LinearLayout>
         </FrameLayout>
 
