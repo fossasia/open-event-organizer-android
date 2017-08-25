@@ -4,6 +4,8 @@ apply plugin: 'io.sentry.android.gradle'
 apply plugin: 'com.noveogroup.android.check'
 apply from: './jacoco.gradle'
 
+def app_name = System.getenv('app_name') ?: "eventyay organizer"
+
 android {
     lintOptions {
         warning 'InvalidPackage'
@@ -20,10 +22,11 @@ android {
         applicationId "org.fossasia.eventyay"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 2
-        versionName "1.01alpha"
+        versionCode 3
+        versionName "1.02alpha"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [appName: app_name]
     }
     buildTypes {
         release {
