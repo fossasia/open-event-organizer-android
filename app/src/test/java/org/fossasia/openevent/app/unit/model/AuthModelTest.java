@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.unit.model;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.common.app.ContextManager;
 import org.fossasia.openevent.app.common.data.AuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
@@ -9,6 +10,7 @@ import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.models.dto.Login;
 import org.fossasia.openevent.app.common.data.models.dto.LoginResponse;
 import org.fossasia.openevent.app.common.data.network.EventService;
+import org.fossasia.openevent.app.module.main.MainActivity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -26,6 +28,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -214,5 +217,14 @@ public class AuthModelTest {
         authModel.login(new Login(EMAIL + "new", PASSWORD)).test();
 
         verify(sharedPreferenceModel).addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, EMAIL + "new");
+    }
+
+    @Test
+    public void shouldClearSelectedEventOnLogout() {
+        authModel.logout().test();
+
+        verify(utilModel).saveToken(null);
+        verify(sharedPreferenceModel).setLong(MainActivity.EVENT_KEY, -1);
+        assertNull(ContextManager.getSelectedEvent());
     }
 }
