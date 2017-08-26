@@ -5,7 +5,7 @@
 
 [![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/master.svg)](https://travis-ci.org/fossasia/open-event-orga-app)
 [![Codacy Grade](https://img.shields.io/codacy/grade/9a25fb73a9054144b384b5c6d62243f4.svg)](https://www.codacy.com/app/mb/open-event-orga-app)
-[![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app/development.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
 [![Appetize Preview](https://img.shields.io/badge/Preview-appetize.io-673AB7.svg)](https://appetize.io/app/t8hace1jdrybzvwwrfw5p1ayuw)
 [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg)](https://gitter.im/fossasia/open-event-orga-app)
 > Event management app for organizers using Open Event Platform
@@ -18,6 +18,10 @@ The core features of this Android Application are
 - Overview of sales 
 - Ticket Management
 - Data sync with the [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server/)
+
+Currently, the application is released in alpha phase at Google Play Store [here](https://play.google.com/store/apps/details?id=org.fossasia.eventyay).
+
+<a href='https://play.google.com/store/apps/details?id=org.fossasia.eventyay&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/></a>
 
 ## Roadmap
 
