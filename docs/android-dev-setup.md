@@ -30,3 +30,7 @@ Also, you need to enable the option by changing `autoUpload false` to true in or
 For more info, visit https://docs.sentry.io/clients/java/modules/android/
 
 You can alternatively disable proguard altogether
+
+### Configuring App Name (Optional)
+
+Default app name is *eventyay organizer*. This can be changed by setting environment variable `app_name` which will replace the default app name.
