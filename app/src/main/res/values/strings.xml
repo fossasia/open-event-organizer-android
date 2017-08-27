@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Open Event Organizer</string>
     <string name="checked_in">Checked In</string>
     <string name="checked_out">Checked Out</string>
     <string name="check_in">Check In</string>
