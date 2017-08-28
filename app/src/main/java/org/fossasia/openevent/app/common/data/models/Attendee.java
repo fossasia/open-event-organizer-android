@@ -36,6 +36,7 @@ import lombok.experimental.Delegate;
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @EqualsAndHashCode(callSuper = false, exclude = { "attendeeDelegate", "checking" })
 @Table(database = OrgaDatabase.class)
+@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, IHeaderProvider {
 
     @Delegate(types = IAttendeeDelegate.class)
@@ -75,6 +76,41 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;
+
+    // Migration 7 additions
+
+    @Column
+    public String blog;
+    @Column
+    public String homeAddress;
+    @Column
+    public String workAddress;
+    @Column
+    public String jobTitle;
+    @Column
+    public String taxBusinessInfo;
+    @Column
+    public String phone;
+    @Column
+    public String gender;
+    @Column
+    public String company;
+    @Column
+    public String workPhone;
+    @Column
+    public String birthDate;
+    @Column
+    public String twitter;
+    @Column
+    public String facebook;
+    @Column
+    public String github;
+    @Column
+    public String website;
+    @Column
+    public String shippingAddress;
+    @Column
+    public String billingAddress;
 
     // Non model entities
 
