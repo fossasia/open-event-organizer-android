@@ -70,6 +70,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="@{ event == null ? View.GONE : View.VISIBLE }"
+            android:background="@color/grey_400"
             app:paletteHeader='@{ "event_header" }'
             style="@style/ItemPadding" >
 
