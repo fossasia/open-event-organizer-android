@@ -9,6 +9,8 @@ public interface IEventRepository {
 
     Observable<User> getOrganiser(boolean reload);
 
+    Observable<Event> createEvent(Event event);
+
     Observable<Event> getEvent(long eventId, boolean reload);
 
     Observable<Event> getEvents(boolean reload);

@@ -32,6 +32,9 @@ public interface EventService {
     @GET("users/{id}")
     Observable<User> getUser(@Path("id") long id);
 
+    @POST("events")
+    Observable<Event> postEvent(@Body Event event);
+
     @GET("events/{id}?include=tickets")
     Observable<Event> getEvent(@Path("id") long id);
 

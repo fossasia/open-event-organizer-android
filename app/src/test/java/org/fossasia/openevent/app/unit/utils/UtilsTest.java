@@ -1,15 +1,21 @@
 package org.fossasia.openevent.app.unit.utils;
 
+import org.fossasia.openevent.app.common.data.contract.IUtilModel;
+import org.fossasia.openevent.app.common.data.db.DatabaseRepository;
 import org.fossasia.openevent.app.common.data.models.Attendee;
+import org.fossasia.openevent.app.common.data.repository.EventRepository;
 import org.fossasia.openevent.app.common.utils.core.Utils;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
+import retrofit2.Retrofit;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class UtilsTest {

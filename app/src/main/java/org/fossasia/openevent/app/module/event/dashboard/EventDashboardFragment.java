@@ -17,6 +17,7 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
 import org.fossasia.openevent.app.module.event.chart.ChartActivity;
@@ -26,6 +27,7 @@ import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboar
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +46,9 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
 
     @Inject
     IUtilModel utilModel;
+
+    @Inject
+    IEventRepository eventRepository;
 
     @Inject
     Lazy<IEventDashboardPresenter> presenterProvider;
@@ -89,6 +94,18 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = EventDetailBinding.inflate(inflater, container, false);
+
+        binding.test.setOnClickListener(v -> {
+            Event eovent = Event.builder()
+                .name("Test")
+                .build();
+            eventRepository.createEvent(eovent)
+                .subscribe(event -> {
+                    Timber.d(event.toString());
+                }, throwable -> {
+                    Timber.e(throwable);
+                });
+        });
 
         binding.ticketAnalytics.btnChartFullScreen.setOnClickListener(
             v -> {
