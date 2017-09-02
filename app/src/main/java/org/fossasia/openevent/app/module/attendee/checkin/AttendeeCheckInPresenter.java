@@ -57,6 +57,9 @@ public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttende
 
     @Override
     public void toggleCheckIn() {
+        attendee.checking.set(true);
+        attendee.isCheckedIn = !attendee.isCheckedIn;
+
         attendeeRepository.scheduleToggle(attendee)
             .compose(disposeCompletable(getDisposable()))
             .compose(erroneousCompletable(getView()))

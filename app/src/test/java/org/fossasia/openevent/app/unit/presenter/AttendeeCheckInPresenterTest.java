@@ -42,13 +42,17 @@ public class AttendeeCheckInPresenterTest {
     private PublishSubject<DatabaseChangeListener.ModelChange<Attendee>> notifier;
 
     private static final long ID = 42;
-    private static final Attendee ATTENDEE = Attendee.builder().id(ID).build();
+    private static final Attendee ATTENDEE = new Attendee();
+
+    static {
+        ATTENDEE.setId(ID);
+        ATTENDEE.setEvent(Event.builder().id(ID).build());
+    }
 
     private AttendeeCheckInPresenter attendeeCheckInPresenter;
 
     @Before
     public void setUp() {
-        ATTENDEE.setEvent(Event.builder().id(ID).build());
         attendeeCheckInPresenter = new AttendeeCheckInPresenter(attendeeRepository, databaseChangeListener);
         attendeeCheckInPresenter.attach(ID, attendeeCheckInView);
         notifier = PublishSubject.create();
