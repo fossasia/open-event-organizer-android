@@ -85,7 +85,11 @@ public class OrgaApplication extends MultiDexApplication {
             AndroidThreeTen.init(this);
 
             if (BuildConfig.DEBUG) {
-                Stetho.initializeWithDefaults(this);
+                Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                        .build());
 
                 StrictMode.setThreadPolicy(
                     new StrictMode.ThreadPolicy.Builder()

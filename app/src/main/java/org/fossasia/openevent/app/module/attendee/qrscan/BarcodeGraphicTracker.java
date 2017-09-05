@@ -1,7 +1,5 @@
 package org.fossasia.openevent.app.module.attendee.qrscan;
 
-import android.util.SparseArray;
-
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -35,6 +33,7 @@ public class BarcodeGraphicTracker extends Tracker<Barcode> {
     @Override
     public void onNewItem(int id, Barcode item) {
         graphic.setId(id);
+        barcodeEmitter.onNext(Notification.createOnNext(item));
     }
 
     /**
@@ -44,11 +43,7 @@ public class BarcodeGraphicTracker extends Tracker<Barcode> {
     public void onUpdate(Detector.Detections<Barcode> detectionResults, Barcode item) {
         graphicOverlay.add(graphic);
         graphic.updateItem(item);
-        SparseArray<Barcode> barcodeSparseArray = detectionResults.getDetectedItems();
-        if (barcodeSparseArray.size() == 0)
-            barcodeEmitter.onNext(Notification.createOnError(new Throwable()));
-        else
-            barcodeEmitter.onNext(Notification.createOnNext(barcodeSparseArray.valueAt(0)));
+        barcodeEmitter.onNext(Notification.createOnNext(item));
     }
 
     /**
@@ -59,6 +54,7 @@ public class BarcodeGraphicTracker extends Tracker<Barcode> {
     @Override
     public void onMissing(Detector.Detections<Barcode> detectionResults) {
         graphicOverlay.remove(graphic);
+        barcodeEmitter.onNext(Notification.createOnError(new Throwable()));
     }
 
     /**

@@ -34,7 +34,7 @@ public final class OrgaDatabase {
 
     public static final String NAME = "orga_database";
     // To be bumped after each schema change and migration addition
-    public static final int VERSION = 6;
+    public static final int VERSION = 8;
 
     private OrgaDatabase() {
         // Never Called
@@ -92,6 +92,40 @@ public final class OrgaDatabase {
 
             for (String column : addedColumns)
                 addColumn(SQLiteType.TEXT, column);
+        }
+    }
+
+    @Migration(version = 7, database = OrgaDatabase.class)
+    public static class MigrationTo7 extends AlterTableMigration<Attendee> {
+
+        public MigrationTo7(Class<Attendee> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            super.onPreMigrate();
+            List<String> addedColumns = Arrays.asList("blog", "homeAddress", "workAddress", "jobTitle",
+                "country", "taxBusinessInfo", "phone", "gender", "company", "workPhone", "birthDate",
+                "twitter", "facebook", "github", "website", "shippingAddress", "billingAddress");
+
+            for (String column : addedColumns)
+                addColumn(SQLiteType.TEXT, column);
+        }
+    }
+
+    @Migration(version = 8, database = OrgaDatabase.class)
+    public static class MigrationTo8 extends AlterTableMigration<Attendee> {
+
+        public MigrationTo8(Class<Attendee> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            super.onPreMigrate();
+
+            addColumn(SQLiteType.TEXT, "checkinTimes");
         }
     }
 }

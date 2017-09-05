@@ -39,12 +39,9 @@ public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttende
             .compose(dispose(getDisposable()))
             .map(DatabaseChangeListener.ModelChange::getModel)
             .filter(filterAttendee -> filterAttendee.getId() == attendee.getId())
+            .flatMap(filterAttendee -> attendeeRepository.getAttendee(attendee.getId(), false))
             .compose(erroneousResult(getView()))
-            .subscribe(attendee -> {
-                this.attendee = attendee;
-                String status = attendee.isCheckedIn() ? "Checked In" : "Checked Out";
-                getView().onSuccess(status);
-            }, Logger::logError);
+            .subscribe(attendee -> this.attendee = attendee, Logger::logError);
 
         attendeeRepository.getAttendee(getId(), false)
             .compose(dispose(getDisposable()))
@@ -60,6 +57,9 @@ public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttende
 
     @Override
     public void toggleCheckIn() {
+        attendee.checking.set(true);
+        attendee.isCheckedIn = !attendee.isCheckedIn;
+
         attendeeRepository.scheduleToggle(attendee)
             .compose(disposeCompletable(getDisposable()))
             .compose(erroneousCompletable(getView()))

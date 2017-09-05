@@ -5,7 +5,7 @@
 
 [![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/master.svg)](https://travis-ci.org/fossasia/open-event-orga-app)
 [![Codacy Grade](https://img.shields.io/codacy/grade/9a25fb73a9054144b384b5c6d62243f4.svg)](https://www.codacy.com/app/mb/open-event-orga-app)
-[![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app/development.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
 [![Appetize Preview](https://img.shields.io/badge/Preview-appetize.io-673AB7.svg)](https://appetize.io/app/t8hace1jdrybzvwwrfw5p1ayuw)
 [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg)](https://gitter.im/fossasia/open-event-orga-app)
 > Event management app for organizers using Open Event Platform
@@ -18,6 +18,10 @@ The core features of this Android Application are
 - Overview of sales 
 - Ticket Management
 - Data sync with the [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server/)
+
+Currently, the application is released in alpha phase at Google Play Store [here](https://play.google.com/store/apps/details?id=org.fossasia.eventyay).
+
+<a href='https://play.google.com/store/apps/details?id=org.fossasia.eventyay&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/></a>
 
 ## Roadmap
 
@@ -32,6 +36,26 @@ Please join our mailing list to discuss questions regarding the project: https:/
 
 Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-app
 
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="docs/_static/login.png"></td>
+    <td><img src="docs/_static/signup.png"></td>
+    <td><img src="docs/_static/navigation.png"></td>
+  </tr>
+  <tr>
+    <td><img src="docs/_static/dashboard.png"></td>
+    <td><img src="docs/_static/attendees.png"></td>
+    <td><img src="docs/_static/checkin.png"></td>
+  </tr>
+  <tr>
+    <td><img src="docs/_static/about.png"></td>
+    <td><img src="docs/_static/organizer.png"></td>
+    <td><img src="docs/_static/organizer_content.png"></td>
+  </tr>
+</table>
+
 ## Development
 
 - The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at https://open-event-api.herokuapp.com/ .
@@ -44,7 +68,7 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 - [jsonapi-converter](https://github.com/jasminb/jsonapi-converter)
 - [ButterKnife](https://github.com/JakeWharton/butterknife)
 - [Lombok](https://projectlombok.org/)
-- [Picasso](https://github.com/square/picasso)
+- [Glide](https://github.com/bumptech/glide)
 - [Retrofit](https://github.com/square/retrofit) + [OkHttp](https://github.com/square/okhttp)
 - [DBFlow](https://github.com/Raizlabs/DBFlow)
 - [FastAdapter](https://github.com/mikepenz/FastAdapter)
@@ -60,37 +84,9 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
   - [Mockito](https://github.com/mockito/mockito)
   - [RoboElectric](https://github.com/robolectric/robolectric)
 
-### Development setup
-Before you begin, you should already have the Android Studio SDK downloaded and set up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio).
+### Android Development Setup
 
-1. Download the project [source](https://github.com/fossasia/open-event-orga-app). You can do this either by forking and cloning the repository (recommended if you plan on pushing changes) or by downloading it as a ZIP file and extracting it.
-
-2. Open Android Studio, you will see a **Welcome to Android** window. Under Quick Start, select _Import Project (Eclipse ADT, Gradle, etc.)_
-
-3. Navigate to the directory where you saved the project, select the root folder of the project (the folder named "open-event-orga-app"), and hit OK. Android Studio should now begin building the project with Gradle.
-
-4. Once this process is complete and Android Studio opens, check the Console for any build errors.
-
-  - _Note:_ If you receive a Gradle sync error titled, "failed to find ...", you should click on the link below the error message (if avaliable) that says _Install missing platform(s) and sync project_ and allow Android studio to fetch you what is missing.
-
-5. Once all build errors have been resolved, you should be all set to build the app and test it.
-
-6. To Build the app, go to _Build>Make Project_ (or alternatively press the Make Project icon in the toolbar).
-
-7. If the app was built successfully, you can test it by running it on either a real device or an emulated one by going to _Run>Run 'app'_ or presing the Run icon in the toolbar.
-
-**Note: You will need to install Lombok Plugin in Android Studio in order to properly access generated methods of data classes**
-
-**Note:** For release builds, you need to set up Sentry with DSN in environment variables and a sentry.properties file in project root containing these properties in order for sentry cli to automatically upload proguard mappings to your project:
-- defaults.project
-- defaults.org
-- auth.token
-
-Also, you need to enable the option by changing `autoUpload false` to true in order to enable this feature
-
-For more info, visit https://docs.sentry.io/clients/java/modules/android/
-
-You can alternatively disable proguard altogether
+Please find info about the set up of the App in your development environment [here](docs/android-dev-setup.md).
 
 ### Project Conventions
 

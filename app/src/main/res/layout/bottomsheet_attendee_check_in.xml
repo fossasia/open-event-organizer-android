@@ -78,7 +78,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_time }"
                     android:drawableStart="@{ @drawable/ic_time }"
@@ -90,7 +90,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_ticket }"
                     android:drawableStart="@{ @drawable/ic_ticket }"
@@ -102,7 +102,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_coin }"
                     android:drawableStart="@{ @drawable/ic_coin }"
@@ -114,24 +114,24 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_clock }"
                     android:drawableStart="@{ @drawable/ic_clock }"
                     android:drawablePadding="@dimen/spacing_small"
-                    android:text='@{ checkinAttendee.order.completedAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, checkinAttendee.order.completedAt) : "" }'
+                    android:text='@{ checkinAttendee.order.completedAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, checkinAttendee.order.completedAt) : "INCOMPLETE" }'
                     android:textAllCaps="true"
                     tools:text="free" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_receipt }"
                     android:drawableStart="@{ @drawable/ic_receipt }"
                     android:drawablePadding="@dimen/spacing_small"
-                    android:text="@{ checkinAttendee.order.transactionId }"
+                    android:text="@{ checkinAttendee.order.identifier }"
                     android:textAllCaps="true"
                     android:textStyle="bold"
                     tools:text="free" />
@@ -139,13 +139,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawableLeft="@{ @drawable/ic_ray }"
                     android:drawableStart="@{ @drawable/ic_ray }"
                     android:drawablePadding="@dimen/spacing_small"
+                    android:visibility="@{ checkinAttendee.order.paidVia == null ? View.GONE : View.VISIBLE }"
                     android:text="@{ checkinAttendee.order.paidVia }"
-                    android:visibility='@{ checkinAttendee.order.paidVia.equalsIgnoreCase("free") ? View.GONE : View.VISIBLE }'
                     android:textAllCaps="true"
                     tools:text="free" />
 
@@ -157,7 +157,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
-            android:layout_margin="@dimen/spacing_large"
+            android:layout_margin="@dimen/spacing_normal"
             android:onClick="@{() -> presenter.toggleCheckIn() }"
             app:backgroundTint="@{ checkinAttendee.isCheckedIn ? @color/red_500 : @color/light_green_500 }"
             app:fabSize="mini"

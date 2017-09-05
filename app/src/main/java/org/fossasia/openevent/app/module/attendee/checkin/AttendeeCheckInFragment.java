@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.fossasia.openevent.app.BR;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseBottomSheetFragment;
@@ -96,11 +95,6 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<IAttendeeCh
     public void showResult(Attendee attendee) {
         binding.setCheckinAttendee(attendee);
         binding.executePendingBindings();
-    }
-
-    @Override
-    public void onSuccess(String message) {
-        binding.notifyPropertyChanged(BR.checkinAttendee);
     }
 
     @Override

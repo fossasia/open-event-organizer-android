@@ -16,7 +16,9 @@ import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.Event_Table;
 import org.fossasia.openevent.app.common.data.network.EventService;
 import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
+import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.module.attendee.checkin.job.AttendeeCheckInJob;
+import org.threeten.bp.LocalDateTime;
 
 import javax.inject.Inject;
 
@@ -58,13 +60,9 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
 
         Observable<Attendee> networkObservable = Observable.defer(() ->
             eventService.getAttendees(eventId)
-                .doOnNext(attendees -> {
-                    Timber.d(attendees.toString());
-
-                    databaseRepository.deleteAll(Attendee.class)
-                    .concatWith(databaseRepository.saveList(Attendee.class, attendees))
-                    .subscribe(() -> Timber.d("Saved Attendees"), Logger::logError);
-                })
+                .doOnNext(attendees -> databaseRepository.deleteAll(Attendee.class)
+                .concatWith(databaseRepository.saveList(Attendee.class, attendees))
+                .subscribe(() -> Timber.d("Saved Attendees"), Logger::logError))
                 .flatMapIterable(attendees -> attendees));
 
         return new AbstractObservableBuilder<Attendee>(utilModel)
@@ -88,8 +86,6 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
     }
 
     public Completable scheduleToggle(Attendee attendee) {
-        attendee.checking.set(true);
-        attendee.isCheckedIn = !attendee.isCheckedIn;
         return databaseRepository
             .update(Attendee.class, attendee)
             .concatWith(completableObserver -> {
@@ -107,21 +103,19 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
             return Observable.error(new Throwable(Constants.NO_NETWORK));
         }
 
-        return databaseRepository.getItems(Attendee.class, Attendee_Table.id.eq(transitAttendee.getId()))
-            .take(1)
+        return Observable.just(transitAttendee)
             .flatMap(attendee -> {
                 // Remove relationships from attendee item
                 attendee.setEvent(null);
                 attendee.setTicket(null);
                 attendee.setOrder(null);
+                attendee.setCheckinTimes(DateUtils.formatDateToIso(LocalDateTime.now()));
 
                 return eventService.patchAttendee(attendee.getId(), attendee);
             })
-            .doOnNext(attendee -> {
-                databaseRepository
-                    .update(Attendee.class, attendee)
-                    .subscribe();
-            })
+            .doOnNext(attendee -> databaseRepository
+                .update(Attendee.class, attendee)
+                .subscribe())
             .doOnError(throwable -> scheduleToggle(transitAttendee))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());

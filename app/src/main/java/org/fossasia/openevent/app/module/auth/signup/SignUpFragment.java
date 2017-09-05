@@ -67,7 +67,6 @@ public class SignUpFragment extends BaseFragment<ISignUpPresenter> implements IS
             if (!validator.validate())
                 return;
 
-            ViewUtils.hideKeyboard(getActivity());
             String url = binding.url.baseUrl.getText().toString().trim();
             getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
             getPresenter().signUp();

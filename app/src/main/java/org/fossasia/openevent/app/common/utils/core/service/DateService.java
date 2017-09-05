@@ -9,9 +9,9 @@ import java.text.ParseException;
 @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Bug in PMD related to DU anomaly
 public final class DateService {
 
-    private static final String LIVE_EVENT = "LIVE";
-    private static final String PAST_EVENT = "PAST";
-    private static final String UPCOMING_EVENT = "UPCOMING";
+    public static final String LIVE_EVENT = "LIVE";
+    public static final String PAST_EVENT = "PAST";
+    public static final String UPCOMING_EVENT = "UPCOMING";
 
     private DateService() {
         // Never Called
@@ -23,7 +23,7 @@ public final class DateService {
      *
      * for both live events latest will be before in list
      * for both past events lately ended will be before in list
-     * for both upcoming lately started will be before in list
+     * for both upcoming started earliest will be before in list
      *
      * @return int
      */
@@ -31,7 +31,7 @@ public final class DateService {
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime startDate = DateUtils.getDate(one.getStartsAt());
         ZonedDateTime endDate = DateUtils.getDate(one.getEndsAt());
-        ZonedDateTime otherStartDate = DateUtils.getDate(two.getEndsAt());
+        ZonedDateTime otherStartDate = DateUtils.getDate(two.getStartsAt());
         ZonedDateTime otherEndDate = DateUtils.getDate(two.getEndsAt());
         if (endDate.isBefore(now) || otherEndDate.isBefore(now)) {
             // one of them is past and other can be past or live or upcoming
@@ -48,7 +48,7 @@ public final class DateService {
     }
 
     public static String getEventStatus(Event event) throws ParseException {
-        ZonedDateTime startDate = DateUtils.getDate(event.getEndsAt());
+        ZonedDateTime startDate = DateUtils.getDate(event.getStartsAt());
         ZonedDateTime endDate = DateUtils.getDate(event.getEndsAt());
         ZonedDateTime now = ZonedDateTime.now();
         if (now.isAfter(startDate)) {

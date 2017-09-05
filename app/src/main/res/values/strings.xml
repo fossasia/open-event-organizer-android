@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Open Event Organizer</string>
     <string name="checked_in">Checked In</string>
     <string name="checked_out">Checked Out</string>
     <string name="check_in">Check In</string>
@@ -45,6 +44,8 @@
     <string name="text_empty">Nothing to show here</string>
     <string name="empty_view_icon">Empty View Icon</string>
     <string name="event_summary">Event Summary</string>
+    <string name="event_state_publish">Publish</string>
+    <string name="event_state_draft">Draft</string>
     <string name="gross_sales">Gross Sales</string>
     <string name="sales_summary">Sales Summary</string>
     <string name="refresh_complete">Refresh Complete</string>
@@ -86,4 +87,6 @@
     <string name="filter">filter</string>
     <string name="filter_by_sync">Pending Sync</string>
     <string name="filter_by_none">None</string>
+    <string name="publish_success">Your Event is published successfully.</string>
+    <string name="draft_success">Your Event is unpublished successfully.</string>
 </resources>

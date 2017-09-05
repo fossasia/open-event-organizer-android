@@ -103,6 +103,7 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
     public void onStart() {
         super.onStart();
         getPresenter().attach(initialEventId, this);
+        binding.setPresenter(getPresenter());
         setupRefreshListener();
         getPresenter().start();
     }
@@ -160,6 +161,11 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
     @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
+    }
+
+    @Override
+    public void onSuccess(String message) {
+        ViewUtils.showSnackbar(binding.getRoot(), message);
     }
 
     @Override

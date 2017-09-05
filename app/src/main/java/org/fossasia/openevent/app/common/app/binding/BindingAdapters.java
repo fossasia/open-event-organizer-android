@@ -6,34 +6,21 @@ import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.BindingConversion;
 import android.databinding.InverseMethod;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
-import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.load.Transformation;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.github.florent37.glidepalette.GlidePalette;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.app.glide.GlideApp;
-import org.fossasia.openevent.app.common.app.glide.GlideRequest;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 
 @SuppressWarnings("PMD.AvoidCatchingGenericException")
 public final class BindingAdapters {
@@ -92,71 +79,6 @@ public final class BindingAdapters {
         }
     }
 
-    private static void setGlideImage(ImageView imageView, String url, Drawable drawable,
-                                      Transformation<Bitmap> transformation, GlidePalette<Drawable> glidePalette) {
-        if (TextUtils.isEmpty(url)) {
-            if (drawable != null)
-                imageView.setImageDrawable(drawable);
-            return;
-        }
-        GlideRequest<Drawable> request = GlideApp
-            .with(imageView.getContext())
-            .load(Uri.parse(url));
-
-        if (drawable != null) {
-            request
-                .placeholder(drawable)
-                .error(drawable);
-        }
-        request
-            .centerCrop()
-            .transition(withCrossFade())
-            .transform(transformation == null ? new CenterCrop() : transformation)
-            .listener(glidePalette)
-            .into(imageView);
-    }
-
-    @BindingAdapter(value = {"imageUrl", "placeholder"}, requireAll = false)
-    public static void bindDefaultImage(ImageView imageView, String url, Drawable drawable) {
-        setGlideImage(imageView, url, drawable, null, null);
-    }
-
-    @BindingAdapter(value = {"circleImageUrl", "placeholder"}, requireAll = false)
-    public static void bindCircularImage(ImageView imageView, String url, Drawable drawable) {
-        setGlideImage(imageView, url, drawable, new CircleCrop(), null);
-    }
-
-    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    @BindingAdapter(value = {"paletteImageUrl", "placeholder", "imageId", "paletteId"}, requireAll = false)
-    public static void bindImageWithPalette(View container, String url, Drawable drawable, int imageId, int paletteId) {
-        ImageView imageView = (ImageView) container.findViewById(imageId);
-        ViewGroup palette = (ViewGroup) container.findViewById(paletteId);
-
-        if (TextUtils.isEmpty(url)) {
-            if (drawable != null)
-                imageView.setImageDrawable(drawable);
-            palette.setBackgroundColor(container.getResources().getColor(R.color.grey_600));
-            for (int i = 0; i < palette.getChildCount(); i++) {
-                View child = palette.getChildAt(i);
-                if (child instanceof TextView)
-                    ((TextView) child).setTextColor(Color.WHITE);
-            }
-            return;
-        }
-        GlidePalette<Drawable> glidePalette = GlidePalette.with(url)
-            .use(GlidePalette.Profile.MUTED)
-            .intoBackground(palette)
-            .crossfade(true);
-
-        for (int i = 0; i < palette.getChildCount(); i++) {
-            View child = palette.getChildAt(i);
-            if (child instanceof TextView)
-                glidePalette
-                    .intoTextColor((TextView) child, GlidePalette.Swatch.TITLE_TEXT_COLOR);
-        }
-        setGlideImage(imageView, url, drawable, null, glidePalette);
-    }
-
     @BindingAdapter("tint")
     public static void setTintColor(ImageView imageView, @ColorInt int color) {
         DrawableCompat.setTint(imageView.getDrawable(), color);
@@ -198,6 +120,7 @@ public final class BindingAdapters {
     public static void doneAction(EditText editText, Runnable runnable) {
         editText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO) {
+                ViewUtils.hideKeyboard(editText);
                 runnable.run();
                 return true;
             }

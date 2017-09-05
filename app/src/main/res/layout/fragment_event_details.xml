@@ -7,6 +7,10 @@
         <import type="org.fossasia.openevent.app.common.app.ContextManager" />
 
         <variable
+            name="presenter"
+            type="org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardPresenter" />
+
+        <variable
             name="event"
             type="org.fossasia.openevent.app.common.data.models.Event" />
     </data>
@@ -37,6 +41,45 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     tools:context=".event.detail.EventDetailsActivity">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/spacing_medium"
+                        android:paddingBottom="@dimen/spacing_medium"
+                        android:paddingStart="@dimen/spacing_normal"
+                        android:paddingLeft="@dimen/spacing_normal"
+                        android:paddingEnd="@dimen/spacing_normal"
+                        android:paddingRight="@dimen/spacing_normal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="end"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/event_state_publish"
+                                android:textSize="@dimen/text_size_normal" />
+
+                            <android.support.v7.widget.SwitchCompat
+                                android:id="@+id/switchEventState"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{ () -> presenter.toggleState() }"
+                                android:checked='@{ event.state.equals("published") ? true : false }'
+                                android:layout_marginStart="@dimen/spacing_normal"
+                                android:layout_marginLeft="@dimen/spacing_normal"/>
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_shadow"/>
 
                     <TextView
                         android:layout_width="wrap_content"

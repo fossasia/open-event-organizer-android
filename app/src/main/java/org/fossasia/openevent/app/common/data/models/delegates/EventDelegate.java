@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.common.data.models.delegates;
 
 import android.support.annotation.NonNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.fossasia.openevent.app.common.data.models.Event;
@@ -45,6 +46,7 @@ public class EventDelegate implements IEventDelegate {
     }
 
     @Override
+    @JsonIgnore
     public List<Ticket> getEventTickets() {
         List<Ticket> tickets = event.getTickets();
         if (tickets != null && !tickets.isEmpty()) {

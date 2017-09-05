@@ -2,8 +2,10 @@ package org.fossasia.openevent.app.module.event.dashboard;
 
 import android.support.annotation.VisibleForTesting;
 
+import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.presenter.BaseDetailPresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
+import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
@@ -21,6 +23,7 @@ import io.reactivex.Observable;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.disposeCompletable;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneous;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneousRefresh;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.result;
 
@@ -32,14 +35,16 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
     private final IAttendeeRepository attendeeRepository;
     private final TicketAnalyser ticketAnalyser;
     private final ChartAnalyser chartAnalyser;
+    private final IUtilModel utilModel;
 
     @Inject
     public EventDashboardPresenter(IEventRepository eventRepository, IAttendeeRepository attendeeRepository,
-                                   TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser) {
+                                   TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser, IUtilModel utilModel) {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
         this.attendeeRepository = attendeeRepository;
         this.chartAnalyser = chartAnalyser;
+        this.utilModel = utilModel;
     }
 
     @Override
@@ -74,6 +79,22 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
             }, Logger::logError);
     }
 
+    @Override
+    public void toggleState() {
+        event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT;
+        eventRepository.updateEvent(event)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .doFinally(() -> getView().showResult(event))
+            .subscribe(updatedEvent -> {
+                event.state = updatedEvent.state;
+                final int successMessage = Event.STATE_PUBLISHED.equals(event.state) ? R.string.publish_success : R.string.draft_success;
+                getView().onSuccess(utilModel.getResourceString(successMessage));
+            },
+            throwable -> event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT);
+
+    }
+
     private void loadChart() {
         chartAnalyser.loadData(getId())
             .compose(disposeCompletable(getDisposable()))
@@ -105,5 +126,10 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
     @VisibleForTesting
     public Event getEvent() {
         return event;
+    }
+
+    @VisibleForTesting
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }
