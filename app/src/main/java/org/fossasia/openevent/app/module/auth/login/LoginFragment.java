@@ -96,6 +96,7 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
 
     @Override
     public void showError(String error) {
+        ViewUtils.hideKeyboard(binding.getRoot());
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
