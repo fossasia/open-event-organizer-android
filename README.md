@@ -3,7 +3,7 @@
 
 ## Open Event Organizer App
 
-[![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/master.svg)](https://travis-ci.org/fossasia/open-event-orga-app)
+[![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/development.svg)](https://travis-ci.org/fossasia/open-event-orga-app)
 [![Codacy Grade](https://img.shields.io/codacy/grade/9a25fb73a9054144b384b5c6d62243f4.svg)](https://www.codacy.com/app/mb/open-event-orga-app)
 [![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app/development.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
 [![Appetize Preview](https://img.shields.io/badge/Preview-appetize.io-673AB7.svg)](https://appetize.io/app/t8hace1jdrybzvwwrfw5p1ayuw)
