@@ -50,4 +50,5 @@ if [ "$TRAVIS_BRANCH" != "$PUBLISH_BRANCH" ]; then
     exit 0
 fi
 
-# TODO: Add Fastlane Integration here
+gem install fastlane
+fastlane supply --apk test-app-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME

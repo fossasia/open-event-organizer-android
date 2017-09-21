@@ -8,4 +8,5 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/open-
     exit 0
 fi
 
-openssl aes-256-cbc -K $encrypted_6735e748860e_key -iv $encrypted_6735e748860e_iv -in ./scripts/key.jks.enc -out ./scripts/key.jks -d
+openssl aes-256-cbc -K $encrypted_4afa27b18f52_key -iv $encrypted_4afa27b18f52_iv -in ./scripts/secrets.tar.enc -out ./scripts/secrets.tar -d
+tar xvf ./scripts/secrets.tar -C scripts/

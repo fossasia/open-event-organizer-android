@@ -60,6 +60,12 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 - The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at https://open-event-api.herokuapp.com/ .
 
+## Publishing
+
+Each push to master branch automatically publishes the application to Play Store as an Alpha Release. Thus, on each merge into master, the `versionCode` and `versionName` **MUST** be changed accordingly in `app/build.gradle`  
+- `versionCode` : Integer : To be monotonically incremented with each merge. Failure to do so will lead to publishing error, and thus is a crucial step before any merge
+- `versionName` : String : User visible version of the app. To be changed following [symantic versioning](http://semver.org/)
+
 ### Libraries:
 - [RxJava 2](https://github.com/ReactiveX/RxJava)
 - [Dagger 2](https://github.com/google/dagger)
