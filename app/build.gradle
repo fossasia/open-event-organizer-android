@@ -22,8 +22,8 @@ android {
         applicationId "org.fossasia.eventyay"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.02alpha"
+        versionCode 4
+        versionName "1.0.3alpha"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [appName: app_name]
@@ -76,6 +76,7 @@ sentry {
 configurations.all {
     resolutionStrategy {
         force 'com.android.support:multidex:1.0.2'
+        force 'com.squareup.okhttp3:okhttp:3.9.0'
     }
 }
 

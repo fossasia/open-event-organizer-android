@@ -3,7 +3,7 @@
 
 ## Open Event Organizer App
 
-[![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/master.svg)](https://travis-ci.org/fossasia/open-event-orga-app)
+[![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/development.svg)](https://travis-ci.org/fossasia/open-event-orga-app)
 [![Codacy Grade](https://img.shields.io/codacy/grade/9a25fb73a9054144b384b5c6d62243f4.svg)](https://www.codacy.com/app/mb/open-event-orga-app)
 [![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app/development.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
 [![Appetize Preview](https://img.shields.io/badge/Preview-appetize.io-673AB7.svg)](https://appetize.io/app/t8hace1jdrybzvwwrfw5p1ayuw)
@@ -59,6 +59,12 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 ## Development
 
 - The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at https://open-event-api.herokuapp.com/ .
+
+## Publishing
+
+Each push to master branch automatically publishes the application to Play Store as an Alpha Release. Thus, on each merge into master, the `versionCode` and `versionName` **MUST** be changed accordingly in `app/build.gradle`  
+- `versionCode` : Integer : To be monotonically incremented with each merge. Failure to do so will lead to publishing error, and thus is a crucial step before any merge
+- `versionName` : String : User visible version of the app. To be changed following [symantic versioning](http://semver.org/)
 
 ### Libraries:
 - [RxJava 2](https://github.com/ReactiveX/RxJava)
