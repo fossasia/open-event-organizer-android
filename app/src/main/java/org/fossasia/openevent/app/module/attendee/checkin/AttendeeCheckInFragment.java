@@ -58,7 +58,7 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<IAttendeeCh
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding =  DataBindingUtil.inflate(inflater, R.layout.bottomsheet_attendee_check_in, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.bottomsheet_attendee_check_in, container, false);
         return binding.getRoot();
     }
 
