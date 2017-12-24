@@ -1,26 +1,15 @@
 package org.fossasia.openevent.app.robo.db;
 
-import android.app.Application;
-
-import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.data.db.DatabaseRepository;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.models.dto.SimpleModel;
 import org.fossasia.openevent.app.common.data.models.dto.SimpleModel_Table;
-import org.fossasia.openevent.app.robo.rule.DatabaseTestRule;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = Application.class)
-public class DatabaseRepositoryTest {
+public class DatabaseRepositoryTest extends BaseTest {
 
     static final SimpleModel MODEL = new SimpleModel(1, "Title", "Greta Jones");
     private static final SimpleModel MODEL1 = new SimpleModel(2, "Second Title", "Bob Parsley");
@@ -34,10 +23,7 @@ public class DatabaseRepositoryTest {
 
     private DatabaseRepository databaseRepository;
 
-    @Rule
-    public final DatabaseTestRule dbRule = DatabaseTestRule.create();
-
-    @Before
+    @Override
     public void setUp() {
         databaseRepository = new DatabaseRepository();
     }

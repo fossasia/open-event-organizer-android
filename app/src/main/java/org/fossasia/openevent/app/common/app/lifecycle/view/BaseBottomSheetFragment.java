@@ -5,8 +5,6 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 
-import com.squareup.leakcanary.RefWatcher;
-
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.app.lifecycle.contract.presenter.IBasePresenter;
 import org.fossasia.openevent.app.common.app.lifecycle.view.loader.IPresenterProvider;
@@ -37,8 +35,7 @@ public abstract class BaseBottomSheetFragment<P extends IBasePresenter> extends 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = OrgaApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+        OrgaApplication.getRefWatcher(getActivity()).watch(this);
     }
 
 }

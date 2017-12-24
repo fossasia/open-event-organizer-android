@@ -45,18 +45,18 @@ public class AttendeeDelegate extends AbstractItem<Attendee, AttendeeViewHolder>
     }
 
     @Override
-    public AttendeeViewHolder getViewHolder(View view) {
+    public AttendeeViewHolder getViewHolder(@NonNull View view) {
         return new AttendeeViewHolder(DataBindingUtil.bind(view));
     }
 
     @Override
-    public void bindView(AttendeeViewHolder holder, List<Object> list) {
+    public void bindView(@NonNull AttendeeViewHolder holder, @NonNull List<Object> list) {
         super.bindView(holder, list);
         holder.bindAttendee(attendee);
     }
 
     @Override
-    public void unbindView(AttendeeViewHolder holder) {
+    public void unbindView(@NonNull AttendeeViewHolder holder) {
         super.unbindView(holder);
         holder.unbindAttendee();
     }

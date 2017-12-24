@@ -17,7 +17,7 @@ class StickyHeaderAdapter<T extends IItem & IHeaderProvider> extends AbstractAda
     implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
     @Override
     public long getHeaderId(int position) {
-        return getItem(position).getHeaderId();
+        return getFastAdapter().getItem(position).getHeaderId();
     }
 
     @Override
@@ -27,7 +27,12 @@ class StickyHeaderAdapter<T extends IItem & IHeaderProvider> extends AbstractAda
 
     @Override
     public void onBindHeaderViewHolder(HeaderViewHolder viewHolder, int position) {
-        viewHolder.bindHeader(getItem(position).getHeader());
+        viewHolder.bindHeader(getFastAdapter().getItem(position).getHeader());
+    }
+
+    @Override
+    public int getItemCount() {
+        return getFastAdapter().getItemCount();
     }
 
     @Override
