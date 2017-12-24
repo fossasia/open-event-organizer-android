@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data class="EventDetailBinding">
         <import type="org.fossasia.openevent.app.common.app.ContextManager" />
@@ -15,7 +15,7 @@
             type="org.fossasia.openevent.app.common.data.models.Event" />
     </data>
 
-    <FrameLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_top_surface">
@@ -25,39 +25,38 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="@dimen/spacing_normal"
-                android:clipToPadding="false">
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/spacing_normal">
 
-                <LinearLayout
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
                     tools:context=".event.detail.EventDetailsActivity">
 
                     <FrameLayout
+                        android:id="@+id/frame_event_state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/spacing_medium"
                         android:paddingBottom="@dimen/spacing_medium"
-                        android:paddingStart="@dimen/spacing_normal"
-                        android:paddingLeft="@dimen/spacing_normal"
                         android:paddingEnd="@dimen/spacing_normal"
-                        android:paddingRight="@dimen/spacing_normal">
+                        android:paddingLeft="@dimen/spacing_normal"
+                        android:paddingRight="@dimen/spacing_normal"
+                        android:paddingStart="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_medium"
+                        bind:layout_constraintEnd_toEndOf="parent"
+                        bind:layout_constraintStart_toStartOf="parent"
+                        bind:layout_constraintTop_toTopOf="parent">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:layout_gravity="end"
-                            android:gravity="center_vertical">
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -69,68 +68,86 @@
                                 android:id="@+id/switchEventState"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:onClick="@{ () -> presenter.toggleState() }"
-                                android:checked='@{ event.state.equals("published") ? true : false }'
+                                android:layout_marginLeft="@dimen/spacing_normal"
                                 android:layout_marginStart="@dimen/spacing_normal"
-                                android:layout_marginLeft="@dimen/spacing_normal"/>
+                                android:checked='@{ event.state.equals("published") ? true : false }'
+                                android:onClick="@{ () -> presenter.toggleState() }" />
                         </LinearLayout>
                     </FrameLayout>
 
                     <FrameLayout
+                        android:id="@+id/frame_horizontal_line_one"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/color_shadow"/>
+                        android:background="@color/color_shadow"
+                        bind:layout_constraintEnd_toEndOf="parent"
+                        bind:layout_constraintStart_toStartOf="parent"
+                        bind:layout_constraintTop_toBottomOf="@+id/frame_event_state"/>
+
 
                     <TextView
+                        android:id="@+id/tv_gross_sales_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_normal"
+                        android:layout_marginStart="@dimen/spacing_normal"
+                        android:layout_marginTop="@dimen/spacing_normal"
                         android:text="@string/gross_sales"
                         android:textAllCaps="true"
                         android:textSize="@dimen/text_size_small"
-                        android:layout_marginTop="@dimen/spacing_normal"
-                        android:layout_marginLeft="@dimen/spacing_normal"
-                        android:layout_marginStart="@dimen/spacing_normal"/>
+                        bind:layout_constraintStart_toStartOf="parent"
+                        bind:layout_constraintTop_toBottomOf="@+id/frame_horizontal_line_one"/>
 
                     <TextView
+                        android:id="@+id/tv_gross_sales_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{ContextManager.getCurrency() + " " + event.analytics.totalSale}'
-                        android:textSize="@dimen/text_size_extra_large"
-                        android:textColor="@color/color_accent"
+                        android:layout_marginBottom="@dimen/spacing_normal"
                         android:layout_marginLeft="@dimen/spacing_normal"
                         android:layout_marginStart="@dimen/spacing_normal"
-                        android:layout_marginBottom="@dimen/spacing_normal"/>
+                        android:text='@{ContextManager.getCurrency() + String.format(" %.2f", event.analytics.totalSale)}'
+                        android:textColor="@color/color_accent"
+                        android:textSize="@dimen/text_size_extra_large"
+                        bind:layout_constraintStart_toStartOf="parent"
+                        bind:layout_constraintTop_toBottomOf="@+id/tv_gross_sales_text"/>
 
                     <LinearLayout
+                        android:id="@+id/linear_layout_for_space_one"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:orientation="vertical"
+                        bind:layout_constraintStart_toStartOf="parent"
+                        bind:layout_constraintTop_toBottomOf="@+id/tv_gross_sales_value">
 
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/color_shadow"/>
+                            android:background="@color/color_shadow" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/spacing_small"
-                            android:background="@color/color_bottom_surface"/>
+                            android:background="@color/color_bottom_surface" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/linear_layout_tickets"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:baselineAligned="false"
                         android:layout_marginTop="@dimen/spacing_normal"
-                        android:layout_marginBottom="@dimen/spacing_normal">
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        bind:layout_constraintEnd_toEndOf="parent"
+                        bind:layout_constraintStart_toStartOf="parent"
+                        bind:layout_constraintTop_toBottomOf="@+id/linear_layout_for_space_one">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -142,13 +159,13 @@
                                     android:layout_height="wrap_content"
                                     android:text="@{event.analytics.totalAttendees}"
                                     android:textSize="20sp"
-                                    android:textStyle="bold"/>
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text='@{"/" + event.analytics.totalTickets}'
-                                    android:textSize="@dimen/text_size_small"/>
+                                    android:textSize="@dimen/text_size_small" />
 
                             </LinearLayout>
 
@@ -161,9 +178,9 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_marginTop="@dimen/spacing_extra_small"
-                                android:gravity="center_vertical">
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
                                 <ProgressBar
                                     style="?android:attr/progressBarStyleHorizontal"
@@ -175,9 +192,9 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text='@{(event.analytics.totalTickets == 0 ? 0 : (int) ((event.analytics.totalAttendees*100)/event.analytics.totalTickets)) + "%"}'
                                     android:layout_marginLeft="@dimen/spacing_extra_small"
-                                    android:layout_marginStart="@dimen/spacing_extra_small"/>
+                                    android:layout_marginStart="@dimen/spacing_extra_small"
+                                    android:text='@{(event.analytics.totalTickets == 0 ? 0 : (int) ((event.analytics.totalAttendees*100)/event.analytics.totalTickets)) + "%"}' />
 
                             </LinearLayout>
 
@@ -186,14 +203,14 @@
                         <RelativeLayout
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="@color/color_bottom_surface"/>
+                            android:background="@color/color_bottom_surface" />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -205,13 +222,13 @@
                                     android:layout_height="wrap_content"
                                     android:text="@{event.analytics.checkedIn}"
                                     android:textSize="@dimen/text_size_large"
-                                    android:textStyle="bold"/>
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text='@{"/" + event.analytics.totalAttendees}'
-                                    android:textSize="@dimen/text_size_small"/>
+                                    android:textSize="@dimen/text_size_small" />
 
                             </LinearLayout>
 
@@ -224,9 +241,9 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_marginTop="@dimen/spacing_extra_small"
-                                android:gravity="center_vertical">
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
                                 <ProgressBar
                                     style="?android:attr/progressBarStyleHorizontal"
@@ -239,9 +256,9 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text='@{(event.analytics.totalAttendees == 0 ? 0 : (int) ((event.analytics.checkedIn*100)/event.analytics.totalAttendees)) + "%"}'
                                     android:layout_marginLeft="@dimen/spacing_extra_small"
-                                    android:layout_marginStart="@dimen/spacing_extra_small"/>
+                                    android:layout_marginStart="@dimen/spacing_extra_small"
+                                    android:text='@{(event.analytics.totalAttendees == 0 ? 0 : (int) ((event.analytics.checkedIn*100)/event.analytics.totalAttendees)) + "%"}' />
 
                             </LinearLayout>
 
@@ -250,38 +267,57 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/linear_layout_for_space_two"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:orientation="vertical"
+                        bind:layout_constraintEnd_toEndOf="parent"
+                        bind:layout_constraintStart_toStartOf="parent"
+                        bind:layout_constraintTop_toBottomOf="@+id/linear_layout_tickets">
 
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/color_shadow"/>
+                            android:background="@color/color_shadow" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/spacing_small"
-                            android:background="@color/color_bottom_surface"/>
+                            android:background="@color/color_bottom_surface" />
+
                     </LinearLayout>
 
-                    <include
-                        android:id="@+id/ticket_analytics"
-                        layout="@layout/ticket_analytics"
-                        bind:event="@{event}" />
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        bind:layout_constraintEnd_toEndOf="parent"
+                        bind:layout_constraintStart_toStartOf="parent"
+                        bind:layout_constraintTop_toBottomOf="@+id/linear_layout_for_space_two">
+                        <include
+                            android:id="@+id/ticket_analytics"
+                            layout="@layout/ticket_analytics"
+                            bind:event="@{event}" />
+                    </FrameLayout>
 
-                </LinearLayout>
+
+                </android.support.constraint.ConstraintLayout>
+
+
+
             </android.support.v4.widget.NestedScrollView>
 
-            <FrameLayout
-                android:id="@+id/progressBar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone">
 
-                <include layout="@layout/progressbar_layout" />
-            </FrameLayout>
-        </android.support.design.widget.CoordinatorLayout>
         </android.support.v4.widget.SwipeRefreshLayout>
-    </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone">
+
+            <include layout="@layout/progressbar_layout" />
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>
