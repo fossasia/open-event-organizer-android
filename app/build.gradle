@@ -110,6 +110,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${support_lib_version}"
     compile "com.android.support:design:${support_lib_version}"
     compile "com.android.support:palette-v7:${support_lib_version}"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile ("com.github.florent37:glidepalette:2.1.0") {
         transitive = false
     }
