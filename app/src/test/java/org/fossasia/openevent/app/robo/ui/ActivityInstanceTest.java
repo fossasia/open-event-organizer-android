@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 
-import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.data.UtilModel;
 import org.fossasia.openevent.app.module.attendee.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.module.auth.AuthActivity;
@@ -12,28 +11,17 @@ import org.fossasia.openevent.app.module.event.about.AboutEventActivity;
 import org.fossasia.openevent.app.module.event.chart.ChartActivity;
 import org.fossasia.openevent.app.module.main.MainActivity;
 import org.fossasia.openevent.app.module.organizer.detail.OrganizerDetailActivity;
-import org.fossasia.openevent.app.robo.TestApplication;
-import org.fossasia.openevent.app.robo.rule.DatabaseTestRule;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.robolectric.ParameterizedRobolectricTestRunner;
 import org.robolectric.Robolectric;
 import org.robolectric.android.controller.ActivityController;
-import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-@RunWith(ParameterizedRobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApplication.class)
-@SuppressWarnings({ "PMD.JUnit4TestShouldUseAfterAnnotation", "PMD.JUnit4TestShouldUseBeforeAnnotation" })
-public class ActivityInstanceTest<T extends Activity> {
-
-    @Rule
-    public final DatabaseTestRule rule = DatabaseTestRule.create();
+public class ActivityInstanceTest<T extends Activity> extends BaseParameterTest {
 
     private final Class<T> activityClass;
     private final String tag;
@@ -57,13 +45,13 @@ public class ActivityInstanceTest<T extends Activity> {
 
     @ParameterizedRobolectricTestRunner.Parameters(name = "InstantiateActivity = {0}")
     public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] {
-            { AuthActivity.class, null, null },
-            { ScanQRActivity.class, MainActivity.EVENT_KEY, 1L },
-            { MainActivity.class, null, null },
-            { ChartActivity.class, null, null },
-            { AboutEventActivity.class, AboutEventActivity.EVENT_ID, 1L },
-            { OrganizerDetailActivity.class, null, null }
+        return Arrays.asList(new Object[][]{
+            {AuthActivity.class, null, null},
+            {ScanQRActivity.class, MainActivity.EVENT_KEY, 1L},
+            {MainActivity.class, null, null},
+            {ChartActivity.class, null, null},
+            {AboutEventActivity.class, AboutEventActivity.EVENT_ID, 1L},
+            {OrganizerDetailActivity.class, null, null}
         });
     }
 

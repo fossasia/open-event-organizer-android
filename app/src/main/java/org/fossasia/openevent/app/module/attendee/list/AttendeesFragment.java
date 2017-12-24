@@ -20,8 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.databinding.library.baseAdapters.BR;
-import com.mikepenz.fastadapter.adapters.HeaderAdapter;
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.fossasia.openevent.app.OrgaApplication;
@@ -39,6 +39,7 @@ import org.fossasia.openevent.app.module.attendee.list.listeners.AttendeeItemChe
 import org.fossasia.openevent.app.module.attendee.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.module.main.MainActivity;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -62,9 +63,7 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     @Inject
     Lazy<IAttendeesPresenter> presenterProvider;
 
-    private FastItemAdapter<Attendee> fastItemAdapter;
-    private StickyHeaderAdapter<Attendee> stickyHeaderAdapter;
-    private RecyclerView.AdapterDataObserver adapterDataObserver;
+    private ItemAdapter<Attendee> fastItemAdapter;
     private FragmentAttendeesBinding binding;
     private SwipeRefreshLayout refreshLayout;
     private SearchView searchView;
@@ -164,7 +163,7 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
-        stickyHeaderAdapter.unregisterAdapterDataObserver(adapterDataObserver);
+        //stickyHeaderAdapter.unregisterAdapterDataObserver(adapterDataObserver);
         if (searchView != null)
             searchView.setOnQueryTextListener(null);
     }
@@ -200,16 +199,16 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
 
     private void setupRecyclerView() {
         if (!initialized) {
-            fastItemAdapter = new FastItemAdapter<>();
-            fastItemAdapter.setHasStableIds(true);
-            fastItemAdapter.withPositionBasedStateManagement(false);
-            fastItemAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
+            fastItemAdapter = new ItemAdapter<>();
             fastItemAdapter.getItemFilter().withFilterPredicate(
                 (attendee, query) -> {
+                    if (query == null)
+                        return true;
+
                     if (query.equals(FILTER_SYNC)) {
-                        return !attendee.checking.get();
+                        return attendee.checking.get();
                     }
-                    return SearchUtils.filter(
+                    return !SearchUtils.filter(
                         query.toString(),
                         attendee.getFirstname(),
                         attendee.getLastname(),
@@ -217,29 +216,23 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
                 }
             );
 
-            stickyHeaderAdapter = new StickyHeaderAdapter<>();
-            final HeaderAdapter headerAdapter = new HeaderAdapter();
+            StickyHeaderAdapter<Attendee> stickyHeaderAdapter = new StickyHeaderAdapter<>();
+
+            FastAdapter<Attendee> fastAdapter = FastAdapter.with(Arrays.asList(fastItemAdapter, stickyHeaderAdapter));
+            fastAdapter.setHasStableIds(true);
+            fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
 
             RecyclerView recyclerView = binding.rvAttendeeList;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(stickyHeaderAdapter.wrap(headerAdapter.wrap(fastItemAdapter)));
+            recyclerView.setAdapter(fastAdapter);
 
             final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
             recyclerView.addItemDecoration(decoration);
 
-            adapterDataObserver = new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onChanged() {
-                    decoration.invalidateHeaders();
-                }
-            };
-
             ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.fabScanQr);
         }
-
-        stickyHeaderAdapter.registerAdapterDataObserver(adapterDataObserver);
     }
 
     private void setupRefreshListener() {
