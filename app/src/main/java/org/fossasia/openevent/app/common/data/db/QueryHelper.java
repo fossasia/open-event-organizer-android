@@ -82,7 +82,7 @@ public class QueryHelper<R> {
     }
 
     public Observable<Long> count() {
-        return Observable.fromCallable(() -> build().count());
+        return Observable.fromCallable(() -> build().longValue());
     }
 
     public <T> Observable<T> toCustomObservable(Class<T> to) {

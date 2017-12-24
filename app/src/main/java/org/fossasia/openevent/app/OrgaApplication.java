@@ -2,6 +2,7 @@ package org.fossasia.openevent.app;
 
 import android.content.Context;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
@@ -65,13 +66,7 @@ public class OrgaApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        refWatcher = LeakCanary.install(this);
-
+        refWatcher = setupLeakCanary();
         if (CREATED.getAndSet(true))
             return;
 
@@ -79,38 +74,48 @@ public class OrgaApplication extends MultiDexApplication {
             .androidModule(new AndroidModule())
             .build();
 
-        if (!isTestBuild()) {
-            JobManager.create(this).addJobCreator(new OrgaJobCreator());
-            initializeDatabase(this);
-            AndroidThreeTen.init(this);
+        if (isTestBuild())
+            return;
 
-            if (BuildConfig.DEBUG) {
-                Stetho.initialize(
-                    Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                        .build());
+        JobManager.create(this).addJobCreator(new OrgaJobCreator());
+        initializeDatabase(this);
+        AndroidThreeTen.init(this);
 
-                StrictMode.setThreadPolicy(
-                    new StrictMode.ThreadPolicy.Builder()
-                        .detectAll()
-                        .penaltyDeath()
-                        .build());
-                StrictMode.setVmPolicy(
-                    new StrictMode.VmPolicy.Builder()
-                        .detectAll()
-                        .penaltyDeath()
-                        .build());
+        if (BuildConfig.DEBUG) {
+            Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                    .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                    .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                    .build());
 
-                Timber.plant(new Timber.DebugTree());
-            } else {
-                // Sentry DSN must be defined as environment variable
-                // https://docs.sentry.io/clients/java/config/#setting-the-dsn-data-source-name
-                Sentry.init(new AndroidSentryClientFactory(getApplicationContext()));
+            StrictMode.setThreadPolicy(
+                new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyDeath()
+                    .build());
+            StrictMode.setVmPolicy(
+                new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyDeath()
+                    .build());
 
-                Timber.plant(new ReleaseLogTree());
-            }
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            // Sentry DSN must be defined as environment variable
+            // https://docs.sentry.io/clients/java/config/#setting-the-dsn-data-source-name
+            Sentry.init(new AndroidSentryClientFactory(getApplicationContext()));
+
+            Timber.plant(new ReleaseLogTree());
         }
+    }
+
+    protected RefWatcher setupLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return RefWatcher.DISABLED;
+        }
+        return LeakCanary.install(this);
     }
 
     protected boolean isTestBuild() {
@@ -120,7 +125,7 @@ public class OrgaApplication extends MultiDexApplication {
     private static class ReleaseLogTree extends Timber.Tree {
 
         @Override
-        protected void log(int priority, String tag, String message, Throwable throwable) {
+        protected void log(int priority, String tag, @NonNull String message, Throwable throwable) {
             if (priority == Log.DEBUG || priority == Log.VERBOSE)
                 return;
 

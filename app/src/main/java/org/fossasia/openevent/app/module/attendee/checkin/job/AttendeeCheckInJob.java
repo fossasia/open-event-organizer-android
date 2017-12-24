@@ -51,7 +51,6 @@ public class AttendeeCheckInJob extends Job {
             .setBackoffCriteria(10000L, JobRequest.BackoffPolicy.EXPONENTIAL)
             .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
             .setRequirementsEnforced(true)
-            .setPersisted(true)
             .setUpdateCurrent(true)
             .build()
             .schedule();

@@ -70,7 +70,7 @@ public class DatabaseRepository implements IDatabaseRepository {
             ModelAdapter<T> modelAdapter = FlowManager.getModelAdapter(classType);
             modelAdapter.update(item);
         })
-            .doOnComplete(() -> Timber.i("Updated item of Type %s : ", item.getClass(), item));
+            .doOnComplete(() -> Timber.i("Updated item of Type %s : ", item.getClass()));
     }
 
     @Override

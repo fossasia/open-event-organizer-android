@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 
-import com.squareup.leakcanary.RefWatcher;
-
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.app.lifecycle.contract.presenter.IBasePresenter;
 import org.fossasia.openevent.app.common.app.lifecycle.view.loader.IPresenterProvider;
@@ -17,7 +15,8 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
 
     private final LoaderHandler<P> loaderHandler = new LoaderHandler<>();
 
-    protected abstract @StringRes int getTitle();
+    protected abstract @StringRes
+    int getTitle();
 
     @Override
     @CallSuper
@@ -51,8 +50,7 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = OrgaApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+        OrgaApplication.getRefWatcher(getActivity()).watch(this);
     }
 
 }
