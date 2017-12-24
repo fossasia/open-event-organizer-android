@@ -1,21 +1,12 @@
 package org.fossasia.openevent.app.robo.db;
 
-import android.app.Application;
-
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.common.data.db.DatabaseRepository;
 import org.fossasia.openevent.app.common.data.models.dto.SimpleModel;
 import org.fossasia.openevent.app.common.data.models.dto.SimpleModel_Table;
-import org.fossasia.openevent.app.robo.rule.DatabaseTestRule;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +16,13 @@ import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = Application.class)
-public class DatabaseChangeListenerTest {
-
-    @Rule
-    public final DatabaseTestRule dbRule = DatabaseTestRule.create();
+public class DatabaseChangeListenerTest extends BaseTest {
 
     private DatabaseRepository databaseRepository;
     private DatabaseChangeListener<SimpleModel> databaseChangeListener;
     private Observable<DatabaseChangeListener.ModelChange<SimpleModel>> notifier;
 
-    @Before
+    @Override
     public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
@@ -75,7 +61,7 @@ public class DatabaseChangeListenerTest {
             .test()
             .assertValue(value ->
                 value.getAction().equals(BaseModel.Action.UPDATE) &&
-                value.getModel().equals(newModel)
+                    value.getModel().equals(newModel)
             );
     }
 

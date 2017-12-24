@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import io.reactivex.functions.Consumer;
 import timber.log.Timber;
 
+// TODO: Reimplement once Glide Palette is fixed
 @SuppressWarnings("PMD.AvoidCatchingGenericException")
 public final class PaletteHolder {
 

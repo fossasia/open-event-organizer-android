@@ -6,8 +6,8 @@ import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.data.models.query.TypeQuantity;
 
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 public interface ITicketRepository {
 
@@ -30,6 +30,6 @@ public interface ITicketRepository {
     Observable<TypeQuantity> getSoldTicketsQuantity(long eventId);
 
     @NonNull
-    Single<Float> getTotalSale(long eventId);
+    Maybe<Float> getTotalSale(long eventId);
 
 }

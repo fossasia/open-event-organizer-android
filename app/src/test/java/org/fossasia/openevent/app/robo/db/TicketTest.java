@@ -1,22 +1,13 @@
 package org.fossasia.openevent.app.robo.db;
 
-import android.app.Application;
-
-import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.data.db.DatabaseRepository;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.data.models.query.TypeQuantity;
 import org.fossasia.openevent.app.common.data.repository.TicketRepository;
-import org.fossasia.openevent.app.robo.rule.DatabaseTestRule;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 
@@ -27,9 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, application = Application.class)
-public class TicketTest {
+public class TicketTest extends BaseTest {
 
     private static final String PAID = "paid";
     private static final String FREE = "free";
@@ -37,10 +26,7 @@ public class TicketTest {
 
     private TicketRepository ticketRepository;
 
-    @Rule
-    public final DatabaseTestRule dbRule = DatabaseTestRule.create();
-
-    @Before
+    @Override
     public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());

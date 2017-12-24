@@ -5,10 +5,9 @@ jdk:
 android:
   components:
     - tools
-    - android-25
-    - build-tools-25.0.2
+    - android-27
+    - build-tools-27.0.1
     - platform-tools
-    - extra-google-m2repository
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
@@ -17,6 +16,8 @@ cache:
       - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
       - "$HOME/.gradle/caches/"
       - "$HOME/.gradle/wrapper/"
+install:
+  - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-27"
 script:
   - ./gradlew build
   - ./gradlew testDebugUnitTestCoverage

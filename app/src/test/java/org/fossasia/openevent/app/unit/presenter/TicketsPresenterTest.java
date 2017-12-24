@@ -22,21 +22,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
-import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings({"PMD.CommentSize", "PMD.LineTooLong"})
 @RunWith(JUnit4.class)
 public class TicketsPresenterTest {
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -174,7 +172,7 @@ public class TicketsPresenterTest {
         inOrder.verify(ticketsView).showProgress(false);
     }
 
-    @Test
+    /*@Test
     public void shouldUpdateViewOnTicketDeleteSuccess() {
         when(ticketRepository.deleteTicket(TICKETS.get(0).id)).thenReturn(Completable.complete());
 
@@ -199,5 +197,5 @@ public class TicketsPresenterTest {
         ticketsPresenter.deleteTicket(TICKETS.get(0));
 
         assertFalse(TICKETS.get(0).deleting.get());
-    }
+    }*/
 }
