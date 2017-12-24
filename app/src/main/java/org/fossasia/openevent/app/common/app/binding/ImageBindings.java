@@ -13,7 +13,6 @@ import com.github.florent37.glidepalette.GlidePalette;
 
 import org.fossasia.openevent.app.common.app.glide.GlideApp;
 import org.fossasia.openevent.app.common.app.glide.GlideRequest;
-import org.fossasia.openevent.app.common.utils.ui.PaletteHolder;
 
 import io.reactivex.functions.Consumer;
 import timber.log.Timber;
@@ -78,18 +77,18 @@ public final class ImageBindings {
 
         setGlideImage(imageView, url, drawable, request -> {
             request.listener(glidePalette);
-            PaletteHolder.getInstance().setPalette(key, glidePalette);
+            //PaletteHolder.getInstance().setPalette(key, glidePalette);
         });
     }
 
     @BindingAdapter("paletteHeader")
     public static void bindHeaderWithPalette(ViewGroup viewGroup, String key) {
-        PaletteHolder.getInstance().registerHeader(key, viewGroup);
+        //PaletteHolder.getInstance().registerHeader(key, viewGroup);
     }
 
     @BindingAdapter("paletteText")
     public static void bindTextWithPalette(TextView textView, String key) {
-        PaletteHolder.getInstance().registerText(key, textView);
+        //PaletteHolder.getInstance().registerText(key, textView);
     }
 
 }

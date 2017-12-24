@@ -96,7 +96,10 @@ Severity: HARD
 
     <rule ref="rulesets/java/logging-java.xml" />
 
-    <rule ref="rulesets/java/migrating.xml" />
+    <rule ref="rulesets/java/migrating.xml">
+        <exclude name="JUnit4TestShouldUseBeforeAnnotation" />
+        <exclude name="JUnit4TestShouldUseAfterAnnotation" />
+    </rule>
 
     <rule ref="rulesets/java/naming.xml">
         <exclude name="AbstractNaming" />

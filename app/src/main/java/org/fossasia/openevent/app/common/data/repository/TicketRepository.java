@@ -24,8 +24,8 @@ import java.util.NoSuchElementException;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -139,7 +139,7 @@ public class TicketRepository extends Repository implements ITicketRepository {
 
     @NonNull
     @Override
-    public Single<Float> getTotalSale(long eventId) {
+    public Maybe<Float> getTotalSale(long eventId) {
         return RXSQLite.rx(
             new QueryHelper<Ticket>()
                 .sum(Ticket_Table.price, "price")
