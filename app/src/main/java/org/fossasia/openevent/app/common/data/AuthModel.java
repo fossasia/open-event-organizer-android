@@ -8,6 +8,8 @@ import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
+import org.fossasia.openevent.app.common.data.models.CustomObjectWrapper;
+import org.fossasia.openevent.app.common.data.models.RequestToken;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.models.dto.Login;
 import org.fossasia.openevent.app.common.data.network.EventService;
@@ -104,4 +106,16 @@ public class AuthModel implements IAuthModel {
             .observeOn(AndroidSchedulers.mainThread());
     }
 
+    @Override
+    public Completable requestToken(RequestToken reqToken) {
+        if (!utilModel.isConnected())
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+
+        return eventService
+            .requestToken(CustomObjectWrapper.withLabel("data", reqToken))
+            .flatMapCompletable(
+                var -> Completable.complete())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
 }
