@@ -20,6 +20,7 @@
     <string name="login_link"><u>Already have an account? Log In</u></string>
     <string name="scan_the_barcode">Scan the BarCode</string>
     <string name="event_title_here">Event Title Here</string>
+    <string name="forgot_password_link">Forgot Password</string>
 
     <!-- PLace Holders -->
     <string name="date_placeholder">May 25th 2017</string>
@@ -89,4 +90,6 @@
     <string name="filter_by_none">None</string>
     <string name="publish_success">Your Event is published successfully.</string>
     <string name="draft_success">Your Event is unpublished successfully.</string>
+    <string name="request_token">Request Token</string>
+    <string name="back_to_login">Back To Login</string>
 </resources>

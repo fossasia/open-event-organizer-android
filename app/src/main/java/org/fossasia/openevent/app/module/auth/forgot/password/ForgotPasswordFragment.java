@@ -1,23 +1,21 @@
-package org.fossasia.openevent.app.module.auth.login;
+package org.fossasia.openevent.app.module.auth.forgot.password;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
-import org.fossasia.openevent.app.databinding.LoginFragmentBinding;
-import org.fossasia.openevent.app.module.auth.forgot.password.ForgotPasswordFragment;
-import org.fossasia.openevent.app.module.auth.login.contract.ILoginPresenter;
-import org.fossasia.openevent.app.module.auth.login.contract.ILoginView;
-import org.fossasia.openevent.app.module.auth.signup.SignUpFragment;
-import org.fossasia.openevent.app.module.main.MainActivity;
+import org.fossasia.openevent.app.databinding.ForgotPasswordFragmentBinding;
+import org.fossasia.openevent.app.module.auth.forgot.password.contract.IForgotPasswordPresenter;
+import org.fossasia.openevent.app.module.auth.forgot.password.contract.IForgotPasswordView;
+import org.fossasia.openevent.app.module.auth.login.LoginFragment;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -29,16 +27,16 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.common.utils.ui.ViewUtils.showView;
 
-public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILoginView {
+public class ForgotPasswordFragment extends BaseFragment<IForgotPasswordPresenter> implements IForgotPasswordView {
 
     @Inject
-    Lazy<ILoginPresenter> presenterProvider;
+    Lazy<IForgotPasswordPresenter> presenterProvider;
 
-    private LoginFragmentBinding binding;
+    private ForgotPasswordFragmentBinding binding;
     private Validator validator;
 
-    public static LoginFragment newInstance() {
-        return new LoginFragment();
+    public static ForgotPasswordFragment newInstance() {
+        return new ForgotPasswordFragment();
     }
 
     @Override
@@ -53,7 +51,7 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.forgot_password_fragment, container, false);
         validator = new Validator(binding);
         return binding.getRoot();
     }
@@ -62,26 +60,19 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
     public void onStart() {
         super.onStart();
         getPresenter().attach(this);
-        binding.setLogin(getPresenter().getLogin());
+        binding.setForgotEmail(getPresenter().getEmailId());
         getPresenter().start();
 
-        binding.btnLogin.setOnClickListener(view -> {
+        binding.btnRequestToken.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
             String url = binding.url.baseUrl.getText().toString().trim();
             getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
-            getPresenter().login();
+            getPresenter().requestToken();
         });
 
-        binding.signUpLink.setOnClickListener(view -> openSignUpPage());
-
-        binding.forgotPasswordLink.setOnClickListener(view -> openForgotPasswordPage());
-    }
-
-    @Override
-    protected int getTitle() {
-        return R.string.login;
+        binding.loginLink.setOnClickListener(view -> openLoginPage());
     }
 
     @Override
@@ -90,18 +81,21 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
         binding.emailDropdown.setAdapter(null);
     }
 
-    private void openSignUpPage() {
+    private void openLoginPage() {
         getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
-            .replace(R.id.fragment_container, new SignUpFragment())
+            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            .replace(R.id.fragment_container, new LoginFragment())
             .commit();
     }
 
-    private void openForgotPasswordPage() {
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
-            .replace(R.id.fragment_container, new ForgotPasswordFragment())
-            .commit();
+    @Override
+    public void showProgress(boolean show) {
+        showView(binding.progressBar, show);
+    }
+
+    @Override
+    protected int getTitle() {
+        return R.string.forgot_password_link;
     }
 
     @Override
@@ -112,23 +106,17 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
 
     @Override
     public void onSuccess(String message) {
-        startActivity(new Intent(getActivity(), MainActivity.class));
-        getActivity().finish();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showProgress(boolean show) {
-        showView(binding.progressBar, show);
-    }
-
-    @Override
-    public Lazy<ILoginPresenter> getPresenterProvider() {
+    public Lazy<IForgotPasswordPresenter> getPresenterProvider() {
         return presenterProvider;
     }
 
     @Override
     public int getLoaderId() {
-        return R.layout.login_fragment;
+        return R.layout.forgot_password_fragment;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.common.data.contract;
 
+import org.fossasia.openevent.app.common.data.models.RequestToken;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.models.dto.Login;
 
@@ -15,5 +16,7 @@ public interface IAuthModel {
     boolean isLoggedIn();
 
     Completable logout();
+
+    Completable requestToken(RequestToken data);
 
 }
