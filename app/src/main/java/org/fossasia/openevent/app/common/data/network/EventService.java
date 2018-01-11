@@ -2,12 +2,15 @@ package org.fossasia.openevent.app.common.data.network;
 
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.RequestToken;
+import org.fossasia.openevent.app.common.data.models.RequestTokenResponse;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.models.dto.Login;
 import org.fossasia.openevent.app.common.data.models.dto.LoginResponse;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -17,6 +20,10 @@ import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+
+/* TODO: The current API doesn't conform to JSONAPI always. Revert to JSONAPI
+ implementation once this is fixed.
+ */
 
 public interface EventService {
 
@@ -56,4 +63,6 @@ public interface EventService {
     @PATCH("attendees/{attendee_id}?include=ticket,event,order&fields[event]=id&fields[ticket]=id")
     Observable<Attendee> patchAttendee(@Path("attendee_id") long attendeeId, @Body Attendee attendee);
 
+    @POST("auth/reset-password")
+    Observable<RequestTokenResponse> requestToken(@Body Map<String, RequestToken> reqToken);
 }
