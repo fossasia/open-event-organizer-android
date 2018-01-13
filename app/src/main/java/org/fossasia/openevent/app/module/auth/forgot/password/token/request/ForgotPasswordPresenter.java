@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.module.auth.forgot.password;
+package org.fossasia.openevent.app.module.auth.forgot.password.token.request;
 
 import android.support.annotation.VisibleForTesting;
 
@@ -10,8 +10,8 @@ import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.models.RequestToken;
 import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
-import org.fossasia.openevent.app.module.auth.forgot.password.contract.IForgotPasswordPresenter;
-import org.fossasia.openevent.app.module.auth.forgot.password.contract.IForgotPasswordView;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.request.contract.IForgotPasswordPresenter;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.request.contract.IForgotPasswordView;
 
 import java.util.Set;
 

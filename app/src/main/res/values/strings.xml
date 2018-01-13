@@ -92,4 +92,8 @@
     <string name="draft_success">Your Event is unpublished successfully.</string>
     <string name="request_token">Request Token</string>
     <string name="back_to_login">Back To Login</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="resend_token">Didn\'t receive token? Resend</string>
+    <string name="token">Token</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

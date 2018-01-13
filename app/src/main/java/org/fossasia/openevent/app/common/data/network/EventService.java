@@ -4,6 +4,8 @@ import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.RequestToken;
 import org.fossasia.openevent.app.common.data.models.RequestTokenResponse;
+import org.fossasia.openevent.app.common.data.models.SubmitToken;
+import org.fossasia.openevent.app.common.data.models.SubmitTokenResponse;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.models.dto.Login;
@@ -65,4 +67,7 @@ public interface EventService {
 
     @POST("auth/reset-password")
     Observable<RequestTokenResponse> requestToken(@Body Map<String, RequestToken> reqToken);
+
+    @PATCH("auth/reset-password")
+    Observable<SubmitTokenResponse> submitToken(@Body Map<String, SubmitToken> subToken);
 }

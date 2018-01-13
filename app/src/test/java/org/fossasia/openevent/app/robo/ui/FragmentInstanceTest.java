@@ -4,7 +4,8 @@ import android.support.v4.app.Fragment;
 
 import org.fossasia.openevent.app.common.data.UtilModel;
 import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
-import org.fossasia.openevent.app.module.auth.forgot.password.ForgotPasswordFragment;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.request.ForgotPasswordFragment;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.submit.ResetPasswordByTokenFragment;
 import org.fossasia.openevent.app.module.auth.login.LoginFragment;
 import org.fossasia.openevent.app.module.auth.signup.SignUpFragment;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
@@ -57,7 +58,8 @@ public class FragmentInstanceTest<T extends Fragment> extends BaseParameterTest 
             {AttendeesFragment.class, 1},
             {LoginFragment.class, -1},
             {SignUpFragment.class, -1},
-            {ForgotPasswordFragment.class, -1}
+            {ForgotPasswordFragment.class, -1},
+            {ResetPasswordByTokenFragment.class, -1}
         });
     }
 
