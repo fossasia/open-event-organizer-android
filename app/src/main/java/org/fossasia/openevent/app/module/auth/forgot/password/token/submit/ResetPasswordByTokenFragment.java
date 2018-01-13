@@ -1,24 +1,21 @@
-package org.fossasia.openevent.app.module.auth.forgot.password;
+package org.fossasia.openevent.app.module.auth.forgot.password.token.submit;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
-import org.fossasia.openevent.app.databinding.ForgotPasswordFragmentBinding;
-import org.fossasia.openevent.app.module.auth.forgot.password.contract.IForgotPasswordPresenter;
-import org.fossasia.openevent.app.module.auth.forgot.password.contract.IForgotPasswordView;
+import org.fossasia.openevent.app.databinding.ResetPasswordByTokenFragmentBinding;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.request.ForgotPasswordFragment;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.submit.contract.IResetPasswordByTokenPresenter;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.submit.contract.IResetPasswordByTokenView;
 import org.fossasia.openevent.app.module.auth.login.LoginFragment;
-
-import java.util.ArrayList;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -27,16 +24,16 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.common.utils.ui.ViewUtils.showView;
 
-public class ForgotPasswordFragment extends BaseFragment<IForgotPasswordPresenter> implements IForgotPasswordView {
+public class ResetPasswordByTokenFragment extends BaseFragment<IResetPasswordByTokenPresenter> implements IResetPasswordByTokenView {
 
     @Inject
-    Lazy<IForgotPasswordPresenter> presenterProvider;
+    Lazy<IResetPasswordByTokenPresenter> presenterProvider;
 
-    private ForgotPasswordFragmentBinding binding;
+    private ResetPasswordByTokenFragmentBinding binding;
     private Validator validator;
 
-    public static ForgotPasswordFragment newInstance() {
-        return new ForgotPasswordFragment();
+    public static ResetPasswordByTokenFragment newInstance() {
+        return new ResetPasswordByTokenFragment();
     }
 
     @Override
@@ -51,7 +48,7 @@ public class ForgotPasswordFragment extends BaseFragment<IForgotPasswordPresente
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.forgot_password_fragment, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.reset_password_by_token_fragment, container, false);
         validator = new Validator(binding);
         return binding.getRoot();
     }
@@ -60,25 +57,33 @@ public class ForgotPasswordFragment extends BaseFragment<IForgotPasswordPresente
     public void onStart() {
         super.onStart();
         getPresenter().attach(this);
-        binding.setForgotEmail(getPresenter().getEmailId());
+        binding.setSubmitToken(getPresenter().getSubmitToken());
         getPresenter().start();
 
-        binding.btnRequestToken.setOnClickListener(view -> {
+        binding.btnResetPassword.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
+            if (!binding.newPassword.getText().toString()
+                .equals(binding.confirmPassword.getText().toString())) {
+
+                showError("Passwords Do not Match");
+                return;
+            }
+
             String url = binding.url.baseUrl.getText().toString().trim();
             getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
-            getPresenter().requestToken();
+            getPresenter().submitRequest();
         });
 
         binding.loginLink.setOnClickListener(view -> openLoginPage());
+
+        binding.resendTokenLink.setOnClickListener(view -> openForgotPasswordPage());
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        binding.emailDropdown.setAdapter(null);
+    protected int getTitle() {
+        return R.string.forgot_password_link;
     }
 
     private void openLoginPage() {
@@ -88,14 +93,11 @@ public class ForgotPasswordFragment extends BaseFragment<IForgotPasswordPresente
             .commit();
     }
 
-    @Override
-    public void showProgress(boolean show) {
-        showView(binding.progressBar, show);
-    }
-
-    @Override
-    protected int getTitle() {
-        return R.string.forgot_password_link;
+    private void openForgotPasswordPage() {
+        getFragmentManager().beginTransaction()
+            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            .replace(R.id.fragment_container, new ForgotPasswordFragment())
+            .commit();
     }
 
     @Override
@@ -107,22 +109,21 @@ public class ForgotPasswordFragment extends BaseFragment<IForgotPasswordPresente
     @Override
     public void onSuccess(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        openLoginPage();
     }
 
     @Override
-    public Lazy<IForgotPasswordPresenter> getPresenterProvider() {
+    public void showProgress(boolean show) {
+        showView(binding.progressBar, show);
+    }
+
+    @Override
+    public Lazy<IResetPasswordByTokenPresenter> getPresenterProvider() {
         return presenterProvider;
     }
 
     @Override
     public int getLoaderId() {
-        return R.layout.forgot_password_fragment;
-    }
-
-    @Override
-    public void attachEmails(Set<String> emails) {
-        binding.emailDropdown.setAdapter(
-            new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(emails))
-        );
+        return R.layout.reset_password_by_token_fragment;
     }
 }

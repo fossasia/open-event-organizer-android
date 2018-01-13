@@ -6,8 +6,10 @@ import org.fossasia.openevent.app.module.attendee.list.AttendeesPresenter;
 import org.fossasia.openevent.app.module.attendee.list.contract.IAttendeesPresenter;
 import org.fossasia.openevent.app.module.attendee.qrscan.ScanQRPresenter;
 import org.fossasia.openevent.app.module.attendee.qrscan.contract.IScanQRPresenter;
-import org.fossasia.openevent.app.module.auth.forgot.password.ForgotPasswordPresenter;
-import org.fossasia.openevent.app.module.auth.forgot.password.contract.IForgotPasswordPresenter;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.request.ForgotPasswordPresenter;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.request.contract.IForgotPasswordPresenter;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.submit.ResetPasswordByTokenPresenter;
+import org.fossasia.openevent.app.module.auth.forgot.password.token.submit.contract.IResetPasswordByTokenPresenter;
 import org.fossasia.openevent.app.module.auth.login.LoginPresenter;
 import org.fossasia.openevent.app.module.auth.login.contract.ILoginPresenter;
 import org.fossasia.openevent.app.module.auth.signup.SignUpPresenter;
@@ -34,6 +36,7 @@ import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsPresenter;
 import dagger.Binds;
 import dagger.Module;
 
+@SuppressWarnings("PMD.TooManyMethods") // Will break cohesion if refactored
 @Module
 public abstract class PresenterModule {
 
@@ -81,4 +84,7 @@ public abstract class PresenterModule {
 
     @Binds
     abstract IForgotPasswordPresenter bindsForgotPasswordPresenter(ForgotPasswordPresenter forgotPasswordPresenter);
+
+    @Binds
+    abstract IResetPasswordByTokenPresenter bindsResetPasswordByTokenPresenter(ResetPasswordByTokenPresenter resetPasswordByTokenPresenter);
 }
