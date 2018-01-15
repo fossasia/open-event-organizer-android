@@ -54,6 +54,10 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
     <td><img src="docs/_static/organizer.png"></td>
     <td><img src="docs/_static/organizer_content.png"></td>
   </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/23634977/34945795-8d03341e-fa2a-11e7-840a-03e7838867e5.jpg"></td>
+    <td><img src="https://user-images.githubusercontent.com/23634977/34945794-8b5dd402-fa2a-11e7-8a4b-6650b0bc8b7a.jpg"></td>
+  </tr>
 </table>
 
 ## Development
