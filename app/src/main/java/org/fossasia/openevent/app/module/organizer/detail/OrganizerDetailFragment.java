@@ -6,6 +6,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +21,7 @@ import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.OrganizerDetailFragmentBinding;
 import org.fossasia.openevent.app.module.organizer.detail.contract.IOrganizerDetailPresenter;
 import org.fossasia.openevent.app.module.organizer.detail.contract.IOrganizerDetailView;
+import org.fossasia.openevent.app.module.organizer.password.ChangePasswordFragment;
 
 import javax.inject.Inject;
 
@@ -50,6 +54,7 @@ public class OrganizerDetailFragment extends BaseFragment<IOrganizerDetailPresen
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        setHasOptionsMenu(true);
         return binding.getRoot();
     }
 
@@ -65,6 +70,33 @@ public class OrganizerDetailFragment extends BaseFragment<IOrganizerDetailPresen
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_organizer, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_change_password:
+                openChangePasswordFragment();
+                break;
+            default:
+                super.onOptionsItemSelected(item);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void openChangePasswordFragment() {
+        getFragmentManager().beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
+            .replace(R.id.fragment, new ChangePasswordFragment())
+            .commit();
     }
 
     private void setupRefreshListener() {

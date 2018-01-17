@@ -12,6 +12,12 @@ public class OrganizerDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.organizer_detail_activity);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment, new OrganizerDetailFragment())
+                .commit();
+        }
     }
 
     @Override

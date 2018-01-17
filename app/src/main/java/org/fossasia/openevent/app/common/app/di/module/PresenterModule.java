@@ -26,6 +26,8 @@ import org.fossasia.openevent.app.module.main.MainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.module.organizer.detail.OrganizerDetailPresenter;
 import org.fossasia.openevent.app.module.organizer.detail.contract.IOrganizerDetailPresenter;
+import org.fossasia.openevent.app.module.organizer.password.ChangePasswordPresenter;
+import org.fossasia.openevent.app.module.organizer.password.contract.IChangePasswordPresenter;
 import org.fossasia.openevent.app.module.ticket.create.CreateTicketPresenter;
 import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketPresenter;
 import org.fossasia.openevent.app.module.ticket.detail.TicketDetailPresenter;
@@ -87,4 +89,7 @@ public abstract class PresenterModule {
 
     @Binds
     abstract IResetPasswordByTokenPresenter bindsResetPasswordByTokenPresenter(ResetPasswordByTokenPresenter resetPasswordByTokenPresenter);
+
+    @Binds
+    abstract IChangePasswordPresenter bindsChangePasswordPresenter(ChangePasswordPresenter changePasswordPresenter);
 }
