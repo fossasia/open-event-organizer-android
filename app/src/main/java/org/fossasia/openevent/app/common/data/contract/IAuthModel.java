@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.common.data.contract;
 
+import org.fossasia.openevent.app.common.data.models.ChangePassword;
 import org.fossasia.openevent.app.common.data.models.RequestToken;
 import org.fossasia.openevent.app.common.data.models.SubmitToken;
 import org.fossasia.openevent.app.common.data.models.User;
@@ -22,4 +23,5 @@ public interface IAuthModel {
 
     Completable submitToken(SubmitToken tokenData);
 
+    Completable changePassword(ChangePassword changePassword);
 }

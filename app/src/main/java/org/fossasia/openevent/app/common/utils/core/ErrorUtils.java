@@ -19,7 +19,7 @@ public final class ErrorUtils {
         if (throwable instanceof HttpException) {
             switch (((HttpException) throwable).code()) {
                 case BAD_REQUEST:
-                    return "Something went wrong! Please check any empty field if a form.";
+                    return "Something went wrong! Please check any empty field of a form.";
                 case UNAUTHORIZED:
                     return "Invalid Credentials! Please check your credentials.";
                 case FORBIDDEN:

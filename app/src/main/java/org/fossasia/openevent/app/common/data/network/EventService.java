@@ -1,6 +1,8 @@
 package org.fossasia.openevent.app.common.data.network;
 
 import org.fossasia.openevent.app.common.data.models.Attendee;
+import org.fossasia.openevent.app.common.data.models.ChangePassword;
+import org.fossasia.openevent.app.common.data.models.ChangePasswordResponse;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.RequestToken;
 import org.fossasia.openevent.app.common.data.models.RequestTokenResponse;
@@ -70,4 +72,7 @@ public interface EventService {
 
     @PATCH("auth/reset-password")
     Observable<SubmitTokenResponse> submitToken(@Body Map<String, SubmitToken> subToken);
+
+    @POST("auth/change-password")
+    Observable<ChangePasswordResponse> changePassword(@Body Map<String, ChangePassword> changePassword);
 }
