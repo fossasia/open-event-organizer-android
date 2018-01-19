@@ -8,6 +8,7 @@ import org.fossasia.openevent.app.common.data.contract.IAuthModel;
 import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
+import org.fossasia.openevent.app.common.data.models.ChangePassword;
 import org.fossasia.openevent.app.common.data.models.CustomObjectWrapper;
 import org.fossasia.openevent.app.common.data.models.RequestToken;
 import org.fossasia.openevent.app.common.data.models.SubmitToken;
@@ -127,6 +128,19 @@ public class AuthModel implements IAuthModel {
 
         return eventService
             .submitToken(CustomObjectWrapper.withLabel("data", tokenData))
+            .flatMapCompletable(
+                var -> Completable.complete())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable changePassword(ChangePassword changePassword) {
+        if (!utilModel.isConnected())
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+
+        return eventService
+            .changePassword(CustomObjectWrapper.withLabel("data", changePassword))
             .flatMapCompletable(
                 var -> Completable.complete())
             .subscribeOn(Schedulers.io())
