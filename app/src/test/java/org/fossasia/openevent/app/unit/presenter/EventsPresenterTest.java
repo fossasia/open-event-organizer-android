@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.User;
+import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.module.event.list.EventsPresenter;
@@ -43,12 +44,13 @@ public class EventsPresenterTest {
 
     private EventsPresenter eventsActivityPresenter;
 
-    private static final String DATE = DateUtils.formatDateToIso(LocalDateTime.now());
+    private static final String DATE_STRING = DateUtils.formatDateToIso(LocalDateTime.now());
+    private static final ObservableString DATE = new ObservableString(DATE_STRING);
 
     private static final List<Event> EVENT_LIST = Arrays.asList(
-        Event.builder().id(12).startsAt(DATE).endsAt(DATE).build(),
-        Event.builder().id(13).startsAt(DATE).endsAt(DATE).build(),
-        Event.builder().id(14).startsAt(DATE).endsAt(DATE).build()
+        Event.builder().id(12L).startsAt(DATE).endsAt(DATE).build(),
+        Event.builder().id(13L).startsAt(DATE).endsAt(DATE).build(),
+        Event.builder().id(14L).startsAt(DATE).endsAt(DATE).build()
     );
 
     private static final User ORGANISER = new User();

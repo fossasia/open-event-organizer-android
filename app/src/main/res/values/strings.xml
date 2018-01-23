@@ -99,4 +99,6 @@
     <string name="change_password">Change Password</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
+    <string name="create_event">Create Event</string>
+    <string name="event_name">Event Name</string>
 </resources>

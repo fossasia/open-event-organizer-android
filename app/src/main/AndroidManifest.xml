@@ -44,6 +44,10 @@
             android:label="@string/title_activity_about_event"
             android:theme="@style/AppTheme.Main" />
         <activity
+            android:name=".module.event.create.CreateEventActivity"
+            android:label="@string/title_activity_about_event"
+            android:theme="@style/AppTheme.Main" />
+        <activity
             android:name=".module.organizer.detail.OrganizerDetailActivity"
             android:label="@string/title_activity_organizer_detail"
             android:theme="@style/AppTheme.Main.Light" />

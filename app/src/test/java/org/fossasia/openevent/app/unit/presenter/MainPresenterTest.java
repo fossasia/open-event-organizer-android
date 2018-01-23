@@ -46,8 +46,8 @@ public class MainPresenterTest {
 
     private MainPresenter mainPresenter;
 
-    private static final long EVENT_ID = 2;
-    private static final Event EVENT = Event.builder().id(2).paymentCurrency("INR").build();
+    private static final long EVENT_ID = 2L;
+    private static final Event EVENT = Event.builder().id(2L).paymentCurrency("INR").build();
     private static final User ORGANIZER = User.builder().id(3).build();
 
     @Before

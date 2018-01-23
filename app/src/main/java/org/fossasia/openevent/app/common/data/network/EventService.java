@@ -75,4 +75,7 @@ public interface EventService {
 
     @POST("auth/change-password")
     Observable<ChangePasswordResponse> changePassword(@Body Map<String, ChangePassword> changePassword);
+
+    @POST("events")
+    Observable<Event> postEvent(@Body Event event);
 }

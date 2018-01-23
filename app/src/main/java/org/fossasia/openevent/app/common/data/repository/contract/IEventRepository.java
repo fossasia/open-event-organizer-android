@@ -14,4 +14,6 @@ public interface IEventRepository {
     Observable<Event> getEvents(boolean reload);
 
     Observable<Event> updateEvent(Event event);
+
+    Observable<Event> createEvent(Event event);
 }

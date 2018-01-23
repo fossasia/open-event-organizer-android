@@ -114,4 +114,18 @@ public class EventRepository extends Repository implements IEventRepository {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Observable<Event> createEvent(Event event) {
+        if (!utilModel.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return eventService.postEvent(event)
+            .doOnNext(created -> databaseRepository
+                .save(Event.class, created)
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
 }

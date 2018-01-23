@@ -6,6 +6,7 @@ import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.Ticket;
+import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
 import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardPresenter;
@@ -62,7 +63,7 @@ public class EventDashboardPresenterTest {
     @Mock
     private IUtilModel utilModel;
 
-    private static final int ID = 42;
+    private static final long ID = 42L;
     private EventDashboardPresenter eventDashboardPresenter;
 
     private static final Event EVENT = Event.builder().id(ID).state(Event.STATE_PUBLISHED).build();
@@ -86,8 +87,8 @@ public class EventDashboardPresenterTest {
     static {
         // Event set up
         EVENT.setName("Event Name");
-        EVENT.setStartsAt("2004-05-21T9:30:00");
-        EVENT.setEndsAt("2012-09-20T12:23:00");
+        EVENT.setStartsAt(new ObservableString("2004-05-21T9:30:00"));
+        EVENT.setEndsAt(new ObservableString("2012-09-20T12:23:00"));
         EVENT.setTickets(TICKETS);
     }
 
@@ -314,7 +315,7 @@ public class EventDashboardPresenterTest {
         when(eventRepository.updateEvent(any(Event.class))).thenReturn(ERROR_OBSERVABLE);
 
         // Defined locally as a work around for unexpected failureg
-        Event event = Event.builder().id(6).state(Event.STATE_PUBLISHED).build();
+        Event event = Event.builder().id(6L).state(Event.STATE_PUBLISHED).build();
 
         eventDashboardPresenter.setEvent(event);
         eventDashboardPresenter.toggleState();
