@@ -22,6 +22,8 @@ import javax.inject.Inject;
 import br.com.ilhasoft.support.validation.Validator;
 import dagger.Lazy;
 
+import static org.fossasia.openevent.app.common.utils.ui.ViewUtils.showView;
+
 public class CreateEventFragment extends BaseBottomSheetFragment<ICreateEventPresenter> implements ICreateEventView {
 
     @Inject
@@ -86,6 +88,11 @@ public class CreateEventFragment extends BaseBottomSheetFragment<ICreateEventPre
     @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        showView(binding.progressBar, show);
     }
 
     @Override

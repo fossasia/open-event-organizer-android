@@ -13,7 +13,7 @@ import org.threeten.bp.ZonedDateTime;
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
-import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.erroneous;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneous;
 
 
 public class CreateEventPresenter extends BasePresenter<ICreateEventView> implements ICreateEventPresenter {
@@ -29,8 +29,6 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
         String isoDate = DateUtils.formatDateToIso(current);
         event.getStartsAt().set(isoDate);
         event.getEndsAt().set(isoDate);
-        event.setDefaults();
-        event.setId(null);
     }
 
     @Override
@@ -63,12 +61,7 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
         eventRepository
             .createEvent(event)
             .compose(dispose(getDisposable()))
-            .compose(erroneous(getView()))
-            .doOnSubscribe(disposable -> event.creating.set(true))
-            .doFinally(() -> event.creating.set(false))
-            .subscribe(createdEvent -> {
-                getView().onSuccess("Event Created");
-                getView().dismiss();
-            }, Logger::logError);
+            .compose(progressiveErroneous(getView()))
+            .subscribe(createdEvent -> getView().onSuccess("Event Created Successfully"), Logger::logError);
     }
 }
