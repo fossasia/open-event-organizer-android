@@ -196,7 +196,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Timezone"
                     android:inputType="text"
-                    android:text="@={ event.timezone }" />
+                    android:text="@={ event.timezone }"
+                    app:validateEmpty="@{true}"/>
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
@@ -224,7 +225,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/payment_currency"
                     android:inputType="text"
-                    android:text="@={ event.paymentCurrency }" />
+                    android:text="@={ event.paymentCurrency }"
+                    app:validateEmpty="@{true}"/>
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
