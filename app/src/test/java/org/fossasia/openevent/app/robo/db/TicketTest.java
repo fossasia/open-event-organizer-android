@@ -32,7 +32,7 @@ public class TicketTest extends BaseTest {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
         Event event = new Event();
-        event.setId(12);
+        event.setId(Long.valueOf(12));
 
         Ticket ticket1 = Ticket.builder()
             .id(1L)

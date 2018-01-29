@@ -57,11 +57,11 @@ public class EventRepositoryTest {
     private static final String AUTH = Utils.formatToken(TOKEN);
 
     private static final List<Event> EVENTS = Arrays.asList(
-        Event.builder().id(12).build(),
-        Event.builder().id(21).build(),
-        Event.builder().id(52).build()
+        Event.builder().id(12L).build(),
+        Event.builder().id(21L).build(),
+        Event.builder().id(52L).build()
     );
-    private static final int ID = 4;
+    private static final long ID = 4L;
     private static final Event EVENT = Event.builder().id(ID).state(Event.STATE_PUBLISHED).build();
     private static final Event UPDATED_EVENT = Event.builder().id(ID).state(Event.STATE_PUBLISHED).build();
 
@@ -97,11 +97,11 @@ public class EventRepositoryTest {
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        eventRepository.getEvent(21, false)
+        eventRepository.getEvent(21L, false)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        eventRepository.getEvent(21, true)
+        eventRepository.getEvent(21L, true)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
@@ -182,7 +182,7 @@ public class EventRepositoryTest {
 
     @Test
     public void shouldSaveEventInCache() {
-        long id = 23;
+        long id = 23L;
 
         Event event = new Event();
 
@@ -213,7 +213,7 @@ public class EventRepositoryTest {
 
     @Test
     public void shouldLoadEventFromCache() {
-        long id = 45;
+        long id = 45L;
 
         Event event = new Event();
         when(databaseRepository.getItems(eq(Event.class), refEq(Event_Table.id.eq(id))))
@@ -229,7 +229,7 @@ public class EventRepositoryTest {
 
     @Test
     public void shouldFetchEventOnForceReload() {
-        long id = 45;
+        long id = 45L;
 
         Event event = new Event();
         when(databaseRepository.save(Event.class, event)).thenReturn(Completable.complete());
@@ -262,7 +262,7 @@ public class EventRepositoryTest {
             .thenReturn(Observable.fromIterable(EVENTS));
         when(databaseRepository.saveList(Event.class, EVENTS)).thenReturn(completable);
         when(databaseRepository.deleteAll(Event.class)).thenReturn(completable);
-        when(eventService.getEvents(344)).thenReturn(Observable.just(EVENTS));
+        when(eventService.getEvents(344L)).thenReturn(Observable.just(EVENTS));
 
         // No force reload ensures use of cache
         Observable<Event> eventObservable = eventRepository.getEvents(false);
@@ -274,7 +274,7 @@ public class EventRepositoryTest {
 
         // Verify loads from network
         verify(utilModel).getToken();
-        verify(eventService).getEvents(344);
+        verify(eventService).getEvents(344L);
 
         testObserver.assertSubscribed();
     }
@@ -314,7 +314,7 @@ public class EventRepositoryTest {
             .assertValue(EVENTS);
 
         // Verify loads from network
-        verify(eventService).getEvents(344);
+        verify(eventService).getEvents(344L);
         verify(databaseRepository).getAllItems(eq(Event.class));
     }
 
@@ -324,7 +324,7 @@ public class EventRepositoryTest {
         when(utilModel.getToken()).thenReturn(TOKEN);
         when(databaseRepository.saveList(Event.class, EVENTS)).thenReturn(Completable.complete());
         when(databaseRepository.deleteAll(Event.class)).thenReturn(Completable.complete());
-        when(eventService.getEvents(344)).thenReturn(Observable.just(EVENTS));
+        when(eventService.getEvents(344L)).thenReturn(Observable.just(EVENTS));
 
         InOrder inOrder = Mockito.inOrder(databaseRepository);
 

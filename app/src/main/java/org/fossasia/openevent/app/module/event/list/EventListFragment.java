@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.module.event.list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.FragmentEventListBinding;
+import org.fossasia.openevent.app.module.event.create.CreateEventActivity;
 import org.fossasia.openevent.app.module.event.list.contract.IEventsPresenter;
 import org.fossasia.openevent.app.module.event.list.contract.IEventsView;
 
@@ -111,6 +113,13 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
         getPresenter().start();
 
         initialized = true;
+
+        binding.createEventFab.setOnClickListener(view -> openCreateEventFragment());
+    }
+
+    public void openCreateEventFragment() {
+        Intent intent = new Intent(getActivity(), CreateEventActivity.class);
+        startActivity(intent);
     }
 
     @Override

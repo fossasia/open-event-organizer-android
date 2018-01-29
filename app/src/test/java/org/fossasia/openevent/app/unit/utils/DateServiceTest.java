@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.unit.utils;
 
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
 import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.common.utils.core.service.DateService;
 import org.junit.Test;
@@ -23,14 +24,14 @@ public class DateServiceTest {
         String max = DateUtils.formatDateToIso(LocalDateTime.MAX);
         String min = DateUtils.formatDateToIso(LocalDateTime.MIN);
 
-        LIVE.setStartsAt(min);
-        LIVE.setEndsAt(max);
+        LIVE.setStartsAt(new ObservableString(min));
+        LIVE.setEndsAt(new ObservableString(max));
 
-        PAST.setStartsAt(min);
-        PAST.setEndsAt(min);
+        PAST.setStartsAt(new ObservableString(min));
+        PAST.setEndsAt(new ObservableString(min));
 
-        UPCOMING.setStartsAt(max);
-        UPCOMING.setEndsAt(max);
+        UPCOMING.setStartsAt(new ObservableString(max));
+        UPCOMING.setEndsAt(new ObservableString(max));
     }
 
     private static void testStatus(Event event, String expected) {
@@ -86,8 +87,8 @@ public class DateServiceTest {
         Event liveLatest = new Event();
         String nowMinus5 = DateUtils.formatDateToIso(LocalDateTime.now().minusDays(5));
         String nowPlus5 = DateUtils.formatDateToIso(LocalDateTime.now().plusDays(5));
-        liveLatest.setStartsAt(nowMinus5);
-        liveLatest.setEndsAt(nowPlus5);
+        liveLatest.setStartsAt(new ObservableString(nowMinus5));
+        liveLatest.setEndsAt(new ObservableString(nowPlus5));
 
         assertEquals(1, DateService.compareEventDates(LIVE, liveLatest));
     }
@@ -97,8 +98,8 @@ public class DateServiceTest {
         Event pastLatest = new Event();
         String min = DateUtils.formatDateToIso(LocalDateTime.MIN);
         String minPlus5 = DateUtils.formatDateToIso(LocalDateTime.MIN.plusDays(5));
-        pastLatest.setStartsAt(min);
-        pastLatest.setEndsAt(minPlus5);
+        pastLatest.setStartsAt(new ObservableString(min));
+        pastLatest.setEndsAt(new ObservableString(minPlus5));
 
         assertEquals(1, DateService.compareEventDates(PAST, pastLatest));
     }
@@ -108,8 +109,8 @@ public class DateServiceTest {
         Event upcomingEarliest = new Event();
         String max = DateUtils.formatDateToIso(LocalDateTime.MAX);
         String maxMinus5 = DateUtils.formatDateToIso(LocalDateTime.MAX.minusDays(5));
-        upcomingEarliest.setStartsAt(maxMinus5);
-        upcomingEarliest.setEndsAt(max);
+        upcomingEarliest.setStartsAt(new ObservableString(maxMinus5));
+        upcomingEarliest.setEndsAt(new ObservableString(max));
 
         assertEquals(1, DateService.compareEventDates(UPCOMING, upcomingEarliest));
     }
