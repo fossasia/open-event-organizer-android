@@ -29,10 +29,10 @@ public final class DateService {
      */
     public static int compareEventDates(Event one, Event two) {
         ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime startDate = DateUtils.getDate(one.getStartsAt());
-        ZonedDateTime endDate = DateUtils.getDate(one.getEndsAt());
-        ZonedDateTime otherStartDate = DateUtils.getDate(two.getStartsAt());
-        ZonedDateTime otherEndDate = DateUtils.getDate(two.getEndsAt());
+        ZonedDateTime startDate = DateUtils.getDate(one.getStartsAt().get());
+        ZonedDateTime endDate = DateUtils.getDate(one.getEndsAt().get());
+        ZonedDateTime otherStartDate = DateUtils.getDate(two.getStartsAt().get());
+        ZonedDateTime otherEndDate = DateUtils.getDate(two.getEndsAt().get());
         if (endDate.isBefore(now) || otherEndDate.isBefore(now)) {
             // one of them is past and other can be past or live or upcoming
             return endDate.isAfter(otherEndDate) ? -1 : 1;
@@ -48,8 +48,8 @@ public final class DateService {
     }
 
     public static String getEventStatus(Event event) throws ParseException {
-        ZonedDateTime startDate = DateUtils.getDate(event.getStartsAt());
-        ZonedDateTime endDate = DateUtils.getDate(event.getEndsAt());
+        ZonedDateTime startDate = DateUtils.getDate(event.getStartsAt().get());
+        ZonedDateTime endDate = DateUtils.getDate(event.getEndsAt().get());
         ZonedDateTime now = ZonedDateTime.now();
         if (now.isAfter(startDate)) {
             if (now.isBefore(endDate)) {

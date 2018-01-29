@@ -13,6 +13,7 @@ import org.fossasia.openevent.app.module.auth.login.LoginFragment;
 import org.fossasia.openevent.app.module.auth.signup.SignUpFragment;
 import org.fossasia.openevent.app.module.event.about.AboutEventFragment;
 import org.fossasia.openevent.app.module.event.chart.ChartActivity;
+import org.fossasia.openevent.app.module.event.create.CreateEventFragment;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
 import org.fossasia.openevent.app.module.main.MainActivity;
@@ -73,4 +74,6 @@ public interface AppComponent {
     void inject(ResetPasswordByTokenFragment resetPasswordByTokenFragment);
 
     void inject(ChangePasswordFragment changePasswordFragment);
+
+    void inject(CreateEventFragment createEventFragment);
 }

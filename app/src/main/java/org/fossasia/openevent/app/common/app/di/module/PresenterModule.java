@@ -18,6 +18,8 @@ import org.fossasia.openevent.app.module.event.about.AboutEventPresenter;
 import org.fossasia.openevent.app.module.event.about.contract.IAboutEventPresenter;
 import org.fossasia.openevent.app.module.event.chart.ChartPresenter;
 import org.fossasia.openevent.app.module.event.chart.contract.IChartPresenter;
+import org.fossasia.openevent.app.module.event.create.CreateEventPresenter;
+import org.fossasia.openevent.app.module.event.create.contract.ICreateEventPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardPresenter;
 import org.fossasia.openevent.app.module.event.list.EventsPresenter;
@@ -92,4 +94,8 @@ public abstract class PresenterModule {
 
     @Binds
     abstract IChangePasswordPresenter bindsChangePasswordPresenter(ChangePasswordPresenter changePasswordPresenter);
+
+    @Binds
+    abstract ICreateEventPresenter bindsCreateEventPresenter(CreateEventPresenter createEventPresenter);
+
 }
