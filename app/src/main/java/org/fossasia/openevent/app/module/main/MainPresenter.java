@@ -20,6 +20,7 @@ import org.fossasia.openevent.app.module.main.contract.IMainView;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.disposeCompletable;
@@ -37,6 +38,8 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
     private final IBus bus;
     private final ContextManager contextManager;
 
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     private User organizer;
 
     @Inject
@@ -52,30 +55,30 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
 
     @Override
     public void start() {
-        sharedPreferences.getBoolean(Constants.SHARED_PREFS_LOCAL_DATE)
+        compositeDisposable.add(sharedPreferences.getBoolean(Constants.SHARED_PREFS_LOCAL_DATE)
             .asObservable()
             .compose(dispose(getDisposable()))
             .distinctUntilChanged()
             .doOnNext(changed -> getView().invalidateDateViews())
-            .subscribe(DateUtils::setShowLocal);
+            .subscribe(DateUtils::setShowLocal));
 
-        bus.getSelectedEvent()
+        compositeDisposable.add(bus.getSelectedEvent()
             .compose(dispose(getDisposable()))
             .compose(erroneousResult(getView()))
             .subscribe(event -> {
                 sharedPreferenceModel.setLong(EVENT_KEY, event.getId());
                 ContextManager.setSelectedEvent(event);
-                CurrencyUtils.getCurrencySymbol(event.getPaymentCurrency())
-                    .subscribe(ContextManager::setCurrency);
+                compositeDisposable.add(CurrencyUtils.getCurrencySymbol(event.getPaymentCurrency())
+                    .subscribe(ContextManager::setCurrency));
                 showEvent(event);
-            }, Logger::logError);
+            }, Logger::logError));
 
-        getOrganizerObservable()
+        compositeDisposable.add(getOrganizerObservable()
             .compose(dispose(getDisposable()))
             .subscribe(user -> {
                 this.organizer = user;
                 getView().showOrganizer(user);
-            }, Logger::logError);
+            }, Logger::logError));
 
         long storedEventId = sharedPreferenceModel.getLong(EVENT_KEY, -1);
 
@@ -95,11 +98,11 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
             return;
         }
 
-        eventRepository
+        compositeDisposable.add(eventRepository
             .getEvent(storedEventId, false)
             .compose(dispose(getDisposable()))
             .compose(erroneous(getView()))
-            .subscribe(bus::pushSelectedEvent, Logger::logError);
+            .subscribe(bus::pushSelectedEvent, Logger::logError));
     }
 
     private void showEvent(Event event) {
@@ -116,12 +119,18 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
 
     @Override
     public void logout() {
-        loginModel.logout()
+        compositeDisposable.add(loginModel.logout()
             .compose(disposeCompletable(getDisposable()))
             .compose(erroneousCompletable(getView()))
             .subscribe(() -> {
                 contextManager.clearOrganiser();
                 getView().onLogout();
-            }, Logger::logError);
+            }, Logger::logError));
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        compositeDisposable.dispose();
     }
 }

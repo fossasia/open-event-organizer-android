@@ -24,6 +24,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -122,6 +123,7 @@ public class MainPresenterTest {
 
     @Test
     public void shouldShowEventsIfNoneStored() {
+        fail();
         mockCommons();
 
         when(sharedPreferenceModel.getLong(anyString(), anyLong())).thenReturn(-1L);
@@ -130,16 +132,6 @@ public class MainPresenterTest {
         mainPresenter.start();
 
         verify(mainView).showEventList();
-    }
-
-    @Test
-    public void shouldShowResultInViewOnEventPush() {
-        mockCommons();
-
-        mainPresenter.start();
-        PUBLISHER.onNext(EVENT);
-
-        verify(mainView).showResult(EVENT);
     }
 
 }
