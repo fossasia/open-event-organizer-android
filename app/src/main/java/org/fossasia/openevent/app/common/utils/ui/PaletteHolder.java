@@ -110,6 +110,9 @@ public final class PaletteHolder {
     }
 
     private void setHeaderColor(WeakReference<GlidePalette<Drawable>> glidePalette, ViewGroup viewGroup) {
+        if (glidePalette == null || viewGroup == null)
+            return;
+
         if (glidePalette.get() == null)
             return;
 
@@ -117,6 +120,9 @@ public final class PaletteHolder {
     }
 
     private void setTextColor(WeakReference<GlidePalette<Drawable>> glidePalette, TextView textView) {
+        if (glidePalette == null || textView == null)
+            return;
+
         if (glidePalette.get() == null)
             return;
 
