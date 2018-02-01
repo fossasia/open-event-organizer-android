@@ -9,6 +9,7 @@ import org.fossasia.openevent.app.module.attendee.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.module.auth.AuthActivity;
 import org.fossasia.openevent.app.module.event.about.AboutEventActivity;
 import org.fossasia.openevent.app.module.event.chart.ChartActivity;
+import org.fossasia.openevent.app.module.event.create.CreateEventActivity;
 import org.fossasia.openevent.app.module.main.MainActivity;
 import org.fossasia.openevent.app.module.organizer.detail.OrganizerDetailActivity;
 import org.junit.AfterClass;
@@ -51,7 +52,8 @@ public class ActivityInstanceTest<T extends Activity> extends BaseParameterTest 
             {MainActivity.class, null, null},
             {ChartActivity.class, null, null},
             {AboutEventActivity.class, AboutEventActivity.EVENT_ID, 1L},
-            {OrganizerDetailActivity.class, null, null}
+            {OrganizerDetailActivity.class, null, null},
+            {CreateEventActivity.class, null, null}
         });
     }
 
