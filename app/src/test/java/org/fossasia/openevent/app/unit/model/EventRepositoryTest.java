@@ -40,6 +40,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class EventRepositoryTest {
 
     @Rule
@@ -366,4 +367,33 @@ public class EventRepositoryTest {
         testObserver.assertNotSubscribed();
     }
 
+    @Test
+    public void shouldSaveCreatedEventToDatabaseOnSuccess() {
+        TestObserver testObserver = TestObserver.create();
+        Completable completable = Completable.complete()
+            .doOnSubscribe(testObserver::onSubscribe);
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.postEvent(EVENT)).thenReturn(Observable.just(EVENT));
+        when(databaseRepository.save(Event.class, EVENT)).thenReturn(completable);
+
+        eventRepository.createEvent(EVENT).test();
+
+        testObserver.assertSubscribed();
+    }
+
+    @Test
+    public void shouldNotSaveCreatedEventOnError() {
+        TestObserver testObserver = TestObserver.create();
+        Completable completable = Completable.complete()
+            .doOnSubscribe(testObserver::onSubscribe);
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.postEvent(EVENT)).thenReturn(ObservableLift.error(Logger.TEST_ERROR));
+        when(databaseRepository.save(Event.class, EVENT)).thenReturn(completable);
+
+        eventRepository.createEvent(EVENT).test();
+
+        testObserver.assertNotSubscribed();
+    }
 }
