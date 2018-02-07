@@ -8,5 +8,6 @@ public interface ICreateEventPresenter extends IPresenter<ICreateEventView> {
     Event getEvent();
 
     void createEvent();
+
 }
 
