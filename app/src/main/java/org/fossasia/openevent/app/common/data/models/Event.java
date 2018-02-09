@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.common.data.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -84,18 +85,30 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     public String chequeDetails;
     public String identifier;
     public boolean isComplete;
-    public double latitude;
-    public double longitude;
+    public Double latitude;
+    public Double longitude;
+
+    @JsonProperty("can-pay-by-stripe")
     public boolean canPayByStripe;
+    @JsonProperty("can-pay-by-cheque")
     public boolean canPayByCheque;
+    @JsonProperty("can-pay-by-bank")
     public boolean canPayByBank;
+    @JsonProperty("can-pay-by-paypal")
     public boolean canPayByPaypal;
+    @JsonProperty("can-pay-onsite")
     public boolean canPayOnsite;
+    @JsonProperty("is-sponsors-enabled")
     public boolean isSponsorsEnabled;
+    @JsonProperty("has-organizer-info")
     public boolean hasOrganizerInfo;
+    @JsonProperty("is-sessions-speakers-enabled")
     public boolean isSessionsSpeakersEnabled;
+    @JsonProperty("is-ticketing-enabled")
     public boolean isTicketingEnabled;
+    @JsonProperty("is-tax-enabled")
     public boolean isTaxEnabled;
+    @JsonProperty("is-map-shown")
     public boolean isMapShown;
 
     @JsonSerialize(using = ObservableStringSerializer.class)
@@ -110,6 +123,7 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     public List<Ticket> tickets;
 
     public Event() { }
+
 
     // One to Many implementation
     @JsonIgnore

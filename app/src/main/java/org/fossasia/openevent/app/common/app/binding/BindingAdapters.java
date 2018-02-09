@@ -41,12 +41,21 @@ public final class BindingAdapters {
         return value == null ?  "" : String.valueOf(value);
     }
 
+    @InverseMethod("strToDouble")
+    public static String doubleToStr(Double value) {
+        return value == null ? "" : String.valueOf(value);
+    }
+
     public static Long strToLong(String value) {
         return value == null ?  null : Long.parseLong(value);
     }
 
     public static Float strToFloat(String value) {
         return value == null ?  null : Float.parseFloat(value);
+    }
+
+    public static Double strToDouble(String value) {
+        return value == null ? null : Double.parseDouble(value);
     }
 
     @InverseMethod("getType")
