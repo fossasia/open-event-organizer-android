@@ -4,7 +4,9 @@ import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
+import org.fossasia.openevent.app.common.utils.core.CurrencyUtils;
 import org.fossasia.openevent.app.common.utils.core.DateUtils;
+import org.fossasia.openevent.app.common.utils.core.StringUtils;
 import org.fossasia.openevent.app.module.event.create.contract.ICreateEventPresenter;
 import org.fossasia.openevent.app.module.event.create.contract.ICreateEventView;
 import org.threeten.bp.LocalDateTime;
@@ -14,7 +16,6 @@ import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneous;
-
 
 public class CreateEventPresenter extends BasePresenter<ICreateEventView> implements ICreateEventPresenter {
 
@@ -33,7 +34,7 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
 
     @Override
     public void start() {
-        // Nothing to do
+        getView().attachCurrencyCodesList(CurrencyUtils.getCurrencyCodesList());
     }
 
     @Override
@@ -53,10 +54,20 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
         return true;
     }
 
+    protected void nullifyEmptyFields(Event event) {
+        event.setLogoUrl(StringUtils.emptyToNull(event.getLogoUrl()));
+        event.setTicketUrl(StringUtils.emptyToNull(event.getTicketUrl()));
+        event.setOriginalImageUrl(StringUtils.emptyToNull(event.getOriginalImageUrl()));
+        event.setExternalEventUrl(StringUtils.emptyToNull(event.getExternalEventUrl()));
+        event.setPaypalEmail(StringUtils.emptyToNull(event.getPaypalEmail()));
+    }
+
     @Override
     public void createEvent() {
         if (!verify())
             return;
+
+        nullifyEmptyFields(event);
 
         eventRepository
             .createEvent(event)

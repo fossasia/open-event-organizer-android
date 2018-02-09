@@ -1,6 +1,8 @@
 package org.fossasia.openevent.app.common.utils.core;
 
+import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -49,6 +51,23 @@ public final class CurrencyUtils {
                     currency.getSymbol(currencyLocalMap.get(currency))
             )
             .subscribeOn(Schedulers.computation());
+    }
+
+    @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock" })
+    public static List<String> getCurrencyCodesList() {
+        List<String> currencyCodes = new ArrayList<>();
+
+        for (Locale locale : Locale.getAvailableLocales()) {
+            try {
+                Currency currency = Currency.getInstance(locale);
+                if (currency != null) {
+                    currencyCodes.add(currency.toString());
+                }
+            } catch (Exception e) {
+                // No action
+            }
+        }
+        return currencyCodes;
     }
 
 }
