@@ -42,6 +42,9 @@ public final class CurrencyUtils {
     }
 
     public static Single<String> getCurrencySymbol(String currencyCode) {
+        if (currencyCode == null)
+            return Single.error(new Throwable("Currency Code is null"));
+
         return Single
             .just(currencyCode)
             .map(Currency::getInstance)
