@@ -66,7 +66,7 @@ public class MainPresenter extends BasePresenter<IMainView> implements IMainPres
                 sharedPreferenceModel.setLong(EVENT_KEY, event.getId());
                 ContextManager.setSelectedEvent(event);
                 CurrencyUtils.getCurrencySymbol(event.getPaymentCurrency())
-                    .subscribe(ContextManager::setCurrency);
+                    .subscribe(ContextManager::setCurrency, Logger::logError);
                 showEvent(event);
             }, Logger::logError);
 
