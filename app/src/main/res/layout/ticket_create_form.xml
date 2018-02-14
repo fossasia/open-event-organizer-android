@@ -109,7 +109,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/quantity"
                     android:text="@={ BindingAdapters.longToStr(ticket.quantity) }"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    app:validateEmpty="@{true}" />
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
@@ -138,7 +139,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/price"
                     android:text="@={ BindingAdapters.floatToStr(ticket.price) }"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    app:validateEmpty="@{true}" />
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
