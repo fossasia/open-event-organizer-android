@@ -52,12 +52,14 @@ public final class BindingAdapters {
         return Utils.isEmpty(value) ?  null : Long.parseLong(value);
     }
 
+    @SuppressWarnings("PMD")
     public static Float strToFloat(String value) {
-        return value == null ?  null : Float.parseFloat(value);
+        return Utils.isEmpty(value) ? null : Float.parseFloat(value);
     }
 
+    @SuppressWarnings("PMD")
     public static Double strToDouble(String value) {
-        return value == null ? null : Double.parseDouble(value);
+        return Utils.isEmpty(value) ? null : Double.parseDouble(value);
     }
 
     @InverseMethod("getType")
