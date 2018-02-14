@@ -151,6 +151,9 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3'
 
+    //ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:1.0.0"
+
     // Fast Adapter
     implementation('com.mikepenz:fastadapter:3.0.4@aar') {
         transitive = true

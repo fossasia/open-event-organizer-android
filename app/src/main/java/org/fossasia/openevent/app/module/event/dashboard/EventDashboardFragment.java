@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.module.event.dashboard;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import org.fossasia.openevent.app.databinding.EventDetailBinding;
 import org.fossasia.openevent.app.module.event.chart.ChartActivity;
 import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardView;
+
 
 import javax.inject.Inject;
 
@@ -50,6 +52,7 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
 
     private ConstraintLayout container;
     private SwipeRefreshLayout refreshLayout;
+    private EventDashboardViewModel eventDashboardViewModel;
 
     public EventDashboardFragment() {
         // Required empty public constructor
@@ -83,6 +86,12 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
         Bundle arguments = getArguments();
         if (arguments != null)
             initialEventId = arguments.getLong(EVENT_ID);
+        eventDashboardViewModel = ViewModelProviders.of(this).get(EventDashboardViewModel.class);
+
+        if (eventDashboardViewModel.getEventId() == null) {
+            eventDashboardViewModel.setEventId(initialEventId);
+
+        }
     }
 
     @Override
@@ -93,7 +102,7 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
         binding.ticketAnalytics.btnChartFullScreen.setOnClickListener(
             v -> {
                 Intent openChart = new Intent(getActivity(), ChartActivity.class);
-                openChart.putExtra(EVENT_ID, initialEventId);
+                openChart.putExtra(EVENT_ID, eventDashboardViewModel.getEventId());
                 startActivity(openChart);
             });
         return binding.getRoot();
@@ -102,7 +111,7 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(initialEventId, this);
+        getPresenter().attach(eventDashboardViewModel.getEventId(), this);
         binding.setPresenter(getPresenter());
         setupRefreshListener();
         getPresenter().start();
