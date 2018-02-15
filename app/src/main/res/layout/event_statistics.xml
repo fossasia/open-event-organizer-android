@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="org.fossasia.openevent.app.common.app.binding.BindingAdapters" />
+
+        <variable
+            name="eventStatistics"
+            type="org.fossasia.openevent.app.common.data.models.EventStatistics" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/event_statistics_outer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_event_statistics_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_small"
+                android:layout_marginRight="@dimen/spacing_small"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="18dp"
+                android:text="@string/event_statistics"
+                android:textSize="@dimen/text_size_normal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switch_event_statistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginRight="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:checked="false"
+                android:onCheckedChanged='@{ (switch, checked) -> checked ? eventStatisticsLayout.setVisibility(View.VISIBLE) : eventStatisticsLayout.setVisibility(View.GONE) }' />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/event_statistics_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:layout_marginEnd="@dimen/spacing_large"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:text="@string/speakers"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:text="@string/sponsors" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:text="@string/sessions"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:text="@string/sessions_submitted" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:text="@string/sessions_accepted" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:text="@string/sessions_confirmed" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:text="@string/sessions_draft" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    style="@style/TextAppearance.AppCompat.Body2"
+                    android:text="@string/sessions_pending"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/spacing_larger"
+                android:layout_marginStart="@dimen/spacing_larger"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_speakers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:text="@{ BindingAdapters.longToStr(eventStatistics.speakers) }"/>
+
+                <TextView
+                    android:id="@+id/tv_sponsors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:text="@{ BindingAdapters.longToStr(eventStatistics.sponsors) }" />
+
+                <TextView
+                    android:id="@+id/tv_sessions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:text="@{ BindingAdapters.longToStr(eventStatistics.sessions) }" />
+
+                <TextView
+                    android:id="@+id/tv_sessionsSubmitted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:text="@{ BindingAdapters.longToStr(eventStatistics.sessionsSubmitted) }" />
+
+                <TextView
+                    android:id="@+id/tv_sessionsAccepted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:text="@{ BindingAdapters.longToStr(eventStatistics.sessionsAccepted) }" />
+
+                <TextView
+                    android:id="@+id/tv_sessionsConfirmed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:text="@{ BindingAdapters.longToStr(eventStatistics.sessionsConfirmed) }" />
+
+                <TextView
+                    android:id="@+id/tv_sessionsDraft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:text="@{ BindingAdapters.longToStr(eventStatistics.sessionsDraft) }"/>
+
+                <TextView
+                    android:id="@+id/tv_sessionsPending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:text="@{ BindingAdapters.longToStr(eventStatistics.sessionsPending) }"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_shadow"/>
+
+    </LinearLayout>
+</layout>

@@ -17,6 +17,7 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.EventStatistics;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
 import org.fossasia.openevent.app.module.event.chart.ChartActivity;
@@ -103,6 +104,7 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
     public void onStart() {
         super.onStart();
         getPresenter().attach(initialEventId, this);
+        binding.eventStatistics.switchEventStatistics.setChecked(false);
         binding.setPresenter(getPresenter());
         setupRefreshListener();
         getPresenter().start();
@@ -155,6 +157,12 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
     @Override
     public void showResult(Event event) {
         binding.setEvent(event);
+        binding.executePendingBindings();
+    }
+
+    @Override
+    public void showStatistics(EventStatistics eventStatistics) {
+        binding.setEventStatistics(eventStatistics);
         binding.executePendingBindings();
     }
 

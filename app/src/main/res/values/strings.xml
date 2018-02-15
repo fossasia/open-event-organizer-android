@@ -102,4 +102,13 @@
     <string name="create_event">Create Event</string>
     <string name="event_name">Event Name</string>
     <string name="payment_currency">Payment Currency</string>
+    <string name="event_statistics">Event Statistics</string>
+    <string name="speakers">Speakers</string>
+    <string name="sponsors">Sponsors</string>
+    <string name="sessions">Sessions</string>
+    <string name="sessions_submitted">Sessions Submitted</string>
+    <string name="sessions_accepted">Sessions Accepted</string>
+    <string name="sessions_confirmed">Sessions Confirmed</string>
+    <string name="sessions_draft">Sessions Draft</string>
+    <string name="sessions_pending">Sessions Pending</string>
 </resources>
