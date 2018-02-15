@@ -102,6 +102,7 @@
     <string name="create_event">Create Event</string>
     <string name="event_name">Event Name</string>
     <string name="payment_currency">Payment Currency</string>
+<<<<<<< HEAD
     <string name="date_and_time">Date and Time</string>
     <string name="timezone">Timezone</string>
     <string name="location_details">Location Details</string>
@@ -151,6 +152,15 @@
     <string name="enable_tax">Enable Tax</string>
     <string name="url_validation_error">Please Enter a Valid URL</string>
     <string name="email_validation_error">Please Enter a Valid Email</string>
+    <string name="event_statistics">Event Statistics</string>
+    <string name="speakers">Speakers</string>
+    <string name="sponsors">Sponsors</string>
+    <string name="sessions">Sessions</string>
+    <string name="sessions_submitted">Sessions Submitted</string>
+    <string name="sessions_accepted">Sessions Accepted</string>
+    <string name="sessions_confirmed">Sessions Confirmed</string>
+    <string name="sessions_draft">Sessions Draft</string>
+    <string name="sessions_pending">Sessions Pending</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
@@ -736,4 +746,5 @@
         <item>WET</item>
         <item>Zulu</item>
     </string-array>
+
 </resources>

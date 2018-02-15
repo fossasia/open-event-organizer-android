@@ -8,9 +8,13 @@ import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Progressive
 import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Refreshable;
 import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Successful;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.EventStatistics;
 
 public interface IEventDashboardView extends Progressive, Erroneous, Successful, Refreshable, ItemResult<Event> {
+
     LineChart getChartView();
 
     void showChart(boolean show);
+
+    void showStatistics(EventStatistics eventStatistics);
 }

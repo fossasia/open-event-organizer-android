@@ -6,6 +6,7 @@ import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.EventStatistics;
 import org.fossasia.openevent.app.common.data.models.Event_Table;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.network.EventService;
@@ -125,6 +126,17 @@ public class EventRepository extends Repository implements IEventRepository {
             .doOnNext(created -> databaseRepository
                 .save(Event.class, created)
                 .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<EventStatistics> getEventStatistics(long id) {
+        if (!utilModel.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return eventService.getEventStatistics(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
