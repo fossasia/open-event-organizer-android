@@ -66,7 +66,6 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
             .flatMap(loadedEvent -> {
                 this.event = loadedEvent;
                 ticketAnalyser.analyseTotalTickets(event);
-                loadEventStatistics(event);
                 return getAttendeeSource(forceReload);
             })
             .compose(progressiveErroneousRefresh(getView(), forceReload))
@@ -80,6 +79,8 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
                     loadChart();
                 }
             }, Logger::logError);
+
+        loadEventStatistics(forceReload);
     }
 
     @Override
@@ -98,11 +99,16 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
 
     }
 
-    private void loadEventStatistics(Event event) {
-        eventRepository.getEventStatistics(event.getId())
-            .compose(dispose(getDisposable()))
-            .doFinally(() -> getView().showStatistics(eventStatistics))
-            .subscribe(statistics -> eventStatistics = statistics, Logger::logError);
+    private void loadEventStatistics(boolean forceReload) {
+        if (!forceReload && isRotated() && eventStatistics != null)
+            getView().showStatistics(eventStatistics);
+        else {
+            eventRepository.getEventStatistics(getId())
+                .compose(dispose(getDisposable()))
+                .compose(progressiveErroneousRefresh(getView(), forceReload))
+                .doFinally(() -> getView().showStatistics(eventStatistics))
+                .subscribe(statistics -> eventStatistics = statistics, Logger::logError);
+        }
     }
 
     private void loadChart() {
