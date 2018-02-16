@@ -8,6 +8,7 @@ import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.EventStatistics;
 import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
 import org.fossasia.openevent.app.module.event.dashboard.analyser.ChartAnalyser;
@@ -31,6 +32,7 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
 
     private Event event;
     private List<Attendee> attendees;
+    private EventStatistics eventStatistics;
     private final IEventRepository eventRepository;
     private final IAttendeeRepository attendeeRepository;
     private final TicketAnalyser ticketAnalyser;
@@ -77,6 +79,8 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
                     loadChart();
                 }
             }, Logger::logError);
+
+        loadEventStatistics(forceReload);
     }
 
     @Override
@@ -93,6 +97,18 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
             },
             throwable -> event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT);
 
+    }
+
+    private void loadEventStatistics(boolean forceReload) {
+        if (!forceReload && isRotated() && eventStatistics != null)
+            getView().showStatistics(eventStatistics);
+        else {
+            eventRepository.getEventStatistics(getId())
+                .compose(dispose(getDisposable()))
+                .compose(progressiveErroneousRefresh(getView(), forceReload))
+                .doFinally(() -> getView().showStatistics(eventStatistics))
+                .subscribe(statistics -> eventStatistics = statistics, Logger::logError);
+        }
     }
 
     private void loadChart() {
@@ -126,6 +142,10 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
     @VisibleForTesting
     public Event getEvent() {
         return event;
+    }
+
+    public EventStatistics getEventStatistics() {
+        return eventStatistics;
     }
 
     @VisibleForTesting

@@ -11,6 +11,7 @@ import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.EventStatistics;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.data.models.User;
 import org.fossasia.openevent.app.common.data.network.EventService;
@@ -47,7 +48,7 @@ public class NetworkModule {
 
     @Provides
     Class[] providesMappedClasses() {
-        return new Class[]{Event.class, Attendee.class, Ticket.class, User.class};
+        return new Class[]{Event.class, Attendee.class, Ticket.class, User.class, EventStatistics.class};
     }
 
     @Provides
