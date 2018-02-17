@@ -11,6 +11,7 @@ import org.fossasia.openevent.app.module.event.create.contract.ICreateEventPrese
 import org.fossasia.openevent.app.module.event.create.contract.ICreateEventView;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.format.DateTimeParseException;
 
 import javax.inject.Inject;
 
@@ -43,15 +44,19 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
     }
 
     private boolean verify() {
-        ZonedDateTime start = DateUtils.getDate(event.getStartsAt().get());
-        ZonedDateTime end = DateUtils.getDate(event.getEndsAt().get());
+        try {
+            ZonedDateTime start = DateUtils.getDate(event.getStartsAt().get());
+            ZonedDateTime end = DateUtils.getDate(event.getEndsAt().get());
 
-        if (!end.isAfter(start)) {
-            getView().showError("End time should be after start time");
+            if (!end.isAfter(start)) {
+                getView().showError("End time should be after start time");
+                return false;
+            }
+            return true;
+        } catch (DateTimeParseException pe) {
+            getView().showError("Please enter date in correct format");
             return false;
         }
-
-        return true;
     }
 
     protected void nullifyEmptyFields(Event event) {

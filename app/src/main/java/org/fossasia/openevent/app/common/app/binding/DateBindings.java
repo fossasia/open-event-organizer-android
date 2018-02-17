@@ -13,6 +13,9 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.format.DateTimeParseException;
+
+import timber.log.Timber;
 
 public final class DateBindings {
 
@@ -27,6 +30,7 @@ public final class DateBindings {
         button.setText(DateUtils.formatDateWithDefault(format, isoDate));
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private static void bindTemporal(Button button, ObservableField<String> date, String format,
                                      Function<ZonedDateTime, AlertDialog> dialogProvider) {
         if (date == null)
@@ -36,7 +40,12 @@ public final class DateBindings {
         button.setText(DateUtils.formatDateWithDefault(format, isoDate));
 
         button.setOnClickListener(view -> {
-            ZonedDateTime zonedDateTime = DateUtils.getDate(isoDate);
+            ZonedDateTime zonedDateTime = ZonedDateTime.now();
+            try {
+                zonedDateTime = DateUtils.getDate(isoDate);
+            } catch (DateTimeParseException pe) {
+                Timber.e(pe);
+            }
             dialogProvider.apply(zonedDateTime).show();
         });
     }
