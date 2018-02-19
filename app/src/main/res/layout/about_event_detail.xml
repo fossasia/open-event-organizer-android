@@ -69,7 +69,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_clock }"
                         android:drawableStart="@{ @drawable/ic_clock }"
-                        android:text='@{ "Starts: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) }' />
+                        android:text='@{ "Starts: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) }'
+                        android:visibility="@{ (event.startsAt != null) ? View.VISIBLE : View.GONE }"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -79,7 +80,9 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_clock }"
                         android:drawableStart="@{ @drawable/ic_clock }"
-                        android:text='@{ "Ends: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.endsAt) }' />
+                        android:text='@{ "Ends: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.endsAt) }'
+                        android:visibility="@{ (event.endsAt != null) ? View.VISIBLE : View.GONE }"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -89,7 +92,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_time }"
                         android:drawableStart="@{ @drawable/ic_time }"
-                        android:text='@{ event.timezone }' />
+                        android:text='@{ event.timezone }'
+                        android:visibility="@{ (event.timezone != null) ? View.VISIBLE : View.GONE }"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -99,7 +103,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_earth }"
                         android:drawableStart="@{ @drawable/ic_earth }"
-                        android:text='@{ event.paymentCountry }' />
+                        android:text='@{ event.paymentCountry }'
+                        android:visibility="@{ (event.paymentCountry != null) ? View.VISIBLE : View.GONE }"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -109,7 +114,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_coin }"
                         android:drawableStart="@{ @drawable/ic_coin }"
-                        android:text='@{ event.paymentCurrency }' />
+                        android:text='@{ event.paymentCurrency }'
+                        android:visibility="@{ (event.paymentCurrency != null) ? View.VISIBLE : View.GONE }"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -119,7 +125,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_location }"
                         android:drawableStart="@{ @drawable/ic_location }"
-                        android:text='@{ event.latitude + " " + event.longitude }' />
+                        android:text='@{ event.latitude + " " + event.longitude }'
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -129,7 +136,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_info }"
                         android:drawableStart="@{ @drawable/ic_info }"
-                        android:text='@{ event.description }' />
+                        android:text='@{ event.description }'
+                        android:visibility="@{ (event.description != null) ? View.VISIBLE : View.GONE }"/>
 
                 </LinearLayout>
 
