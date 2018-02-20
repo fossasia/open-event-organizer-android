@@ -96,4 +96,9 @@ public final class DateUtils {
         return formatDateWithDefault(format, isoString, INVALID_DATE);
     }
 
+    @NonNull
+    public static LocalDateTime getIsoOffsetTimeFromTimestamp(@NonNull String timestamp) {
+        return LocalDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+    }
+
 }
