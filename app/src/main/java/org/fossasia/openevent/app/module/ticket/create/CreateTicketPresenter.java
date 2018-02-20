@@ -26,10 +26,17 @@ public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> impl
     public CreateTicketPresenter(ITicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
         LocalDateTime current = LocalDateTime.now();
+        String startDate = DateUtils.formatDateToIso(current);
+        ticket.getSalesStartsAt().set(startDate);
 
-        String isoDate = DateUtils.formatDateToIso(current);
-        ticket.getSalesStartsAt().set(isoDate);
-        ticket.getSalesEndsAt().set(isoDate);
+        LocalDateTime salesEndTime = current.plusDays(10);
+        LocalDateTime eventEndTime = DateUtils.getIsoOffsetTimeFromTimestamp(ContextManager.getSelectedEvent().getEndsAt().get());
+        //if less than 10 days are available in the event.
+        if (salesEndTime.isAfter(eventEndTime)) {
+            salesEndTime = eventEndTime;
+        }
+        String endDate = DateUtils.formatDateToIso(salesEndTime);
+        ticket.getSalesEndsAt().set(endDate);
         ticket.setType("free");
     }
 

@@ -1,6 +1,9 @@
 package org.fossasia.openevent.app.unit.presenter;
 
+import org.fossasia.openevent.app.common.app.ContextManager;
+import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.Ticket;
+import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
 import org.fossasia.openevent.app.common.data.repository.contract.ITicketRepository;
 import org.fossasia.openevent.app.common.utils.core.DateUtils;
 import org.fossasia.openevent.app.module.ticket.create.CreateTicketPresenter;
@@ -32,6 +35,7 @@ public class TicketCreatePresenterTest {
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock private ICreateTicketView ticketsView;
     @Mock private ITicketRepository ticketRepository;
+    @Mock private Event event;
 
     private CreateTicketPresenter createTicketPresenter;
 
@@ -40,8 +44,16 @@ public class TicketCreatePresenterTest {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
+        setupMockEvent();
+        ContextManager.setSelectedEvent(event);
         createTicketPresenter = new CreateTicketPresenter(ticketRepository);
         createTicketPresenter.attach(ticketsView);
+        ContextManager.setSelectedEvent(null);
+    }
+
+    private void setupMockEvent() {
+        when(event.getTimezone()).thenReturn("UTC");
+        when(event.getEndsAt()).thenReturn(new ObservableString("2018-12-14T23:59:59.123456+00:00"));
     }
 
     @After
