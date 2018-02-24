@@ -25,8 +25,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.preferences, rootKey);
     }
 
-
-
     @Override
     public void onResume() {
         super.onResume();
