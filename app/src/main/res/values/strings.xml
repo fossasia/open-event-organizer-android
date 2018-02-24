@@ -160,6 +160,7 @@
     <string name="sessions_confirmed">Sessions Confirmed</string>
     <string name="sessions_draft">Sessions Draft</string>
     <string name="sessions_pending">Sessions Pending</string>
+    <string name="faq">FAQ</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

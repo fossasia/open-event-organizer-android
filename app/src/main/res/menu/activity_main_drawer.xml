@@ -21,6 +21,12 @@
             android:icon="@drawable/ic_info"
             android:title="@string/about"
             android:checkable="false"/>
+
+        <item
+            android:id="@+id/nav_faq"
+            android:icon="@drawable/ic_faq"
+            android:title="@string/faq"
+            android:checkable="false"/>
     </group>
 
     <group android:id="@+id/eventsMenu" android:checkableBehavior="single">
