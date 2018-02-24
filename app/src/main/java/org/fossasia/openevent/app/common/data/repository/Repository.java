@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.common.data.repository;
 
-import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
+import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.common.data.network.EventService;
 import org.fossasia.openevent.app.common.utils.core.Utils;
 

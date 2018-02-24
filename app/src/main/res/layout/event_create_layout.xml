@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="event"
+            type="org.fossasia.openevent.app.common.data.models.Event" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="Event" />
+
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_top_surface">
+
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <include
+                        android:id="@+id/form"
+                        layout="@layout/event_create_form"
+                        bind:event="@{event}" />
+                </android.support.v4.widget.NestedScrollView>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:layout_marginRight="@dimen/spacing_normal">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:backgroundTint="@color/light_green_500"
+                        app:fabSize="mini"
+                        app:srcCompat="@drawable/ic_check"
+                        app:tint="@android:color/white" />
+
+                    <FrameLayout
+                        android:layout_width="@dimen/progressbar_large"
+                        android:layout_height="@dimen/progressbar_large"
+                        android:layout_gravity="center">
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:theme="@style/AppTheme"
+                            android:visibility="gone" />
+
+                    </FrameLayout>
+
+                </FrameLayout>
+            </android.support.design.widget.CoordinatorLayout>
+
+        </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

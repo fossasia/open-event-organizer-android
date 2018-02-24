@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.utils.core.Utils;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 
 @SuppressWarnings("PMD.AvoidCatchingGenericException")
@@ -41,12 +42,24 @@ public final class BindingAdapters {
         return value == null ?  "" : String.valueOf(value);
     }
 
-    public static Long strToLong(String value) {
-        return value == null ?  null : Long.parseLong(value);
+    @InverseMethod("strToDouble")
+    public static String doubleToStr(Double value) {
+        return value == null ? "" : String.valueOf(value);
     }
 
+    @SuppressWarnings("PMD")
+    public static Long strToLong(String value) {
+        return Utils.isEmpty(value) ?  null : Long.parseLong(value);
+    }
+
+    @SuppressWarnings("PMD")
     public static Float strToFloat(String value) {
-        return value == null ?  null : Float.parseFloat(value);
+        return Utils.isEmpty(value) ? null : Float.parseFloat(value);
+    }
+
+    @SuppressWarnings("PMD")
+    public static Double strToDouble(String value) {
+        return Utils.isEmpty(value) ? null : Double.parseDouble(value);
     }
 
     @InverseMethod("getType")

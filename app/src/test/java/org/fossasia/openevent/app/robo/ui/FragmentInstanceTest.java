@@ -2,7 +2,10 @@ package org.fossasia.openevent.app.robo.ui;
 
 import android.support.v4.app.Fragment;
 
+import org.fossasia.openevent.app.common.app.ContextManager;
 import org.fossasia.openevent.app.common.data.UtilModel;
+import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
 import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.module.auth.forgot.password.token.request.ForgotPasswordFragment;
 import org.fossasia.openevent.app.module.auth.forgot.password.token.submit.ResetPasswordByTokenFragment;
@@ -32,6 +35,16 @@ public class FragmentInstanceTest<T extends Fragment> extends BaseParameterTest 
     public FragmentInstanceTest(Class<T> testFragmentClass, long id) {
         this.testFragmentClass = testFragmentClass;
         this.id = id;
+        if (testFragmentClass == CreateTicketFragment.class) {
+            setUpMockEvent();
+        }
+    }
+
+    private void setUpMockEvent() {
+        Event event = new Event();
+        event.timezone = "UTC";
+        event.endsAt = new ObservableString("2018-12-14T23:59:59.123456+00:00");
+        ContextManager.setSelectedEvent(event);
     }
 
     @BeforeClass
@@ -42,6 +55,7 @@ public class FragmentInstanceTest<T extends Fragment> extends BaseParameterTest 
     @AfterClass
     public static void tearDown() {
         UtilModel.releaseNetwork();
+        ContextManager.setSelectedEvent(null);
     }
 
     @ParameterizedRobolectricTestRunner.Parameters(name = "InstantiateFragment = {0}")
