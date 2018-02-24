@@ -20,7 +20,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferencesFix(@Nullable Bundle bundle, String rootKey) {
         PreferenceManager manager = getPreferenceManager();
         manager.setSharedPreferencesName(Constants.FOSS_PREFS);
-        setRetainInstance(true);
 
         setPreferencesFromResource(R.xml.preferences, rootKey);
     }
