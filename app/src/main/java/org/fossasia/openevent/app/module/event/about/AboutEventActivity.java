@@ -20,6 +20,7 @@ public class AboutEventActivity extends AppCompatActivity {
         if (extras != null && extras.containsKey(EVENT_ID)) {
             long id = extras.getLong(EVENT_ID);
 
+
             IAboutEventVew aboutEventVew = (IAboutEventVew) getSupportFragmentManager().findFragmentById(R.id.about_event_fragment);
             aboutEventVew.setEventId(id);
         }

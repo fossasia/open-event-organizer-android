@@ -190,9 +190,11 @@
                         android:drawableLeft="@{ @drawable/ic_earth }"
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableStart="@{ @drawable/ic_earth }"
+                        android:text='@{ event.paymentCountry }'
+                        android:visibility="@{ (event.paymentCountry != null) ? View.VISIBLE : View.GONE }"/>
                         android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_small"
-                        android:text='@{ event.paymentCountry }' />
+                        android:padding="@dimen/spacing_small" />
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -200,9 +202,11 @@
                         android:drawableLeft="@{ @drawable/ic_coin }"
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableStart="@{ @drawable/ic_coin }"
+                        android:text='@{ event.paymentCurrency }'
+                        android:visibility="@{ (event.paymentCurrency != null) ? View.VISIBLE : View.GONE }"/>
                         android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_small"
-                        android:text='@{ event.paymentCurrency }' />
+                        android:padding="@dimen/spacing_small" />
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -312,9 +316,10 @@
                         android:drawableLeft="@{ @drawable/ic_info }"
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableStart="@{ @drawable/ic_info }"
+                        android:text='@{ event.description }'
+                        android:visibility="@{ (event.description != null) ? View.VISIBLE : View.GONE }"/>
                         android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_small"
-                        android:text='@{ event.description }' />
+                        android:padding="@dimen/spacing_small" />
 
                 </LinearLayout>
 

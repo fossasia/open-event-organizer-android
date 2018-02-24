@@ -47,7 +47,8 @@
                         android:text="@string/details"
                         android:background="#dedede"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="?android:textColorSecondary" />
+                        android:textColor="?android:textColorSecondary"
+                        android:visibility="@{user.createdAt == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -87,7 +88,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_info }"
                         android:drawableStart="@{ @drawable/ic_info }"
-                        android:text='@{ user.details }' />
+                        android:text='@{ user.details }'
+                        android:visibility="@{user.details == null ? View.GONE : View.VISIBLE}"/>
 
                 </LinearLayout>
 
@@ -96,7 +98,8 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium" >
+                android:layout_margin="@dimen/spacing_medium"
+                android:visibility="@{user.facebookUrl != null || user.contact != null || user.twitterUrl != null || user.googlePlusUrl != null || user.instagramUrl != null ? View.VISIBLE : View.GONE}">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -110,7 +113,8 @@
                         android:text="@string/contact"
                         android:background="#dedede"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="?android:textColorSecondary" />
+                        android:textColor="?android:textColorSecondary"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -120,7 +124,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_contact }"
                         android:drawableStart="@{ @drawable/ic_contact }"
-                        android:text='@{ user.contact }' />
+                        android:text='@{ user.contact }'
+                        android:visibility="@{user.contact == null ? View.GONE : View.VISIBLE}"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -130,7 +135,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_facebook }"
                         android:drawableStart="@{ @drawable/ic_facebook }"
-                        android:text='@{ user.facebookUrl }' />
+                        android:text='@{ user.facebookUrl != null ? user.facebookUrl :  "test" }'
+                        android:visibility="@{user.facebookUrl == null ? View.GONE : View.VISIBLE}"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -140,7 +146,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_twitter }"
                         android:drawableStart="@{ @drawable/ic_twitter }"
-                        android:text='@{ user.twitterUrl }' />
+                        android:text='@{ user.twitterUrl }'
+                        android:visibility="@{user.twitterUrl == null ? View.GONE : View.VISIBLE}"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -150,7 +157,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_google_plus }"
                         android:drawableStart="@{ @drawable/ic_google_plus }"
-                        android:text='@{ user.googlePlusUrl }' />
+                        android:text='@{ user.googlePlusUrl }'
+                        android:visibility="@{user.googlePlusUrl == null ? View.GONE : View.VISIBLE}"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -160,7 +168,8 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_instagram }"
                         android:drawableStart="@{ @drawable/ic_instagram }"
-                        android:text='@{ user.instagramUrl }' />
+                        android:text='@{ user.instagramUrl }'
+                        android:visibility="@{user.instagramUrl == null ? View.GONE : View.VISIBLE}"/>
 
                 </LinearLayout>
 
