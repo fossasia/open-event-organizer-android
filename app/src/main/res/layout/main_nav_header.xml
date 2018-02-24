@@ -55,12 +55,13 @@
                     android:background="@drawable/circle_placeholder" />
 
                 <TextView
+                    android:id="@+id/getName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
                     android:text='@{ user.firstName + " " + user.lastName }'
-                    android:textColor="@android:color/white"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginTop="@dimen/spacing_normal"/>
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </FrameLayout>
 

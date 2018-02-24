@@ -11,6 +11,7 @@ import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
+    private SettingsFragment data;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -20,8 +21,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferencesFix(@Nullable Bundle bundle, String rootKey) {
         PreferenceManager manager = getPreferenceManager();
         manager.setSharedPreferencesName(Constants.FOSS_PREFS);
+        setRetainInstance(true);
 
         setPreferencesFromResource(R.xml.preferences, rootKey);
+    }
+
+    public void setData(SettingsFragment data) {
+        this.data = data;
+    }
+
+    public SettingsFragment getData() {
+        return data;
     }
 
     @Override
