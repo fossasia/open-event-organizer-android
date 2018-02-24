@@ -113,8 +113,7 @@
                     android:drawablePadding="@dimen/spacing_small"
                     android:text='@{ ContextManager.getCurrency() + " " + checkinAttendee.ticket.price }'
                     android:visibility='@{ checkinAttendee.ticket.type.equalsIgnoreCase("paid") ? View.VISIBLE : View.GONE }'
-                    tools:text="3.78"
-                    />
+                    tools:text="3.78" />
 
                 <TextView
                     android:layout_width="wrap_content"

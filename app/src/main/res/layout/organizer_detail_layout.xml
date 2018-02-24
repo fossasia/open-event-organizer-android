@@ -48,8 +48,7 @@
                         android:background="#dedede"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="?android:textColorSecondary"
-                        android:visibility="@{user.createdAt == null ? View.GONE : View.VISIBLE}"
-                        />
+                        android:visibility="@{user.createdAt == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -59,8 +58,7 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_clock }"
                         android:drawableStart="@{ @drawable/ic_clock }"
-                        android:text='@{ "Joined: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, user.createdAt) }'
-                        />
+                        android:text='@{ "Joined: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, user.createdAt) }' />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -70,8 +68,7 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_email }"
                         android:drawableStart="@{ @drawable/ic_email }"
-                        android:text='@{ user.email }'
-                        android:visibility="@{user.email == null ? View.GONE : View.VISIBLE}"/>
+                        android:text='@{ user.email }' />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -81,8 +78,7 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_server_sync }"
                         android:drawableStart="@{ @drawable/ic_server_sync }"
-                        android:text='@{ user.isVerified ? @string/verified : @string/not_verified }'
-                        />
+                        android:text='@{ user.isVerified ? @string/verified : @string/not_verified }' />
 
                     <TextView
                         android:layout_width="wrap_content"

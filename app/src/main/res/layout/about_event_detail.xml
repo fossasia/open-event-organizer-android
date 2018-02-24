@@ -69,8 +69,7 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_clock }"
                         android:drawableStart="@{ @drawable/ic_clock }"
-                        android:text='@{ "Starts: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) }'
-                        android:visibility="@{ (event.startsAt != null) ? View.VISIBLE : View.GONE }"/>
+                        android:text='@{ "Starts: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) }' />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -80,9 +79,7 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_clock }"
                         android:drawableStart="@{ @drawable/ic_clock }"
-                        android:text='@{ "Ends: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.endsAt) }'
-                        android:visibility="@{ (event.endsAt != null) ? View.VISIBLE : View.GONE }"
-                        />
+                        android:text='@{ "Ends: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.endsAt) }' />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -92,8 +89,7 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_time }"
                         android:drawableStart="@{ @drawable/ic_time }"
-                        android:text='@{ event.timezone }'
-                        android:visibility="@{ (event.timezone != null) ? View.VISIBLE : View.GONE }"/>
+                        android:text='@{ event.timezone }' />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -125,8 +121,7 @@
                         android:drawablePadding="@dimen/spacing_small"
                         android:drawableLeft="@{ @drawable/ic_location }"
                         android:drawableStart="@{ @drawable/ic_location }"
-                        android:text='@{ event.latitude + " " + event.longitude }'
-                        />
+                        android:text='@{ event.latitude + " " + event.longitude }' />
 
                     <TextView
                         android:layout_width="wrap_content"
