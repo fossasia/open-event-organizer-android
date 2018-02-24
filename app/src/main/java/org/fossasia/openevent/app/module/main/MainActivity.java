@@ -1,8 +1,6 @@
 package org.fossasia.openevent.app.module.main;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,10 +11,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
@@ -60,7 +56,6 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
     private int lastSelectedNavItemId;
 
-    @SuppressLint("LongLogTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         OrgaApplication
@@ -85,9 +80,6 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentManager = getSupportFragmentManager();
-
-
-
         headerBinding.profile.setOnClickListener(view -> startActivity(new Intent(this, OrganizerDetailActivity.class)));
     }
 
@@ -158,7 +150,6 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
         loadFragment(R.id.nav_dashboard);
     }
 
-
     @Override
     public void showOrganizer(User organizer) {
         headerBinding.setUser(organizer);
@@ -179,8 +170,6 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
         startActivity(new Intent(this, AuthActivity.class));
         finish();
     }
-
-
 
     @Override
     public void showError(String error) {
