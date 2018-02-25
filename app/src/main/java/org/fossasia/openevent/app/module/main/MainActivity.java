@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentManager = getSupportFragmentManager();
+
         headerBinding.profile.setOnClickListener(view -> startActivity(new Intent(this, OrganizerDetailActivity.class)));
     }
 
