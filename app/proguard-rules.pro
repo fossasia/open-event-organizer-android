@@ -31,6 +31,8 @@
 
 -dontwarn javax.annotation**
 
+-dontwarn org.conscrypt.**
+
 -keep class org.fossasia.openevent.app.common.data.models.** {
   *;
 }
