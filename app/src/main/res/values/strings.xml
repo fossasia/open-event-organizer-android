@@ -161,6 +161,14 @@
     <string name="sessions_draft">Sessions Draft</string>
     <string name="sessions_pending">Sessions Pending</string>
     <string name="faq">FAQ</string>
+    <string name="pdf_url">PDF URL</string>
+    <string name="country">Country</string>
+    <string name="state">State</string>
+    <string name="city">City</string>
+    <string name="address">Address</string>
+    <string name="pdf_url_colon">PDF URL:  </string>
+    <string name="answer_initial">A:</string>
+    <string name="question_initial">Q:</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

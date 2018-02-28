@@ -84,6 +84,6 @@ public interface EventService {
     @GET("events/{id}/general-statistics")
     Observable<EventStatistics> getEventStatistics(@Path("id") long id);
 
-    @GET("/v1/events/{id}/faqs?include=event&fields[event]=id&page[size]=0")
+    @GET("events/{id}/faqs?include=event&fields[event]=id&page[size]=0")
     Observable<List<Faq>> getFaqs(@Path("id") long id);
 }

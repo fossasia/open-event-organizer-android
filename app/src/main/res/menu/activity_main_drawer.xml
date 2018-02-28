@@ -25,8 +25,7 @@
         <item
             android:id="@+id/nav_faq"
             android:icon="@drawable/ic_faq"
-            android:title="@string/faq"
-            android:checkable="false"/>
+            android:title="@string/faq"/>
     </group>
 
     <group android:id="@+id/eventsMenu" android:checkableBehavior="single">
