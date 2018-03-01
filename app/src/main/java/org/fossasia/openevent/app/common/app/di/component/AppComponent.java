@@ -16,6 +16,7 @@ import org.fossasia.openevent.app.module.event.chart.ChartActivity;
 import org.fossasia.openevent.app.module.event.create.CreateEventFragment;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
+import org.fossasia.openevent.app.module.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.module.main.MainActivity;
 import org.fossasia.openevent.app.module.organizer.detail.OrganizerDetailFragment;
 import org.fossasia.openevent.app.module.organizer.password.ChangePasswordFragment;
@@ -76,4 +77,6 @@ public interface AppComponent {
     void inject(ChangePasswordFragment changePasswordFragment);
 
     void inject(CreateEventFragment createEventFragment);
+
+    void inject(FaqListFragment faqListFragment);
 }

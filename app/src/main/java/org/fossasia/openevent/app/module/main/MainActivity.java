@@ -28,6 +28,7 @@ import org.fossasia.openevent.app.module.auth.AuthActivity;
 import org.fossasia.openevent.app.module.event.about.AboutEventActivity;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
+import org.fossasia.openevent.app.module.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.module.main.contract.IMainPresenter;
 import org.fossasia.openevent.app.module.main.contract.IMainView;
 import org.fossasia.openevent.app.module.organizer.detail.OrganizerDetailActivity;
@@ -198,6 +199,9 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
                 break;
             case R.id.nav_settings:
                 fragment = SettingsFragment.newInstance();
+                break;
+            case R.id.nav_faq:
+                fragment = FaqListFragment.newInstance(eventId);
                 break;
             default:
                 fragment = EventDashboardFragment.newInstance(eventId);
