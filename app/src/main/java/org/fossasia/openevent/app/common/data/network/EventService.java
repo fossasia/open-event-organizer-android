@@ -5,6 +5,7 @@ import org.fossasia.openevent.app.common.data.models.ChangePassword;
 import org.fossasia.openevent.app.common.data.models.ChangePasswordResponse;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.EventStatistics;
+import org.fossasia.openevent.app.common.data.models.Faq;
 import org.fossasia.openevent.app.common.data.models.RequestToken;
 import org.fossasia.openevent.app.common.data.models.RequestTokenResponse;
 import org.fossasia.openevent.app.common.data.models.SubmitToken;
@@ -82,4 +83,7 @@ public interface EventService {
 
     @GET("events/{id}/general-statistics")
     Observable<EventStatistics> getEventStatistics(@Path("id") long id);
+
+    @GET("events/{id}/faqs?include=event&fields[event]=id&page[size]=0")
+    Observable<List<Faq>> getFaqs(@Path("id") long id);
 }

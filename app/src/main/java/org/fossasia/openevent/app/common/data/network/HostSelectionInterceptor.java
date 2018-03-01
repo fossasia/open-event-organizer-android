@@ -16,6 +16,7 @@ import okhttp3.Response;
 public final class HostSelectionInterceptor implements Interceptor {
     private String scheme;
     private String host;
+    private int port = 80;
 
     @Inject
     public HostSelectionInterceptor() {
@@ -28,6 +29,7 @@ public final class HostSelectionInterceptor implements Interceptor {
             return;
         scheme = httpUrl.scheme();
         host = httpUrl.host();
+        port = httpUrl.port();
     }
 
     @Override
@@ -39,6 +41,7 @@ public final class HostSelectionInterceptor implements Interceptor {
             HttpUrl newUrl = original.url().newBuilder()
                 .scheme(scheme)
                 .host(host)
+                .port(port)
                 .build();
             original = original.newBuilder()
                 .url(newUrl)
