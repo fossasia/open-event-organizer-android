@@ -22,6 +22,8 @@ import org.fossasia.openevent.app.module.event.create.CreateEventPresenter;
 import org.fossasia.openevent.app.module.event.create.contract.ICreateEventPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardPresenter;
+import org.fossasia.openevent.app.module.faq.list.FaqListPresenter;
+import org.fossasia.openevent.app.module.faq.list.contract.IFaqListPresenter;
 import org.fossasia.openevent.app.module.event.list.EventsPresenter;
 import org.fossasia.openevent.app.module.event.list.contract.IEventsPresenter;
 import org.fossasia.openevent.app.module.main.MainPresenter;
@@ -97,5 +99,8 @@ public abstract class PresenterModule {
 
     @Binds
     abstract ICreateEventPresenter bindsCreateEventPresenter(CreateEventPresenter createEventPresenter);
+
+    @Binds
+    abstract IFaqListPresenter bindsFaqListPresenter(FaqListPresenter faqListPresenter);
 
 }
