@@ -192,7 +192,8 @@
                         android:drawableStart="@{ @drawable/ic_earth }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:text='@{ event.paymentCountry }' />
+                        android:text='@{ event.paymentCountry }'
+                        android:visibility="@{ (event.paymentCountry != null) ? View.VISIBLE : View.GONE }" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -202,7 +203,8 @@
                         android:drawableStart="@{ @drawable/ic_coin }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:text='@{ event.paymentCurrency }' />
+                        android:text='@{ event.paymentCurrency }'
+                        android:visibility="@{ (event.paymentCurrency != null) ? View.VISIBLE : View.GONE }"/>
 
                     <TextView
                         android:layout_width="wrap_content"
