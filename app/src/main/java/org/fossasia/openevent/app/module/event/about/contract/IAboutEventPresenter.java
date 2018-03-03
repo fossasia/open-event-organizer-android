@@ -6,4 +6,5 @@ public interface IAboutEventPresenter extends IDetailPresenter<Long, IAboutEvent
 
     void loadEvent(boolean forceReload);
 
+    void loadCopyright(boolean forceReload);
 }

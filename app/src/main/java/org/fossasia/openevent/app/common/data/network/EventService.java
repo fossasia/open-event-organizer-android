@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.common.data.network;
 import org.fossasia.openevent.app.common.data.models.Attendee;
 import org.fossasia.openevent.app.common.data.models.ChangePassword;
 import org.fossasia.openevent.app.common.data.models.ChangePasswordResponse;
+import org.fossasia.openevent.app.common.data.models.Copyright;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.models.EventStatistics;
 import org.fossasia.openevent.app.common.data.models.Faq;
@@ -86,4 +87,11 @@ public interface EventService {
 
     @GET("events/{id}/faqs?include=event&fields[event]=id&page[size]=0")
     Observable<List<Faq>> getFaqs(@Path("id") long id);
+
+    @POST("event-copyrights")
+    Observable<Copyright> postCopyright(@Body Copyright copyright);
+
+    @GET("events/{eventId}/event-copyright")
+    Observable<Copyright> getCopyright(@Path("eventId") long eventId);
+
 }
