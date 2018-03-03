@@ -13,6 +13,9 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
 
+import java.util.List;
+import java.util.TimeZone;
+
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
@@ -36,6 +39,12 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
     @Override
     public void start() {
         getView().attachCurrencyCodesList(CurrencyUtils.getCurrencyCodesList());
+
+        //set default timezone
+        List<String> timeZoneList = getView().getTimeZoneList();
+        getView().setDefaultTimeZone(
+            timeZoneList.indexOf(TimeZone.getDefault().getID())
+        );
     }
 
     @Override
