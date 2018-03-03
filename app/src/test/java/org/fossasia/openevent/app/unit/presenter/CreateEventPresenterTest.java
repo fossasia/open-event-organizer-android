@@ -113,5 +113,21 @@ public class CreateEventPresenterTest {
         verify(createEventView).onSuccess(anyString());
     }
 
+    @Test
+    public void shouldCloseOnCreated() {
+        Event event = createEventPresenter.getEvent();
+
+        when(eventRepository.createEvent(event)).thenReturn(Observable.just(event));
+
+        String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
+        String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);
+        event.getStartsAt().set(isoDateNow);
+        event.getEndsAt().set(isoDateThen);
+
+        createEventPresenter.createEvent();
+
+        verify(createEventView).close();
+    }
+
 }
 

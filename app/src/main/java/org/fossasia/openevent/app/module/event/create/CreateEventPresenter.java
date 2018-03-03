@@ -87,6 +87,9 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
             .createEvent(event)
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneous(getView()))
-            .subscribe(createdEvent -> getView().onSuccess("Event Created Successfully"), Logger::logError);
+            .subscribe(createdEvent -> {
+                getView().onSuccess("Event Created Successfully");
+                getView().close();
+            }, Logger::logError);
     }
 }
