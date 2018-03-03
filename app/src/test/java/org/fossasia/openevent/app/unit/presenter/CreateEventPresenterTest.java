@@ -128,6 +128,5 @@ public class CreateEventPresenterTest {
 
         verify(createEventView).close();
     }
-
 }
 

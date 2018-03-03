@@ -173,15 +173,5 @@ public class CreateEventFragment extends BaseBottomSheetFragment<ICreateEventPre
     public void setDefaultTimeZone(int index) {
         binding.form.timezoneSpinner.setSelection(index);
     }
-
-    @Override
-    public List<String> getTimeZoneList() {
-        return Arrays.asList(getResources().getStringArray(R.array.timezones));
-    }
-
-    @Override
-    public void setDefaultTimeZone(int index) {
-        binding.form.timezoneSpinner.setSelection(index);
-    }
 }
 
