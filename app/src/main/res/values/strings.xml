@@ -171,6 +171,14 @@
     <string name="pdf_url_colon">PDF URL:  </string>
     <string name="answer_initial">A:</string>
     <string name="question_initial">Q:</string>
+    <string name="create_copyright">Create Copyright</string>
+    <string name="edit_copyright">Edit Copyright</string>
+    <string name="holder_name">Holder Name</string>
+    <string name="holder_url">Holder URL</string>
+    <string name="license_text">License Text</string>
+    <string name="license_url">License URL</string>
+    <string name="copyright_year">Year</string>
+    <string name="copyright">Copyright</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
