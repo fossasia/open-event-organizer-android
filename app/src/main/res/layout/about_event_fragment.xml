@@ -7,6 +7,10 @@
         <variable
             name="event"
             type="org.fossasia.openevent.app.common.data.models.Event" />
+
+        <variable
+            name="copyright"
+            type="org.fossasia.openevent.app.common.data.models.Copyright" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -74,6 +78,7 @@
             <include
                 android:id="@+id/detail"
                 bind:event="@{ event }"
+                bind:copyright="@{ copyright }"
                 layout="@layout/about_event_detail" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
