@@ -15,4 +15,8 @@ public interface ICreateEventView extends Progressive, Erroneous, Successful {
 
     void attachCurrencyCodesList(List<String> currencyCodesList);
 
+    List<String> getTimeZoneList();
+
+    void setDefaultTimeZone(int index);
+
 }
