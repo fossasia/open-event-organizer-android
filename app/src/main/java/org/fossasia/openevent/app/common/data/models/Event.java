@@ -126,6 +126,10 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     @Relationship("faqs")
     public List<Faq> faqs;
 
+    @ColumnIgnore
+    @Relationship("event-copyright")
+    public Copyright copyright;
+
     public Event() { }
 
 
