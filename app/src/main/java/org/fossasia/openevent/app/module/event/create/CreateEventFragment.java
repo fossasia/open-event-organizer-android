@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
@@ -155,7 +156,12 @@ public class CreateEventFragment extends BaseBottomSheetFragment<ICreateEventPre
 
     @Override
     public void onSuccess(String message) {
-        ViewUtils.showSnackbar(binding.getRoot(), message);
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void close() {
+        getActivity().finish();
     }
 
     @Override
