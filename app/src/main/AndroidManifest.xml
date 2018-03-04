@@ -22,7 +22,8 @@
         <activity
             android:name=".module.auth.AuthActivity"
             android:theme="@style/AppTheme.Main.Light"
-            android:label="${appName}">
+            android:label="${appName}"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
