@@ -100,7 +100,7 @@
                     android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawablePadding="@dimen/spacing_small"
-                    android:text='@{ @string/maxOrder + ": " + String.valueOf(ticket.maxOrder) }'
+                    android:text='@{ @string/maxOrder + ": " + String.valueOf(safeUnbox(ticket.maxOrder)) }'
                     tools:text="free" />
 
                 <TextView
@@ -109,7 +109,7 @@
                     android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawablePadding="@dimen/spacing_small"
-                    android:text='@{ @string/minOrder + ": " + String.valueOf(ticket.maxOrder) }'
+                    android:text='@{ @string/minOrder + ": " + String.valueOf(safeUnbox(ticket.maxOrder)) }'
                     tools:text="free" />
             </LinearLayout>
 
