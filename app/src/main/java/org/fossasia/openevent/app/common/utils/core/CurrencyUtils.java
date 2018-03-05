@@ -73,7 +73,7 @@ public final class CurrencyUtils {
         for (Locale locale : Locale.getAvailableLocales()) {
             try {
                 Currency currency = Currency.getInstance(locale);
-                if (currency != null) {
+                if (currency != null && !currencyCodes.contains(currency.toString())) {
                     currencyCodes.add(currency.toString());
                 }
             } catch (Exception e) {
