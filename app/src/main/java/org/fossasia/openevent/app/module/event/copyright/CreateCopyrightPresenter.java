@@ -11,7 +11,7 @@ import org.fossasia.openevent.app.module.event.copyright.contract.ICreateCopyrig
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
-import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.erroneous;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneous;
 
 public class CreateCopyrightPresenter extends BasePresenter<ICreateCopyrightView> implements ICreateCopyrightPresenter {
 
@@ -39,9 +39,7 @@ public class CreateCopyrightPresenter extends BasePresenter<ICreateCopyrightView
 
         copyrightRepository.createCopyright(copyright)
             .compose(dispose(getDisposable()))
-            .compose(erroneous(getView()))
-            .doOnSubscribe(disposable -> copyright.creating.set(true))
-            .doFinally(() -> copyright.creating.set(false))
+            .compose(progressiveErroneous(getView()))
             .subscribe(createdTicket -> {
                 getView().onSuccess("Copyright Created");
                 getView().dismiss();

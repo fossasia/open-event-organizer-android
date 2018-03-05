@@ -1,8 +1,5 @@
 package org.fossasia.openevent.app.common.data.models;
 
-import android.databinding.ObservableBoolean;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
@@ -46,10 +43,4 @@ public class Copyright {
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;
 
-    // Non model entities
-
-    @JsonIgnore
-    public final ObservableBoolean creating = new ObservableBoolean();
-    @JsonIgnore
-    public final ObservableBoolean deleting = new ObservableBoolean();
 }
