@@ -13,7 +13,9 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
 
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
@@ -44,6 +46,11 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
         List<String> timeZoneList = getView().getTimeZoneList();
         getView().setDefaultTimeZone(
             timeZoneList.indexOf(TimeZone.getDefault().getID())
+        );
+
+        List<String> currencyList = CurrencyUtils.getCurrencyCodesList();
+        getView().setDefaultCurrency(
+            currencyList.indexOf(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
         );
     }
 
