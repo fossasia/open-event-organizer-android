@@ -47,6 +47,12 @@ public final class BindingAdapters {
         return value == null ? "" : String.valueOf(value);
     }
 
+    @BindingConversion
+    @InverseMethod("strToInteger")
+    public static String integerToStr(Integer value) {
+        return value == null ?  "" : String.valueOf(value);
+    }
+
     @SuppressWarnings("PMD")
     public static Long strToLong(String value) {
         return Utils.isEmpty(value) ?  null : Long.parseLong(value);
@@ -60,6 +66,11 @@ public final class BindingAdapters {
     @SuppressWarnings("PMD")
     public static Double strToDouble(String value) {
         return Utils.isEmpty(value) ? null : Double.parseDouble(value);
+    }
+
+    @SuppressWarnings("PMD.NullAssignment")
+    public static Integer strToInteger(String value) {
+        return Utils.isEmpty(value) ? null : Integer.parseInt(value);
     }
 
     @InverseMethod("getType")
