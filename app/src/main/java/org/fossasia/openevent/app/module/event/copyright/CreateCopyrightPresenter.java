@@ -5,6 +5,7 @@ import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.models.Copyright;
 import org.fossasia.openevent.app.common.data.repository.contract.ICopyrightRepository;
+import org.fossasia.openevent.app.common.utils.core.StringUtils;
 import org.fossasia.openevent.app.module.event.copyright.contract.ICreateCopyrightPresenter;
 import org.fossasia.openevent.app.module.event.copyright.contract.ICreateCopyrightView;
 
@@ -33,8 +34,18 @@ public class CreateCopyrightPresenter extends BasePresenter<ICreateCopyrightView
         return copyright;
     }
 
+    protected void nullifyEmptyFields(Copyright copyright) {
+        copyright.setHolderUrl(StringUtils.emptyToNull(copyright.getHolderUrl()));
+        copyright.setLicence(StringUtils.emptyToNull(copyright.getLicence()));
+        copyright.setLicenceUrl(StringUtils.emptyToNull(copyright.getLicenceUrl()));
+        copyright.setYear(StringUtils.emptyToNull(copyright.getYear()));
+        copyright.setLogoUrl(StringUtils.emptyToNull(copyright.getLogoUrl()));
+    }
+
     @Override
     public void createCopyright() {
+        nullifyEmptyFields(copyright);
+
         copyright.setEvent(ContextManager.getSelectedEvent());
 
         copyrightRepository.createCopyright(copyright)
