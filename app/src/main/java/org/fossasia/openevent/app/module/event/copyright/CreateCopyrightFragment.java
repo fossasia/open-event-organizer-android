@@ -23,6 +23,8 @@ import javax.inject.Inject;
 import br.com.ilhasoft.support.validation.Validator;
 import dagger.Lazy;
 
+import static org.fossasia.openevent.app.common.utils.ui.ViewUtils.showView;
+
 public class CreateCopyrightFragment extends BaseBottomSheetFragment<ICreateCopyrightPresenter> implements ICreateCopyrightView {
 
     @Inject
@@ -73,6 +75,11 @@ public class CreateCopyrightFragment extends BaseBottomSheetFragment<ICreateCopy
     @Override
     public int getLoaderId() {
         return R.layout.copyright_create_layout;
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        showView(binding.progressBar, show);
     }
 
     @Override

@@ -22,6 +22,8 @@ import javax.inject.Inject;
 import br.com.ilhasoft.support.validation.Validator;
 import dagger.Lazy;
 
+import static org.fossasia.openevent.app.common.utils.ui.ViewUtils.showView;
+
 public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketPresenter> implements ICreateTicketView {
 
     @Inject
@@ -72,6 +74,11 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
     @Override
     public int getLoaderId() {
         return R.layout.ticket_create_layout;
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        showView(binding.progressBar, show);
     }
 
     @Override
