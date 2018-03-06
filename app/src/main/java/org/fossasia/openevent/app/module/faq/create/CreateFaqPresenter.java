@@ -35,7 +35,6 @@ public class CreateFaqPresenter extends BasePresenter<ICreateFaqView> implements
 
     @Override
     public void createFaq() {
-
         faq.setEvent(ContextManager.getSelectedEvent());
 
         faqRepository
