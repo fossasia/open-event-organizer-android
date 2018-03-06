@@ -3,7 +3,7 @@ package org.fossasia.openevent.app.module.faq.list;
 import org.fossasia.openevent.app.common.app.lifecycle.presenter.BaseDetailPresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.models.Faq;
-import org.fossasia.openevent.app.common.data.repository.contract.IFAQRepository;
+import org.fossasia.openevent.app.common.data.repository.contract.IFaqRepository;
 import org.fossasia.openevent.app.module.faq.list.contract.IFaqListPresenter;
 import org.fossasia.openevent.app.module.faq.list.contract.IFaqListView;
 
@@ -21,10 +21,10 @@ import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progress
 public class FaqListPresenter extends BaseDetailPresenter<Long, IFaqListView> implements IFaqListPresenter {
 
     private final List<Faq> faqs = new ArrayList<>();
-    private final IFAQRepository faqRepository;
+    private final IFaqRepository faqRepository;
 
     @Inject
-    public FaqListPresenter(IFAQRepository faqRepository) {
+    public FaqListPresenter(IFaqRepository faqRepository) {
         this.faqRepository = faqRepository;
     }
 
