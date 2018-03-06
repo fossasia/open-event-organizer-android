@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.models.Faq;
-import org.fossasia.openevent.app.common.data.repository.contract.IFAQRepository;
+import org.fossasia.openevent.app.common.data.repository.contract.IFaqRepository;
 import org.fossasia.openevent.app.module.faq.list.FaqListPresenter;
 import org.fossasia.openevent.app.module.faq.list.contract.IFaqListView;
 import org.junit.Before;
@@ -36,7 +36,7 @@ public class FaqListPresenterTest {
     @Mock
     private IFaqListView faqListView;
     @Mock
-    private IFAQRepository faqRepository;
+    private IFaqRepository faqRepository;
 
     private FaqListPresenter faqListPresenter;
 
