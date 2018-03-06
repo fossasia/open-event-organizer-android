@@ -12,7 +12,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.threeten.bp.LocalDateTime;
@@ -115,7 +117,11 @@ public class TicketCreatePresenterTest {
 
         createTicketPresenter.createTicket();
 
-        verify(ticketsView).showError("Error");
+        InOrder inOrder = Mockito.inOrder(ticketsView);
+
+        inOrder.verify(ticketsView).showProgress(true);
+        inOrder.verify(ticketsView).showError("Error");
+        inOrder.verify(ticketsView).showProgress(false);
     }
 
     @Test
@@ -131,8 +137,12 @@ public class TicketCreatePresenterTest {
 
         createTicketPresenter.createTicket();
 
-        verify(ticketsView).onSuccess(anyString());
-        verify(ticketsView).dismiss();
+        InOrder inOrder = Mockito.inOrder(ticketsView);
+
+        inOrder.verify(ticketsView).showProgress(true);
+        inOrder.verify(ticketsView).onSuccess(anyString());
+        inOrder.verify(ticketsView).dismiss();
+        inOrder.verify(ticketsView).showProgress(false);
     }
 
 }

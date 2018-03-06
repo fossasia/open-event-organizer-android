@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.emptiable;
-import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.erroneousCompletable;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneousCompletable;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> implements ITicketsPresenter {
@@ -81,9 +81,7 @@ public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> im
         ticketRepository
             .deleteTicket(ticket.getId())
             .compose(disposeCompletable(getDisposable()))
-            .compose(erroneousCompletable(getView()))
-            .doOnSubscribe(disposable -> ticket.getDeleting().set(true))
-            .doFinally(() -> ticket.getDeleting().set(false))
+            .compose(progressiveErroneousCompletable(getView()))
             .subscribe(() -> {
                 getView().showTicketDeleted("Ticket Deleted. Refreshing Items");
                 loadTickets(true);
