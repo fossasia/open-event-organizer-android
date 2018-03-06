@@ -238,7 +238,10 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> getPresenter().loadAttendees(true));
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+            getPresenter().loadAttendees(true);
+        });
     }
 
     // View Implementation
@@ -256,7 +259,6 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
 
     @Override
     public void onRefreshComplete(boolean success) {
-        refreshLayout.setRefreshing(false);
         if (success)
             ViewUtils.showSnackbar(binding.rvAttendeeList, R.string.refresh_complete);
     }
