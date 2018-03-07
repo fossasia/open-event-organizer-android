@@ -135,9 +135,10 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
         container = binding.container;
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() ->
-            getPresenter().loadDetails(true)
-        );
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+            getPresenter().loadDetails(true);
+        });
     }
 
     // View implementation
@@ -149,7 +150,6 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
 
     @Override
     public void onRefreshComplete(boolean success) {
-        refreshLayout.setRefreshing(false);
         if (success)
             ViewUtils.showSnackbar(container, R.string.refresh_complete);
     }
