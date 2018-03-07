@@ -39,7 +39,6 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     private SwipeRefreshLayout refreshLayout;
     private long eventId;
     private boolean creatingCopyright = true;
-    private Menu menu;
 
     @Inject
     Lazy<IAboutEventPresenter> aboutEventPresenterProvider;
@@ -108,7 +107,6 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_about_event, menu);
-        this.menu = menu;
     }
 
     @Override
@@ -124,6 +122,15 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
                 // No implementation
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (!creatingCopyright) {
+            MenuItem menuItem = menu.findItem(R.id.action_create_change_copyright);
+            menuItem.setTitle(R.string.edit_copyright);
+        }
     }
 
     @Override
@@ -159,8 +166,7 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     @Override
     public void changeCopyrightMenuItem() {
         creatingCopyright = false;
-        MenuItem menuItem = menu.findItem(R.id.action_create_change_copyright);
-        menuItem.setTitle(R.string.edit_copyright);
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override
