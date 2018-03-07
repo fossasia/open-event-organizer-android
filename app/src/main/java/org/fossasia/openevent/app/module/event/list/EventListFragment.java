@@ -160,7 +160,10 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> getPresenter().loadUserEvents(true));
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+            getPresenter().loadUserEvents(true);
+        });
     }
 
     @Override
@@ -170,7 +173,6 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
 
     @Override
     public void onRefreshComplete(boolean success) {
-        refreshLayout.setRefreshing(false);
         if (success)
             ViewUtils.showSnackbar(recyclerView, R.string.refresh_complete);
     }
