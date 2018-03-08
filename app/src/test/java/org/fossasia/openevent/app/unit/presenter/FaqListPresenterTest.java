@@ -1,10 +1,12 @@
 package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.app.rx.Logger;
+import org.fossasia.openevent.app.common.data.db.contract.IDatabaseChangeListener;
 import org.fossasia.openevent.app.common.data.models.Faq;
 import org.fossasia.openevent.app.common.data.repository.contract.IFaqRepository;
 import org.fossasia.openevent.app.module.faq.list.FaqListPresenter;
 import org.fossasia.openevent.app.module.faq.list.contract.IFaqListView;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,6 +23,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -37,6 +43,8 @@ public class FaqListPresenterTest {
     private IFaqListView faqListView;
     @Mock
     private IFaqRepository faqRepository;
+    @Mock
+    private IDatabaseChangeListener<Faq> databaseChangeListener;
 
     private FaqListPresenter faqListPresenter;
 
@@ -50,13 +58,24 @@ public class FaqListPresenterTest {
 
     @Before
     public void setUp() {
-        faqListPresenter = new FaqListPresenter(faqRepository);
+        faqListPresenter = new FaqListPresenter(faqRepository, databaseChangeListener);
         faqListPresenter.attach(ID, faqListView);
+
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
+        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+    }
+
+    @After
+    public void tearDown() {
+        RxJavaPlugins.reset();
+        RxAndroidPlugins.reset();
     }
 
     @Test
     public void shouldLoadFaqListAutomatically() {
         when(faqRepository.getFaqs(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(FAQS));
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         faqListPresenter.start();
 
@@ -66,10 +85,28 @@ public class FaqListPresenterTest {
     @Test
     public void shouldShowFaqListAutomatically() {
         when(faqRepository.getFaqs(ID, false)).thenReturn(Observable.fromIterable(FAQS));
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         faqListPresenter.start();
 
         verify(faqListView).showResults(FAQS);
+    }
+
+    @Test
+    public void shouldActivateChangeListenerOnStart() {
+        when(faqRepository.getFaqs(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(FAQS));
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
+        faqListPresenter.start();
+
+        verify(databaseChangeListener).startListening();
+    }
+
+    @Test
+    public void shouldDisableChangeListenerOnDetach() {
+        faqListPresenter.detach();
+
+        verify(databaseChangeListener).stopListening();
     }
 
     @Test
