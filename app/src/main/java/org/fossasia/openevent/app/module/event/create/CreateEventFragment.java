@@ -173,5 +173,10 @@ public class CreateEventFragment extends BaseBottomSheetFragment<ICreateEventPre
     public void setDefaultTimeZone(int index) {
         binding.form.timezoneSpinner.setSelection(index);
     }
+
+    @Override
+    public void setDefaultCurrency(int index) {
+        binding.form.currencySpinner.setSelection(index);
+    }
 }
 

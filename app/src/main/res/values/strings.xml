@@ -179,6 +179,9 @@
     <string name="license_url">License URL</string>
     <string name="copyright_year">Year</string>
     <string name="copyright">Copyright</string>
+    <string name="create_faq">Create FAQ</string>
+    <string name="question">Question</string>
+    <string name="answer">Answer</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
