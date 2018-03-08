@@ -50,8 +50,7 @@ public class CopyrightRepository extends Repository implements ICopyrightReposit
         Observable<Copyright> networkObservable = Observable.defer(() ->
             eventService.getCopyright(eventId)
                 .doOnNext(copyright -> databaseRepository
-                    .delete(Copyright.class, Copyright_Table.event_id.eq(eventId))
-                    .concatWith(databaseRepository.save(Copyright.class, copyright))
+                    .save(Copyright.class, copyright)
                     .subscribe()));
 
         return new AbstractObservableBuilder<Copyright>(utilModel)
