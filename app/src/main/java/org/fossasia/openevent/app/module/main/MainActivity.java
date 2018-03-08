@@ -63,9 +63,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
         OrgaApplication
             .getAppComponent()
             .inject(this);
-
         super.onCreate(savedInstanceState);
-
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
         headerBinding = MainNavHeaderBinding.bind(binding.navView.getHeaderView(0));
