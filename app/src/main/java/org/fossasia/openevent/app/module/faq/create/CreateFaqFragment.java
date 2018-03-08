@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.module.ticket.create;
+package org.fossasia.openevent.app.module.faq.create;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -13,9 +13,9 @@ import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
-import org.fossasia.openevent.app.databinding.TicketCreateLayoutBinding;
-import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketPresenter;
-import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketView;
+import org.fossasia.openevent.app.databinding.FaqCreateLayoutBinding;
+import org.fossasia.openevent.app.module.faq.create.contract.ICreateFaqPresenter;
+import org.fossasia.openevent.app.module.faq.create.contract.ICreateFaqView;
 
 import javax.inject.Inject;
 
@@ -24,16 +24,16 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.common.utils.ui.ViewUtils.showView;
 
-public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketPresenter> implements ICreateTicketView {
+public class CreateFaqFragment extends BaseBottomSheetFragment<ICreateFaqPresenter> implements ICreateFaqView {
 
     @Inject
-    Lazy<ICreateTicketPresenter> presenterProvider;
+    Lazy<ICreateFaqPresenter> presenterProvider;
 
-    private TicketCreateLayoutBinding binding;
+    private FaqCreateLayoutBinding binding;
     private Validator validator;
 
-    public static CreateTicketFragment newInstance() {
-        return new CreateTicketFragment();
+    public static CreateFaqFragment newInstance() {
+        return new CreateFaqFragment();
     }
 
     @Override
@@ -48,12 +48,12 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        binding =  DataBindingUtil.inflate(localInflater, R.layout.ticket_create_layout, container, false);
+        binding =  DataBindingUtil.inflate(localInflater, R.layout.faq_create_layout, container, false);
         validator = new Validator(binding.form);
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
-                getPresenter().createTicket();
+                getPresenter().createFaq();
         });
 
         return binding.getRoot();
@@ -63,17 +63,17 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
     public void onStart() {
         super.onStart();
         getPresenter().attach(this);
-        binding.setTicket(getPresenter().getTicket());
+        binding.setFaq(getPresenter().getFaq());
     }
 
     @Override
-    public Lazy<ICreateTicketPresenter> getPresenterProvider() {
+    public Lazy<ICreateFaqPresenter> getPresenterProvider() {
         return presenterProvider;
     }
 
     @Override
     public int getLoaderId() {
-        return R.layout.ticket_create_layout;
+        return R.layout.faq_create_layout;
     }
 
     @Override

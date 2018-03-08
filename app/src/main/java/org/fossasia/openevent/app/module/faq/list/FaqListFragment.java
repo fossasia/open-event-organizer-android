@@ -4,9 +4,9 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +20,7 @@ import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.models.Faq;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.FaqsFragmentBinding;
+import org.fossasia.openevent.app.module.faq.create.CreateFaqFragment;
 import org.fossasia.openevent.app.module.faq.list.contract.IFaqListPresenter;
 import org.fossasia.openevent.app.module.faq.list.contract.IFaqListView;
 import org.fossasia.openevent.app.module.main.MainActivity;
@@ -75,6 +76,11 @@ public class FaqListFragment extends BaseFragment<IFaqListPresenter> implements 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.faqs_fragment, container, false);
 
+        binding.createFaqFab.setOnClickListener(view -> {
+            BottomSheetDialogFragment bottomSheetDialogFragment = CreateFaqFragment.newInstance();
+            bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+        });
+
         return binding.getRoot();
     }
 
@@ -108,14 +114,16 @@ public class FaqListFragment extends BaseFragment<IFaqListPresenter> implements 
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(faqsAdapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         }
     }
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> getPresenter().loadFaqs(true));
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+            getPresenter().loadFaqs(true);
+        });
     }
 
     @Override
@@ -140,7 +148,6 @@ public class FaqListFragment extends BaseFragment<IFaqListPresenter> implements 
 
     @Override
     public void onRefreshComplete(boolean success) {
-        refreshLayout.setRefreshing(false);
         if (success)
             ViewUtils.showSnackbar(binding.faqsRecyclerView, R.string.refresh_complete);
     }

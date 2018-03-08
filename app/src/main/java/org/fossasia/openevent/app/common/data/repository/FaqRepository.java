@@ -1,18 +1,23 @@
 package org.fossasia.openevent.app.common.data.repository;
 
+import android.support.annotation.NonNull;
+
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
 import org.fossasia.openevent.app.common.data.models.Faq;
 import org.fossasia.openevent.app.common.data.models.Faq_Table;
 import org.fossasia.openevent.app.common.data.network.EventService;
-import org.fossasia.openevent.app.common.data.repository.contract.IFAQRepository;
+import org.fossasia.openevent.app.common.data.repository.contract.IFaqRepository;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class FaqRepository extends Repository implements IFAQRepository {
+public class FaqRepository extends Repository implements IFaqRepository {
 
     @Inject
     public FaqRepository(IUtilModel utilModel, IDatabaseRepository databaseRepository, EventService eventService) {
@@ -40,5 +45,23 @@ public class FaqRepository extends Repository implements IFAQRepository {
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Faq> createFaq(Faq faq) {
+        if (!utilModel.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return eventService
+            .postFaq(faq)
+            .doOnNext(created -> {
+                created.setEvent(faq.getEvent());
+                databaseRepository.save(Faq.class, created)
+                    .subscribe();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 }

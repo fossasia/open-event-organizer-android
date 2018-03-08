@@ -91,7 +91,10 @@ public interface EventService {
     @POST("event-copyrights")
     Observable<Copyright> postCopyright(@Body Copyright copyright);
 
-    @GET("events/{eventId}/event-copyright")
+    @GET("events/{eventId}/event-copyright?include=event&fields[event]=id&page[size]=0")
     Observable<Copyright> getCopyright(@Path("eventId") long eventId);
+
+    @POST("faqs")
+    Observable<Faq> postFaq(@Body Faq faq);
 
 }

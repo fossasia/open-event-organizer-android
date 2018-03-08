@@ -138,7 +138,10 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> getPresenter().loadTickets(true));
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+            getPresenter().loadTickets(true);
+        });
     }
 
     @Override
@@ -163,7 +166,6 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
 
     @Override
     public void onRefreshComplete(boolean success) {
-        refreshLayout.setRefreshing(false);
         if (success)
             ViewUtils.showSnackbar(binding.ticketsRecyclerView, R.string.refresh_complete);
     }
