@@ -120,7 +120,10 @@ public class FaqListFragment extends BaseFragment<IFaqListPresenter> implements 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> getPresenter().loadFaqs(true));
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+            getPresenter().loadFaqs(true);
+        });
     }
 
     @Override
@@ -145,7 +148,6 @@ public class FaqListFragment extends BaseFragment<IFaqListPresenter> implements 
 
     @Override
     public void onRefreshComplete(boolean success) {
-        refreshLayout.setRefreshing(false);
         if (success)
             ViewUtils.showSnackbar(binding.faqsRecyclerView, R.string.refresh_complete);
     }
