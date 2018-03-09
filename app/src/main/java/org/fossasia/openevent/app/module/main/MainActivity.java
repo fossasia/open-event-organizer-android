@@ -71,7 +71,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
         if(savedInstanceState!=null) {
             onRestoreInstanceState(savedInstanceState);
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, flag).commit();
+         //   fragmentManager.beginTransaction().replace(R.id.fragment_container, flag).commit();
         }
 
         headerBinding = MainNavHeaderBinding.bind(binding.navView.getHeaderView(0));
@@ -110,13 +110,13 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState,"settings",new SettingsFragment());
+        //getSupportFragmentManager().putFragment(outState,"settings",new SettingsFragment());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        flag=getSupportFragmentManager().getFragment(savedInstanceState,"settings");
+       // flag=getSupportFragmentManager().getFragment(savedInstanceState,"settings");
     }
 
     @Override
