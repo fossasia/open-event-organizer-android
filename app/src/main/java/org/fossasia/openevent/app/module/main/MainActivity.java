@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.module.main;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,8 +12,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
@@ -42,6 +45,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
     public static final String EVENT_KEY = "event";
     private long eventId = -1;
+    private Fragment flag;
 
     @Inject
     Lazy<IMainPresenter> presenterProvider;
@@ -65,6 +69,11 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
+        if(savedInstanceState!=null) {
+            onRestoreInstanceState(savedInstanceState);
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, flag).commit();
+        }
+
         headerBinding = MainNavHeaderBinding.bind(binding.navView.getHeaderView(0));
 
         setSupportActionBar(binding.main.toolbar);
@@ -78,8 +87,8 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentManager = getSupportFragmentManager();
-
         headerBinding.profile.setOnClickListener(view -> startActivity(new Intent(this, OrganizerDetailActivity.class)));
+
     }
 
     @Override
@@ -96,6 +105,18 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
         } else {
             backPressHandler.onBackPressed(this, super::onBackPressed);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState,"settings",new SettingsFragment());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        flag=getSupportFragmentManager().getFragment(savedInstanceState,"settings");
     }
 
     @Override
