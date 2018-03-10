@@ -26,6 +26,7 @@
             android:layout_marginBottom="@dimen/spacing_large"
             android:layout_marginEnd="@dimen/spacing_large"
             android:layout_marginRight="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_normal"
             android:padding="@dimen/spacing_extra_small"
             android:text="@string/create_faq" />
 

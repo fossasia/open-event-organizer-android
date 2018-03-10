@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal">
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/submit"
@@ -39,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:backgroundTint="@color/light_green_500"
-                app:fabSize="mini"
+                app:fabSize="normal"
                 app:srcCompat="@drawable/ic_check"
                 app:tint="@android:color/white" />
 
