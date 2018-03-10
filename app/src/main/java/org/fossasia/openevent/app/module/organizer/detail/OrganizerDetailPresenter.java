@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
-import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneousResultRefresh;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class OrganizerDetailPresenter extends BasePresenter<IOrganizerDetailView> implements IOrganizerDetailPresenter {
 
@@ -34,7 +34,7 @@ public class OrganizerDetailPresenter extends BasePresenter<IOrganizerDetailView
     public void loadOrganizer(boolean forceReload) {
         getOrganizerSource(forceReload)
             .compose(dispose(getDisposable()))
-            .compose(progressiveErroneousResultRefresh(getView(), forceReload))
+            .compose(progressiveErroneousRefresh(getView(), forceReload))
             .subscribe(loadedUser -> {
                 this.user = loadedUser;
                 getView().showResult(user);
