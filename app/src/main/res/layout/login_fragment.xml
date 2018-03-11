@@ -36,7 +36,7 @@
                     android:textColor="@color/color_accent"
                     android:textStyle="bold"
                     android:textSize="26sp"
-                    android:text="Welcome, Organiser!"
+                    android:text="@string/welcome_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
