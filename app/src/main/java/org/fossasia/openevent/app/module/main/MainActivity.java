@@ -57,6 +57,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
     private MainActivityBinding binding;
     private MainNavHeaderBinding headerBinding;
+    private static Fragment fragment;
 
     private int lastSelectedNavItemId;
 
@@ -69,11 +70,11 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
+        fragmentManager = getSupportFragmentManager();
+
         if(savedInstanceState!=null) {
             onRestoreInstanceState(savedInstanceState);
-         //   fragmentManager.beginTransaction().replace(R.id.fragment_container, flag).commit();
         }
-
         headerBinding = MainNavHeaderBinding.bind(binding.navView.getHeaderView(0));
 
         setSupportActionBar(binding.main.toolbar);
@@ -86,7 +87,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
         binding.navView.setNavigationItemSelectedListener(this);
 
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, false);
-        fragmentManager = getSupportFragmentManager();
+
         headerBinding.profile.setOnClickListener(view -> startActivity(new Intent(this, OrganizerDetailActivity.class)));
 
     }
@@ -110,13 +111,14 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //getSupportFragmentManager().putFragment(outState,"settings",new SettingsFragment());
+        getSupportFragmentManager().putFragment(outState,"event",fragment);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-       // flag=getSupportFragmentManager().getFragment(savedInstanceState,"settings");
+        fragment=getSupportFragmentManager().getFragment(savedInstanceState,"event");
+
     }
 
     @Override
@@ -203,7 +205,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
         binding.navView.setCheckedItem(navItemId);
         lastSelectedNavItemId = navItemId;
 
-        Fragment fragment;
+
         switch (navItemId) {
             case R.id.nav_dashboard:
                 fragment = EventDashboardFragment.newInstance(eventId);
