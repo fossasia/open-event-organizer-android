@@ -36,6 +36,9 @@
 
                     <android.support.v7.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/email_dropdown"
+                        android:drawableLeft="@drawable/ic_account_circle"
+                        android:drawableStart="@drawable/ic_account_circle"
+                        android:drawablePadding="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/email"
@@ -53,6 +56,9 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_password"
+                        android:drawableStart="@drawable/ic_password"
+                        android:drawablePadding="8dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
                         android:text="@={ login.password }"
