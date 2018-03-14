@@ -15,7 +15,7 @@ import org.threeten.bp.format.DateTimeParseException;
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
-import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.erroneous;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneous;
 
 public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> implements ICreateTicketPresenter {
 
@@ -76,9 +76,7 @@ public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> impl
         ticketRepository
             .createTicket(ticket)
             .compose(dispose(getDisposable()))
-            .compose(erroneous(getView()))
-            .doOnSubscribe(disposable -> ticket.creating.set(true))
-            .doFinally(() -> ticket.creating.set(false))
+            .compose(progressiveErroneous(getView()))
             .subscribe(createdTicket -> {
                 getView().onSuccess("Ticket Created");
                 getView().dismiss();

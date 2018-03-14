@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.common.app.di.module;
 import org.fossasia.openevent.app.common.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.common.data.db.contract.IDatabaseChangeListener;
 import org.fossasia.openevent.app.common.data.models.Attendee;
+import org.fossasia.openevent.app.common.data.models.Faq;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 
 import dagger.Module;
@@ -21,4 +22,8 @@ public class ChangeListenerModule {
         return new DatabaseChangeListener<>(Ticket.class);
     }
 
+    @Provides
+    IDatabaseChangeListener<Faq> providesFaqChangeListener() {
+        return new DatabaseChangeListener<>(Faq.class);
+    }
 }

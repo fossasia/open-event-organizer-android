@@ -80,12 +80,12 @@
             <include
                 layout="@layout/time_picker"
                 bind:date="@{ event.startsAt }"
-                bind:label="@{ @string/sale_start_time }"/>
+                bind:label="@{ @string/starts_at }"/>
 
             <include
                 layout="@layout/time_picker"
                 bind:date="@{ event.endsAt }"
-                bind:label="@{ @string/sale_end_time }"/>
+                bind:label="@{ @string/ends_at }"/>
 
             <TextView
                 android:layout_width="wrap_content"
