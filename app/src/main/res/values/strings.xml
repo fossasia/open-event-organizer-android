@@ -182,6 +182,7 @@
     <string name="create_faq">Create FAQ</string>
     <string name="question">Question</string>
     <string name="answer">Answer</string>
+    <string name="save_icon">Save Icon</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
