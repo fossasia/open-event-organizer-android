@@ -45,7 +45,7 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     public static final String STATE_DRAFT = "draft";
     public static final String STATE_PUBLISHED = "published";
 
-    @Delegate(types = IEventDelegate.class, excludes = Excluding.class)
+    @Delegate(types = IEventDelegate.class, excludes = {Excluding.class})
     private final EventDelegate eventDelegate = new EventDelegate(this);
 
     @Delegate(types = EventAnalyticsDelegate.class)
@@ -122,6 +122,14 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     @Relationship("tickets")
     public List<Ticket> tickets;
 
+    @ColumnIgnore
+    @Relationship("faqs")
+    public List<Faq> faqs;
+
+    @ColumnIgnore
+    @Relationship("event-copyright")
+    public Copyright copyright;
+
     public Event() { }
 
 
@@ -132,7 +140,16 @@ public class Event implements Comparable<Event>, IHeaderProvider {
         return eventDelegate.getEventTickets();
     }
 
+    @JsonIgnore
+    @OneToMany(methods = {OneToMany.Method.SAVE}, variableName = "faqs")
+    List<Faq> getEventFaqs() {
+        return eventDelegate.getEventFaqs();
+    }
+
     private interface Excluding {
         List<Ticket> getEventTickets();
+
+        List<Faq> getEventFaqs();
     }
+
 }

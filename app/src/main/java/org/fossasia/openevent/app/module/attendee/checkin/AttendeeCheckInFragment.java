@@ -67,6 +67,7 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<IAttendeeCh
         super.onStart();
         getPresenter().attach(attendeeId, this);
         binding.setPresenter(getPresenter());
+        binding.switchAttendeeDetailsState.setChecked(false);
         getPresenter().start();
     }
 

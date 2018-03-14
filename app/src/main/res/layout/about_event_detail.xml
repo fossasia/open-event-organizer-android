@@ -10,6 +10,10 @@
         <variable
             name="event"
             type="org.fossasia.openevent.app.common.data.models.Event" />
+
+        <variable
+            name="copyright"
+            type="org.fossasia.openevent.app.common.data.models.Copyright" />
     </data>
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -192,7 +196,8 @@
                         android:drawableStart="@{ @drawable/ic_earth }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:text='@{ event.paymentCountry }' />
+                        android:text='@{ event.paymentCountry }'
+                        android:visibility="@{ (event.paymentCountry != null) ? View.VISIBLE : View.GONE }" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -202,7 +207,8 @@
                         android:drawableStart="@{ @drawable/ic_coin }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:text='@{ event.paymentCurrency }' />
+                        android:text='@{ event.paymentCurrency }'
+                        android:visibility="@{ (event.paymentCurrency != null) ? View.VISIBLE : View.GONE }"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -315,6 +321,71 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
                         android:text='@{ event.description }' />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                android:visibility='@{ copyright == null ? View.GONE : View.VISIBLE }'>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#dedede"
+                        android:padding="@dimen/spacing_small"
+                        android:text="@string/copyright"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textColor="?android:textColorSecondary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@{ @drawable/ic_person }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableStart="@{ @drawable/ic_person }"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:text='@{ copyright.holder }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@{ @drawable/ic_events }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableStart="@{ @drawable/ic_events }"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:text='@{ copyright.year }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@{ @drawable/ic_copyright }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableStart="@{ @drawable/ic_copyright }"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:text='@{ copyright.licence }' />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@{ @drawable/ic_email }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:drawableStart="@{ @drawable/ic_email }"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:text='@{ copyright.licenceUrl }' />
+
 
                 </LinearLayout>
 

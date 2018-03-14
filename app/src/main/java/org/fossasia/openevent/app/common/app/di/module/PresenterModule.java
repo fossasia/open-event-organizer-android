@@ -18,10 +18,16 @@ import org.fossasia.openevent.app.module.event.about.AboutEventPresenter;
 import org.fossasia.openevent.app.module.event.about.contract.IAboutEventPresenter;
 import org.fossasia.openevent.app.module.event.chart.ChartPresenter;
 import org.fossasia.openevent.app.module.event.chart.contract.IChartPresenter;
+import org.fossasia.openevent.app.module.event.copyright.CreateCopyrightPresenter;
+import org.fossasia.openevent.app.module.event.copyright.contract.ICreateCopyrightPresenter;
 import org.fossasia.openevent.app.module.event.create.CreateEventPresenter;
 import org.fossasia.openevent.app.module.event.create.contract.ICreateEventPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardPresenter;
+import org.fossasia.openevent.app.module.faq.create.CreateFaqPresenter;
+import org.fossasia.openevent.app.module.faq.create.contract.ICreateFaqPresenter;
+import org.fossasia.openevent.app.module.faq.list.FaqListPresenter;
+import org.fossasia.openevent.app.module.faq.list.contract.IFaqListPresenter;
 import org.fossasia.openevent.app.module.event.list.EventsPresenter;
 import org.fossasia.openevent.app.module.event.list.contract.IEventsPresenter;
 import org.fossasia.openevent.app.module.main.MainPresenter;
@@ -40,7 +46,7 @@ import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsPresenter;
 import dagger.Binds;
 import dagger.Module;
 
-@SuppressWarnings("PMD.TooManyMethods") // Will break cohesion if refactored
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.CouplingBetweenObjects"}) // Will break cohesion if refactored
 @Module
 public abstract class PresenterModule {
 
@@ -98,4 +104,12 @@ public abstract class PresenterModule {
     @Binds
     abstract ICreateEventPresenter bindsCreateEventPresenter(CreateEventPresenter createEventPresenter);
 
+    @Binds
+    abstract IFaqListPresenter bindsFaqListPresenter(FaqListPresenter faqListPresenter);
+
+    @Binds
+    abstract ICreateCopyrightPresenter bindsCreateCopyrightPresenter(CreateCopyrightPresenter createCopyrightPresenter);
+
+    @Binds
+    abstract ICreateFaqPresenter bindsCreateFaqPresenter(CreateFaqPresenter createFaqPresenter);
 }

@@ -4,11 +4,15 @@ import android.databinding.DataBindingUtil;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,11 +20,13 @@ import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.app.lifecycle.view.BaseFragment;
 import org.fossasia.openevent.app.common.data.contract.IUtilModel;
+import org.fossasia.openevent.app.common.data.models.Copyright;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.AboutEventFragmentBinding;
 import org.fossasia.openevent.app.module.event.about.contract.IAboutEventPresenter;
 import org.fossasia.openevent.app.module.event.about.contract.IAboutEventVew;
+import org.fossasia.openevent.app.module.event.copyright.CreateCopyrightFragment;
 
 import javax.inject.Inject;
 
@@ -32,6 +38,7 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     private AboutEventFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
     private long eventId;
+    private boolean creatingCopyright = true;
 
     @Inject
     Lazy<IAboutEventPresenter> aboutEventPresenterProvider;
@@ -45,6 +52,7 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         binding = DataBindingUtil.inflate(inflater, R.layout.about_event_fragment, container, false);
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
@@ -90,7 +98,39 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> getPresenter().loadEvent(true));
+        refreshLayout.setOnRefreshListener(() -> {
+            getPresenter().loadEvent(true);
+            getPresenter().loadCopyright(true);
+        });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_about_event, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_create_change_copyright:
+                if (creatingCopyright) {
+                    BottomSheetDialogFragment bottomSheetDialogFragment = CreateCopyrightFragment.newInstance();
+                    bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+                }
+                break;
+            default:
+                // No implementation
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (!creatingCopyright) {
+            MenuItem menuItem = menu.findItem(R.id.action_create_change_copyright);
+            menuItem.setTitle(R.string.edit_copyright);
+        }
     }
 
     @Override
@@ -116,6 +156,17 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     @Override
     public void showResult(Event item) {
         binding.setEvent(item);
+    }
+
+    @Override
+    public void showCopyright(Copyright copyright) {
+        binding.setCopyright(copyright);
+    }
+
+    @Override
+    public void changeCopyrightMenuItem() {
+        creatingCopyright = false;
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override

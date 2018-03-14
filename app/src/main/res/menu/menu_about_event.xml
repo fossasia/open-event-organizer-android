@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".module.organizer.detail.OrganizerDetailActivity">
+
+    <item
+        android:id="@+id/action_create_change_copyright"
+        android:title="@string/create_copyright"
+        app:showAsAction="never"/>
+</menu>

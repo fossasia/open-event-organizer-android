@@ -13,6 +13,11 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
 
+import java.util.Currency;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
@@ -36,6 +41,17 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
     @Override
     public void start() {
         getView().attachCurrencyCodesList(CurrencyUtils.getCurrencyCodesList());
+
+        //set default timezone
+        List<String> timeZoneList = getView().getTimeZoneList();
+        getView().setDefaultTimeZone(
+            timeZoneList.indexOf(TimeZone.getDefault().getID())
+        );
+
+        List<String> currencyList = CurrencyUtils.getCurrencyCodesList();
+        getView().setDefaultCurrency(
+            currencyList.indexOf(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+        );
     }
 
     @Override
@@ -78,6 +94,9 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
             .createEvent(event)
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneous(getView()))
-            .subscribe(createdEvent -> getView().onSuccess("Event Created Successfully"), Logger::logError);
+            .subscribe(createdEvent -> {
+                getView().onSuccess("Event Created Successfully");
+                getView().close();
+            }, Logger::logError);
     }
 }

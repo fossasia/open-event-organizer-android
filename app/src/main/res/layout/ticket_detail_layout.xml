@@ -99,11 +99,17 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_clock }"
-                    android:drawableStart="@{ @drawable/ic_clock }"
                     android:drawablePadding="@dimen/spacing_small"
-                    android:text='@{ ticket.salesEndsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, ticket.salesEndsAt) : "" }'
-                    android:textAllCaps="true"
+                    android:text='@{ @string/maxOrder + ": " + String.valueOf(safeUnbox(ticket.maxOrder)) }'
+                    tools:text="free" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:text='@{ @string/minOrder + ": " + String.valueOf(safeUnbox(ticket.maxOrder)) }'
                     tools:text="free" />
             </LinearLayout>
 

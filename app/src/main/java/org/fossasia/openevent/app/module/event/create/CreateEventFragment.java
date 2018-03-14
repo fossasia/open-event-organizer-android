@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
@@ -24,6 +25,7 @@ import org.fossasia.openevent.app.databinding.EventCreateLayoutBinding;
 import org.fossasia.openevent.app.module.event.create.contract.ICreateEventPresenter;
 import org.fossasia.openevent.app.module.event.create.contract.ICreateEventView;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -154,7 +156,27 @@ public class CreateEventFragment extends BaseBottomSheetFragment<ICreateEventPre
 
     @Override
     public void onSuccess(String message) {
-        ViewUtils.showSnackbar(binding.getRoot(), message);
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void close() {
+        getActivity().finish();
+    }
+
+    @Override
+    public List<String> getTimeZoneList() {
+        return Arrays.asList(getResources().getStringArray(R.array.timezones));
+    }
+
+    @Override
+    public void setDefaultTimeZone(int index) {
+        binding.form.timezoneSpinner.setSelection(index);
+    }
+
+    @Override
+    public void setDefaultCurrency(int index) {
+        binding.form.currencySpinner.setSelection(index);
     }
 }
 

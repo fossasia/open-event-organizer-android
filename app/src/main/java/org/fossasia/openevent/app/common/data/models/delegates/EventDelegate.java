@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.fossasia.openevent.app.common.data.models.Event;
+import org.fossasia.openevent.app.common.data.models.Faq;
+import org.fossasia.openevent.app.common.data.models.Faq_Table;
 import org.fossasia.openevent.app.common.data.models.Ticket;
 import org.fossasia.openevent.app.common.data.models.Ticket_Table;
 import org.fossasia.openevent.app.common.data.models.delegates.contract.IEventDelegate;
@@ -63,6 +65,26 @@ public class EventDelegate implements IEventDelegate {
             .queryList());
 
         return tickets;
+    }
+
+    @Override
+    @JsonIgnore
+    public List<Faq> getEventFaqs() {
+        List<Faq> faqs = event.getFaqs();
+        if (faqs != null && !faqs.isEmpty()) {
+            for (Faq faq : faqs)
+                faq.setEvent(event);
+
+            return faqs;
+        }
+
+        event.setFaqs(
+            SQLite.select()
+                .from(Faq.class)
+                .where(Faq_Table.event_id.eq(event.getId()))
+                .queryList());
+
+        return faqs;
     }
 
 }

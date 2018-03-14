@@ -109,6 +109,13 @@ public final class ViewTransformers {
             .compose(refreshable(view, forceReload));
     }
 
+    public static <T, V extends Progressive & Refreshable> ObservableTransformer<T, T>
+    progressiveRefresh(V view, boolean forceReload) {
+        return observable -> observable
+            .compose(progressive(view))
+            .compose(refreshable(view, forceReload));
+    }
+
     public static <T, V extends Emptiable<T>> SingleTransformer<List<T>, List<T>> emptiable(V view, List<T> items) {
         return observable -> observable
             .doOnSubscribe(disposable -> view.showEmptyView(false))
