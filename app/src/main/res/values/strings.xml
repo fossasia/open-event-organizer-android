@@ -76,6 +76,8 @@
     <string name="price">Price</string>
     <string name="sale_start_time">Sale start time</string>
     <string name="sale_end_time">Sale end time</string>
+    <string name="starts_at">Starts at:</string>
+    <string name="ends_at">Ends at:</string>
     <string name="pick">Pick :</string>
     <string name="minOrder">Minimum Order</string>
     <string name="maxOrder">Maximum Order</string>
@@ -183,6 +185,7 @@
     <string name="question">Question</string>
     <string name="answer">Answer</string>
     <string name="save_icon">Save Icon</string>
+    <string name="use_date_time_picker">Use Picker</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
