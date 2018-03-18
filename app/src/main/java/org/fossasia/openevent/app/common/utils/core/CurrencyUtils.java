@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.common.utils.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
@@ -59,18 +60,30 @@ public final class CurrencyUtils {
     @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock" })
     public static List<String> getCurrencyCodesList() {
         List<String> currencyCodes = new ArrayList<>();
+        List<String> priorCurrencyCodes = new ArrayList<>();
+
+        priorCurrencyCodes.add(Currency.getInstance(Locale.US).toString());
+        priorCurrencyCodes.add(Currency.getInstance(Locale.UK).toString());
+        priorCurrencyCodes.add(Currency.getInstance(Locale.GERMANY).toString());
+        priorCurrencyCodes.add(Currency.getInstance(Locale.JAPAN).toString());
+        priorCurrencyCodes.add(Currency.getInstance(Locale.CANADA).toString());
+        priorCurrencyCodes.add(Currency.getInstance(Locale.CHINA).toString());
+        priorCurrencyCodes.add(Currency.getInstance(Locale.KOREA).toString());
 
         for (Locale locale : Locale.getAvailableLocales()) {
             try {
                 Currency currency = Currency.getInstance(locale);
-                if (currency != null) {
+                if (currency != null && !currencyCodes.contains(currency.toString())) {
                     currencyCodes.add(currency.toString());
                 }
             } catch (Exception e) {
                 // No action
             }
         }
-        return currencyCodes;
+
+        Collections.sort(currencyCodes);
+        priorCurrencyCodes.addAll(currencyCodes);
+        return priorCurrencyCodes;
     }
 
 }

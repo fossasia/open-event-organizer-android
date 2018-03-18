@@ -21,4 +21,6 @@ public interface ICreateEventView extends Progressive, Erroneous, Successful {
 
     void setDefaultTimeZone(int index);
 
+    void setDefaultCurrency(int index);
+
 }

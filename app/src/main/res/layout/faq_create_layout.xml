@@ -7,8 +7,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="copyright"
-            type="org.fossasia.openevent.app.common.data.models.Copyright" />
+            name="faq"
+            type="org.fossasia.openevent.app.common.data.models.Faq" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -22,8 +22,8 @@
 
             <include
                 android:id="@+id/form"
-                bind:copyright="@{copyright}"
-                layout="@layout/copyright_create_form" />
+                bind:faq="@{faq}"
+                layout="@layout/faq_create_form" />
         </android.support.v4.widget.NestedScrollView>
 
         <FrameLayout
@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal">
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/submit"
@@ -39,24 +40,26 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:backgroundTint="@color/light_green_500"
-                app:fabSize="mini"
+                app:fabSize="normal"
                 app:srcCompat="@drawable/ic_check"
                 app:tint="@android:color/white" />
 
-                <FrameLayout
-                    android:layout_width="@dimen/progressbar_large"
-                    android:layout_height="@dimen/progressbar_large"
-                    android:layout_gravity="center">
+            <FrameLayout
+                android:layout_width="@dimen/progressbar_large"
+                android:layout_height="@dimen/progressbar_large"
+                android:layout_gravity="center">
 
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:theme="@style/AppTheme"
-                        android:visibility="gone" />
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:theme="@style/AppTheme"
+                    android:visibility="gone" />
 
-                </FrameLayout>
+            </FrameLayout>
+
         </FrameLayout>
+
     </android.support.design.widget.CoordinatorLayout>
 </layout>
