@@ -1,11 +1,13 @@
 package org.fossasia.openevent.app.module.auth.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 
 import org.fossasia.openevent.app.OrgaApplication;
@@ -68,6 +70,13 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
+
+            if (view != null) {
+                assert getContext()!=null;
+                InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(imm!=null)
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
 
             String url = binding.url.baseUrl.getText().toString().trim();
             getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
