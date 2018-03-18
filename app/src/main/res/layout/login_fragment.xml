@@ -29,6 +29,18 @@
                 android:paddingRight="@dimen/spacing_normal"
                 android:paddingStart="@dimen/spacing_normal">
 
+                <TextView
+                    android:textStyle="bold"
+                    android:textColor="@color/color_accent"
+                    android:textSize="@dimen/text_size_larger"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/welcome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
