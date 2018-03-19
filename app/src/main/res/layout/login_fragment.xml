@@ -30,7 +30,6 @@
                 android:paddingStart="@dimen/spacing_normal">
 
                 <TextView
-                    android:textStyle="bold"
                     android:textColor="@color/color_accent"
                     android:textSize="@dimen/text_size_larger"
                     android:layout_marginTop="@dimen/spacing_small"
