@@ -69,6 +69,8 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
             if (!validator.validate())
                 return;
 
+            ViewUtils.hideKeyboard(view);
+
             String url = binding.url.baseUrl.getText().toString().trim();
             getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
             getPresenter().login();

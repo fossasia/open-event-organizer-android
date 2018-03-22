@@ -76,6 +76,8 @@
     <string name="price">Price</string>
     <string name="sale_start_time">Sale start time</string>
     <string name="sale_end_time">Sale end time</string>
+    <string name="starts_at">Starts at:</string>
+    <string name="ends_at">Ends at:</string>
     <string name="pick">Pick :</string>
     <string name="minOrder">Minimum Order</string>
     <string name="maxOrder">Maximum Order</string>
@@ -182,6 +184,12 @@
     <string name="license_url">License URL</string>
     <string name="copyright_year">Year</string>
     <string name="copyright">Copyright</string>
+    <string name="create_faq">Create FAQ</string>
+    <string name="question">Question</string>
+    <string name="answer">Answer</string>
+    <string name="save_icon">Save Icon</string>
+    <string name="use_date_time_picker">Use Picker</string>
+    <string name="welcome">Hi, Organiser!</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
