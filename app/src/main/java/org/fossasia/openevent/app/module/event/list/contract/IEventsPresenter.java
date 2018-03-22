@@ -9,6 +9,7 @@ public interface IEventsPresenter extends IPresenter<IEventsView> {
 
     List<Event> getEvents();
 
-    void loadUserEvents(boolean forceReload);
+    void sortBy(int criteria);
 
+    void loadUserEvents(boolean forceReload);
 }

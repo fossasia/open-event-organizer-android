@@ -2,8 +2,15 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/logout"
-        android:title="@string/logout"
-        android:icon="@drawable/ic_logout"
-        app:showAsAction="always"/>
+    <item android:id="@+id/sort"
+        android:title="@string/sort_by"
+        android:icon="@drawable/ic_filter"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item android:id="@+id/sortByEventName"
+                android:title="@string/sort_by_name" />
+            <item android:id="@+id/sortByEventDate"
+                android:title="@string/sort_by_date" />
+        </menu>
+    </item>
 </menu>

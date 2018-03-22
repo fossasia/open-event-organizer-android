@@ -159,6 +159,9 @@
     <string name="speakers">Speakers</string>
     <string name="sponsors">Sponsors</string>
     <string name="sessions">Sessions</string>
+    <string name="sort_by">Sort By</string>
+    <string name="sort_by_name">Name</string>
+    <string name="sort_by_date">Date</string>
     <string name="sessions_submitted">Sessions Submitted</string>
     <string name="sessions_accepted">Sessions Accepted</string>
     <string name="sessions_confirmed">Sessions Confirmed</string>
