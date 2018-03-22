@@ -34,6 +34,7 @@
             android:theme="@style/AppTheme.Main" />
         <activity
             android:name=".module.main.MainActivity"
+            android:configChanges="orientation|keyboard"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.Main.Light"/>
         <activity
@@ -49,6 +50,7 @@
             android:theme="@style/AppTheme.Main" />
         <activity
             android:name=".module.organizer.detail.OrganizerDetailActivity"
+            android:configChanges="orientation|keyboard"
             android:label="@string/title_activity_organizer_detail"
             android:theme="@style/AppTheme.Main.Light" />
     </application>
