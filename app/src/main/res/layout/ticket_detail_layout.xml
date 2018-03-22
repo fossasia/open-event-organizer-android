@@ -109,7 +109,7 @@
                     android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
                     android:drawablePadding="@dimen/spacing_small"
-                    android:text='@{ @string/minOrder + ": " + String.valueOf(safeUnbox(ticket.maxOrder)) }'
+                    android:text='@{ @string/minOrder + ": " + String.valueOf(safeUnbox(ticket.minOrder)) }'
                     tools:text="free" />
             </LinearLayout>
 
