@@ -15,4 +15,6 @@ public interface ITicketsPresenter extends IDetailPresenter<Long, ITicketsView> 
 
     List<Ticket> getTickets();
 
+    void sortBy(int criteria);
+
 }
