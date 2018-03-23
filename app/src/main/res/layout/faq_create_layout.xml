@@ -7,8 +7,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="ticket"
-            type="org.fossasia.openevent.app.common.data.models.Ticket" />
+            name="faq"
+            type="org.fossasia.openevent.app.common.data.models.Faq" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -22,8 +22,8 @@
 
             <include
                 android:id="@+id/form"
-                bind:ticket="@{ticket}"
-                layout="@layout/ticket_create_form" />
+                bind:faq="@{faq}"
+                layout="@layout/faq_create_form" />
         </android.support.v4.widget.NestedScrollView>
 
         <FrameLayout
@@ -60,5 +60,6 @@
             </FrameLayout>
 
         </FrameLayout>
+
     </android.support.design.widget.CoordinatorLayout>
 </layout>
