@@ -20,6 +20,8 @@ import org.fossasia.openevent.app.module.event.chart.ChartPresenter;
 import org.fossasia.openevent.app.module.event.chart.contract.IChartPresenter;
 import org.fossasia.openevent.app.module.event.copyright.CreateCopyrightPresenter;
 import org.fossasia.openevent.app.module.event.copyright.contract.ICreateCopyrightPresenter;
+import org.fossasia.openevent.app.module.event.copyright.update.UpdateCopyrightPresenter;
+import org.fossasia.openevent.app.module.event.copyright.update.contract.IUpdateCopyrightPresenter;
 import org.fossasia.openevent.app.module.event.create.CreateEventPresenter;
 import org.fossasia.openevent.app.module.event.create.contract.ICreateEventPresenter;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardPresenter;
@@ -112,4 +114,7 @@ public abstract class PresenterModule {
 
     @Binds
     abstract ICreateFaqPresenter bindsCreateFaqPresenter(CreateFaqPresenter createFaqPresenter);
+
+    @Binds
+    abstract IUpdateCopyrightPresenter bindsUpdateCopyrightPresenter(UpdateCopyrightPresenter updateCopyrightPresenter);
 }
