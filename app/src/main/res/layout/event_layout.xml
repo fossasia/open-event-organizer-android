@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
+        android:background="@{ event.state.equals(`draft`) ? @color/event_state_draft : android.R.attr.selectableItemBackground }"
         android:orientation="horizontal">
 
         <FrameLayout
@@ -35,7 +35,8 @@
             android:paddingEnd="@dimen/spacing_normal"
             android:paddingRight="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_small"
-            android:paddingBottom="@dimen/spacing_small">
+            android:paddingBottom="@dimen/spacing_small"
+            android:background="?android:attr/selectableItemBackground">
 
             <ImageView
                 android:layout_width="@dimen/image_small"
@@ -72,14 +73,12 @@
                     android:layout_weight="3"
                     android:visibility='@{ Event.STATE_DRAFT.equals(event.state) ? View.VISIBLE : View.GONE }'>
 
-                    <TextView
-                        android:layout_gravity="center_vertical"
+                    <ImageView
+                        android:layout_gravity="end|bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/event_state_draft"
-                        android:textSize="@dimen/text_size_small"
-                        android:background="@drawable/rounded_rectangle"
-                        app:backgroundTint="@color/grey_400"
+                        android:contentDescription="@string/save_icon"
+                        app:srcCompat="@drawable/ic_save"
                         android:paddingLeft="@dimen/spacing_small"
                         android:paddingStart="@dimen/spacing_small"
                         android:paddingRight="@dimen/spacing_small"
