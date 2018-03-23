@@ -41,9 +41,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:layout_marginLeft="@dimen/spacing_normal"
-                android:layout_marginStart="@dimen/spacing_normal">
+                android:layout_margin="@dimen/spacing_normal">
 
                 <ImageView
                     android:id="@+id/profile"
@@ -60,7 +58,9 @@
                     android:text='@{ user.firstName == null ? user.email : user.firstName + " " + user.lastName }'
                     android:textColor="@android:color/white"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginTop="@dimen/spacing_normal"/>
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
             </LinearLayout>
         </FrameLayout>
 
