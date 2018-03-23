@@ -99,6 +99,7 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
             getPresenter().loadEvent(true);
             getPresenter().loadCopyright(true);
         });
