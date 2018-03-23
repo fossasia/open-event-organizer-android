@@ -1,6 +1,6 @@
 ext {
     compileSdkVersion = 27
-    buildToolsVersion = '27.0.1'
+    buildToolsVersion = '27.0.3'
     minSdkVersion = 16
     targetSdkVersion = 27
 
@@ -23,6 +23,6 @@ ext {
     lombokVersion = '1.16.18'
     timber_version = '4.6.0'
     leak_canary_version = '1.5.4'
-    support_lib_version = '27.0.2'
-    play_services_vision='11.8.0'
+    support_lib_version = '27.1.0'
+    play_services_vision='12.0.0'
 }
