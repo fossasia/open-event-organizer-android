@@ -132,11 +132,6 @@ public class FaqListFragment extends BaseFragment<IFaqListPresenter> implements 
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.faqs_fragment;
-    }
-
-    @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }

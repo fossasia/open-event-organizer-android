@@ -149,11 +149,6 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.about_event_fragment;
-    }
-
-    @Override
     protected int getTitle() {
         return R.string.about;
     }

@@ -173,11 +173,6 @@ public class AttendeesFragment extends BaseFragment<IAttendeesPresenter> impleme
         return presenterProvider;
     }
 
-    @Override
-    public int getLoaderId() {
-        return R.layout.fragment_attendees;
-    }
-
     private void setupSearchListener() {
         if (searchView == null)
             return;
