@@ -40,10 +40,6 @@
             android:name=".module.event.chart.ChartActivity"
             android:theme="@style/AppTheme.Main.Light"/>
         <activity
-            android:name=".module.event.about.AboutEventActivity"
-            android:label="@string/title_activity_about_event"
-            android:theme="@style/AppTheme.Main" />
-        <activity
             android:name=".module.event.create.CreateEventActivity"
             android:label="@string/title_activity_about_event"
             android:theme="@style/AppTheme.Main" />
