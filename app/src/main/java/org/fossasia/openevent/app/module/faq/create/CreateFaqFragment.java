@@ -72,11 +72,6 @@ public class CreateFaqFragment extends BaseBottomSheetFragment<ICreateFaqPresent
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.faq_create_layout;
-    }
-
-    @Override
     public void showProgress(boolean show) {
         showView(binding.progressBar, show);
     }

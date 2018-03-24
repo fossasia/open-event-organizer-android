@@ -124,11 +124,6 @@ public class ForgotPasswordFragment extends BaseFragment<IForgotPasswordPresente
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.forgot_password_fragment;
-    }
-
-    @Override
     public void attachEmails(Set<String> emails) {
         binding.emailDropdown.setAdapter(
             new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(emails))

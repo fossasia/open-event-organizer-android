@@ -115,11 +115,6 @@ public class OrganizerDetailFragment extends BaseFragment<IOrganizerDetailPresen
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.organizer_detail_fragment;
-    }
-
-    @Override
     protected int getTitle() {
         return R.string.title_activity_organizer_detail;
     }

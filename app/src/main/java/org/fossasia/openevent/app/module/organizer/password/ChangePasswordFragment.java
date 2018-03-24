@@ -110,8 +110,4 @@ public class ChangePasswordFragment extends BaseFragment<IChangePasswordPresente
         return presenterProvider;
     }
 
-    @Override
-    public int getLoaderId() {
-        return R.layout.change_password_fragment;
-    }
 }

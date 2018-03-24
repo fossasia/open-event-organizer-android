@@ -41,7 +41,7 @@ import dagger.Lazy;
 import io.reactivex.Completable;
 import io.reactivex.Notification;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
@@ -73,7 +73,7 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
 
-    private Disposable disposable;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     Lazy<IScanQRPresenter> presenterProvider;
@@ -134,7 +134,7 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
         if (getPresenter() != null) getPresenter().detach();
         if (preview != null) preview.release();
         if (barcodeDetector != null) barcodeDetector.release();
-        if (disposable != null) disposable.dispose();
+        compositeDisposable.dispose();
     }
 
     @Override
@@ -157,11 +157,6 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
         return presenterProvider;
     }
 
-    @Override
-    public int getLoaderId() {
-        return R.layout.activity_scan_qr;
-    }
-
     private void buildBarcodeDetector() {
         barcodeDetector = barcodeDetectorProvider.get();
     }
@@ -174,13 +169,13 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
 
     @Override
     public void loadCamera() {
-        Completable.fromAction(() -> {
+        compositeDisposable.add(Completable.fromAction(() -> {
             buildBarcodeDetector();
             buildCameraSource();
         })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(() -> getPresenter().onCameraLoaded());
+            .subscribe(() -> getPresenter().onCameraLoaded()));
     }
 
     @Override
@@ -222,24 +217,24 @@ public class ScanQRActivity extends BaseActivity<IScanQRPresenter> implements IS
 
     @Override
     public void startScan() {
-        Completable.fromAction(() -> {
+        compositeDisposable.add(Completable.fromAction(() -> {
             try {
                 startCameraSource();
 
-                disposable = barcodeEmitter.subscribe(barcodeNotification -> {
+                compositeDisposable.add(barcodeEmitter.subscribe(barcodeNotification -> {
                     if (barcodeNotification.isOnError()) {
                         getPresenter().onBarcodeDetected(null);
                     } else {
                         getPresenter().onBarcodeDetected(barcodeNotification.getValue());
                     }
-                });
+                }));
             } catch (SecurityException se) {
                 // Should never happen as we call this when we get our permission
                 Timber.e("Should never happen. Check %s", getClass().getName());
             }
         }).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(() -> getPresenter().onScanStarted());
+            .subscribe(() -> getPresenter().onScanStarted()));
     }
 
     @Override
