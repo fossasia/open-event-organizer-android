@@ -9,6 +9,8 @@ import org.fossasia.openevent.app.common.data.models.Event;
 
 public interface IAboutEventVew extends Progressive, Erroneous, Refreshable, ItemResult<Event> {
 
+    void setEventId(long id);
+
     void showCopyright(Copyright copyright);
 
     void changeCopyrightMenuItem();
