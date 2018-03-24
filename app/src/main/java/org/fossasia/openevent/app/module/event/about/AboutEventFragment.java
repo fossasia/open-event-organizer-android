@@ -29,6 +29,7 @@ import org.fossasia.openevent.app.databinding.AboutEventFragmentBinding;
 import org.fossasia.openevent.app.module.event.about.contract.IAboutEventPresenter;
 import org.fossasia.openevent.app.module.event.about.contract.IAboutEventVew;
 import org.fossasia.openevent.app.module.event.copyright.CreateCopyrightFragment;
+import org.fossasia.openevent.app.module.event.copyright.update.UpdateCopyrightFragment;
 
 import javax.inject.Inject;
 
@@ -140,6 +141,7 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
             getPresenter().loadEvent(true);
             getPresenter().loadCopyright(true);
         });
@@ -156,6 +158,9 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
             case R.id.action_create_change_copyright:
                 if (creatingCopyright) {
                     BottomSheetDialogFragment bottomSheetDialogFragment = CreateCopyrightFragment.newInstance();
+                    bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+                } else {
+                    BottomSheetDialogFragment bottomSheetDialogFragment = UpdateCopyrightFragment.newInstance(getPresenter().getCopyright());
                     bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
                 }
                 break;

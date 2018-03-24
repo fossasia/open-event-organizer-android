@@ -59,4 +59,19 @@ public class CopyrightRepository extends Repository implements ICopyrightReposit
             .withNetworkObservable(networkObservable)
             .build();
     }
+
+    @NonNull
+    @Override
+    public Observable<Copyright> updateCopyright(Copyright copyright) {
+        if (!utilModel.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return eventService.patchCopyright(copyright.getId(), copyright)
+            .doOnNext(updatedCopyright -> databaseRepository
+                .update(Copyright.class, updatedCopyright)
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
 }

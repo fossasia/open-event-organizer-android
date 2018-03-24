@@ -13,6 +13,7 @@ import org.fossasia.openevent.app.module.main.MainActivity;
 import org.fossasia.openevent.app.module.organizer.detail.OrganizerDetailActivity;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.robolectric.ParameterizedRobolectricTestRunner;
 import org.robolectric.Robolectric;
@@ -21,6 +22,7 @@ import org.robolectric.android.controller.ActivityController;
 import java.util.Arrays;
 import java.util.Collection;
 
+@Ignore
 public class ActivityInstanceTest<T extends Activity> extends BaseParameterTest {
 
     private final Class<T> activityClass;
