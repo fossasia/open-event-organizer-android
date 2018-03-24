@@ -25,7 +25,7 @@ import org.fossasia.openevent.app.databinding.MainActivityBinding;
 import org.fossasia.openevent.app.databinding.MainNavHeaderBinding;
 import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.module.auth.AuthActivity;
-import org.fossasia.openevent.app.module.event.about.AboutEventActivity;
+import org.fossasia.openevent.app.module.event.about.AboutEventFragment;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
 import org.fossasia.openevent.app.module.faq.list.FaqListFragment;
@@ -110,11 +110,7 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
 
                 if (id == R.id.nav_logout)
                     showLogoutDialog();
-                else if (id == R.id.nav_about_event) {
-                    Intent intent = new Intent(MainActivity.this, AboutEventActivity.class);
-                    intent.putExtra(AboutEventActivity.EVENT_ID, eventId);
-                    startActivity(intent);
-                } else
+                else
                     loadFragment(id);
 
                 binding.drawerLayout.removeDrawerListener(this);
@@ -202,6 +198,9 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
                 break;
             case R.id.nav_faq:
                 fragment = FaqListFragment.newInstance(eventId);
+                break;
+            case R.id.nav_about_event:
+                fragment = AboutEventFragment.newInstance(eventId);
                 break;
             default:
                 fragment = EventDashboardFragment.newInstance(eventId);
