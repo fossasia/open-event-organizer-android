@@ -6,10 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,17 +36,10 @@ import io.reactivex.Observable;
 
 public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> implements IAboutEventVew {
 
-    public static final String EVENT_ID = "event_id";
-
     private AboutEventFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
     private long eventId;
     private boolean creatingCopyright = true;
-
-    private ActionBar mainActionBar;
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle drawerToggle;
-    private AppCompatActivity mainActivity;
 
     @Inject
     Lazy<IAboutEventPresenter> aboutEventPresenterProvider;
@@ -56,35 +47,7 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     IUtilModel utilModel;
 
     public AboutEventFragment() {
-        //required empty constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param eventId Event for which the Fragment is to be created.
-     * @return A new instance of fragment AboutEventFragment.
-     */
-    public static AboutEventFragment newInstance(long eventId) {
-        AboutEventFragment fragment = new AboutEventFragment();
-        Bundle args = new Bundle();
-        args.putLong(EVENT_ID, eventId);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
-
-        super.onCreate(savedInstanceState);
-
-        Bundle arguments = getArguments();
-        if (arguments != null)
-            eventId = arguments.getLong(EVENT_ID);
+        OrgaApplication.getAppComponent().inject(this);
     }
 
     @Override
@@ -93,32 +56,28 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
         setHasOptionsMenu(true);
         binding = DataBindingUtil.inflate(inflater, R.layout.about_event_fragment, container, false);
 
-        mainActivity = (AppCompatActivity) getActivity();
-        drawerLayout = mainActivity.findViewById(R.id.drawer_layout);
-        mainActionBar = mainActivity.getSupportActionBar();
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        activity.setSupportActionBar(binding.toolbar);
 
-        if (mainActionBar != null)
-            mainActionBar.hide();
-        mainActivity.setSupportActionBar(binding.toolbar);
-        drawerToggle = new ActionBarDrawerToggle(
-            getActivity(), drawerLayout, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        );
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
 
-        binding.appBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) ->
-            Observable.just((binding.collapsingToolbar.getHeight() + verticalOffset) <
-                (2 * ViewCompat.getMinimumHeight(binding.collapsingToolbar)))
-                .distinctUntilChanged()
-                .map(collapsed -> {
-                    if (collapsed)
-                        return getResources().getColor(android.R.color.black);
-                    else
-                        return getResources().getColor(android.R.color.white);
-                }).subscribe(color -> {
-                Drawable icon = binding.toolbar.getNavigationIcon();
-                if (icon != null) icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-            }));
+            binding.appBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) ->
+                Observable.just((binding.collapsingToolbar.getHeight() + verticalOffset) <
+                    (2 * ViewCompat.getMinimumHeight(binding.collapsingToolbar)))
+                    .distinctUntilChanged()
+                    .map(collapsed -> {
+                        if (collapsed)
+                            return getResources().getColor(android.R.color.black);
+                        else
+                            return getResources().getColor(android.R.color.white);
+                    }).subscribe(color -> {
+                    Drawable icon = binding.toolbar.getNavigationIcon();
+                    if (icon != null) icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+                }));
+        }
 
         return binding.getRoot();
     }
@@ -180,6 +139,11 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     }
 
     @Override
+    public void setEventId(long id) {
+        this.eventId = id;
+    }
+
+    @Override
     public Lazy<IAboutEventPresenter> getPresenterProvider() {
         return aboutEventPresenterProvider;
     }
@@ -225,13 +189,5 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
         refreshLayout.setRefreshing(false);
         if (success)
             ViewUtils.showSnackbar(binding.mainContent, R.string.refresh_complete);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mainActivity.setSupportActionBar(mainActivity.findViewById(R.id.toolbar));
-        mainActionBar.show();
-        drawerLayout.removeDrawerListener(drawerToggle);
     }
 }
