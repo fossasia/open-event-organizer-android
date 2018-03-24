@@ -109,11 +109,6 @@ public class SignUpFragment extends BaseFragment<ISignUpPresenter> implements IS
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.sign_up_fragment;
-    }
-
-    @Override
     protected int getTitle() {
         return R.string.sign_up;
     }

@@ -72,11 +72,6 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<ICreateTicketP
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.ticket_create_layout;
-    }
-
-    @Override
     public void showProgress(boolean show) {
         showView(binding.progressBar, show);
     }
