@@ -25,6 +25,8 @@ import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progress
 
 public class CreateEventPresenter extends BasePresenter<ICreateEventView> implements ICreateEventPresenter {
 
+    public static String ERROR_DATE_END_AFTER_START = "End time should be after start time";
+    public static String ERROR_DATE_WRONG_FORMAT = "Please enter date in correct format";
     private final IEventRepository eventRepository;
     private final Event event = new Event();
 
@@ -65,12 +67,12 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
             ZonedDateTime end = DateUtils.getDate(event.getEndsAt().get());
 
             if (!end.isAfter(start)) {
-                getView().showError("End time should be after start time");
+                getView().showError(ERROR_DATE_END_AFTER_START);
                 return false;
             }
             return true;
         } catch (DateTimeParseException pe) {
-            getView().showError("Please enter date in correct format");
+            getView().showError(ERROR_DATE_WRONG_FORMAT);
             return false;
         }
     }
