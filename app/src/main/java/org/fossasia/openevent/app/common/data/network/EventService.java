@@ -97,7 +97,9 @@ public interface EventService {
     @PATCH("event-copyrights/{id}")
     Observable<Copyright> patchCopyright(@Path("id") long id, @Body Copyright copyright);
 
+    @DELETE("event-copyrights/{id}")
+    Completable deleteCopyright(@Path("id") long id);
+
     @POST("faqs")
     Observable<Faq> postFaq(@Body Faq faq);
-
 }
