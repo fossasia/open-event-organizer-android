@@ -59,6 +59,10 @@ public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> impl
                 getView().showError("End time should be after start time");
                 return false;
             }
+            if (ticket.minOrder != null && ticket.maxOrder != null && ticket.minOrder > ticket.maxOrder) {
+                getView().showError("Minimum order should be greater than Maximum order");
+                return false;
+            }
             return true;
         } catch (DateTimeParseException pe) {
             getView().showError("Please enter date in correct format");
