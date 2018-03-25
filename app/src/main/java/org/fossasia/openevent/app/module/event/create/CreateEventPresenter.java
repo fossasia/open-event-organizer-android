@@ -99,4 +99,18 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
                 getView().close();
             }, Logger::logError);
     }
+
+    /**
+     * Returns the most accurate and searchable address substring, which a user can search for.
+     * Also makes sure that the substring doesn't contain any numbers by matching it to the regex,
+     * as those are more likely to be house numbers or block numbers.
+     * @param address full address string of a location
+     * @return searchable address substring
+     */
+    public String getSearchableLocationName(String address) {
+        String primary = address.substring(0, address.indexOf(','));
+        if (primary.matches(".*\\d+.*")) { //contains number => not likely to be searchable
+            return address.substring(address.indexOf(',') + 2, address.indexOf(",", address.indexOf(',') + 1));
+        } else return primary;
+    }
 }

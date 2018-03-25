@@ -6,6 +6,7 @@ def versions = {}
 apply from: project(':app').file('config.gradle'), to: versions
 
 def app_name = System.getenv('app_name') ?: "eventyay organizer"
+def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
 
 android {
     lintOptions {
@@ -27,7 +28,10 @@ android {
         versionName "1.0.3alpha"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [appName: app_name]
+        manifestPlaceholders = [
+            appName: app_name,
+            GOOGLE_PLACES_API_KEY: GOOGLE_PLACES_API_KEY
+        ]
     }
     buildTypes {
         release {
@@ -109,7 +113,8 @@ dependencies {
     implementation "com.android.support:design:${versions.support_lib_version}"
     implementation "com.android.support:palette-v7:${versions.support_lib_version}"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib_version}.0"
-    implementation "com.google.android.gms:play-services-vision:${versions.play_services_vision}"
+    implementation "com.google.android.gms:play-services-vision:${versions.play_services_version}"
+    implementation "com.google.android.gms:play-services-places:${versions.play_services_version}"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // Misc

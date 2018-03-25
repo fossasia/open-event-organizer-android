@@ -51,6 +51,9 @@
             android:name=".module.organizer.detail.OrganizerDetailActivity"
             android:label="@string/title_activity_organizer_detail"
             android:theme="@style/AppTheme.Main.Light" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_PLACES_API_KEY}"/>
     </application>
 
 </manifest>
