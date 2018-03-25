@@ -21,4 +21,9 @@ public abstract class BaseBottomSheetFragment<P extends IBasePresenter> extends 
         return getPresenterProvider().get();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        getPresenter().detach();
+    }
 }
