@@ -30,6 +30,12 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        getPresenter().detach();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         OrgaApplication.getRefWatcher(getActivity()).watch(this);
