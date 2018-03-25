@@ -5,7 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,10 +28,12 @@ import org.fossasia.openevent.app.module.event.about.contract.IAboutEventVew;
 import org.fossasia.openevent.app.module.event.copyright.CreateCopyrightFragment;
 import org.fossasia.openevent.app.module.event.copyright.update.UpdateCopyrightFragment;
 
+import java.util.Arrays;
+
 import javax.inject.Inject;
 
 import dagger.Lazy;
-import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> implements IAboutEventVew {
 
@@ -40,11 +41,14 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     private SwipeRefreshLayout refreshLayout;
     private long eventId;
     private boolean creatingCopyright = true;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     Lazy<IAboutEventPresenter> aboutEventPresenterProvider;
     @Inject
     IUtilModel utilModel;
+    @Inject
+    ToolbarColorChanger toolbarColorChanger;
 
     public AboutEventFragment() {
         OrgaApplication.getAppComponent().inject(this);
@@ -63,20 +67,6 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
-
-            binding.appBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) ->
-                Observable.just((binding.collapsingToolbar.getHeight() + verticalOffset) <
-                    (2 * ViewCompat.getMinimumHeight(binding.collapsingToolbar)))
-                    .distinctUntilChanged()
-                    .map(collapsed -> {
-                        if (collapsed)
-                            return getResources().getColor(android.R.color.black);
-                        else
-                            return getResources().getColor(android.R.color.white);
-                    }).subscribe(color -> {
-                    Drawable icon = binding.toolbar.getNavigationIcon();
-                    if (icon != null) icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-                }));
         }
 
         return binding.getRoot();
@@ -85,6 +75,7 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     @Override
     public void onStart() {
         super.onStart();
+        observeColorChanges();
         setupRefreshListener();
         getPresenter().attach(eventId, this);
         getPresenter().start();
@@ -94,6 +85,19 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
+        toolbarColorChanger.removeChangeListener();
+        compositeDisposable.dispose();
+    }
+
+    private void observeColorChanges() {
+        Drawable icon = binding.toolbar.getNavigationIcon();
+        Drawable overflowIcon = binding.toolbar.getOverflowIcon();
+        compositeDisposable.add(toolbarColorChanger.observeColor(binding.appBar, binding.collapsingToolbar)
+            .subscribe(color -> {
+                for (Drawable drawable : Arrays.asList(icon, overflowIcon)) {
+                    if (drawable != null) drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+                }
+            }));
     }
 
     private void setupRefreshListener() {
