@@ -11,4 +11,5 @@ public interface ISignUpPresenter extends IPresenter<ISignUpView> {
 
     void setBaseUrl(String url, boolean shouldSetDefaultUrl);
 
+    boolean arePasswordsEqual(String password, String confirmPassword);
 }

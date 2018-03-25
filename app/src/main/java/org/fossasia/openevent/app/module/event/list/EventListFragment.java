@@ -11,6 +11,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -34,6 +37,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+
+import static org.fossasia.openevent.app.module.event.list.EventsPresenter.SORTBYDATE;
+import static org.fossasia.openevent.app.module.event.list.EventsPresenter.SORTBYNAME;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,6 +90,7 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -93,14 +100,36 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
         return binding.getRoot();
     }
 
-    @Override
-    public Lazy<IEventsPresenter> getPresenterProvider() {
-        return presenterProvider;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_events, menu);
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.fragment_event_list;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sortByEventName:
+                sortEvents(SORTBYNAME);
+                return true;
+            case R.id.sortByEventDate:
+                sortEvents(SORTBYDATE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void sortEvents(int sortBy) {
+        getPresenter().sortBy(sortBy);
+        eventListAdapter.setSortByName(sortBy == SORTBYNAME);
+        binding.setVariable(BR.events, getPresenter().getEvents());
+        binding.executePendingBindings();
+        eventListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public Lazy<IEventsPresenter> getPresenterProvider() {
+        return presenterProvider;
     }
 
     @Override
@@ -153,7 +182,6 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
                 }
             };
         }
-
         eventListAdapter.registerAdapterDataObserver(adapterDataObserver);
     }
 

@@ -50,8 +50,7 @@ public class CopyrightRepository extends Repository implements ICopyrightReposit
         Observable<Copyright> networkObservable = Observable.defer(() ->
             eventService.getCopyright(eventId)
                 .doOnNext(copyright -> databaseRepository
-                    .delete(Copyright.class, Copyright_Table.event_id.eq(eventId))
-                    .concatWith(databaseRepository.save(Copyright.class, copyright))
+                    .save(Copyright.class, copyright)
                     .subscribe()));
 
         return new AbstractObservableBuilder<Copyright>(utilModel)
@@ -59,5 +58,20 @@ public class CopyrightRepository extends Repository implements ICopyrightReposit
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Copyright> updateCopyright(Copyright copyright) {
+        if (!utilModel.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return eventService.patchCopyright(copyright.getId(), copyright)
+            .doOnNext(updatedCopyright -> databaseRepository
+                .update(Copyright.class, updatedCopyright)
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -1,29 +1,17 @@
 package org.fossasia.openevent.app.common.app.lifecycle.view;
 
-import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.app.lifecycle.contract.presenter.IBasePresenter;
-import org.fossasia.openevent.app.common.app.lifecycle.view.loader.IPresenterProvider;
 import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
 
-public abstract class BaseFragment<P extends IBasePresenter> extends Fragment implements IPresenterProvider<P> {
+import dagger.Lazy;
 
-    private final LoaderHandler<P> loaderHandler = new LoaderHandler<>();
+public abstract class BaseFragment<P extends IBasePresenter> extends Fragment {
 
-    protected abstract @StringRes
-    int getTitle();
-
-    @Override
-    @CallSuper
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        loaderHandler.load(getContext(), getLoaderManager(), getLoaderId(), getPresenterProvider());
-    }
+    protected abstract @StringRes int getTitle();
 
     @Override
     public void onResume() {
@@ -31,20 +19,20 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
         setTitle(getString(getTitle()));
     }
 
-    @Override
-    @CallSuper
-    public void onStop() {
-        super.onStop();
-        loaderHandler.presenter.detach();
-    }
+    protected abstract Lazy<P> getPresenterProvider();
 
-    @Override
-    public P getPresenter() {
-        return loaderHandler.getPresenter();
+    protected P getPresenter() {
+        return getPresenterProvider().get();
     }
 
     protected void setTitle(String title) {
         ViewUtils.setTitle(this, title);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getPresenter().detach();
     }
 
     @Override

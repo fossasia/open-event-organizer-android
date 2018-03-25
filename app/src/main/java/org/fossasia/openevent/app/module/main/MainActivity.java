@@ -130,11 +130,6 @@ public class MainActivity extends BaseActivity<IMainPresenter> implements Naviga
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.main_activity;
-    }
-
-    @Override
     public void setEventId(long eventId) {
         this.eventId = eventId;
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, true);

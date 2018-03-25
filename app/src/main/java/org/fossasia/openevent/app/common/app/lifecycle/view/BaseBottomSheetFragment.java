@@ -1,36 +1,13 @@
 package org.fossasia.openevent.app.common.app.lifecycle.view;
 
-import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.app.lifecycle.contract.presenter.IBasePresenter;
-import org.fossasia.openevent.app.common.app.lifecycle.view.loader.IPresenterProvider;
 
-public abstract class BaseBottomSheetFragment<P extends IBasePresenter> extends BottomSheetDialogFragment implements IPresenterProvider<P> {
+import dagger.Lazy;
 
-    private final LoaderHandler<P> loaderHandler = new LoaderHandler<>();
-
-    @Override
-    @CallSuper
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        loaderHandler.load(getContext(), getLoaderManager(), getLoaderId(), getPresenterProvider());
-    }
-
-    @Override
-    @CallSuper
-    public void onStop() {
-        super.onStop();
-        loaderHandler.presenter.detach();
-    }
-
-    @Override
-    public P getPresenter() {
-        return loaderHandler.getPresenter();
-    }
+public abstract class BaseBottomSheetFragment<P extends IBasePresenter> extends BottomSheetDialogFragment {
 
     @Override
     public void onDestroy() {
@@ -38,4 +15,15 @@ public abstract class BaseBottomSheetFragment<P extends IBasePresenter> extends 
         OrgaApplication.getRefWatcher(getActivity()).watch(this);
     }
 
+    protected abstract Lazy<P> getPresenterProvider();
+
+    protected P getPresenter() {
+        return getPresenterProvider().get();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getPresenter().detach();
+    }
 }

@@ -64,10 +64,11 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
         getPresenter().attach(this);
         binding.setLogin(getPresenter().getLogin());
         getPresenter().start();
-
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
+
+            ViewUtils.hideKeyboard(view);
 
             String url = binding.url.baseUrl.getText().toString().trim();
             getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
@@ -124,11 +125,6 @@ public class LoginFragment extends BaseFragment<ILoginPresenter> implements ILog
     @Override
     public Lazy<ILoginPresenter> getPresenterProvider() {
         return presenterProvider;
-    }
-
-    @Override
-    public int getLoaderId() {
-        return R.layout.login_fragment;
     }
 
     @Override

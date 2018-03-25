@@ -14,6 +14,7 @@ import org.fossasia.openevent.app.module.auth.signup.SignUpFragment;
 import org.fossasia.openevent.app.module.event.about.AboutEventFragment;
 import org.fossasia.openevent.app.module.event.chart.ChartActivity;
 import org.fossasia.openevent.app.module.event.copyright.CreateCopyrightFragment;
+import org.fossasia.openevent.app.module.event.copyright.update.UpdateCopyrightFragment;
 import org.fossasia.openevent.app.module.event.create.CreateEventFragment;
 import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.module.event.list.EventListFragment;
@@ -85,4 +86,6 @@ public interface AppComponent {
     void inject(CreateCopyrightFragment createCopyrightFragment);
 
     void inject(CreateFaqFragment createFaqFragment);
+
+    void inject(UpdateCopyrightFragment updateCopyrightFragment);
 }

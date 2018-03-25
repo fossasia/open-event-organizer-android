@@ -122,8 +122,4 @@ public class ResetPasswordByTokenFragment extends BaseFragment<IResetPasswordByT
         return presenterProvider;
     }
 
-    @Override
-    public int getLoaderId() {
-        return R.layout.reset_password_by_token_fragment;
-    }
 }

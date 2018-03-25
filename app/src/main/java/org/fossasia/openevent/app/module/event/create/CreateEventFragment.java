@@ -196,11 +196,6 @@ public class CreateEventFragment extends BaseBottomSheetFragment<ICreateEventPre
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.event_create_layout;
-    }
-
-    @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }

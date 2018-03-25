@@ -102,17 +102,16 @@ public class OrganizerDetailFragment extends BaseFragment<IOrganizerDetailPresen
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> getPresenter().loadOrganizer(true));
+
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+            getPresenter().loadOrganizer(true);
+        });
     }
 
     @Override
     public Lazy<IOrganizerDetailPresenter> getPresenterProvider() {
         return presenterProvider;
-    }
-
-    @Override
-    public int getLoaderId() {
-        return R.layout.organizer_detail_fragment;
     }
 
     @Override

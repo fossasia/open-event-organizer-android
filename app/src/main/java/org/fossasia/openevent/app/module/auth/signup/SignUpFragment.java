@@ -67,6 +67,12 @@ public class SignUpFragment extends BaseFragment<ISignUpPresenter> implements IS
             if (!validator.validate())
                 return;
 
+            String password = binding.password.getText().toString();
+            String confirmPassword = binding.confirmPassword.getText().toString();
+            if (!(getPresenter().arePasswordsEqual(password, confirmPassword))) {
+                return;
+            }
+
             String url = binding.url.baseUrl.getText().toString().trim();
             getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
             getPresenter().signUp();
@@ -100,11 +106,6 @@ public class SignUpFragment extends BaseFragment<ISignUpPresenter> implements IS
     @Override
     public Lazy<ISignUpPresenter> getPresenterProvider() {
         return presenterProvider;
-    }
-
-    @Override
-    public int getLoaderId() {
-        return R.layout.sign_up_fragment;
     }
 
     @Override

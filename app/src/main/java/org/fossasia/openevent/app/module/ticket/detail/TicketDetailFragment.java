@@ -72,11 +72,6 @@ public class TicketDetailFragment extends BaseBottomSheetFragment<ITicketDetailP
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.ticket_detail_layout;
-    }
-
-    @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
