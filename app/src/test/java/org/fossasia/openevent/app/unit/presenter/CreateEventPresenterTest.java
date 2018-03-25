@@ -109,9 +109,9 @@ public class CreateEventPresenterTest {
         when(eventRepository.createEvent(event)).thenReturn(Observable.empty());
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
-        String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);
+        String isoDateMax = DateUtils.formatDateToIso(LocalDateTime.MAX);
         event.getStartsAt().set(isoDateNow);
-        event.getEndsAt().set(isoDateThen);
+        event.getEndsAt().set(isoDateMax);
 
         createEventPresenter.createEvent();
 
@@ -142,13 +142,13 @@ public class CreateEventPresenterTest {
         when(eventRepository.createEvent(event)).thenReturn(Observable.just(event));
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
-        String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);
+        String isoDateMax = DateUtils.formatDateToIso(LocalDateTime.MAX);
         event.getStartsAt().set(isoDateNow);
-        event.getEndsAt().set(isoDateThen);
+        event.getEndsAt().set(isoDateMax);
 
         createEventPresenter.createEvent();
 
-        verify(createEventView).onSuccess(anyString());
+        verify(createEventView).onSuccess(createEventPresenter.SUCCESS);
     }
 
     @Test
@@ -158,9 +158,9 @@ public class CreateEventPresenterTest {
         when(eventRepository.createEvent(event)).thenReturn(Observable.just(event));
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
-        String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);
+        String isoDateMax = DateUtils.formatDateToIso(LocalDateTime.MAX);
         event.getStartsAt().set(isoDateNow);
-        event.getEndsAt().set(isoDateThen);
+        event.getEndsAt().set(isoDateMax);
 
         createEventPresenter.createEvent();
 

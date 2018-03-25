@@ -27,6 +27,7 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
 
     public static String ERROR_DATE_END_AFTER_START = "End time should be after start time";
     public static String ERROR_DATE_WRONG_FORMAT = "Please enter date in correct format";
+    public static String SUCCESS = "Event Created Successfully";
     private final IEventRepository eventRepository;
     private final Event event = new Event();
 
