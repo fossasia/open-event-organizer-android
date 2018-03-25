@@ -12,6 +12,7 @@ import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsPresenter;
 import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,6 +31,9 @@ public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> im
     private final List<Ticket> tickets = new ArrayList<>();
     private final ITicketRepository ticketRepository;
     private final IDatabaseChangeListener<Ticket> ticketChangeListener;
+
+    public static final int SORTTICKETBYDATE = 0;
+    public static final int SORTTICKETBYNAME = 1;
 
     @Inject
     public TicketsPresenter(ITicketRepository ticketRepository, IDatabaseChangeListener<Ticket> ticketChangeListener) {
@@ -67,6 +71,16 @@ public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> im
             .toSortedList()
             .compose(emptiable(getView(), tickets))
             .subscribe(Logger::logSuccess, Logger::logError);
+    }
+
+
+    @Override
+    public void sortBy(int criteria) {
+        if (criteria == SORTTICKETBYNAME)
+            Collections.sort(tickets, (t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
+        else {
+            Collections.sort(tickets, (t1, t2) -> t1.getType().compareToIgnoreCase(t2.getType()));
+        }
     }
 
     private Observable<Ticket> getTicketSource(boolean forceReload) {

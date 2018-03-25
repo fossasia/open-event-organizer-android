@@ -15,11 +15,14 @@ import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsPresenter;
 import org.fossasia.openevent.app.module.ticket.list.viewholder.TicketViewHolder;
 
 import java.util.List;
+import java.util.Locale;
 
 public class TicketsAdapter extends RecyclerView.Adapter<TicketViewHolder> implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
 
     private final List<Ticket> tickets;
     private final ITicketsPresenter ticketsPresenter;
+
+    private boolean sortByName;
 
     public TicketsAdapter(ITicketsPresenter ticketsPresenter) {
         this.ticketsPresenter = ticketsPresenter;
@@ -49,12 +52,24 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketViewHolder> imple
 
     @Override
     public void onBindHeaderViewHolder(HeaderViewHolder headerViewHolder, int position) {
-        headerViewHolder.bindHeader(tickets.get(position).getType());
+        if (sortByName) {
+            headerViewHolder.bindHeader(tickets.get(position).getName().substring(0, 1).toUpperCase(Locale.getDefault()));
+        } else {
+            headerViewHolder.bindHeader(tickets.get(position).getType());
+        }
+    }
+
+    public void setSortByName(boolean sortBy) {
+        sortByName = sortBy;
     }
 
     @Override
     public long getHeaderId(int position) {
-        return tickets.get(position).getType().hashCode();
+        if (sortByName) {
+            return tickets.get(position).getName().substring(0, 1).toUpperCase(Locale.getDefault()).hashCode();
+        } else {
+            return tickets.get(position).getType().hashCode();
+        }
     }
 
     @Override

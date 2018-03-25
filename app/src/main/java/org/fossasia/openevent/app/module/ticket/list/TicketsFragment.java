@@ -11,6 +11,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -34,6 +37,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+
+import static org.fossasia.openevent.app.module.ticket.list.TicketsPresenter.SORTTICKETBYDATE;
+import static org.fossasia.openevent.app.module.ticket.list.TicketsPresenter.SORTTICKETBYNAME;
 
 public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements ITicketsView {
 
@@ -71,6 +77,8 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
+
         context = getContext();
         if (getArguments() != null)
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
@@ -96,6 +104,32 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
         getPresenter().start();
 
         initialized = true;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_ticket, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sortByTicketName:
+                sortEvents(SORTTICKETBYNAME);
+                return true;
+            case R.id.sortByTicketType:
+                sortEvents(SORTTICKETBYDATE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void sortEvents(int sortBy) {
+        getPresenter().sortBy(sortBy);
+        ticketsAdapter.setSortByName(sortBy == SORTTICKETBYNAME);
+        ticketsAdapter.notifyDataSetChanged();
     }
 
     @Override
