@@ -14,12 +14,15 @@ import org.fossasia.openevent.app.databinding.EventLayoutBinding;
 import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
 
 import java.util.List;
+import java.util.Locale;
 
 class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder>
     implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
 
     private final List<Event> events;
     private final IBus bus;
+
+    private boolean sortByName;
 
     EventsListAdapter(List<Event> events, IBus bus) {
         this.events = events;
@@ -42,7 +45,11 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
     @Override
     public long getHeaderId(int position) {
-        return events.get(position).getHeaderId();
+        if (sortByName) {
+            return events.get(position).getName().substring(0, 1).toUpperCase(Locale.getDefault()).hashCode();
+        } else {
+            return events.get(position).getHeaderId();
+        }
     }
 
     @Override
@@ -53,12 +60,20 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
     @Override
     public void onBindHeaderViewHolder(HeaderViewHolder headerViewHolder, int i) {
-        headerViewHolder.bindHeader(events.get(i).getHeader());
+        if (sortByName) {
+            headerViewHolder.bindHeader(events.get(i).getName().substring(0, 1).toUpperCase(Locale.getDefault()));
+        } else {
+            headerViewHolder.bindHeader(events.get(i).getHeader());
+       }
     }
 
     @Override
     public int getItemCount() {
         return events.size();
+    }
+
+    public void setSortByName(boolean sortBy) {
+        sortByName = sortBy;
     }
 
     //view holder class

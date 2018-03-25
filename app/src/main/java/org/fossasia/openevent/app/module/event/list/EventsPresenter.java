@@ -6,10 +6,12 @@ import org.fossasia.openevent.app.common.app.lifecycle.presenter.BasePresenter;
 import org.fossasia.openevent.app.common.app.rx.Logger;
 import org.fossasia.openevent.app.common.data.models.Event;
 import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
+import org.fossasia.openevent.app.common.utils.core.service.DateService;
 import org.fossasia.openevent.app.module.event.list.contract.IEventsPresenter;
 import org.fossasia.openevent.app.module.event.list.contract.IEventsView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,6 +28,9 @@ public class EventsPresenter extends BasePresenter<IEventsView> implements IEven
 
     private final IEventRepository eventsDataRepository;
 
+    public static final int SORTBYDATE = 0;
+    public static final int SORTBYNAME = 1;
+
     @Inject
     public EventsPresenter(IEventRepository eventsDataRepository) {
         this.eventsDataRepository = eventsDataRepository;
@@ -39,6 +44,15 @@ public class EventsPresenter extends BasePresenter<IEventsView> implements IEven
     @Override
     public List<Event> getEvents() {
         return events;
+    }
+
+    @Override
+    public void sortBy(int criteria) {
+        if (criteria == SORTBYNAME)
+            Collections.sort(events, (e1, e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
+        else {
+            Collections.sort(events, (e1, e2) -> DateService.compareEventDates(e1, e2));
+        }
     }
 
     @Override

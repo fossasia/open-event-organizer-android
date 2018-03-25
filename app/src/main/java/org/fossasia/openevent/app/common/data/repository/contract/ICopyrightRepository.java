@@ -13,4 +13,7 @@ public interface ICopyrightRepository {
 
     @NonNull
     Observable<Copyright> getCopyright(long id, boolean reload);
+
+    @NonNull
+    Observable<Copyright> updateCopyright(Copyright copyright);
 }

@@ -49,4 +49,13 @@ public class SignUpPresenter extends BasePresenter<ISignUpView> implements ISign
         String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
         interceptor.setInterceptor(baseUrl);
     }
+
+    @Override
+    public boolean arePasswordsEqual(String password, String confirmPassword) {
+        if (!password.equals(confirmPassword)) {
+            getView().showError("Passwords don't match!");
+            return false;
+        }
+        return true;
+    }
 }

@@ -22,7 +22,7 @@
     <string name="event_title_here">Event Title Here</string>
     <string name="forgot_password_link">Forgot Password</string>
 
-    <!-- PLace Holders -->
+    <!-- Place Holders -->
     <string name="date_placeholder">May 25th 2017</string>
     <string name="date_placeholder_2">May 31th 2017</string>
     <string name="hour_placeholder">1300</string>
@@ -76,6 +76,8 @@
     <string name="price">Price</string>
     <string name="sale_start_time">Sale start time</string>
     <string name="sale_end_time">Sale end time</string>
+    <string name="starts_at">Starts at:</string>
+    <string name="ends_at">Ends at:</string>
     <string name="pick">Pick :</string>
     <string name="minOrder">Minimum Order</string>
     <string name="maxOrder">Maximum Order</string>
@@ -157,6 +159,9 @@
     <string name="speakers">Speakers</string>
     <string name="sponsors">Sponsors</string>
     <string name="sessions">Sessions</string>
+    <string name="sort_by">Sort By</string>
+    <string name="sort_by_name">Name</string>
+    <string name="sort_by_date">Date</string>
     <string name="sessions_submitted">Sessions Submitted</string>
     <string name="sessions_accepted">Sessions Accepted</string>
     <string name="sessions_confirmed">Sessions Confirmed</string>
@@ -182,6 +187,9 @@
     <string name="create_faq">Create FAQ</string>
     <string name="question">Question</string>
     <string name="answer">Answer</string>
+    <string name="save_icon">Save Icon</string>
+    <string name="use_date_time_picker">Use Picker</string>
+    <string name="welcome">Hi, Organiser!</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

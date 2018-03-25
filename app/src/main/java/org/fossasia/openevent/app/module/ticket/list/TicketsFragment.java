@@ -150,11 +150,6 @@ public class TicketsFragment extends BaseFragment<ITicketsPresenter> implements 
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.tickets_fragment;
-    }
-
-    @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }

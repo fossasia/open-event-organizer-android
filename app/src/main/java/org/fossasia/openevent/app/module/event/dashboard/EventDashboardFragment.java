@@ -126,11 +126,6 @@ public class EventDashboardFragment extends BaseFragment<IEventDashboardPresente
         return presenterProvider;
     }
 
-    @Override
-    public int getLoaderId() {
-        return R.layout.fragment_event_details;
-    }
-
     private void setupRefreshListener() {
         container = binding.container;
         refreshLayout = binding.swipeContainer;

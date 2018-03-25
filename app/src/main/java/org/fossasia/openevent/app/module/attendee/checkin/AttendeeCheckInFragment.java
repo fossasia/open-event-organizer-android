@@ -83,11 +83,6 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<IAttendeeCh
         return presenterProvider;
     }
 
-    @Override
-    public int getLoaderId() {
-        return R.layout.bottomsheet_attendee_check_in;
-    }
-
     public void setOnCancelListener(Runnable onCancel) {
         this.onCancelAction = onCancel;
     }
