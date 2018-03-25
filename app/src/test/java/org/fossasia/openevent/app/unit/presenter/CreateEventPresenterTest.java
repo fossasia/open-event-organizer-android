@@ -61,7 +61,7 @@ public class CreateEventPresenterTest {
 
         createEventPresenter.createEvent();
 
-        verify(createEventView).showError(createEventPresenter.ERROR_DATE_END_AFTER_START_MESSAGE);
+        verify(createEventView).showError("End time should be after start time");
         verify(eventRepository, never()).createEvent(any());
     }
 
@@ -74,7 +74,7 @@ public class CreateEventPresenterTest {
         event.getEndsAt().set("2011/03/03");
         createEventPresenter.createEvent();
 
-        verify(createEventView).showError(createEventPresenter.ERROR_DATE_WRONG_FORMAT_MESSAGE);
+        verify(createEventView).showError("Please enter date in correct format");
         verify(eventRepository, never()).createEvent(any());
     }
 
@@ -148,7 +148,7 @@ public class CreateEventPresenterTest {
 
         createEventPresenter.createEvent();
 
-        verify(createEventView).onSuccess(createEventPresenter.SUCCESS_MESSAGE);
+        verify(createEventView).onSuccess("Event Created Successfully");
     }
 
     @Test
