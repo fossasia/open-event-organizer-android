@@ -9,5 +9,7 @@ public interface ICreateEventPresenter extends IPresenter<ICreateEventView> {
 
     void createEvent();
 
+    String getSearchableLocationName(String address);
+
 }
 

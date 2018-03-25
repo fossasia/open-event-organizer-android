@@ -187,6 +187,7 @@
     <string name="create_faq">Create FAQ</string>
     <string name="question">Question</string>
     <string name="answer">Answer</string>
+    <string name="pick_from_map">Pick from Map</string>
     <string name="save_icon">Save Icon</string>
     <string name="use_date_time_picker">Use Picker</string>
     <string name="welcome">Hi, Organiser!</string>
