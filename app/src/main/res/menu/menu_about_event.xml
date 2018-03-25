@@ -9,4 +9,10 @@
         android:id="@+id/action_create_change_copyright"
         android:title="@string/create_copyright"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_delete_copyright"
+        android:title="@string/delete_copyright"
+        app:showAsAction="never"
+        android:visible="false"/>
 </menu>

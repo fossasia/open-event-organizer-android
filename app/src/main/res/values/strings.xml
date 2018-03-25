@@ -190,6 +190,7 @@
     <string name="save_icon">Save Icon</string>
     <string name="use_date_time_picker">Use Picker</string>
     <string name="welcome">Hi, Organiser!</string>
+    <string name="delete_copyright">Delete Copyright</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

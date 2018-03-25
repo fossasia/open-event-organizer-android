@@ -12,6 +12,7 @@ import org.fossasia.openevent.app.common.data.repository.contract.ICopyrightRepo
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -71,6 +72,23 @@ public class CopyrightRepository extends Repository implements ICopyrightReposit
             .doOnNext(updatedCopyright -> databaseRepository
                 .update(Copyright.class, updatedCopyright)
                 .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Completable deleteCopyright(long id) {
+        if (!utilModel.isConnected()) {
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return eventService.deleteCopyright(id)
+            .doOnComplete(() -> {
+                databaseRepository
+                    .delete(Copyright.class, Copyright_Table.id.eq(id))
+                    .subscribe();
+            })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }

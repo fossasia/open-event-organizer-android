@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.module.event.about;
 
+import android.support.annotation.Nullable;
+
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.fossasia.openevent.app.common.app.lifecycle.presenter.BaseDetailPresenter;
@@ -19,6 +21,8 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.disposeCompletable;
+import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneousCompletable;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveErroneousResultRefresh;
 import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progressiveRefresh;
 
@@ -28,6 +32,7 @@ public class AboutEventPresenter extends BaseDetailPresenter<Long, IAboutEventVe
     private final ICopyrightRepository copyrightRepository;
     private final IDatabaseChangeListener<Copyright> copyrightChangeListener;
     private Event event;
+    @Nullable
     private Copyright copyright;
 
     @Inject
@@ -72,8 +77,10 @@ public class AboutEventPresenter extends BaseDetailPresenter<Long, IAboutEventVe
 
     private void showCopyright() {
         getView().showCopyright(copyright);
-        if (copyright != null) {
-            getView().changeCopyrightMenuItem();
+        if (copyright == null) {
+            getView().changeCopyrightMenuItem(true);
+        } else {
+            getView().changeCopyrightMenuItem(false);
         }
     }
 
@@ -85,9 +92,24 @@ public class AboutEventPresenter extends BaseDetailPresenter<Long, IAboutEventVe
         }
     }
 
+    @Nullable
     @Override
     public Copyright getCopyright() {
         return copyright;
+    }
+
+    @SuppressWarnings("PMD.NullAssignment")
+    @Override
+    public void deleteCopyright() {
+        copyrightRepository
+            .deleteCopyright(copyright.getId())
+            .compose(disposeCompletable(getDisposable()))
+            .compose(progressiveErroneousCompletable(getView()))
+            .subscribe(() -> {
+                getView().showCopyrightDeleted("Copyright Deleted");
+                copyright = null;
+                loadCopyright(true);
+            }, Logger::logError);
     }
 
     private void listenChanges() {
