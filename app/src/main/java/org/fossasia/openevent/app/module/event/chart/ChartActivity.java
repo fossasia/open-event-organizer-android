@@ -75,11 +75,6 @@ public class ChartActivity extends BaseActivity<IChartPresenter> implements ICha
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.activity_chart;
-    }
-
-    @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(chart, error);
     }

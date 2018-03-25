@@ -73,11 +73,6 @@ public class CreateCopyrightFragment extends BaseBottomSheetFragment<ICreateCopy
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.copyright_create_layout;
-    }
-
-    @Override
     public void showProgress(boolean show) {
         showView(binding.progressBar, show);
     }

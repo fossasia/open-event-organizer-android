@@ -18,6 +18,7 @@ import org.fossasia.openevent.app.module.ticket.create.CreateTicketFragment;
 import org.fossasia.openevent.app.module.ticket.list.TicketsFragment;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.robolectric.ParameterizedRobolectricTestRunner;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
@@ -26,6 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 
+@Ignore
 @SuppressWarnings({"PMD.JUnit4TestShouldUseAfterAnnotation", "PMD.JUnit4TestShouldUseBeforeAnnotation"})
 public class FragmentInstanceTest<T extends Fragment> extends BaseParameterTest {
 

@@ -133,11 +133,6 @@ public class EventListFragment extends BaseFragment<IEventsPresenter> implements
     }
 
     @Override
-    public int getLoaderId() {
-        return R.layout.fragment_event_list;
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         setupRecyclerView();
