@@ -10,4 +10,6 @@ public interface IAboutEventPresenter extends IDetailPresenter<Long, IAboutEvent
     void loadCopyright(boolean forceReload);
 
     Copyright getCopyright();
+
+    void deleteCopyright();
 }

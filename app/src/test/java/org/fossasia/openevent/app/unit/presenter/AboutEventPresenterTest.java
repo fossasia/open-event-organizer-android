@@ -110,7 +110,7 @@ public class AboutEventPresenterTest {
 
         aboutEventPresenter.loadCopyright(false);
 
-        verify(aboutEventVew).changeCopyrightMenuItem();
+        verify(aboutEventVew).changeCopyrightMenuItem(false);
     }
 
     @Test

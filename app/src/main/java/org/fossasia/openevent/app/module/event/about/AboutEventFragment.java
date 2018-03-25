@@ -123,6 +123,9 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
                     bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
                 }
                 break;
+            case R.id.action_delete_copyright:
+                getPresenter().deleteCopyright();
+                break;
             default:
                 // No implementation
         }
@@ -132,9 +135,16 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (!creatingCopyright) {
+        if (creatingCopyright) {
+            MenuItem menuItem = menu.findItem(R.id.action_create_change_copyright);
+            menuItem.setTitle(R.string.create_copyright);
+            menuItem = menu.findItem(R.id.action_delete_copyright);
+            menuItem.setVisible(false);
+        } else {
             MenuItem menuItem = menu.findItem(R.id.action_create_change_copyright);
             menuItem.setTitle(R.string.edit_copyright);
+            menuItem = menu.findItem(R.id.action_delete_copyright);
+            menuItem.setVisible(true);
         }
     }
 
@@ -164,8 +174,8 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
     }
 
     @Override
-    public void changeCopyrightMenuItem() {
-        creatingCopyright = false;
+    public void changeCopyrightMenuItem(boolean creatingCopyright) {
+        this.creatingCopyright = creatingCopyright;
         getActivity().invalidateOptionsMenu();
     }
 
@@ -184,5 +194,10 @@ public class AboutEventFragment extends BaseFragment<IAboutEventPresenter> imple
         refreshLayout.setRefreshing(false);
         if (success)
             ViewUtils.showSnackbar(binding.mainContent, R.string.refresh_complete);
+    }
+
+    @Override
+    public void showCopyrightDeleted(String message) {
+        ViewUtils.showSnackbar(binding.mainContent, message);
     }
 }
