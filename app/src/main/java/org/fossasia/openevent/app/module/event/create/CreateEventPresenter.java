@@ -25,9 +25,9 @@ import static org.fossasia.openevent.app.common.app.rx.ViewTransformers.progress
 
 public class CreateEventPresenter extends BasePresenter<ICreateEventView> implements ICreateEventPresenter {
 
-    public static String ERROR_DATE_END_AFTER_START = "End time should be after start time";
-    public static String ERROR_DATE_WRONG_FORMAT = "Please enter date in correct format";
-    public static String SUCCESS = "Event Created Successfully";
+    public static String ERROR_DATE_END_AFTER_START_MESSAGE = "End time should be after start time";
+    public static String ERROR_DATE_WRONG_FORMAT_MESSAGE = "Please enter date in correct format";
+    public static String SUCCESS_MESSAGE = "Event Created Successfully";
     private final IEventRepository eventRepository;
     private final Event event = new Event();
 
@@ -68,12 +68,12 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
             ZonedDateTime end = DateUtils.getDate(event.getEndsAt().get());
 
             if (!end.isAfter(start)) {
-                getView().showError(ERROR_DATE_END_AFTER_START);
+                getView().showError(ERROR_DATE_END_AFTER_START_MESSAGE);
                 return false;
             }
             return true;
         } catch (DateTimeParseException pe) {
-            getView().showError(ERROR_DATE_WRONG_FORMAT);
+            getView().showError(ERROR_DATE_WRONG_FORMAT_MESSAGE);
             return false;
         }
     }
@@ -98,7 +98,7 @@ public class CreateEventPresenter extends BasePresenter<ICreateEventView> implem
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneous(getView()))
             .subscribe(createdEvent -> {
-                getView().onSuccess("Event Created Successfully");
+                getView().onSuccess(SUCCESS_MESSAGE);
                 getView().close();
             }, Logger::logError);
     }
