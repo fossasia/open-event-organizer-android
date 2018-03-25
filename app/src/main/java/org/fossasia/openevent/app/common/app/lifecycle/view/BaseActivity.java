@@ -19,4 +19,9 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
         return getPresenterProvider().get();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        getPresenter().detach();
+    }
 }
