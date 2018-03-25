@@ -13,5 +13,7 @@ public interface IAboutEventVew extends Progressive, Erroneous, Refreshable, Ite
 
     void showCopyright(Copyright copyright);
 
-    void changeCopyrightMenuItem();
+    void changeCopyrightMenuItem(boolean creatingCopyright);
+
+    void showCopyrightDeleted(String message);
 }
