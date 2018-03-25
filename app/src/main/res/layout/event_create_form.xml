@@ -139,26 +139,28 @@
                 android:text="@string/location_details"
                 android:textSize="@dimen/text_size_normal" />
 
-            <CheckBox
-                android:id="@+id/map_shown"
+            <Button
+                android:id="@+id/button_place_picker"
+                style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
-                android:text="@string/show_map" />
+                android:layout_marginTop="@dimen/spacing_extra_small"
+                android:textColor="@color/purple_500"
+                android:text="@string/pick_from_map"/>
 
             <LinearLayout
+                android:id="@+id/layout_searchable_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small"
-                    android:contentDescription="@string/latitude"
+                    android:contentDescription="@string/searchable_location_name"
                     app:srcCompat="@drawable/ic_location" />
 
                 <android.support.design.widget.TextInputLayout
@@ -167,50 +169,23 @@
                     android:padding="@dimen/spacing_extra_small">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/latitude"
+                        android:id="@+id/searchable_location_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/latitude"
-                        android:inputType="numberDecimal"
-                        android:text="@={ BindingAdapters.doubleToStr(event.latitude) }" />
+                        android:hint="@string/searchable_location_name"
+                        android:inputType="text"
+                        android:text="@={ event.searchableLocationName }" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_location_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:contentDescription="@string/longitude"
-                    app:srcCompat="@drawable/ic_location" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/longitude"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/longitude"
-                        android:inputType="numberDecimal"
-                        android:text="@={ BindingAdapters.doubleToStr(event.longitude) }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -236,16 +211,18 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_latitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small"
-                    android:contentDescription="@string/searchable_location_name"
+                    android:contentDescription="@string/latitude"
                     app:srcCompat="@drawable/ic_location" />
 
                 <android.support.design.widget.TextInputLayout
@@ -254,15 +231,55 @@
                     android:padding="@dimen/spacing_extra_small">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/searchable_location_name"
+                        android:id="@+id/latitude"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/searchable_location_name"
-                        android:inputType="text"
-                        android:text="@={ event.searchableLocationName }" />
+                        android:hint="@string/latitude"
+                        android:inputType="numberDecimal"
+                        android:text="@={ BindingAdapters.doubleToStr(event.latitude) }" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_longitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:contentDescription="@string/longitude"
+                    app:srcCompat="@drawable/ic_location" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/longitude"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/longitude"
+                        android:inputType="numberDecimal"
+                        android:text="@={ BindingAdapters.doubleToStr(event.longitude) }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/map_shown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_extra_small"
+                android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
+                android:text="@string/show_map" />
+
         </LinearLayout>
 
         <LinearLayout
