@@ -6,11 +6,11 @@
     <data>
         <import type="android.view.View" />
 
-        <import type="org.fossasia.openevent.app.common.app.binding.BindingAdapters" />
+        <import type="org.fossasia.openevent.app.ui.binding.BindingAdapters" />
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.common.data.models.Event" />
+            type="org.fossasia.openevent.app.data.models.Event" />
     </data>
 
     <LinearLayout

@@ -2,10 +2,10 @@ package org.fossasia.openevent.app.robo.db;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.fossasia.openevent.app.common.data.db.DatabaseChangeListener;
-import org.fossasia.openevent.app.common.data.db.DatabaseRepository;
-import org.fossasia.openevent.app.common.data.models.dto.SimpleModel;
-import org.fossasia.openevent.app.common.data.models.dto.SimpleModel_Table;
+import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
+import org.fossasia.openevent.app.data.db.DatabaseRepository;
+import org.fossasia.openevent.app.data.models.dto.SimpleModel;
+import org.fossasia.openevent.app.data.models.dto.SimpleModel_Table;
 import org.junit.Test;
 
 import java.util.ArrayList;
