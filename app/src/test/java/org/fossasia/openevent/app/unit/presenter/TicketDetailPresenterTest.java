@@ -1,10 +1,10 @@
 package org.fossasia.openticket.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.models.Ticket;
-import org.fossasia.openevent.app.common.data.repository.TicketRepository;
-import org.fossasia.openevent.app.module.ticket.detail.TicketDetailPresenter;
-import org.fossasia.openevent.app.module.ticket.detail.contract.ITicketDetailView;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.Ticket;
+import org.fossasia.openevent.app.data.repository.TicketRepository;
+import org.fossasia.openevent.app.core.ticket.detail.TicketDetailPresenter;
+import org.fossasia.openevent.app.core.ticket.detail.ITicketDetailView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

@@ -2,13 +2,13 @@ package org.fossasia.openevent.app.unit.presenter;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.fossasia.openevent.app.common.data.db.DatabaseChangeListener;
-import org.fossasia.openevent.app.common.data.db.contract.IDatabaseChangeListener;
-import org.fossasia.openevent.app.common.data.models.Attendee;
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
-import org.fossasia.openevent.app.module.attendee.checkin.AttendeeCheckInPresenter;
-import org.fossasia.openevent.app.module.attendee.checkin.contract.IAttendeeCheckInView;
+import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
+import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
+import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.repository.IAttendeeRepository;
+import org.fossasia.openevent.app.core.attendee.checkin.AttendeeCheckInPresenter;
+import org.fossasia.openevent.app.core.attendee.checkin.IAttendeeCheckInView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

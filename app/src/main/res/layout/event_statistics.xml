@@ -5,11 +5,11 @@
 
         <import type="android.view.View" />
 
-        <import type="org.fossasia.openevent.app.common.app.binding.BindingAdapters" />
+        <import type="org.fossasia.openevent.app.ui.binding.BindingAdapters" />
 
         <variable
             name="eventStatistics"
-            type="org.fossasia.openevent.app.common.data.models.EventStatistics" />
+            type="org.fossasia.openevent.app.data.models.EventStatistics" />
     </data>
 
     <LinearLayout

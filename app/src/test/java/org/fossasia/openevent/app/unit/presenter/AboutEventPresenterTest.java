@@ -1,12 +1,12 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.data.db.contract.IDatabaseChangeListener;
-import org.fossasia.openevent.app.common.data.models.Copyright;
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.repository.contract.ICopyrightRepository;
-import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
-import org.fossasia.openevent.app.module.event.about.AboutEventPresenter;
-import org.fossasia.openevent.app.module.event.about.contract.IAboutEventVew;
+import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
+import org.fossasia.openevent.app.data.models.Copyright;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.repository.ICopyrightRepository;
+import org.fossasia.openevent.app.data.repository.IEventRepository;
+import org.fossasia.openevent.app.core.event.about.AboutEventPresenter;
+import org.fossasia.openevent.app.core.event.about.IAboutEventVew;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

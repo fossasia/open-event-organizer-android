@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.unit.utils;
 
-import org.fossasia.openevent.app.common.data.models.Attendee;
-import org.fossasia.openevent.app.common.utils.core.Utils;
+import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.utils.Utils;
 import org.junit.Test;
 
 import java.util.Arrays;

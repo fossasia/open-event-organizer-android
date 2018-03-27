@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="org.fossasia.openevent.app.common.app.ContextManager" />
-        <import type="org.fossasia.openevent.app.common.utils.core.DateUtils" />
-        <import type="org.fossasia.openevent.app.common.utils.ui.ViewUtils" />
+        <import type="org.fossasia.openevent.app.common.ContextManager" />
+        <import type="org.fossasia.openevent.app.utils.DateUtils" />
+        <import type="org.fossasia.openevent.app.ui.ViewUtils" />
         <import type="android.view.View" />
 
         <variable
             name="ticket"
-            type="org.fossasia.openevent.app.common.data.models.Ticket" />
+            type="org.fossasia.openevent.app.data.models.Ticket" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

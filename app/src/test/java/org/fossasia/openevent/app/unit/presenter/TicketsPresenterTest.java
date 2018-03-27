@@ -1,11 +1,11 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.app.rx.Logger;
-import org.fossasia.openevent.app.common.data.db.contract.IDatabaseChangeListener;
-import org.fossasia.openevent.app.common.data.models.Ticket;
-import org.fossasia.openevent.app.common.data.repository.contract.ITicketRepository;
-import org.fossasia.openevent.app.module.ticket.list.TicketsPresenter;
-import org.fossasia.openevent.app.module.ticket.list.contract.ITicketsView;
+import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
+import org.fossasia.openevent.app.data.models.Ticket;
+import org.fossasia.openevent.app.data.repository.ITicketRepository;
+import org.fossasia.openevent.app.core.ticket.list.TicketsPresenter;
+import org.fossasia.openevent.app.core.ticket.list.ITicketsView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

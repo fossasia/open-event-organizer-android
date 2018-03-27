@@ -8,7 +8,7 @@
 
         <variable
             name="copyright"
-            type="org.fossasia.openevent.app.common.data.models.Copyright" />
+            type="org.fossasia.openevent.app.data.models.Copyright" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

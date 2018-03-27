@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.unit.utils.misc;
 
-import org.fossasia.openevent.app.common.app.ContextManager;
-import org.fossasia.openevent.app.common.data.models.User;
+import org.fossasia.openevent.app.common.ContextManager;
+import org.fossasia.openevent.app.data.models.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

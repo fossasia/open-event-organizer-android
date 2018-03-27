@@ -33,11 +33,11 @@
 
 -dontwarn org.conscrypt.**
 
--keep class org.fossasia.openevent.app.common.data.models.** {
+-keep class org.fossasia.openevent.app.data.models.** {
   *;
 }
 
--keep class org.fossasia.openevent.app.common.utils.json.** {
+-keep class org.fossasia.openevent.app.data.models.json.** {
   *;
 }
 

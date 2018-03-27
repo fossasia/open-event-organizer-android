@@ -1,11 +1,11 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.app.rx.Logger;
-import org.fossasia.openevent.app.common.data.contract.IAuthModel;
-import org.fossasia.openevent.app.common.data.models.SubmitToken;
-import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
-import org.fossasia.openevent.app.module.auth.forgot.password.token.submit.ResetPasswordByTokenPresenter;
-import org.fossasia.openevent.app.module.auth.forgot.password.token.submit.contract.IResetPasswordByTokenView;
+import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.IAuthModel;
+import org.fossasia.openevent.app.data.models.SubmitToken;
+import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
+import org.fossasia.openevent.app.core.auth.forgot.submit.ResetPasswordByTokenPresenter;
+import org.fossasia.openevent.app.core.auth.forgot.submit.IResetPasswordByTokenView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

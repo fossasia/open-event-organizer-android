@@ -1,16 +1,16 @@
 package org.fossasia.openevent.app.unit.model;
 
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.common.app.ContextManager;
-import org.fossasia.openevent.app.common.data.AuthModel;
-import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
-import org.fossasia.openevent.app.common.data.contract.IUtilModel;
-import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
-import org.fossasia.openevent.app.common.data.models.User;
-import org.fossasia.openevent.app.common.data.models.dto.Login;
-import org.fossasia.openevent.app.common.data.models.dto.LoginResponse;
-import org.fossasia.openevent.app.common.data.network.EventService;
-import org.fossasia.openevent.app.module.main.MainActivity;
+import org.fossasia.openevent.app.common.ContextManager;
+import org.fossasia.openevent.app.data.AuthModel;
+import org.fossasia.openevent.app.data.ISharedPreferenceModel;
+import org.fossasia.openevent.app.data.IUtilModel;
+import org.fossasia.openevent.app.data.db.IDatabaseRepository;
+import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.models.dto.Login;
+import org.fossasia.openevent.app.data.models.dto.LoginResponse;
+import org.fossasia.openevent.app.data.network.EventService;
+import org.fossasia.openevent.app.core.main.MainActivity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

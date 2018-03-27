@@ -1,11 +1,11 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.app.rx.Logger;
-import org.fossasia.openevent.app.common.data.db.contract.IDatabaseChangeListener;
-import org.fossasia.openevent.app.common.data.models.Faq;
-import org.fossasia.openevent.app.common.data.repository.contract.IFaqRepository;
-import org.fossasia.openevent.app.module.faq.list.FaqListPresenter;
-import org.fossasia.openevent.app.module.faq.list.contract.IFaqListView;
+import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
+import org.fossasia.openevent.app.data.models.Faq;
+import org.fossasia.openevent.app.data.repository.IFaqRepository;
+import org.fossasia.openevent.app.core.faq.list.FaqListPresenter;
+import org.fossasia.openevent.app.core.faq.list.IFaqListView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

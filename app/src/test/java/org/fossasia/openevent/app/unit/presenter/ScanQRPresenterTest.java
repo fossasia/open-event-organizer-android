@@ -2,11 +2,11 @@ package org.fossasia.openevent.app.unit.presenter;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
-import org.fossasia.openevent.app.common.data.models.Attendee;
-import org.fossasia.openevent.app.common.data.models.Order;
-import org.fossasia.openevent.app.common.data.repository.contract.IAttendeeRepository;
-import org.fossasia.openevent.app.module.attendee.qrscan.ScanQRPresenter;
-import org.fossasia.openevent.app.module.attendee.qrscan.contract.IScanQRView;
+import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.models.Order;
+import org.fossasia.openevent.app.data.repository.IAttendeeRepository;
+import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRPresenter;
+import org.fossasia.openevent.app.core.attendee.qrscan.IScanQRView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

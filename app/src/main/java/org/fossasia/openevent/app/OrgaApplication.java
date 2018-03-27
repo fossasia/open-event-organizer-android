@@ -16,10 +16,10 @@ import com.raizlabs.android.dbflow.runtime.DirectModelNotifier;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import org.fossasia.openevent.app.common.app.di.component.AppComponent;
-import org.fossasia.openevent.app.common.app.di.component.DaggerAppComponent;
-import org.fossasia.openevent.app.common.app.di.module.AndroidModule;
-import org.fossasia.openevent.app.common.data.db.configuration.OrgaDatabase;
+import org.fossasia.openevent.app.common.di.component.AppComponent;
+import org.fossasia.openevent.app.common.di.component.DaggerAppComponent;
+import org.fossasia.openevent.app.common.di.module.AndroidModule;
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
