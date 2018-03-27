@@ -1,11 +1,11 @@
 package org.fossasia.openevent.app.robo.db;
 
-import org.fossasia.openevent.app.common.data.db.DatabaseRepository;
-import org.fossasia.openevent.app.common.data.models.Attendee;
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.models.Ticket;
-import org.fossasia.openevent.app.common.data.models.query.TypeQuantity;
-import org.fossasia.openevent.app.common.data.repository.TicketRepository;
+import org.fossasia.openevent.app.data.db.DatabaseRepository;
+import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.Ticket;
+import org.fossasia.openevent.app.data.models.query.TypeQuantity;
+import org.fossasia.openevent.app.data.repository.TicketRepository;
 import org.junit.After;
 import org.junit.Test;
 

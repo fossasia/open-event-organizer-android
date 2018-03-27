@@ -5,15 +5,15 @@
 
         <import type="android.view.View" />
 
-        <import type="org.fossasia.openevent.app.common.utils.core.DateUtils" />
+        <import type="org.fossasia.openevent.app.utils.DateUtils" />
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.common.data.models.Event" />
+            type="org.fossasia.openevent.app.data.models.Event" />
 
         <variable
             name="copyright"
-            type="org.fossasia.openevent.app.common.data.models.Copyright" />
+            type="org.fossasia.openevent.app.data.models.Copyright" />
     </data>
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"

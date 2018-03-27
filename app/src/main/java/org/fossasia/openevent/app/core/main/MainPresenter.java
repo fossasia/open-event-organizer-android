@@ -1,0 +1,124 @@
+package org.fossasia.openevent.app.core.main;
+
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
+
+import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.common.ContextManager;
+import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.IAuthModel;
+import org.fossasia.openevent.app.data.IBus;
+import org.fossasia.openevent.app.data.ISharedPreferenceModel;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.repository.IEventRepository;
+import org.fossasia.openevent.app.utils.CurrencyUtils;
+import org.fossasia.openevent.app.utils.DateUtils;
+
+import javax.inject.Inject;
+
+import io.reactivex.Observable;
+
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneous;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneousCompletable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneousResult;
+import static org.fossasia.openevent.app.core.main.MainActivity.EVENT_KEY;
+
+public class MainPresenter extends BasePresenter<IMainView> {
+
+    private final ISharedPreferenceModel sharedPreferenceModel;
+    private final IAuthModel loginModel;
+    private final IEventRepository eventRepository;
+    private final RxSharedPreferences sharedPreferences;
+    private final IBus bus;
+    private final ContextManager contextManager;
+
+    private User organizer;
+
+    @Inject
+    public MainPresenter(ISharedPreferenceModel sharedPreferenceModel, IAuthModel loginModel,
+                         IEventRepository eventRepository, IBus bus, RxSharedPreferences sharedPreferences, ContextManager contextManager) {
+        this.sharedPreferenceModel = sharedPreferenceModel;
+        this.loginModel = loginModel;
+        this.eventRepository = eventRepository;
+        this.bus = bus;
+        this.sharedPreferences = sharedPreferences;
+        this.contextManager = contextManager;
+    }
+
+    @Override
+    public void start() {
+        sharedPreferences.getBoolean(Constants.SHARED_PREFS_LOCAL_DATE)
+            .asObservable()
+            .compose(dispose(getDisposable()))
+            .distinctUntilChanged()
+            .doOnNext(changed -> getView().invalidateDateViews())
+            .subscribe(DateUtils::setShowLocal);
+
+        bus.getSelectedEvent()
+            .compose(dispose(getDisposable()))
+            .compose(erroneousResult(getView()))
+            .subscribe(event -> {
+                sharedPreferenceModel.setLong(EVENT_KEY, event.getId());
+                ContextManager.setSelectedEvent(event);
+                CurrencyUtils.getCurrencySymbol(event.getPaymentCurrency())
+                    .subscribe(ContextManager::setCurrency, Logger::logError);
+                showEvent(event);
+            }, Logger::logError);
+
+        getOrganizerObservable()
+            .compose(dispose(getDisposable()))
+            .subscribe(user -> {
+                this.organizer = user;
+                getView().showOrganizer(user);
+            }, Logger::logError);
+
+        long storedEventId = sharedPreferenceModel.getLong(EVENT_KEY, -1);
+
+        if (storedEventId == -1)
+            getView().showEventList();
+        else
+            showLoadedEvent(storedEventId);
+    }
+
+    private void showLoadedEvent(long storedEventId) {
+        getView().setEventId(storedEventId);
+        Event staticEvent = ContextManager.getSelectedEvent();
+
+        if (staticEvent != null) {
+            getView().showResult(staticEvent);
+            if (!isRotated()) showEvent(staticEvent);
+            return;
+        }
+
+        eventRepository
+            .getEvent(storedEventId, false)
+            .compose(dispose(getDisposable()))
+            .compose(erroneous(getView()))
+            .subscribe(bus::pushSelectedEvent, Logger::logError);
+    }
+
+    private void showEvent(Event event) {
+        getView().setEventId(event.getId());
+        getView().showDashboard();
+    }
+
+    private Observable<User> getOrganizerObservable() {
+        if (organizer != null && isRotated())
+            return Observable.just(organizer);
+        else
+            return eventRepository.getOrganiser(false);
+    }
+
+    public void logout() {
+        loginModel.logout()
+            .compose(disposeCompletable(getDisposable()))
+            .compose(erroneousCompletable(getView()))
+            .subscribe(() -> {
+                contextManager.clearOrganiser();
+                getView().onLogout();
+            }, Logger::logError);
+    }
+}

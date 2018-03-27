@@ -7,11 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import org.fossasia.openevent.app.common.data.db.configuration.ObservableBooleanTypeConverter;
-import org.fossasia.openevent.app.common.data.db.configuration.ObservableStringTypeConverter;
-import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
-import org.fossasia.openevent.app.common.utils.json.ObservableStringDeserializer;
-import org.fossasia.openevent.app.common.utils.json.ObservableStringSerializer;
+import org.fossasia.openevent.app.data.db.configuration.ObservableBooleanTypeConverter;
+import org.fossasia.openevent.app.data.db.configuration.ObservableStringTypeConverter;
+import org.fossasia.openevent.app.data.models.dto.ObservableString;
+import org.fossasia.openevent.app.data.models.serializer.ObservableStringDeserializer;
+import org.fossasia.openevent.app.data.models.serializer.ObservableStringSerializer;
 import org.junit.Test;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.unit.utils;
 
-import org.fossasia.openevent.app.common.utils.core.SearchUtils;
+import org.fossasia.openevent.app.utils.SearchUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

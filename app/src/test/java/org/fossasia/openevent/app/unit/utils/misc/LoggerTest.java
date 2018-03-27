@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.unit.utils.misc;
 
-import org.fossasia.openevent.app.common.app.rx.Logger;
-import org.fossasia.openevent.app.common.data.models.dto.SimpleModel;
+import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.models.dto.SimpleModel;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;

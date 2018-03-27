@@ -4,19 +4,19 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data class="EventDetailBinding">
-        <import type="org.fossasia.openevent.app.common.app.ContextManager" />
+        <import type="org.fossasia.openevent.app.common.ContextManager" />
 
         <variable
             name="presenter"
-            type="org.fossasia.openevent.app.module.event.dashboard.contract.IEventDashboardPresenter" />
+            type="org.fossasia.openevent.app.core.event.dashboard.EventDashboardPresenter" />
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.common.data.models.Event" />
+            type="org.fossasia.openevent.app.data.models.Event" />
 
         <variable
             name="eventStatistics"
-            type="org.fossasia.openevent.app.common.data.models.EventStatistics" />
+            type="org.fossasia.openevent.app.data.models.EventStatistics" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

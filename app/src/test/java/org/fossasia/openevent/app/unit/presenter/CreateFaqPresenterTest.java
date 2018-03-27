@@ -1,11 +1,11 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.app.ContextManager;
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.models.Faq;
-import org.fossasia.openevent.app.common.data.repository.contract.IFaqRepository;
-import org.fossasia.openevent.app.module.faq.create.CreateFaqPresenter;
-import org.fossasia.openevent.app.module.faq.create.contract.ICreateFaqView;
+import org.fossasia.openevent.app.common.ContextManager;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.Faq;
+import org.fossasia.openevent.app.data.repository.IFaqRepository;
+import org.fossasia.openevent.app.core.faq.create.CreateFaqPresenter;
+import org.fossasia.openevent.app.core.faq.create.ICreateFaqView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
