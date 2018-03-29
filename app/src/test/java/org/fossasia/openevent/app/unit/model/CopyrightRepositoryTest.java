@@ -48,6 +48,7 @@ public class CopyrightRepositoryTest {
 
     static {
         COPYRIGHT.setEvent(EVENT);
+        COPYRIGHT.setId(ID);
     }
 
     @Before
@@ -99,6 +100,27 @@ public class CopyrightRepositoryTest {
             .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
+    @Test
+    public void shouldReturnConnectionErrorOnUpdateCopyright() {
+        when(utilModel.isConnected()).thenReturn(false);
+
+        Observable<Copyright> copyrightObservable = copyrightRepository.updateCopyright(COPYRIGHT);
+
+        copyrightObservable
+            .test()
+            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+    }
+
+    @Test
+    public void shouldReturnConnectionErrorOnDeleteCopyright() {
+        when(utilModel.isConnected()).thenReturn(false);
+
+        Completable copyrightCompletable = copyrightRepository.deleteCopyright(ID);
+
+        copyrightCompletable
+            .test()
+            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+    }
 
     // Network up tests
 
@@ -175,4 +197,42 @@ public class CopyrightRepositoryTest {
 
         verify(databaseRepository).save(Copyright.class, COPYRIGHT);
     }
+
+    // Copyright update tests
+
+    @Test
+    public void shouldCallUpdateCopyrightService() {
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.patchCopyright(ID, COPYRIGHT)).thenReturn(Observable.empty());
+
+        copyrightRepository.updateCopyright(COPYRIGHT).subscribe();
+
+        verify(eventService).patchCopyright(ID, COPYRIGHT);
+    }
+
+    @Test
+    public void shouldUpdateUpdatedCopyright() {
+        Copyright updated = mock(Copyright.class);
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.patchCopyright(ID, COPYRIGHT)).thenReturn(Observable.just(updated));
+        when(databaseRepository.update(eq(Copyright.class), eq(updated))).thenReturn(Completable.complete());
+
+        copyrightRepository.updateCopyright(COPYRIGHT).subscribe();
+
+        verify(databaseRepository).update(Copyright.class, updated);
+    }
+
+    // Copyright delete tests
+
+    @Test
+    public void shouldCallDeleteCopyrightService() {
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.deleteCopyright(ID)).thenReturn(Completable.complete());
+
+        copyrightRepository.deleteCopyright(ID).subscribe();
+
+        verify(eventService).deleteCopyright(ID);
+    }
+
 }
