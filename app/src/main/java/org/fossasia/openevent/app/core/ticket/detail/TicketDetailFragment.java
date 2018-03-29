@@ -7,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.data.models.Ticket;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.TicketDetailLayoutBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -39,9 +38,6 @@ public class TicketDetailFragment extends BaseBottomSheetFragment<TicketDetailPr
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        OrgaApplication.getAppComponent()
-            .inject(this);
-
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();

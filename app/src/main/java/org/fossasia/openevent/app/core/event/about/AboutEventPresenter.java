@@ -94,9 +94,9 @@ public class AboutEventPresenter extends BaseDetailPresenter<Long, IAboutEventVe
     }
 
     @SuppressWarnings("PMD.NullAssignment")
-    public void deleteCopyright() {
+    public void deleteCopyright(long id) {
         copyrightRepository
-            .deleteCopyright(copyright.getId())
+            .deleteCopyright(id)
             .compose(disposeCompletable(getDisposable()))
             .compose(progressiveErroneousCompletable(getView()))
             .subscribe(() -> {

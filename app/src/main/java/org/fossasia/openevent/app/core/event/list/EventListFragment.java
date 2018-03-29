@@ -20,15 +20,14 @@ import android.view.ViewGroup;
 import com.android.databinding.library.baseAdapters.BR;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.core.event.create.CreateEventActivity;
 import org.fossasia.openevent.app.data.IBus;
 import org.fossasia.openevent.app.data.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.FragmentEventListBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import java.util.List;
 
@@ -64,12 +63,6 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
 
     private Context context;
     private boolean initialized;
-
-    public EventListFragment() {
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
-    }
 
     /**
      * Use this factory method to create a new instance of

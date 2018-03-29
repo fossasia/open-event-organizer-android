@@ -7,11 +7,10 @@ import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.mvp.view.BaseActivity;
-import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.common.mvp.view.BaseInjectActivity;
 import org.fossasia.openevent.app.core.event.dashboard.EventDashboardFragment;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -19,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.Lazy;
 
-public class ChartActivity extends BaseActivity<ChartPresenter> implements IChartView {
+public class ChartActivity extends BaseInjectActivity<ChartPresenter> implements IChartView {
     @BindView(R.id.chart)
     LineChart chart;
 
@@ -36,9 +35,6 @@ public class ChartActivity extends BaseActivity<ChartPresenter> implements IChar
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_chart);

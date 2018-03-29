@@ -10,12 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.data.models.Copyright;
 import org.fossasia.openevent.app.databinding.CopyrightCreateLayoutBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -35,14 +34,6 @@ public class UpdateCopyrightFragment extends BaseBottomSheetFragment<UpdateCopyr
     public static UpdateCopyrightFragment newInstance(Copyright copyright) {
         UpdateCopyrightFragment.copyright = copyright;
         return new UpdateCopyrightFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        OrgaApplication.getAppComponent()
-            .inject(this);
-
-        super.onCreate(savedInstanceState);
     }
 
     @Nullable

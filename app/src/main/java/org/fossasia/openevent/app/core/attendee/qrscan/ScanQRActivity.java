@@ -18,15 +18,14 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.di.component.DaggerBarcodeComponent;
-import org.fossasia.openevent.app.common.di.module.AndroidModule;
 import org.fossasia.openevent.app.common.di.module.BarcodeModule;
 import org.fossasia.openevent.app.common.mvp.view.BaseActivity;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.core.attendee.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.core.attendee.qrscan.widget.CameraSourcePreview;
 import org.fossasia.openevent.app.core.attendee.qrscan.widget.GraphicOverlay;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import java.io.IOException;
 
@@ -89,7 +88,6 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements ISc
         ButterKnife.bind(this);
 
         DaggerBarcodeComponent.builder()
-            .androidModule(new AndroidModule())
             .barcodeModule(new BarcodeModule(graphicOverlay))
             .build()
             .inject(this);

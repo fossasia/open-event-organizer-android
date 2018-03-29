@@ -8,13 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.data.IUtilModel;
 import org.fossasia.openevent.app.databinding.SignUpFragmentBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -36,15 +35,6 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements ISi
 
     public static SignUpFragment newInstance() {
         return new SignUpFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
     }
 
     @Nullable

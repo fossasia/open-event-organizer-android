@@ -1,12 +1,12 @@
 package org.fossasia.openevent.app.unit.presenter;
 
+import org.fossasia.openevent.app.core.event.about.AboutEventPresenter;
+import org.fossasia.openevent.app.core.event.about.IAboutEventVew;
 import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
 import org.fossasia.openevent.app.data.models.Copyright;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.repository.ICopyrightRepository;
 import org.fossasia.openevent.app.data.repository.IEventRepository;
-import org.fossasia.openevent.app.core.event.about.AboutEventPresenter;
-import org.fossasia.openevent.app.core.event.about.IAboutEventVew;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,6 +19,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -26,6 +27,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -168,5 +170,20 @@ public class AboutEventPresenterTest {
         aboutEventPresenter.detach();
 
         verify(copyrightChangeListener).stopListening();
+    }
+
+    @Test
+    public void shouldDeleteCopyrightSuccessfully() {
+        when(copyrightRepository.deleteCopyright(ID)).thenReturn(Completable.complete());
+        when(copyrightRepository.getCopyright(ID, true)).thenReturn(Observable.just(COPYRIGHT));
+
+        InOrder inOrder = Mockito.inOrder(copyrightRepository, aboutEventVew);
+
+        aboutEventPresenter.deleteCopyright(ID);
+
+        inOrder.verify(copyrightRepository).deleteCopyright(ID);
+        inOrder.verify(aboutEventVew).showProgress(true);
+        inOrder.verify(aboutEventVew).showCopyrightDeleted("Copyright Deleted");
+        inOrder.verify(aboutEventVew, times(2)).showProgress(false); // delete copyright operation and load copyright operation
     }
 }

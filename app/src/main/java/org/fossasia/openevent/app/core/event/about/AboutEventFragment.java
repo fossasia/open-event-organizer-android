@@ -15,16 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.core.event.copyright.CreateCopyrightFragment;
 import org.fossasia.openevent.app.core.event.copyright.update.UpdateCopyrightFragment;
 import org.fossasia.openevent.app.data.IUtilModel;
 import org.fossasia.openevent.app.data.models.Copyright;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.AboutEventFragmentBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import java.util.Arrays;
 
@@ -47,10 +46,6 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     IUtilModel utilModel;
     @Inject
     ToolbarColorChanger toolbarColorChanger;
-
-    public AboutEventFragment() {
-        OrgaApplication.getAppComponent().inject(this);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,7 +121,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
                 }
                 break;
             case R.id.action_delete_copyright:
-                getPresenter().deleteCopyright();
+                getPresenter().deleteCopyright(getPresenter().getCopyright().getId());
                 break;
             default:
                 // No implementation

@@ -24,10 +24,8 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.core.attendee.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.core.attendee.list.listeners.AttendeeItemCheckInEvent;
 import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRActivity;
@@ -35,6 +33,7 @@ import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.data.IUtilModel;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.databinding.FragmentAttendeesBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.utils.SearchUtils;
 
 import java.util.Arrays;
@@ -79,12 +78,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     private RecyclerView.AdapterDataObserver observer;
 
     private static final String FILTER_SYNC = "FILTER_SYNC";
-
-    public AttendeesFragment() {
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
-    }
 
     /**
      * Use this factory method to create a new instance of

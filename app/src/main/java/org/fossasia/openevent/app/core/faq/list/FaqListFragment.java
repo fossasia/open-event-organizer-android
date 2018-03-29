@@ -13,15 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.core.faq.create.CreateFaqFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.data.IUtilModel;
 import org.fossasia.openevent.app.data.models.Faq;
 import org.fossasia.openevent.app.databinding.FaqsFragmentBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import java.util.List;
 
@@ -45,12 +44,6 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements I
     private SwipeRefreshLayout refreshLayout;
 
     private boolean initialized;
-
-    public FaqListFragment() {
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
-    }
 
     public static FaqListFragment newInstance(long eventId) {
         FaqListFragment fragment = new FaqListFragment();
