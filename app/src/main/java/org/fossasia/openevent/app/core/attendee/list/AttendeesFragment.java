@@ -49,6 +49,8 @@ import dagger.Lazy;
  * Use the {@link AttendeesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+@SuppressWarnings("PMD.TooManyMethods")
 public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implements IAttendeesView {
 
     private Context context;
@@ -61,12 +63,20 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     @Inject
     Lazy<AttendeesPresenter> presenterProvider;
 
+    private static final int SORTBYTICKET = 1;
+    private static final int SORTBYNAME = 0;
+
+    private FastAdapter<Attendee> fastAdapter;
+    private StickyHeaderAdapter<Attendee> stickyHeaderAdapter;
+
     private ItemAdapter<Attendee> fastItemAdapter;
     private FragmentAttendeesBinding binding;
     private SwipeRefreshLayout refreshLayout;
     private SearchView searchView;
 
     private boolean initialized;
+
+    private RecyclerView.AdapterDataObserver observer;
 
     private static final String FILTER_SYNC = "FILTER_SYNC";
 
@@ -104,6 +114,14 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (observer != null) {
+            fastAdapter.unregisterAdapterDataObserver(observer);
+        }
+    }
+
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_attendees, menu);
         MenuItem search = menu.findItem(R.id.search);
@@ -121,9 +139,27 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             case R.id.filterBySync:
                 fastItemAdapter.filter(FILTER_SYNC);
                 return true;
+            case R.id.sortByTicket:
+                sortAttendees(SORTBYTICKET);
+                return true;
+            case R.id.sortByName:
+                sortAttendees(SORTBYNAME);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void sortAttendees(int sortBy) {
+        if (sortBy == SORTBYTICKET) {
+            fastItemAdapter.withComparator((Attendee a1, Attendee a2) -> a1.getTicket().getType().compareTo(a2.getTicket().getType()));
+        } else {
+            fastItemAdapter.withComparator((Attendee a1, Attendee a2) -> a1.getFirstname().compareTo(a2.getFirstname()), true);
+        }
+        fastItemAdapter.setNewList(getPresenter().getAttendees());
+        stickyHeaderAdapter.setSortByName(sortBy == SORTBYTICKET);
+        binding.setVariable(BR.attendees, getPresenter().getAttendees());
+        binding.executePendingBindings();
     }
 
     @Override
@@ -209,9 +245,9 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
                 }
             );
 
-            StickyHeaderAdapter<Attendee> stickyHeaderAdapter = new StickyHeaderAdapter<>();
-
-            FastAdapter<Attendee> fastAdapter = FastAdapter.with(Arrays.asList(fastItemAdapter, stickyHeaderAdapter));
+            stickyHeaderAdapter = new StickyHeaderAdapter<>();
+            stickyHeaderAdapter.setSortByName(false);
+            fastAdapter = FastAdapter.with(Arrays.asList(fastItemAdapter, stickyHeaderAdapter));
             fastAdapter.setHasStableIds(true);
             fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
 
@@ -223,7 +259,14 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
             final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
             recyclerView.addItemDecoration(decoration);
-
+            observer = new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    decoration.invalidateHeaders();
+                }
+            };
+            fastAdapter.registerAdapterDataObserver(observer);
             ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.fabScanQr);
         }
     }

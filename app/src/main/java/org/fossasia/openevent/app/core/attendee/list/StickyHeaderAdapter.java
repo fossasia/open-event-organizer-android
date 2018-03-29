@@ -7,6 +7,7 @@ import com.mikepenz.fastadapter.AbstractAdapter;
 import com.mikepenz.fastadapter.IItem;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
+import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.ui.HeaderViewHolder;
 import org.fossasia.openevent.app.data.models.delegates.IHeaderProvider;
 import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
@@ -15,9 +16,17 @@ import java.util.List;
 
 class StickyHeaderAdapter<T extends IItem & IHeaderProvider> extends AbstractAdapter<T>
     implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
+
+    private boolean sortByName;
+
     @Override
     public long getHeaderId(int position) {
-        return getFastAdapter().getItem(position).getHeaderId();
+        if (sortByName) {
+            Attendee attendee = (Attendee) getFastAdapter().getItem(position);
+            return attendee.getTicket().getType().hashCode();
+        } else {
+            return getFastAdapter().getItem(position).getHeaderId();
+        }
     }
 
     @Override
@@ -27,7 +36,11 @@ class StickyHeaderAdapter<T extends IItem & IHeaderProvider> extends AbstractAda
 
     @Override
     public void onBindHeaderViewHolder(HeaderViewHolder viewHolder, int position) {
-        viewHolder.bindHeader(getFastAdapter().getItem(position).getHeader());
+        if (sortByName) {
+            Attendee attendee = (Attendee) getFastAdapter().getItem(position);
+            viewHolder.bindHeader(attendee.getTicket().getType());
+        } else
+            viewHolder.bindHeader(getFastAdapter().getItem(position).getHeader());
     }
 
     @Override
@@ -68,5 +81,9 @@ class StickyHeaderAdapter<T extends IItem & IHeaderProvider> extends AbstractAda
     @Override
     public int getGlobalPosition(int i) {
         return -1;
+    }
+
+    public void setSortByName(boolean sortByName) {
+        this.sortByName = sortByName;
     }
 }
