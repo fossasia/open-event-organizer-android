@@ -106,6 +106,7 @@
     <string name="create_event">Create Event</string>
     <string name="event_name">Event Name</string>
     <string name="payment_currency">Payment Currency</string>
+    <string name="ticket">Ticket</string>
     <string name="date_and_time">Date and Time</string>
     <string name="timezone">Timezone</string>
     <string name="location_details">Location Details</string>
