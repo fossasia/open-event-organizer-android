@@ -13,7 +13,9 @@ import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.models.Copyright;
 import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.Faq;
 import org.fossasia.openevent.app.data.models.Order;
 import org.fossasia.openevent.app.data.models.Ticket;
 import org.fossasia.openevent.app.data.models.User;
@@ -34,7 +36,7 @@ public final class OrgaDatabase {
 
     public static final String NAME = "orga_database";
     // To be bumped after each schema change and migration addition
-    public static final int VERSION = 8;
+    public static final int VERSION = 9;
 
     private OrgaDatabase() {
         // Never Called
@@ -128,4 +130,22 @@ public final class OrgaDatabase {
             addColumn(SQLiteType.TEXT, "checkinTimes");
         }
     }
+
+    @Migration(version = 9, database = OrgaDatabase.class)
+    public static class MigrationTo9 extends BaseMigration {
+
+        @Override
+        public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
+            Timber.d("Running migration for DB version 9");
+
+            Class[] recreated = new Class[] {Faq.class, Copyright.class};
+
+            for (Class recreate: recreated) {
+                ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
+                databaseWrapper.execSQL("DROP TABLE IF EXISTS " + modelAdapter.getTableName());
+                databaseWrapper.execSQL(modelAdapter.getCreationQuery());
+            }
+        }
+    }
+
 }
