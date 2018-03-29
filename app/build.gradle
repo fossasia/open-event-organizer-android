@@ -95,6 +95,7 @@ configurations.all { config ->
 
 check {
     abortOnError false
+    findbugs { skip true }
 }
 
 dependencies {
