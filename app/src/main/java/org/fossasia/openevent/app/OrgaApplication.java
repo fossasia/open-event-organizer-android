@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -16,24 +17,29 @@ import com.raizlabs.android.dbflow.runtime.DirectModelNotifier;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import org.fossasia.openevent.app.common.di.component.AppComponent;
-import org.fossasia.openevent.app.common.di.component.DaggerAppComponent;
-import org.fossasia.openevent.app.common.di.module.AndroidModule;
+import org.fossasia.openevent.app.common.di.AppInjector;
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 import io.sentry.Sentry;
 import io.sentry.android.AndroidSentryClientFactory;
 import io.sentry.event.BreadcrumbBuilder;
 import timber.log.Timber;
 
-public class OrgaApplication extends MultiDexApplication {
+public class OrgaApplication extends MultiDexApplication implements HasActivityInjector {
 
     private static final AtomicBoolean CREATED = new AtomicBoolean();
 
-    private static volatile AppComponent appComponent;
     private RefWatcher refWatcher;
+
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
     /**
      * Reference watcher to be used in detecting leaks in Fragments
@@ -43,10 +49,6 @@ public class OrgaApplication extends MultiDexApplication {
      */
     public static RefWatcher getRefWatcher(Context context) {
         return ((OrgaApplication) context.getApplicationContext()).refWatcher;
-    }
-
-    public static AppComponent getAppComponent() {
-        return appComponent;
     }
 
     public static void initializeDatabase(Context context) {
@@ -70,9 +72,7 @@ public class OrgaApplication extends MultiDexApplication {
         if (CREATED.getAndSet(true))
             return;
 
-        appComponent = DaggerAppComponent.builder()
-            .androidModule(new AndroidModule())
-            .build();
+        AppInjector.init(this);
 
         if (isTestBuild())
             return;
@@ -120,6 +120,11 @@ public class OrgaApplication extends MultiDexApplication {
 
     protected boolean isTestBuild() {
         return false;
+    }
+
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return dispatchingAndroidInjector;
     }
 
     private static class ReleaseLogTree extends Timber.Tree {

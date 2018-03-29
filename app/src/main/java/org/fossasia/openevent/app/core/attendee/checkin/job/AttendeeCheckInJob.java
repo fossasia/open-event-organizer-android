@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 
-import org.fossasia.openevent.app.OrgaApplication;
+import org.fossasia.openevent.app.common.di.component.DaggerAppComponent;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.repository.AttendeeRepository;
 
@@ -24,7 +24,7 @@ public class AttendeeCheckInJob extends Job {
     @Override
     @SuppressWarnings("PMD.AvoidCatchingGenericException") // No information on possible exceptions available
     protected Result onRunJob(Params params) {
-        OrgaApplication.getAppComponent().inject(this);
+        DaggerAppComponent.create().inject(this);
 
         Timber.d("Running batch job : %s", TAG);
 

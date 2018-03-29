@@ -25,13 +25,12 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.databinding.EventCreateLayoutBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.utils.ValidateUtils;
 
 import java.util.Arrays;
@@ -60,14 +59,6 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
 
     public static CreateEventFragment newInstance() {
         return new CreateEventFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        OrgaApplication.getAppComponent()
-            .inject(this);
-
-        super.onCreate(savedInstanceState);
     }
 
     @Override

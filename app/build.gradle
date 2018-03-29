@@ -134,7 +134,10 @@ dependencies {
 
     // Dagger
     implementation "com.google.dagger:dagger:${versions.dagger_version}"
+    implementation "com.google.dagger:dagger-android:${versions.dagger_version}"
+    implementation "com.google.dagger:dagger-android-support:${versions.dagger_version}"
     annotationProcessor "com.google.dagger:dagger-compiler:${versions.dagger_version}"
+    annotationProcessor "com.google.dagger:dagger-android-processor:${versions.dagger_version}"
 
     // Retrofit
     implementation "com.squareup.okhttp3:okhttp:${versions.okhttp_version}"

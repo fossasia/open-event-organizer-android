@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
@@ -50,12 +49,6 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements I
     private SwipeRefreshLayout refreshLayout;
 
     private boolean initialized;
-
-    public TicketsFragment() {
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
-    }
 
     public static TicketsFragment newInstance(long eventId) {
         TicketsFragment fragment = new TicketsFragment();

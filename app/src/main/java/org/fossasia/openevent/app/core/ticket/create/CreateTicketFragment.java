@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.databinding.TicketCreateLayoutBinding;
@@ -32,14 +31,6 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<CreateTicketPr
 
     public static CreateTicketFragment newInstance() {
         return new CreateTicketFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        OrgaApplication.getAppComponent()
-            .inject(this);
-
-        super.onCreate(savedInstanceState);
     }
 
     @Override

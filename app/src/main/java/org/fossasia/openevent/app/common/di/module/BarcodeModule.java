@@ -8,6 +8,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.fossasia.openevent.app.OrgaProvider;
+import org.fossasia.openevent.app.common.di.module.android.BarcodeActivityBuildersModule;
 import org.fossasia.openevent.app.core.attendee.qrscan.BarcodeGraphic;
 import org.fossasia.openevent.app.core.attendee.qrscan.BarcodeTrackerFactory;
 import org.fossasia.openevent.app.core.attendee.qrscan.widget.GraphicOverlay;
@@ -20,7 +21,7 @@ import dagger.Provides;
 import io.reactivex.Notification;
 import io.reactivex.subjects.PublishSubject;
 
-@Module(includes = AndroidModule.class)
+@Module(includes = BarcodeActivityBuildersModule.class)
 public class BarcodeModule {
 
     private final GraphicOverlay<BarcodeGraphic> graphicOverlay;

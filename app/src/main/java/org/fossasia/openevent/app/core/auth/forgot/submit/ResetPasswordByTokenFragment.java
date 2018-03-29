@@ -7,13 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.core.auth.forgot.request.ForgotPasswordFragment;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.databinding.ResetPasswordByTokenFragmentBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -32,15 +31,6 @@ public class ResetPasswordByTokenFragment extends BaseFragment<ResetPasswordByTo
 
     public static ResetPasswordByTokenFragment newInstance() {
         return new ResetPasswordByTokenFragment();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
     }
 
     @Override
