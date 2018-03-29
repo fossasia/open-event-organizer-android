@@ -94,10 +94,7 @@ configurations.all { config ->
 }
 
 check {
-    abortOnError true
-    findbugs {
-        abortOnError false
-    }
+    abortOnError false
 }
 
 dependencies {
