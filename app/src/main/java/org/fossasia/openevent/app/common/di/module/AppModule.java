@@ -6,7 +6,8 @@ import dagger.Module;
     AndroidModule.class,
     RepoModule.class,
     ModelModule.class,
-    NetworkModule.class
+    NetworkModule.class,
+    ViewModelModule.class
 })
 public class AppModule {
 
