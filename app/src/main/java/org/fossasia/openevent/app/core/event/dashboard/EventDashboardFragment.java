@@ -12,15 +12,14 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
+import org.fossasia.openevent.app.core.event.chart.ChartActivity;
 import org.fossasia.openevent.app.data.IUtilModel;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.EventStatistics;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
-import org.fossasia.openevent.app.core.event.chart.ChartActivity;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -73,10 +72,6 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
-
         super.onCreate(savedInstanceState);
 
         Bundle arguments = getArguments();

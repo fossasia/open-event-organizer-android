@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.event.copyright.CreateCopyrightFragment;
@@ -47,10 +46,6 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     IUtilModel utilModel;
     @Inject
     ToolbarColorChanger toolbarColorChanger;
-
-    public AboutEventFragment() {
-        OrgaApplication.getAppComponent().inject(this);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

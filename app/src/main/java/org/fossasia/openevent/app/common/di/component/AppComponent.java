@@ -1,7 +1,8 @@
 package org.fossasia.openevent.app.common.di.component;
 
-import org.fossasia.openevent.app.common.di.module.DataModule;
-import org.fossasia.openevent.app.common.di.module.NetworkModule;
+import org.fossasia.openevent.app.OrgaApplication;
+import org.fossasia.openevent.app.common.di.module.AppModule;
+import org.fossasia.openevent.app.common.di.module.android.ActivityBuildersModule;
 import org.fossasia.openevent.app.core.attendee.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.core.attendee.checkin.job.AttendeeCheckInJob;
 import org.fossasia.openevent.app.core.attendee.list.AttendeesFragment;
@@ -30,14 +31,19 @@ import org.fossasia.openevent.app.core.ticket.list.TicketsFragment;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import dagger.android.AndroidInjectionModule;
+import dagger.android.AndroidInjector;
 
 @Singleton
 @Component(modules = {
-    DataModule.class,
-    NetworkModule.class
+    AndroidInjectionModule.class,
+    ActivityBuildersModule.class,
+    AppModule.class
 })
 @SuppressWarnings("PMD.TooManyMethods") // Will contain entry for all injectable classes
-public interface AppComponent {
+public interface AppComponent extends AndroidInjector<OrgaApplication> {
+
+    void inject(OrgaApplication orgaApplication);
 
     void inject(MainActivity mainActivity);
 
