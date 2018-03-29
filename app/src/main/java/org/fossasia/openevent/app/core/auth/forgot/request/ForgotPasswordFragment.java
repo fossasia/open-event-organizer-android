@@ -8,13 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.core.auth.forgot.submit.ResetPasswordByTokenFragment;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.databinding.ForgotPasswordFragmentBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -36,15 +35,6 @@ public class ForgotPasswordFragment extends BaseFragment<ForgotPasswordPresenter
 
     public static ForgotPasswordFragment newInstance() {
         return new ForgotPasswordFragment();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
     }
 
     @Override

@@ -33,6 +33,8 @@
 
 -dontwarn org.conscrypt.**
 
+-dontwarn com.google.errorprone.**
+
 -keep class org.fossasia.openevent.app.data.models.** {
   *;
 }

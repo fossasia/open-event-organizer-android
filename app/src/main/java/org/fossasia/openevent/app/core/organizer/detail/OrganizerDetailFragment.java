@@ -12,14 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.core.organizer.password.ChangePasswordFragment;
 import org.fossasia.openevent.app.data.IUtilModel;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.databinding.OrganizerDetailFragmentBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -34,10 +33,6 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
     IUtilModel utilModel;
     @Inject
     Lazy<OrganizerDetailPresenter> presenterProvider;
-
-    public OrganizerDetailFragment() {
-        OrgaApplication.getAppComponent().inject(this);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

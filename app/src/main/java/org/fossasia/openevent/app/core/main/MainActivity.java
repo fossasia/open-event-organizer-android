@@ -14,11 +14,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.mvp.view.BaseActivity;
-import org.fossasia.openevent.app.ui.BackPressHandler;
-import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.common.mvp.view.BaseInjectActivity;
 import org.fossasia.openevent.app.core.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.core.auth.AuthActivity;
 import org.fossasia.openevent.app.core.event.about.AboutEventActivity;
@@ -32,12 +29,14 @@ import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.databinding.MainActivityBinding;
 import org.fossasia.openevent.app.databinding.MainNavHeaderBinding;
+import org.fossasia.openevent.app.ui.BackPressHandler;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
 
-public class MainActivity extends BaseActivity<MainPresenter> implements NavigationView.OnNavigationItemSelectedListener, IMainView {
+public class MainActivity extends BaseInjectActivity<MainPresenter> implements NavigationView.OnNavigationItemSelectedListener, IMainView {
 
     public static final String EVENT_KEY = "event";
     private long eventId = -1;
@@ -57,10 +56,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements Navigat
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
-
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 

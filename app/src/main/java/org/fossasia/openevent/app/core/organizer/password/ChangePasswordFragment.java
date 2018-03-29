@@ -9,11 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.databinding.ChangePasswordFragmentBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -32,15 +31,6 @@ public class ChangePasswordFragment extends BaseFragment<ChangePasswordPresenter
 
     public static ChangePasswordFragment newInstance() {
         return new ChangePasswordFragment();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        OrgaApplication
-            .getAppComponent()
-            .inject(this);
     }
 
     @Override
