@@ -15,6 +15,7 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class UpdateCopyrightPresenter extends BasePresenter<IUpdateCopyrightView> {
 
     private final ICopyrightRepository copyrightRepository;
+    private Copyright copyright;
 
     @Inject
     public UpdateCopyrightPresenter(ICopyrightRepository copyrightRepository) {
@@ -34,7 +35,20 @@ public class UpdateCopyrightPresenter extends BasePresenter<IUpdateCopyrightView
         copyright.setLogoUrl(StringUtils.emptyToNull(copyright.getLogoUrl()));
     }
 
-    public void updateCopyright(Copyright copyright) {
+    public void loadCopyright(long eventId) {
+        copyrightRepository
+            .getCopyright(eventId, false)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .doFinally(this::showCopyright)
+            .subscribe(loadedCopyright -> this.copyright = loadedCopyright, Logger::logError);
+    }
+
+    private void showCopyright() {
+        getView().setCopyright(copyright);
+    }
+
+    public void updateCopyright() {
         nullifyEmptyFields(copyright);
 
         copyright.setEvent(ContextManager.getSelectedEvent());

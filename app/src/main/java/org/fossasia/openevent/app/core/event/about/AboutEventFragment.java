@@ -116,7 +116,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
                     BottomSheetDialogFragment bottomSheetDialogFragment = CreateCopyrightFragment.newInstance();
                     bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
                 } else {
-                    BottomSheetDialogFragment bottomSheetDialogFragment = UpdateCopyrightFragment.newInstance(getPresenter().getCopyright());
+                    BottomSheetDialogFragment bottomSheetDialogFragment = UpdateCopyrightFragment.newInstance(eventId);
                     bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
                 }
                 break;
