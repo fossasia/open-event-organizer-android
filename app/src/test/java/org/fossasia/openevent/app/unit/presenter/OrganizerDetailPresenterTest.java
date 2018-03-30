@@ -1,10 +1,10 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.app.rx.Logger;
-import org.fossasia.openevent.app.common.data.models.User;
-import org.fossasia.openevent.app.common.data.repository.EventRepository;
-import org.fossasia.openevent.app.module.organizer.detail.OrganizerDetailPresenter;
-import org.fossasia.openevent.app.module.organizer.detail.contract.IOrganizerDetailView;
+import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.repository.EventRepository;
+import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailPresenter;
+import org.fossasia.openevent.app.core.organizer.detail.IOrganizerDetailView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

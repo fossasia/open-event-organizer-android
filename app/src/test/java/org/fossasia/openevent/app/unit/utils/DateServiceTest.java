@@ -1,9 +1,9 @@
 package org.fossasia.openevent.app.unit.utils;
 
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
-import org.fossasia.openevent.app.common.utils.core.DateUtils;
-import org.fossasia.openevent.app.common.utils.core.service.DateService;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.dto.ObservableString;
+import org.fossasia.openevent.app.utils.DateUtils;
+import org.fossasia.openevent.app.utils.service.DateService;
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
 

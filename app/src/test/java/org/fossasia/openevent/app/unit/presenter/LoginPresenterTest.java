@@ -1,13 +1,13 @@
 package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.common.app.rx.Logger;
-import org.fossasia.openevent.app.common.data.contract.IAuthModel;
-import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
-import org.fossasia.openevent.app.common.data.models.dto.Login;
-import org.fossasia.openevent.app.common.data.network.HostSelectionInterceptor;
-import org.fossasia.openevent.app.module.auth.login.LoginPresenter;
-import org.fossasia.openevent.app.module.auth.login.contract.ILoginView;
+import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.IAuthModel;
+import org.fossasia.openevent.app.data.ISharedPreferenceModel;
+import org.fossasia.openevent.app.data.models.dto.Login;
+import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
+import org.fossasia.openevent.app.core.auth.login.LoginPresenter;
+import org.fossasia.openevent.app.core.auth.login.ILoginView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

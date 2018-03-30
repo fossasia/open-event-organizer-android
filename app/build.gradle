@@ -2,10 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.sentry.android.gradle'
 apply plugin: 'com.noveogroup.android.check'
 apply from: './jacoco.gradle'
-def versions = {}
-apply from: project(':app').file('config.gradle'), to: versions
 
 def app_name = System.getenv('app_name') ?: "eventyay organizer"
+def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
 
 android {
     lintOptions {
@@ -17,17 +16,20 @@ android {
         exclude 'META-INF/LICENSE'
     }
 
-    compileSdkVersion versions.compileSdkVersion
-    buildToolsVersion versions.buildToolsVersion
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
     defaultConfig {
         applicationId "org.fossasia.eventyay"
-        minSdkVersion versions.minSdkVersion
-        targetSdkVersion versions.targetSdkVersion
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
         versionCode 4
         versionName "1.0.3alpha"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [appName: app_name]
+        manifestPlaceholders = [
+            appName: app_name,
+            GOOGLE_PLACES_API_KEY: GOOGLE_PLACES_API_KEY
+        ]
     }
     buildTypes {
         release {
@@ -92,56 +94,64 @@ configurations.all { config ->
 }
 
 check {
-    abortOnError true
-    findbugs {
-        abortOnError false
-    }
+    abortOnError false
+    findbugs { skip true }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Support Lib
-    implementation 'com.android.support:multidex:1.0.2'
-    implementation "com.android.support:appcompat-v7:${versions.support_lib_version}"
-    implementation "com.android.support:cardview-v7:${versions.support_lib_version}"
-    implementation "com.android.support:recyclerview-v7:${versions.support_lib_version}"
-    implementation "com.android.support:design:${versions.support_lib_version}"
-    implementation "com.android.support:palette-v7:${versions.support_lib_version}"
-    implementation "com.takisoft.fix:preference-v7:${versions.support_lib_version}.0"
-    implementation "com.google.android.gms:play-services-vision:${versions.play_services_vision}"
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation "com.android.support:appcompat-v7:${versions.support_lib}"
+    implementation "com.android.support:cardview-v7:${versions.support_lib}"
+    implementation "com.android.support:recyclerview-v7:${versions.support_lib}"
+    implementation "com.android.support:design:${versions.support_lib}"
+    implementation "com.android.support:palette-v7:${versions.support_lib}"
+    implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
+    implementation "com.google.android.gms:play-services-vision:${versions.play_services}"
+    implementation "com.google.android.gms:play-services-places:${versions.play_services}"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // Misc
-    implementation "com.jakewharton.timber:timber:${versions.timber_version}"
-    implementation "com.evernote:android-job:${versions.android_job_version}"
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "com.evernote:android-job:${versions.android_job}"
     implementation 'com.mikhaellopez:circularprogressbar:1.1.1'
     implementation 'com.github.Ilhasoft:data-binding-validator:1.0.0'
-    implementation "io.sentry:sentry-android:${versions.sentry_android_version}"
-    implementation "com.github.PhilJay:MPAndroidChart:${versions.mpAndroidChartVersion}"
+    implementation "io.sentry:sentry-android:${versions.sentry_android}"
+    implementation "com.github.PhilJay:MPAndroidChart:${versions.mp_android_chart}"
     compileOnly 'com.google.code.findbugs:findbugs-annotations:3.0.1'
 
+    // Lifecycle
+    implementation "android.arch.lifecycle:runtime:$versions.lifecycle"
+    implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
+    implementation "android.arch.lifecycle:common-java8:$versions.lifecycle"
+    annotationProcessor "android.arch.lifecycle:compiler:$versions.lifecycle"
+
     // DbFlow
-    implementation "com.github.raizlabs.dbflow:dbflow-core:${versions.dbflow_version}"
-    implementation "com.github.raizlabs.dbflow:dbflow:${versions.dbflow_version}"
-    implementation "com.github.raizlabs.dbflow:dbflow-rx2:${versions.dbflow_version}"
-    annotationProcessor "com.github.raizlabs.dbflow:dbflow-processor:${versions.dbflow_version}"
+    implementation "com.github.raizlabs.dbflow:dbflow-core:${versions.dbflow}"
+    implementation "com.github.raizlabs.dbflow:dbflow:${versions.dbflow}"
+    implementation "com.github.raizlabs.dbflow:dbflow-rx2:${versions.dbflow}"
+    annotationProcessor "com.github.raizlabs.dbflow:dbflow-processor:${versions.dbflow}"
 
     // Dagger
-    implementation "com.google.dagger:dagger:${versions.dagger_version}"
-    annotationProcessor "com.google.dagger:dagger-compiler:${versions.dagger_version}"
+    implementation "com.google.dagger:dagger:${versions.dagger}"
+    implementation "com.google.dagger:dagger-android:${versions.dagger}"
+    implementation "com.google.dagger:dagger-android-support:${versions.dagger}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${versions.dagger}"
+    annotationProcessor "com.google.dagger:dagger-android-processor:${versions.dagger}"
 
     // Retrofit
-    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp_version}"
-    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit_version}"
-    implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit_version}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit_version}"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    implementation 'com.github.jasminb:jsonapi-converter:0.8'
+    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    implementation 'com.github.jasminb:jsonapi-converter:0.8.1'
 
     // RxJava
-    implementation "io.reactivex.rxjava2:rxandroid:${versions.rxandroid_version}"
-    implementation "io.reactivex.rxjava2:rxjava:${versions.rxjava_version}"
+    implementation "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}"
+    implementation "io.reactivex.rxjava2:rxjava:${versions.rxjava}"
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3'
 
     // Fast Adapter
@@ -156,33 +166,33 @@ dependencies {
     implementation ("com.github.florent37:glidepalette:2.1.0") {
         transitive = false
     }
-    implementation "com.github.bumptech.glide:glide:${versions.glide_version}"
-    implementation "com.github.bumptech.glide:okhttp3-integration:${versions.glide_version}"
-    annotationProcessor "com.github.bumptech.glide:compiler:${versions.glide_version}"
+    implementation "com.github.bumptech.glide:glide:${versions.glide}"
+    implementation "com.github.bumptech.glide:okhttp3-integration:${versions.glide}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${versions.glide}"
 
     // ThreeTen
-    implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenbp_version}"
+    implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenbp}"
     testImplementation 'org.threeten:threetenbp:1.3.6'
 
     // Leak Canary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary_version}"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leak_canary_version}"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leak_canary}"
 
     // Stetho
-    debugImplementation "com.facebook.stetho:stetho:${versions.stetho_version}"
-    debugImplementation "com.facebook.stetho:stetho-okhttp3:${versions.stetho_version}"
-    releaseImplementation "net.igenius:stetho-no-op:${versions.stetho_no_op_version}"
-    testImplementation "net.igenius:stetho-no-op:${versions.stetho_no_op_version}"
+    debugImplementation "com.facebook.stetho:stetho:${versions.stetho}"
+    debugImplementation "com.facebook.stetho:stetho-okhttp3:${versions.stetho}"
+    releaseImplementation "net.igenius:stetho-no-op:${versions.stetho_no_op}"
+    testImplementation "net.igenius:stetho-no-op:${versions.stetho_no_op}"
 
     // Butterknife
-    implementation "com.jakewharton:butterknife:${versions.butterknife_version}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${versions.butterknife_version}"
+    implementation "com.jakewharton:butterknife:${versions.butterknife}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${versions.butterknife}"
 
     // Lombok
-    compileOnly "org.projectlombok:lombok:${versions.lombokVersion}"
-    testCompileOnly "org.projectlombok:lombok:${versions.lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${versions.lombokVersion}"
-    testAnnotationProcessor "org.projectlombok:lombok:${versions.lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${versions.lombok}"
+    testCompileOnly "org.projectlombok:lombok:${versions.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+    testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
     //Testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
@@ -190,8 +200,8 @@ dependencies {
     })
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-inline:2.8.9'
-    testImplementation 'org.json:json:20140107'
-    testImplementation "org.robolectric:robolectric:${versions.roboelectric_version}"
-    testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric_version}"
-    testImplementation "org.robolectric:shadows-supportv4:${versions.roboelectric_version}"
+    testImplementation 'org.json:json:20160810'
+    testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
+    testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"
+    testImplementation "org.robolectric:shadows-supportv4:${versions.roboelectric}"
 }

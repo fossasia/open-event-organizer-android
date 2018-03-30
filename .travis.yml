@@ -6,7 +6,7 @@ android:
   components:
     - tools
     - android-27
-    - build-tools-27.0.1
+    - build-tools-27.0.3
     - platform-tools
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -21,13 +21,6 @@ install:
 script:
   - ./gradlew build
   - ./gradlew testDebugUnitTestCoverage
-after_failure:
-  # tests
-  - cat app/build/reports/tests/testDebugUnitTest/index.html
-
-  # app
-  - cat app/build/reports/lint-results.xml
-  - cat app/build/reports/lint-results.html
 after_success:
     - bash <(curl -s https://codecov.io/bash)
     - bash scripts/prep-key.sh

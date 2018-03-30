@@ -2,22 +2,23 @@ package org.fossasia.openevent.app.robo.ui;
 
 import android.support.v4.app.Fragment;
 
-import org.fossasia.openevent.app.common.app.ContextManager;
-import org.fossasia.openevent.app.common.data.UtilModel;
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
-import org.fossasia.openevent.app.module.attendee.list.AttendeesFragment;
-import org.fossasia.openevent.app.module.auth.forgot.password.token.request.ForgotPasswordFragment;
-import org.fossasia.openevent.app.module.auth.forgot.password.token.submit.ResetPasswordByTokenFragment;
-import org.fossasia.openevent.app.module.auth.login.LoginFragment;
-import org.fossasia.openevent.app.module.auth.signup.SignUpFragment;
-import org.fossasia.openevent.app.module.event.dashboard.EventDashboardFragment;
-import org.fossasia.openevent.app.module.event.list.EventListFragment;
-import org.fossasia.openevent.app.module.settings.SettingsFragment;
-import org.fossasia.openevent.app.module.ticket.create.CreateTicketFragment;
-import org.fossasia.openevent.app.module.ticket.list.TicketsFragment;
+import org.fossasia.openevent.app.common.ContextManager;
+import org.fossasia.openevent.app.data.UtilModel;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.dto.ObservableString;
+import org.fossasia.openevent.app.core.attendee.list.AttendeesFragment;
+import org.fossasia.openevent.app.core.auth.forgot.request.ForgotPasswordFragment;
+import org.fossasia.openevent.app.core.auth.forgot.submit.ResetPasswordByTokenFragment;
+import org.fossasia.openevent.app.core.auth.login.LoginFragment;
+import org.fossasia.openevent.app.core.auth.signup.SignUpFragment;
+import org.fossasia.openevent.app.core.event.dashboard.EventDashboardFragment;
+import org.fossasia.openevent.app.core.event.list.EventListFragment;
+import org.fossasia.openevent.app.core.settings.SettingsFragment;
+import org.fossasia.openevent.app.core.ticket.create.CreateTicketFragment;
+import org.fossasia.openevent.app.core.ticket.list.TicketsFragment;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.robolectric.ParameterizedRobolectricTestRunner;
 import org.robolectric.shadows.support.v4.SupportFragmentController;
@@ -26,6 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 
+@Ignore
 @SuppressWarnings({"PMD.JUnit4TestShouldUseAfterAnnotation", "PMD.JUnit4TestShouldUseBeforeAnnotation"})
 public class FragmentInstanceTest<T extends Fragment> extends BaseParameterTest {
 

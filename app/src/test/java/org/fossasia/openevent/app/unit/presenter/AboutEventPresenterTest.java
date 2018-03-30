@@ -1,11 +1,12 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.data.models.Copyright;
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.repository.contract.ICopyrightRepository;
-import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
-import org.fossasia.openevent.app.module.event.about.AboutEventPresenter;
-import org.fossasia.openevent.app.module.event.about.contract.IAboutEventVew;
+import org.fossasia.openevent.app.core.event.about.AboutEventPresenter;
+import org.fossasia.openevent.app.core.event.about.IAboutEventVew;
+import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
+import org.fossasia.openevent.app.data.models.Copyright;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.repository.ICopyrightRepository;
+import org.fossasia.openevent.app.data.repository.IEventRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,12 +19,15 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,6 +38,7 @@ public class AboutEventPresenterTest {
     @Mock private IAboutEventVew aboutEventVew;
     @Mock private IEventRepository eventRepository;
     @Mock private ICopyrightRepository copyrightRepository;
+    @Mock private IDatabaseChangeListener<Copyright> copyrightChangeListener;
 
     private AboutEventPresenter aboutEventPresenter;
     private static final Event EVENT = new Event();
@@ -45,7 +50,7 @@ public class AboutEventPresenterTest {
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
-        aboutEventPresenter = new AboutEventPresenter(eventRepository, copyrightRepository);
+        aboutEventPresenter = new AboutEventPresenter(eventRepository, copyrightRepository, copyrightChangeListener);
         aboutEventPresenter.attach(ID, aboutEventVew);
     }
 
@@ -59,6 +64,7 @@ public class AboutEventPresenterTest {
     public void shouldLoadEventAndCopyrightAutomatically() {
         when(eventRepository.getEvent(ID, false)).thenReturn(Observable.just(EVENT));
         when(copyrightRepository.getCopyright(ID, false)).thenReturn(Observable.just(COPYRIGHT));
+        when(copyrightChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         aboutEventPresenter.start();
 
@@ -106,7 +112,7 @@ public class AboutEventPresenterTest {
 
         aboutEventPresenter.loadCopyright(false);
 
-        verify(aboutEventVew).changeCopyrightMenuItem();
+        verify(aboutEventVew).changeCopyrightMenuItem(false);
     }
 
     @Test
@@ -148,4 +154,36 @@ public class AboutEventPresenterTest {
         inOrder.verify(aboutEventVew).showProgress(false);
     }
 
+    @Test
+    public void shouldActivateCopyrightChangeListenerOnStart() {
+        when(eventRepository.getEvent(ID, false)).thenReturn(Observable.just(EVENT));
+        when(copyrightRepository.getCopyright(ID, false)).thenReturn(Observable.just(COPYRIGHT));
+        when(copyrightChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
+        aboutEventPresenter.start();
+
+        verify(copyrightChangeListener).startListening();
+    }
+
+    @Test
+    public void shouldDisableCopyrightChangeListenerOnDetach() {
+        aboutEventPresenter.detach();
+
+        verify(copyrightChangeListener).stopListening();
+    }
+
+    @Test
+    public void shouldDeleteCopyrightSuccessfully() {
+        when(copyrightRepository.deleteCopyright(ID)).thenReturn(Completable.complete());
+        when(copyrightRepository.getCopyright(ID, true)).thenReturn(Observable.just(COPYRIGHT));
+
+        InOrder inOrder = Mockito.inOrder(copyrightRepository, aboutEventVew);
+
+        aboutEventPresenter.deleteCopyright(ID);
+
+        inOrder.verify(copyrightRepository).deleteCopyright(ID);
+        inOrder.verify(aboutEventVew).showProgress(true);
+        inOrder.verify(aboutEventVew).showCopyrightDeleted("Copyright Deleted");
+        inOrder.verify(aboutEventVew, times(2)).showProgress(false); // delete copyright operation and load copyright operation
+    }
 }

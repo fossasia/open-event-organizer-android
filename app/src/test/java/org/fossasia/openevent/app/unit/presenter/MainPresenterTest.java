@@ -3,16 +3,16 @@ package org.fossasia.openevent.app.unit.presenter;
 import com.f2prateek.rx.preferences2.Preference;
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
 
-import org.fossasia.openevent.app.common.app.ContextManager;
-import org.fossasia.openevent.app.common.data.contract.IAuthModel;
-import org.fossasia.openevent.app.common.data.contract.IBus;
-import org.fossasia.openevent.app.common.data.contract.ISharedPreferenceModel;
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.models.User;
-import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
-import org.fossasia.openevent.app.module.main.MainActivity;
-import org.fossasia.openevent.app.module.main.MainPresenter;
-import org.fossasia.openevent.app.module.main.contract.IMainView;
+import org.fossasia.openevent.app.common.ContextManager;
+import org.fossasia.openevent.app.data.IAuthModel;
+import org.fossasia.openevent.app.data.IBus;
+import org.fossasia.openevent.app.data.ISharedPreferenceModel;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.repository.IEventRepository;
+import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.core.main.MainPresenter;
+import org.fossasia.openevent.app.core.main.IMainView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -136,6 +136,7 @@ public class MainPresenterTest {
     public void shouldShowResultInViewOnEventPush() {
         mockCommons();
 
+        ContextManager.setSelectedEvent(null);
         mainPresenter.start();
         PUBLISHER.onNext(EVENT);
 

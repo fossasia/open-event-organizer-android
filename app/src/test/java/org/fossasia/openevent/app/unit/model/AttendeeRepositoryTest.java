@@ -2,11 +2,11 @@ package org.fossasia.openevent.app.unit.model;
 
 import com.raizlabs.android.dbflow.sql.language.SQLOperator;
 
-import org.fossasia.openevent.app.common.data.contract.IUtilModel;
-import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
-import org.fossasia.openevent.app.common.data.models.Attendee;
-import org.fossasia.openevent.app.common.data.network.EventService;
-import org.fossasia.openevent.app.common.data.repository.AttendeeRepository;
+import org.fossasia.openevent.app.data.IUtilModel;
+import org.fossasia.openevent.app.data.db.IDatabaseRepository;
+import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.network.EventService;
+import org.fossasia.openevent.app.data.repository.AttendeeRepository;
 import org.fossasia.openevent.app.common.Constants;
 import org.junit.After;
 import org.junit.Before;

@@ -1,12 +1,12 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.models.User;
-import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
-import org.fossasia.openevent.app.common.data.repository.contract.IEventRepository;
-import org.fossasia.openevent.app.common.utils.core.DateUtils;
-import org.fossasia.openevent.app.module.event.list.EventsPresenter;
-import org.fossasia.openevent.app.module.event.list.contract.IEventsView;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.models.dto.ObservableString;
+import org.fossasia.openevent.app.data.repository.IEventRepository;
+import org.fossasia.openevent.app.utils.DateUtils;
+import org.fossasia.openevent.app.core.event.list.EventsPresenter;
+import org.fossasia.openevent.app.core.event.list.IEventsView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

@@ -3,7 +3,7 @@ package org.fossasia.openevent.app;
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobCreator;
 
-import org.fossasia.openevent.app.module.attendee.checkin.job.AttendeeCheckInJob;
+import org.fossasia.openevent.app.core.attendee.checkin.job.AttendeeCheckInJob;
 
 public class OrgaJobCreator implements JobCreator {
 

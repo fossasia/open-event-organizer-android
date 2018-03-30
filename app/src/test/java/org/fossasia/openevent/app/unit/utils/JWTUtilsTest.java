@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.unit.utils;
 
 import android.support.v4.util.SparseArrayCompat;
 
-import org.fossasia.openevent.app.common.utils.core.JWTUtils;
+import org.fossasia.openevent.app.utils.JWTUtils;
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;

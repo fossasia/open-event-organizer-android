@@ -1,9 +1,9 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.data.models.Copyright;
-import org.fossasia.openevent.app.common.data.repository.contract.ICopyrightRepository;
-import org.fossasia.openevent.app.module.event.copyright.CreateCopyrightPresenter;
-import org.fossasia.openevent.app.module.event.copyright.contract.ICreateCopyrightView;
+import org.fossasia.openevent.app.data.models.Copyright;
+import org.fossasia.openevent.app.data.repository.ICopyrightRepository;
+import org.fossasia.openevent.app.core.event.copyright.CreateCopyrightPresenter;
+import org.fossasia.openevent.app.core.event.copyright.ICreateCopyrightView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

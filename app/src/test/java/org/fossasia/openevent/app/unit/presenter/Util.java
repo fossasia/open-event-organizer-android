@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.app.rx.Logger;
+import org.fossasia.openevent.app.common.rx.Logger;
 
 import io.reactivex.Observable;
 

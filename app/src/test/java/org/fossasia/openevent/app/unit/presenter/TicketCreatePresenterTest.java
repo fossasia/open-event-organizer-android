@@ -1,13 +1,13 @@
 package org.fossasia.openevent.app.unit.presenter;
 
-import org.fossasia.openevent.app.common.app.ContextManager;
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.models.Ticket;
-import org.fossasia.openevent.app.common.data.models.dto.ObservableString;
-import org.fossasia.openevent.app.common.data.repository.contract.ITicketRepository;
-import org.fossasia.openevent.app.common.utils.core.DateUtils;
-import org.fossasia.openevent.app.module.ticket.create.CreateTicketPresenter;
-import org.fossasia.openevent.app.module.ticket.create.contract.ICreateTicketView;
+import org.fossasia.openevent.app.common.ContextManager;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.models.Ticket;
+import org.fossasia.openevent.app.data.models.dto.ObservableString;
+import org.fossasia.openevent.app.data.repository.ITicketRepository;
+import org.fossasia.openevent.app.utils.DateUtils;
+import org.fossasia.openevent.app.core.ticket.create.CreateTicketPresenter;
+import org.fossasia.openevent.app.core.ticket.create.ICreateTicketView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

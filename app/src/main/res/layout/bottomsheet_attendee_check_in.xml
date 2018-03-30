@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="org.fossasia.openevent.app.common.app.ContextManager" />
-        <import type="org.fossasia.openevent.app.common.utils.core.DateUtils" />
-        <import type="org.fossasia.openevent.app.common.utils.core.Utils" />
+        <import type="org.fossasia.openevent.app.common.ContextManager" />
+        <import type="org.fossasia.openevent.app.utils.DateUtils" />
+        <import type="org.fossasia.openevent.app.utils.Utils" />
         <import type="android.view.View" />
 
         <variable
             name="presenter"
-            type="org.fossasia.openevent.app.module.attendee.checkin.contract.IAttendeeCheckInPresenter" />
+            type="org.fossasia.openevent.app.core.attendee.checkin.AttendeeCheckInPresenter" />
 
         <variable
             name="checkinAttendee"
-            type="org.fossasia.openevent.app.common.data.models.Attendee" />
+            type="org.fossasia.openevent.app.data.models.Attendee" />
     </data>
 
 
@@ -177,7 +177,7 @@
                         android:layout_marginLeft="@dimen/spacing_small"
                         android:layout_marginTop="@dimen/spacing_extra_small"
                         android:checked="false"
-                        android:onCheckedChanged="@{ (switch, checked) -> checked ? attendeeDetailsLayout.setVisibility(View.VISIBLE) : attendeeDetailsLayout.setVisibility(View.GONE) }'  }"
+                        android:onCheckedChanged="@{ (switch, checked) -> checked ? attendeeDetailsLayout.setVisibility(View.VISIBLE) : attendeeDetailsLayout.setVisibility(View.GONE)  }"
                         android:layout_marginStart="@dimen/spacing_small" />
 
                  </LinearLayout>

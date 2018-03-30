@@ -20,7 +20,7 @@
             android:authorities="${applicationId}.org.fossasia.openevent.app"
             android:exported="false"/>
         <activity
-            android:name=".module.auth.AuthActivity"
+            android:name=".core.auth.AuthActivity"
             android:theme="@style/AppTheme.Main.Light"
             android:label="${appName}">
             <intent-filter>
@@ -30,27 +30,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".module.attendee.qrscan.ScanQRActivity"
+            android:name=".core.attendee.qrscan.ScanQRActivity"
             android:theme="@style/AppTheme.Main" />
         <activity
-            android:name=".module.main.MainActivity"
+            android:name=".core.main.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.Main.Light"/>
         <activity
-            android:name=".module.event.chart.ChartActivity"
+            android:name=".core.event.chart.ChartActivity"
             android:theme="@style/AppTheme.Main.Light"/>
         <activity
-            android:name=".module.event.about.AboutEventActivity"
+            android:name=".core.event.about.AboutEventActivity"
             android:label="@string/title_activity_about_event"
             android:theme="@style/AppTheme.Main" />
         <activity
-            android:name=".module.event.create.CreateEventActivity"
+            android:name=".core.event.create.CreateEventActivity"
             android:label="@string/title_activity_about_event"
             android:theme="@style/AppTheme.Main" />
         <activity
-            android:name=".module.organizer.detail.OrganizerDetailActivity"
+            android:name=".core.organizer.detail.OrganizerDetailActivity"
             android:label="@string/title_activity_organizer_detail"
             android:theme="@style/AppTheme.Main.Light" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_PLACES_API_KEY}"/>
     </application>
 
 </manifest>

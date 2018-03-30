@@ -1,8 +1,8 @@
 package org.fossasia.openevent.app.unit.utils;
 
-import org.fossasia.openevent.app.common.app.ContextManager;
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.utils.core.DateUtils;
+import org.fossasia.openevent.app.common.ContextManager;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.utils.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 

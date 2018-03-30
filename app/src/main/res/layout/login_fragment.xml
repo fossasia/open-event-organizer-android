@@ -6,13 +6,13 @@
     <data>
         <variable
             name="login"
-            type="org.fossasia.openevent.app.common.data.models.dto.Login" />
+            type="org.fossasia.openevent.app.data.models.dto.Login" />
      </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.fossasia.openevent.app.module.auth.login.LoginFragment">
+        tools:context="org.fossasia.openevent.app.core.auth.login.LoginFragment">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
