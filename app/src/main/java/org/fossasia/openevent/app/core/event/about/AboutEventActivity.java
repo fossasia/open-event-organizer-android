@@ -26,11 +26,10 @@ public class AboutEventActivity extends AppCompatActivity implements HasSupportF
         setContentView(R.layout.about_event_activity);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.containsKey(EVENT_ID)) {
-            long id = extras.getLong(EVENT_ID);
-
-            IAboutEventVew aboutEventVew = (IAboutEventVew) getSupportFragmentManager().findFragmentById(R.id.about_event_fragment);
-            aboutEventVew.setEventId(id);
+        if (extras != null && extras.containsKey(EVENT_ID) && savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment, AboutEventFragment.newInstance(extras.getLong(EVENT_ID)))
+                .commit();
         }
     }
 
