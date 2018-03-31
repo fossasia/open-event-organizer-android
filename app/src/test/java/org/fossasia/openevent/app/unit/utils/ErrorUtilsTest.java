@@ -1,13 +1,11 @@
 package org.fossasia.openevent.app.unit.utils;
 
 import android.accounts.Account;
-import android.app.Application;
 
-import org.fossasia.openevent.app.common.utils.core.ErrorUtils;
+import org.fossasia.openevent.app.utils.ErrorUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
+import org.junit.runners.JUnit4;
 
 import java.io.IOException;
 
@@ -20,8 +18,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(sdk = Config.OLDEST_SDK, application = Application.class)
+//@RunWith(RobolectricTestRunner.class)
+//@Config(sdk = Config.OLDEST_SDK, application = Application.class)
+@RunWith(JUnit4.class)
 public class ErrorUtilsTest {
 
     public static final String CONTENT1 = "{\"errors\": [{\"status\": \"422\", \"source\": {\"pointer\": \"/data/attributes/licence\"}, \"detail\": \"Missing data for required field.\", \"title\": \"Validation error\"}], \"jsonapi\": {\"version\": \"1.0\"}}";
@@ -66,7 +65,7 @@ public class ErrorUtilsTest {
     public void shouldReturnErrorDetailsWithPointedFieldSuccessfully() {
         String str = String.valueOf(ErrorUtils.getErrorDetails(ERROR_RESPONSE_1.errorBody()));
 
-        assertEquals("Missing data for required field" + ": " + "licence", str);
+        assertEquals("Missing data for required field: licence", str);
         assertNotEquals("Some random string", str);
     }
 
