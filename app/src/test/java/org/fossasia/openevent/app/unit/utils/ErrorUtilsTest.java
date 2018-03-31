@@ -8,42 +8,67 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 import retrofit2.Response;
+import timber.log.Timber;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 
-//@RunWith(RobolectricTestRunner.class)
-//@Config(sdk = Config.OLDEST_SDK, application = Application.class)
 @RunWith(JUnit4.class)
 public class ErrorUtilsTest {
 
-    public static final String CONTENT1 = "{\"errors\": [{\"status\": \"422\", \"source\": {\"pointer\": \"/data/attributes/licence\"}, \"detail\": \"Missing data for required field.\", \"title\": \"Validation error\"}], \"jsonapi\": {\"version\": \"1.0\"}}";
-    public static final String CONTENT2 = "{\"errors\": [{\"status\": \"422\", \"source\": {\"pointer\": \"\"}, \"detail\": \"Missing data for required field.\", \"title\": \"Validation error\"}], \"jsonapi\": {\"version\": \"1.0\"}}";
-    public static final String CONTENT3 = "{\"errors\": [{\"status\": \"422\", \"source\": {}, \"detail\": \"Missing data for required field.\", \"title\": \"Validation error\"}], \"jsonapi\": {\"version\": \"1.0\"}}";
+    private static String content1;
+    private static String content2;
+    private static String content3;
 
-    public static final ResponseBody RESPONSE_BODY_1 = ResponseBody.create(MediaType.parse("application/vnd.api+json"), CONTENT1);
-    public static final Response<Account> ERROR_RESPONSE = Response.error(400, RESPONSE_BODY_1);
-    public static final Response<Account> ERROR_RESPONSE_1 = Response.error(422, RESPONSE_BODY_1);
+    static {
+        URI uri1 = null;
+        URI uri2 = null;
+        URI uri3 = null;
 
-    public static final ResponseBody RESPONSE_BODY_2 = ResponseBody.create(MediaType.parse("application/vnd.api+json"), CONTENT2);
-    public static final Response<Account> ERROR_RESPONSE_2 = Response.error(422, RESPONSE_BODY_2);
+        try {
+            uri1 = ErrorUtilsTest.class.getClassLoader().getResource("raw/content1.json").toURI();
+            uri2 = ErrorUtilsTest.class.getClassLoader().getResource("raw/content2.json").toURI();
+            uri3 = ErrorUtilsTest.class.getClassLoader().getResource("raw/content3.json").toURI();
+        } catch (URISyntaxException e) {
+            Timber.e(e.getMessage());
+        }
+        try {
+            content1 = new String(Files.readAllBytes(Paths.get(uri1)), Charset.forName("utf-8"));
+            content2 = new String(Files.readAllBytes(Paths.get(uri2)), Charset.forName("utf-8"));
+            content3 = new String(Files.readAllBytes(Paths.get(uri3)), Charset.forName("utf-8"));
+        } catch (IOException e) {
+            Timber.e(e.getMessage());
+        }
+    }
 
-    public static final ResponseBody RESPONSE_BODY_3 = ResponseBody.create(MediaType.parse("application/vnd.api+json"), CONTENT3);
-    public static final Response<Account> ERROR_RESPONSE_3 = Response.error(422, RESPONSE_BODY_3);
+    private static final ResponseBody RESPONSE_BODY_1 = ResponseBody.create(MediaType.parse("application/vnd.api+json"), content1);
+    private static final Response<Account> ERROR_RESPONSE = Response.error(400, RESPONSE_BODY_1);
+    private static final Response<Account> ERROR_RESPONSE_1 = Response.error(422, RESPONSE_BODY_1);
 
-    public static HttpException httpException = new HttpException(ERROR_RESPONSE);
-    public static HttpException httpException1 = new HttpException(ERROR_RESPONSE_1);
+    private static final ResponseBody RESPONSE_BODY_2 = ResponseBody.create(MediaType.parse("application/vnd.api+json"), content2);
+    private static final Response<Account> ERROR_RESPONSE_2 = Response.error(422, RESPONSE_BODY_2);
 
-    public static IOException ioException = new IOException();
+    private static final ResponseBody RESPONSE_BODY_3 = ResponseBody.create(MediaType.parse("application/vnd.api+json"), content3);
+    private static final Response<Account> ERROR_RESPONSE_3 = Response.error(422, RESPONSE_BODY_3);
+
+    private static HttpException httpException = new HttpException(ERROR_RESPONSE);
+    private static HttpException httpException1 = new HttpException(ERROR_RESPONSE_1);
+
+    private static IOException ioException = new IOException();
 
     @Test
-    public void shouldReturnNullOnNullAnsEmptyPointedField() {
+    public void shouldReturnNullOnNullAnsEmptyPointedField() throws IOException, URISyntaxException {
         assertNull(ErrorUtils.getPointedField(null));
         assertNull(ErrorUtils.getPointedField(""));
     }
@@ -96,11 +121,11 @@ public class ErrorUtilsTest {
     public void shouldReturnStoredErrorMessageSuccessfully() {
         String str = String.valueOf(ErrorUtils.getMessage(httpException));
 
-        assertEquals("Something went wrong! Please check any empty field if a form.", str);
+        assertEquals("Something went wrong! Please check any empty field of a form.", str);
     }
 
     @Test
-    public void shouldNotReturnErrorMessageSuccessfully() {
+    public void shouldReturnOtherThrowableErrorMessageSuccessfully() {
         String str = String.valueOf(ErrorUtils.getMessage(ioException));
 
         assertEquals("null", str);

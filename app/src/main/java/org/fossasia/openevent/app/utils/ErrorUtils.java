@@ -11,6 +11,7 @@ public final class ErrorUtils {
     public static final String SOURCE = "source";
     public static final String POINTER = "pointer";
     public static final String DETAIL = "detail";
+
     public static final int POINTER_LENGTH = 3;
 
     public static final int BAD_REQUEST = 400;
@@ -28,7 +29,7 @@ public final class ErrorUtils {
         if (throwable instanceof HttpException) {
             switch (((HttpException) throwable).code()) {
                 case BAD_REQUEST:
-                    return "Something went wrong! Please check any empty field if a form.";
+                    return "Something went wrong! Please check any empty field of a form.";
                 case UNAUTHORIZED:
                     return "Invalid Credentials! Please check your credentials.";
                 case FORBIDDEN:
@@ -43,7 +44,6 @@ public final class ErrorUtils {
                     ResponseBody responseBody = ((HttpException) throwable).response().errorBody();
                     return getErrorDetails(responseBody);
             }
-
         } else {
             return throwable.getMessage();
         }
@@ -53,8 +53,8 @@ public final class ErrorUtils {
     public static String getErrorDetails(ResponseBody responseBody) {
         try {
             JSONObject jsonObject = new JSONObject(responseBody.string());
-            JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).getString(0));
-            JSONObject errorSource = new JSONObject(jsonArray.getString(SOURCE));
+            JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
+            JSONObject errorSource = new JSONObject(jsonArray.get(SOURCE).toString());
 
             try {
                 String pointedField = getPointedField(errorSource.getString(POINTER));

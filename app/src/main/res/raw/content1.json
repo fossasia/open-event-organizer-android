@@ -1,0 +1,1 @@
+"{\"errors\": [{\"status\": \"422\", \"source\": {\"pointer\": \"/data/attributes/licence\"}, \"detail\": \"Missing data for required field.\", \"title\": \"Validation error\"}], \"jsonapi\": {\"version\": \"1.0\"}}"
