@@ -4,16 +4,16 @@
 
     <data>
         <import type="com.github.florent37.glidepalette.BitmapPalette.Profile" />
-        <import type="org.fossasia.openevent.app.common.utils.core.DateUtils" />
+        <import type="org.fossasia.openevent.app.utils.DateUtils" />
         <import type="org.fossasia.openevent.app.R" />
         <import type="android.view.View" />
 
         <variable
             name="user"
-            type="org.fossasia.openevent.app.common.data.models.User" />
+            type="org.fossasia.openevent.app.data.models.User" />
         <variable
             name="event"
-            type="org.fossasia.openevent.app.common.data.models.Event" />
+            type="org.fossasia.openevent.app.data.models.Event" />
     </data>
 
     <LinearLayout

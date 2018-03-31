@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import org.fossasia.openevent.app.common.utils.ui.ViewUtils;
+import org.fossasia.openevent.app.ui.ViewUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -3,12 +3,12 @@ package org.fossasia.openevent.app.unit.model;
 import com.raizlabs.android.dbflow.sql.language.SQLOperator;
 
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.common.data.contract.IUtilModel;
-import org.fossasia.openevent.app.common.data.db.contract.IDatabaseRepository;
-import org.fossasia.openevent.app.common.data.models.Copyright;
-import org.fossasia.openevent.app.common.data.models.Event;
-import org.fossasia.openevent.app.common.data.network.EventService;
-import org.fossasia.openevent.app.common.data.repository.CopyrightRepository;
+import org.fossasia.openevent.app.data.IUtilModel;
+import org.fossasia.openevent.app.data.db.IDatabaseRepository;
+import org.fossasia.openevent.app.data.models.Copyright;
+import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.network.EventService;
+import org.fossasia.openevent.app.data.repository.CopyrightRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -48,6 +48,7 @@ public class CopyrightRepositoryTest {
 
     static {
         COPYRIGHT.setEvent(EVENT);
+        COPYRIGHT.setId(ID);
     }
 
     @Before
@@ -99,6 +100,27 @@ public class CopyrightRepositoryTest {
             .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
+    @Test
+    public void shouldReturnConnectionErrorOnUpdateCopyright() {
+        when(utilModel.isConnected()).thenReturn(false);
+
+        Observable<Copyright> copyrightObservable = copyrightRepository.updateCopyright(COPYRIGHT);
+
+        copyrightObservable
+            .test()
+            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+    }
+
+    @Test
+    public void shouldReturnConnectionErrorOnDeleteCopyright() {
+        when(utilModel.isConnected()).thenReturn(false);
+
+        Completable copyrightCompletable = copyrightRepository.deleteCopyright(ID);
+
+        copyrightCompletable
+            .test()
+            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+    }
 
     // Network up tests
 
@@ -175,4 +197,42 @@ public class CopyrightRepositoryTest {
 
         verify(databaseRepository).save(Copyright.class, COPYRIGHT);
     }
+
+    // Copyright update tests
+
+    @Test
+    public void shouldCallUpdateCopyrightService() {
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.patchCopyright(ID, COPYRIGHT)).thenReturn(Observable.empty());
+
+        copyrightRepository.updateCopyright(COPYRIGHT).subscribe();
+
+        verify(eventService).patchCopyright(ID, COPYRIGHT);
+    }
+
+    @Test
+    public void shouldUpdateUpdatedCopyright() {
+        Copyright updated = mock(Copyright.class);
+
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.patchCopyright(ID, COPYRIGHT)).thenReturn(Observable.just(updated));
+        when(databaseRepository.update(eq(Copyright.class), eq(updated))).thenReturn(Completable.complete());
+
+        copyrightRepository.updateCopyright(COPYRIGHT).subscribe();
+
+        verify(databaseRepository).update(Copyright.class, updated);
+    }
+
+    // Copyright delete tests
+
+    @Test
+    public void shouldCallDeleteCopyrightService() {
+        when(utilModel.isConnected()).thenReturn(true);
+        when(eventService.deleteCopyright(ID)).thenReturn(Completable.complete());
+
+        copyrightRepository.deleteCopyright(ID).subscribe();
+
+        verify(eventService).deleteCopyright(ID);
+    }
+
 }

@@ -8,12 +8,38 @@
 
         <variable
             name="copyright"
-            type="org.fossasia.openevent.app.common.data.models.Copyright" />
+            type="org.fossasia.openevent.app.data.models.Copyright" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="@string/copyright" />
+
+            </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/color_top_surface">
 
         <android.support.v4.widget.NestedScrollView
@@ -29,9 +55,10 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal">
+            android:layout_marginBottom="@dimen/spacing_normal">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/submit"
@@ -39,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:backgroundTint="@color/light_green_500"
-                app:fabSize="mini"
+                app:fabSize="normal"
                 app:srcCompat="@drawable/ic_check"
                 app:tint="@android:color/white" />
 
@@ -58,5 +85,8 @@
 
                 </FrameLayout>
         </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
+    </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

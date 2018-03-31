@@ -1,13 +1,13 @@
 package org.fossasia.openevent.app.unit.utils.misc;
 
-import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Emptiable;
-import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Erroneous;
-import org.fossasia.openevent.app.common.app.lifecycle.contract.view.ItemResult;
-import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Progressive;
-import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Refreshable;
-import org.fossasia.openevent.app.common.app.lifecycle.contract.view.Successful;
-import org.fossasia.openevent.app.common.app.rx.Logger;
-import org.fossasia.openevent.app.common.app.rx.ViewTransformers;
+import org.fossasia.openevent.app.common.mvp.view.Emptiable;
+import org.fossasia.openevent.app.common.mvp.view.Erroneous;
+import org.fossasia.openevent.app.common.mvp.view.ItemResult;
+import org.fossasia.openevent.app.common.mvp.view.Progressive;
+import org.fossasia.openevent.app.common.mvp.view.Refreshable;
+import org.fossasia.openevent.app.common.mvp.view.Successful;
+import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.common.rx.ViewTransformers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InOrder;

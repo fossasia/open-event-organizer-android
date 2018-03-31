@@ -14,7 +14,9 @@ fi
 
 git clone --quiet --branch=apk https://niranjan94:$GITHUB_API_KEY@github.com/fossasia/open-event-orga-app apk > /dev/null
 cd apk
-\cp -r ../app/build/outputs/apk/*.apk .
+\cp -r ../app/build/outputs/apk/*/**.apk .
+\cp -r ../app/build/outputs/apk/debug/output.json debug-output.json
+\cp -r ../app/build/outputs/apk/release/output.json release-output.json
 
 # Signing Apps
 

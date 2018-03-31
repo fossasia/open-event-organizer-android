@@ -106,6 +106,7 @@
     <string name="create_event">Create Event</string>
     <string name="event_name">Event Name</string>
     <string name="payment_currency">Payment Currency</string>
+    <string name="ticket">Ticket</string>
     <string name="date_and_time">Date and Time</string>
     <string name="timezone">Timezone</string>
     <string name="location_details">Location Details</string>
@@ -187,9 +188,12 @@
     <string name="create_faq">Create FAQ</string>
     <string name="question">Question</string>
     <string name="answer">Answer</string>
+    <string name="pick_from_map">Pick from Map</string>
     <string name="save_icon">Save Icon</string>
     <string name="use_date_time_picker">Use Picker</string>
     <string name="welcome">Hi, Organiser!</string>
+    <string name="delete_copyright">Delete Copyright</string>
+    <string name="year_validation_error">Please Enter a Valid Year</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
