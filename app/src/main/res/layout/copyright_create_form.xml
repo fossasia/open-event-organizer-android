@@ -70,6 +70,7 @@
                 app:srcCompat="@drawable/ic_link" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/copyright_holderUrl_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
@@ -108,6 +109,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/license_text"
                     android:text="@={copyright.licence}"
+                    app:validateEmpty="@{true}"
                     android:inputType="text" />
 
             </android.support.design.widget.TextInputLayout>
@@ -126,6 +128,7 @@
                 app:srcCompat="@drawable/ic_link" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/copyright_licenceUrl_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
@@ -154,6 +157,7 @@
                 app:srcCompat="@drawable/ic_link" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/copyright_logoUrl_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
