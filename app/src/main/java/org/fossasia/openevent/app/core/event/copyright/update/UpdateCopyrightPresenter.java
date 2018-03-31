@@ -16,6 +16,7 @@ public class UpdateCopyrightPresenter extends BasePresenter<IUpdateCopyrightView
 
     private final ICopyrightRepository copyrightRepository;
     private Copyright copyright;
+    private static final int YEAR_LENGTH = 4;
 
     @Inject
     public UpdateCopyrightPresenter(ICopyrightRepository copyrightRepository) {
@@ -27,12 +28,27 @@ public class UpdateCopyrightPresenter extends BasePresenter<IUpdateCopyrightView
         // Nothing to do
     }
 
+    public Long getParentEventId() {
+        return ContextManager.getSelectedEvent().id;
+    }
+
     private void nullifyEmptyFields(Copyright copyright) {
         copyright.setHolderUrl(StringUtils.emptyToNull(copyright.getHolderUrl()));
         copyright.setLicence(StringUtils.emptyToNull(copyright.getLicence()));
         copyright.setLicenceUrl(StringUtils.emptyToNull(copyright.getLicenceUrl()));
         copyright.setYear(StringUtils.emptyToNull(copyright.getYear()));
         copyright.setLogoUrl(StringUtils.emptyToNull(copyright.getLogoUrl()));
+    }
+
+    protected boolean verifyYear(Copyright copyright) {
+        if (copyright.getYear() == null)
+            return true;
+        else if (copyright.getYear().length() == YEAR_LENGTH)
+            return true;
+        else {
+            getView().showError("Please Enter a Valid Year");
+            return false;
+        }
     }
 
     public void loadCopyright(long eventId) {
@@ -50,6 +66,9 @@ public class UpdateCopyrightPresenter extends BasePresenter<IUpdateCopyrightView
 
     public void updateCopyright() {
         nullifyEmptyFields(copyright);
+
+        if (!verifyYear(copyright))
+            return;
 
         copyright.setEvent(ContextManager.getSelectedEvent());
 
