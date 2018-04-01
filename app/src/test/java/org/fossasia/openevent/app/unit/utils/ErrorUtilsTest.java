@@ -21,7 +21,6 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(JUnit4.class)
@@ -30,6 +29,7 @@ public class ErrorUtilsTest {
     private static String content1;
     private static String content2;
     private static String content3;
+    private static String contentType = "application/vnd.api+json";
 
     static {
         URI uri1 = null;
@@ -52,15 +52,20 @@ public class ErrorUtilsTest {
         }
     }
 
-    private static final ResponseBody RESPONSE_BODY_1 = ResponseBody.create(MediaType.parse("application/vnd.api+json"), content1);
-    private static final Response<Account> ERROR_RESPONSE = Response.error(400, RESPONSE_BODY_1);
+    private static final ResponseBody RESPONSE_BODY = ResponseBody.create(MediaType.parse(contentType), content1);
+    private static final Response<Account> ERROR_RESPONSE = Response.error(400, RESPONSE_BODY);
+
+    private static final ResponseBody RESPONSE_BODY_1 = ResponseBody.create(MediaType.parse(contentType), content1);
     private static final Response<Account> ERROR_RESPONSE_1 = Response.error(422, RESPONSE_BODY_1);
 
-    private static final ResponseBody RESPONSE_BODY_2 = ResponseBody.create(MediaType.parse("application/vnd.api+json"), content2);
+    private static final ResponseBody RESPONSE_BODY_2 = ResponseBody.create(MediaType.parse(contentType), content2);
     private static final Response<Account> ERROR_RESPONSE_2 = Response.error(422, RESPONSE_BODY_2);
 
-    private static final ResponseBody RESPONSE_BODY_3 = ResponseBody.create(MediaType.parse("application/vnd.api+json"), content3);
+    private static final ResponseBody RESPONSE_BODY_3 = ResponseBody.create(MediaType.parse(contentType), content3);
     private static final Response<Account> ERROR_RESPONSE_3 = Response.error(422, RESPONSE_BODY_3);
+
+    private static final ResponseBody RESPONSE_BODY_4 = ResponseBody.create(MediaType.parse(contentType), content1);
+    private static final Response<Account> ERROR_RESPONSE_4 = Response.error(422, RESPONSE_BODY_4);
 
     private static HttpException httpException = new HttpException(ERROR_RESPONSE);
     private static HttpException httpException1 = new HttpException(ERROR_RESPONSE_1);
@@ -88,10 +93,9 @@ public class ErrorUtilsTest {
 
     @Test
     public void shouldReturnErrorDetailsWithPointedFieldSuccessfully() {
-        String str = String.valueOf(ErrorUtils.getErrorDetails(ERROR_RESPONSE_1.errorBody()));
+        String str = String.valueOf(ErrorUtils.getErrorDetails(ERROR_RESPONSE_4.errorBody()));
 
         assertEquals("Missing data for required field: licence", str);
-        assertNotEquals("Some random string", str);
     }
 
     @Test
@@ -99,7 +103,6 @@ public class ErrorUtilsTest {
         String str = String.valueOf(ErrorUtils.getErrorDetails(ERROR_RESPONSE_2.errorBody()));
 
         assertEquals("Missing data for required field.", str);
-        assertNotEquals("Some random string", str);
     }
 
     @Test
@@ -107,7 +110,6 @@ public class ErrorUtilsTest {
         String str = String.valueOf(ErrorUtils.getErrorDetails(ERROR_RESPONSE_3.errorBody()));
 
         assertEquals("Missing data for required field.", str);
-        assertNotEquals("Some random string", str);
     }
 
     @Test

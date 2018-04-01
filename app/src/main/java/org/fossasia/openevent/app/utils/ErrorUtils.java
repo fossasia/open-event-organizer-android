@@ -20,6 +20,7 @@ public final class ErrorUtils {
     public static final int NOT_FOUND = 404;
     public static final int METHOD_NOT_ALLOWED = 405;
     public static final int REQUEST_TIMEOUT = 408;
+    public static final int UNPROCESSABLE_ENTITY = 422;
 
     private ErrorUtils() {
         // Never Called
@@ -40,9 +41,11 @@ public final class ErrorUtils {
                     return "Sorry, this request is not allowed.";
                 case REQUEST_TIMEOUT:
                     return "Sorry, request timeout. Please retry after some time.";
-                default:
+                case UNPROCESSABLE_ENTITY:
                     ResponseBody responseBody = ((HttpException) throwable).response().errorBody();
                     return getErrorDetails(responseBody);
+                default:
+                    return throwable.getMessage();
             }
         } else {
             return throwable.getMessage();

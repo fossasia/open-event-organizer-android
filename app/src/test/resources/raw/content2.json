@@ -1,1 +1,15 @@
-{"errors": [{"status": "422", "source": {"pointer": ""}, "detail": "Missing data for required field.", "title": "Validation error"}], "jsonapi": {"version": "1.0"}}
+{
+    "errors": [
+        {
+            "status": "422",
+            "source": {
+                "pointer": ""
+            },
+            "detail": "Missing data for required field.",
+            "title": "Validation error"
+        }
+    ],
+    "jsonapi": {
+        "version": "1.0"
+    }
+}
