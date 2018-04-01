@@ -15,6 +15,8 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class UpdateCopyrightPresenter extends BasePresenter<IUpdateCopyrightView> {
 
     private final ICopyrightRepository copyrightRepository;
+    private Copyright copyright;
+    private static final int YEAR_LENGTH = 4;
 
     @Inject
     public UpdateCopyrightPresenter(ICopyrightRepository copyrightRepository) {
@@ -26,6 +28,10 @@ public class UpdateCopyrightPresenter extends BasePresenter<IUpdateCopyrightView
         // Nothing to do
     }
 
+    public Long getParentEventId() {
+        return ContextManager.getSelectedEvent().id;
+    }
+
     private void nullifyEmptyFields(Copyright copyright) {
         copyright.setHolderUrl(StringUtils.emptyToNull(copyright.getHolderUrl()));
         copyright.setLicence(StringUtils.emptyToNull(copyright.getLicence()));
@@ -34,8 +40,35 @@ public class UpdateCopyrightPresenter extends BasePresenter<IUpdateCopyrightView
         copyright.setLogoUrl(StringUtils.emptyToNull(copyright.getLogoUrl()));
     }
 
-    public void updateCopyright(Copyright copyright) {
+    protected boolean verifyYear(Copyright copyright) {
+        if (copyright.getYear() == null)
+            return true;
+        else if (copyright.getYear().length() == YEAR_LENGTH)
+            return true;
+        else {
+            getView().showError("Please Enter a Valid Year");
+            return false;
+        }
+    }
+
+    public void loadCopyright(long eventId) {
+        copyrightRepository
+            .getCopyright(eventId, false)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .doFinally(this::showCopyright)
+            .subscribe(loadedCopyright -> this.copyright = loadedCopyright, Logger::logError);
+    }
+
+    private void showCopyright() {
+        getView().setCopyright(copyright);
+    }
+
+    public void updateCopyright() {
         nullifyEmptyFields(copyright);
+
+        if (!verifyYear(copyright))
+            return;
 
         copyright.setEvent(ContextManager.getSelectedEvent());
 

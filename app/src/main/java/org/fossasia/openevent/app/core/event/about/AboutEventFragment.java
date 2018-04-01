@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +36,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     private AboutEventFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
     private long eventId;
+    private static final String EVENT_ID = "id";
     private boolean creatingCopyright = true;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -47,11 +47,22 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     @Inject
     ToolbarColorChanger toolbarColorChanger;
 
+    public static AboutEventFragment newInstance(long id) {
+        Bundle bundle = new Bundle();
+        bundle.putLong(EVENT_ID, id);
+        AboutEventFragment aboutEventFragment = new AboutEventFragment();
+        aboutEventFragment.setArguments(bundle);
+        return aboutEventFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         binding = DataBindingUtil.inflate(inflater, R.layout.about_event_fragment, container, false);
+
+        Bundle bundle = getArguments();
+        eventId = bundle.getLong(EVENT_ID);
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         activity.setSupportActionBar(binding.toolbar);
@@ -113,11 +124,13 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
         switch (item.getItemId()) {
             case R.id.action_create_change_copyright:
                 if (creatingCopyright) {
-                    BottomSheetDialogFragment bottomSheetDialogFragment = CreateCopyrightFragment.newInstance();
-                    bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+                    getFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, CreateCopyrightFragment.newInstance())
+                        .commit();
                 } else {
-                    BottomSheetDialogFragment bottomSheetDialogFragment = UpdateCopyrightFragment.newInstance(getPresenter().getCopyright());
-                    bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+                    getFragmentManager().beginTransaction()
+                        .replace(R.id.fragment, UpdateCopyrightFragment.newInstance(eventId))
+                        .commit();
                 }
                 break;
             case R.id.action_delete_copyright:

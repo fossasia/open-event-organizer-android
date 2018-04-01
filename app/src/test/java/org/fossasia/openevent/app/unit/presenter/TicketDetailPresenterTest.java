@@ -1,4 +1,4 @@
-package org.fossasia.openticket.app.unit.presenter;
+package org.fossasia.openevent.app.unit.presenter;
 
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.Ticket;
