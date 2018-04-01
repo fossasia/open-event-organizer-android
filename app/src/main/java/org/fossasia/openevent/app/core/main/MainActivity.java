@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -40,6 +41,7 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
 
     public static final String EVENT_KEY = "event";
     private long eventId = -1;
+    private boolean isDashboardActive = true;
 
     @Inject
     Lazy<MainPresenter> presenterProvider;
@@ -87,8 +89,14 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (isDashboardActive) {
             backPressHandler.onBackPressed(this, super::onBackPressed);
+        } else {
+            getSupportFragmentManager().popBackStack();
+            binding.navView.getMenu().getItem(0).setChecked(true);
+            getSupportActionBar().setTitle(R.string.dashboard);
+            lastSelectedNavItemId = R.id.nav_dashboard;
+            isDashboardActive = true;
         }
     }
 
@@ -172,6 +180,10 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
         lastSelectedNavItemId = navItemId;
 
         Fragment fragment;
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+
+        isDashboardActive = true;
+
         switch (navItemId) {
             case R.id.nav_dashboard:
                 fragment = EventDashboardFragment.newInstance(eventId);
@@ -195,7 +207,16 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
                 fragment = EventDashboardFragment.newInstance(eventId);
                 break;
         }
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
+        getSupportFragmentManager().popBackStack();
+        if (navItemId == R.id.nav_dashboard) {
+            ft.replace(R.id.fragment_container, fragment);
+        } else {
+            ft.add(R.id.fragment_container, fragment).addToBackStack(null);
+            isDashboardActive = false;
+        }
+        ft.commit();
+
     }
 
     private void showLogoutDialog() {

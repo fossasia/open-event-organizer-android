@@ -3,6 +3,9 @@ package org.fossasia.openevent.app.core.settings;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
@@ -14,6 +17,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        view.setBackgroundColor(getResources().getColor(R.color.color_top_surface));
+        return view;
     }
 
     @Override
