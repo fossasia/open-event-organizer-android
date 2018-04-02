@@ -30,7 +30,7 @@ public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> {
         LocalDateTime salesEndTime = current.plusDays(10);
         LocalDateTime eventEndTime = DateUtils.getIsoOffsetTimeFromTimestamp(ContextManager.getSelectedEvent().getEndsAt().get());
         //if less than 10 days are available in the event.
-        if (salesEndTime.isAfter(eventEndTime)) {
+        if (salesEndTime.isAfter(eventEndTime) && !eventEndTime.isBefore(current)) {
             salesEndTime = eventEndTime;
         }
         String endDate = DateUtils.formatDateToIso(salesEndTime);
