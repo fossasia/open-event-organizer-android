@@ -91,9 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginStart="@dimen/spacing_large"
-                android:padding="@dimen/spacing_small"
+                android:padding="@dimen/spacing_extra_small"
                 android:textSize="@dimen/text_size_small"
                 android:text="@string/timezone"/>
 
@@ -870,7 +868,6 @@
                     android:id="@+id/draft_state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:onCheckedChanged='@{ (switch, checked) -> (checked == true) ? event.setState("draft") : event.setState("published") }'
                     android:text="@string/draft" />
 
@@ -878,6 +875,7 @@
                     android:id="@+id/published_state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="@string/published" />
 
             </RadioGroup>
