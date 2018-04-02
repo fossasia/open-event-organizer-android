@@ -262,7 +262,7 @@ public class EventRepositoryTest {
             .thenReturn(Observable.empty())
             .thenReturn(Observable.fromIterable(EVENTS));
         when(databaseRepository.saveList(Event.class, EVENTS)).thenReturn(completable);
-        when(databaseRepository.deleteAll(Event.class)).thenReturn(completable);
+        when(databaseRepository.delete(eq(Event.class), any())).thenReturn(completable);
         when(eventService.getEvents(344L)).thenReturn(Observable.just(EVENTS));
 
         // No force reload ensures use of cache
@@ -320,7 +320,7 @@ public class EventRepositoryTest {
     }
 
     @Test
-    public void shouldDeletePreviousDataOnForceReload() {
+    public void shouldSaveOnForceReload() {
         when(utilModel.isConnected()).thenReturn(true);
         when(utilModel.getToken()).thenReturn(TOKEN);
         when(databaseRepository.saveList(Event.class, EVENTS)).thenReturn(Completable.complete());
@@ -331,7 +331,6 @@ public class EventRepositoryTest {
 
         eventRepository.getEvents(true).test();
 
-        inOrder.verify(databaseRepository).deleteAll(Event.class);
         inOrder.verify(databaseRepository).saveList(Event.class, EVENTS);
     }
 

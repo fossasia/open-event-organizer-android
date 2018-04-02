@@ -235,22 +235,6 @@ public class TicketRepositoryTest {
     }
 
     @Test
-    public void shouldDeleteTicketsOnGet() {
-        List<Ticket> tickets = new ArrayList<>();
-        tickets.add(TICKET);
-
-        when(utilModel.isConnected()).thenReturn(true);
-        when(eventService.getTickets(ID)).thenReturn(Observable.just(tickets));
-        when(databaseRepository.deleteAll(Ticket.class)).thenReturn(Completable.complete());
-        when(databaseRepository.saveList(Ticket.class, tickets)).thenReturn(Completable.complete());
-        when(databaseRepository.getItems(eq(Ticket.class), any(SQLOperator.class))).thenReturn(Observable.empty());
-
-        ticketRepository.getTickets(ID, true).subscribe();
-
-        verify(databaseRepository).deleteAll(Ticket.class);
-    }
-
-    @Test
     public void shouldSaveTicketsOnGet() {
         List<Ticket> tickets = new ArrayList<>();
         tickets.add(TICKET);
