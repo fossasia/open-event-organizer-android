@@ -14,7 +14,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 public class FaqRepository extends Repository implements IFaqRepository {
 
@@ -31,12 +30,7 @@ public class FaqRepository extends Repository implements IFaqRepository {
 
         Observable<Faq> networkObservable = Observable.defer(() ->
             eventService.getFaqs(eventId)
-                .doOnNext(faqs -> {
-                    Timber.d(faqs.toString());
-                    databaseRepository
-                    .deleteAll(Faq.class)
-                    .concatWith(databaseRepository.saveList(Faq.class, faqs))
-                    .subscribe(); })
+                .doOnNext(faqs -> syncSave(Faq.class, faqs, Faq::getId, Faq_Table.id).subscribe())
                 .flatMapIterable(faqs -> faqs));
 
         return new AbstractObservableBuilder<Faq>(utilModel)

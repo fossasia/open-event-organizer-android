@@ -8,9 +8,12 @@ import org.fossasia.openevent.app.data.db.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.EventStatistics;
 import org.fossasia.openevent.app.data.models.Event_Table;
+import org.fossasia.openevent.app.data.models.Ticket;
 import org.fossasia.openevent.app.data.models.User;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.utils.JWTUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -50,6 +53,24 @@ public class EventRepository extends Repository implements IEventRepository {
             .build();
     }
 
+    private void saveEvent(Event event) {
+        event.setComplete(true);
+
+        databaseRepository
+            .save(Event.class, event)
+            .subscribe();
+
+        List<Ticket> tickets = event.getTickets();
+        if (tickets != null) {
+            for (Ticket ticket : tickets)
+                ticket.setEvent(event);
+
+            databaseRepository
+                .saveList(Ticket.class, tickets)
+                .subscribe();
+        }
+    }
+
     @Override
     public Observable<Event> getEvent(long eventId, boolean reload) {
         Observable<Event> diskObservable = Observable.defer(() ->
@@ -62,14 +83,7 @@ public class EventRepository extends Repository implements IEventRepository {
         Observable<Event> networkObservable = Observable.defer(() ->
             eventService
                 .getEvent(eventId)
-                .doOnNext(event -> {
-                    event.setComplete(true);
-
-                    databaseRepository
-                        .save(Event.class, event)
-                        .subscribe();
-                }
-        ));
+                .doOnNext(this::saveEvent));
 
         return new AbstractObservableBuilder<Event>(utilModel)
             .reload(reload)
@@ -78,6 +92,7 @@ public class EventRepository extends Repository implements IEventRepository {
             .build();
     }
 
+    @NonNull
     @Override
     public Observable<Event> getEvents(boolean reload) {
         Observable<Event> diskObservable = Observable.defer(() ->
@@ -86,10 +101,7 @@ public class EventRepository extends Repository implements IEventRepository {
 
         Observable<Event> networkObservable = Observable.defer(() ->
             eventService.getEvents(JWTUtils.getIdentity(getAuthorization()))
-                .doOnNext(events -> databaseRepository
-                    .deleteAll(Event.class)
-                    .concatWith(databaseRepository.saveList(Event.class, events))
-                    .subscribe())
+                .doOnNext(events -> syncSave(Event.class, events, Event::getId, Event_Table.id).subscribe())
                 .flatMapIterable(events -> events));
 
         return new AbstractObservableBuilder<Event>(utilModel)

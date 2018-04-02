@@ -11,7 +11,6 @@ import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
@@ -45,9 +44,11 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     public static final String STATE_DRAFT = "draft";
     public static final String STATE_PUBLISHED = "published";
 
-    @Delegate(types = IEventDelegate.class, excludes = {Excluding.class})
+    @JsonIgnore
+    @Delegate(types = IEventDelegate.class)
     private final EventDelegate eventDelegate = new EventDelegate(this);
 
+    @JsonIgnore
     @Delegate(types = EventAnalyticsDelegate.class)
     public final EventAnalyticsDelegate analytics = new EventAnalyticsDelegate();
 
@@ -88,27 +89,16 @@ public class Event implements Comparable<Event>, IHeaderProvider {
     public Double latitude;
     public Double longitude;
 
-    @JsonProperty("can-pay-by-stripe")
     public boolean canPayByStripe;
-    @JsonProperty("can-pay-by-cheque")
     public boolean canPayByCheque;
-    @JsonProperty("can-pay-by-bank")
     public boolean canPayByBank;
-    @JsonProperty("can-pay-by-paypal")
     public boolean canPayByPaypal;
-    @JsonProperty("can-pay-onsite")
     public boolean canPayOnsite;
-    @JsonProperty("is-sponsors-enabled")
     public boolean isSponsorsEnabled;
-    @JsonProperty("has-organizer-info")
     public boolean hasOrganizerInfo;
-    @JsonProperty("is-sessions-speakers-enabled")
     public boolean isSessionsSpeakersEnabled;
-    @JsonProperty("is-ticketing-enabled")
     public boolean isTicketingEnabled;
-    @JsonProperty("is-tax-enabled")
     public boolean isTaxEnabled;
-    @JsonProperty("is-map-shown")
     public boolean isMapShown;
 
     @JsonSerialize(using = ObservableStringSerializer.class)
@@ -120,36 +110,9 @@ public class Event implements Comparable<Event>, IHeaderProvider {
 
     @ColumnIgnore
     @Relationship("tickets")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public List<Ticket> tickets;
 
-    @ColumnIgnore
-    @Relationship("faqs")
-    public List<Faq> faqs;
-
-    @ColumnIgnore
-    @Relationship("event-copyright")
-    public Copyright copyright;
-
     public Event() { }
-
-
-    // One to Many implementation
-    @JsonIgnore
-    @OneToMany(methods = {OneToMany.Method.SAVE}, variableName = "tickets")
-    List<Ticket> getEventTickets() {
-        return eventDelegate.getEventTickets();
-    }
-
-    @JsonIgnore
-    @OneToMany(methods = {OneToMany.Method.SAVE}, variableName = "faqs")
-    List<Faq> getEventFaqs() {
-        return eventDelegate.getEventFaqs();
-    }
-
-    private interface Excluding {
-        List<Ticket> getEventTickets();
-
-        List<Faq> getEventFaqs();
-    }
 
 }

@@ -2,19 +2,17 @@ package org.fossasia.openevent.app.unit.model;
 
 import com.raizlabs.android.dbflow.sql.language.SQLOperator;
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.IUtilModel;
 import org.fossasia.openevent.app.data.db.IDatabaseRepository;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.data.repository.AttendeeRepository;
-import org.fossasia.openevent.app.common.Constants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -71,7 +69,7 @@ public class AttendeeRepositoryTest {
 
         when(utilModel.isConnected()).thenReturn(true);
         when(databaseRepository.getItems(eq(Attendee.class), any(SQLOperator.class))).thenReturn(Observable.empty());
-        when(databaseRepository.deleteAll(Attendee.class)).thenReturn(completable);
+        when(databaseRepository.delete(eq(Attendee.class), any())).thenReturn(completable);
         when(databaseRepository.saveList(Attendee.class, ATTENDEES)).thenReturn(completable);
         when(eventService.getAttendees(43)).thenReturn(Observable.just(ATTENDEES));
 
@@ -122,21 +120,6 @@ public class AttendeeRepositoryTest {
 
         // Verify loads from network
         verify(eventService).getAttendees(23);
-    }
-
-    @Test
-    public void shouldDeletePreviousDataOnForceReload() {
-        when(utilModel.isConnected()).thenReturn(true);
-        when(eventService.getAttendees(23)).thenReturn(Observable.just(ATTENDEES));
-        when(databaseRepository.deleteAll(Attendee.class)).thenReturn(Completable.complete());
-        when(databaseRepository.saveList(Attendee.class, ATTENDEES)).thenReturn(Completable.complete());
-
-        InOrder inOrder = Mockito.inOrder(databaseRepository);
-
-        attendeeRepository.getAttendees(23, true).test();
-
-        inOrder.verify(databaseRepository).deleteAll(Attendee.class);
-        inOrder.verify(databaseRepository).saveList(Attendee.class, ATTENDEES);
     }
 
     @Test
