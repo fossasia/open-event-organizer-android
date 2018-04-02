@@ -111,22 +111,6 @@ public class FaqRepositoryTest {
     }
 
     @Test
-    public void shouldDeleteFaqsOnGet() {
-        List<Faq> faqs = new ArrayList<>();
-        faqs.add(FAQ);
-
-        when(utilModel.isConnected()).thenReturn(true);
-        when(eventService.getFaqs(ID)).thenReturn(Observable.just(faqs));
-        when(databaseRepository.deleteAll(Faq.class)).thenReturn(Completable.complete());
-        when(databaseRepository.saveList(Faq.class, faqs)).thenReturn(Completable.complete());
-        when(databaseRepository.getItems(eq(Faq.class), any(SQLOperator.class))).thenReturn(Observable.empty());
-
-        faqRepository.getFaqs(ID, true).subscribe();
-
-        verify(databaseRepository).deleteAll(Faq.class);
-    }
-
-    @Test
     public void shouldSaveFaqsOnGet() {
         List<Faq> faqs = new ArrayList<>();
         faqs.add(FAQ);

@@ -6,17 +6,16 @@ import android.support.annotation.NonNull;
 import com.raizlabs.android.dbflow.sql.language.Method;
 
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.core.attendee.checkin.job.AttendeeCheckInJob;
 import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.db.QueryHelper;
 import org.fossasia.openevent.app.data.db.IDatabaseRepository;
+import org.fossasia.openevent.app.data.db.QueryHelper;
 import org.fossasia.openevent.app.data.models.Attendee;
 import org.fossasia.openevent.app.data.models.Attendee_Table;
 import org.fossasia.openevent.app.data.models.Event;
 import org.fossasia.openevent.app.data.models.Event_Table;
 import org.fossasia.openevent.app.data.network.EventService;
 import org.fossasia.openevent.app.utils.DateUtils;
-import org.fossasia.openevent.app.core.attendee.checkin.job.AttendeeCheckInJob;
 import org.threeten.bp.LocalDateTime;
 
 import javax.inject.Inject;
@@ -25,7 +24,6 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 public class AttendeeRepository extends Repository implements IAttendeeRepository {
 
@@ -59,9 +57,7 @@ public class AttendeeRepository extends Repository implements IAttendeeRepositor
 
         Observable<Attendee> networkObservable = Observable.defer(() ->
             eventService.getAttendees(eventId)
-                .doOnNext(attendees -> databaseRepository.deleteAll(Attendee.class)
-                .concatWith(databaseRepository.saveList(Attendee.class, attendees))
-                .subscribe(() -> Timber.d("Saved Attendees"), Logger::logError))
+                .doOnNext(attendees -> syncSave(Attendee.class, attendees, Attendee::getId, Attendee_Table.id).subscribe())
                 .flatMapIterable(attendees -> attendees));
 
         return new AbstractObservableBuilder<Attendee>(utilModel)
