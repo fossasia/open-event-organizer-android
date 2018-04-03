@@ -82,8 +82,11 @@ public class TicketRepository extends Repository implements ITicketRepository {
 
         Observable<Ticket> networkObservable = Observable.defer(() ->
             eventService.getTickets(eventId)
-                .doOnNext(tickets -> databaseRepository
-                    .deleteAll(Ticket.class)
+                .doOnNext(tickets ->
+                    Observable.fromIterable(tickets)
+                    .map(Ticket::getId)
+                    .flatMapCompletable(ticketIds ->
+                        databaseRepository.delete(Ticket.class, Ticket_Table.id.notIn(ticketIds)))
                     .concatWith(databaseRepository.saveList(Ticket.class, tickets))
                     .subscribe())
                 .flatMapIterable(tickets -> tickets));

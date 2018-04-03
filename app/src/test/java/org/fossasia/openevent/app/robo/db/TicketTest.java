@@ -118,6 +118,7 @@ public class TicketTest extends BaseTest {
         DatabaseRepository databaseRepository = new DatabaseRepository();
 
         databaseRepository.save(Event.class, event).subscribe();
+        databaseRepository.saveList(Ticket.class, Arrays.asList(ticket1, ticket2, ticket3, ticket4, ticket5)).subscribe();
         databaseRepository.saveList(Attendee.class, Arrays.asList(attendee, attendee2, attendee3,
             attendee4, attendee5, attendee6, attendee7)).subscribe();
 
