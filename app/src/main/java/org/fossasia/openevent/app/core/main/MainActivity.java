@@ -182,8 +182,6 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
         Fragment fragment;
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        isDashboardActive = true;
-
         switch (navItemId) {
             case R.id.nav_dashboard:
                 fragment = EventDashboardFragment.newInstance(eventId);
@@ -209,11 +207,12 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
         }
 
         getSupportFragmentManager().popBackStack();
-        if (navItemId == R.id.nav_dashboard) {
+
+        isDashboardActive = navItemId == R.id.nav_dashboard;
+        if (isDashboardActive) {
             ft.replace(R.id.fragment_container, fragment);
         } else {
             ft.add(R.id.fragment_container, fragment).addToBackStack(null);
-            isDashboardActive = false;
         }
         ft.commit();
 
