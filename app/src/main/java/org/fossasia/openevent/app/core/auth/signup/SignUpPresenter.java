@@ -1,10 +1,10 @@
 package org.fossasia.openevent.app.core.auth.signup;
 
 import org.fossasia.openevent.app.BuildConfig;
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.IAuthModel;
-import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.auth.AuthService;
+import org.fossasia.openevent.app.data.auth.model.User;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 
 import javax.inject.Inject;
@@ -12,14 +12,14 @@ import javax.inject.Inject;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneous;
 
-public class SignUpPresenter extends BasePresenter<ISignUpView> {
+public class SignUpPresenter extends AbstractBasePresenter<SignUpView> {
 
-    private final IAuthModel authModel;
+    private final AuthService authModel;
     private final HostSelectionInterceptor interceptor;
     private final User user = new User();
 
     @Inject
-    public SignUpPresenter(IAuthModel authModel, HostSelectionInterceptor interceptor) {
+    public SignUpPresenter(AuthService authModel, HostSelectionInterceptor interceptor) {
         this.authModel = authModel;
         this.interceptor = interceptor;
     }

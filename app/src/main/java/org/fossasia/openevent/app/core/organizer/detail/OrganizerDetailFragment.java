@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.organizer.password.ChangePasswordFragment;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.auth.model.User;
 import org.fossasia.openevent.app.databinding.OrganizerDetailFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -24,13 +24,13 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
-public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresenter> implements IOrganizerDetailView {
+public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresenter> implements OrganizerDetailView {
 
     private OrganizerDetailFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
     @Inject
-    IUtilModel utilModel;
+    ContextUtils utilModel;
     @Inject
     Lazy<OrganizerDetailPresenter> presenterProvider;
 

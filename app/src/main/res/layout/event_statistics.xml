@@ -9,7 +9,7 @@
 
         <variable
             name="eventStatistics"
-            type="org.fossasia.openevent.app.data.models.EventStatistics" />
+            type="org.fossasia.openevent.app.data.event.EventStatistics" />
     </data>
 
     <LinearLayout

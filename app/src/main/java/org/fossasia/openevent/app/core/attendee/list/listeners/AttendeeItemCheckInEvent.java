@@ -9,15 +9,15 @@ import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.listeners.ClickEventHook;
 import com.mikepenz.fastadapter.utils.EventHookUtil;
 
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.core.attendee.list.IAttendeesView;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.core.attendee.list.AttendeesView;
 import org.fossasia.openevent.app.core.attendee.list.viewholders.AttendeeViewHolder;
 
 import java.util.List;
 
 public class AttendeeItemCheckInEvent extends ClickEventHook<Attendee> {
 
-    private final IAttendeesView attendeesView;
+    private final AttendeesView attendeesView;
 
     @Nullable
     @Override
@@ -28,7 +28,7 @@ public class AttendeeItemCheckInEvent extends ClickEventHook<Attendee> {
         return super.onBindMany(viewHolder);
     }
 
-    public AttendeeItemCheckInEvent(IAttendeesView attendeesView) {
+    public AttendeeItemCheckInEvent(AttendeesView attendeesView) {
         this.attendeesView = attendeesView;
     }
 

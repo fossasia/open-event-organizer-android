@@ -11,7 +11,7 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
-import org.fossasia.openevent.app.data.IUtilModel;
+import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.databinding.SignUpFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -22,13 +22,13 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class SignUpFragment extends BaseFragment<SignUpPresenter> implements ISignUpView {
+public class SignUpFragment extends BaseFragment<SignUpPresenter> implements SignUpView {
 
     @Inject
     Lazy<SignUpPresenter> presenterProvider;
 
     @Inject
-    IUtilModel utilModel;
+    ContextUtils utilModel;
 
     private SignUpFragmentBinding binding;
     private Validator validator;

@@ -2,10 +2,10 @@ package org.fossasia.openevent.app.core.event.list;
 
 import android.support.annotation.VisibleForTesting;
 
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.repository.IEventRepository;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.utils.service.DateService;
 
 import java.util.ArrayList;
@@ -20,17 +20,17 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
-public class EventsPresenter extends BasePresenter<IEventsView> {
+public class EventsPresenter extends AbstractBasePresenter<EventsView> {
 
     private final List<Event> events = new ArrayList<>();
 
-    private final IEventRepository eventsDataRepository;
+    private final EventRepository eventsDataRepository;
 
     public static final int SORTBYDATE = 0;
     public static final int SORTBYNAME = 1;
 
     @Inject
-    public EventsPresenter(IEventRepository eventsDataRepository) {
+    public EventsPresenter(EventRepository eventsDataRepository) {
         this.eventsDataRepository = eventsDataRepository;
     }
 
@@ -71,7 +71,7 @@ public class EventsPresenter extends BasePresenter<IEventsView> {
     }
 
     @VisibleForTesting
-    public IEventsView getView() {
+    public EventsView getView() {
         return super.getView();
     }
 

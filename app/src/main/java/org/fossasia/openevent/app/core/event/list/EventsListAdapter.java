@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import org.fossasia.openevent.app.common.ContextManager;
-import org.fossasia.openevent.app.data.IBus;
-import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.Bus;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.databinding.EventLayoutBinding;
 import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
 import org.fossasia.openevent.app.ui.HeaderViewHolder;
@@ -20,11 +20,11 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
 
     private final List<Event> events;
-    private final IBus bus;
+    private final Bus bus;
 
     private boolean sortByName;
 
-    EventsListAdapter(List<Event> events, IBus bus) {
+    EventsListAdapter(List<Event> events, Bus bus) {
         this.events = events;
         this.bus = bus;
     }

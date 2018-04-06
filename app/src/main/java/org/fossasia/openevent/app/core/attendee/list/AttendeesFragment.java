@@ -30,8 +30,8 @@ import org.fossasia.openevent.app.core.attendee.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.core.attendee.list.listeners.AttendeeItemCheckInEvent;
 import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.core.main.MainActivity;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.databinding.FragmentAttendeesBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.utils.SearchUtils;
@@ -50,14 +50,14 @@ import dagger.Lazy;
  */
 
 @SuppressWarnings("PMD.TooManyMethods")
-public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implements IAttendeesView {
+public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implements AttendeesView {
 
     private Context context;
 
     private long eventId;
 
     @Inject
-    IUtilModel utilModel;
+    ContextUtils utilModel;
 
     @Inject
     Lazy<AttendeesPresenter> presenterProvider;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
-import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.databinding.BottomsheetAttendeeCheckInBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
-public class AttendeeCheckInFragment extends BaseBottomSheetFragment<AttendeeCheckInPresenter> implements IAttendeeCheckInView {
+public class AttendeeCheckInFragment extends BaseBottomSheetFragment<AttendeeCheckInPresenter> implements AttendeeCheckInView {
 
     private static final String ATTENDEE_ID = "attendee_id";
 

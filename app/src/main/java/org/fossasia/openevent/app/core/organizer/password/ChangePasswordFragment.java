@@ -21,7 +21,7 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class ChangePasswordFragment extends BaseFragment<ChangePasswordPresenter> implements IChangePasswordView {
+public class ChangePasswordFragment extends BaseFragment<ChangePasswordPresenter> implements ChangePasswordView {
 
     @Inject
     Lazy<ChangePasswordPresenter> presenterProvider;

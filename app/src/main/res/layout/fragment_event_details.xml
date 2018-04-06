@@ -12,11 +12,11 @@
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.models.Event" />
+            type="org.fossasia.openevent.app.data.event.Event" />
 
         <variable
             name="eventStatistics"
-            type="org.fossasia.openevent.app.data.models.EventStatistics" />
+            type="org.fossasia.openevent.app.data.event.EventStatistics" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
