@@ -102,4 +102,7 @@ public interface EventService {
 
     @POST("faqs")
     Observable<Faq> postFaq(@Body Faq faq);
+
+    @DELETE("faqs/{id}")
+    Completable deleteFaq(@Path("id") long id);
 }
