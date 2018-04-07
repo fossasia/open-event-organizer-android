@@ -18,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.Lazy;
 
-public class ChartActivity extends BaseInjectActivity<ChartPresenter> implements IChartView {
+public class ChartActivity extends BaseInjectActivity<ChartPresenter> implements ChartView {
     @BindView(R.id.chart)
     LineChart chart;
 

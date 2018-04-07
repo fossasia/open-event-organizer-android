@@ -21,7 +21,7 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class ResetPasswordByTokenFragment extends BaseFragment<ResetPasswordByTokenPresenter> implements IResetPasswordByTokenView {
+public class ResetPasswordByTokenFragment extends BaseFragment<ResetPasswordByTokenPresenter> implements ResetPasswordByTokenView {
 
     @Inject
     Lazy<ResetPasswordByTokenPresenter> presenterProvider;

@@ -18,9 +18,9 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.event.copyright.CreateCopyrightFragment;
 import org.fossasia.openevent.app.core.event.copyright.update.UpdateCopyrightFragment;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.models.Copyright;
-import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.copyright.Copyright;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.databinding.AboutEventFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -31,7 +31,7 @@ import javax.inject.Inject;
 import dagger.Lazy;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implements IAboutEventVew {
+public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implements AboutEventVew {
 
     private AboutEventFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
@@ -43,7 +43,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     @Inject
     Lazy<AboutEventPresenter> aboutEventPresenterProvider;
     @Inject
-    IUtilModel utilModel;
+    ContextUtils utilModel;
     @Inject
     ToolbarColorChanger toolbarColorChanger;
 

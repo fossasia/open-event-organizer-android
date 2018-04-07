@@ -1,23 +1,23 @@
 package org.fossasia.openevent.app.core.faq.create;
 
 import org.fossasia.openevent.app.common.ContextManager;
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.models.Faq;
-import org.fossasia.openevent.app.data.repository.IFaqRepository;
+import org.fossasia.openevent.app.data.faq.Faq;
+import org.fossasia.openevent.app.data.faq.FaqRepository;
 
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneous;
 
-public class CreateFaqPresenter extends BasePresenter<ICreateFaqView> {
+public class CreateFaqPresenter extends AbstractBasePresenter<CreateFaqView> {
 
-    private final IFaqRepository faqRepository;
+    private final FaqRepository faqRepository;
     private final Faq faq = new Faq();
 
     @Inject
-    public CreateFaqPresenter(IFaqRepository faqRepository) {
+    public CreateFaqPresenter(FaqRepository faqRepository) {
         this.faqRepository = faqRepository;
     }
 

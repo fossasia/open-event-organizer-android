@@ -3,10 +3,10 @@ package org.fossasia.openevent.app.core.organizer.password;
 import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.BuildConfig;
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.IAuthModel;
-import org.fossasia.openevent.app.data.models.ChangePassword;
+import org.fossasia.openevent.app.data.auth.AuthService;
+import org.fossasia.openevent.app.data.auth.model.ChangePassword;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 
 import javax.inject.Inject;
@@ -14,14 +14,14 @@ import javax.inject.Inject;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 
-public class ChangePasswordPresenter extends BasePresenter<IChangePasswordView> {
+public class ChangePasswordPresenter extends AbstractBasePresenter<ChangePasswordView> {
 
-    private final IAuthModel changePasswordModel;
+    private final AuthService changePasswordModel;
     private final HostSelectionInterceptor interceptor;
     private final ChangePassword organizerPasswordObject = new ChangePassword();
 
     @Inject
-    public ChangePasswordPresenter(IAuthModel changePasswordModel, HostSelectionInterceptor interceptor) {
+    public ChangePasswordPresenter(AuthService changePasswordModel, HostSelectionInterceptor interceptor) {
         this.changePasswordModel = changePasswordModel;
         this.interceptor = interceptor;
     }
@@ -52,7 +52,7 @@ public class ChangePasswordPresenter extends BasePresenter<IChangePasswordView> 
     }
 
     @VisibleForTesting
-    public IChangePasswordView getView() {
+    public ChangePasswordView getView() {
         return super.getView();
     }
 

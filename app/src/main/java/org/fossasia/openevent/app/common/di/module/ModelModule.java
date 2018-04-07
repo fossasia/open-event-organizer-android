@@ -1,13 +1,15 @@
 package org.fossasia.openevent.app.common.di.module;
 
-import org.fossasia.openevent.app.data.AuthModel;
+import org.fossasia.openevent.app.data.auth.AuthServiceImpl;
+import org.fossasia.openevent.app.data.AndroidUtils;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.Preferences;
+import org.fossasia.openevent.app.data.RxBus;
+import org.fossasia.openevent.app.data.auth.AuthService;
 import org.fossasia.openevent.app.data.Bus;
-import org.fossasia.openevent.app.data.IAuthModel;
-import org.fossasia.openevent.app.data.IBus;
-import org.fossasia.openevent.app.data.ISharedPreferenceModel;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.SharedPreferenceModel;
-import org.fossasia.openevent.app.data.UtilModel;
+import org.fossasia.openevent.app.data.SharedPreferencesImpl;
+import org.fossasia.openevent.app.data.network.ConnectionStatus;
+import org.fossasia.openevent.app.data.network.ConnectionStatusImpl;
 
 import javax.inject.Singleton;
 
@@ -19,18 +21,22 @@ public abstract class ModelModule {
 
     @Binds
     @Singleton
-    abstract IBus bindsBus(Bus bus);
+    abstract Bus bindsBus(RxBus bus);
 
     @Binds
     @Singleton
-    abstract IUtilModel bindsUtilModel(UtilModel utilModel);
+    abstract ContextUtils bindsUtilModel(AndroidUtils utilModel);
 
     @Binds
     @Singleton
-    abstract ISharedPreferenceModel bindsSharedPreferenceModel(SharedPreferenceModel sharedPreferenceModel);
+    abstract ConnectionStatus bindsConnectionObserver(ConnectionStatusImpl connectionStatus);
 
     @Binds
     @Singleton
-    abstract IAuthModel bindsLoginModule(AuthModel authModel);
+    abstract Preferences bindsSharedPreferenceModel(SharedPreferencesImpl sharedPreferenceModel);
+
+    @Binds
+    @Singleton
+    abstract AuthService bindsLoginModule(AuthServiceImpl authModel);
 
 }

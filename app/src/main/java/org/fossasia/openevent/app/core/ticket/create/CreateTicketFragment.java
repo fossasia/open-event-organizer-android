@@ -21,7 +21,7 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateTicketFragment extends BaseBottomSheetFragment<CreateTicketPresenter> implements ICreateTicketView {
+public class CreateTicketFragment extends BaseBottomSheetFragment<CreateTicketPresenter> implements CreateTicketView {
 
     @Inject
     Lazy<CreateTicketPresenter> presenterProvider;

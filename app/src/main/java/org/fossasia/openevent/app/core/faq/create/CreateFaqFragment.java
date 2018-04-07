@@ -21,7 +21,7 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateFaqFragment extends BaseBottomSheetFragment<CreateFaqPresenter> implements ICreateFaqView {
+public class CreateFaqFragment extends BaseBottomSheetFragment<CreateFaqPresenter> implements CreateFaqView {
 
     @Inject
     Lazy<CreateFaqPresenter> presenterProvider;

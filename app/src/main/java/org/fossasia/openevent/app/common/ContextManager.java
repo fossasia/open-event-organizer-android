@@ -2,18 +2,20 @@ package org.fossasia.openevent.app.common;
 
 import android.databinding.ObservableField;
 
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.auth.model.User;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.sentry.Sentry;
 import io.sentry.event.UserBuilder;
 import timber.log.Timber;
 
+@Singleton
 public class ContextManager {
 
     private static final ObservableField<String> CURRENCY = new ObservableField<>("$");

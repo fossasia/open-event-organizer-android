@@ -4,11 +4,11 @@ import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.IAuthModel;
-import org.fossasia.openevent.app.data.ISharedPreferenceModel;
-import org.fossasia.openevent.app.data.models.dto.Login;
+import org.fossasia.openevent.app.data.auth.AuthService;
+import org.fossasia.openevent.app.data.Preferences;
+import org.fossasia.openevent.app.data.auth.model.Login;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 
 import java.util.Set;
@@ -18,15 +18,15 @@ import javax.inject.Inject;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 
-public class LoginPresenter extends BasePresenter<ILoginView> {
+public class LoginPresenter extends AbstractBasePresenter<LoginView> {
 
-    private final IAuthModel loginModel;
-    private final ISharedPreferenceModel sharedPreferenceModel;
+    private final AuthService loginModel;
+    private final Preferences sharedPreferenceModel;
     private final HostSelectionInterceptor interceptor;
     private final Login login = new Login();
 
     @Inject
-    public LoginPresenter(IAuthModel loginModel, ISharedPreferenceModel sharedPreferenceModel, HostSelectionInterceptor interceptor) {
+    public LoginPresenter(AuthService loginModel, Preferences sharedPreferenceModel, HostSelectionInterceptor interceptor) {
         this.loginModel = loginModel;
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.interceptor = interceptor;
@@ -68,7 +68,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     }
 
     @VisibleForTesting
-    public ILoginView getView() {
+    public LoginView getView() {
         return super.getView();
     }
 

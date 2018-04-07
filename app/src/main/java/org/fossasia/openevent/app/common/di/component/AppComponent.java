@@ -3,7 +3,7 @@ package org.fossasia.openevent.app.common.di.component;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.di.module.AppModule;
 import org.fossasia.openevent.app.common.di.module.android.ActivityBuildersModule;
-import org.fossasia.openevent.app.core.attendee.checkin.job.AttendeeCheckInJob;
+import org.fossasia.openevent.app.data.attendee.AttendeeCheckInJob;
 
 import javax.inject.Singleton;
 

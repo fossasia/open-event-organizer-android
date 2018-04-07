@@ -21,8 +21,8 @@ import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.core.ticket.create.CreateTicketFragment;
 import org.fossasia.openevent.app.core.ticket.detail.TicketDetailFragment;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.models.Ticket;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.databinding.TicketsFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -32,13 +32,13 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
-public class TicketsFragment extends BaseFragment<TicketsPresenter> implements ITicketsView {
+public class TicketsFragment extends BaseFragment<TicketsPresenter> implements TicketsView {
 
     private Context context;
     private long eventId;
 
     @Inject
-    IUtilModel utilModel;
+    ContextUtils utilModel;
 
     @Inject
     Lazy<TicketsPresenter> ticketsPresenter;

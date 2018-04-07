@@ -24,7 +24,7 @@ import org.fossasia.openevent.app.core.attendee.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.core.attendee.qrscan.widget.CameraSourcePreview;
 import org.fossasia.openevent.app.core.attendee.qrscan.widget.GraphicOverlay;
 import org.fossasia.openevent.app.core.main.MainActivity;
-import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
 import java.io.IOException;
@@ -46,7 +46,7 @@ import timber.log.Timber;
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
 @SuppressWarnings("PMD.TooManyMethods")
-public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements IScanQRView {
+public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements ScanQRView {
 
     public static final int PERM_REQ_CODE = 123;
 

@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.data.db.configuration;
 
 import com.raizlabs.android.dbflow.converter.TypeConverter;
 
-import org.fossasia.openevent.app.data.models.dto.ObservableString;
+import org.fossasia.openevent.app.data.event.serializer.ObservableString;
 
 @com.raizlabs.android.dbflow.annotation.TypeConverter
 public class ObservableStringTypeConverter extends TypeConverter<String, ObservableString> {

@@ -5,7 +5,7 @@
         <import type="android.view.View" />
         <variable
             name="date"
-            type="org.fossasia.openevent.app.data.models.dto.ObservableString" />
+            type="org.fossasia.openevent.app.data.event.serializer.ObservableString" />
         <variable
             name="label"
             type="String"/>
