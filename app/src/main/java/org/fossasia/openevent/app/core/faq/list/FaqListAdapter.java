@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.core.faq.list.viewholder.FaqViewHolder;
-import org.fossasia.openevent.app.data.models.Faq;
+import org.fossasia.openevent.app.data.faq.Faq;
 
 import java.util.List;
 

@@ -4,14 +4,14 @@ import android.support.annotation.Nullable;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.fossasia.openevent.app.common.mvp.presenter.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.copyright.CopyrightRepository;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
-import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
-import org.fossasia.openevent.app.data.models.Copyright;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.repository.ICopyrightRepository;
-import org.fossasia.openevent.app.data.repository.IEventRepository;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
+import org.fossasia.openevent.app.data.copyright.Copyright;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.event.EventRepository;
 
 import javax.inject.Inject;
 
@@ -24,18 +24,18 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousResultRefresh;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveRefresh;
 
-public class AboutEventPresenter extends BaseDetailPresenter<Long, IAboutEventVew> {
+public class AboutEventPresenter extends AbstractDetailPresenter<Long, AboutEventVew> {
 
-    private final IEventRepository eventRepository;
-    private final ICopyrightRepository copyrightRepository;
-    private final IDatabaseChangeListener<Copyright> copyrightChangeListener;
+    private final EventRepository eventRepository;
+    private final CopyrightRepository copyrightRepository;
+    private final DatabaseChangeListener<Copyright> copyrightChangeListener;
     private Event event;
     @Nullable
     private Copyright copyright;
 
     @Inject
-    public AboutEventPresenter(IEventRepository eventRepository, ICopyrightRepository copyrightRepository,
-                               IDatabaseChangeListener<Copyright> copyrightChangeListener) {
+    public AboutEventPresenter(EventRepository eventRepository, CopyrightRepository copyrightRepository,
+                               DatabaseChangeListener<Copyright> copyrightChangeListener) {
         this.eventRepository = eventRepository;
         this.copyrightRepository = copyrightRepository;
         this.copyrightChangeListener = copyrightChangeListener;
@@ -110,7 +110,7 @@ public class AboutEventPresenter extends BaseDetailPresenter<Long, IAboutEventVe
         copyrightChangeListener.startListening();
         copyrightChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
-            .map(DatabaseChangeListener.ModelChange::getAction)
+            .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
             .filter(action -> action.equals(BaseModel.Action.UPDATE))
             .subscribeOn(Schedulers.io())
             .subscribe(copyrightModelChange -> loadCopyright(false), Logger::logError);

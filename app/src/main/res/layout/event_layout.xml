@@ -4,11 +4,11 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="org.fossasia.openevent.app.data.models.Event" />
+        <import type="org.fossasia.openevent.app.data.event.Event" />
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.models.Event" />
+            type="org.fossasia.openevent.app.data.event.Event" />
         <variable
             name="selectedEventId"
             type="Long" />

@@ -15,8 +15,8 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseInjectActivity;
 import org.fossasia.openevent.app.core.auth.AuthActivity;
 import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailActivity;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.auth.model.User;
 import org.fossasia.openevent.app.databinding.MainActivityBinding;
 import org.fossasia.openevent.app.databinding.MainNavHeaderBinding;
 import org.fossasia.openevent.app.ui.BackPressHandler;
@@ -26,7 +26,7 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
-public class MainActivity extends BaseInjectActivity<MainPresenter> implements NavigationView.OnNavigationItemSelectedListener, IMainView {
+public class MainActivity extends BaseInjectActivity<MainPresenter> implements NavigationView.OnNavigationItemSelectedListener, MainView {
 
     public static final String EVENT_KEY = "event";
     private long eventId = -1;

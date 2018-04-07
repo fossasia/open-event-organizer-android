@@ -9,7 +9,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.core.ticket.list.viewholder.TicketViewHolder;
-import org.fossasia.openevent.app.data.models.Ticket;
+import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
 import org.fossasia.openevent.app.ui.HeaderViewHolder;
 

@@ -3,16 +3,16 @@ package org.fossasia.openevent.app.core.event.dashboard;
 import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.mvp.presenter.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.core.event.dashboard.analyser.ChartAnalyser;
 import org.fossasia.openevent.app.core.event.dashboard.analyser.TicketAnalyser;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.models.EventStatistics;
-import org.fossasia.openevent.app.data.repository.IAttendeeRepository;
-import org.fossasia.openevent.app.data.repository.IEventRepository;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.event.EventStatistics;
+import org.fossasia.openevent.app.data.event.EventRepository;
 
 import java.util.List;
 
@@ -26,20 +26,20 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.result;
 
-public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDashboardView> {
+public class EventDashboardPresenter extends AbstractDetailPresenter<Long, EventDashboardView> {
 
     private Event event;
     private List<Attendee> attendees;
     private EventStatistics eventStatistics;
-    private final IEventRepository eventRepository;
-    private final IAttendeeRepository attendeeRepository;
+    private final EventRepository eventRepository;
+    private final AttendeeRepository attendeeRepository;
     private final TicketAnalyser ticketAnalyser;
     private final ChartAnalyser chartAnalyser;
-    private final IUtilModel utilModel;
+    private final ContextUtils utilModel;
 
     @Inject
-    public EventDashboardPresenter(IEventRepository eventRepository, IAttendeeRepository attendeeRepository,
-                                   TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser, IUtilModel utilModel) {
+    public EventDashboardPresenter(EventRepository eventRepository, AttendeeRepository attendeeRepository,
+                                   TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser, ContextUtils utilModel) {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
         this.attendeeRepository = attendeeRepository;
@@ -131,7 +131,7 @@ public class EventDashboardPresenter extends BaseDetailPresenter<Long, IEventDas
     }
 
     @VisibleForTesting
-    public IEventDashboardView getView() {
+    public EventDashboardView getView() {
         return super.getView();
     }
 

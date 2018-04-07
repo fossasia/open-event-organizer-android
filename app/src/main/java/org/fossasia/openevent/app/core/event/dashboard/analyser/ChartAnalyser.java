@@ -13,10 +13,10 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.EntryXComparator;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.models.Order;
-import org.fossasia.openevent.app.data.repository.AttendeeRepository;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.attendee.AttendeeRepositoryImpl;
+import org.fossasia.openevent.app.data.order.Order;
 import org.fossasia.openevent.app.utils.DateUtils;
 
 import java.text.ParseException;
@@ -36,8 +36,8 @@ public class ChartAnalyser {
 
     private static final int TICKET_SALE_THRESHOLD = 5;
 
-    private final IUtilModel utilModel;
-    private final AttendeeRepository attendeeRepository;
+    private final ContextUtils utilModel;
+    private final AttendeeRepositoryImpl attendeeRepository;
 
     private final Map<String, Long> freeMap = new ConcurrentHashMap<>();
     private final Map<String, Long> paidMap = new ConcurrentHashMap<>();
@@ -55,7 +55,7 @@ public class ChartAnalyser {
     private boolean error;
 
     @Inject
-    protected ChartAnalyser(IUtilModel utilModel, AttendeeRepository attendeeRepository) {
+    protected ChartAnalyser(ContextUtils utilModel, AttendeeRepositoryImpl attendeeRepository) {
         this.utilModel = utilModel;
         this.attendeeRepository = attendeeRepository;
 

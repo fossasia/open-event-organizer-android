@@ -4,11 +4,11 @@ import android.support.design.widget.BottomSheetDialogFragment;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.di.Injectable;
-import org.fossasia.openevent.app.common.mvp.presenter.IBasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
 
 import dagger.Lazy;
 
-public abstract class BaseBottomSheetFragment<P extends IBasePresenter> extends BottomSheetDialogFragment implements Injectable {
+public abstract class BaseBottomSheetFragment<P extends BasePresenter> extends BottomSheetDialogFragment implements Injectable {
 
     @Override
     public void onDestroy() {

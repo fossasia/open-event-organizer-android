@@ -1,9 +1,9 @@
 package org.fossasia.openevent.app.core.organizer.detail;
 
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.models.User;
-import org.fossasia.openevent.app.data.repository.EventRepository;
+import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.event.EventRepositoryImpl;
 
 import javax.inject.Inject;
 
@@ -12,14 +12,14 @@ import io.reactivex.Observable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
-public class OrganizerDetailPresenter extends BasePresenter<IOrganizerDetailView> {
+public class OrganizerDetailPresenter extends AbstractBasePresenter<OrganizerDetailView> {
 
-    private final EventRepository eventRepository;
+    private final EventRepositoryImpl eventRepository;
 
     private User user;
 
     @Inject
-    public OrganizerDetailPresenter(EventRepository eventRepository) {
+    public OrganizerDetailPresenter(EventRepositoryImpl eventRepository) {
         this.eventRepository = eventRepository;
     }
 

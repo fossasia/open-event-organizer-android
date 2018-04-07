@@ -10,10 +10,10 @@
 
         <variable
             name="user"
-            type="org.fossasia.openevent.app.data.models.User" />
+            type="org.fossasia.openevent.app.data.auth.model.User" />
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.models.Event" />
+            type="org.fossasia.openevent.app.data.event.Event" />
     </data>
 
     <LinearLayout

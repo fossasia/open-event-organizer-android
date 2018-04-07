@@ -1,17 +1,17 @@
 package org.fossasia.openevent.app.common.di.module;
 
+import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
+import org.fossasia.openevent.app.data.copyright.CopyrightRepository;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseRepository;
 import org.fossasia.openevent.app.data.db.DatabaseRepository;
-import org.fossasia.openevent.app.data.db.IDatabaseRepository;
-import org.fossasia.openevent.app.data.repository.AttendeeRepository;
-import org.fossasia.openevent.app.data.repository.CopyrightRepository;
-import org.fossasia.openevent.app.data.repository.EventRepository;
-import org.fossasia.openevent.app.data.repository.FaqRepository;
-import org.fossasia.openevent.app.data.repository.IAttendeeRepository;
-import org.fossasia.openevent.app.data.repository.ICopyrightRepository;
-import org.fossasia.openevent.app.data.repository.IEventRepository;
-import org.fossasia.openevent.app.data.repository.IFaqRepository;
-import org.fossasia.openevent.app.data.repository.ITicketRepository;
-import org.fossasia.openevent.app.data.repository.TicketRepository;
+import org.fossasia.openevent.app.data.attendee.AttendeeRepositoryImpl;
+import org.fossasia.openevent.app.data.copyright.CopyrightRepositoryImpl;
+import org.fossasia.openevent.app.data.event.EventRepositoryImpl;
+import org.fossasia.openevent.app.data.faq.FaqRepository;
+import org.fossasia.openevent.app.data.faq.FaqRepositoryImpl;
+import org.fossasia.openevent.app.data.event.EventRepository;
+import org.fossasia.openevent.app.data.ticket.TicketRepository;
+import org.fossasia.openevent.app.data.ticket.TicketRepositoryImpl;
 
 import javax.inject.Singleton;
 
@@ -23,26 +23,26 @@ public abstract class RepoModule {
 
     @Binds
     @Singleton
-    abstract IDatabaseRepository providesDatabaseRepository(DatabaseRepository databaseRepository);
+    abstract DatabaseRepository providesDatabaseRepository(DbFlowDatabaseRepository databaseRepository);
 
     @Binds
     @Singleton
-    abstract IEventRepository bindsEventRepository(EventRepository eventRepository);
+    abstract EventRepository bindsEventRepository(EventRepositoryImpl eventRepository);
 
     @Binds
     @Singleton
-    abstract IAttendeeRepository providesAttendeeRepository(AttendeeRepository attendeeRepository);
+    abstract AttendeeRepository providesAttendeeRepository(AttendeeRepositoryImpl attendeeRepository);
 
     @Binds
     @Singleton
-    abstract ITicketRepository bindsTicketRepository(TicketRepository ticketRepository);
+    abstract TicketRepository bindsTicketRepository(TicketRepositoryImpl ticketRepository);
 
     @Binds
     @Singleton
-    abstract IFaqRepository bindsFAQRepository(FaqRepository faqRepository);
+    abstract FaqRepository bindsFAQRepository(FaqRepositoryImpl faqRepository);
 
     @Binds
     @Singleton
-    abstract ICopyrightRepository bindsCopyrightRepository(CopyrightRepository copyrightRepository);
+    abstract CopyrightRepository bindsCopyrightRepository(CopyrightRepositoryImpl copyrightRepository);
 
 }

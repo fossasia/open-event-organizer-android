@@ -3,11 +3,11 @@ package org.fossasia.openevent.app.core.event.dashboard.analyser;
 import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.models.query.TypeQuantity;
-import org.fossasia.openevent.app.data.repository.IAttendeeRepository;
-import org.fossasia.openevent.app.data.repository.ITicketRepository;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.ticket.TicketRepository;
+import org.fossasia.openevent.app.data.ticket.TypeQuantity;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ public class TicketAnalyser {
     public static final String TICKET_FREE = "free";
     public static final String TICKET_PAID = "paid";
     public static final String TICKET_DONATION = "donation";
-    private final ITicketRepository ticketRepository;
-    private final IAttendeeRepository attendeeRepository;
+    private final TicketRepository ticketRepository;
+    private final AttendeeRepository attendeeRepository;
 
     @Inject
-    public TicketAnalyser(ITicketRepository ticketRepository, IAttendeeRepository attendeeRepository) {
+    public TicketAnalyser(TicketRepository ticketRepository, AttendeeRepository attendeeRepository) {
         this.ticketRepository = ticketRepository;
         this.attendeeRepository = attendeeRepository;
     }
