@@ -43,7 +43,7 @@ public class Event implements Comparable<Event>, HeaderProvider {
     public static final String STATE_PUBLISHED = "published";
 
     @JsonIgnore
-   @Delegate(types = EventDelegate.class)
+    @Delegate(types = EventDelegate.class)
     private final EventDelegateImpl eventDelegate = new EventDelegateImpl(this);
 
     @JsonIgnore

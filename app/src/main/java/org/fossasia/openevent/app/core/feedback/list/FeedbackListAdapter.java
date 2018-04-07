@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.core.feedback.list;
 
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -19,16 +20,16 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackViewHolder
         this.feedbacks = feedbackListPresenter.getFeedbacks();
     }
 
+    @NonNull
     @Override
-    public FeedbackViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-
+    public FeedbackViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         return new FeedbackViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.feedbacklist_layout, viewGroup, false));
     }
 
     @Override
-    public void onBindViewHolder(FeedbackViewHolder feedbackViewHolder, int position) {
+    public void onBindViewHolder(@NonNull FeedbackViewHolder feedbackViewHolder, int position) {
         feedbackViewHolder.bind(feedbacks.get(position));
     }
 

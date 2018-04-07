@@ -16,7 +16,6 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
-
 public class FeedbackListPresenter extends AbstractDetailPresenter<Long, FeedbackListView> {
 
     private final List<Feedback> feedbacks = new ArrayList<>();

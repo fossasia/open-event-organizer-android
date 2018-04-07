@@ -73,7 +73,7 @@ class FragmentNavigator {
             case R.id.nav_feedback:
                 fragment = FeedbackListFragment.newInstance(eventId);
                 break;
-            default:
+           default:
                 fragment = EventDashboardFragment.newInstance(eventId);
                 break;
         }

@@ -5,7 +5,6 @@ import org.fossasia.openevent.app.common.di.module.AppModule;
 import org.fossasia.openevent.app.common.di.module.android.ActivityBuildersModule;
 import org.fossasia.openevent.app.data.attendee.AttendeeCheckInJob;
 
-
 import javax.inject.Singleton;
 
 import dagger.Component;

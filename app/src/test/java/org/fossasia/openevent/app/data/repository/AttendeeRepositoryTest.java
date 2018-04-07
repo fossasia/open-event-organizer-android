@@ -1,4 +1,3 @@
-
 package org.fossasia.openevent.app.data.repository;
 
 import com.raizlabs.android.dbflow.sql.language.SQLOperator;

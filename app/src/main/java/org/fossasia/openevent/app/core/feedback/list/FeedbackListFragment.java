@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.feedback.list;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,7 +17,6 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
-import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.feedback.Feedback;
 import org.fossasia.openevent.app.databinding.FeedbackFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -31,9 +31,6 @@ public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> im
 
     private Context context;
     private long eventId;
-
-    @Inject
-    ContextUtils utilModel;
 
     @Inject
     Lazy<FeedbackListPresenter> feedbacksPresenter;
@@ -63,7 +60,7 @@ public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> im
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.feedback_fragment, container, false);
 
         return binding.getRoot();
@@ -92,21 +89,22 @@ public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> im
     }
 
     private void setupRecyclerView() {
-        if (!initialized) {
-            feedbacksAdapter = new FeedbackListAdapter(getPresenter());
+        if (initialized)
+            return;
 
-            RecyclerView recyclerView = binding.feedbacksRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(feedbacksAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
-        }
+        feedbacksAdapter = new FeedbackListAdapter(getPresenter());
+
+        RecyclerView recyclerView = binding.feedbacksRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(feedbacksAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
     }
 
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
-        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
             getPresenter().loadFeedbacks(true);
@@ -138,9 +136,7 @@ public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> im
 
     @Override
     public void showResults(List<Feedback> items) {
-
         feedbacksAdapter.notifyDataSetChanged();
-
     }
 
     @Override
