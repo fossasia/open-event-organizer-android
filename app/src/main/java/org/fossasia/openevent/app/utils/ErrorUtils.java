@@ -1,8 +1,18 @@
 package org.fossasia.openevent.app.utils;
 
+import org.json.JSONObject;
+
+import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 
 public final class ErrorUtils {
+
+    public static final String ERRORS = "errors";
+    public static final String SOURCE = "source";
+    public static final String POINTER = "pointer";
+    public static final String DETAIL = "detail";
+
+    public static final int POINTER_LENGTH = 3;
 
     public static final int BAD_REQUEST = 400;
     public static final int UNAUTHORIZED = 401;
@@ -10,6 +20,7 @@ public final class ErrorUtils {
     public static final int NOT_FOUND = 404;
     public static final int METHOD_NOT_ALLOWED = 405;
     public static final int REQUEST_TIMEOUT = 408;
+    public static final int UNPROCESSABLE_ENTITY = 422;
 
     private ErrorUtils() {
         // Never Called
@@ -30,10 +41,49 @@ public final class ErrorUtils {
                     return "Sorry, this request is not allowed.";
                 case REQUEST_TIMEOUT:
                     return "Sorry, request timeout. Please retry after some time.";
+                case UNPROCESSABLE_ENTITY:
+                    ResponseBody responseBody = ((HttpException) throwable).response().errorBody();
+                    return getErrorDetails(responseBody);
                 default:
                     return throwable.getMessage();
             }
+        } else {
+            return throwable.getMessage();
         }
-        return throwable.getMessage();
+    }
+
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    public static String getErrorDetails(ResponseBody responseBody) {
+        try {
+            JSONObject jsonObject = new JSONObject(responseBody.string());
+            JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
+            JSONObject errorSource = new JSONObject(jsonArray.get(SOURCE).toString());
+
+            try {
+                String pointedField = getPointedField(errorSource.getString(POINTER));
+
+                if (pointedField == null)
+                    return jsonArray.get(DETAIL).toString();
+                else
+                    return jsonArray.get(DETAIL).toString().replace(".", "") + ": " + pointedField;
+            } catch (Exception e) {
+                return jsonArray.get(DETAIL).toString();
+            }
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String getPointedField(String pointerString) {
+        if (pointerString == null || Utils.isEmpty(pointerString))
+            return null;
+        else {
+            String[] path = pointerString.split("/");
+            if (path.length > POINTER_LENGTH)
+                return path[path.length - 1];
+            else
+                return null;
+        }
     }
 }

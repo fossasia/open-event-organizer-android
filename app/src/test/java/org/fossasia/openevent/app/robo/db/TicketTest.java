@@ -1,11 +1,12 @@
 package org.fossasia.openevent.app.robo.db;
 
-import org.fossasia.openevent.app.data.db.DatabaseRepository;
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.models.Ticket;
-import org.fossasia.openevent.app.data.models.query.TypeQuantity;
-import org.fossasia.openevent.app.data.repository.TicketRepository;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseRepository;
+import org.fossasia.openevent.app.data.Repository;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.ticket.Ticket;
+import org.fossasia.openevent.app.data.ticket.TicketRepositoryImpl;
+import org.fossasia.openevent.app.data.ticket.TypeQuantity;
 import org.junit.After;
 import org.junit.Test;
 
@@ -24,7 +25,7 @@ public class TicketTest extends BaseTest {
     private static final String FREE = "free";
     private static final String DONATION = "donation";
 
-    private TicketRepository ticketRepository;
+    private TicketRepositoryImpl ticketRepository;
 
     @Override
     public void setUp() {
@@ -32,7 +33,7 @@ public class TicketTest extends BaseTest {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
         Event event = new Event();
-        event.setId(Long.valueOf(12));
+        event.setId(12L);
 
         Ticket ticket1 = Ticket.builder()
             .id(1L)
@@ -115,13 +116,16 @@ public class TicketTest extends BaseTest {
 
         event.setTickets(Arrays.asList(ticket1, ticket2, ticket3, ticket4, ticket5));
 
-        DatabaseRepository databaseRepository = new DatabaseRepository();
+        DbFlowDatabaseRepository databaseRepository = new DbFlowDatabaseRepository();
 
         databaseRepository.save(Event.class, event).subscribe();
+        databaseRepository.saveList(Ticket.class, Arrays.asList(ticket1, ticket2, ticket3, ticket4, ticket5)).subscribe();
         databaseRepository.saveList(Attendee.class, Arrays.asList(attendee, attendee2, attendee3,
             attendee4, attendee5, attendee6, attendee7)).subscribe();
 
-        ticketRepository = new TicketRepository(null, databaseRepository, null);
+        Repository repository = new Repository(null, null, null, databaseRepository);
+
+        ticketRepository = new TicketRepositoryImpl(null, repository);
     }
 
     @After

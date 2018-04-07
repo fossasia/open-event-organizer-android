@@ -8,7 +8,7 @@
 
         <variable
             name="user"
-            type="org.fossasia.openevent.app.data.models.User" />
+            type="org.fossasia.openevent.app.data.auth.model.User" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

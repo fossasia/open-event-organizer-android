@@ -6,11 +6,11 @@
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.models.Event" />
+            type="org.fossasia.openevent.app.data.event.Event" />
 
         <variable
             name="copyright"
-            type="org.fossasia.openevent.app.data.models.Copyright" />
+            type="org.fossasia.openevent.app.data.copyright.Copyright" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,7 +18,8 @@
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:background="@color/color_top_surface">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"

@@ -57,6 +57,10 @@ public final class JWTUtils {
         }
     }
 
+    public static String getAuthorization(String token) {
+        return String.format("JWT %s", token);
+    }
+
     /**
      * Base64 class because we can't test Android class and this is faster
      */

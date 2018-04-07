@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.event.chart;
 
-import org.fossasia.openevent.app.common.mvp.presenter.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.core.event.dashboard.analyser.ChartAnalyser;
 
@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 
-public class ChartPresenter extends BaseDetailPresenter<Long, IChartView> {
+public class ChartPresenter extends AbstractDetailPresenter<Long, ChartView> {
 
     private final ChartAnalyser chartAnalyser;
 

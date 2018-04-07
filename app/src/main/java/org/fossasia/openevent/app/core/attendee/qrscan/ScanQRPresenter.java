@@ -4,10 +4,10 @@ import android.support.annotation.VisibleForTesting;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
-import org.fossasia.openevent.app.common.mvp.presenter.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.repository.IAttendeeRepository;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +21,11 @@ import io.reactivex.subjects.PublishSubject;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.schedule;
 
-public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> {
+public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
 
     private static final String CLEAR_DISTINCT = "clear";
 
-    private final IAttendeeRepository attendeeRepository;
+    private final AttendeeRepository attendeeRepository;
     private final List<Attendee> attendees = new ArrayList<>();
 
     private final PublishSubject<Boolean> detect = PublishSubject.create();
@@ -34,7 +34,7 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> {
     private boolean paused;
 
     @Inject
-    public ScanQRPresenter(IAttendeeRepository attendeeRepository) {
+    public ScanQRPresenter(AttendeeRepository attendeeRepository) {
         this.attendeeRepository = attendeeRepository;
 
         detect.distinctUntilChanged()
@@ -127,7 +127,7 @@ public class ScanQRPresenter extends BaseDetailPresenter<Long, IScanQRView> {
     }
 
     @VisibleForTesting
-    public IScanQRView getView() {
+    public ScanQRView getView() {
         return super.getView();
     }
 }

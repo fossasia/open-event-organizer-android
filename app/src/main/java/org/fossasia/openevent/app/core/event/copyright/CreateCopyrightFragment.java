@@ -32,7 +32,7 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateCopyrightFragment extends BaseFragment<CreateCopyrightPresenter> implements ICreateCopyrightView {
+public class CreateCopyrightFragment extends BaseFragment<CreateCopyrightPresenter> implements CreateCopyrightView {
 
     @Inject
     Lazy<CreateCopyrightPresenter> presenterProvider;

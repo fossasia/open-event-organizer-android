@@ -1,11 +1,11 @@
 package org.fossasia.openevent.app.common.di.module;
 
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
-import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.models.Copyright;
-import org.fossasia.openevent.app.data.models.Faq;
-import org.fossasia.openevent.app.data.models.Ticket;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.copyright.Copyright;
+import org.fossasia.openevent.app.data.faq.Faq;
+import org.fossasia.openevent.app.data.ticket.Ticket;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,22 +14,22 @@ import dagger.Provides;
 public class ChangeListenerModule {
 
     @Provides
-    IDatabaseChangeListener<Attendee> providesAttendeeChangeListener() {
-        return new DatabaseChangeListener<>(Attendee.class);
+    DatabaseChangeListener<Attendee> providesAttendeeChangeListener() {
+        return new DbFlowDatabaseChangeListener<>(Attendee.class);
     }
 
     @Provides
-    IDatabaseChangeListener<Ticket> providesTicketChangeListener() {
-        return new DatabaseChangeListener<>(Ticket.class);
+    DatabaseChangeListener<Ticket> providesTicketChangeListener() {
+        return new DbFlowDatabaseChangeListener<>(Ticket.class);
     }
 
     @Provides
-    IDatabaseChangeListener<Faq> providesFaqChangeListener() {
-        return new DatabaseChangeListener<>(Faq.class);
+    DatabaseChangeListener<Faq> providesFaqChangeListener() {
+        return new DbFlowDatabaseChangeListener<>(Faq.class);
     }
 
     @Provides
-    IDatabaseChangeListener<Copyright> providesCopyrightChangeListener() {
-        return new DatabaseChangeListener<>(Copyright.class);
+    DatabaseChangeListener<Copyright> providesCopyrightChangeListener() {
+        return new DbFlowDatabaseChangeListener<>(Copyright.class);
     }
 }

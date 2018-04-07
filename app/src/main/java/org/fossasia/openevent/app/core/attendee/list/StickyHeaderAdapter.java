@@ -7,14 +7,14 @@ import com.mikepenz.fastadapter.AbstractAdapter;
 import com.mikepenz.fastadapter.IItem;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
-import org.fossasia.openevent.app.data.models.Attendee;
+import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.ui.HeaderViewHolder;
-import org.fossasia.openevent.app.data.models.delegates.IHeaderProvider;
+import org.fossasia.openevent.app.common.model.HeaderProvider;
 import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
 
 import java.util.List;
 
-class StickyHeaderAdapter<T extends IItem & IHeaderProvider> extends AbstractAdapter<T>
+class StickyHeaderAdapter<T extends IItem & HeaderProvider> extends AbstractAdapter<T>
     implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
 
     private boolean sortByName;

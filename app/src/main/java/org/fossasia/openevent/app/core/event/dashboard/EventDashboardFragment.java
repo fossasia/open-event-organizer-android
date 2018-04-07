@@ -15,9 +15,9 @@ import com.github.mikephil.charting.charts.LineChart;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.event.chart.ChartActivity;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.models.EventStatistics;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.event.EventStatistics;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -30,7 +30,7 @@ import dagger.Lazy;
  * Use the {@link EventDashboardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter> implements IEventDashboardView {
+public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter> implements EventDashboardView {
 
     public static final String EVENT_ID = "event_id";
 
@@ -41,7 +41,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     Context context;
 
     @Inject
-    IUtilModel utilModel;
+    ContextUtils utilModel;
 
     @Inject
     Lazy<EventDashboardPresenter> presenterProvider;

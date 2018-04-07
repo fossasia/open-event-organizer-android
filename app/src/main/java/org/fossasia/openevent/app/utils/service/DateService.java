@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.utils.service;
 
-import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.utils.DateUtils;
 import org.threeten.bp.ZonedDateTime;
 

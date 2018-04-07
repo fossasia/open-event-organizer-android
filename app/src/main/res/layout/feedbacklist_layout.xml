@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="org.fossasia.openevent.app.common.ContextManager" />
+
+        <variable
+            name="feedback"
+            type="org.fossasia.openevent.app.data.feedback.Feedback" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/profile"
+            android:layout_width="@dimen/spacing_large"
+            android:layout_height="@dimen/spacing_large"
+            app:circleImageUrl="@{ feedback.user.avatarUrl }"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginStart="@dimen/spacing_small"
+            app:placeholder="@{ @drawable/ic_account_circle }"
+            android:contentDescription="@string/profile_picture"
+            android:background="@drawable/circle_placeholder" />
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/spacing_small">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:layout_marginLeft="@dimen/spacing_small"
+                android:text='@{ String.valueOf(feedback.user.firstName + " " + feedback.user.lastName) }'
+                android:textSize="@dimen/text_size_normal"/>
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:layout_marginLeft="@dimen/spacing_small"
+                style="?android:attr/ratingBarStyleSmall"
+                android:rating="@{ Float.valueOf(feedback.rating) }" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:layout_marginLeft="@dimen/spacing_small"
+                android:text='@{ feedback.comment }'
+                android:textSize="@dimen/text_size_small"/>
+
+    </LinearLayout>
+    </LinearLayout>
+</layout>

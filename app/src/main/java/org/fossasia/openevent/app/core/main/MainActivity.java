@@ -5,28 +5,18 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseInjectActivity;
-import org.fossasia.openevent.app.core.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.core.auth.AuthActivity;
-import org.fossasia.openevent.app.core.event.about.AboutEventActivity;
-import org.fossasia.openevent.app.core.event.dashboard.EventDashboardFragment;
-import org.fossasia.openevent.app.core.event.list.EventListFragment;
-import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailActivity;
-import org.fossasia.openevent.app.core.settings.SettingsFragment;
-import org.fossasia.openevent.app.core.ticket.list.TicketsFragment;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.models.User;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.auth.model.User;
 import org.fossasia.openevent.app.databinding.MainActivityBinding;
 import org.fossasia.openevent.app.databinding.MainNavHeaderBinding;
 import org.fossasia.openevent.app.ui.BackPressHandler;
@@ -36,7 +26,7 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
-public class MainActivity extends BaseInjectActivity<MainPresenter> implements NavigationView.OnNavigationItemSelectedListener, IMainView {
+public class MainActivity extends BaseInjectActivity<MainPresenter> implements NavigationView.OnNavigationItemSelectedListener, MainView {
 
     public static final String EVENT_KEY = "event";
     private long eventId = -1;
@@ -46,13 +36,11 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
     @Inject
     BackPressHandler backPressHandler;
 
-    private FragmentManager fragmentManager;
-    private AlertDialog logoutDialog;
+    private FragmentNavigator fragmentNavigator;
+    private DrawerNavigator drawerNavigator;
 
     private MainActivityBinding binding;
     private MainNavHeaderBinding headerBinding;
-
-    private int lastSelectedNavItemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +59,8 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
         binding.navView.setNavigationItemSelectedListener(this);
 
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, false);
-        fragmentManager = getSupportFragmentManager();
+        fragmentNavigator = new FragmentNavigator(getSupportFragmentManager(), eventId);
+        drawerNavigator = new DrawerNavigator(this, fragmentNavigator, getPresenter());
 
         headerBinding.profile.setOnClickListener(view -> startActivity(new Intent(this, OrganizerDetailActivity.class)));
     }
@@ -87,8 +76,12 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (fragmentNavigator.isDashboardActive()) {
             backPressHandler.onBackPressed(this, super::onBackPressed);
+        } else {
+            fragmentNavigator.back();
+            binding.navView.getMenu().findItem(R.id.nav_dashboard).setChecked(true);
+            getSupportActionBar().setTitle(R.string.dashboard);
         }
     }
 
@@ -99,17 +92,8 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
 
-                int id = item.getItemId();
-
-                if (id == R.id.nav_logout)
-                    showLogoutDialog();
-                else if (id == R.id.nav_about_event) {
-                    Intent intent = new Intent(MainActivity.this, AboutEventActivity.class);
-                    intent.putExtra(AboutEventActivity.EVENT_ID, eventId);
-                    startActivity(intent);
-                } else
-                    loadFragment(id);
-
+                binding.navView.setCheckedItem(item.getItemId());
+                drawerNavigator.selectItem(item);
                 binding.drawerLayout.removeDrawerListener(this);
             }
         });
@@ -125,6 +109,7 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
     @Override
     public void setEventId(long eventId) {
         this.eventId = eventId;
+        fragmentNavigator.setEventId(eventId);
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, true);
     }
 
@@ -165,48 +150,8 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
     }
 
     private void loadFragment(int navItemId) {
-        if (lastSelectedNavItemId == navItemId)
-            return;
-
         binding.navView.setCheckedItem(navItemId);
-        lastSelectedNavItemId = navItemId;
 
-        Fragment fragment;
-        switch (navItemId) {
-            case R.id.nav_dashboard:
-                fragment = EventDashboardFragment.newInstance(eventId);
-                break;
-            case R.id.nav_attendees:
-                fragment = AttendeesFragment.newInstance(eventId);
-                break;
-            case R.id.nav_tickets:
-                fragment = TicketsFragment.newInstance(eventId);
-                break;
-            case R.id.nav_events:
-                fragment = EventListFragment.newInstance();
-                break;
-            case R.id.nav_settings:
-                fragment = SettingsFragment.newInstance();
-                break;
-            case R.id.nav_faq:
-                fragment = FaqListFragment.newInstance(eventId);
-                break;
-            default:
-                fragment = EventDashboardFragment.newInstance(eventId);
-                break;
-        }
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
-    }
-
-    private void showLogoutDialog() {
-        if (logoutDialog == null)
-            logoutDialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.logout_confirmation)
-                .setMessage(R.string.logout_confirmation_message)
-                .setPositiveButton(R.string.ok, (dialog, which) -> getPresenter().logout())
-                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
-                .create();
-
-        logoutDialog.show();
+        fragmentNavigator.loadFragment(navItemId);
     }
 }

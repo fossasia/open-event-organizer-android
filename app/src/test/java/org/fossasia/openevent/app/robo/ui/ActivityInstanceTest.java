@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 
-import org.fossasia.openevent.app.data.UtilModel;
 import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.core.auth.AuthActivity;
 import org.fossasia.openevent.app.core.event.about.AboutEventActivity;
@@ -38,12 +37,12 @@ public class ActivityInstanceTest<T extends Activity> extends BaseParameterTest 
 
     @BeforeClass
     public static void setUp() {
-        UtilModel.blockNetwork();
+        // UtilModel.blockNetwork();
     }
 
     @AfterClass
     public static void tearDown() {
-        UtilModel.releaseNetwork();
+        // UtilModel.releaseNetwork();
     }
 
     @ParameterizedRobolectricTestRunner.Parameters(name = "InstantiateActivity = {0}")

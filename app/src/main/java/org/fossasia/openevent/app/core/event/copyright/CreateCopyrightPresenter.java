@@ -1,10 +1,10 @@
 package org.fossasia.openevent.app.core.event.copyright;
 
 import org.fossasia.openevent.app.common.ContextManager;
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.models.Copyright;
-import org.fossasia.openevent.app.data.repository.ICopyrightRepository;
+import org.fossasia.openevent.app.data.copyright.Copyright;
+import org.fossasia.openevent.app.data.copyright.CopyrightRepository;
 import org.fossasia.openevent.app.utils.StringUtils;
 
 import javax.inject.Inject;
@@ -12,14 +12,14 @@ import javax.inject.Inject;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneous;
 
-public class CreateCopyrightPresenter extends BasePresenter<ICreateCopyrightView> {
+public class CreateCopyrightPresenter extends AbstractBasePresenter<CreateCopyrightView> {
 
-    private final ICopyrightRepository copyrightRepository;
+    private final CopyrightRepository copyrightRepository;
     private final Copyright copyright = new Copyright();
     private static final int YEAR_LENGTH = 4;
 
     @Inject
-    public CreateCopyrightPresenter(ICopyrightRepository copyrightRepository) {
+    public CreateCopyrightPresenter(CopyrightRepository copyrightRepository) {
         this.copyrightRepository = copyrightRepository;
     }
 

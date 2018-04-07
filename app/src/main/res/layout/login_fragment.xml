@@ -6,7 +6,7 @@
     <data>
         <variable
             name="login"
-            type="org.fossasia.openevent.app.data.models.dto.Login" />
+            type="org.fossasia.openevent.app.data.auth.model.Login" />
      </data>
 
     <android.support.design.widget.CoordinatorLayout

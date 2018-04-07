@@ -4,11 +4,11 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="org.fossasia.openevent.app.data.models.Event" />
+        <import type="org.fossasia.openevent.app.data.event.Event" />
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.models.Event" />
+            type="org.fossasia.openevent.app.data.event.Event" />
         <variable
             name="selectedEventId"
             type="Long" />
@@ -17,13 +17,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@{ event.state.equals(`draft`) ? @color/event_state_draft : android.R.attr.selectableItemBackground }"
+        android:background="@{ Event.STATE_DRAFT.equalsIgnoreCase(event.state) ? @color/event_state_draft : android.R.attr.selectableItemBackground }"
         android:orientation="horizontal">
 
         <FrameLayout
             android:layout_width="@dimen/spacing_small"
             android:layout_height="match_parent"
-            android:background="@{ event.id == selectedEventId ? @color/color_accent : @color/color_top_surface }"/>
+            android:background="@{ event.id.equals(selectedEventId) ? @color/color_accent : @color/color_top_surface }"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:visibility='@{ Event.STATE_DRAFT.equals(event.state) ? View.VISIBLE : View.GONE }'>
+                    android:visibility='@{ Event.STATE_DRAFT.equalsIgnoreCase(event.state) ? View.VISIBLE : View.GONE }'>
 
                     <ImageView
                         android:layout_gravity="end|bottom"

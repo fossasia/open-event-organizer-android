@@ -200,7 +200,7 @@ dependencies {
     })
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-inline:2.8.9'
-    testImplementation 'org.json:json:20160810'
+    testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-supportv4:${versions.roboelectric}"

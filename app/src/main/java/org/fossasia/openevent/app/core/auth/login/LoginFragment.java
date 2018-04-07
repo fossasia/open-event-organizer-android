@@ -26,7 +26,7 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class LoginFragment extends BaseFragment<LoginPresenter> implements ILoginView {
+public class LoginFragment extends BaseFragment<LoginPresenter> implements LoginView {
 
     @Inject
     Lazy<LoginPresenter> presenterProvider;

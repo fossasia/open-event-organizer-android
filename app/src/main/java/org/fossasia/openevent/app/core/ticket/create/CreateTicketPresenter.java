@@ -1,10 +1,10 @@
 package org.fossasia.openevent.app.core.ticket.create;
 
 import org.fossasia.openevent.app.common.ContextManager;
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.models.Ticket;
-import org.fossasia.openevent.app.data.repository.ITicketRepository;
+import org.fossasia.openevent.app.data.ticket.Ticket;
+import org.fossasia.openevent.app.data.ticket.TicketRepository;
 import org.fossasia.openevent.app.utils.DateUtils;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
@@ -15,13 +15,13 @@ import javax.inject.Inject;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneous;
 
-public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> {
+public class CreateTicketPresenter extends AbstractBasePresenter<CreateTicketView> {
 
-    private final ITicketRepository ticketRepository;
+    private final TicketRepository ticketRepository;
     private final Ticket ticket = new Ticket();
 
     @Inject
-    public CreateTicketPresenter(ITicketRepository ticketRepository) {
+    public CreateTicketPresenter(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
         LocalDateTime current = LocalDateTime.now();
         String startDate = DateUtils.formatDateToIso(current);
@@ -30,7 +30,7 @@ public class CreateTicketPresenter extends BasePresenter<ICreateTicketView> {
         LocalDateTime salesEndTime = current.plusDays(10);
         LocalDateTime eventEndTime = DateUtils.getIsoOffsetTimeFromTimestamp(ContextManager.getSelectedEvent().getEndsAt().get());
         //if less than 10 days are available in the event.
-        if (salesEndTime.isAfter(eventEndTime)) {
+        if (salesEndTime.isAfter(eventEndTime) && !eventEndTime.isBefore(current)) {
             salesEndTime = eventEndTime;
         }
         String endDate = DateUtils.formatDateToIso(salesEndTime);

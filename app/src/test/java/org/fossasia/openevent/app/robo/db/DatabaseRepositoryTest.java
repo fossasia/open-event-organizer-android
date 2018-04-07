@@ -1,9 +1,9 @@
 package org.fossasia.openevent.app.robo.db;
 
-import org.fossasia.openevent.app.data.db.DatabaseRepository;
-import org.fossasia.openevent.app.data.models.User;
-import org.fossasia.openevent.app.data.models.dto.SimpleModel;
-import org.fossasia.openevent.app.data.models.dto.SimpleModel_Table;
+import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseRepository;
+import org.fossasia.openevent.app.common.model.SimpleModel;
+import org.fossasia.openevent.app.common.model.SimpleModel_Table;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -21,11 +21,11 @@ public class DatabaseRepositoryTest extends BaseTest {
         LIST.add(MODEL1);
     }
 
-    private DatabaseRepository databaseRepository;
+    private DbFlowDatabaseRepository databaseRepository;
 
     @Override
     public void setUp() {
-        databaseRepository = new DatabaseRepository();
+        databaseRepository = new DbFlowDatabaseRepository();
     }
 
     @Test

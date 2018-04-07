@@ -3,11 +3,11 @@ package org.fossasia.openevent.app.common.mvp.view;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 
-import org.fossasia.openevent.app.common.mvp.presenter.IBasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
 
 import dagger.Lazy;
 
-public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatActivity {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

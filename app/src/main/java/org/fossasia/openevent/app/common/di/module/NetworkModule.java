@@ -1,24 +1,24 @@
 package org.fossasia.openevent.app.common.di.module;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 
 import org.fossasia.openevent.app.OrgaProvider;
+import org.fossasia.openevent.app.data.auth.AuthHolder;
+import org.fossasia.openevent.app.data.auth.model.User;
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.models.Copyright;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.models.EventStatistics;
-import org.fossasia.openevent.app.data.models.Faq;
-import org.fossasia.openevent.app.data.models.Ticket;
-import org.fossasia.openevent.app.data.models.User;
-import org.fossasia.openevent.app.data.network.EventService;
+import org.fossasia.openevent.app.data.feedback.Feedback;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
-import org.fossasia.openevent.app.utils.Utils;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.copyright.Copyright;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.event.EventStatistics;
+import org.fossasia.openevent.app.data.faq.Faq;
+import org.fossasia.openevent.app.data.ticket.Ticket;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -37,7 +37,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 import timber.log.Timber;
 
-@Module
+@Module(includes = ApiModule.class)
 public class NetworkModule {
 
     @Provides
@@ -45,12 +45,15 @@ public class NetworkModule {
     ObjectMapper providesObjectMapper() {
         return new ObjectMapper()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            // Handle constant breaking changes in API by not including null fields
+            // TODO: Remove when API stabilizes and/or need to include null values is there
+            .setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
     }
 
     @Provides
     Class[] providesMappedClasses() {
-        return new Class[]{Event.class, Attendee.class, Ticket.class, User.class, EventStatistics.class, Faq.class, Copyright.class};
+        return new Class[]{Event.class, Attendee.class, Ticket.class, User.class, EventStatistics.class, Faq.class, Copyright.class, Feedback.class};
     }
 
     @Provides
@@ -91,11 +94,11 @@ public class NetworkModule {
     @Provides
     @Singleton
     @Named("authenticator")
-    Interceptor authenticator(IUtilModel utilModel) {
+    Interceptor authenticator(AuthHolder authHolder) {
         return chain -> {
             Request original = chain.request();
 
-            String token = utilModel.getToken();
+            String token = authHolder.getToken();
 
             if (token == null) {
                 Timber.wtf("Someone tried to access resources without auth token. Maybe auth request?");
@@ -103,7 +106,7 @@ public class NetworkModule {
             }
 
             Request request = original.newBuilder()
-                .header("Authorization", Utils.formatToken(token))
+                .header("Authorization", authHolder.getAuthorization())
                 .method(original.method(), original.body())
                 .build();
 
@@ -149,11 +152,5 @@ public class NetworkModule {
             .client(client)
             .baseUrl(Constants.BASE_URL)
             .build();
-    }
-
-    @Provides
-    @Singleton
-    EventService providesEventService(Retrofit retrofit) {
-        return retrofit.create(EventService.class);
     }
 }

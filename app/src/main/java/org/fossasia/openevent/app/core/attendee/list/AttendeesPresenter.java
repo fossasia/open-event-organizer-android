@@ -4,12 +4,12 @@ import android.support.annotation.VisibleForTesting;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.fossasia.openevent.app.common.mvp.presenter.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
-import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.repository.IAttendeeRepository;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
 import org.fossasia.openevent.app.utils.Utils;
 
 import java.util.ArrayList;
@@ -25,15 +25,15 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneous;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
-public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView> {
+public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesView> {
 
-    private final IAttendeeRepository attendeeRepository;
-    private final IDatabaseChangeListener<Attendee> attendeeListener;
+    private final AttendeeRepository attendeeRepository;
+    private final DatabaseChangeListener<Attendee> attendeeListener;
 
     private final List<Attendee> attendeeList = new ArrayList<>();
 
     @Inject
-    public AttendeesPresenter(IAttendeeRepository attendeeRepository, IDatabaseChangeListener<Attendee> attendeeListener) {
+    public AttendeesPresenter(AttendeeRepository attendeeRepository, DatabaseChangeListener<Attendee> attendeeListener) {
         this.attendeeRepository = attendeeRepository;
         this.attendeeListener = attendeeListener;
     }
@@ -89,7 +89,7 @@ public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView
             .compose(dispose(getDisposable()))
             .compose(erroneous(getView()))
             .filter(attendeeModelChange -> attendeeModelChange.getAction().equals(BaseModel.Action.UPDATE))
-            .map(DatabaseChangeListener.ModelChange::getModel)
+            .map(DbFlowDatabaseChangeListener.ModelChange::getModel)
             .flatMap(filterAttendee -> attendeeRepository.getAttendee(filterAttendee.getId(), false))
             .subscribe(attendee -> {
                 getView().updateAttendee(attendee);
@@ -98,7 +98,7 @@ public class AttendeesPresenter extends BaseDetailPresenter<Long, IAttendeesView
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    public IAttendeesView getView() {
+    public AttendeesView getView() {
         return super.getView();
     }
 

@@ -5,7 +5,7 @@
         <import type="android.view.View" />
         <variable
             name="date"
-            type="org.fossasia.openevent.app.data.models.dto.ObservableString" />
+            type="org.fossasia.openevent.app.data.event.serializer.ObservableString" />
         <variable
             name="label"
             type="String"/>
@@ -15,56 +15,54 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/spacing_extra_small"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_extra_small"
-            android:orientation="horizontal"
-            android:visibility="@{ picker.checked ? View.VISIBLE : View.GONE }">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="@{ label }" />
-
-            <Button
-                style="?attr/borderlessButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:textColor="@color/purple_500"
-                app:date="@{ date }" />
-
-            <Button
-                style="?attr/borderlessButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/red_500"
-                app:time="@{ date }" />
-
-        </LinearLayout>
+            android:text="@{ label }" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="@{ picker.checked ? View.GONE : View.VISIBLE }">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
                 android:contentDescription="@string/date_and_time"
                 app:srcCompat="@drawable/ic_events" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_extra_small"
+                android:orientation="horizontal"
+                android:visibility="@{ picker.checked ? View.VISIBLE : View.GONE }">
+
+                <Button
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/purple_500"
+                    app:date="@{ date }" />
+
+                <Button
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red_500"
+                    app:time="@{ date }" />
+
+            </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small">
+                android:padding="@dimen/spacing_extra_small"
+                android:visibility="@{ picker.checked ? View.GONE : View.VISIBLE }">
 
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"

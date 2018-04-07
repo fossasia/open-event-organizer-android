@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
-import org.fossasia.openevent.app.data.models.Ticket;
+import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.databinding.TicketDetailLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -17,7 +17,7 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
-public class TicketDetailFragment extends BaseBottomSheetFragment<TicketDetailPresenter> implements ITicketDetailView {
+public class TicketDetailFragment extends BaseBottomSheetFragment<TicketDetailPresenter> implements TicketDetailView {
 
     private static final String TICKET_ID = "ticket_id";
 

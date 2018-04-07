@@ -5,12 +5,12 @@ import android.support.v4.app.Fragment;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.di.Injectable;
-import org.fossasia.openevent.app.common.mvp.presenter.IBasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
 import dagger.Lazy;
 
-public abstract class BaseFragment<P extends IBasePresenter> extends Fragment implements Injectable {
+public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements Injectable {
 
     protected abstract @StringRes int getTitle();
 
