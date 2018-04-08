@@ -15,7 +15,7 @@
             type="org.fossasia.openevent.app.data.event.Event" />
 
         <variable
-            name="eventStatistics"
+            name="eventStats"
             type="org.fossasia.openevent.app.data.event.EventStatistics" />
     </data>
 
@@ -49,7 +49,7 @@
                         android:layout_marginRight="@dimen/spacing_normal"
                         android:layout_marginTop="@dimen/spacing_normal"
                         android:layout_marginBottom="@dimen/spacing_normal"
-                        android:checked='@{ event.state.equals("published") ? true : false }'
+                        android:checked='@{ event.state.equalsIgnoreCase("published") ? true : false }'
                         android:onClick="@{ () -> presenter.toggleState() }"
                         bind:layout_constraintEnd_toEndOf="parent"
                         bind:layout_constraintTop_toTopOf="parent" />
@@ -303,7 +303,7 @@
                         <include
                             android:id="@+id/event_statistics"
                             layout="@layout/event_statistics"
-                            bind:eventStatistics="@{eventStatistics}" />
+                            bind:eventStatistics="@{eventStats}" />
 
                     </FrameLayout>
 

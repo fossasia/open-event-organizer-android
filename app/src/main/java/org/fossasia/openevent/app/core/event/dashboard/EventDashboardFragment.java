@@ -150,7 +150,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
 
     @Override
     public void showStatistics(EventStatistics eventStatistics) {
-        binding.setEventStatistics(eventStatistics);
+        binding.setEventStats(eventStatistics);
         binding.executePendingBindings();
     }
 
