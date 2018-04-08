@@ -1,12 +1,13 @@
 package org.fossasia.openevent.app.common.di.module;
 
-import org.fossasia.openevent.app.data.auth.AuthApi;
 import org.fossasia.openevent.app.data.attendee.AttendeeApi;
+import org.fossasia.openevent.app.data.auth.AuthApi;
 import org.fossasia.openevent.app.data.copyright.CopyrightApi;
 import org.fossasia.openevent.app.data.event.EventApi;
 import org.fossasia.openevent.app.data.faq.FaqApi;
 import org.fossasia.openevent.app.data.feedback.FeedbackApi;
 import org.fossasia.openevent.app.data.ticket.TicketApi;
+import org.fossasia.openevent.app.data.tracks.TrackApi;
 
 import javax.inject.Singleton;
 
@@ -59,4 +60,9 @@ public class ApiModule {
         return retrofit.create(FeedbackApi.class);
     }
 
+    @Provides
+    @Singleton
+    TrackApi providesTrackApi(Retrofit retrofit) {
+        return retrofit.create(TrackApi.class);
+    }
 }
