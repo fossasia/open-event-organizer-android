@@ -36,8 +36,9 @@ import timber.log.Timber;
 public final class OrgaDatabase {
 
     public static final String NAME = "orga_database";
+    private static final String DROP_TABLE = "DROP TABLE IF EXISTS ";
     // To be bumped after each schema change and migration addition
-    public static final int VERSION = 9;
+    public static final int VERSION = 10;
 
     private OrgaDatabase() {
         // Never Called
@@ -52,17 +53,17 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 4");
 
-            Class[] recreated = new Class[] {Attendee.class, Event.class, Order.class, Ticket.class, User.class};
+            Class<?>[] recreated = new Class[] {Attendee.class, Event.class, Order.class, Ticket.class, User.class};
             String[] deleted = new String[] {"CallForPapers", "Copyright", "License", "SocialLink", "UserDetail", "Version"};
 
-            for (Class recreate: recreated) {
+            for (Class<?> recreate: recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
-                databaseWrapper.execSQL("DROP TABLE IF EXISTS " + modelAdapter.getTableName());
+                databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
             }
 
             for (String delete: deleted)
-                databaseWrapper.execSQL("DROP TABLE IF EXISTS " + delete);
+                databaseWrapper.execSQL(DROP_TABLE + delete);
         }
     }
 
@@ -139,9 +140,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 9");
 
-            Class[] recreated = new Class[] {Faq.class, Copyright.class};
+            Class<?>[] recreated = new Class[] {Faq.class, Copyright.class};
 
-            for (Class recreate: recreated) {
+            for (Class<?> recreate: recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL("DROP TABLE IF EXISTS " + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -156,11 +157,11 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 10");
 
-            Class[] recreated = new Class[] {Feedback.class};
+            Class<?>[] recreated = new Class[] {Feedback.class};
 
-            for (Class recreate: recreated) {
+            for (Class<?> recreate: recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
-                databaseWrapper.execSQL("DROP TABLE IF EXISTS " + modelAdapter.getTableName());
+                databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
             }
         }

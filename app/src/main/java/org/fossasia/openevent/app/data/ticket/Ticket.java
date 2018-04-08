@@ -33,7 +33,7 @@ import lombok.experimental.Delegate;
 @ToString(exclude = "event")
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
-@EqualsAndHashCode(exclude = { "ticketDelegate", "creating", "deleting" })
+@EqualsAndHashCode(exclude = { "ticketDelegate" })
 @SuppressWarnings("PMD.TooManyFields")
 public class Ticket implements Comparable<Ticket> {
 
