@@ -14,17 +14,23 @@ import java.util.List;
 public class FaqListAdapter extends RecyclerView.Adapter<FaqViewHolder> {
 
     private final List<Faq> faqs;
+    private final FaqListPresenter faqListPresenter;
 
     public FaqListAdapter(FaqListPresenter faqListPresenter) {
+        this.faqListPresenter = faqListPresenter;
         this.faqs = faqListPresenter.getFaqs();
     }
 
     @Override
     public FaqViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-
-        return new FaqViewHolder(
+        FaqViewHolder faqViewHolder = new FaqViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.faq_layout, viewGroup, false));
+
+        faqViewHolder.setLongClickAction(faqListPresenter::toolbarDeleteMode);
+        faqViewHolder.setClickAction(faqListPresenter::resetToDefaultState);
+
+        return faqViewHolder;
     }
 
     @Override

@@ -18,12 +18,15 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView> {
 
     private final List<Faq> faqs = new ArrayList<>();
+    private Faq previousFaq = new Faq();
     private final FaqRepository faqRepository;
     private final DatabaseChangeListener<Faq> faqChangeListener;
 
@@ -67,12 +70,45 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
         faqChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
             .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT))
+            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.DELETE))
             .subscribeOn(Schedulers.io())
             .subscribe(faqModelChange -> loadFaqs(false), Logger::logError);
     }
 
     public List<Faq> getFaqs() {
         return faqs;
+    }
+
+    public void deleteFaq(Faq faq) {
+        faqRepository
+            .deleteFaq(faq.getId())
+            .compose(disposeCompletable(getDisposable()))
+            .compose(progressiveErroneousCompletable(getView()))
+            .subscribe(() -> {
+                getView().showMessage("FAQ Deleted Successfully");
+                unselectFaq(faq);
+            }, Logger::logError);
+    }
+
+    public void deleteSelectedFaq() {
+        deleteFaq(previousFaq);
+    }
+
+    public void unselectFaq(Faq faq) {
+        if (faq != null)
+            faq.getSelected().set(false);
+    }
+
+    public void toolbarDeleteMode(Faq currentFaq) {
+        if (!previousFaq.equals(currentFaq))
+            unselectFaq(previousFaq);
+
+        previousFaq = currentFaq;
+        getView().changeToDeletingMode();
+    }
+
+    public void resetToDefaultState() {
+        unselectFaq(previousFaq);
+        getView().resetToolbar();
     }
 }
