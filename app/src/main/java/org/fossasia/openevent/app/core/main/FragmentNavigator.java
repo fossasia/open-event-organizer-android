@@ -12,6 +12,7 @@ import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
 import org.fossasia.openevent.app.core.settings.SettingsFragment;
 import org.fossasia.openevent.app.core.ticket.list.TicketsFragment;
+import org.fossasia.openevent.app.core.track.list.TracksFragment;
 
 class FragmentNavigator {
 
@@ -74,7 +75,10 @@ class FragmentNavigator {
             case R.id.nav_feedback:
                 fragment = FeedbackListFragment.newInstance(eventId);
                 break;
-           default:
+            case R.id.nav_track:
+                fragment = TracksFragment.newInstance(eventId);
+                break;
+            default:
                 fragment = EventDashboardFragment.newInstance(eventId);
                 break;
         }

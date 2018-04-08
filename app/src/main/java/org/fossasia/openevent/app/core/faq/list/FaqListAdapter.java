@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.core.faq.list;
 
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -21,8 +22,9 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqViewHolder> {
         this.faqs = faqListPresenter.getFaqs();
     }
 
+    @NonNull
     @Override
-    public FaqViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
+    public FaqViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         FaqViewHolder faqViewHolder = new FaqViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.faq_layout, viewGroup, false));
@@ -34,7 +36,7 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(FaqViewHolder faqViewHolder, int position) {
+    public void onBindViewHolder(@NonNull FaqViewHolder faqViewHolder, int position) {
         faqViewHolder.bind(faqs.get(position));
     }
 
