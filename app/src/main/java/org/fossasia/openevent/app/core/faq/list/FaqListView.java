@@ -8,4 +8,9 @@ import org.fossasia.openevent.app.data.faq.Faq;
 
 public interface FaqListView extends Progressive, Erroneous, Refreshable, Emptiable<Faq> {
 
+    void showMessage(String message);
+
+    void changeToDeletingMode();
+
+    void resetToolbar();
 }

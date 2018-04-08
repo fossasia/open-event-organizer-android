@@ -7,6 +7,7 @@ import org.fossasia.openevent.app.data.Repository;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -55,6 +56,21 @@ public class FaqRepositoryImpl implements FaqRepository {
                     .save(Faq.class, created)
                     .subscribe();
             })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Completable deleteFaq(long id) {
+        if (!repository.isConnected()) {
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return faqApi.deleteFaq(id)
+            .doOnComplete(() -> repository
+                .delete(Faq.class, Faq_Table.id.eq(id))
+                .subscribe())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
