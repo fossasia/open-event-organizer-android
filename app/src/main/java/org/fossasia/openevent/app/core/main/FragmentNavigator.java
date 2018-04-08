@@ -44,6 +44,7 @@ class FragmentNavigator {
         dashboardActive = true;
     }
 
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity"})
     void loadFragment(int navItemId) {
         if (lastSelectedNavItemId == navItemId)
             return;

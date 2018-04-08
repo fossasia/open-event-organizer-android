@@ -1,17 +1,11 @@
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion = "0.7.9"
+    toolVersion = "0.8.1"
 }
 
-android {
-    testOptions {
-        unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
-            }
-        }
-    }
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
 }
 
 project.afterEvaluate {
@@ -48,6 +42,8 @@ project.afterEvaluate {
                         '**/BuildConfig.*',
                         '**/Manifest*.*',
                         '**/*_Factory.*',
+                        '**/Dagger*.*',
+                        '**/*_Table*',
                         '**/*Orga*.*',
                         '**/*BR.*',
                         '**/*_ViewBinding.*',
@@ -56,7 +52,9 @@ project.afterEvaluate {
                         '**/data/models/*',
                         '**/app/databinding/*',
                         '**/android/databinding/*',
-                        '**/app/di/*',
+                        '**/app/common/di/*',
+                        '**/Glide*.*',
+                        '**/Generated*.*',
                         '**/dbflow/*',
                     ]
                 )
