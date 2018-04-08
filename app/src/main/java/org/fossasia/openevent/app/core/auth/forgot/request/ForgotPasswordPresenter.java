@@ -4,11 +4,11 @@ import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.IAuthModel;
-import org.fossasia.openevent.app.data.ISharedPreferenceModel;
-import org.fossasia.openevent.app.data.models.RequestToken;
+import org.fossasia.openevent.app.data.auth.AuthService;
+import org.fossasia.openevent.app.data.Preferences;
+import org.fossasia.openevent.app.data.auth.model.RequestToken;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 
 import java.util.Set;
@@ -18,15 +18,15 @@ import javax.inject.Inject;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 
-public class ForgotPasswordPresenter extends BasePresenter<IForgotPasswordView> {
+public class ForgotPasswordPresenter extends AbstractBasePresenter<ForgotPasswordView> {
 
-    private final IAuthModel forgotPasswordModel;
-    private final ISharedPreferenceModel sharedPreferenceModel;
+    private final AuthService forgotPasswordModel;
+    private final Preferences sharedPreferenceModel;
     private final HostSelectionInterceptor interceptor;
     private final RequestToken forgotEmail = new RequestToken();
 
     @Inject
-    public ForgotPasswordPresenter(IAuthModel loginModel, ISharedPreferenceModel sharedPreferenceModel, HostSelectionInterceptor interceptor) {
+    public ForgotPasswordPresenter(AuthService loginModel, Preferences sharedPreferenceModel, HostSelectionInterceptor interceptor) {
         this.forgotPasswordModel = loginModel;
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.interceptor = interceptor;
@@ -63,7 +63,7 @@ public class ForgotPasswordPresenter extends BasePresenter<IForgotPasswordView> 
     }
 
     @VisibleForTesting
-    public IForgotPasswordView getView() {
+    public ForgotPasswordView getView() {
         return super.getView();
     }
 }

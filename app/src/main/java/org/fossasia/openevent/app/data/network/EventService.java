@@ -1,20 +1,19 @@
 package org.fossasia.openevent.app.data.network;
 
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.models.ChangePassword;
-import org.fossasia.openevent.app.data.models.ChangePasswordResponse;
-import org.fossasia.openevent.app.data.models.Copyright;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.models.EventStatistics;
-import org.fossasia.openevent.app.data.models.Faq;
-import org.fossasia.openevent.app.data.models.RequestToken;
-import org.fossasia.openevent.app.data.models.RequestTokenResponse;
-import org.fossasia.openevent.app.data.models.SubmitToken;
-import org.fossasia.openevent.app.data.models.SubmitTokenResponse;
-import org.fossasia.openevent.app.data.models.Ticket;
-import org.fossasia.openevent.app.data.models.User;
-import org.fossasia.openevent.app.data.models.dto.Login;
-import org.fossasia.openevent.app.data.models.dto.LoginResponse;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.auth.model.ChangePassword;
+import org.fossasia.openevent.app.data.auth.model.ChangePasswordResponse;
+import org.fossasia.openevent.app.data.auth.model.LoginResponse;
+import org.fossasia.openevent.app.data.auth.model.RequestToken;
+import org.fossasia.openevent.app.data.auth.model.RequestTokenResponse;
+import org.fossasia.openevent.app.data.auth.model.SubmitToken;
+import org.fossasia.openevent.app.data.auth.model.SubmitTokenResponse;
+import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.copyright.Copyright;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.event.EventStatistics;
+import org.fossasia.openevent.app.data.faq.Faq;
+import org.fossasia.openevent.app.data.ticket.Ticket;
 
 import java.util.List;
 import java.util.Map;

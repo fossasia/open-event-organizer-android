@@ -1,9 +1,9 @@
 package org.fossasia.openevent.app.core.event.create;
 
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.models.Event;
-import org.fossasia.openevent.app.data.repository.IEventRepository;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.utils.CurrencyUtils;
 import org.fossasia.openevent.app.utils.DateUtils;
 import org.fossasia.openevent.app.utils.StringUtils;
@@ -21,13 +21,13 @@ import javax.inject.Inject;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneous;
 
-public class CreateEventPresenter extends BasePresenter<ICreateEventView> {
+public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView> {
 
-    private final IEventRepository eventRepository;
+    private final EventRepository eventRepository;
     private final Event event = new Event();
 
     @Inject
-    public CreateEventPresenter(IEventRepository eventRepository) {
+    public CreateEventPresenter(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
         LocalDateTime current = LocalDateTime.now();
 

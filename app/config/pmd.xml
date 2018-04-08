@@ -105,6 +105,7 @@ Severity: HARD
         <exclude name="AbstractNaming" />
         <exclude name="ShortClassName" />
         <exclude name="ShortVariable" />
+        <exclude name="ShortMethodName" />
         <exclude name="AvoidFieldNameMatchingMethodName" />
     </rule>
 

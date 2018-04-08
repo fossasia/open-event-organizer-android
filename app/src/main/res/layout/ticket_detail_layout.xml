@@ -10,7 +10,7 @@
 
         <variable
             name="ticket"
-            type="org.fossasia.openevent.app.data.models.Ticket" />
+            type="org.fossasia.openevent.app.data.ticket.Ticket" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

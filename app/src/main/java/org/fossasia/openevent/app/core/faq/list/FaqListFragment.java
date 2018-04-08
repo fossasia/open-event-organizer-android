@@ -21,8 +21,8 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.faq.create.CreateFaqFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.models.Faq;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.databinding.FaqsFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -33,7 +33,7 @@ import javax.inject.Inject;
 import dagger.Lazy;
 
 @SuppressWarnings("PMD.TooManyMethods")
-public class FaqListFragment extends BaseFragment<FaqListPresenter> implements IFaqListView {
+public class FaqListFragment extends BaseFragment<FaqListPresenter> implements FaqListView {
 
     private Context context;
     private long eventId;
@@ -41,7 +41,7 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements I
     private AlertDialog deleteDialog;
 
     @Inject
-    IUtilModel utilModel;
+    ContextUtils utilModel;
 
     @Inject
     Lazy<FaqListPresenter> faqsPresenter;

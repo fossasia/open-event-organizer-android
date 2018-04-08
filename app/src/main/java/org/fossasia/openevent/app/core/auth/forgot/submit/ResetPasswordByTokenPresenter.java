@@ -3,10 +3,10 @@ package org.fossasia.openevent.app.core.auth.forgot.submit;
 import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.BuildConfig;
-import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.IAuthModel;
-import org.fossasia.openevent.app.data.models.SubmitToken;
+import org.fossasia.openevent.app.data.auth.AuthService;
+import org.fossasia.openevent.app.data.auth.model.SubmitToken;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 
 import javax.inject.Inject;
@@ -14,14 +14,14 @@ import javax.inject.Inject;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 
-public class ResetPasswordByTokenPresenter extends BasePresenter<IResetPasswordByTokenView> {
+public class ResetPasswordByTokenPresenter extends AbstractBasePresenter<ResetPasswordByTokenView> {
 
-    private final IAuthModel tokenSubmitModel;
+    private final AuthService tokenSubmitModel;
     private final HostSelectionInterceptor interceptor;
     private final SubmitToken submitToken = new SubmitToken();
 
     @Inject
-    public ResetPasswordByTokenPresenter(IAuthModel tokenSubmitModel,
+    public ResetPasswordByTokenPresenter(AuthService tokenSubmitModel,
                                          HostSelectionInterceptor interceptor) {
         this.tokenSubmitModel = tokenSubmitModel;
         this.interceptor = interceptor;
@@ -50,7 +50,7 @@ public class ResetPasswordByTokenPresenter extends BasePresenter<IResetPasswordB
     }
 
     @VisibleForTesting
-    public IResetPasswordByTokenView getView() {
+    public ResetPasswordByTokenView getView() {
         return super.getView();
     }
 

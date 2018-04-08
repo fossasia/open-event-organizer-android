@@ -10,7 +10,7 @@
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.models.Event" />
+            type="org.fossasia.openevent.app.data.event.Event" />
     </data>
 
     <LinearLayout

@@ -23,9 +23,9 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.event.create.CreateEventActivity;
-import org.fossasia.openevent.app.data.IBus;
-import org.fossasia.openevent.app.data.IUtilModel;
-import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.Bus;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.databinding.FragmentEventListBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -44,12 +44,12 @@ import static org.fossasia.openevent.app.core.event.list.EventsPresenter.SORTBYN
  * Use the {@link EventListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventListFragment extends BaseFragment<EventsPresenter> implements IEventsView {
+public class EventListFragment extends BaseFragment<EventsPresenter> implements EventsView {
     @Inject
-    IUtilModel utilModel;
+    ContextUtils utilModel;
 
     @Inject
-    IBus bus;
+    Bus bus;
 
     @Inject
     Lazy<EventsPresenter> presenterProvider;

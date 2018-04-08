@@ -6,7 +6,7 @@ import android.view.View;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Pipe;
-import org.fossasia.openevent.app.data.models.Faq;
+import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.databinding.FaqLayoutBinding;
 
 public class FaqViewHolder extends RecyclerView.ViewHolder {

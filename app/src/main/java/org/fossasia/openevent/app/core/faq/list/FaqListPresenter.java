@@ -2,12 +2,12 @@ package org.fossasia.openevent.app.core.faq.list;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.fossasia.openevent.app.common.mvp.presenter.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
-import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
-import org.fossasia.openevent.app.data.models.Faq;
-import org.fossasia.openevent.app.data.repository.IFaqRepository;
+import org.fossasia.openevent.app.data.faq.Faq;
+import org.fossasia.openevent.app.data.faq.FaqRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +23,15 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
-public class FaqListPresenter extends BaseDetailPresenter<Long, IFaqListView> {
+public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView> {
 
     private final List<Faq> faqs = new ArrayList<>();
-    private final IFaqRepository faqRepository;
-    private final IDatabaseChangeListener<Faq> faqChangeListener;
     private Faq previousFaq = new Faq();
+    private final FaqRepository faqRepository;
+    private final DatabaseChangeListener<Faq> faqChangeListener;
 
     @Inject
-    public FaqListPresenter(IFaqRepository faqRepository, IDatabaseChangeListener<Faq> faqChangeListener) {
+    public FaqListPresenter(FaqRepository faqRepository, DatabaseChangeListener<Faq> faqChangeListener) {
         this.faqRepository = faqRepository;
         this.faqChangeListener = faqChangeListener;
     }
@@ -69,7 +69,7 @@ public class FaqListPresenter extends BaseDetailPresenter<Long, IFaqListView> {
         faqChangeListener.startListening();
         faqChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
-            .map(DatabaseChangeListener.ModelChange::getAction)
+            .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
             .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.DELETE))
             .subscribeOn(Schedulers.io())
             .subscribe(faqModelChange -> loadFaqs(false), Logger::logError);

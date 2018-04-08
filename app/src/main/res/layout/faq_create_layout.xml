@@ -8,7 +8,7 @@
 
         <variable
             name="faq"
-            type="org.fossasia.openevent.app.data.models.Faq" />
+            type="org.fossasia.openevent.app.data.faq.Faq" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

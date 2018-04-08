@@ -2,12 +2,12 @@ package org.fossasia.openevent.app.core.ticket.list;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import org.fossasia.openevent.app.common.mvp.presenter.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
-import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
-import org.fossasia.openevent.app.data.models.Ticket;
-import org.fossasia.openevent.app.data.repository.ITicketRepository;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
+import org.fossasia.openevent.app.data.ticket.Ticket;
+import org.fossasia.openevent.app.data.ticket.TicketRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +23,14 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
-public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> {
+public class TicketsPresenter extends AbstractDetailPresenter<Long, TicketsView> {
 
     private final List<Ticket> tickets = new ArrayList<>();
-    private final ITicketRepository ticketRepository;
-    private final IDatabaseChangeListener<Ticket> ticketChangeListener;
+    private final TicketRepository ticketRepository;
+    private final DatabaseChangeListener<Ticket> ticketChangeListener;
 
     @Inject
-    public TicketsPresenter(ITicketRepository ticketRepository, IDatabaseChangeListener<Ticket> ticketChangeListener) {
+    public TicketsPresenter(TicketRepository ticketRepository, DatabaseChangeListener<Ticket> ticketChangeListener) {
         this.ticketRepository = ticketRepository;
         this.ticketChangeListener = ticketChangeListener;
     }
@@ -51,7 +51,7 @@ public class TicketsPresenter extends BaseDetailPresenter<Long, ITicketsView> {
         ticketChangeListener.startListening();
         ticketChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
-            .map(DatabaseChangeListener.ModelChange::getAction)
+            .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
             .filter(action -> action.equals(BaseModel.Action.INSERT))
             .subscribeOn(Schedulers.io())
             .subscribe(ticketModelChange -> loadTickets(false), Logger::logError);

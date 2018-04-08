@@ -2,12 +2,12 @@ package org.fossasia.openevent.app.core.attendee.checkin;
 
 import android.support.annotation.VisibleForTesting;
 
-import org.fossasia.openevent.app.common.mvp.presenter.BaseDetailPresenter;
+import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
-import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
-import org.fossasia.openevent.app.data.models.Attendee;
-import org.fossasia.openevent.app.data.repository.IAttendeeRepository;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
+import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
 
 import javax.inject.Inject;
 
@@ -16,15 +16,15 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompl
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneousCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.erroneousResult;
 
-public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttendeeCheckInView> {
+public class AttendeeCheckInPresenter extends AbstractDetailPresenter<Long, AttendeeCheckInView> {
 
-    private final IAttendeeRepository attendeeRepository;
-    private final IDatabaseChangeListener<Attendee> databaseChangeListener;
+    private final AttendeeRepository attendeeRepository;
+    private final DatabaseChangeListener<Attendee> databaseChangeListener;
 
     private Attendee attendee;
 
     @Inject
-    public AttendeeCheckInPresenter(IAttendeeRepository attendeeRepository, IDatabaseChangeListener<Attendee> databaseChangeListener) {
+    public AttendeeCheckInPresenter(AttendeeRepository attendeeRepository, DatabaseChangeListener<Attendee> databaseChangeListener) {
         this.attendeeRepository = attendeeRepository;
         this.databaseChangeListener = databaseChangeListener;
     }
@@ -35,7 +35,7 @@ public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttende
 
         databaseChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
-            .map(DatabaseChangeListener.ModelChange::getModel)
+            .map(DbFlowDatabaseChangeListener.ModelChange::getModel)
             .filter(filterAttendee -> filterAttendee.getId() == attendee.getId())
             .flatMap(filterAttendee -> attendeeRepository.getAttendee(attendee.getId(), false))
             .compose(erroneousResult(getView()))
@@ -71,7 +71,7 @@ public class AttendeeCheckInPresenter extends BaseDetailPresenter<Long, IAttende
     }
 
     @VisibleForTesting
-    public IAttendeeCheckInView getView() {
+    public AttendeeCheckInView getView() {
         return super.getView();
     }
 }

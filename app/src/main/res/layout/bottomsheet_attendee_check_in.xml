@@ -15,7 +15,7 @@
 
         <variable
             name="checkinAttendee"
-            type="org.fossasia.openevent.app.data.models.Attendee" />
+            type="org.fossasia.openevent.app.data.attendee.Attendee" />
     </data>
 
 

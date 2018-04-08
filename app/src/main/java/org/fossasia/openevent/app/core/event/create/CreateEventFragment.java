@@ -28,7 +28,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
-import org.fossasia.openevent.app.data.models.Event;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.databinding.EventCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.utils.ValidateUtils;
@@ -45,7 +45,7 @@ import timber.log.Timber;
 import static android.app.Activity.RESULT_OK;
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPresenter> implements ICreateEventView {
+public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPresenter> implements CreateEventView {
 
     @Inject
     Lazy<CreateEventPresenter> presenterProvider;
