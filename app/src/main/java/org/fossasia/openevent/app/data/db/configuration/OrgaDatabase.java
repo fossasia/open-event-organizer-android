@@ -16,6 +16,7 @@ import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.copyright.Copyright;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.faq.Faq;
+import org.fossasia.openevent.app.data.feedback.Feedback;
 import org.fossasia.openevent.app.data.order.Order;
 import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.data.auth.model.User;
@@ -139,6 +140,23 @@ public final class OrgaDatabase {
             Timber.d("Running migration for DB version 9");
 
             Class[] recreated = new Class[] {Faq.class, Copyright.class};
+
+            for (Class recreate: recreated) {
+                ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
+                databaseWrapper.execSQL("DROP TABLE IF EXISTS " + modelAdapter.getTableName());
+                databaseWrapper.execSQL(modelAdapter.getCreationQuery());
+            }
+        }
+    }
+
+    @Migration(version = 10, database = OrgaDatabase.class)
+    public static class MigrationTo10 extends BaseMigration {
+
+        @Override
+        public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
+            Timber.d("Running migration for DB version 10");
+
+            Class[] recreated = new Class[] {Feedback.class};
 
             for (Class recreate: recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);

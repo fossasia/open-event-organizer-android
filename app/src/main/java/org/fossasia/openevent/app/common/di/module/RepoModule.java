@@ -10,6 +10,8 @@ import org.fossasia.openevent.app.data.event.EventRepositoryImpl;
 import org.fossasia.openevent.app.data.faq.FaqRepository;
 import org.fossasia.openevent.app.data.faq.FaqRepositoryImpl;
 import org.fossasia.openevent.app.data.event.EventRepository;
+import org.fossasia.openevent.app.data.feedback.FeedbackRepository;
+import org.fossasia.openevent.app.data.feedback.FeedbackRepositoryImpl;
 import org.fossasia.openevent.app.data.ticket.TicketRepository;
 import org.fossasia.openevent.app.data.ticket.TicketRepositoryImpl;
 
@@ -45,4 +47,7 @@ public abstract class RepoModule {
     @Singleton
     abstract CopyrightRepository bindsCopyrightRepository(CopyrightRepositoryImpl copyrightRepository);
 
+    @Binds
+    @Singleton
+    abstract FeedbackRepository bindsFeedbackRepository(FeedbackRepositoryImpl feedbackRepository);
 }
