@@ -23,6 +23,11 @@
             android:checkable="false"/>
 
         <item
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/ic_feedback"
+            android:title="@string/feedback" />
+
+        <item
             android:id="@+id/nav_faq"
             android:icon="@drawable/ic_faq"
             android:title="@string/faq"/>
