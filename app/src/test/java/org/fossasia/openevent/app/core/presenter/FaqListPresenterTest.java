@@ -3,19 +3,11 @@ package org.fossasia.openevent.app.core.presenter;
 import android.databinding.ObservableBoolean;
 
 import org.fossasia.openevent.app.common.rx.Logger;
-<<<<<<< HEAD:app/src/test/java/org/fossasia/openevent/app/unit/presenter/FaqListPresenterTest.java
 import org.fossasia.openevent.app.core.faq.list.FaqListPresenter;
-import org.fossasia.openevent.app.core.faq.list.IFaqListView;
-import org.fossasia.openevent.app.data.db.IDatabaseChangeListener;
-import org.fossasia.openevent.app.data.models.Faq;
-import org.fossasia.openevent.app.data.repository.IFaqRepository;
-=======
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.faq.FaqRepository;
-import org.fossasia.openevent.app.core.faq.list.FaqListPresenter;
 import org.fossasia.openevent.app.core.faq.list.FaqListView;
->>>>>>> development:app/src/test/java/org/fossasia/openevent/app/core/presenter/FaqListPresenterTest.java
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

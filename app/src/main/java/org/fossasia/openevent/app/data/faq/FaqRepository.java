@@ -9,5 +9,5 @@ public interface FaqRepository {
 
     Observable<Faq> createFaq(Faq faq);
 
-    Completable deleteFaq(long id)
+    Completable deleteFaq(long id);
 }

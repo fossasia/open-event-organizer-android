@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Repository;
-import org.fossasia.openevent.app.data.models.Faq_Table;
 
 import javax.inject.Inject;
 
@@ -64,12 +63,12 @@ public class FaqRepositoryImpl implements FaqRepository {
     @NonNull
     @Override
     public Completable deleteFaq(long id) {
-        if (!utilModel.isConnected()) {
+        if (!repository.isConnected()) {
             return Completable.error(new Throwable(Constants.NO_NETWORK));
         }
 
-        return eventService.deleteFaq(id)
-            .doOnComplete(() -> databaseRepository
+        return faqApi.deleteFaq(id)
+            .doOnComplete(() -> repository
                 .delete(Faq.class, Faq_Table.id.eq(id))
                 .subscribe())
             .subscribeOn(Schedulers.io())
