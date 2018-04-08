@@ -172,6 +172,8 @@
     <string name="sessions_draft">Sessions Draft</string>
     <string name="sessions_pending">Sessions Pending</string>
     <string name="faq">FAQ</string>
+    <string name="track">Track</string>
+    <string name="tracks">Tracks</string>
     <string name="pdf_url">PDF URL</string>
     <string name="country">Country</string>
     <string name="state">State</string>

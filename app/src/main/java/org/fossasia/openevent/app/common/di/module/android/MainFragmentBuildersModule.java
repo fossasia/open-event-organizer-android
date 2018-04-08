@@ -11,6 +11,7 @@ import org.fossasia.openevent.app.core.settings.SettingsFragment;
 import org.fossasia.openevent.app.core.ticket.create.CreateTicketFragment;
 import org.fossasia.openevent.app.core.ticket.detail.TicketDetailFragment;
 import org.fossasia.openevent.app.core.ticket.list.TicketsFragment;
+import org.fossasia.openevent.app.core.track.list.TracksFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -61,5 +62,10 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract FeedbackListFragment contributeFeedbackListFragment();
+
+    // Tracks
+
+    @ContributesAndroidInjector
+    abstract TracksFragment contributeTracksFragment();
 }
 

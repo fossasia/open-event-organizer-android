@@ -13,13 +13,14 @@ import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.fossasia.openevent.app.data.attendee.Attendee;
+import org.fossasia.openevent.app.data.auth.model.User;
 import org.fossasia.openevent.app.data.copyright.Copyright;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.feedback.Feedback;
 import org.fossasia.openevent.app.data.order.Order;
 import org.fossasia.openevent.app.data.ticket.Ticket;
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.tracks.Track;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +39,8 @@ public final class OrgaDatabase {
     public static final String NAME = "orga_database";
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS ";
     // To be bumped after each schema change and migration addition
-    public static final int VERSION = 10;
+    public static final int VERSION = 11;
+
 
     private OrgaDatabase() {
         // Never Called
@@ -167,4 +169,20 @@ public final class OrgaDatabase {
         }
     }
 
+    @Migration(version = 11, database = OrgaDatabase.class)
+    public static class MigrationTo11 extends BaseMigration {
+
+        @Override
+        public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
+            Timber.d("Running migration for DB version 11");
+
+            Class<?>[] recreated = new Class[] {Track.class};
+
+            for (Class<?> recreate: recreated) {
+                ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
+                databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
+                databaseWrapper.execSQL(modelAdapter.getCreationQuery());
+            }
+        }
+    }
 }
