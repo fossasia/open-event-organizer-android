@@ -8,11 +8,12 @@ import org.fossasia.openevent.app.data.auth.AuthService;
 import org.fossasia.openevent.app.data.Bus;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.core.main.MainPresenter;
 import org.fossasia.openevent.app.core.main.MainView;
+import org.fossasia.openevent.app.data.user.UserRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,6 +42,7 @@ public class MainPresenterTest {
     @Mock private Preferences sharedPreferenceModel;
     @Mock private RxSharedPreferences rxSharedPreferences;
     @Mock private EventRepository eventRepository;
+    @Mock private UserRepository userRepository;
 
     private static final PublishSubject<Event> PUBLISHER = PublishSubject.create();
 
@@ -52,7 +54,7 @@ public class MainPresenterTest {
 
     @Before
     public void setUp() {
-        mainPresenter = new MainPresenter(sharedPreferenceModel, loginModel, eventRepository, bus, rxSharedPreferences, contextManager);
+        mainPresenter = new MainPresenter(sharedPreferenceModel, loginModel, eventRepository, bus, rxSharedPreferences, contextManager, userRepository);
         mainPresenter.attach(mainView);
     }
 
@@ -62,7 +64,7 @@ public class MainPresenterTest {
 
         when(bus.getSelectedEvent()).thenReturn(PUBLISHER);
 
-        when(eventRepository.getOrganiser(anyBoolean())).thenReturn(Observable.just(ORGANIZER));
+        when(userRepository.getOrganizer(anyBoolean())).thenReturn(Observable.just(ORGANIZER));
         when(eventRepository.getEvent(anyLong(), anyBoolean())).thenReturn(Observable.just(EVENT));
     }
 

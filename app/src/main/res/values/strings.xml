@@ -12,6 +12,15 @@
     <string name="first_name">First Name (Optional)</string>
     <string name="last_name">Last Name (Optional)</string>
     <string name="email">Email</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="update">Update</string>
+    <string name="thumbnail_image">Thumbnail Image URL</string>
+    <string name="icon_image_url">Icon Image URL</string>
+    <string name="facebook_url">Facebook URL</string>
+    <string name="instagram_url">Instagram URL</string>
+    <string name="avatar_url">Avatar URL</string>
+    <string name="twitter_url">Twitter URL</string>
+    <string name="google_plus_url">Google Plus URL</string>
     <string name="password">Password</string>
     <string name="base_url">Base URL</string>
     <string name="login">Log In</string>

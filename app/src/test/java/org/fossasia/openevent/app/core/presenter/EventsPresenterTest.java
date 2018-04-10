@@ -1,9 +1,10 @@
 package org.fossasia.openevent.app.core.presenter;
 
 import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.event.serializer.ObservableString;
 import org.fossasia.openevent.app.data.event.EventRepository;
+import org.fossasia.openevent.app.data.user.UserRepository;
 import org.fossasia.openevent.app.utils.DateUtils;
 import org.fossasia.openevent.app.core.event.list.EventsPresenter;
 import org.fossasia.openevent.app.core.event.list.EventsView;
@@ -40,6 +41,7 @@ public class EventsPresenterTest {
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock private EventsView eventListView;
     @Mock private EventRepository eventRepository;
+    @Mock private UserRepository userRepository;
 
     private EventsPresenter eventsActivityPresenter;
 
@@ -69,7 +71,7 @@ public class EventsPresenterTest {
 
     @Test
     public void shouldLoadEventsAndOrganiserAutomatically() {
-        when(eventRepository.getOrganiser(false))
+        when(userRepository.getOrganizer(false))
             .thenReturn(Observable.just(ORGANISER));
 
         when(eventRepository.getEvents(false))
