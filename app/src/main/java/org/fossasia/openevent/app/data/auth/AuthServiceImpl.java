@@ -5,7 +5,7 @@ import org.fossasia.openevent.app.data.auth.model.CustomObjectWrapper;
 import org.fossasia.openevent.app.data.auth.model.Login;
 import org.fossasia.openevent.app.data.auth.model.RequestToken;
 import org.fossasia.openevent.app.data.auth.model.SubmitToken;
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Repository;
 

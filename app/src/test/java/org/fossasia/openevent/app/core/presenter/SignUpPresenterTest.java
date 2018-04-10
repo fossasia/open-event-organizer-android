@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.core.presenter;
 
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.auth.AuthService;
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.core.auth.signup.SignUpPresenter;
 import org.fossasia.openevent.app.core.auth.signup.SignUpView;

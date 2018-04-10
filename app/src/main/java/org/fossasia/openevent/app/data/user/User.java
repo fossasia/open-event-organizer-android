@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.data.auth.model;
+package org.fossasia.openevent.app.data.user;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

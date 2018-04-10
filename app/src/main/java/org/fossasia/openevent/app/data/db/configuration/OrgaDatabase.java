@@ -13,7 +13,6 @@ import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import org.fossasia.openevent.app.data.attendee.Attendee;
-import org.fossasia.openevent.app.data.auth.model.User;
 import org.fossasia.openevent.app.data.copyright.Copyright;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.faq.Faq;
@@ -21,6 +20,7 @@ import org.fossasia.openevent.app.data.feedback.Feedback;
 import org.fossasia.openevent.app.data.order.Order;
 import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.data.tracks.Track;
+import org.fossasia.openevent.app.data.user.User;
 
 import java.util.Arrays;
 import java.util.List;

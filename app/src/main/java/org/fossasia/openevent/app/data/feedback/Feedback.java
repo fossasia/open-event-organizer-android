@@ -12,7 +12,7 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.event.Event;
 

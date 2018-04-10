@@ -3,8 +3,6 @@ package org.fossasia.openevent.app.data.event;
 import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.data.auth.AuthHolder;
-import org.fossasia.openevent.app.data.auth.model.User;
-import org.fossasia.openevent.app.data.auth.model.User_Table;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.data.Repository;
@@ -30,29 +28,6 @@ public class EventRepositoryImpl implements EventRepository {
         this.repository = repository;
         this.eventApi = eventApi;
         this.authHolder = authHolder;
-    }
-
-    @Override
-    public Observable<User> getOrganiser(boolean reload) {
-        int userId = authHolder.getIdentity();
-        Observable<User> diskObservable = Observable.defer(() ->
-            repository.getItems(User.class, User_Table.id.eq(userId))
-        );
-
-        Observable<User> networkObservable = Observable.defer(() ->
-            eventApi
-                .getUser(userId)
-                .doOnNext(user -> repository
-                    .save(User.class, user)
-                    .subscribe()
-                )
-        );
-
-        return repository.observableOf(User.class)
-            .reload(reload)
-            .withDiskObservable(diskObservable)
-            .withNetworkObservable(networkObservable)
-            .build();
     }
 
     private void saveEvent(Event event) {

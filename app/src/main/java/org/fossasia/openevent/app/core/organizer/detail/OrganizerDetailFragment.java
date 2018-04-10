@@ -15,8 +15,9 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.organizer.password.ChangePasswordFragment;
+import org.fossasia.openevent.app.core.organizer.update.UpdateOrganizerInfoFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.databinding.OrganizerDetailFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -77,6 +78,11 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
         switch (item.getItemId()) {
             case R.id.action_change_password:
                 openChangePasswordFragment();
+                break;
+            case R.id.update_organizer:
+                getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment, UpdateOrganizerInfoFragment.newInstance())
+                    .commit();
                 break;
             default:
                 super.onOptionsItemSelected(item);

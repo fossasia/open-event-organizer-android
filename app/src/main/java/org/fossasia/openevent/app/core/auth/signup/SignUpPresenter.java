@@ -4,7 +4,7 @@ import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.auth.AuthService;
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 
 import javax.inject.Inject;

@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.data.repository;
 
 import org.fossasia.openevent.app.data.auth.AuthHolder;
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.AbstractObservable;
@@ -10,6 +10,8 @@ import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventApi;
 import org.fossasia.openevent.app.data.event.EventRepositoryImpl;
 import org.fossasia.openevent.app.data.event.Event_Table;
+import org.fossasia.openevent.app.data.user.UserApi;
+import org.fossasia.openevent.app.data.user.UserRepositoryImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -44,8 +46,10 @@ public class EventRepositoryTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private EventRepositoryImpl eventRepository;
+    private UserRepositoryImpl userRepository;
 
     @Mock private EventApi eventApi;
+    @Mock private UserApi userApi;
     @Mock private Repository repository;
     @Mock private AuthHolder authHolder;
 
@@ -63,6 +67,7 @@ public class EventRepositoryTest {
         when(repository.observableOf(Event.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
         when(repository.observableOf(User.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
         eventRepository = new EventRepositoryImpl(repository, eventApi, authHolder);
+        userRepository = new UserRepositoryImpl(userApi, repository, authHolder);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
@@ -95,11 +100,11 @@ public class EventRepositoryTest {
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        eventRepository.getOrganiser(false)
+        userRepository.getOrganizer(false)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
-        eventRepository.getOrganiser(true)
+        userRepository.getOrganizer(true)
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
 
@@ -120,17 +125,17 @@ public class EventRepositoryTest {
             .thenReturn(Observable.empty())
             .thenReturn(Observable.just(user));
         when(repository.save(User.class, user)).thenReturn(completable);
-        when(eventApi.getUser(344)).thenReturn(Observable.just(user));
+        when(userApi.getOrganizer(344)).thenReturn(Observable.just(user));
 
         // No force reload ensures use of cache
-        Observable<User> userObservable = eventRepository.getOrganiser(false);
+        Observable<User> userObservable = userRepository.getOrganizer(false);
 
         userObservable
             .test()
             .assertValue(user);
 
         // Verify loads from network
-        verify(eventApi).getUser(344);
+        verify(userApi).getOrganizer(344);
         verify(repository).save(User.class, user);
         testObserver.assertSubscribed();
     }
@@ -142,13 +147,13 @@ public class EventRepositoryTest {
         when(repository.getItems(eq(User.class), any())).thenReturn(Observable.just(user));
 
         // No force reload ensures use of cache
-        Observable<User> userObservable = eventRepository.getOrganiser(false);
+        Observable<User> userObservable = userRepository.getOrganizer(false);
 
         userObservable
             .test()
             .assertValue(user);
 
-        verifyZeroInteractions(eventApi);
+        verifyZeroInteractions(userApi);
     }
 
     @Test
@@ -156,16 +161,16 @@ public class EventRepositoryTest {
         User user = new User();
 
         when(authHolder.getIdentity()).thenReturn(344);
-        when(eventApi.getUser(344)).thenReturn(Observable.just(user));
+        when(userApi.getOrganizer(344)).thenReturn(Observable.just(user));
         when(repository.save(User.class, user)).thenReturn(Completable.complete());
         when(repository.getAllItems(User.class)).thenReturn(Observable.just(user));
         when(repository.isConnected()).thenReturn(true);
 
         // Force reload ensures no use of cache
-        eventRepository.getOrganiser(true).subscribe();
+        userRepository.getOrganizer(true).subscribe();
 
         // Verify loads from network
-        verify(eventApi).getUser(344);
+        verify(userApi).getOrganizer(344);
     }
 
     @Test

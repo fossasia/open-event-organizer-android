@@ -8,6 +8,7 @@ import org.fossasia.openevent.app.data.faq.FaqApi;
 import org.fossasia.openevent.app.data.feedback.FeedbackApi;
 import org.fossasia.openevent.app.data.ticket.TicketApi;
 import org.fossasia.openevent.app.data.tracks.TrackApi;
+import org.fossasia.openevent.app.data.user.UserApi;
 
 import javax.inject.Singleton;
 
@@ -64,5 +65,11 @@ public class ApiModule {
     @Singleton
     TrackApi providesTrackApi(Retrofit retrofit) {
         return retrofit.create(TrackApi.class);
+    }
+
+    @Provides
+    @Singleton
+    UserApi providesUserApi(Retrofit retrofit) {
+        return retrofit.create(UserApi.class);
     }
 }

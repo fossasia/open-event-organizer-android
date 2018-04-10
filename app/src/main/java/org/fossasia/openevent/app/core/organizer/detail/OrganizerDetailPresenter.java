@@ -2,8 +2,8 @@ package org.fossasia.openevent.app.core.organizer.detail;
 
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.auth.model.User;
-import org.fossasia.openevent.app.data.event.EventRepositoryImpl;
+import org.fossasia.openevent.app.data.user.User;
+import org.fossasia.openevent.app.data.user.UserRepositoryImpl;
 
 import javax.inject.Inject;
 
@@ -14,13 +14,13 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 
 public class OrganizerDetailPresenter extends AbstractBasePresenter<OrganizerDetailView> {
 
-    private final EventRepositoryImpl eventRepository;
+    private final UserRepositoryImpl userRepository;
 
     private User user;
 
     @Inject
-    public OrganizerDetailPresenter(EventRepositoryImpl eventRepository) {
-        this.eventRepository = eventRepository;
+    public OrganizerDetailPresenter(UserRepositoryImpl userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class OrganizerDetailPresenter extends AbstractBasePresenter<OrganizerDet
         if (user != null && !forceReload && isRotated()) {
             return Observable.just(user);
         } else {
-            return eventRepository.getOrganiser(forceReload);
+            return userRepository.getOrganizer(forceReload);
         }
     }
 }
