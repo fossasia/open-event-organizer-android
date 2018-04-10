@@ -100,15 +100,14 @@ public class NetworkModule {
         return chain -> {
             Request original = chain.request();
 
-            String token = authHolder.getToken();
-
-            if (token == null) {
-                Timber.wtf("Someone tried to access resources without auth token. Maybe auth request?");
+            String authorization = authHolder.getAuthorization();
+            if (authorization == null) {
+                Timber.d("Someone tried to access resources without auth token. Maybe auth request?");
                 return chain.proceed(original);
             }
 
             Request request = original.newBuilder()
-                .header("Authorization", authHolder.getAuthorization())
+                .header("Authorization", authorization)
                 .method(original.method(), original.body())
                 .build();
 

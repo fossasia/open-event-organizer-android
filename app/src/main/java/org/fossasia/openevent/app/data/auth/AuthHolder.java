@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.data.auth;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.common.Constants;
@@ -14,7 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class AuthHolder {
+public final class AuthHolder {
 
     private static final String SHARED_PREFS_TOKEN = "token";
     private final Preferences sharedPreferenceModel;
@@ -27,13 +28,21 @@ public class AuthHolder {
     }
 
     public String getToken() {
-        if (token != null)
-            return token;
+        if (token == null)
+            token = sharedPreferenceModel.getString(SHARED_PREFS_TOKEN, null);
 
-        return sharedPreferenceModel.getString(SHARED_PREFS_TOKEN, null);
+        return token;
+    }
+
+    @VisibleForTesting
+    String getTokenRaw() {
+        return token;
     }
 
     public String getAuthorization() {
+        String token = getToken();
+        if (token == null)
+            return null;
         return JWTUtils.getAuthorization(token);
     }
 
