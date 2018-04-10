@@ -9,4 +9,9 @@
         android:id="@+id/action_change_password"
         android:title="@string/change_password"
         app:showAsAction="never"/>
+
+    <item android:id="@+id/update_organizer"
+        android:title="@string/edit_profile"
+        android:icon="@drawable/ic_edit"
+        app:showAsAction="ifRoom"/>
 </menu>

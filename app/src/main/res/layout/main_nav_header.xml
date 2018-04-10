@@ -10,7 +10,7 @@
 
         <variable
             name="user"
-            type="org.fossasia.openevent.app.data.auth.model.User" />
+            type="org.fossasia.openevent.app.data.user.User" />
         <variable
             name="event"
             type="org.fossasia.openevent.app.data.event.Event" />

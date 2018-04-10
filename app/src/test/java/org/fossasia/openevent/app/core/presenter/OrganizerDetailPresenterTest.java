@@ -1,10 +1,10 @@
 package org.fossasia.openevent.app.core.presenter;
 
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.auth.model.User;
-import org.fossasia.openevent.app.data.event.EventRepositoryImpl;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailPresenter;
 import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailView;
+import org.fossasia.openevent.app.data.user.UserRepositoryImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,14 +34,14 @@ public class OrganizerDetailPresenterTest {
     @Mock
     private OrganizerDetailView organizerDetailView;
     @Mock
-    private EventRepositoryImpl eventRepository;
+    private UserRepositoryImpl userRepository;
     private OrganizerDetailPresenter organizerDetailPresenter;
 
     private static final User USER = new User();
 
     @Before
     public void setUp() {
-        organizerDetailPresenter = new OrganizerDetailPresenter(eventRepository);
+        organizerDetailPresenter = new OrganizerDetailPresenter(userRepository);
         organizerDetailPresenter.attach(organizerDetailView);
 
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
@@ -57,7 +57,7 @@ public class OrganizerDetailPresenterTest {
 
     @Test
     public void shouldLoadOrganizerSuccessfully() {
-        when(eventRepository.getOrganiser(anyBoolean())).thenReturn(Observable.just(USER));
+        when(userRepository.getOrganizer(anyBoolean())).thenReturn(Observable.just(USER));
 
         organizerDetailPresenter.loadOrganizer(false);
 
@@ -70,7 +70,7 @@ public class OrganizerDetailPresenterTest {
 
     @Test
     public void shouldShowErrorOnOrganizerLoadFailure() {
-        when(eventRepository.getOrganiser(anyBoolean())).thenReturn(Observable.error(new Throwable("Error")));
+        when(userRepository.getOrganizer(anyBoolean())).thenReturn(Observable.error(new Throwable("Error")));
 
         organizerDetailPresenter.loadOrganizer(false);
 
@@ -83,7 +83,7 @@ public class OrganizerDetailPresenterTest {
 
     @Test
     public void shouldShowOrganizerDetailsOnSwipeRefreshSuccess() {
-        when(eventRepository.getOrganiser(true)).thenReturn(Observable.just(USER));
+        when(userRepository.getOrganizer(true)).thenReturn(Observable.just(USER));
 
         organizerDetailPresenter.loadOrganizer(true);
 
@@ -92,7 +92,7 @@ public class OrganizerDetailPresenterTest {
 
     @Test
     public void shouldShowErrorMessageOnSwipeRefreshError() {
-        when(eventRepository.getOrganiser(true)).thenReturn(Observable.error(Logger.TEST_ERROR));
+        when(userRepository.getOrganizer(true)).thenReturn(Observable.error(Logger.TEST_ERROR));
 
         organizerDetailPresenter.loadOrganizer(true);
 
@@ -101,7 +101,7 @@ public class OrganizerDetailPresenterTest {
 
     @Test
     public void testProgressbarOnSwipeRefreshSuccess() {
-        when(eventRepository.getOrganiser(true)).thenReturn(Observable.just(USER));
+        when(userRepository.getOrganizer(true)).thenReturn(Observable.just(USER));
 
         organizerDetailPresenter.loadOrganizer(true);
 
@@ -114,7 +114,7 @@ public class OrganizerDetailPresenterTest {
 
     @Test
     public void testProgressbarOnSwipeRefreshError() {
-        when(eventRepository.getOrganiser(true)).thenReturn(Observable.error(Logger.TEST_ERROR));
+        when(userRepository.getOrganizer(true)).thenReturn(Observable.error(Logger.TEST_ERROR));
 
         organizerDetailPresenter.loadOrganizer(true);
 

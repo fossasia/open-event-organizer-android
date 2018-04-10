@@ -8,7 +8,7 @@ import org.fossasia.openevent.app.data.auth.model.RequestToken;
 import org.fossasia.openevent.app.data.auth.model.RequestTokenResponse;
 import org.fossasia.openevent.app.data.auth.model.SubmitToken;
 import org.fossasia.openevent.app.data.auth.model.SubmitTokenResponse;
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 
 import java.util.Map;
 
@@ -33,5 +33,4 @@ public interface AuthApi {
 
     @POST("auth/change-password")
     Observable<ChangePasswordResponse> changePassword(@Body Map<String, ChangePassword> changePassword);
-
 }

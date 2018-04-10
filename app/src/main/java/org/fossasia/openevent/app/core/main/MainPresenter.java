@@ -10,8 +10,9 @@ import org.fossasia.openevent.app.data.auth.AuthService;
 import org.fossasia.openevent.app.data.Bus;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.event.EventRepository;
+import org.fossasia.openevent.app.data.user.UserRepository;
 import org.fossasia.openevent.app.utils.CurrencyUtils;
 import org.fossasia.openevent.app.utils.DateUtils;
 
@@ -31,6 +32,7 @@ public class MainPresenter extends AbstractBasePresenter<MainView> {
     private final Preferences sharedPreferenceModel;
     private final AuthService loginModel;
     private final EventRepository eventRepository;
+    private final UserRepository userRepository;
     private final RxSharedPreferences sharedPreferences;
     private final Bus bus;
     private final ContextManager contextManager;
@@ -39,13 +41,15 @@ public class MainPresenter extends AbstractBasePresenter<MainView> {
 
     @Inject
     public MainPresenter(Preferences sharedPreferenceModel, AuthService loginModel,
-                         EventRepository eventRepository, Bus bus, RxSharedPreferences sharedPreferences, ContextManager contextManager) {
+                         EventRepository eventRepository, Bus bus,
+                         RxSharedPreferences sharedPreferences, ContextManager contextManager, UserRepository userRepository) {
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.loginModel = loginModel;
         this.eventRepository = eventRepository;
         this.bus = bus;
         this.sharedPreferences = sharedPreferences;
         this.contextManager = contextManager;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -109,7 +113,7 @@ public class MainPresenter extends AbstractBasePresenter<MainView> {
         if (organizer != null && isRotated())
             return Observable.just(organizer);
         else
-            return eventRepository.getOrganiser(false);
+            return userRepository.getOrganizer(false);
     }
 
     public void logout() {

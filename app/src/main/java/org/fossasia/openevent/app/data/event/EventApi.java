@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.event;
 
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 
 import java.util.List;
 

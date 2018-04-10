@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.data.auth;
 
 import android.support.annotation.NonNull;
 
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.core.main.MainActivity;

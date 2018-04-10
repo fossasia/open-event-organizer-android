@@ -16,6 +16,8 @@ import org.fossasia.openevent.app.data.ticket.TicketRepository;
 import org.fossasia.openevent.app.data.ticket.TicketRepositoryImpl;
 import org.fossasia.openevent.app.data.tracks.TrackRepository;
 import org.fossasia.openevent.app.data.tracks.TrackRepositoryImpl;
+import org.fossasia.openevent.app.data.user.UserRepository;
+import org.fossasia.openevent.app.data.user.UserRepositoryImpl;
 
 import javax.inject.Singleton;
 
@@ -56,4 +58,8 @@ public abstract class RepoModule {
     @Binds
     @Singleton
     abstract TrackRepository bindsTrackRepository(TrackRepositoryImpl trackRepositoryImpl);
+
+    @Binds
+    @Singleton
+    abstract UserRepository bindsUserRepository(UserRepositoryImpl userRepository);
 }

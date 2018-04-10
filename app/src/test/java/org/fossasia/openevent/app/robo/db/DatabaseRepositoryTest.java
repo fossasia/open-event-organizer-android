@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.robo.db;
 
-import org.fossasia.openevent.app.data.auth.model.User;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.db.DbFlowDatabaseRepository;
 import org.fossasia.openevent.app.common.model.SimpleModel;
 import org.fossasia.openevent.app.common.model.SimpleModel_Table;
