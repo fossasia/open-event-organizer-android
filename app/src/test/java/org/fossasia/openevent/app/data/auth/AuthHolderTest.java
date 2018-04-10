@@ -27,6 +27,7 @@ public class AuthHolderTest {
     private static final String UNEXPIRABLE_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
         ".eyJuYmYiOjE0OTU3NDU0MDAsImlhdCI6MTQ5NTc0NTQwMCwiZXhwIjoyNDk1ODMxODAwLCJpZGVudGl0eSI6MzQ0fQ" +
         ".A_aC4hwK8sixZk4k9gzmzidO1wj2hjy_EH573uorK-E";
+    private static final String TOKEN = "token";
 
     private AuthHolder authHolder;
 
@@ -64,9 +65,9 @@ public class AuthHolderTest {
 
     @Test
     public void shouldReturnStoredToken() {
-        when(preferenceModel.getString(any(), any())).thenReturn("token");
+        when(preferenceModel.getString(any(), any())).thenReturn(TOKEN);
 
-        assertEquals("token", authHolder.getToken());
+        assertEquals(TOKEN, authHolder.getToken());
     }
 
     @Test
@@ -109,6 +110,25 @@ public class AuthHolderTest {
 
         verify(preferenceModel).setLong(MainActivity.EVENT_KEY, -1);
         assertNull(ContextManager.getSelectedEvent());
+    }
+
+    // Regression Tests
+
+    @Test
+    public void shouldSetPrivateMember() {
+        assertNull(authHolder.getTokenRaw());
+
+        when(preferenceModel.getString(any(), any())).thenReturn(TOKEN);
+        assertEquals(TOKEN, authHolder.getToken());
+        assertEquals(TOKEN, authHolder.getTokenRaw());
+    }
+
+    @Test
+    public void authorizationShouldBeNull() {
+        assertNull(authHolder.getTokenRaw());
+
+        assertNull(authHolder.getToken());
+        assertNull(authHolder.getAuthorization());
     }
 
 }
