@@ -11,9 +11,10 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
 
-import java.util.Currency;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
@@ -25,30 +26,36 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
 
     private final EventRepository eventRepository;
     private final Event event = new Event();
+    private final Map<String, String> countryCurrencyMap;
+    private final List<String> countryList;
+    private final List<String> currencyCodesList;
 
     @Inject
-    public CreateEventPresenter(EventRepository eventRepository) {
+    public CreateEventPresenter(EventRepository eventRepository, CurrencyUtils currencyUtils) {
         this.eventRepository = eventRepository;
         LocalDateTime current = LocalDateTime.now();
 
         String isoDate = DateUtils.formatDateToIso(current);
         event.getStartsAt().set(isoDate);
         event.getEndsAt().set(isoDate);
+
+        countryCurrencyMap = currencyUtils.getCountryCurrencyMap();
+        countryList = new ArrayList<>(countryCurrencyMap.keySet());
+        currencyCodesList = currencyUtils.getCurrencyCodesList();
     }
 
     @Override
     public void start() {
-        getView().attachCurrencyCodesList(CurrencyUtils.getCurrencyCodesList());
+        getView().attachCountryList(countryList);
+        getView().attachCurrencyCodesList(currencyCodesList);
 
-        //set default timezone
         List<String> timeZoneList = getView().getTimeZoneList();
         getView().setDefaultTimeZone(
             timeZoneList.indexOf(TimeZone.getDefault().getID())
         );
 
-        List<String> currencyList = CurrencyUtils.getCurrencyCodesList();
-        getView().setDefaultCurrency(
-            currencyList.indexOf(Currency.getInstance(Locale.getDefault()).getCurrencyCode())
+        getView().setDefaultCountry(
+            countryList.indexOf(Locale.getDefault().getDisplayCountry())
         );
     }
 
@@ -108,5 +115,16 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
         if (primary.matches(".*\\d+.*")) { //contains number => not likely to be searchable
             return address.substring(address.indexOf(',') + 2, address.indexOf(",", address.indexOf(',') + 1));
         } else return primary;
+    }
+
+    /**
+     * auto-selects paymentCurrency when paymentCountry is selected.
+     * @param paymentCountry chosen payment country
+     */
+    void onPaymentCountrySelected(String paymentCountry) {
+        event.setPaymentCountry(paymentCountry);
+        String paymentCurrency = countryCurrencyMap.get(paymentCountry);
+        event.setPaymentCurrency(paymentCurrency);
+        getView().setPaymentCurrency(currencyCodesList.indexOf(paymentCurrency));
     }
 }

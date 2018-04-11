@@ -13,7 +13,11 @@ public interface CreateEventView extends Progressive, Erroneous, Successful {
 
     void validate(TextInputLayout textInputLayout, Function<String, Boolean> fuck, String tsr);
 
+    void attachCountryList(List<String> countryList);
+
     void attachCurrencyCodesList(List<String> currencyCodesList);
+
+    void setPaymentCurrency(int index);
 
     void close();
 
@@ -21,6 +25,6 @@ public interface CreateEventView extends Progressive, Erroneous, Successful {
 
     void setDefaultTimeZone(int index);
 
-    void setDefaultCurrency(int index);
+    void setDefaultCountry(int index);
 
 }

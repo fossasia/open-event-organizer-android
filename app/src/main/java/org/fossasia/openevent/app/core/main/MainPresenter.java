@@ -36,13 +36,15 @@ public class MainPresenter extends AbstractBasePresenter<MainView> {
     private final RxSharedPreferences sharedPreferences;
     private final Bus bus;
     private final ContextManager contextManager;
+    private final CurrencyUtils currencyUtils;
 
     private User organizer;
 
     @Inject
+    @SuppressWarnings({"checkstyle:parameternumber"})
     public MainPresenter(Preferences sharedPreferenceModel, AuthService loginModel,
-                         EventRepository eventRepository, Bus bus,
-                         RxSharedPreferences sharedPreferences, ContextManager contextManager, UserRepository userRepository) {
+                         EventRepository eventRepository, Bus bus, RxSharedPreferences sharedPreferences,
+                         ContextManager contextManager, UserRepository userRepository, CurrencyUtils currencyUtils) {
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.loginModel = loginModel;
         this.eventRepository = eventRepository;
@@ -50,6 +52,7 @@ public class MainPresenter extends AbstractBasePresenter<MainView> {
         this.sharedPreferences = sharedPreferences;
         this.contextManager = contextManager;
         this.userRepository = userRepository;
+        this.currencyUtils = currencyUtils;
     }
 
     @Override
@@ -67,7 +70,7 @@ public class MainPresenter extends AbstractBasePresenter<MainView> {
             .subscribe(event -> {
                 sharedPreferenceModel.setLong(EVENT_KEY, event.getId());
                 ContextManager.setSelectedEvent(event);
-                CurrencyUtils.getCurrencySymbol(event.getPaymentCurrency())
+                currencyUtils.getCurrencySymbol(event.getPaymentCurrency())
                     .subscribe(ContextManager::setCurrency, Logger::logError);
                 showEvent(event);
             }, Logger::logError);
