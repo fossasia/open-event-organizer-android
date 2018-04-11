@@ -20,7 +20,6 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.core.event.about.AboutEventFragment;
 import org.fossasia.openevent.app.databinding.CopyrightCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.utils.ValidateUtils;
@@ -119,9 +118,7 @@ public class CreateCopyrightFragment extends BaseFragment<CreateCopyrightPresent
 
     @Override
     public void dismiss() {
-        getFragmentManager().beginTransaction()
-            .replace(R.id.fragment, AboutEventFragment.newInstance(getPresenter().getParentEventId()))
-            .commit();
+        getFragmentManager().popBackStack();
     }
 
     @Override
