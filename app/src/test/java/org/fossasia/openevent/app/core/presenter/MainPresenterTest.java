@@ -14,6 +14,7 @@ import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.core.main.MainPresenter;
 import org.fossasia.openevent.app.core.main.MainView;
 import org.fossasia.openevent.app.data.user.UserRepository;
+import org.fossasia.openevent.app.utils.CurrencyUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,6 +38,7 @@ public class MainPresenterTest {
     @Mock private AuthService loginModel;
     @Mock private MainView mainView;
     @Mock private ContextManager contextManager;
+    @Mock private CurrencyUtils currencyUtils;
     @Mock private Bus bus;
     @Mock private Preference<Boolean> booleanPref;
     @Mock private Preferences sharedPreferenceModel;
@@ -54,7 +56,8 @@ public class MainPresenterTest {
 
     @Before
     public void setUp() {
-        mainPresenter = new MainPresenter(sharedPreferenceModel, loginModel, eventRepository, bus, rxSharedPreferences, contextManager, userRepository);
+        mainPresenter = new MainPresenter(sharedPreferenceModel, loginModel, eventRepository, bus,
+            rxSharedPreferences, contextManager, userRepository, currencyUtils);
         mainPresenter.attach(mainView);
     }
 

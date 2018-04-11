@@ -524,6 +524,16 @@
                     android:onCheckedChanged="@{ (switch, checked) -> event.setTaxEnabled(checked) }"
                     android:text="@string/enable_tax" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_large"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:padding="@dimen/spacing_small"
+                    android:textSize="@dimen/text_size_small"
+                    android:text="@string/payment_country"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -537,20 +547,11 @@
                         android:contentDescription="@string/payment_country"
                         app:srcCompat="@drawable/ic_coin" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/payment_country_spinner"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small">
+                        android:layout_height="wrap_content"/>
 
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/payment_country"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/payment_country"
-                            android:inputType="text"
-                            android:text="@={ event.paymentCountry }" />
-
-                    </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
 
                 <TextView

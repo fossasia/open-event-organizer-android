@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -52,7 +53,8 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
 
     private EventCreateLayoutBinding binding;
     private Validator validator;
-    private ArrayAdapter<CharSequence> adapter;
+    private ArrayAdapter<CharSequence> currencyAdapter;
+    private ArrayAdapter<CharSequence> paymentCountryAdapter;
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private final GoogleApiAvailability googleApiAvailabilityInstance = GoogleApiAvailability.getInstance();
@@ -82,50 +84,32 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
                 getPresenter().createEvent();
         });
 
-        //check if there's an google places API key
-        try {
-            ApplicationInfo ai = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
-            Bundle bundle = ai.metaData;
-            String placesApiKey = bundle.getString("com.google.android.geo.API_KEY");
-            if ("YOUR_API_KEY".equals(placesApiKey)) {
-                Timber.d("Add Google Places API key in AndroidManifest.xml file to use Place Picker.");
-                binding.form.buttonPlacePicker.setVisibility(View.GONE);
-                binding.form.layoutLatitude.setVisibility(View.VISIBLE);
-                binding.form.layoutLongitude.setVisibility(View.VISIBLE);
-                showLocationLayouts();
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Timber.e(e, "Package name not found");
-        }
+        setupSpinners();
 
-        binding.form.buttonPlacePicker.setOnClickListener(view -> {
-            int errorCode = googleApiAvailabilityInstance.isGooglePlayServicesAvailable(getContext());
-            if (errorCode == ConnectionResult.SUCCESS) {
-                //SUCCESS
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                try {
-                    startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    Timber.d(e, "GooglePlayServicesRepairable");
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    Timber.d("GooglePlayServices NotAvailable => Updating or Unauthentic");
-                }
-            } else if (googleApiAvailabilityInstance.isUserResolvableError(errorCode)) {
-                //SERVICE_MISSING, SERVICE_VERSION_UPDATE_REQUIRED, SERVICE_DISABLED
-                googleApiAvailabilityInstance.getErrorDialog(
-                    getActivity(), errorCode, PLACE_PICKER_REQUEST, (dialog) -> {
-                        showLocationLayouts();
-                    });
-            } else {
-                //SERVICE_UPDATING, SERVICE_INVALID - can't use place picker - must enter manually
-                showLocationLayouts();
-            }
-        });
-
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        setupPlacePicker();
 
         return binding.getRoot();
+    }
+
+    private void setupSpinners() {
+        currencyAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
+        currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        paymentCountryAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
+        paymentCountryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        binding.form.paymentCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                getPresenter().onPaymentCountrySelected(adapterView.getItemAtPosition(i).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //do nothing
+            }
+
+        });
     }
 
     @Override
@@ -174,9 +158,20 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     }
 
     @Override
+    public void setPaymentCurrency(int index) {
+        binding.form.currencySpinner.setSelection(index);
+    }
+
+    @Override
+    public void attachCountryList(List<String> countryList) {
+        paymentCountryAdapter.addAll(countryList);
+        binding.form.paymentCountrySpinner.setAdapter(paymentCountryAdapter);
+    }
+
+    @Override
     public void attachCurrencyCodesList(List<String> currencyCodesList) {
-        adapter.addAll(currencyCodesList);
-        binding.form.currencySpinner.setAdapter(adapter);
+        currencyAdapter.addAll(currencyCodesList);
+        binding.form.currencySpinner.setAdapter(currencyAdapter);
     }
 
     @Override
@@ -215,8 +210,50 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     }
 
     @Override
-    public void setDefaultCurrency(int index) {
-        binding.form.currencySpinner.setSelection(index);
+    public void setDefaultCountry(int index) {
+        binding.form.paymentCountrySpinner.setSelection(index);
+    }
+
+    private void setupPlacePicker() {
+        //check if there's an google places API key
+        try {
+            ApplicationInfo ai = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            String placesApiKey = bundle.getString("com.google.android.geo.API_KEY");
+            if ("YOUR_API_KEY".equals(placesApiKey)) {
+                Timber.d("Add Google Places API key in AndroidManifest.xml file to use Place Picker.");
+                binding.form.buttonPlacePicker.setVisibility(View.GONE);
+                binding.form.layoutLatitude.setVisibility(View.VISIBLE);
+                binding.form.layoutLongitude.setVisibility(View.VISIBLE);
+                showLocationLayouts();
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Timber.e(e, "Package name not found");
+        }
+
+        binding.form.buttonPlacePicker.setOnClickListener(view -> {
+            int errorCode = googleApiAvailabilityInstance.isGooglePlayServicesAvailable(getContext());
+            if (errorCode == ConnectionResult.SUCCESS) {
+                //SUCCESS
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    Timber.d(e, "GooglePlayServicesRepairable");
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    Timber.d("GooglePlayServices NotAvailable => Updating or Unauthentic");
+                }
+            } else if (googleApiAvailabilityInstance.isUserResolvableError(errorCode)) {
+                //SERVICE_MISSING, SERVICE_VERSION_UPDATE_REQUIRED, SERVICE_DISABLED
+                googleApiAvailabilityInstance.getErrorDialog(
+                    getActivity(), errorCode, PLACE_PICKER_REQUEST, (dialog) -> {
+                        showLocationLayouts();
+                    });
+            } else {
+                //SERVICE_UPDATING, SERVICE_INVALID - can't use place picker - must enter manually
+                showLocationLayouts();
+            }
+        });
     }
 
     @Override
