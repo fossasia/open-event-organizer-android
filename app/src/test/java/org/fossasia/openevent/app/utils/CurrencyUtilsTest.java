@@ -1,24 +1,32 @@
 package org.fossasia.openevent.app.utils;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class CurrencyUtilsTest {
 
+    private CurrencyUtils currencyUtils;
+
+    @Before
+    public void setUp() {
+        currencyUtils = new CurrencyUtils();
+    }
+
     @Test
     public void testDollar() {
-        assertEquals("US$", CurrencyUtils.getCurrencySymbol("USD").blockingGet());
+        assertEquals("US$", currencyUtils.getCurrencySymbol("USD").blockingGet());
     }
 
     @Test
     public void testRupee() {
-        assertEquals("Rs.", CurrencyUtils.getCurrencySymbol("INR").blockingGet());
+        assertEquals("Rs.", currencyUtils.getCurrencySymbol("INR").blockingGet());
     }
 
     @Test
     public void testPound() {
-        assertEquals("£", CurrencyUtils.getCurrencySymbol("GBP").blockingGet());
+        assertEquals("£", currencyUtils.getCurrencySymbol("GBP").blockingGet());
     }
 
 }

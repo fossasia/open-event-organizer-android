@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.presenter;
 
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventRepository;
+import org.fossasia.openevent.app.utils.CurrencyUtils;
 import org.fossasia.openevent.app.utils.DateUtils;
 import org.fossasia.openevent.app.core.event.create.CreateEventPresenter;
 import org.fossasia.openevent.app.core.event.create.CreateEventView;
@@ -34,12 +35,14 @@ public class CreateEventPresenterTest {
     private EventRepository eventRepository;
     @Mock
     private CreateEventView createEventView;
+    @Mock
+    private CurrencyUtils currencyUtils;
 
     private CreateEventPresenter createEventPresenter;
 
     @Before
     public void setUp() {
-        createEventPresenter = new CreateEventPresenter(eventRepository);
+        createEventPresenter = new CreateEventPresenter(eventRepository, currencyUtils);
         createEventPresenter.attach(createEventView);
     }
 
