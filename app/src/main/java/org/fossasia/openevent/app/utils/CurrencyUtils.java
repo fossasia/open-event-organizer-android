@@ -1,29 +1,35 @@
 package org.fossasia.openevent.app.utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
+
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Source: https://stackoverflow.com/a/15343675/3309666
  */
 public final class CurrencyUtils {
 
-    private static SortedMap<Currency, Locale> currencyLocaleMap;
+    private SortedMap<Currency, Locale> currencyLocaleMap;
+    private Map<String, String> countryCurrencyMap;
 
-    private CurrencyUtils() {
+    @Inject
+    public CurrencyUtils() {
         // Never Called
     }
 
     @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock" })
-    private static Single<SortedMap<Currency, Locale>> getCurrecyMap() {
+    private Single<SortedMap<Currency, Locale>> getCurrecyMap() {
         if (currencyLocaleMap != null && !currencyLocaleMap.isEmpty())
             return Single.just(currencyLocaleMap);
 
@@ -42,7 +48,7 @@ public final class CurrencyUtils {
         });
     }
 
-    public static Single<String> getCurrencySymbol(String currencyCode) {
+    public Single<String> getCurrencySymbol(String currencyCode) {
         if (currencyCode == null)
             return Single.error(new Throwable("Currency Code is null"));
 
@@ -57,9 +63,28 @@ public final class CurrencyUtils {
             .subscribeOn(Schedulers.computation());
     }
 
-    @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock" })
-    public static List<String> getCurrencyCodesList() {
-        List<String> currencyCodes = new ArrayList<>();
+    @SuppressWarnings({ "PMD.UseConcurrentHashMap"})
+    public Map<String, String> getCountryCurrencyMap() {
+
+        if (countryCurrencyMap != null)
+            return countryCurrencyMap;
+
+        countryCurrencyMap = new TreeMap<>();
+        for (Locale locale : Locale.getAvailableLocales()) {
+            try {
+                Currency currency = Currency.getInstance(locale);
+                String country = locale.getDisplayCountry();
+                if (currency != null && country != null && !country.equals("")) {
+                    countryCurrencyMap.put(country, currency.toString());
+                }
+            } catch (IllegalArgumentException e) {
+                Timber.d(e);
+            }
+        }
+        return countryCurrencyMap;
+    }
+
+    public List<String> getCurrencyCodesList() {
         List<String> priorCurrencyCodes = new ArrayList<>();
 
         priorCurrencyCodes.add(Currency.getInstance(Locale.US).toString());
@@ -70,19 +95,8 @@ public final class CurrencyUtils {
         priorCurrencyCodes.add(Currency.getInstance(Locale.CHINA).toString());
         priorCurrencyCodes.add(Currency.getInstance(Locale.KOREA).toString());
 
-        for (Locale locale : Locale.getAvailableLocales()) {
-            try {
-                Currency currency = Currency.getInstance(locale);
-                if (currency != null && !currencyCodes.contains(currency.toString())) {
-                    currencyCodes.add(currency.toString());
-                }
-            } catch (Exception e) {
-                // No action
-            }
-        }
+        priorCurrencyCodes.addAll(new ArrayList<String>(new TreeSet<>(getCountryCurrencyMap().values())));
 
-        Collections.sort(currencyCodes);
-        priorCurrencyCodes.addAll(currencyCodes);
         return priorCurrencyCodes;
     }
 

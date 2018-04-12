@@ -125,11 +125,13 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
             case R.id.action_create_change_copyright:
                 if (creatingCopyright) {
                     getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment, CreateCopyrightFragment.newInstance())
+                        .add(R.id.fragment, CreateCopyrightFragment.newInstance())
+                        .addToBackStack(null)
                         .commit();
                 } else {
                     getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment, UpdateCopyrightFragment.newInstance(eventId))
+                        .add(R.id.fragment, UpdateCopyrightFragment.newInstance(eventId))
+                        .addToBackStack(null)
                         .commit();
                 }
                 break;

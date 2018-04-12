@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.event.about;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -17,6 +18,8 @@ public class AboutEventActivity extends AppCompatActivity implements HasSupportF
 
     public static final String EVENT_ID = "event_id";
 
+    private final FragmentManager fragmentManager = getSupportFragmentManager();
+
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
@@ -27,8 +30,8 @@ public class AboutEventActivity extends AppCompatActivity implements HasSupportF
 
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(EVENT_ID) && savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment, AboutEventFragment.newInstance(extras.getLong(EVENT_ID)))
+            fragmentManager.beginTransaction()
+                .add(R.id.fragment, AboutEventFragment.newInstance(extras.getLong(EVENT_ID)))
                 .commit();
         }
     }
@@ -37,7 +40,10 @@ public class AboutEventActivity extends AppCompatActivity implements HasSupportF
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                if (fragmentManager.getBackStackEntryCount() > 0)
+                    fragmentManager.popBackStack();
+                else
+                    finish();
                 return true;
             default:
         }
