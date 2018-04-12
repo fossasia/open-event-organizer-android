@@ -18,7 +18,6 @@
         android:id="@+id/faq_outer_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:backgroundTint="@{ faq.getSelected() ? @color/blue_200 : 0 }"
         android:elevation="@dimen/cardview_default_elevation"
         android:layout_margin="@dimen/spacing_small">
 
@@ -26,7 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:foreground="?selectableItemBackground"
+        app:backgroundTint="@{ faq.getSelected() ? @color/blue_200 : 0 }"
+        android:background="@android:color/white"
+        android:foreground="?attr/selectableItemBackground"
         android:gravity="center_vertical">
 
         <LinearLayout
