@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.organizer.detail;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -15,6 +16,8 @@ import dagger.android.support.HasSupportFragmentInjector;
 
 public class OrganizerDetailActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
+    private final FragmentManager fragmentManager = getSupportFragmentManager();
+
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
@@ -24,7 +27,7 @@ public class OrganizerDetailActivity extends AppCompatActivity implements HasSup
         setContentView(R.layout.organizer_detail_activity);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
+            fragmentManager.beginTransaction()
                 .replace(R.id.fragment, new OrganizerDetailFragment())
                 .commit();
         }
@@ -34,7 +37,10 @@ public class OrganizerDetailActivity extends AppCompatActivity implements HasSup
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                if (fragmentManager.getBackStackEntryCount() > 0)
+                    fragmentManager.popBackStack();
+                else
+                    finish();
                 return true;
             default:
         }

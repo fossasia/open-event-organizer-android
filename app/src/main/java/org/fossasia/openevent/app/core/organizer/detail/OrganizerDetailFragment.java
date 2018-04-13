@@ -82,6 +82,7 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
             case R.id.update_organizer:
                 getFragmentManager().beginTransaction()
                     .replace(R.id.fragment, UpdateOrganizerInfoFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
                 break;
             default:
