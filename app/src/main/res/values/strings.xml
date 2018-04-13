@@ -210,6 +210,9 @@
     <string name="year_validation_error">Please Enter a Valid Year</string>
     <string name="delete_confirmation_message">Are you sure you want to delete the Question?</string>
     <string name="delete">Delete</string>
+    <string name="create_track">Create Track</string>
+    <string name="name">Name</string>
+    <string name="color">Color</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
