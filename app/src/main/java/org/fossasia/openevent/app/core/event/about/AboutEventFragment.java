@@ -8,9 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -73,6 +70,9 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        handleVisibility();
+        addCopyrightListeners();
+
         return binding.getRoot();
     }
 
@@ -114,49 +114,35 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
         });
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_about_event, menu);
+    private void addCopyrightListeners() {
+        binding.detail.actionCreateCopyright.setOnClickListener(view -> {
+            getFragmentManager().beginTransaction()
+                .add(R.id.fragment, CreateCopyrightFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
+        });
+      
+        binding.detail.actionChangeCopyright.setOnClickListener(view -> {
+            getFragmentManager().beginTransaction()
+                .add(R.id.fragment, UpdateCopyrightFragment.newInstance(eventId))
+                .addToBackStack(null)
+                .commit();
+        });
+
+        binding.detail.actionDeleteCopyright.setOnClickListener(view -> {
+            getPresenter().deleteCopyright(getPresenter().getCopyright().getId());
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_create_change_copyright:
-                if (creatingCopyright) {
-                    getFragmentManager().beginTransaction()
-                        .add(R.id.fragment, CreateCopyrightFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit();
-                } else {
-                    getFragmentManager().beginTransaction()
-                        .add(R.id.fragment, UpdateCopyrightFragment.newInstance(eventId))
-                        .addToBackStack(null)
-                        .commit();
-                }
-                break;
-            case R.id.action_delete_copyright:
-                getPresenter().deleteCopyright(getPresenter().getCopyright().getId());
-                break;
-            default:
-                // No implementation
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
+    public void handleVisibility() {
         if (creatingCopyright) {
-            MenuItem menuItem = menu.findItem(R.id.action_create_change_copyright);
-            menuItem.setTitle(R.string.create_copyright);
-            menuItem = menu.findItem(R.id.action_delete_copyright);
-            menuItem.setVisible(false);
+            binding.detail.actionChangeCopyright.setVisibility(View.GONE);
+            binding.detail.actionDeleteCopyright.setVisibility(View.GONE);
+            binding.detail.actionCreateCopyright.setVisibility(View.VISIBLE);
         } else {
-            MenuItem menuItem = menu.findItem(R.id.action_create_change_copyright);
-            menuItem.setTitle(R.string.edit_copyright);
-            menuItem = menu.findItem(R.id.action_delete_copyright);
-            menuItem.setVisible(true);
+            binding.detail.actionChangeCopyright.setVisibility(View.VISIBLE);
+            binding.detail.actionDeleteCopyright.setVisibility(View.VISIBLE);
+            binding.detail.actionCreateCopyright.setVisibility(View.GONE);
         }
     }
 
@@ -188,7 +174,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     @Override
     public void changeCopyrightMenuItem(boolean creatingCopyright) {
         this.creatingCopyright = creatingCopyright;
-        getActivity().invalidateOptionsMenu();
+        handleVisibility();
     }
 
     @Override
