@@ -329,23 +329,55 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium"
-                android:visibility='@{ copyright == null ? View.GONE : View.VISIBLE }'>
+                android:layout_margin="@dimen/spacing_medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <LinearLayout
                         android:layout_height="wrap_content"
-                        android:background="#dedede"
-                        android:padding="@dimen/spacing_small"
-                        android:text="@string/copyright"
+                        android:layout_width="match_parent"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="?android:textColorSecondary" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:background="#dedede"
+                            android:padding="@dimen/spacing_small"
+                            android:text="@string/copyright"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            android:textColor="?android:textColorSecondary" />
 
+                        <ImageButton
+                            android:id="@+id/action_create_copyright"
+                            android:layout_width="@dimen/spacing_larger"
+                            android:layout_height="@dimen/spacing_larger"
+                            android:background="#dedede"
+                            android:tint="@color/menu_icon_color"
+                            android:contentDescription="@string/create_copyright"
+                            app:srcCompat="@drawable/ic_add" />
+
+                        <ImageButton
+                            android:id="@+id/action_change_copyright"
+                            android:layout_width="@dimen/spacing_larger"
+                            android:layout_height="@dimen/spacing_larger"
+                            android:background="#dedede"
+                            android:contentDescription="@string/edit_copyright"
+                            app:srcCompat="@drawable/ic_edit" />
+
+
+                        <ImageButton
+                            android:id="@+id/action_delete_copyright"
+                            android:layout_width="@dimen/spacing_larger"
+                            android:layout_height="@dimen/spacing_larger"
+                            android:background="#dedede"
+                            android:contentDescription="@string/delete_copyright"
+                            app:srcCompat="@drawable/ic_delete" />
+
+                    </LinearLayout>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -354,6 +386,7 @@
                         android:drawableStart="@{ @drawable/ic_person }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
+                        android:visibility='@{ copyright.holder == null ? View.GONE : View.VISIBLE }'
                         android:text='@{ copyright.holder }' />
 
                     <TextView
@@ -364,6 +397,7 @@
                         android:drawableStart="@{ @drawable/ic_events }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
+                        android:visibility='@{ copyright.year == null ? View.GONE : View.VISIBLE }'
                         android:text='@{ copyright.year }' />
 
                     <TextView
@@ -374,6 +408,7 @@
                         android:drawableStart="@{ @drawable/ic_copyright }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
+                        android:visibility='@{ copyright.licence == null ? View.GONE : View.VISIBLE }'
                         android:text='@{ copyright.licence }' />
 
                     <TextView
@@ -384,6 +419,7 @@
                         android:drawableStart="@{ @drawable/ic_email }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
+                        android:visibility='@{ copyright.licenceUrl == null ? View.GONE : View.VISIBLE }'
                         android:text='@{ copyright.licenceUrl }' />
 
 
