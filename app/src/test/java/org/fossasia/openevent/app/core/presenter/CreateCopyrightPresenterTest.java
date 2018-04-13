@@ -1,9 +1,11 @@
 package org.fossasia.openevent.app.core.presenter;
 
+import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.data.copyright.Copyright;
 import org.fossasia.openevent.app.data.copyright.CopyrightRepository;
 import org.fossasia.openevent.app.core.event.copyright.CreateCopyrightPresenter;
 import org.fossasia.openevent.app.core.event.copyright.CreateCopyrightView;
+import org.fossasia.openevent.app.data.event.Event;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -51,6 +53,10 @@ public class CreateCopyrightPresenterTest {
         RxAndroidPlugins.reset();
     }
 
+    private Event getEvent() {
+        return Event.builder().id(2L).build();
+    }
+
     @Test
     public void shouldShowErrorOnInvalidYear() {
         Copyright copyright = createCopyrightPresenter.getCopyright();
@@ -64,6 +70,8 @@ public class CreateCopyrightPresenterTest {
 
     @Test
     public void shouldAcceptCorrectYear() {
+        ContextManager.setSelectedEvent(getEvent());
+
         Copyright copyright = createCopyrightPresenter.getCopyright();
         copyright.setYear("2018");
 
@@ -77,10 +85,14 @@ public class CreateCopyrightPresenterTest {
         inOrder.verify(createCopyrightView).onSuccess(anyString());
         inOrder.verify(createCopyrightView).dismiss();
         inOrder.verify(createCopyrightView).showProgress(false);
+
+        ContextManager.setSelectedEvent(null);
     }
 
     @Test
     public void shouldShowErrorOnFailure() {
+        ContextManager.setSelectedEvent(getEvent());
+
         Copyright copyright = createCopyrightPresenter.getCopyright();
 
         when(copyrightRepository.createCopyright(copyright)).thenReturn(Observable.error(new Throwable("Error")));
@@ -92,10 +104,14 @@ public class CreateCopyrightPresenterTest {
         inOrder.verify(createCopyrightView).showProgress(true);
         inOrder.verify(createCopyrightView).showError("Error");
         inOrder.verify(createCopyrightView).showProgress(false);
+
+        ContextManager.setSelectedEvent(null);
     }
 
     @Test
     public void shouldShowSuccessOnCreated() {
+        ContextManager.setSelectedEvent(getEvent());
+
         Copyright copyright = createCopyrightPresenter.getCopyright();
         copyright.setYear(null);
 
@@ -109,5 +125,7 @@ public class CreateCopyrightPresenterTest {
         inOrder.verify(createCopyrightView).onSuccess(anyString());
         inOrder.verify(createCopyrightView).dismiss();
         inOrder.verify(createCopyrightView).showProgress(false);
+
+        ContextManager.setSelectedEvent(null);
     }
 }

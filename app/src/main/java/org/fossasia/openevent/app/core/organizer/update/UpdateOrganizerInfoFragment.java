@@ -20,7 +20,6 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailFragment;
 import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.databinding.UpdateOrganizerLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -129,9 +128,7 @@ public class UpdateOrganizerInfoFragment extends BaseFragment<UpdateOrganizerInf
 
     @Override
     public void dismiss() {
-        getFragmentManager().beginTransaction()
-            .replace(R.id.fragment, new OrganizerDetailFragment())
-            .commit();
+        getFragmentManager().popBackStack();
     }
 
     @Override
