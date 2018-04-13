@@ -5,6 +5,7 @@ import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.copyright.Copyright;
 import org.fossasia.openevent.app.data.copyright.CopyrightRepository;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.utils.StringUtils;
 
 import javax.inject.Inject;
@@ -32,11 +33,7 @@ public class CreateCopyrightPresenter extends AbstractBasePresenter<CreateCopyri
         return copyright;
     }
 
-    public Long getParentEventId() {
-        return ContextManager.getSelectedEvent().id;
-    }
-
-    protected void nullifyEmptyFields(Copyright copyright) {
+    private void nullifyEmptyFields(Copyright copyright) {
         copyright.setHolderUrl(StringUtils.emptyToNull(copyright.getHolderUrl()));
         copyright.setLicence(StringUtils.emptyToNull(copyright.getLicence()));
         copyright.setLicenceUrl(StringUtils.emptyToNull(copyright.getLicenceUrl()));
@@ -44,7 +41,7 @@ public class CreateCopyrightPresenter extends AbstractBasePresenter<CreateCopyri
         copyright.setLogoUrl(StringUtils.emptyToNull(copyright.getLogoUrl()));
     }
 
-    protected boolean verifyYear(Copyright copyright) {
+    private boolean verifyYear(Copyright copyright) {
        if (copyright.getYear() == null)
             return true;
        else if (copyright.getYear().length() == YEAR_LENGTH)
@@ -61,7 +58,10 @@ public class CreateCopyrightPresenter extends AbstractBasePresenter<CreateCopyri
         if (!verifyYear(copyright))
             return;
 
-        copyright.setEvent(ContextManager.getSelectedEvent());
+        long eventId = ContextManager.getSelectedEvent().getId();
+        Event event = new Event();
+        event.setId(eventId);
+        copyright.setEvent(event);
 
         copyrightRepository.createCopyright(copyright)
             .compose(dispose(getDisposable()))

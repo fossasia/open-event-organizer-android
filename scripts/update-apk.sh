@@ -24,7 +24,7 @@ if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     echo "Push to master branch detected, signing the app..."
     cp app-release-unsigned.apk app-release-unaligned.apk
 	jarsigner -verbose -tsa http://timestamp.comodoca.com/rfc3161 -sigalg SHA1withRSA -digestalg SHA1 -keystore ../scripts/key.jks -storepass $STORE_PASS -keypass $KEY_PASS app-release-unaligned.apk $ALIAS
-	${ANDROID_HOME}/build-tools/25.0.2/zipalign -v -p 4 app-release-unaligned.apk app-release.apk
+	${ANDROID_HOME}/build-tools/27.0.3/zipalign -v -p 4 app-release-unaligned.apk app-release.apk
 fi
 
 for file in app*; do
