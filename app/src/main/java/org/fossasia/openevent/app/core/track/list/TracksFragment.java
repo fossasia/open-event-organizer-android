@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.core.track.create.CreateTrackFragment;
 import org.fossasia.openevent.app.data.tracks.Track;
 import org.fossasia.openevent.app.databinding.TracksFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -62,7 +64,8 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
         binding = DataBindingUtil.inflate(inflater, R.layout.tracks_fragment, container, false);
 
         binding.createTrackFab.setOnClickListener(view -> {
-            // Create Track
+            BottomSheetDialogFragment bottomSheetDialogFragment = CreateTrackFragment.newInstance();
+            bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
         });
 
         return binding.getRoot();
