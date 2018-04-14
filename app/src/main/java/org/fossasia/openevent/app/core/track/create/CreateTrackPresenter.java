@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.track.create;
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.tracks.Track;
 import org.fossasia.openevent.app.data.tracks.TrackRepository;
 import org.fossasia.openevent.app.utils.StringUtils;
@@ -38,7 +39,10 @@ public class CreateTrackPresenter extends AbstractBasePresenter<CreateTrackView>
     public void createTrack() {
         nullifyEmptyFields(track);
 
-        track.setEvent(ContextManager.getSelectedEvent());
+        long eventId = ContextManager.getSelectedEvent().getId();
+        Event event = new Event();
+        event.setId(eventId);
+        track.setEvent(event);
 
         trackRepository
             .createTrack(track)

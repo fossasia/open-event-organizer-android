@@ -1,10 +1,8 @@
 package org.fossasia.openevent.app.core.track.create;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +33,7 @@ public class CreateTrackFragment extends BaseBottomSheetFragment<CreateTrackPres
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
-        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        binding =  DataBindingUtil.inflate(localInflater, R.layout.track_create_layout, container, false);
+        binding =  DataBindingUtil.inflate(inflater, R.layout.track_create_layout, container, false);
         validator = new Validator(binding.form);
 
         binding.submit.setOnClickListener(view -> {
