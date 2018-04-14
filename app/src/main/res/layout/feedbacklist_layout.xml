@@ -55,12 +55,15 @@
                 tools:rating="4" />
 
             <TextView
+                android:id="@+id/comment_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/spacing_small"
                 android:layout_marginStart="@dimen/spacing_small"
                 android:text='@{ feedback.comment }'
                 android:textSize="@dimen/text_size_small"
+                android:ellipsize="end"
+                android:maxLines="2"
                 tools:text="Awesome Event" />
 
         </LinearLayout>
