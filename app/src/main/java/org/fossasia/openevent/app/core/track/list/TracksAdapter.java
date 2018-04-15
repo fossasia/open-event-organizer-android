@@ -14,17 +14,23 @@ import java.util.List;
 
 public class TracksAdapter extends RecyclerView.Adapter<TracksViewHolder> {
     private final List<Track> tracks;
+    private final TracksPresenter tracksPresenter;
 
     public TracksAdapter(TracksPresenter tracksPresenter) {
+        this.tracksPresenter = tracksPresenter;
         this.tracks = tracksPresenter.getTracks();
     }
 
     @NonNull
     @Override
     public TracksViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        return new TracksViewHolder(
+        TracksViewHolder tracksViewHolder = new TracksViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.track_item, viewGroup, false));
+
+        tracksViewHolder.setClickAction(tracksPresenter::openSessions);
+
+        return tracksViewHolder;
     }
 
     @Override

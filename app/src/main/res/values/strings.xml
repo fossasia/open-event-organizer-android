@@ -213,6 +213,7 @@
     <string name="create_track">Create Track</string>
     <string name="name">Name</string>
     <string name="color">Color</string>
+    <string name="session">Session</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

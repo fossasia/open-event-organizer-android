@@ -1,11 +1,13 @@
 package org.fossasia.openevent.app.data.tracks;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
+import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -13,6 +15,9 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.session.Session;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +31,7 @@ import lombok.ToString;
 @Type("track")
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "event")
+@ToString(exclude = {"event", "sessions"})
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @EqualsAndHashCode()
@@ -44,4 +49,9 @@ public class Track {
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;
+
+    @ColumnIgnore
+    @Relationship("session")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public List<Session> sessions;
 }

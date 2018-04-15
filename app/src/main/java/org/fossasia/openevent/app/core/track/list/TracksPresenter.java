@@ -94,4 +94,8 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
             return Color.BLACK;
         }
     }
+
+    public void openSessions(Long trackId) {
+        getView().openSessionsFragment(trackId);
+    }
 }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 
 import org.fossasia.openevent.app.OrgaProvider;
+import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.attendee.Attendee;
@@ -39,6 +40,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import timber.log.Timber;
 
 @Module(includes = ApiModule.class)
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class NetworkModule {
 
     @Provides
@@ -55,7 +57,7 @@ public class NetworkModule {
     @Provides
     Class[] providesMappedClasses() {
         return new Class[]{Event.class, Attendee.class, Ticket.class, User.class,
-            EventStatistics.class, Faq.class, Copyright.class, Feedback.class, Track.class};
+            EventStatistics.class, Faq.class, Copyright.class, Feedback.class, Track.class, Session.class};
     }
 
     @Provides
