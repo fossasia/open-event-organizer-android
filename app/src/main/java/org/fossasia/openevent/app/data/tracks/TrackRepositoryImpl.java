@@ -1,11 +1,14 @@
 package org.fossasia.openevent.app.data.tracks;
 
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Repository;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class TrackRepositoryImpl implements TrackRepository {
     private final TrackApi trackApi;
@@ -33,5 +36,23 @@ public class TrackRepositoryImpl implements TrackRepository {
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
+    }
+
+    @Override
+    public Observable<Track> createTrack(Track track) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return trackApi
+            .postTrack(track)
+            .doOnNext(created -> {
+                created.setEvent(track.getEvent());
+                repository
+                    .save(Track.class, created)
+                    .subscribe();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 }
