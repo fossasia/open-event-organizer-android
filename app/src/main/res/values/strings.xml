@@ -193,6 +193,7 @@
     <string name="question_initial">Q:</string>
     <string name="create_copyright">Create Copyright</string>
     <string name="edit_copyright">Edit Copyright</string>
+    <string name="edit_track">Edit Track</string>
     <string name="holder_name">Holder Name</string>
     <string name="holder_url">Holder URL</string>
     <string name="license_text">License Text</string>
