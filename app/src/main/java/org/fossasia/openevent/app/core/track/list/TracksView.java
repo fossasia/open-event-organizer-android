@@ -7,4 +7,6 @@ import org.fossasia.openevent.app.common.mvp.view.Refreshable;
 import org.fossasia.openevent.app.data.tracks.Track;
 
 public interface TracksView extends Progressive, Erroneous, Refreshable, Emptiable<Track> {
+
+    void openUpdateTrackFragment(long trackId);
 }
