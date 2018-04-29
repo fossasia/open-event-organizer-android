@@ -1,6 +1,8 @@
 package org.fossasia.openevent.app.data.tracks;
 
 
+import android.support.annotation.NonNull;
+
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Repository;
 
@@ -52,6 +54,44 @@ public class TrackRepositoryImpl implements TrackRepository {
                     .save(Track.class, created)
                     .subscribe();
             })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Observable<Track> getTrack(long trackId, boolean reload) {
+        Observable<Track> diskObservable = Observable.defer(() ->
+            repository
+                .getItems(Track.class, Track_Table.id.eq(trackId)).take(1)
+        );
+
+        Observable<Track> networkObservable = Observable.defer(() ->
+            trackApi.getTrack(trackId)
+                .doOnNext(track -> repository
+                    .save(Track.class, track)
+                    .subscribe()));
+
+        return repository
+            .observableOf(Track.class)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Track> updateTrack(Track track) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return trackApi
+            .updateTrack(track.getId(), track)
+            .doOnNext(updatedTrack -> repository
+                .update(Track.class, updatedTrack)
+                .subscribe())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }

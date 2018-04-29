@@ -70,7 +70,7 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
         trackChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
             .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT))
+            .filter(action -> (action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.UPDATE)))
             .subscribeOn(Schedulers.io())
             .subscribe(trackModelChange -> loadTracks(false), Logger::logError);
     }
@@ -93,5 +93,9 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
         } catch (IllegalArgumentException illegalArgumentException) {
             return Color.BLACK;
         }
+    }
+
+    public void updateTrack(Track ticket) {
+        getView().openUpdateTrackFragment(ticket.getId());
     }
 }
