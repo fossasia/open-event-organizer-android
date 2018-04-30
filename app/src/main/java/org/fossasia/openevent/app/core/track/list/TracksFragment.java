@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.core.session.list.SessionsFragment;
 import org.fossasia.openevent.app.core.track.create.CreateTrackFragment;
 import org.fossasia.openevent.app.core.track.update.UpdateTrackFragment;
 import org.fossasia.openevent.app.data.tracks.Track;
@@ -112,6 +113,14 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
             refreshLayout.setRefreshing(false);
             getPresenter().loadTracks(true);
         });
+    }
+
+    public void openSessionsFragment(long trackId) {
+        getFragmentManager().popBackStack();
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, SessionsFragment.newInstance(trackId))
+            .addToBackStack(null)
+            .commit();
     }
 
     @Override
