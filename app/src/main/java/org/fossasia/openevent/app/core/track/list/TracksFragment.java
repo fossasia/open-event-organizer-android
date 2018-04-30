@@ -19,6 +19,7 @@ import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.core.session.list.SessionsFragment;
 import org.fossasia.openevent.app.core.track.create.CreateTrackFragment;
+import org.fossasia.openevent.app.core.track.update.UpdateTrackFragment;
 import org.fossasia.openevent.app.data.tracks.Track;
 import org.fossasia.openevent.app.databinding.TracksFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -151,5 +152,11 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     @Override
     protected Lazy<TracksPresenter> getPresenterProvider() {
         return tracksPresenter;
+    }
+
+    @Override
+    public void openUpdateTrackFragment(long trackId) {
+        BottomSheetDialogFragment bottomSheetDialogFragment = UpdateTrackFragment.newInstance(trackId);
+        bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 }

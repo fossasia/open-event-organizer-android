@@ -29,6 +29,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksViewHolder> {
                 R.layout.track_item, viewGroup, false));
 
         tracksViewHolder.setClickAction(tracksPresenter::openSessions);
+        tracksViewHolder.setEditAction(tracksPresenter::updateTrack);
 
         return tracksViewHolder;
     }

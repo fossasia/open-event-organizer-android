@@ -8,8 +8,9 @@ import org.fossasia.openevent.app.databinding.TrackItemBinding;
 
 public class TracksViewHolder extends RecyclerView.ViewHolder {
     private final TrackItemBinding binding;
-    private Pipe<Long> clickAction;
     private long trackId;
+    private Pipe<Long> clickAction;
+    private Pipe<Track> editAction;
 
     public TracksViewHolder(TrackItemBinding binding) {
         super(binding.getRoot());
@@ -25,9 +26,16 @@ public class TracksViewHolder extends RecyclerView.ViewHolder {
         this.clickAction = clickAction;
     }
 
+    public void setEditAction(Pipe<Track> editAction) {
+        this.editAction = editAction;
+    }
+
     public void bind(Track track) {
         trackId = track.getId();
         binding.setTrack(track);
+        binding.actionChangeTrack.setOnClickListener(view -> {
+            if (editAction != null) editAction.push(track);
+        });
         binding.executePendingBindings();
     }
 }
