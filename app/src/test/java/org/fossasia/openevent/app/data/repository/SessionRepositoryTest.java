@@ -5,10 +5,10 @@ import com.raizlabs.android.dbflow.sql.language.SQLOperator;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.AbstractObservable;
 import org.fossasia.openevent.app.data.Repository;
-import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.data.session.SessionApi;
 import org.fossasia.openevent.app.data.session.SessionRepositoryImpl;
+import org.fossasia.openevent.app.data.tracks.Track;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,12 +32,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class SessionRepositoryTest {
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private SessionRepositoryImpl sessionRepository;
     private static final Session SESSION = new Session();
-    private static final Event EVENT = new Event();
+    private static final Track TRACK = new Track();
     private static final long ID = 10L;
 
     @Mock
@@ -45,7 +46,7 @@ public class SessionRepositoryTest {
     @Mock private Repository repository;
 
     static {
-        SESSION.setEvent(EVENT);
+        SESSION.setTrack(TRACK);
     }
 
     @Before
