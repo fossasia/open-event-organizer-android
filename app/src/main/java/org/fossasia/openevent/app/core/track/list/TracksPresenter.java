@@ -21,7 +21,9 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
@@ -99,7 +101,22 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
         getView().openSessionsFragment(trackId);
     }
 
-    public void updateTrack(Track ticket) {
-        getView().openUpdateTrackFragment(ticket.getId());
+    public void updateTrack(Long trackId) {
+        getView().openUpdateTrackFragment(trackId);
+    }
+
+    public void showDeleteAlertDialog(Long trackId) {
+        getView().showAlertDialog(trackId);
+    }
+
+    public void deleteTrack(Long trackId) {
+        trackRepository
+            .deleteTrack(trackId)
+            .compose(disposeCompletable(getDisposable()))
+            .compose(progressiveErroneousCompletable(getView()))
+            .subscribe(() -> {
+                getView().showTrackDeleted("Track Deleted");
+                loadTracks(true);
+            }, Logger::logError);
     }
 }

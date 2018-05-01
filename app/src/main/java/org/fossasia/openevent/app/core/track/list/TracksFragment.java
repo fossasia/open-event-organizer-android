@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +34,7 @@ import dagger.Lazy;
 public class TracksFragment extends BaseFragment<TracksPresenter> implements TracksView {
     private Context context;
     private long eventId;
+    private AlertDialog deleteDialog;
 
     @Inject
     Lazy<TracksPresenter> tracksPresenter;
@@ -124,6 +126,24 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     }
 
     @Override
+    public void showAlertDialog(long trackId) {
+        if (deleteDialog == null)
+            deleteDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.delete)
+                .setMessage(String.format(getString(R.string.delete_confirmation_message),
+                    getString(R.string.track)))
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    getPresenter().deleteTrack(trackId);
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create();
+
+        deleteDialog.show();
+    }
+
+    @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
@@ -158,5 +178,10 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     public void openUpdateTrackFragment(long trackId) {
         BottomSheetDialogFragment bottomSheetDialogFragment = UpdateTrackFragment.newInstance(trackId);
         bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+    }
+
+    @Override
+    public void showTrackDeleted(String message) {
+        ViewUtils.showSnackbar(binding.getRoot(), message);
     }
 }
