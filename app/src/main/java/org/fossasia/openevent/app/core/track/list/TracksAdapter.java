@@ -30,6 +30,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksViewHolder> {
 
         tracksViewHolder.setClickAction(tracksPresenter::openSessions);
         tracksViewHolder.setEditAction(tracksPresenter::updateTrack);
+        tracksViewHolder.setDeleteAction(tracksPresenter::showDeleteAlertDialog);
 
         return tracksViewHolder;
     }

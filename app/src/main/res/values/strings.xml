@@ -209,12 +209,13 @@
     <string name="welcome">Hi, Organiser!</string>
     <string name="delete_copyright">Delete Copyright</string>
     <string name="year_validation_error">Please Enter a Valid Year</string>
-    <string name="delete_confirmation_message">Are you sure you want to delete the Question?</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete the %s?</string>
     <string name="delete">Delete</string>
     <string name="create_track">Create Track</string>
     <string name="name">Name</string>
     <string name="color">Color</string>
     <string name="session">Session</string>
+    <string name="delete_track">Delete Track</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
