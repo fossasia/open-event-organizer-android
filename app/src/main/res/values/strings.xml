@@ -209,8 +209,7 @@
     <string name="welcome">Hi, Organiser!</string>
     <string name="delete_copyright">Delete Copyright</string>
     <string name="year_validation_error">Please Enter a Valid Year</string>
-    <string name="delete_confirmation_message">Are you sure you want to delete the Question?</string>
-    <string name="delete_confirmation_message_track">Are you sure you want to delete the Track?</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete the %s?</string>
     <string name="delete">Delete</string>
     <string name="create_track">Create Track</string>
     <string name="name">Name</string>

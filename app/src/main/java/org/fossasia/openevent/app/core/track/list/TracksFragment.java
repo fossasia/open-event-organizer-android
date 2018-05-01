@@ -130,7 +130,8 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
         if (deleteDialog == null)
             deleteDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.delete)
-                .setMessage(R.string.delete_confirmation_message_track)
+                .setMessage(String.format(getString(R.string.delete_confirmation_message),
+                    getString(R.string.track)))
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                     getPresenter().deleteTrack(trackId);
                 })
