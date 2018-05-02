@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.data.tracks;
 
 import android.support.annotation.NonNull;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public interface TrackRepository {
@@ -14,4 +15,7 @@ public interface TrackRepository {
 
     @NonNull
     Observable<Track> updateTrack(Track track);
+
+    @NonNull
+    Completable deleteTrack(long id);
 }

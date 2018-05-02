@@ -8,6 +8,7 @@ import org.fossasia.openevent.app.data.Repository;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -91,6 +92,21 @@ public class TrackRepositoryImpl implements TrackRepository {
             .updateTrack(track.getId(), track)
             .doOnNext(updatedTrack -> repository
                 .update(Track.class, updatedTrack)
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Completable deleteTrack(long id) {
+        if (!repository.isConnected()) {
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return trackApi.deleteTrack(id)
+            .doOnComplete(() -> repository
+                .delete(Track.class, Track_Table.id.eq(id))
                 .subscribe())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());

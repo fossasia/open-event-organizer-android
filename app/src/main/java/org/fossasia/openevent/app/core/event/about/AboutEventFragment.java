@@ -121,7 +121,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
                 .addToBackStack(null)
                 .commit();
         });
-      
+
         binding.detail.actionChangeCopyright.setOnClickListener(view -> {
             getFragmentManager().beginTransaction()
                 .add(R.id.fragment, UpdateCopyrightFragment.newInstance(eventId))

@@ -51,6 +51,15 @@
                     android:tint="@{TracksPresenter.getTrackFontColor(track)}"
                     app:srcCompat="@drawable/ic_edit" />
 
+                <ImageButton
+                    android:id="@+id/action_delete_track"
+                    android:layout_width="@dimen/spacing_larger"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/delete_track"
+                    android:background="@{ TracksPresenter.getTrackColor(track) }"
+                    android:tint="@{TracksPresenter.getTrackFontColor(track)}"
+                    app:srcCompat="@drawable/ic_delete" />
+
             </LinearLayout>
 
             <TextView

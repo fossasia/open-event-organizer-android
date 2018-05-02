@@ -156,7 +156,8 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
         if (deleteDialog == null)
             deleteDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.delete)
-                .setMessage(R.string.delete_confirmation_message)
+                .setMessage(String.format(getString(R.string.delete_confirmation_message),
+                    getString(R.string.question)))
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                     getPresenter().deleteSelectedFaq();
                     resetToolbar();

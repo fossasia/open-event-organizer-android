@@ -8,5 +8,11 @@ import org.fossasia.openevent.app.data.tracks.Track;
 
 public interface TracksView extends Progressive, Erroneous, Refreshable, Emptiable<Track> {
 
+    void openSessionsFragment(long trackId);
+
     void openUpdateTrackFragment(long trackId);
+
+    void showAlertDialog(long trackId);
+
+    void showTrackDeleted(String message);
 }

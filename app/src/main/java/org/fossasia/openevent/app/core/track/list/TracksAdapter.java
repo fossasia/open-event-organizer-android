@@ -17,8 +17,8 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksViewHolder> {
     private final TracksPresenter tracksPresenter;
 
     public TracksAdapter(TracksPresenter tracksPresenter) {
-        this.tracks = tracksPresenter.getTracks();
         this.tracksPresenter = tracksPresenter;
+        this.tracks = tracksPresenter.getTracks();
     }
 
     @NonNull
@@ -26,8 +26,11 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksViewHolder> {
     public TracksViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         TracksViewHolder tracksViewHolder = new TracksViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-            R.layout.track_item, viewGroup, false));
-        tracksViewHolder.setClickAction(tracksPresenter::updateTrack);
+                R.layout.track_item, viewGroup, false));
+
+        tracksViewHolder.setClickAction(tracksPresenter::openSessions);
+        tracksViewHolder.setEditAction(tracksPresenter::updateTrack);
+        tracksViewHolder.setDeleteAction(tracksPresenter::showDeleteAlertDialog);
 
         return tracksViewHolder;
     }

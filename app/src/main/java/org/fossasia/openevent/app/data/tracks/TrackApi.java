@@ -2,8 +2,10 @@ package org.fossasia.openevent.app.data.tracks;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -22,4 +24,7 @@ public interface TrackApi {
 
     @PATCH("tracks/{track_id}")
     Observable<Track> updateTrack(@Path("track_id") long id, @Body Track track);
+
+    @DELETE("tracks/{track_id}")
+    Completable deleteTrack(@Path("track_id") long id);
 }
