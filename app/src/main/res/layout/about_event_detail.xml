@@ -354,7 +354,7 @@
                         <ImageButton
                             android:id="@+id/action_create_copyright"
                             android:layout_width="@dimen/spacing_larger"
-                            android:layout_height="@dimen/spacing_larger"
+                            android:layout_height="match_parent"
                             android:background="#dedede"
                             android:tint="@color/menu_icon_color"
                             android:contentDescription="@string/create_copyright"
@@ -363,7 +363,7 @@
                         <ImageButton
                             android:id="@+id/action_change_copyright"
                             android:layout_width="@dimen/spacing_larger"
-                            android:layout_height="@dimen/spacing_larger"
+                            android:layout_height="match_parent"
                             android:background="#dedede"
                             android:contentDescription="@string/edit_copyright"
                             app:srcCompat="@drawable/ic_edit" />
@@ -372,7 +372,7 @@
                         <ImageButton
                             android:id="@+id/action_delete_copyright"
                             android:layout_width="@dimen/spacing_larger"
-                            android:layout_height="@dimen/spacing_larger"
+                            android:layout_height="match_parent"
                             android:background="#dedede"
                             android:contentDescription="@string/delete_copyright"
                             app:srcCompat="@drawable/ic_delete" />
