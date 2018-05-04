@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     private long eventId;
     private static final String EVENT_ID = "id";
     private boolean creatingCopyright = true;
+    private AlertDialog deleteDialog;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
@@ -130,7 +132,20 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
         });
 
         binding.detail.actionDeleteCopyright.setOnClickListener(view -> {
-            getPresenter().deleteCopyright(getPresenter().getCopyright().getId());
+            if (deleteDialog == null)
+                deleteDialog = new AlertDialog.Builder(getContext())
+                    .setTitle(R.string.delete)
+                    .setMessage(String.format(getString(R.string.delete_confirmation_message),
+                        getString(R.string.copyright)))
+                    .setPositiveButton(R.string.ok, (dialog, which) -> {
+                        getPresenter().deleteCopyright(getPresenter().getCopyright().getId());
+                    })
+                    .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .create();
+
+            deleteDialog.show();
         });
     }
 
