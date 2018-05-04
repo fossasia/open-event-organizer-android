@@ -19,6 +19,7 @@
             android:name=".OrgaProvider"
             android:authorities="${applicationId}.org.fossasia.openevent.app"
             android:exported="false"/>
+        <!-- TODO: Current approach for resolving Toolbar issues is just a workaround -->
         <activity
             android:name=".core.auth.AuthActivity"
             android:theme="@style/AppTheme.Main.Light"
