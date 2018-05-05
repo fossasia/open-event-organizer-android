@@ -120,7 +120,7 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     public void openSessionsFragment(long trackId) {
         getFragmentManager().popBackStack();
         getFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, SessionsFragment.newInstance(trackId))
+            .replace(R.id.fragment_container, SessionsFragment.newInstance(trackId, eventId))
             .addToBackStack(null)
             .commit();
     }
