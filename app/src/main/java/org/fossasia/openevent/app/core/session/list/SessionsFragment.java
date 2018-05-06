@@ -44,8 +44,6 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     private SessionsFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    private boolean initialized;
-
     public static SessionsFragment newInstance(long trackId, long eventId) {
         SessionsFragment fragment = new SessionsFragment();
         Bundle args = new Bundle();
@@ -84,14 +82,9 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         getPresenter().start();
 
         binding.createSessionFab.setOnClickListener(view -> openCreateSessionFragment());
-
-        initialized = true;
     }
 
     public void openCreateSessionFragment() {
-        //BackStack is popped so that on back press user lands on Dashboard
-        
-        getFragmentManager().popBackStack();
         getFragmentManager().beginTransaction()
             .replace(R.id.fragment_container, CreateSessionFragment.newInstance(trackId, eventId))
             .addToBackStack(null)
@@ -110,14 +103,12 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     }
 
     private void setupRecyclerView() {
-        if (!initialized) {
-            sessionsAdapter = new SessionsAdapter(getPresenter());
+        sessionsAdapter = new SessionsAdapter(getPresenter());
 
-            RecyclerView recyclerView = binding.sessionsRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(sessionsAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-        }
+        RecyclerView recyclerView = binding.sessionsRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(sessionsAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void setupRefreshListener() {
