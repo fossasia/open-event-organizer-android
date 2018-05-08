@@ -36,6 +36,12 @@
             android:id="@+id/nav_track"
             android:icon="@drawable/ic_event_note"
             android:title="@string/tracks"/>
+
+        <item
+            android:id="@+id/nav_sponsor"
+            android:icon="@drawable/ic_sponsors"
+            android:title="@string/sponsors"/>
+
     </group>
 
     <group android:id="@+id/eventsMenu" android:checkableBehavior="single">
