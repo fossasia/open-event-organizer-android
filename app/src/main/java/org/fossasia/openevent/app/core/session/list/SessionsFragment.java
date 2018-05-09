@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.core.session.create.CreateSessionFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.databinding.SessionsFragmentBinding;
@@ -28,8 +29,10 @@ import dagger.Lazy;
 
 public class SessionsFragment extends BaseFragment<SessionsPresenter> implements SessionsView {
 
+    public static final String TRACK_KEY = "track";
     private Context context;
     private long trackId;
+    private long eventId;
 
     @Inject
     ContextUtils utilModel;
@@ -41,12 +44,11 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     private SessionsFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    private boolean initialized;
-
-    public static SessionsFragment newInstance(long trackId) {
+    public static SessionsFragment newInstance(long trackId, long eventId) {
         SessionsFragment fragment = new SessionsFragment();
         Bundle args = new Bundle();
-        args.putLong(MainActivity.EVENT_KEY, trackId);
+        args.putLong(TRACK_KEY, trackId);
+        args.putLong(MainActivity.EVENT_KEY, eventId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,8 +59,10 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
 
         context = getContext();
 
-        if (getArguments() != null)
-            trackId = getArguments().getLong(MainActivity.EVENT_KEY);
+        if (getArguments() != null) {
+            trackId = getArguments().getLong(TRACK_KEY);
+            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+        }
     }
 
     @Nullable
@@ -77,7 +81,14 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         getPresenter().attach(trackId, this);
         getPresenter().start();
 
-        initialized = true;
+        binding.createSessionFab.setOnClickListener(view -> openCreateSessionFragment());
+    }
+
+    public void openCreateSessionFragment() {
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, CreateSessionFragment.newInstance(trackId, eventId))
+            .addToBackStack(null)
+            .commit();
     }
 
     @Override
@@ -92,14 +103,12 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     }
 
     private void setupRecyclerView() {
-        if (!initialized) {
-            sessionsAdapter = new SessionsAdapter(getPresenter());
+        sessionsAdapter = new SessionsAdapter(getPresenter());
 
-            RecyclerView recyclerView = binding.sessionsRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(sessionsAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-        }
+        RecyclerView recyclerView = binding.sessionsRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(sessionsAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void setupRefreshListener() {

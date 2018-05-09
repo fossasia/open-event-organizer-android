@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="org.fossasia.openevent.app.ui.binding.BindingAdapters" />
+
+        <variable
+            name="session"
+            type="org.fossasia.openevent.app.data.session.Session" />
+    </data>
+
+    <LinearLayout
+        style="@style/ItemPadding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/const_normal">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            android:padding="@dimen/spacing_extra_small"
+            android:text="@string/create_session" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/create_session"
+                android:padding="@dimen/spacing_extra_small"
+                app:srcCompat="@drawable/ic_ticket" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:padding="@dimen/spacing_extra_small">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title"
+                    android:text="@={ session.title }"
+                    app:validateEmpty="@{true}" />
+
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:divider="?android:dividerHorizontal"
+            android:orientation="vertical"
+            android:showDividers="beginning">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_extra_small"
+                android:text="@string/date_and_time"
+                android:textSize="@dimen/text_size_normal" />
+
+            <include
+                layout="@layout/time_picker"
+                bind:date="@{ session.startsAt }"
+                bind:label="@{ @string/starts_at }" />
+
+            <include
+                layout="@layout/time_picker"
+                bind:date="@{ session.endsAt }"
+                bind:label="@{ @string/ends_at }" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:divider="?android:dividerHorizontal"
+            android:orientation="vertical"
+            android:showDividers="beginning">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_extra_small"
+                android:text="@string/description"
+                android:textSize="@dimen/text_size_normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/subtitle"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_info" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/subtitle"
+                        android:inputType="text"
+                        android:text="@={ session.subtitle }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/level"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_info" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/level"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/level"
+                        android:inputType="text"
+                        android:text="@={ BindingAdapters.integerToStr(session.level) }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/comments"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_info" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/comments"
+                        android:inputType="text"
+                        android:text="@={ session.comments }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/state"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_info" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/state"
+                        android:inputType="text"
+                        android:text="@={ session.state }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:divider="?android:dividerHorizontal"
+            android:orientation="vertical"
+            android:showDividers="beginning">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_extra_small"
+                android:text="@string/session_abstract"
+                android:textSize="@dimen/text_size_normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/language"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_info" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/language"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/language"
+                        android:inputType="text"
+                        android:text="@={ session.language }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/short_abstract"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_info" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/short_abstract"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/short_abstract"
+                        android:inputType="text"
+                        android:text="@={ session.shortAbstract }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/long_abstract"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_info" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/long_abstract"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/long_abstract"
+                        android:inputType="text"
+                        android:text="@={ session.longAbstract }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:divider="?android:dividerHorizontal"
+            android:orientation="vertical"
+            android:showDividers="beginning">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_extra_small"
+                android:text="@string/links"
+                android:textSize="@dimen/text_size_normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/slides_url"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_photo" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/slides_url_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/spacing_extra_small"
+                    android:paddingLeft="@dimen/spacing_extra_small"
+                    android:paddingRight="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/slides_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/slides_url"
+                        android:inputType="text"
+                        android:text="@={ session.slidesUrl }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/audio_url"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_photo" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/audio_url_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/spacing_extra_small"
+                    android:paddingLeft="@dimen/spacing_extra_small"
+                    android:paddingRight="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/audio_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/audio_url"
+                        android:inputType="text"
+                        android:text="@={ session.audioUrl }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/video_url"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_photo" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/video_url_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/video_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/video_url"
+                        android:inputType="text"
+                        android:text="@={ session.videoUrl }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/signup_url"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_photo" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/signup_url_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/spacing_extra_small"
+                    android:paddingLeft="@dimen/spacing_extra_small"
+                    android:paddingRight="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/signup_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/signup_url"
+                        android:inputType="text"
+                        android:text="@={ session.signupUrl }" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>
