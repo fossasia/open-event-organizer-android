@@ -78,6 +78,8 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else if (fragmentNavigator.isDashboardActive()) {
             backPressHandler.onBackPressed(this, super::onBackPressed);
+        } else if (getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.create_event_fragment)) != null) {
+            getSupportFragmentManager().popBackStack();
         } else {
             fragmentNavigator.back();
             binding.navView.getMenu().findItem(R.id.nav_dashboard).setChecked(true);

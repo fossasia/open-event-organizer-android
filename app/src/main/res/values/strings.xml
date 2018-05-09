@@ -216,6 +216,7 @@
     <string name="color">Color</string>
     <string name="session">Session</string>
     <string name="delete_track">Delete Track</string>
+    <string name="create_event_fragment">CreateEventFragment</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
