@@ -97,8 +97,8 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
         }
     }
 
-    public void openSessions(Long trackId) {
-        getView().openSessionsFragment(trackId);
+    public void openSessions(Track track) {
+        getView().openSessionsFragment(track.getId());
     }
 
     public void updateTrack(Long trackId) {

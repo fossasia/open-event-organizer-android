@@ -43,8 +43,6 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     private TracksFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    private boolean initialized;
-
     public static TracksFragment newInstance(long eventId) {
         TracksFragment fragment = new TracksFragment();
         Bundle args = new Bundle();
@@ -82,8 +80,6 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
         setupRefreshListener();
         getPresenter().attach(eventId, this);
         getPresenter().start();
-
-        initialized = true;
     }
 
     @Override
@@ -98,14 +94,12 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     }
 
     private void setupRecyclerView() {
-        if (!initialized) {
-            tracksAdapter = new TracksAdapter(getPresenter());
+        tracksAdapter = new TracksAdapter(getPresenter());
 
-            RecyclerView recyclerView = binding.tracksRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(tracksAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-        }
+        RecyclerView recyclerView = binding.tracksRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(tracksAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void setupRefreshListener() {
@@ -118,9 +112,8 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     }
 
     public void openSessionsFragment(long trackId) {
-        getFragmentManager().popBackStack();
         getFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, SessionsFragment.newInstance(trackId))
+            .replace(R.id.fragment_container, SessionsFragment.newInstance(trackId, eventId))
             .addToBackStack(null)
             .commit();
     }
