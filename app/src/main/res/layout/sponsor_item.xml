@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_small"
-                    android:text='@{ "Type: " + sponsor.getSponsorType() }'
+                    android:text='@{ "Type: " + sponsor.getType() }'
                     style="@style/TextAppearance.AppCompat.Caption"
                     tools:text="Sponsor Description"/>
 

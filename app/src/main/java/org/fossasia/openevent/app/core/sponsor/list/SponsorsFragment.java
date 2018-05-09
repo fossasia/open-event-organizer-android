@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
@@ -41,7 +38,6 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     Lazy<SponsorsPresenter> sponsorsPresenter;
 
     private SponsorsListAdapter sponsorsListAdapter;
-    private RecyclerView.AdapterDataObserver adapterDataObserver;
     private SponsorsFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
@@ -92,7 +88,6 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
-        sponsorsListAdapter.unregisterAdapterDataObserver(adapterDataObserver);
     }
 
     private void setupRecyclerView() {
@@ -103,21 +98,9 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(sponsorsListAdapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(sponsorsListAdapter);
-            recyclerView.addItemDecoration(decoration);
-            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
-
-            adapterDataObserver = new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onChanged() {
-                    decoration.invalidateHeaders();
-                }
-            };
 
             ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createSponsorFab);
         }
-
-        sponsorsListAdapter.registerAdapterDataObserver(adapterDataObserver);
     }
 
     private void setupRefreshListener() {

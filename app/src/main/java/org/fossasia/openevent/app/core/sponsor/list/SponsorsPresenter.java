@@ -59,7 +59,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
         getSponsorSource(forceReload)
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneousRefresh(getView(), forceReload))
-            .toSortedList()
+            .toList()
             .compose(emptiable(getView(), sponsors))
             .subscribe(Logger::logSuccess, Logger::logError);
     }
@@ -74,4 +74,5 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     public List<Sponsor> getSponsors() {
         return sponsors;
     }
+
 }
