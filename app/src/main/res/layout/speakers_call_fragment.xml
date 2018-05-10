@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="org.fossasia.openevent.app.utils.DateUtils" />
+
+        <variable
+            name="speakersCall"
+            type="org.fossasia.openevent.app.data.speakerscall.SpeakersCall" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_top_surface">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:foreground="?selectableItemBackground"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_normal"
+                        android:text='@{ speakersCall.announcement }'
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textColor="?android:textColorSecondary"
+                        android:textSize="@dimen/text_size_extra_large"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_medium">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#dedede"
+                                android:padding="@dimen/spacing_small"
+                                android:text="@string/date_and_time"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                                android:textColor="?android:textColorSecondary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@{ @drawable/ic_clock }"
+                                android:drawablePadding="@dimen/spacing_small"
+                                android:drawableStart="@{ @drawable/ic_clock }"
+                                android:text='@{ "Starts: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, speakersCall.startsAt) }'
+                                android:textColor="@color/grey_600"
+                                android:textSize="@dimen/text_size_normal"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/spacing_small"
+                                android:visibility="@{ (speakersCall.startsAt != null) ? View.VISIBLE : View.GONE }" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@{ @drawable/ic_clock }"
+                                android:drawablePadding="@dimen/spacing_small"
+                                android:drawableStart="@{ @drawable/ic_clock }"
+                                android:text='@{ "Ends: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, speakersCall.endsAt) }'
+                                android:textColor="@color/grey_600"
+                                android:textSize="@dimen/text_size_normal"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/spacing_small"
+                                android:visibility="@{ (speakersCall.endsAt != null) ? View.VISIBLE : View.GONE }" />
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_medium">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#dedede"
+                                android:padding="@dimen/spacing_small"
+                                android:text="@string/details"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                                android:textColor="?android:textColorSecondary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@{ @drawable/ic_info }"
+                                android:drawablePadding="@dimen/spacing_small"
+                                android:drawableStart="@{ @drawable/ic_info }"
+                                android:text='@{ "Hash: " + speakersCall.hash }'
+                                android:textColor="@color/grey_600"
+                                android:textSize="@dimen/text_size_normal"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/spacing_small"
+                                android:visibility="@{ (speakersCall.hash != null) ? View.VISIBLE : View.GONE }" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@{ @drawable/ic_info }"
+                                android:drawablePadding="@dimen/spacing_small"
+                                android:drawableStart="@{ @drawable/ic_info }"
+                                android:text='@{ "Privacy: " + speakersCall.privacy }'
+                                android:textColor="@color/grey_600"
+                                android:textSize="@dimen/text_size_normal"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/spacing_small"
+                                android:visibility="@{ (speakersCall.privacy != null) ? View.VISIBLE : View.GONE }" />
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/empty_layout" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/progressbar_layout" />
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
