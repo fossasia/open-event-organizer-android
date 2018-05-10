@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.presenter;
 
+import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.event.serializer.ObservableString;
@@ -28,6 +29,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -42,7 +44,7 @@ public class EventsPresenterTest {
     @Mock private EventsView eventListView;
     @Mock private EventRepository eventRepository;
     @Mock private UserRepository userRepository;
-
+    @Mock private DatabaseChangeListener<Event> databaseChangeListener;
     private EventsPresenter eventsActivityPresenter;
 
     private static final String DATE_STRING = DateUtils.formatDateToIso(LocalDateTime.now());
@@ -60,7 +62,7 @@ public class EventsPresenterTest {
     public void setUp() {
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
 
-        eventsActivityPresenter = new EventsPresenter(eventRepository);
+        eventsActivityPresenter = new EventsPresenter(eventRepository, databaseChangeListener);
         eventsActivityPresenter.attach(eventListView);
     }
 
@@ -76,6 +78,8 @@ public class EventsPresenterTest {
 
         when(eventRepository.getEvents(false))
             .thenReturn(Observable.fromIterable(EVENT_LIST));
+
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         eventsActivityPresenter.start();
 

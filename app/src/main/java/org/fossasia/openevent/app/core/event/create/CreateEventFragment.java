@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -68,17 +67,6 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
         binding = DataBindingUtil.inflate(inflater, R.layout.event_create_layout, container, false);
         validator = new Validator(binding.form);
 
-        AppCompatActivity activity = ((AppCompatActivity) getActivity());
-        activity.setSupportActionBar(binding.toolbar);
-
-        ActionBar actionBar = activity.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        setHasOptionsMenu(true);
-
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
                 getPresenter().createEvent();
@@ -118,6 +106,7 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
         getPresenter().attach(this);
         binding.setEvent(getPresenter().getEvent());
         getPresenter().start();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
         validate(binding.form.ticketUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.logoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -196,7 +185,8 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
 
     @Override
     public void close() {
-        getActivity().finish();
+        getFragmentManager().popBackStack();
+        ViewUtils.hideKeyboard(binding.getRoot());
     }
 
     @Override
@@ -279,5 +269,11 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     private void showLocationLayouts() {
         binding.form.layoutSearchableLocation.setVisibility(View.VISIBLE);
         binding.form.layoutLocationName.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

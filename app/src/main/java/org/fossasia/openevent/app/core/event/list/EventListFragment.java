@@ -1,7 +1,6 @@
 package org.fossasia.openevent.app.core.event.list;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,7 +21,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.core.event.create.CreateEventActivity;
+import org.fossasia.openevent.app.core.event.create.CreateEventFragment;
 import org.fossasia.openevent.app.data.Bus;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.event.Event;
@@ -138,8 +137,10 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     }
 
     public void openCreateEventFragment() {
-        Intent intent = new Intent(getActivity(), CreateEventActivity.class);
-        startActivity(intent);
+        getFragmentManager().beginTransaction()
+                            .add(R.id.fragment_container, CreateEventFragment.newInstance(), getResources().getString(R.string.create_event_fragment))
+                            .addToBackStack(null)
+                            .commit();
     }
 
     @Override
