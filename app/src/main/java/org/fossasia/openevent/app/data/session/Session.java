@@ -14,6 +14,7 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.serializer.ObservableString;
 import org.fossasia.openevent.app.data.event.serializer.ObservableStringDeserializer;
 import org.fossasia.openevent.app.data.event.serializer.ObservableStringSerializer;
@@ -43,12 +44,16 @@ public class Session {
     public Long id;
 
     @Relationship("track")
-    @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
+    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Track track;
+
+    @Relationship("event")
+    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
+    public Event event;
 
     public String title;
     public String subtitle;
-    public String level;
+    public Integer level;
     public String shortAbstract;
     public String longAbstract;
     public String comments;

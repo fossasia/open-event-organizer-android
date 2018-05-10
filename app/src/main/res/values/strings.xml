@@ -217,6 +217,20 @@
     <string name="session">Session</string>
     <string name="delete_track">Delete Track</string>
     <string name="create_event_fragment">CreateEventFragment</string>
+    <string name="create_session">Create Session</string>
+    <string name="slides_url">Slides Url</string>
+    <string name="long_abstract">Long Abstract</string>
+    <string name="short_abstract">Short Abstract</string>
+    <string name="language">Language</string>
+    <string name="audio_url">Audio Url</string>
+    <string name="video_url">Video Url</string>
+    <string name="signup_url">SignUp Url</string>
+    <string name="links">Links</string>
+    <string name="comments">Comments</string>
+    <string name="level">Level</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="title">Title</string>
+    <string name="session_abstract">Abstract</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
