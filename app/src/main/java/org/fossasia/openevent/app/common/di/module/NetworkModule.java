@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 
 import org.fossasia.openevent.app.OrgaProvider;
 import org.fossasia.openevent.app.data.session.Session;
+import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.attendee.Attendee;
@@ -57,7 +58,7 @@ public class NetworkModule {
     @Provides
     Class[] providesMappedClasses() {
         return new Class[]{Event.class, Attendee.class, Ticket.class, User.class,
-            EventStatistics.class, Faq.class, Copyright.class, Feedback.class, Track.class, Session.class};
+            EventStatistics.class, Faq.class, Copyright.class, Feedback.class, Track.class, Session.class, Sponsor.class};
     }
 
     @Provides
