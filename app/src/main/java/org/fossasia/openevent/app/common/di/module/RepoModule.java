@@ -14,6 +14,8 @@ import org.fossasia.openevent.app.data.feedback.FeedbackRepository;
 import org.fossasia.openevent.app.data.feedback.FeedbackRepositoryImpl;
 import org.fossasia.openevent.app.data.session.SessionRepository;
 import org.fossasia.openevent.app.data.session.SessionRepositoryImpl;
+import org.fossasia.openevent.app.data.speaker.SpeakerRepository;
+import org.fossasia.openevent.app.data.speaker.SpeakerRepositoryImpl;
 import org.fossasia.openevent.app.data.sponsor.SponsorRepository;
 import org.fossasia.openevent.app.data.sponsor.SponsorRepositoryImpl;
 import org.fossasia.openevent.app.data.ticket.TicketRepository;
@@ -74,4 +76,8 @@ public abstract class RepoModule {
     @Binds
     @Singleton
     abstract SponsorRepository bindsSponsorRepository(SponsorRepositoryImpl sponsorRepositoryImpl);
+
+    @Binds
+    @Singleton
+    abstract SpeakerRepository bindsSpeakerRepository(SpeakerRepositoryImpl speakerRepository);
 }
