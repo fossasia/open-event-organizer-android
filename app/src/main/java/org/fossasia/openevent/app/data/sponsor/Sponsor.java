@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @EqualsAndHashCode(callSuper = false, exclude = { "sponsorDelegate", "checking" })
-@Table(database = OrgaDatabase.class)
+@Table(database = OrgaDatabase.class, allFields = true)
 public class Sponsor {
 
     @Id(LongIdHandler.class)
