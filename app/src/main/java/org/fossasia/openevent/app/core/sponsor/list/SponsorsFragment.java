@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.core.session.list;
+package org.fossasia.openevent.app.core.sponsor.list;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -15,10 +15,9 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
-import org.fossasia.openevent.app.core.session.create.CreateSessionFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
-import org.fossasia.openevent.app.data.session.Session;
-import org.fossasia.openevent.app.databinding.SessionsFragmentBinding;
+import org.fossasia.openevent.app.data.sponsor.Sponsor;
+import org.fossasia.openevent.app.databinding.SponsorsFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
 import java.util.List;
@@ -27,27 +26,26 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
-public class SessionsFragment extends BaseFragment<SessionsPresenter> implements SessionsView {
+public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements SponsorsView {
 
-    public static final String TRACK_KEY = "track";
     private Context context;
-    private long trackId;
     private long eventId;
 
     @Inject
     ContextUtils utilModel;
 
     @Inject
-    Lazy<SessionsPresenter> sessionsPresenter;
+    Lazy<SponsorsPresenter> sponsorsPresenter;
 
-    private SessionsAdapter sessionsAdapter;
-    private SessionsFragmentBinding binding;
+    private SponsorsListAdapter sponsorsListAdapter;
+    private SponsorsFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    public static SessionsFragment newInstance(long trackId, long eventId) {
-        SessionsFragment fragment = new SessionsFragment();
+    private boolean initialized;
+
+    public static SponsorsFragment newInstance(long eventId) {
+        SponsorsFragment fragment = new SponsorsFragment();
         Bundle args = new Bundle();
-        args.putLong(TRACK_KEY, trackId);
         args.putLong(MainActivity.EVENT_KEY, eventId);
         fragment.setArguments(args);
         return fragment;
@@ -58,18 +56,15 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         super.onCreate(savedInstanceState);
 
         context = getContext();
-
-        if (getArguments() != null) {
-            trackId = getArguments().getLong(TRACK_KEY);
+        if (getArguments() != null)
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
-        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.sessions_fragment, container, false);
-
+        binding = DataBindingUtil.inflate(inflater, R.layout.sponsors_fragment, container, false);
+        binding.createSponsorFab.setOnClickListener(view -> ViewUtils.showSnackbar(binding.sponsorsRecyclerView, "To be implemented"));
         return binding.getRoot();
     }
 
@@ -78,22 +73,15 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         super.onStart();
         setupRecyclerView();
         setupRefreshListener();
-        getPresenter().attach(trackId, this);
+        getPresenter().attach(eventId, this);
         getPresenter().start();
 
-        binding.createSessionFab.setOnClickListener(view -> openCreateSessionFragment());
-    }
-
-    public void openCreateSessionFragment() {
-        getFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, CreateSessionFragment.newInstance(trackId, eventId))
-            .addToBackStack(null)
-            .commit();
+        initialized = true;
     }
 
     @Override
     protected int getTitle() {
-        return R.string.session;
+        return R.string.sponsors;
     }
 
     @Override
@@ -103,12 +91,16 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     }
 
     private void setupRecyclerView() {
-        sessionsAdapter = new SessionsAdapter(getPresenter());
+        if (!initialized) {
+            sponsorsListAdapter = new SponsorsListAdapter(getPresenter());
 
-        RecyclerView recyclerView = binding.sessionsRecyclerView;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(sessionsAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+            RecyclerView recyclerView = binding.sponsorsRecyclerView;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(sponsorsListAdapter);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createSponsorFab);
+        }
     }
 
     private void setupRefreshListener() {
@@ -116,13 +108,13 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            getPresenter().loadSessions(true);
+            getPresenter().loadSponsors(true);
         });
     }
 
     @Override
-    public Lazy<SessionsPresenter> getPresenterProvider() {
-        return sessionsPresenter;
+    public Lazy<SponsorsPresenter> getPresenterProvider() {
+        return sponsorsPresenter;
     }
 
     @Override
@@ -138,12 +130,12 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     @Override
     public void onRefreshComplete(boolean success) {
         if (success)
-            ViewUtils.showSnackbar(binding.sessionsRecyclerView, R.string.refresh_complete);
+            ViewUtils.showSnackbar(binding.sponsorsRecyclerView, R.string.refresh_complete);
     }
 
     @Override
-    public void showResults(List<Session> items) {
-        sessionsAdapter.notifyDataSetChanged();
+    public void showResults(List<Sponsor> items) {
+        sponsorsListAdapter.notifyDataSetChanged();
     }
 
     @Override

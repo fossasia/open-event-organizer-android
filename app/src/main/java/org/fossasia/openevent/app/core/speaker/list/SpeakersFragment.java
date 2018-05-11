@@ -1,8 +1,9 @@
-package org.fossasia.openevent.app.core.session.list;
+package org.fossasia.openevent.app.core.speaker.list;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,10 +16,8 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
-import org.fossasia.openevent.app.core.session.create.CreateSessionFragment;
-import org.fossasia.openevent.app.data.ContextUtils;
-import org.fossasia.openevent.app.data.session.Session;
-import org.fossasia.openevent.app.databinding.SessionsFragmentBinding;
+import org.fossasia.openevent.app.data.speaker.Speaker;
+import org.fossasia.openevent.app.databinding.SpeakersFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
 import java.util.List;
@@ -27,27 +26,22 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
-public class SessionsFragment extends BaseFragment<SessionsPresenter> implements SessionsView {
-
-    public static final String TRACK_KEY = "track";
+public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements SpeakersView  {
     private Context context;
-    private long trackId;
     private long eventId;
 
     @Inject
-    ContextUtils utilModel;
+    Lazy<SpeakersPresenter> speakersPresenter;
 
-    @Inject
-    Lazy<SessionsPresenter> sessionsPresenter;
-
-    private SessionsAdapter sessionsAdapter;
-    private SessionsFragmentBinding binding;
+    private SpeakersAdapter speakersAdapter;
+    private SpeakersFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    public static SessionsFragment newInstance(long trackId, long eventId) {
-        SessionsFragment fragment = new SessionsFragment();
+    private boolean initialized;
+
+    public static SpeakersFragment newInstance(long eventId) {
+        SpeakersFragment fragment = new SpeakersFragment();
         Bundle args = new Bundle();
-        args.putLong(TRACK_KEY, trackId);
         args.putLong(MainActivity.EVENT_KEY, eventId);
         fragment.setArguments(args);
         return fragment;
@@ -58,17 +52,18 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         super.onCreate(savedInstanceState);
 
         context = getContext();
-
-        if (getArguments() != null) {
-            trackId = getArguments().getLong(TRACK_KEY);
+        if (getArguments() != null)
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
-        }
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.sessions_fragment, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.speakers_fragment, container, false);
+
+        binding.createSpeakerFab.setOnClickListener(view -> {
+            // create Speaker
+        });
 
         return binding.getRoot();
     }
@@ -78,22 +73,15 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         super.onStart();
         setupRecyclerView();
         setupRefreshListener();
-        getPresenter().attach(trackId, this);
+        getPresenter().attach(eventId, this);
         getPresenter().start();
 
-        binding.createSessionFab.setOnClickListener(view -> openCreateSessionFragment());
-    }
-
-    public void openCreateSessionFragment() {
-        getFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, CreateSessionFragment.newInstance(trackId, eventId))
-            .addToBackStack(null)
-            .commit();
+        initialized = true;
     }
 
     @Override
     protected int getTitle() {
-        return R.string.session;
+        return R.string.speakers;
     }
 
     @Override
@@ -103,26 +91,23 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     }
 
     private void setupRecyclerView() {
-        sessionsAdapter = new SessionsAdapter(getPresenter());
+        if (!initialized) {
+            speakersAdapter = new SpeakersAdapter(getPresenter());
 
-        RecyclerView recyclerView = binding.sessionsRecyclerView;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(sessionsAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+            RecyclerView recyclerView = binding.speakersRecyclerView;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(speakersAdapter);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+        }
     }
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
-        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            getPresenter().loadSessions(true);
+            getPresenter().loadSpeakers(true);
         });
-    }
-
-    @Override
-    public Lazy<SessionsPresenter> getPresenterProvider() {
-        return sessionsPresenter;
     }
 
     @Override
@@ -138,16 +123,21 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     @Override
     public void onRefreshComplete(boolean success) {
         if (success)
-            ViewUtils.showSnackbar(binding.sessionsRecyclerView, R.string.refresh_complete);
+            ViewUtils.showSnackbar(binding.speakersRecyclerView, R.string.refresh_complete);
     }
 
     @Override
-    public void showResults(List<Session> items) {
-        sessionsAdapter.notifyDataSetChanged();
+    public void showResults(List<Speaker> items) {
+        speakersAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showEmptyView(boolean show) {
         ViewUtils.showView(binding.emptyView, show);
+    }
+
+    @Override
+    protected Lazy<SpeakersPresenter> getPresenterProvider() {
+        return speakersPresenter;
     }
 }

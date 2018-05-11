@@ -8,8 +8,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 
 import org.fossasia.openevent.app.OrgaProvider;
-import org.fossasia.openevent.app.data.session.Session;
-import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.auth.AuthHolder;
@@ -19,8 +17,12 @@ import org.fossasia.openevent.app.data.event.EventStatistics;
 import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.feedback.Feedback;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
+import org.fossasia.openevent.app.data.session.Session;
+import org.fossasia.openevent.app.data.speaker.Speaker;
+import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.data.tracks.Track;
+import org.fossasia.openevent.app.data.user.User;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -57,7 +59,8 @@ public class NetworkModule {
     @Provides
     Class[] providesMappedClasses() {
         return new Class[]{Event.class, Attendee.class, Ticket.class, User.class,
-            EventStatistics.class, Faq.class, Copyright.class, Feedback.class, Track.class, Session.class};
+            EventStatistics.class, Faq.class, Copyright.class, Feedback.class, Track.class,
+                Session.class, Sponsor.class, Speaker.class};
     }
 
     @Provides

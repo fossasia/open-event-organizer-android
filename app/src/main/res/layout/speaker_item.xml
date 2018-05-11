@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="speaker"
+            type="org.fossasia.openevent.app.data.speaker.Speaker" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/spacing_small"
+        android:paddingEnd="@dimen/spacing_normal"
+        android:paddingLeft="@dimen/spacing_small"
+        android:paddingRight="@dimen/spacing_normal"
+        android:paddingStart="@dimen/spacing_small"
+        android:paddingTop="@dimen/spacing_small">
+
+        <ImageView
+            android:layout_width="@dimen/image_small"
+            android:layout_height="@dimen/image_small"
+            android:contentDescription="@string/speakers_photo"
+            app:circleImageUrl="@{ speaker.thumbnailImageUrl }"
+            app:placeholder="@{ @drawable/ic_account_circle }" />
+
+        <TextView
+            android:id="@+id/speakers_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingBottom="@dimen/spacing_extra_small"
+            android:paddingEnd="@dimen/spacing_small"
+            android:paddingLeft="@dimen/spacing_medium"
+            android:paddingRight="@dimen/spacing_small"
+            android:paddingStart="@dimen/spacing_medium"
+            android:paddingTop="@dimen/spacing_tiny"
+            android:text="@{ speaker.name }"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_normal"
+            tools:text="Speaker Name"/>
+
+    </LinearLayout>
+</layout>

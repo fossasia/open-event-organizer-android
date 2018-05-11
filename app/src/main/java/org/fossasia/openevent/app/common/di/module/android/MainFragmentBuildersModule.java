@@ -7,14 +7,12 @@ import org.fossasia.openevent.app.core.event.list.EventListFragment;
 import org.fossasia.openevent.app.core.faq.create.CreateFaqFragment;
 import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
-import org.fossasia.openevent.app.core.session.list.SessionsFragment;
 import org.fossasia.openevent.app.core.settings.SettingsFragment;
+import org.fossasia.openevent.app.core.speaker.list.SpeakersFragment;
+import org.fossasia.openevent.app.core.sponsor.list.SponsorsFragment;
 import org.fossasia.openevent.app.core.ticket.create.CreateTicketFragment;
 import org.fossasia.openevent.app.core.ticket.detail.TicketDetailFragment;
 import org.fossasia.openevent.app.core.ticket.list.TicketsFragment;
-import org.fossasia.openevent.app.core.track.create.CreateTrackFragment;
-import org.fossasia.openevent.app.core.track.list.TracksFragment;
-import org.fossasia.openevent.app.core.track.update.UpdateTrackFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -66,20 +64,15 @@ public abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector
     abstract FeedbackListFragment contributeFeedbackListFragment();
 
-    // Tracks
+    // Sponsor
 
     @ContributesAndroidInjector
-    abstract TracksFragment contributeTracksFragment();
+    abstract SponsorsFragment contributeSponsorsFragment();
+
+
+    // Speaker
 
     @ContributesAndroidInjector
-    abstract CreateTrackFragment contributeCreateTrackFragment();
-
-    @ContributesAndroidInjector
-    abstract UpdateTrackFragment contributeUpdateTrackFragment();
-
-    // Session
-
-    @ContributesAndroidInjector
-    abstract SessionsFragment contributeSessionFragment();
+    abstract SpeakersFragment contributeSpeakersFragment();
 }
 
