@@ -42,6 +42,10 @@
             android:icon="@drawable/ic_sponsors"
             android:title="@string/sponsors"/>
 
+        <item
+            android:id="@+id/nav_speaker"
+            android:icon="@drawable/ic_people"
+            android:title="@string/speakers"/>
     </group>
 
     <group android:id="@+id/eventsMenu" android:checkableBehavior="single">
