@@ -7,6 +7,7 @@ import org.fossasia.openevent.app.data.event.EventApi;
 import org.fossasia.openevent.app.data.faq.FaqApi;
 import org.fossasia.openevent.app.data.feedback.FeedbackApi;
 import org.fossasia.openevent.app.data.session.SessionApi;
+import org.fossasia.openevent.app.data.sponsor.SponsorApi;
 import org.fossasia.openevent.app.data.ticket.TicketApi;
 import org.fossasia.openevent.app.data.tracks.TrackApi;
 import org.fossasia.openevent.app.data.user.UserApi;
@@ -79,4 +80,11 @@ public class ApiModule {
     SessionApi providesSessionApi(Retrofit retrofit) {
         return retrofit.create(SessionApi.class);
     }
+
+    @Provides
+    @Singleton
+    SponsorApi providesSponsorApi(Retrofit retrofit) {
+        return retrofit.create(SponsorApi.class);
+    }
+
 }
