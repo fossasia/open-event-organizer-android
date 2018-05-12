@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.sponsor.create;
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.data.sponsor.SponsorRepository;
 
@@ -31,7 +32,10 @@ public class CreateSponsorPresenter extends AbstractBasePresenter<CreateSponsorV
     }
 
     public void createSponsor() {
-        sponsor.setEvent(ContextManager.getSelectedEvent());
+        long eventId = ContextManager.getSelectedEvent().getId();
+        Event event = new Event();
+        event.setId(eventId);
+        sponsor.setEvent(event);
 
         sponsorRepository
             .createSponsor(sponsor)

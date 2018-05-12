@@ -237,6 +237,7 @@
     <string name="subtitle">Subtitle</string>
     <string name="title">Title</string>
     <string name="session_abstract">Abstract</string>
+    <string name="speakers_photo">Speaker\'s Photo</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
