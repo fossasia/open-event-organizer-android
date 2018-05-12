@@ -16,6 +16,10 @@ import org.fossasia.openevent.app.data.session.SessionRepository;
 import org.fossasia.openevent.app.data.session.SessionRepositoryImpl;
 import org.fossasia.openevent.app.data.speakerscall.SpeakersCallRepository;
 import org.fossasia.openevent.app.data.speakerscall.SpeakersCallRepositoryImpl;
+import org.fossasia.openevent.app.data.speaker.SpeakerRepository;
+import org.fossasia.openevent.app.data.speaker.SpeakerRepositoryImpl;
+import org.fossasia.openevent.app.data.sponsor.SponsorRepository;
+import org.fossasia.openevent.app.data.sponsor.SponsorRepositoryImpl;
 import org.fossasia.openevent.app.data.ticket.TicketRepository;
 import org.fossasia.openevent.app.data.ticket.TicketRepositoryImpl;
 import org.fossasia.openevent.app.data.tracks.TrackRepository;
@@ -70,6 +74,14 @@ public abstract class RepoModule {
     @Binds
     @Singleton
     abstract SessionRepository bindsSessionRepository(SessionRepositoryImpl sessionRepository);
+
+    @Binds
+    @Singleton
+    abstract SponsorRepository bindsSponsorRepository(SponsorRepositoryImpl sponsorRepositoryImpl);
+
+    @Binds
+    @Singleton
+    abstract SpeakerRepository bindsSpeakerRepository(SpeakerRepositoryImpl speakerRepository);
 
     @Binds
     @Singleton

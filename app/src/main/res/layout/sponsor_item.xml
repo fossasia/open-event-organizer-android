@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="org.fossasia.openevent.app.core.sponsor.list.SponsorsPresenter"/>
+
+        <variable
+            name="sponsor"
+            type="org.fossasia.openevent.app.data.sponsor.Sponsor" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/sponsor_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_small"
+        android:padding="@dimen/spacing_normal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/image_small"
+                    android:layout_height="@dimen/image_small"
+                    android:scaleType="fitXY"
+                    app:imageUrl='@{ sponsor.getLogoUrl }'/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_small"
+                    android:text='@{ sponsor.getName() }'
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    tools:text="Sponsor Name"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_small"
+                android:text='@{ sponsor.getDescription() }'
+                style="@style/TextAppearance.AppCompat.Body1"
+                tools:text="Sponsor Description"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_small"
+                    android:layout_marginRight="@dimen/spacing_normal"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:text='@{ "Level: " + sponsor.getLevel() }'
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    tools:text="Sponsor Description" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_small"
+                    android:text='@{ "Type: " + sponsor.getType() }'
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    tools:text="Sponsor Description"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</layout>

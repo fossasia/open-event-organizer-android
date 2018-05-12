@@ -12,6 +12,8 @@ import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
 import org.fossasia.openevent.app.core.settings.SettingsFragment;
 import org.fossasia.openevent.app.core.speakerscall.detail.SpeakersCallFragment;
+import org.fossasia.openevent.app.core.speaker.list.SpeakersFragment;
+import org.fossasia.openevent.app.core.sponsor.list.SponsorsFragment;
 import org.fossasia.openevent.app.core.ticket.list.TicketsFragment;
 import org.fossasia.openevent.app.core.track.list.TracksFragment;
 
@@ -78,6 +80,12 @@ class FragmentNavigator {
                 break;
             case R.id.nav_track:
                 fragment = TracksFragment.newInstance(eventId);
+                break;
+            case R.id.nav_sponsor:
+                fragment = SponsorsFragment.newInstance(eventId);
+                break;
+            case R.id.nav_speaker:
+                fragment = SpeakersFragment.newInstance(eventId);
                 break;
             case R.id.nav_speakers_call:
                 fragment = SpeakersCallFragment.newInstance(eventId);
