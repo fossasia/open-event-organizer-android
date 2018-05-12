@@ -2,11 +2,14 @@ package org.fossasia.openevent.app.data.sponsor;
 
 import android.support.annotation.NonNull;
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Repository;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class SponsorRepositoryImpl implements SponsorRepository {
 
@@ -38,6 +41,24 @@ public class SponsorRepositoryImpl implements SponsorRepository {
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
+    }
+
+    @Override
+    public Observable<Sponsor> createSponsor(Sponsor sponsor) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return sponsorApi
+            .postSponsor(sponsor)
+            .doOnNext(created -> {
+                created.setEvent(sponsor.getEvent());
+                repository
+                    .save(Sponsor.class, created)
+                    .subscribe();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

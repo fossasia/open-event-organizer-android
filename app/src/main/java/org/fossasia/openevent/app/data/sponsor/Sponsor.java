@@ -35,7 +35,7 @@ public class Sponsor {
     public String description;
     public String url;
     public String logoUrl;
-    public int level;
+    public Integer level;
     public String type;
 
     @Relationship("event")

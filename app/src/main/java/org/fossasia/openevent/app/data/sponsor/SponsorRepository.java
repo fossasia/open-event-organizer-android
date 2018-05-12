@@ -9,4 +9,6 @@ public interface SponsorRepository {
     @NonNull
     Observable<Sponsor> getSponsors(long eventId, boolean reload);
 
+    Observable<Sponsor> createSponsor(Sponsor sponsor);
+
 }
