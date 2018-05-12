@@ -33,6 +33,7 @@
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
                     android:foreground="?selectableItemBackground"
+                    android:visibility="@{ (speakersCall.announcement != null) ? View.VISIBLE : View.GONE }"
                     android:orientation="vertical">
 
                     <TextView
