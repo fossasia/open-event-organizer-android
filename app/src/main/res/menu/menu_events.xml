@@ -13,4 +13,11 @@
                 android:title="@string/sort_by_date" />
         </menu>
     </item>
+
+    <item android:id="@+id/edit"
+        android:title="@string/edit_event"
+        android:icon="@drawable/ic_edit"
+        android:visible="false"
+        app:showAsAction="always">
+    </item>
 </menu>

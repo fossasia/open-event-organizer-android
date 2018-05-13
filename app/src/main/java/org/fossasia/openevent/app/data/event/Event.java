@@ -106,6 +106,7 @@ public class Event implements Comparable<Event>, HeaderProvider {
     @JsonDeserialize(using = ObservableStringDeserializer.class)
     public ObservableString endsAt = new ObservableString();
 
+
     @ColumnIgnore
     @Relationship("tickets")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
