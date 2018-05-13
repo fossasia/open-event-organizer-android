@@ -19,23 +19,12 @@ import org.fossasia.openevent.app.data.event.serializer.ObservableString;
 import org.fossasia.openevent.app.data.event.serializer.ObservableStringDeserializer;
 import org.fossasia.openevent.app.data.event.serializer.ObservableStringSerializer;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
-@Builder
 @Type("speakers-call")
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString(exclude = "event")
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
-@EqualsAndHashCode()
-@SuppressWarnings("PMD.TooManyFields")
 public class SpeakersCall {
 
     @Id(LongIdHandler.class)
