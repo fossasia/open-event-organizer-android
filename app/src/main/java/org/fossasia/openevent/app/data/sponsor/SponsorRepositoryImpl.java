@@ -43,6 +43,28 @@ public class SponsorRepositoryImpl implements SponsorRepository {
             .build();
     }
 
+    @NonNull
+    @Override
+    public Observable<Sponsor> getSponsor(long sponsorId, boolean reload) {
+        Observable<Sponsor> diskObservable = Observable.defer(() ->
+            repository
+                .getItems(Sponsor.class, Sponsor_Table.id.eq(sponsorId)).take(1)
+        );
+
+        Observable<Sponsor> networkObservable = Observable.defer(() ->
+            sponsorApi.getSponsor(sponsorId)
+                .doOnNext(sponsor -> repository
+                    .save(Sponsor.class, sponsor)
+                    .subscribe()));
+
+        return repository
+            .observableOf(Sponsor.class)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
     @Override
     public Observable<Sponsor> createSponsor(Sponsor sponsor) {
         if (!repository.isConnected()) {
@@ -57,6 +79,22 @@ public class SponsorRepositoryImpl implements SponsorRepository {
                     .save(Sponsor.class, created)
                     .subscribe();
             })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Observable<Sponsor> updateSponsor(Sponsor sponsor) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return sponsorApi
+            .updateSponsor(sponsor.getId(), sponsor)
+            .doOnNext(updatedSponsor -> repository
+                .update(Sponsor.class, updatedSponsor)
+                .subscribe())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
