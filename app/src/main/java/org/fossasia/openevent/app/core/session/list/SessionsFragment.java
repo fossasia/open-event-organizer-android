@@ -5,10 +5,14 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,12 +31,15 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class SessionsFragment extends BaseFragment<SessionsPresenter> implements SessionsView {
 
     public static final String TRACK_KEY = "track";
     private Context context;
     private long trackId;
     private long eventId;
+    private boolean deletingMode;
+    private AlertDialog deleteDialog;
 
     @Inject
     ContextUtils utilModel;
@@ -57,7 +64,9 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        deletingMode = false;
         context = getContext();
+        setHasOptionsMenu(true);
 
         if (getArguments() != null) {
             trackId = getArguments().getLong(TRACK_KEY);
@@ -125,6 +134,61 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         return sessionsPresenter;
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.del:
+                showDeleteDialog();
+                break;
+            default:
+                // No implementation
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.del);
+        menuItem.setVisible(deletingMode);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_sessions, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public void showDeleteDialog() {
+        if (deleteDialog == null)
+            deleteDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.delete)
+                .setMessage(String.format(getString(R.string.delete_confirmation_message),
+                    getString(R.string.session)))
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    getPresenter().deleteSelectedSession();
+                    resetToolbar();
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss(); getPresenter().resetToDefaultState();
+                })
+                .create();
+
+        deleteDialog.show();
+    }
+
+    @Override
+    public void changeToDeletingMode() {
+        deletingMode = true;
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void resetToolbar() {
+        deletingMode = false;
+        getActivity().invalidateOptionsMenu();
+    }
+
     @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
@@ -139,6 +203,11 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     public void onRefreshComplete(boolean success) {
         if (success)
             ViewUtils.showSnackbar(binding.sessionsRecyclerView, R.string.refresh_complete);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        ViewUtils.showSnackbar(binding.getRoot(), message);
     }
 
     @Override

@@ -18,12 +18,15 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsView> {
 
     private final List<Session> sessions = new ArrayList<>();
+    private Session previousSession = new Session();
     private final SessionRepository sessionRepository;
     private final DatabaseChangeListener<Session> sessionChangeListener;
 
@@ -67,12 +70,44 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
         sessionChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
             .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT))
+            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.DELETE))
             .subscribeOn(Schedulers.io())
             .subscribe(sessionModelChange -> loadSessions(false), Logger::logError);
     }
 
     public List<Session> getSessions() {
         return sessions;
+    }
+
+
+    public void deleteSession(Session session) {
+        sessionRepository
+            .deleteSession(session.getId())
+            .compose(disposeCompletable(getDisposable()))
+            .compose(progressiveErroneousCompletable(getView()))
+            .doFinally(() -> unselectSession(session))
+            .subscribe(() -> getView().showMessage("Session Deleted Successfully"), Logger::logError);
+    }
+
+    public void deleteSelectedSession() {
+        deleteSession(previousSession);
+    }
+
+    public void unselectSession(Session session) {
+        if (session != null)
+            session.getSelected().set(false);
+    }
+
+    public void toolbarDeleteMode(Session currentSession) {
+        if (!previousSession.equals(currentSession))
+            unselectSession(previousSession);
+
+        previousSession = currentSession;
+        getView().changeToDeletingMode();
+    }
+
+    public void resetToDefaultState() {
+        unselectSession(previousSession);
+        getView().resetToolbar();
     }
 }

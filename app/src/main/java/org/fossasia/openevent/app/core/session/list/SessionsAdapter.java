@@ -14,17 +14,25 @@ import java.util.List;
 
 public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
 
+    private final SessionsPresenter sessionsPresenter;
     private final List<Session> sessions;
 
     public SessionsAdapter(SessionsPresenter sessionsPresenter) {
+        this.sessionsPresenter = sessionsPresenter;
         this.sessions = sessionsPresenter.getSessions();
     }
 
     @NonNull
     @Override
     public SessionViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        return new SessionViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
+        SessionViewHolder sessionViewHolder = new SessionViewHolder(
+            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.session_layout, viewGroup, false));
+
+        sessionViewHolder.setLongClickAction(sessionsPresenter::toolbarDeleteMode);
+        sessionViewHolder.setClickAction(sessionsPresenter::resetToDefaultState);
+
+        return sessionViewHolder;
     }
 
     @Override

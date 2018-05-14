@@ -17,6 +17,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:backgroundTint="@{ session.getSelected() ? @color/blue_200 : 0 }"
         android:layout_margin="@dimen/spacing_small">
 
         <LinearLayout
