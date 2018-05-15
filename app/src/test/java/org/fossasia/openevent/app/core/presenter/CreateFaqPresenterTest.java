@@ -36,7 +36,6 @@ public class CreateFaqPresenterTest {
     private Event event;
 
     private CreateFaqPresenter createFaqPresenter;
-    private static final Faq FAQ = new Faq();
 
     @Before
     public void setUp() {
@@ -57,7 +56,9 @@ public class CreateFaqPresenterTest {
 
     @Test
     public void shouldShowSuccessOnCreated() {
-        when(faqRepository.createFaq(FAQ)).thenReturn(Observable.just(FAQ));
+        Faq faq = createFaqPresenter.getFaq();
+        when(faqRepository.createFaq(faq)).thenReturn(Observable.just(faq));
+        ContextManager.setSelectedEvent(event);
 
         createFaqPresenter.createFaq();
 
@@ -67,11 +68,15 @@ public class CreateFaqPresenterTest {
         inOrder.verify(createFaqView).onSuccess(anyString());
         inOrder.verify(createFaqView).dismiss();
         inOrder.verify(createFaqView).showProgress(false);
+
+        ContextManager.setSelectedEvent(null);
     }
 
     @Test
     public void shouldShowErrorOnFailure() {
-        when(faqRepository.createFaq(FAQ)).thenReturn(Observable.error(new Throwable("Error")));
+        Faq faq = createFaqPresenter.getFaq();
+        when(faqRepository.createFaq(faq)).thenReturn(Observable.error(new Throwable("Error")));
+        ContextManager.setSelectedEvent(event);
 
         createFaqPresenter.createFaq();
 
@@ -80,5 +85,7 @@ public class CreateFaqPresenterTest {
         inOrder.verify(createFaqView).showProgress(true);
         inOrder.verify(createFaqView).showError("Error");
         inOrder.verify(createFaqView).showProgress(false);
+
+        ContextManager.setSelectedEvent(null);
     }
 }

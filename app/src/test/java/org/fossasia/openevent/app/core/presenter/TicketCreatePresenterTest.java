@@ -90,6 +90,7 @@ public class TicketCreatePresenterTest {
     @Test
     public void shouldAcceptCorrectSaleDates() {
         Ticket ticket = createTicketPresenter.getTicket();
+        ContextManager.setSelectedEvent(event);
 
         when(ticketRepository.createTicket(ticket)).thenReturn(Observable.empty());
 
@@ -102,11 +103,14 @@ public class TicketCreatePresenterTest {
 
         verify(ticketsView, never()).showError(anyString());
         verify(ticketRepository).createTicket(ticket);
+
+        ContextManager.setSelectedEvent(null);
     }
 
     @Test
     public void shouldShowErrorOnFailure() {
         Ticket ticket = createTicketPresenter.getTicket();
+        ContextManager.setSelectedEvent(event);
 
         when(ticketRepository.createTicket(ticket)).thenReturn(Observable.error(new Throwable("Error")));
 
@@ -122,11 +126,14 @@ public class TicketCreatePresenterTest {
         inOrder.verify(ticketsView).showProgress(true);
         inOrder.verify(ticketsView).showError("Error");
         inOrder.verify(ticketsView).showProgress(false);
+
+        ContextManager.setSelectedEvent(null);
     }
 
     @Test
     public void shouldShowSuccessOnCreated() {
         Ticket ticket = createTicketPresenter.getTicket();
+        ContextManager.setSelectedEvent(event);
 
         when(ticketRepository.createTicket(ticket)).thenReturn(Observable.just(ticket));
 
@@ -143,6 +150,8 @@ public class TicketCreatePresenterTest {
         inOrder.verify(ticketsView).onSuccess(anyString());
         inOrder.verify(ticketsView).dismiss();
         inOrder.verify(ticketsView).showProgress(false);
+
+        ContextManager.setSelectedEvent(null);
     }
 
 }
