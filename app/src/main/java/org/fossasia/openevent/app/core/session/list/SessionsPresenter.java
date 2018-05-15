@@ -20,13 +20,13 @@ import io.reactivex.schedulers.Schedulers;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
-import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneous;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsView> {
 
     private final List<Session> sessions = new ArrayList<>();
-    private Session previousSession = new Session();
+    private final List<Session> deletionList = new ArrayList<>();
     private final SessionRepository sessionRepository;
     private final DatabaseChangeListener<Session> sessionChangeListener;
 
@@ -79,18 +79,27 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
         return sessions;
     }
 
-
     public void deleteSession(Session session) {
         sessionRepository
             .deleteSession(session.getId())
             .compose(disposeCompletable(getDisposable()))
-            .compose(progressiveErroneousCompletable(getView()))
             .doFinally(() -> unselectSession(session))
-            .subscribe(() -> getView().showMessage("Session Deleted Successfully"), Logger::logError);
+            .subscribe(() -> Logger.logSuccess(session), Logger::logError);
     }
 
-    public void deleteSelectedSession() {
-        deleteSession(previousSession);
+    public void deleteSessions(List<Session> deletionList) {
+        Observable.fromIterable(deletionList)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .doFinally(() -> {
+                deletionList.clear();
+                getView().showMessage("Sessions Deleted");
+            })
+            .subscribe(this::deleteSession, Logger::logError);
+    }
+
+    public void deleteSelectedSessions() {
+        deleteSessions(deletionList);
     }
 
     public void unselectSession(Session session) {
@@ -99,15 +108,21 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
     }
 
     public void toolbarDeleteMode(Session currentSession) {
-        if (!previousSession.equals(currentSession))
-            unselectSession(previousSession);
+        if (deletionList.contains(currentSession)) {
+            deletionList.remove(currentSession);
+            unselectSession(currentSession);
+        }
+        else
+            deletionList.add(currentSession);
 
-        previousSession = currentSession;
         getView().changeToDeletingMode();
     }
 
     public void resetToDefaultState() {
-        unselectSession(previousSession);
+        for (int i = 0; i < deletionList.size(); i++)
+            unselectSession(deletionList.get(i));
+
+        deletionList.clear();
         getView().resetToolbar();
     }
 }

@@ -125,6 +125,7 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
+            resetToolbar();
             getPresenter().loadSessions(true);
         });
     }
@@ -166,7 +167,7 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
                 .setMessage(String.format(getString(R.string.delete_confirmation_message),
                     getString(R.string.session)))
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    getPresenter().deleteSelectedSession();
+                    getPresenter().deleteSelectedSessions();
                     resetToolbar();
                 })
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {
