@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.faq.create;
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.faq.FaqRepository;
 
@@ -31,7 +32,10 @@ public class CreateFaqPresenter extends AbstractBasePresenter<CreateFaqView> {
     }
 
     public void createFaq() {
-        faq.setEvent(ContextManager.getSelectedEvent());
+        long eventId = ContextManager.getSelectedEvent().getId();
+        Event event = new Event();
+        event.setId(eventId);
+        faq.setEvent(event);
 
         faqRepository
             .createFaq(faq)
