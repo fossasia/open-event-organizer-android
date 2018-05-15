@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.ticket.create;
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.data.ticket.TicketRepository;
 import org.fossasia.openevent.app.utils.DateUtils;
@@ -70,8 +71,10 @@ public class CreateTicketPresenter extends AbstractBasePresenter<CreateTicketVie
     public void createTicket() {
         if (!verify())
             return;
-
-        ticket.setEvent(ContextManager.getSelectedEvent());
+        long eventId = ContextManager.getSelectedEvent().getId();
+        Event event = new Event();
+        event.setId(eventId);
+        ticket.setEvent(event);
 
         ticketRepository
             .createTicket(ticket)
