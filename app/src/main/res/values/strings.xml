@@ -238,6 +238,7 @@
     <string name="title">Title</string>
     <string name="session_abstract">Abstract</string>
     <string name="speakers_photo">Speaker\'s Photo</string>
+    <string name="edit_sponsor">Edit Sponsor</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
