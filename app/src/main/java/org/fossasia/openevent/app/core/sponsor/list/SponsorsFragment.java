@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.sponsor.list;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
 
     private Context context;
     private long eventId;
+    private AlertDialog deleteDialog;
 
     @Inject
     ContextUtils utilModel;
@@ -153,8 +155,31 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     }
 
     @Override
+    public void showSponsorDeleted(String message) {
+        ViewUtils.showSnackbar(binding.getRoot(), message);
+    }
+
+    @Override
     public void openUpdateSponsorFragment(long sponsorId) {
         BottomSheetDialogFragment bottomSheetDialogFragment = UpdateSponsorFragment.newInstance(sponsorId);
         bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+    }
+
+    @Override
+    public void showAlertDialog(long sponsorId) {
+        if (deleteDialog == null)
+            deleteDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.delete)
+                .setMessage(String.format(getString(R.string.delete_confirmation_message),
+                    getString(R.string.sponsors)))
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    getPresenter().deleteSponsor(sponsorId);
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create();
+
+        deleteDialog.show();
     }
 }
