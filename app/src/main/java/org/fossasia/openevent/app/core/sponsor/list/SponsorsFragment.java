@@ -17,6 +17,7 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.core.sponsor.create.CreateSponsorFragment;
+import org.fossasia.openevent.app.core.sponsor.update.UpdateSponsorFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.databinding.SponsorsFragmentBinding;
@@ -149,5 +150,11 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     @Override
     public void showEmptyView(boolean show) {
         ViewUtils.showView(binding.emptyView, show);
+    }
+
+    @Override
+    public void openUpdateSponsorFragment(long sponsorId) {
+        BottomSheetDialogFragment bottomSheetDialogFragment = UpdateSponsorFragment.newInstance(sponsorId);
+        bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 }

@@ -40,12 +40,22 @@
                     app:imageUrl='@{ sponsor.getLogoUrl }'/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_small"
                     android:text='@{ sponsor.getName() }'
                     style="@style/TextAppearance.AppCompat.Headline"
-                    tools:text="Sponsor Name"/>
+                    tools:text="Sponsor Name"
+                    android:layout_weight="1"/>
+
+                <ImageButton
+                    android:id="@+id/action_change_sponsor"
+                    android:layout_width="@dimen/spacing_larger"
+                    android:layout_height="@dimen/spacing_larger"
+                    android:layout_gravity="top"
+                    android:background="?android:selectableItemBackground"
+                    android:contentDescription="@string/edit_sponsor"
+                    app:srcCompat="@drawable/ic_edit" />
 
             </LinearLayout>
 

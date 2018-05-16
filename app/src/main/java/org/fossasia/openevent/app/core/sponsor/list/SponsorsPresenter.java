@@ -45,12 +45,16 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
         sponsorChangeListener.stopListening();
     }
 
+    public void updateSponsor(Long sponsorId) {
+        getView().openUpdateSponsorFragment(sponsorId);
+    }
+
     private void listenChanges() {
         sponsorChangeListener.startListening();
         sponsorChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
             .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT))
+            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.UPDATE))
             .subscribeOn(Schedulers.io())
             .subscribe(sponsorModelChange -> loadSponsors(false), Logger::logError);
     }
