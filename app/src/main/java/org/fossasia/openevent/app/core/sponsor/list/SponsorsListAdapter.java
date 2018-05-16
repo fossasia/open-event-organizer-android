@@ -30,6 +30,7 @@ public class SponsorsListAdapter extends RecyclerView.Adapter<SponsorsViewHolder
                 R.layout.sponsor_item, viewGroup, false));
 
         sponsorsViewHolder.setEditAction(sponsorsPresenter::updateSponsor);
+        sponsorsViewHolder.setDeleteAction(sponsorsPresenter::showDeleteAlertDialog);
 
         return sponsorsViewHolder;
     }

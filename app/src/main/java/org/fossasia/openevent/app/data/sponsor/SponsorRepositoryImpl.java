@@ -7,6 +7,7 @@ import org.fossasia.openevent.app.data.Repository;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -94,6 +95,20 @@ public class SponsorRepositoryImpl implements SponsorRepository {
             .updateSponsor(sponsor.getId(), sponsor)
             .doOnNext(updatedSponsor -> repository
                 .update(Sponsor.class, updatedSponsor)
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable deleteSponsor(long id) {
+        if (!repository.isConnected()) {
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return sponsorApi.deleteSponsor(id)
+            .doOnComplete(() -> repository
+                .delete(Sponsor.class, Sponsor_Table.id.eq(id))
                 .subscribe())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());

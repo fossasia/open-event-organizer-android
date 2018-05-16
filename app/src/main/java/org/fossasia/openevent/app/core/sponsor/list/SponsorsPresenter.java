@@ -18,7 +18,9 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsView> {
@@ -78,5 +80,21 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     public List<Sponsor> getSponsors() {
         return sponsors;
     }
+
+    public void deleteSponsor(Long sponsorId) {
+        sponsorRepository
+            .deleteSponsor(sponsorId)
+            .compose(disposeCompletable(getDisposable()))
+            .compose(progressiveErroneousCompletable(getView()))
+            .subscribe(() -> {
+                getView().showSponsorDeleted("Sponsor Deleted. Refreshing Items");
+                loadSponsors(true);
+            }, Logger::logError);
+    }
+
+    public void showDeleteAlertDialog(Long sponsorId) {
+        getView().showAlertDialog(sponsorId);
+    }
+
 
 }
