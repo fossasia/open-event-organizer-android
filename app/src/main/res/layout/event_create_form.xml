@@ -79,12 +79,12 @@
 
             <include
                 layout="@layout/time_picker"
-                bind:date="@{ event.startsAt }"
+                bind:date="@={ event.startsAt }"
                 bind:label="@{ @string/starts_at }"/>
 
             <include
                 layout="@layout/time_picker"
-                bind:date="@{ event.endsAt }"
+                bind:date="@={ event.endsAt }"
                 bind:label="@{ @string/ends_at }"/>
 
             <TextView
