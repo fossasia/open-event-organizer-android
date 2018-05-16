@@ -13,6 +13,7 @@ public class SponsorsViewHolder extends RecyclerView.ViewHolder {
     private Sponsor sponsor;
 
     private Pipe<Long> editAction;
+    private Pipe<Long> deleteAction;
 
     public SponsorsViewHolder(SponsorItemBinding binding) {
         super(binding.getRoot());
@@ -21,10 +22,18 @@ public class SponsorsViewHolder extends RecyclerView.ViewHolder {
         binding.actionChangeSponsor.setOnClickListener(view -> {
             if (editAction != null) editAction.push(sponsor.getId());
         });
+
+        binding.actionDeleteSponsor.setOnClickListener(view -> {
+            if (deleteAction != null) deleteAction.push(sponsor.getId());
+        });
     }
 
     public void setEditAction(Pipe<Long> editAction) {
         this.editAction = editAction;
+    }
+
+    public void setDeleteAction(Pipe<Long> deleteAction) {
+        this.deleteAction = deleteAction;
     }
 
     public void bindSponsor(Sponsor sponsor) {

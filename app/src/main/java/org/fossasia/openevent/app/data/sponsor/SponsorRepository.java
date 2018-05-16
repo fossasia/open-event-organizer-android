@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.data.sponsor;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public interface SponsorRepository {
@@ -11,5 +12,7 @@ public interface SponsorRepository {
     Observable<Sponsor> createSponsor(Sponsor sponsor);
 
     Observable<Sponsor> updateSponsor(Sponsor sponsor);
+
+    Completable deleteSponsor(long id);
 
 }
