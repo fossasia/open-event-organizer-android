@@ -1,13 +1,12 @@
 package org.fossasia.openevent.app.core.presenter;
 
 import org.fossasia.openevent.app.common.ContextManager;
-import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.ticket.Ticket;
-import org.fossasia.openevent.app.data.event.serializer.ObservableString;
-import org.fossasia.openevent.app.data.ticket.TicketRepository;
-import org.fossasia.openevent.app.utils.DateUtils;
 import org.fossasia.openevent.app.core.ticket.create.CreateTicketPresenter;
 import org.fossasia.openevent.app.core.ticket.create.CreateTicketView;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.ticket.Ticket;
+import org.fossasia.openevent.app.data.ticket.TicketRepository;
+import org.fossasia.openevent.app.utils.DateUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -55,7 +54,7 @@ public class TicketCreatePresenterTest {
 
     private void setupMockEvent() {
         when(event.getTimezone()).thenReturn("UTC");
-        when(event.getEndsAt()).thenReturn(new ObservableString("2018-12-14T23:59:59.123456+00:00"));
+        when(event.getEndsAt()).thenReturn("2018-12-14T23:59:59.123456+00:00");
     }
 
     @After
@@ -78,8 +77,8 @@ public class TicketCreatePresenterTest {
         Ticket ticket = createTicketPresenter.getTicket();
 
         String isoDate = DateUtils.formatDateToIso(LocalDateTime.now());
-        ticket.getSalesStartsAt().set(isoDate);
-        ticket.getSalesEndsAt().set(isoDate);
+        ticket.setSalesStartsAt(isoDate);
+        ticket.setSalesEndsAt(isoDate);
 
         createTicketPresenter.createTicket();
 
@@ -96,8 +95,8 @@ public class TicketCreatePresenterTest {
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
         String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);
-        ticket.getSalesStartsAt().set(isoDateNow);
-        ticket.getSalesEndsAt().set(isoDateThen);
+        ticket.setSalesStartsAt(isoDateNow);
+        ticket.setSalesEndsAt(isoDateThen);
 
         createTicketPresenter.createTicket();
 
@@ -116,8 +115,8 @@ public class TicketCreatePresenterTest {
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
         String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);
-        ticket.getSalesStartsAt().set(isoDateNow);
-        ticket.getSalesEndsAt().set(isoDateThen);
+        ticket.setSalesStartsAt(isoDateNow);
+        ticket.setSalesEndsAt(isoDateThen);
 
         createTicketPresenter.createTicket();
 
@@ -139,8 +138,8 @@ public class TicketCreatePresenterTest {
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
         String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);
-        ticket.getSalesStartsAt().set(isoDateNow);
-        ticket.getSalesEndsAt().set(isoDateThen);
+        ticket.setSalesStartsAt(isoDateNow);
+        ticket.setSalesEndsAt(isoDateThen);
 
         createTicketPresenter.createTicket();
 
