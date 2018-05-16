@@ -18,7 +18,9 @@ import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsView> {
@@ -45,12 +47,16 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
         sponsorChangeListener.stopListening();
     }
 
+    public void updateSponsor(Long sponsorId) {
+        getView().openUpdateSponsorFragment(sponsorId);
+    }
+
     private void listenChanges() {
         sponsorChangeListener.startListening();
         sponsorChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
             .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT))
+            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.UPDATE))
             .subscribeOn(Schedulers.io())
             .subscribe(sponsorModelChange -> loadSponsors(false), Logger::logError);
     }
@@ -74,5 +80,21 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     public List<Sponsor> getSponsors() {
         return sponsors;
     }
+
+    public void deleteSponsor(Long sponsorId) {
+        sponsorRepository
+            .deleteSponsor(sponsorId)
+            .compose(disposeCompletable(getDisposable()))
+            .compose(progressiveErroneousCompletable(getView()))
+            .subscribe(() -> {
+                getView().showSponsorDeleted("Sponsor Deleted. Refreshing Items");
+                loadSponsors(true);
+            }, Logger::logError);
+    }
+
+    public void showDeleteAlertDialog(Long sponsorId) {
+        getView().showAlertDialog(sponsorId);
+    }
+
 
 }

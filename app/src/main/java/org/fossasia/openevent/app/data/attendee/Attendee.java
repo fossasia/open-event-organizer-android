@@ -1,7 +1,5 @@
 package org.fossasia.openevent.app.data.attendee;
 
-import android.databinding.ObservableBoolean;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -16,13 +14,12 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
-import org.fossasia.openevent.app.data.db.configuration.ObservableBooleanTypeConverter;
+import org.fossasia.openevent.app.common.model.HeaderProvider;
+import org.fossasia.openevent.app.core.attendee.list.viewholders.AttendeeViewHolder;
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.order.Order;
 import org.fossasia.openevent.app.data.ticket.Ticket;
-import org.fossasia.openevent.app.core.attendee.list.viewholders.AttendeeViewHolder;
-import org.fossasia.openevent.app.common.model.HeaderProvider;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -121,8 +118,8 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     // Non model entities
 
     @JsonIgnore
-    @Column(typeConverter = ObservableBooleanTypeConverter.class)
-    public ObservableBoolean checking = new ObservableBoolean();
+    @Column
+    public Boolean checking;
 
     public Attendee() { }
 }

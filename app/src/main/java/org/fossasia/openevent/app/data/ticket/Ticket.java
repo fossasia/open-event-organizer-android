@@ -1,9 +1,7 @@
 package org.fossasia.openevent.app.data.ticket;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
@@ -15,9 +13,6 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.event.serializer.ObservableString;
-import org.fossasia.openevent.app.data.event.serializer.ObservableStringDeserializer;
-import org.fossasia.openevent.app.data.event.serializer.ObservableStringSerializer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,12 +49,8 @@ public class Ticket implements Comparable<Ticket> {
     public Integer position;
     public Long quantity;
     public Boolean isHidden;
-    @JsonSerialize(using = ObservableStringSerializer.class)
-    @JsonDeserialize(using = ObservableStringDeserializer.class)
-    public ObservableString salesStartsAt = new ObservableString();
-    @JsonSerialize(using = ObservableStringSerializer.class)
-    @JsonDeserialize(using = ObservableStringDeserializer.class)
-    public ObservableString salesEndsAt = new ObservableString();
+    public String salesStartsAt;
+    public String salesEndsAt;
     public Integer minOrder;
 
     @Relationship("event")
