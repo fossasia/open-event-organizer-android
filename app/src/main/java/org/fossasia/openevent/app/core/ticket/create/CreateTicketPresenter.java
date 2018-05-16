@@ -26,16 +26,16 @@ public class CreateTicketPresenter extends AbstractBasePresenter<CreateTicketVie
         this.ticketRepository = ticketRepository;
         LocalDateTime current = LocalDateTime.now();
         String startDate = DateUtils.formatDateToIso(current);
-        ticket.getSalesStartsAt().set(startDate);
+        ticket.setSalesStartsAt(startDate);
 
         LocalDateTime salesEndTime = current.plusDays(10);
-        LocalDateTime eventEndTime = DateUtils.getIsoOffsetTimeFromTimestamp(ContextManager.getSelectedEvent().getEndsAt().get());
+        LocalDateTime eventEndTime = DateUtils.getIsoOffsetTimeFromTimestamp(ContextManager.getSelectedEvent().getEndsAt());
         //if less than 10 days are available in the event.
         if (salesEndTime.isAfter(eventEndTime) && !eventEndTime.isBefore(current)) {
             salesEndTime = eventEndTime;
         }
         String endDate = DateUtils.formatDateToIso(salesEndTime);
-        ticket.getSalesEndsAt().set(endDate);
+        ticket.setSalesEndsAt(endDate);
         ticket.setType("free");
     }
 
@@ -50,8 +50,8 @@ public class CreateTicketPresenter extends AbstractBasePresenter<CreateTicketVie
 
     private boolean verify() {
         try {
-            ZonedDateTime start = DateUtils.getDate(ticket.getSalesStartsAt().get());
-            ZonedDateTime end = DateUtils.getDate(ticket.getSalesEndsAt().get());
+            ZonedDateTime start = DateUtils.getDate(ticket.getSalesStartsAt());
+            ZonedDateTime end = DateUtils.getDate(ticket.getSalesEndsAt());
 
             if (!end.isAfter(start)) {
                 getView().showError("End time should be after start time");

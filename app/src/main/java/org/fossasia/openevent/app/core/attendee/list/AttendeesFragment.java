@@ -228,7 +228,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
                         return true;
 
                     if (query.equals(FILTER_SYNC)) {
-                        return attendee.checking.get();
+                        return attendee.checking;
                     }
                     return !SearchUtils.filter(
                         query.toString(),

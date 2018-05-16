@@ -10,6 +10,10 @@
         <import type="org.fossasia.openevent.app.common.ContextManager" />
 
         <variable
+            name="faqListPresenter"
+            type="org.fossasia.openevent.app.core.faq.list.FaqListPresenter"/>
+
+        <variable
             name="faq"
             type="org.fossasia.openevent.app.data.faq.Faq" />
     </data>
@@ -25,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        app:backgroundTint="@{ faq.getSelected() ? @color/blue_200 : 0 }"
+        app:backgroundTint="@{ faqListPresenter.getFaqSelected(faq) ? @color/blue_200 : 0 }"
         android:background="@android:color/white"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center_vertical">
