@@ -99,6 +99,7 @@
                 app:srcCompat="@drawable/ic_link" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/sponsor_sponsorUrl_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
@@ -127,6 +128,7 @@
                 app:srcCompat="@drawable/ic_link" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/sponsor_sponsorLogoUrl_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
