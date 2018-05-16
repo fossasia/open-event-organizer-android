@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.session.list;
 
+import android.databinding.ObservableBoolean;
+
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
@@ -10,7 +12,9 @@ import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.data.session.SessionRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -26,7 +30,8 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsView> {
 
     private final List<Session> sessions = new ArrayList<>();
-    private final List<Session> deletionList = new ArrayList<>();
+    private final Map<Session, ObservableBoolean> selectedMap = new HashMap<>();
+    private static ObservableBoolean selectedState = new ObservableBoolean(true);
     private final SessionRepository sessionRepository;
     private final DatabaseChangeListener<Session> sessionChangeListener;
 
@@ -46,6 +51,7 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
     public void detach() {
         super.detach();
         sessionChangeListener.stopListening();
+        selectedMap.clear();
     }
 
     public void loadSessions(boolean forceReload) {
@@ -79,50 +85,58 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
         return sessions;
     }
 
-    public void deleteSession(Session session) {
+    public void deleteSession(Map<Session, ObservableBoolean> selectedMap, Session session) {
         sessionRepository
             .deleteSession(session.getId())
             .compose(disposeCompletable(getDisposable()))
-            .doFinally(() -> unselectSession(session))
+            .doFinally(() -> selectedMap.get(session).set(false))
             .subscribe(() -> Logger.logSuccess(session), Logger::logError);
     }
 
-    public void deleteSessions(List<Session> deletionList) {
-        Observable.fromIterable(deletionList)
+    public void deleteSessions(Map<Session, ObservableBoolean> selectedMap) {
+        Observable.fromIterable(selectedMap.entrySet())
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneous(getView()))
-            .doFinally(() -> {
-                deletionList.clear();
-                getView().showMessage("Sessions Deleted");
-            })
-            .subscribe(this::deleteSession, Logger::logError);
+            .doFinally(() -> getView().showMessage("Sessions Deleted"))
+            .subscribe(entry -> {
+             if (entry.getValue().get()) {
+                 deleteSession(selectedMap, entry.getKey());
+             }
+            }, Logger::logError);
     }
 
     public void deleteSelectedSessions() {
-        deleteSessions(deletionList);
+        deleteSessions(selectedMap);
     }
 
-    public void unselectSession(Session session) {
-        if (session != null)
-            session.getSelected().set(false);
+    public ObservableBoolean getSessionSelected(Session session) {
+        if (!selectedMap.containsKey(session)) {
+            selectedMap.put(session, new ObservableBoolean(false));
+        }
+        return selectedMap.get(session);
+    }
+
+    public Map<Session, ObservableBoolean> getSelectedMap() {
+        return selectedMap;
     }
 
     public void toolbarDeleteMode(Session currentSession) {
-        if (deletionList.contains(currentSession)) {
-            deletionList.remove(currentSession);
-            unselectSession(currentSession);
+        if (getSessionSelected(currentSession).equals(selectedState)) {
+            selectedMap.get(currentSession).set(false);
+        } else {
+            selectedMap.get(currentSession).set(true);
         }
-        else
-            deletionList.add(currentSession);
 
         getView().changeToDeletingMode();
     }
 
     public void resetToDefaultState() {
-        for (int i = 0; i < deletionList.size(); i++)
-            unselectSession(deletionList.get(i));
+        for (Map.Entry<Session, ObservableBoolean> entry: selectedMap.entrySet()) {
+            if (entry.getValue().equals(selectedState)) {
+                entry.getValue().set(false);
+            }
+        }
 
-        deletionList.clear();
         getView().resetToolbar();
     }
 }

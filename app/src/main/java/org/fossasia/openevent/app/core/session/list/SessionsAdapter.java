@@ -27,7 +27,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
     public SessionViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         SessionViewHolder sessionViewHolder = new SessionViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.session_layout, viewGroup, false));
+                R.layout.session_layout, viewGroup, false), sessionsPresenter);
 
         sessionViewHolder.setLongClickAction(sessionsPresenter::toolbarDeleteMode);
         sessionViewHolder.setClickAction(sessionsPresenter::resetToDefaultState);

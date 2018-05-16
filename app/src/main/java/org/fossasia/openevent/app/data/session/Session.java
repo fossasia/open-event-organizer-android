@@ -1,8 +1,5 @@
 package org.fossasia.openevent.app.data.session;
 
-import android.databinding.ObservableBoolean;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -11,7 +8,6 @@ import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
-import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -76,7 +72,7 @@ public class Session {
     @JsonDeserialize(using = ObservableStringDeserializer.class)
     public ObservableString endsAt = new ObservableString();
 
-    @ColumnIgnore
-    @JsonIgnore
-    public ObservableBoolean selected = new ObservableBoolean();
+//    @ColumnIgnore
+//    @JsonIgnore
+//    public ObservableBoolean selected = new ObservableBoolean();
 }

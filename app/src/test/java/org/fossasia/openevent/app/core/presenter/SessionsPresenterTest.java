@@ -1,7 +1,5 @@
 package org.fossasia.openevent.app.core.presenter;
 
-import android.databinding.ObservableBoolean;
-
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.core.session.list.SessionsPresenter;
 import org.fossasia.openevent.app.core.session.list.SessionsView;
@@ -32,7 +30,6 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -56,17 +53,15 @@ public class SessionsPresenterTest {
 
     private static final long ID = 10L;
 
-    private static ObservableBoolean selectedState = new ObservableBoolean(true);
-
     private static final String SESSION_DELETION_SUCCESS = "Sessions Deleted";
 
     private static List<Session> sessions = new ArrayList<Session>(Arrays.asList(
-        Session.builder().id(2L).title("a").selected(selectedState).build(),
-        Session.builder().id(3L).title("b").selected(selectedState).build(),
-        Session.builder().id(4L).title("c").selected(selectedState).build()
+        Session.builder().id(2L).title("a").build(),
+        Session.builder().id(3L).title("b").build(),
+        Session.builder().id(4L).title("c").build()
     ));
 
-    private static final Session SESSION = Session.builder().id(7L).title("a").selected(selectedState).build();
+    private static final Session SESSION = Session.builder().id(7L).title("a").build();
 
     @Before
     public void setUp() {
@@ -192,32 +187,48 @@ public class SessionsPresenterTest {
     public void shouldDeleteSessionWithIdSuccessfully() {
         when(sessionRepository.deleteSession(SESSION.getId())).thenReturn(Completable.complete());
 
-        sessionsPresenter.deleteSession(SESSION);
+        sessionsPresenter.getSessionSelected(SESSION);
+        sessionsPresenter.getSelectedMap().get(SESSION).set(true);
+        sessionsPresenter.deleteSession(sessionsPresenter.getSelectedMap(), SESSION);
 
-        assertFalse(SESSION.getSelected().get());
+        assertFalse(sessionsPresenter.getSelectedMap().get(SESSION).get());
     }
 
     @Test
     public void shouldDeleteSessionsSuccessfully() {
         for (Session session : sessions) {
+            sessionsPresenter.getSessionSelected(session);
+            sessionsPresenter.getSelectedMap().get(session).set(true);
+        }
+        for (Session session : sessionsPresenter.getSelectedMap().keySet()) {
             when(sessionRepository.deleteSession(session.getId())).thenReturn(Completable.complete());
         }
 
-        sessionsPresenter.deleteSessions(sessions);
+        sessionsPresenter.deleteSessions(sessionsPresenter.getSelectedMap());
 
         InOrder inOrder = Mockito.inOrder(sessionsView);
 
         inOrder.verify(sessionsView).showProgress(true);
         inOrder.verify(sessionsView).showMessage(SESSION_DELETION_SUCCESS);
         inOrder.verify(sessionsView).showProgress(false);
-        assertTrue(sessions.isEmpty());
+
+        for (Session session : sessions) {
+            assertFalse(sessionsPresenter.getSelectedMap().get(session).get());
+        }
     }
 
     @Test
-    public void shouldUnselectSession() {
-        sessionsPresenter.unselectSession(SESSION);
+    public void shouldNotDeleteUnselectedSessions() {
+        for (Session session : sessions) {
+            sessionsPresenter.getSessionSelected(session);
+        }
+        for (Session session : sessionsPresenter.getSelectedMap().keySet()) {
+            when(sessionRepository.deleteSession(session.getId())).thenReturn(Completable.error(Logger.TEST_ERROR));
+        }
 
-        assertFalse(SESSION.getSelected().get());
+        sessionsPresenter.deleteSessions(sessionsPresenter.getSelectedMap());
+
+        verify(sessionRepository, Mockito.never()).deleteSession(anyLong());
     }
 
     @Test
