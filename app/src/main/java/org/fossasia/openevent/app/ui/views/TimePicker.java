@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
+import org.fossasia.openevent.app.data.event.serializer.ObservableString;
 import org.fossasia.openevent.app.utils.DateUtils;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
@@ -23,8 +24,9 @@ public class TimePicker extends AbstractDateTimePicker {
     }
 
     public void setValue(String value) {
-        if (getValue().get() == null || !TextUtils.equals(getValue().get(), value)) {
-            getValue().set(value);
+        ObservableString observableValue = getValue();
+        if (observableValue.get() == null || !TextUtils.equals(observableValue.get(), value)) {
+            observableValue.set(value);
             String format = DateUtils.FORMAT_24H;
 
             bindTemporal(value, format, zonedDateTime ->
