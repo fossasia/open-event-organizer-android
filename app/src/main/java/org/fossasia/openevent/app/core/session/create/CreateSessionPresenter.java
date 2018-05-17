@@ -6,6 +6,11 @@ import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.data.session.SessionRepository;
 import org.fossasia.openevent.app.data.tracks.Track;
+import org.fossasia.openevent.app.utils.DateUtils;
+import org.fossasia.openevent.app.utils.StringUtils;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.format.DateTimeParseException;
 
 import javax.inject.Inject;
 
@@ -20,6 +25,12 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
     @Inject
     public CreateSessionPresenter(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
+
+        LocalDateTime current = LocalDateTime.now();
+
+        String isoDate = DateUtils.formatDateToIso(current);
+        session.getStartsAt().set(isoDate);
+        session.getEndsAt().set(isoDate);
     }
 
     @Override
@@ -31,13 +42,42 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
         return session;
     }
 
+    private boolean verify() {
+        try {
+            ZonedDateTime start = DateUtils.getDate(session.getStartsAt().get());
+            ZonedDateTime end = DateUtils.getDate(session.getEndsAt().get());
+
+            if (!end.isAfter(start)) {
+                getView().showError("End time should be after start time");
+                return false;
+            }
+            return true;
+        } catch (DateTimeParseException pe) {
+            getView().showError("Please enter date in correct format");
+            return false;
+        }
+    }
+
+    protected void nullifyEmptyFields(Session session) {
+        session.setSlidesUrl(StringUtils.emptyToNull(session.getSlidesUrl()));
+        session.setAudioUrl(StringUtils.emptyToNull(session.getAudioUrl()));
+        session.setVideoUrl(StringUtils.emptyToNull(session.getVideoUrl()));
+        session.setSignupUrl(StringUtils.emptyToNull(session.getSignupUrl()));
+    }
+
     public void createSession(long trackId, long eventId) {
+        if (!verify())
+            return;
+
         Track track = new Track();
         Event event = new Event();
+
         track.setId(trackId);
         event.setId(eventId);
         session.setTrack(track);
         session.setEvent(event);
+
+        nullifyEmptyFields(session);
 
         sessionRepository
             .createSession(session)
