@@ -29,8 +29,8 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
         LocalDateTime current = LocalDateTime.now();
 
         String isoDate = DateUtils.formatDateToIso(current);
-        session.getStartsAt().set(isoDate);
-        session.getEndsAt().set(isoDate);
+        session.setStartsAt(isoDate);
+        session.setEndsAt(isoDate);
     }
 
     @Override
@@ -44,8 +44,8 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
 
     private boolean verify() {
         try {
-            ZonedDateTime start = DateUtils.getDate(session.getStartsAt().get());
-            ZonedDateTime end = DateUtils.getDate(session.getEndsAt().get());
+            ZonedDateTime start = DateUtils.getDate(session.getStartsAt());
+            ZonedDateTime end = DateUtils.getDate(session.getEndsAt());
 
             if (!end.isAfter(start)) {
                 getView().showError("End time should be after start time");
