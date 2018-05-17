@@ -16,8 +16,6 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
 
     private final SessionRepository sessionRepository;
     private final Session session = new Session();
-    private final Track track = new Track();
-    private final Event event = new Event();
 
     @Inject
     public CreateSessionPresenter(SessionRepository sessionRepository) {
@@ -34,6 +32,8 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
     }
 
     public void createSession(long trackId, long eventId) {
+        Track track = new Track();
+        Event event = new Event();
         track.setId(trackId);
         event.setId(eventId);
         session.setTrack(track);
