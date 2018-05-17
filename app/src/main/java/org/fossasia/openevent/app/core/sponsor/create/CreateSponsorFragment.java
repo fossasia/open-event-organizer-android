@@ -3,14 +3,20 @@ package org.fossasia.openevent.app.core.sponsor.create;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.databinding.SponsorCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.utils.ValidateUtils;
 
 import javax.inject.Inject;
 
@@ -49,6 +55,9 @@ public class CreateSponsorFragment extends BaseBottomSheetFragment<CreateSponsor
         super.onStart();
         getPresenter().attach(this);
         binding.setSponsor(getPresenter().getSponsor());
+
+        validate(binding.form.sponsorSponsorUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+        validate(binding.form.sponsorSponsorLogoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
     }
 
     @Override
@@ -69,5 +78,35 @@ public class CreateSponsorFragment extends BaseBottomSheetFragment<CreateSponsor
     @Override
     protected Lazy<CreateSponsorPresenter> getPresenterProvider() {
         return presenterProvider;
+    }
+
+    public void validate(TextInputLayout textInputLayout, Function<String, Boolean> validationReference, String errorResponse) {
+        textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Nothing here
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (validationReference.apply(charSequence.toString())) {
+                    textInputLayout.setError(null);
+                    textInputLayout.setErrorEnabled(false);
+                } else {
+                    textInputLayout.setErrorEnabled(true);
+                    textInputLayout.setError(errorResponse);
+                }
+                if (TextUtils.isEmpty(charSequence)) {
+                    textInputLayout.setError(null);
+                    textInputLayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Nothing here
+            }
+        });
     }
 }
