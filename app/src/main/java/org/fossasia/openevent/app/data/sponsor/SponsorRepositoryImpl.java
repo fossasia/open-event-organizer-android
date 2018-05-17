@@ -2,11 +2,15 @@ package org.fossasia.openevent.app.data.sponsor;
 
 import android.support.annotation.NonNull;
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Repository;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class SponsorRepositoryImpl implements SponsorRepository {
 
@@ -38,6 +42,76 @@ public class SponsorRepositoryImpl implements SponsorRepository {
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Sponsor> getSponsor(long sponsorId, boolean reload) {
+        Observable<Sponsor> diskObservable = Observable.defer(() ->
+            repository
+                .getItems(Sponsor.class, Sponsor_Table.id.eq(sponsorId)).take(1)
+        );
+
+        Observable<Sponsor> networkObservable = Observable.defer(() ->
+            sponsorApi.getSponsor(sponsorId)
+                .doOnNext(sponsor -> repository
+                    .save(Sponsor.class, sponsor)
+                    .subscribe()));
+
+        return repository
+            .observableOf(Sponsor.class)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
+    @Override
+    public Observable<Sponsor> createSponsor(Sponsor sponsor) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return sponsorApi
+            .postSponsor(sponsor)
+            .doOnNext(created -> {
+                created.setEvent(sponsor.getEvent());
+                repository
+                    .save(Sponsor.class, created)
+                    .subscribe();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Observable<Sponsor> updateSponsor(Sponsor sponsor) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return sponsorApi
+            .updateSponsor(sponsor.getId(), sponsor)
+            .doOnNext(updatedSponsor -> repository
+                .update(Sponsor.class, updatedSponsor)
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable deleteSponsor(long id) {
+        if (!repository.isConnected()) {
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return sponsorApi.deleteSponsor(id)
+            .doOnComplete(() -> repository
+                .delete(Sponsor.class, Sponsor_Table.id.eq(id))
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

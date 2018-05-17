@@ -171,6 +171,13 @@
     <string name="event_statistics">Event Statistics</string>
     <string name="speakers">Speakers</string>
     <string name="sponsors">Sponsors</string>
+    <string name="create_sponsor">Create Sponsor</string>
+    <string name="sponsor_name">Sponsor Name</string>
+    <string name="sponsor_description">Description</string>
+    <string name="sponsor_url">URL</string>
+    <string name="sponsor_logo_url">Logo URL</string>
+    <string name="sponsor_level">Level</string>
+    <string name="sponsor_type">Type</string>
     <string name="sessions">Sessions</string>
     <string name="sort_by">Sort By</string>
     <string name="sort_by_name">Name</string>
@@ -231,6 +238,8 @@
     <string name="title">Title</string>
     <string name="session_abstract">Abstract</string>
     <string name="speakers_photo">Speaker\'s Photo</string>
+    <string name="edit_sponsor">Edit Sponsor</string>
+    <string name="delete_sponsor">Delete Sponsor</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

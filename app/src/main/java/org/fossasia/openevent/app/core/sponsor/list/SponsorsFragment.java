@@ -1,9 +1,11 @@
 package org.fossasia.openevent.app.core.sponsor.list;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +17,8 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.core.sponsor.create.CreateSponsorFragment;
+import org.fossasia.openevent.app.core.sponsor.update.UpdateSponsorFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.databinding.SponsorsFragmentBinding;
@@ -30,6 +34,7 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
 
     private Context context;
     private long eventId;
+    private AlertDialog deleteDialog;
 
     @Inject
     ContextUtils utilModel;
@@ -64,8 +69,14 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.sponsors_fragment, container, false);
-        binding.createSponsorFab.setOnClickListener(view -> ViewUtils.showSnackbar(binding.sponsorsRecyclerView, "To be implemented"));
+        binding.createSponsorFab.setOnClickListener(view -> openCreateSponsorFragment());
         return binding.getRoot();
+    }
+
+    public void openCreateSponsorFragment() {
+
+        BottomSheetDialogFragment bottomSheetDialogFragment = CreateSponsorFragment.newInstance();
+        bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 
     @Override
@@ -141,5 +152,34 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     @Override
     public void showEmptyView(boolean show) {
         ViewUtils.showView(binding.emptyView, show);
+    }
+
+    @Override
+    public void showSponsorDeleted(String message) {
+        ViewUtils.showSnackbar(binding.getRoot(), message);
+    }
+
+    @Override
+    public void openUpdateSponsorFragment(long sponsorId) {
+        BottomSheetDialogFragment bottomSheetDialogFragment = UpdateSponsorFragment.newInstance(sponsorId);
+        bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+    }
+
+    @Override
+    public void showAlertDialog(long sponsorId) {
+        if (deleteDialog == null)
+            deleteDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.delete)
+                .setMessage(String.format(getString(R.string.delete_confirmation_message),
+                    getString(R.string.sponsors)))
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    getPresenter().deleteSponsor(sponsorId);
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create();
+
+        deleteDialog.show();
     }
 }
