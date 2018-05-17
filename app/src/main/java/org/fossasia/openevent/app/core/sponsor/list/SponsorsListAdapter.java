@@ -27,10 +27,10 @@ public class SponsorsListAdapter extends RecyclerView.Adapter<SponsorsViewHolder
     public SponsorsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         SponsorsViewHolder sponsorsViewHolder = new SponsorsViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.sponsor_item, viewGroup, false));
+                R.layout.sponsor_item, viewGroup, false), sponsorsPresenter);
 
-        sponsorsViewHolder.setEditAction(sponsorsPresenter::updateSponsor);
-        sponsorsViewHolder.setDeleteAction(sponsorsPresenter::showDeleteAlertDialog);
+        sponsorsViewHolder.setLongClickAction(sponsorsPresenter::longClick);
+        sponsorsViewHolder.setClickAction(sponsorsPresenter::click);
 
         return sponsorsViewHolder;
     }

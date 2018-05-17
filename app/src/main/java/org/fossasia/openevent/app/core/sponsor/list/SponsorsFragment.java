@@ -1,16 +1,19 @@
 package org.fossasia.openevent.app.core.sponsor.list;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,6 +36,8 @@ import dagger.Lazy;
 public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements SponsorsView {
 
     private Context context;
+    private boolean toolbarEdit;
+    private boolean toolbarDelete;
     private long eventId;
     private AlertDialog deleteDialog;
 
@@ -61,6 +66,8 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
         super.onCreate(savedInstanceState);
 
         context = getContext();
+        setHasOptionsMenu(true);
+
         if (getArguments() != null)
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
@@ -69,7 +76,10 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.sponsors_fragment, container, false);
-        binding.createSponsorFab.setOnClickListener(view -> openCreateSponsorFragment());
+        binding.createSponsorFab.setOnClickListener(view -> {
+
+            openCreateSponsorFragment();
+        });
         return binding.getRoot();
     }
 
@@ -124,6 +134,60 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.del:
+                showDeleteDialog();
+                break;
+            case R.id.edit:
+                getPresenter().updateSponsor();
+                break;
+            default:
+                // No implementation
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItemEdit = menu.findItem(R.id.edit);
+        MenuItem menuItemDelete = menu.findItem(R.id.del);
+        menuItemEdit.setVisible(toolbarEdit);
+        menuItemDelete.setVisible(toolbarDelete);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_sponsors, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void showDeleteDialog() {
+        if (deleteDialog == null)
+            deleteDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.delete)
+                .setMessage(String.format(getString(R.string.delete_confirmation_message),
+                    getString(R.string.sponsors)))
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    getPresenter().deleteSelectedSponsors();
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create();
+
+        deleteDialog.show();
+    }
+
+    @Override
+    public void changeToolbarMode(boolean toolbarEdit, boolean toolbarDelete) {
+        this.toolbarEdit = toolbarEdit;
+        this.toolbarDelete = toolbarDelete;
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
     public Lazy<SponsorsPresenter> getPresenterProvider() {
         return sponsorsPresenter;
     }
@@ -155,7 +219,7 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     }
 
     @Override
-    public void showSponsorDeleted(String message) {
+    public void showMessage(String message) {
         ViewUtils.showSnackbar(binding.getRoot(), message);
     }
 
@@ -163,23 +227,5 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     public void openUpdateSponsorFragment(long sponsorId) {
         BottomSheetDialogFragment bottomSheetDialogFragment = UpdateSponsorFragment.newInstance(sponsorId);
         bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
-    }
-
-    @Override
-    public void showAlertDialog(long sponsorId) {
-        if (deleteDialog == null)
-            deleteDialog = new AlertDialog.Builder(context)
-                .setTitle(R.string.delete)
-                .setMessage(String.format(getString(R.string.delete_confirmation_message),
-                    getString(R.string.sponsors)))
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    getPresenter().deleteSponsor(sponsorId);
-                })
-                .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .create();
-
-        deleteDialog.show();
     }
 }
