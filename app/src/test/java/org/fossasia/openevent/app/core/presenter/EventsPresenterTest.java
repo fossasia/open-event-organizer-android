@@ -1,13 +1,12 @@
 package org.fossasia.openevent.app.core.presenter;
 
-import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.user.User;
-import org.fossasia.openevent.app.data.event.serializer.ObservableString;
-import org.fossasia.openevent.app.data.event.EventRepository;
-import org.fossasia.openevent.app.data.user.UserRepository;
-import org.fossasia.openevent.app.utils.DateUtils;
 import org.fossasia.openevent.app.core.event.list.EventsPresenter;
 import org.fossasia.openevent.app.core.event.list.EventsView;
+import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.event.EventRepository;
+import org.fossasia.openevent.app.data.user.User;
+import org.fossasia.openevent.app.data.user.UserRepository;
+import org.fossasia.openevent.app.utils.DateUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -45,8 +44,7 @@ public class EventsPresenterTest {
 
     private EventsPresenter eventsActivityPresenter;
 
-    private static final String DATE_STRING = DateUtils.formatDateToIso(LocalDateTime.now());
-    private static final ObservableString DATE = new ObservableString(DATE_STRING);
+    private static final String DATE = DateUtils.formatDateToIso(LocalDateTime.now());
 
     private static final List<Event> EVENT_LIST = Arrays.asList(
         Event.builder().id(12L).startsAt(DATE).endsAt(DATE).build(),

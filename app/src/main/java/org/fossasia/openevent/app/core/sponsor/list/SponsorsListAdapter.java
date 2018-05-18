@@ -15,17 +15,24 @@ import java.util.List;
 public class SponsorsListAdapter extends RecyclerView.Adapter<SponsorsViewHolder> {
 
     private final List<Sponsor> sponsors;
+    private final SponsorsPresenter sponsorsPresenter;
 
     public SponsorsListAdapter(SponsorsPresenter sponsorsPresenter) {
+        this.sponsorsPresenter = sponsorsPresenter;
         this.sponsors = sponsorsPresenter.getSponsors();
     }
 
     @NonNull
     @Override
     public SponsorsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        return new SponsorsViewHolder(
+        SponsorsViewHolder sponsorsViewHolder = new SponsorsViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.sponsor_item, viewGroup, false));
+
+        sponsorsViewHolder.setEditAction(sponsorsPresenter::updateSponsor);
+        sponsorsViewHolder.setDeleteAction(sponsorsPresenter::showDeleteAlertDialog);
+
+        return sponsorsViewHolder;
     }
 
     @Override

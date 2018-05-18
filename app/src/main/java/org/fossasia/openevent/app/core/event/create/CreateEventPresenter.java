@@ -36,8 +36,8 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
         LocalDateTime current = LocalDateTime.now();
 
         String isoDate = DateUtils.formatDateToIso(current);
-        event.getStartsAt().set(isoDate);
-        event.getEndsAt().set(isoDate);
+        event.setStartsAt(isoDate);
+        event.setEndsAt(isoDate);
 
         countryCurrencyMap = currencyUtils.getCountryCurrencyMap();
         countryList = new ArrayList<>(countryCurrencyMap.keySet());
@@ -65,8 +65,8 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
 
     private boolean verify() {
         try {
-            ZonedDateTime start = DateUtils.getDate(event.getStartsAt().get());
-            ZonedDateTime end = DateUtils.getDate(event.getEndsAt().get());
+            ZonedDateTime start = DateUtils.getDate(event.getStartsAt());
+            ZonedDateTime end = DateUtils.getDate(event.getEndsAt());
 
             if (!end.isAfter(start)) {
                 getView().showError("End time should be after start time");

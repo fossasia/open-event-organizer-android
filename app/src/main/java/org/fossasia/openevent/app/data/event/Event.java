@@ -3,9 +3,7 @@ package org.fossasia.openevent.app.data.event;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
@@ -14,12 +12,9 @@ import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
-import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
-import org.fossasia.openevent.app.data.event.serializer.ObservableString;
-import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.common.model.HeaderProvider;
-import org.fossasia.openevent.app.data.event.serializer.ObservableStringDeserializer;
-import org.fossasia.openevent.app.data.event.serializer.ObservableStringSerializer;
+import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
+import org.fossasia.openevent.app.data.ticket.Ticket;
 
 import java.util.List;
 
@@ -83,6 +78,8 @@ public class Event implements Comparable<Event>, HeaderProvider {
     public String bankDetails;
     public String chequeDetails;
     public String identifier;
+    public String startsAt;
+    public String endsAt;
     public boolean isComplete;
     public Double latitude;
     public Double longitude;
@@ -98,14 +95,6 @@ public class Event implements Comparable<Event>, HeaderProvider {
     public boolean isTicketingEnabled;
     public boolean isTaxEnabled;
     public boolean isMapShown;
-
-    @JsonSerialize(using = ObservableStringSerializer.class)
-    @JsonDeserialize(using = ObservableStringDeserializer.class)
-    public ObservableString startsAt = new ObservableString();
-    @JsonSerialize(using = ObservableStringSerializer.class)
-    @JsonDeserialize(using = ObservableStringDeserializer.class)
-    public ObservableString endsAt = new ObservableString();
-
 
     @ColumnIgnore
     @Relationship("tickets")
