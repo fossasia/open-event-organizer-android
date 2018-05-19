@@ -7,11 +7,13 @@
 
         <import type="android.view.View" />
 
-        <import type="org.fossasia.openevent.app.core.sponsor.list.SponsorsPresenter"/>
-
         <variable
             name="sponsor"
             type="org.fossasia.openevent.app.data.sponsor.Sponsor" />
+
+        <variable
+            name="sponsorsPresenter"
+            type="org.fossasia.openevent.app.core.sponsor.list.SponsorsPresenter"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -26,7 +28,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_normal">
+            android:padding="@dimen/spacing_normal"
+            android:background="@{ sponsorsPresenter.isSponsorSelected(sponsor.getId()) ? @color/blue_200 : 0 }"
+            android:foreground="?attr/selectableItemBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -40,12 +44,13 @@
                     app:imageUrl='@{ sponsor.getLogoUrl }'/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_small"
                     android:text='@{ sponsor.getName() }'
                     style="@style/TextAppearance.AppCompat.Headline"
-                    tools:text="Sponsor Name"/>
+                    tools:text="Sponsor Name"
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 

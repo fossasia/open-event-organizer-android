@@ -1,48 +1,48 @@
-package org.fossasia.openevent.app.core.faq.create;
+package org.fossasia.openevent.app.core.sponsor.create;
 
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.faq.Faq;
-import org.fossasia.openevent.app.data.faq.FaqRepository;
+import org.fossasia.openevent.app.data.sponsor.Sponsor;
+import org.fossasia.openevent.app.data.sponsor.SponsorRepository;
 
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneous;
 
-public class CreateFaqPresenter extends AbstractBasePresenter<CreateFaqView> {
+public class CreateSponsorPresenter extends AbstractBasePresenter<CreateSponsorView> {
 
-    private final FaqRepository faqRepository;
-    private final Faq faq = new Faq();
+    private final SponsorRepository sponsorRepository;
+    private final Sponsor sponsor = new Sponsor();
 
     @Inject
-    public CreateFaqPresenter(FaqRepository faqRepository) {
-        this.faqRepository = faqRepository;
+    public CreateSponsorPresenter(SponsorRepository sponsorRepository) {
+        this.sponsorRepository = sponsorRepository;
     }
 
     @Override
     public void start() {
-        // Nothing to do
+        // nothing to do
     }
 
-    public Faq getFaq() {
-        return faq;
+    public Sponsor getSponsor() {
+        return sponsor;
     }
 
-    public void createFaq() {
+    public void createSponsor() {
         long eventId = ContextManager.getSelectedEvent().getId();
         Event event = new Event();
         event.setId(eventId);
-        faq.setEvent(event);
+        sponsor.setEvent(event);
 
-        faqRepository
-            .createFaq(faq)
+        sponsorRepository
+            .createSponsor(sponsor)
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneous(getView()))
-            .subscribe(createdFaq -> {
-                getView().onSuccess("Faq Created");
+            .subscribe(createdSponsor -> {
+                getView().onSuccess("Sponsor Created");
                 getView().dismiss();
             }, Logger::logError);
     }

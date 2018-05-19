@@ -5,7 +5,7 @@
         <import type="android.view.View" />
         <variable
             name="date"
-            type="org.fossasia.openevent.app.data.event.serializer.ObservableString" />
+            type="String" />
         <variable
             name="label"
             type="String"/>
@@ -42,19 +42,19 @@
                 android:orientation="horizontal"
                 android:visibility="@{ picker.checked ? View.VISIBLE : View.GONE }">
 
-                <Button
+                <org.fossasia.openevent.app.ui.views.DatePicker
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/purple_500"
-                    app:date="@{ date }" />
+                    app:value="@={ date }" />
 
-                <Button
+                <org.fossasia.openevent.app.ui.views.TimePicker
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/red_500"
-                    app:time="@{ date }" />
+                    app:value="@={ date }" />
 
             </LinearLayout>
 
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@{ label }"
                     android:inputType="datetime"
-                    android:text="@{ date }"
+                    android:text="@={ date }"
                     app:validateEmpty="@{true}" />
 
             </android.support.design.widget.TextInputLayout>

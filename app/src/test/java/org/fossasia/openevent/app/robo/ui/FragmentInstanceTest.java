@@ -14,7 +14,6 @@ import org.fossasia.openevent.app.core.settings.SettingsFragment;
 import org.fossasia.openevent.app.core.ticket.create.CreateTicketFragment;
 import org.fossasia.openevent.app.core.ticket.list.TicketsFragment;
 import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.event.serializer.ObservableString;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -44,7 +43,7 @@ public class FragmentInstanceTest<T extends Fragment> extends BaseParameterTest 
     private void setUpMockEvent() {
         Event event = new Event();
         event.timezone = "UTC";
-        event.endsAt = new ObservableString("2018-12-14T23:59:59.123456+00:00");
+        event.endsAt = "2018-12-14T23:59:59.123456+00:00";
         ContextManager.setSelectedEvent(event);
     }
 

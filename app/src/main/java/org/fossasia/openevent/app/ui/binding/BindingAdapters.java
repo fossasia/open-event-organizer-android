@@ -5,6 +5,8 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.BindingConversion;
+import android.databinding.InverseBindingAdapter;
+import android.databinding.InverseBindingListener;
 import android.databinding.InverseMethod;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
@@ -20,8 +22,10 @@ import android.widget.ImageView;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.utils.Utils;
 import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.ui.views.DatePicker;
+import org.fossasia.openevent.app.ui.views.TimePicker;
+import org.fossasia.openevent.app.utils.Utils;
 
 @SuppressWarnings("PMD.AvoidCatchingGenericException")
 public final class BindingAdapters {
@@ -152,4 +156,27 @@ public final class BindingAdapters {
         });
     }
 
+    @BindingAdapter(value = "valueAttrChanged")
+    public static void setDateChangeListener(DatePicker datePicker, final InverseBindingListener listener) {
+        if (listener != null) {
+            datePicker.setOnDateChangedListener(newDate -> listener.onChange());
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "value")
+    public static String getRealValue(DatePicker datePicker) {
+        return datePicker.getValue().get();
+    }
+
+    @BindingAdapter(value = "valueAttrChanged")
+    public static void setTimeListener(TimePicker timePicker, final InverseBindingListener listener) {
+        if (listener != null) {
+            timePicker.setOnDateChangedListener(newDate -> listener.onChange());
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "value")
+    public static String getRealValue(TimePicker timePicker) {
+        return timePicker.getValue().get();
+    }
 }
