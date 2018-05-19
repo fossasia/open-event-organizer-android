@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import org.fossasia.openevent.app.common.ContextManager;
+import org.fossasia.openevent.app.common.Pipe;
 import org.fossasia.openevent.app.data.Bus;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.databinding.EventLayoutBinding;
@@ -21,12 +22,13 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
     private final List<Event> events;
     private final Bus bus;
-
+    private final EventsPresenter eventsPresenter;
     private boolean sortByName;
 
-    EventsListAdapter(List<Event> events, Bus bus) {
+    EventsListAdapter(List<Event> events, Bus bus, EventsPresenter eventsPresenter) {
         this.events = events;
         this.bus = bus;
+        this.eventsPresenter = eventsPresenter;
     }
 
     @Override
@@ -34,7 +36,11 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 
         EventLayoutBinding binding = EventLayoutBinding.inflate(layoutInflater, parent, false);
-        return new EventRecyclerViewHolder(binding);
+        EventRecyclerViewHolder eventRecyclerViewHolder = new EventRecyclerViewHolder(binding);
+
+        eventRecyclerViewHolder.onItemLongClick(eventsPresenter::toolbarEditMode);
+        eventRecyclerViewHolder.onItemClick(eventsPresenter::resetToDefaultState);
+        return eventRecyclerViewHolder;
     }
 
     @Override
@@ -81,6 +87,8 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
         private final EventLayoutBinding binding;
         private Event event;
         private final long selectedEventId;
+        private Pipe<Event> longClickAction;
+        private Runnable onClick;
 
         EventRecyclerViewHolder(EventLayoutBinding binding) {
             super(binding.getRoot());
@@ -88,7 +96,21 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
             binding
                 .getRoot()
-                .setOnClickListener(view -> bus.pushSelectedEvent(event));
+                .setOnClickListener(view -> {
+                    if (eventsPresenter.isEditMode())
+                        onClick.run();
+                    else
+                        bus.pushSelectedEvent(event);
+                });
+
+            binding
+                .getRoot()
+                .setOnLongClickListener(view -> {
+                    if (longClickAction != null) {
+                        longClickAction.push(event);
+                    }
+                    return true;
+                });
 
             final Event selectedEvent = ContextManager.getSelectedEvent();
             selectedEventId = selectedEvent == null ? -1 : selectedEvent.getId();
@@ -99,8 +121,16 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
             binding.setEvent(event);
             binding.setSelectedEventId(selectedEventId);
             binding.executePendingBindings();
+            binding.setEventsPresenter(eventsPresenter);
         }
 
+        public void onItemLongClick(Pipe<Event> longClickAction) {
+            this.longClickAction = longClickAction;
+        }
+
+        public void onItemClick(Runnable onClick) {
+            this.onClick = onClick;
+        }
     }
 
 }

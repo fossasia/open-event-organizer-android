@@ -12,38 +12,40 @@
         <variable
             name="selectedEventId"
             type="Long" />
-    </data>
+        <variable
+            name="eventsPresenter"
+            type="org.fossasia.openevent.app.core.event.list.EventsPresenter" />
+        </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@{ Event.STATE_DRAFT.equalsIgnoreCase(event.state) ? @color/event_state_draft : android.R.attr.selectableItemBackground }"
+        android:background="@{ eventsPresenter.getEventsSelected(event) ? @color/blue_200 : (Event.STATE_DRAFT.equalsIgnoreCase(event.state)) ? @color/event_state_draft : android.R.attr.selectableItemBackground}"
         android:orientation="horizontal">
 
         <FrameLayout
             android:layout_width="@dimen/spacing_small"
             android:layout_height="match_parent"
-            android:background="@{ event.id.equals(selectedEventId) ? @color/color_accent : @color/color_top_surface }"/>
+            android:background="@{ event.id.equals(selectedEventId) ? @color/color_accent : @color/color_top_surface }" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingStart="@dimen/spacing_small"
-            android:paddingLeft="@dimen/spacing_small"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:paddingRight="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_small"
+            android:orientation="horizontal"
             android:paddingBottom="@dimen/spacing_small"
-            android:background="?android:attr/selectableItemBackground">
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingLeft="@dimen/spacing_small"
+            android:paddingRight="@dimen/spacing_normal"
+            android:paddingStart="@dimen/spacing_small"
+            android:paddingTop="@dimen/spacing_small">
 
             <ImageView
                 android:layout_width="@dimen/image_small"
                 android:layout_height="@dimen/image_small"
                 android:contentDescription="@string/event_thumbnail"
                 app:circleImageUrl="@{ event.thumbnailImageUrl }"
-                app:placeholder="@{ @drawable/ic_photo_shutter }"/>
+                app:placeholder="@{ @drawable/ic_photo_shutter }" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,16 +57,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@{event.name}"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textColor="@android:color/black"
+                    android:layout_weight="14"
+                    android:paddingBottom="@dimen/spacing_extra_small"
                     android:paddingEnd="@dimen/spacing_small"
                     android:paddingLeft="@dimen/spacing_medium"
                     android:paddingRight="@dimen/spacing_small"
                     android:paddingStart="@dimen/spacing_medium"
-                    android:paddingBottom="@dimen/spacing_extra_small"
                     android:paddingTop="@dimen/spacing_tiny"
-                    android:layout_weight="14"/>
+                    android:text="@{event.name}"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_normal" />
 
                 <FrameLayout
                     android:id="@+id/draft_frame"
@@ -74,15 +76,15 @@
                     android:visibility='@{ Event.STATE_DRAFT.equalsIgnoreCase(event.state) ? View.VISIBLE : View.GONE }'>
 
                     <ImageView
-                        android:layout_gravity="end|bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
                         android:contentDescription="@string/save_icon"
-                        app:srcCompat="@drawable/ic_save"
+                        android:paddingEnd="@dimen/spacing_small"
                         android:paddingLeft="@dimen/spacing_small"
-                        android:paddingStart="@dimen/spacing_small"
                         android:paddingRight="@dimen/spacing_small"
-                        android:paddingEnd="@dimen/spacing_small" />
+                        android:paddingStart="@dimen/spacing_small"
+                        app:srcCompat="@drawable/ic_save" />
 
                 </FrameLayout>
             </LinearLayout>
