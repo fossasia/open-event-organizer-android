@@ -17,14 +17,12 @@ import org.fossasia.openevent.app.data.event.Event;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
 @Builder
 @Type("sponsor")
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
-@EqualsAndHashCode(callSuper = false, exclude = { "sponsorDelegate", "checking" })
 @Table(database = OrgaDatabase.class, allFields = true)
 public class Sponsor {
 
