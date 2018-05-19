@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.common;
 
-import android.databinding.ObservableField;
+import androidx.databinding.ObservableField;
 
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.user.User;

@@ -1,13 +1,13 @@
 package org.fossasia.openevent.app.core.event.about;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +32,7 @@ import io.reactivex.disposables.CompositeDisposable;
 public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implements AboutEventVew {
 
     private AboutEventFragmentBinding binding;
-    private SwipeRefreshLayout refreshLayout;
+    private androidx.swiperefreshlayout.widget.SwipeRefreshLayout refreshLayout;
     private long eventId;
     private static final String EVENT_ID = "id";
     private boolean creatingCopyright = true;

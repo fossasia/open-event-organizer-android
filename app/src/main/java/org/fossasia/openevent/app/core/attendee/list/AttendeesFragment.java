@@ -2,16 +2,16 @@ package org.fossasia.openevent.app.core.attendee.list;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -70,7 +70,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     private ItemAdapter<Attendee> fastItemAdapter;
     private FragmentAttendeesBinding binding;
-    private SwipeRefreshLayout refreshLayout;
+    private androidx.swiperefreshlayout.widget.SwipeRefreshLayout refreshLayout;
     private SearchView searchView;
 
     private boolean initialized;
@@ -244,8 +244,8 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             fastAdapter.setHasStableIds(true);
             fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
 
-            RecyclerView recyclerView = binding.rvAttendeeList;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            androidx.recyclerview.widget.RecyclerView recyclerView = binding.rvAttendeeList;
+            recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(context));
             recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(fastAdapter);

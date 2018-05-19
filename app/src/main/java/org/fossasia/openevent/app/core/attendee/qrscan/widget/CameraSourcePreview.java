@@ -3,7 +3,7 @@ package org.fossasia.openevent.app.core.attendee.qrscan.widget;
 import android.Manifest;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.support.annotation.RequiresPermission;
+import androidx.annotation.RequiresPermission;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;

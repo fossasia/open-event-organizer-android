@@ -10,7 +10,7 @@
             type="org.fossasia.openevent.app.data.user.User" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main_content"
         android:layout_width="match_parent"
@@ -22,22 +22,22 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <android.support.design.widget.AppBarLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:title='@{ user.firstName == null ? user.email : user.firstName + " " + user.lastName }'
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-            </android.support.design.widget.AppBarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
-            <android.support.v4.widget.SwipeRefreshLayout
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -46,7 +46,7 @@
                     layout="@layout/organizer_detail_layout"
                     bind:user="@{ user }" />
 
-            </android.support.v4.widget.SwipeRefreshLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </LinearLayout>
 
@@ -59,5 +59,5 @@
             <include layout="@layout/progressbar_layout" />
         </FrameLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

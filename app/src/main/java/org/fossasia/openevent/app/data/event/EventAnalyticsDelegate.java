@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.data.event;
 
-import android.databinding.ObservableFloat;
-import android.databinding.ObservableLong;
+import androidx.databinding.ObservableFloat;
+import androidx.databinding.ObservableLong;
 
 import lombok.Data;
 

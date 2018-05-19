@@ -1,12 +1,12 @@
 package org.fossasia.openevent.app.core.ticket.list.viewholder;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.fossasia.openevent.app.common.Pipe;
 import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.databinding.TicketLayoutBinding;
 
-public class TicketViewHolder extends RecyclerView.ViewHolder {
+public class TicketViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
     private final TicketLayoutBinding binding;
     private Ticket ticket;
 

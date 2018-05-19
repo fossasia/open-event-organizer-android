@@ -44,13 +44,13 @@
                 android:contentDescription="@string/create_event"
                 app:srcCompat="@drawable/ic_ticket" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_small"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                     android:text="@={ event.name }"
                     app:validateEmpty="@{true}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -108,7 +108,7 @@
                     android:contentDescription="@string/timezone"
                     app:srcCompat="@drawable/ic_clock" />
 
-                <android.support.v7.widget.AppCompatSpinner
+                <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/timezone_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -161,12 +161,12 @@
                     android:contentDescription="@string/searchable_location_name"
                     app:srcCompat="@drawable/ic_location" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/searchable_location_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                         android:inputType="text"
                         android:text="@={ event.searchableLocationName }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -192,12 +192,12 @@
                     android:contentDescription="@string/location_name"
                     app:srcCompat="@drawable/ic_location" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/location_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -205,7 +205,7 @@
                         android:inputType="text"
                         android:text="@={ event.locationName }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -223,12 +223,12 @@
                     android:contentDescription="@string/latitude"
                     app:srcCompat="@drawable/ic_location" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/latitude"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -236,7 +236,7 @@
                         android:inputType="numberDecimal"
                         android:text="@={ BindingAdapters.doubleToStr(event.latitude) }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -254,12 +254,12 @@
                     android:contentDescription="@string/longitude"
                     app:srcCompat="@drawable/ic_location" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/longitude"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -267,7 +267,7 @@
                         android:inputType="numberDecimal"
                         android:text="@={ BindingAdapters.doubleToStr(event.longitude) }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <CheckBox
@@ -320,13 +320,13 @@
                     android:contentDescription="@string/ticket_url"
                     app:srcCompat="@drawable/ic_link" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ticket_url_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ticket_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -334,7 +334,7 @@
                         android:inputType="text"
                         android:text="@={ event.ticketUrl }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -376,12 +376,12 @@
                     android:contentDescription="@string/organizer_name"
                     app:srcCompat="@drawable/ic_person" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/organizer_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -389,7 +389,7 @@
                         android:inputType="text"
                         android:text="@={ event.organizerName }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -406,12 +406,12 @@
                     android:contentDescription="@string/organizer_description"
                     app:srcCompat="@drawable/ic_info" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/organizer_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -419,7 +419,7 @@
                         android:inputType="text"
                         android:text="@={ event.organizerDescription }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
         </LinearLayout>
@@ -547,7 +547,7 @@
                         android:contentDescription="@string/payment_country"
                         app:srcCompat="@drawable/ic_coin" />
 
-                    <android.support.v7.widget.AppCompatSpinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/payment_country_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
@@ -577,7 +577,7 @@
                         android:contentDescription="@string/payment_currency"
                         app:srcCompat="@drawable/ic_coin" />
 
-                    <android.support.v7.widget.AppCompatSpinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/currency_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -630,14 +630,14 @@
                         android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByPaypal(checked) }"
                         android:text="@string/accept_payment_through_paypal" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/paypal_email_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/spacing_extra_small"
                         android:visibility="@{ paypalPayment.checked ? View.VISIBLE : View.GONE }">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/paypal_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -645,7 +645,7 @@
                             android:inputType="text"
                             android:text="@={ event.paypalEmail }" />
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -694,13 +694,13 @@
                             android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByCheque(checked) }"
                             android:text="@string/accept_payment_by_cheque" />
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/spacing_extra_small"
                             android:visibility="@{ chequePayment.checked ? View.VISIBLE : View.GONE }">
 
-                            <android.support.design.widget.TextInputEditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/cheque_details"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -708,7 +708,7 @@
                                 android:inputType="text"
                                 android:text="@={ event.chequeDetails }" />
 
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <CheckBox
                             android:id="@+id/bank_payment"
@@ -717,13 +717,13 @@
                             android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByBank(checked) }"
                             android:text="@string/accept_payment_by_bank_transfer" />
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/spacing_extra_small"
                             android:visibility="@{ bankPayment.checked ? View.VISIBLE : View.GONE }">
 
-                            <android.support.design.widget.TextInputEditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/bank_details"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -731,7 +731,7 @@
                                 android:inputType="text"
                                 android:text="@={ event.bankDetails }" />
 
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <CheckBox
                             android:id="@+id/onsite_payment"
@@ -740,13 +740,13 @@
                             android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayOnsite(checked) }"
                             android:text="@string/accept_payment_at_the_event_onsite" />
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/spacing_extra_small"
                             android:visibility="@{ onsitePayment.checked ? View.VISIBLE : View.GONE }">
 
-                            <android.support.design.widget.TextInputEditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/onsite_details"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -754,7 +754,7 @@
                                 android:inputType="text"
                                 android:text="@={ event.onsiteDetails }" />
 
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -790,13 +790,13 @@
                     android:contentDescription="@string/logo_url"
                     app:srcCompat="@drawable/ic_photo" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/logo_url_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/logo_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -804,7 +804,7 @@
                         android:inputType="text"
                         android:text="@={ event.logoUrl }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -820,7 +820,7 @@
                     android:contentDescription="@string/original_image_url"
                     app:srcCompat="@drawable/ic_photo" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/original_image_url_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -828,7 +828,7 @@
                     android:paddingRight="@dimen/spacing_extra_small"
                     android:paddingBottom="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/original_image_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -836,7 +836,7 @@
                         android:inputType="text"
                         android:text="@={ event.originalImageUrl }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
         </LinearLayout>
@@ -911,12 +911,12 @@
                     android:contentDescription="@string/description"
                     app:srcCompat="@drawable/ic_info" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -924,7 +924,7 @@
                         android:inputType="text"
                         android:text="@={ event.description }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -940,13 +940,13 @@
                     android:contentDescription="@string/external_event_url"
                     app:srcCompat="@drawable/ic_link" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/external_event_url_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/external_event_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -954,7 +954,7 @@
                         android:inputType="textWebEmailAddress"
                         android:text="@={ event.externalEventUrl }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -987,12 +987,12 @@
                     android:contentDescription="@string/code_of_conduct"
                     app:srcCompat="@drawable/ic_gavel" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/code_of_conduct"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1000,7 +1000,7 @@
                         android:inputType="text"
                         android:text="@={ event.codeOfConduct }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

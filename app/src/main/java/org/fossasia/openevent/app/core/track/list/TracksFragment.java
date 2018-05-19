@@ -1,16 +1,16 @@
 package org.fossasia.openevent.app.core.track.list;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +66,7 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
         binding = DataBindingUtil.inflate(inflater, R.layout.tracks_fragment, container, false);
 
         binding.createTrackFab.setOnClickListener(view -> {
-            BottomSheetDialogFragment bottomSheetDialogFragment = CreateTrackFragment.newInstance();
+            com.google.android.material.bottomsheet.BottomSheetDialogFragment bottomSheetDialogFragment = CreateTrackFragment.newInstance();
             bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
         });
 
@@ -99,7 +99,7 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
         RecyclerView recyclerView = binding.tracksRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(tracksAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setItemAnimator(new androidx.recyclerview.widget.DefaultItemAnimator());
     }
 
     private void setupRefreshListener() {
@@ -169,7 +169,7 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
 
     @Override
     public void openUpdateTrackFragment(long trackId) {
-        BottomSheetDialogFragment bottomSheetDialogFragment = UpdateTrackFragment.newInstance(trackId);
+        com.google.android.material.bottomsheet.BottomSheetDialogFragment bottomSheetDialogFragment = UpdateTrackFragment.newInstance(trackId);
         bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 

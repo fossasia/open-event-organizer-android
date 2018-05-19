@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.sponsor.list.viewholder;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import org.fossasia.openevent.app.common.Pipe;

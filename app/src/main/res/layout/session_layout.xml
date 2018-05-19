@@ -14,7 +14,7 @@
             type="org.fossasia.openevent.app.data.session.Session" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_small">
@@ -77,5 +77,5 @@
 
             </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

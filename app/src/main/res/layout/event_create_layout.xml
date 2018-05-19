@@ -14,7 +14,7 @@
             type="org.fossasia.openevent.app.data.event.Event" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,27 +25,27 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <android.support.design.widget.AppBarLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:title="Event" />
 
-            </android.support.design.widget.AppBarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
-            <android.support.design.widget.CoordinatorLayout
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/color_top_surface">
 
-                <android.support.v4.widget.NestedScrollView
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -53,7 +53,7 @@
                         android:id="@+id/form"
                         layout="@layout/event_create_form"
                         bind:event="@{event}" />
-                </android.support.v4.widget.NestedScrollView>
+                </androidx.core.widget.NestedScrollView>
 
                 <FrameLayout
                     android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
                     android:layout_marginRight="@dimen/spacing_normal"
                     android:layout_marginBottom="@dimen/spacing_normal">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/submit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -89,8 +89,8 @@
                     </FrameLayout>
 
                 </FrameLayout>
-            </android.support.design.widget.CoordinatorLayout>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         </LinearLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

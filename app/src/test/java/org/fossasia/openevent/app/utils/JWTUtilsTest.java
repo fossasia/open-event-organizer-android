@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.utils;
 
-import android.support.v4.util.SparseArrayCompat;
+import androidx.collection.SparseArrayCompat;
 
 import org.json.JSONException;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class JWTUtilsTest {
 
     @Test
     public void shouldParseJWT() {
-        SparseArrayCompat<String> decoded = JWTUtils.decode(TOKEN);
+        androidx.collection.SparseArrayCompat<String> decoded = JWTUtils.decode(TOKEN);
 
         assertEquals(HEADER, decoded.get(0));
         assertEquals(BODY, decoded.get(1));

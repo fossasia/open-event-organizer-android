@@ -1,9 +1,9 @@
 package org.fossasia.openevent.app.core.organizer.detail;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import org.fossasia.openevent.app.R;
@@ -16,10 +16,10 @@ import dagger.android.support.HasSupportFragmentInjector;
 
 public class OrganizerDetailActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
-    private final FragmentManager fragmentManager = getSupportFragmentManager();
+    private final androidx.fragment.app.FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+    DispatchingAndroidInjector<androidx.fragment.app.Fragment> dispatchingAndroidInjector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class OrganizerDetailActivity extends AppCompatActivity implements HasSup
     }
 
     @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
+    public AndroidInjector<androidx.fragment.app.Fragment> supportFragmentInjector() {
         return dispatchingAndroidInjector;
     }
 }

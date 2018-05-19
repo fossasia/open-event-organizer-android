@@ -42,12 +42,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_ticket" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                     android:text="@={ ticket.name }"
                     app:validateEmpty="@{true}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <RadioGroup
@@ -99,12 +99,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_receipt" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                     android:text="@={ BindingAdapters.longToStr(ticket.quantity) }"
                     android:inputType="number"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -128,12 +128,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_coin" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                     android:text="@={ BindingAdapters.floatToStr(ticket.price) }"
                     android:inputType="numberDecimal" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <include
@@ -154,7 +154,7 @@
             bind:date="@={ ticket.salesEndsAt }"
             bind:label="@{ @string/ends_at }"/>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -164,9 +164,9 @@
                 android:inputType="number"
                 android:hint="@string/minOrder"
                 android:text="@={ BindingAdapters.integerToStr(ticket.minOrder) }" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -176,7 +176,7 @@
                 android:inputType="number"
                 android:hint="@string/maxOrder"
                 android:text="@={ BindingAdapters.integerToStr(ticket.maxOrder) }" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 </layout>

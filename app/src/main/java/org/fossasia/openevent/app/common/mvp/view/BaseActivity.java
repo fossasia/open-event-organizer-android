@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.common.mvp.view;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
 

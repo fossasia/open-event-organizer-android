@@ -2,14 +2,14 @@ package org.fossasia.openevent.app.core.sponsor.list;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +44,7 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
 
     private SponsorsListAdapter sponsorsListAdapter;
     private SponsorsFragmentBinding binding;
-    private SwipeRefreshLayout refreshLayout;
+    private androidx.swiperefreshlayout.widget.SwipeRefreshLayout refreshLayout;
 
     private boolean initialized;
 
@@ -75,7 +75,7 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
 
     public void openCreateSponsorFragment() {
 
-        BottomSheetDialogFragment bottomSheetDialogFragment = CreateSponsorFragment.newInstance();
+        com.google.android.material.bottomsheet.BottomSheetDialogFragment bottomSheetDialogFragment = CreateSponsorFragment.newInstance();
         bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 
@@ -108,7 +108,7 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
             RecyclerView recyclerView = binding.sponsorsRecyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(sponsorsListAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setItemAnimator(new androidx.recyclerview.widget.DefaultItemAnimator());
 
             ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createSponsorFab);
         }

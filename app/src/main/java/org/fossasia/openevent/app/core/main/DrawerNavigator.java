@@ -2,8 +2,8 @@ package org.fossasia.openevent.app.core.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.VisibleForTesting;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import android.view.MenuItem;
 
 import org.fossasia.openevent.app.R;

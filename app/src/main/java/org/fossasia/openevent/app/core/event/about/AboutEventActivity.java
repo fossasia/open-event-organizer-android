@@ -1,9 +1,9 @@
 package org.fossasia.openevent.app.core.event.about;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import org.fossasia.openevent.app.R;
@@ -51,7 +51,7 @@ public class AboutEventActivity extends AppCompatActivity implements HasSupportF
     }
 
     @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
+    public AndroidInjector<androidx.fragment.app.Fragment> supportFragmentInjector() {
         return dispatchingAndroidInjector;
     }
 }

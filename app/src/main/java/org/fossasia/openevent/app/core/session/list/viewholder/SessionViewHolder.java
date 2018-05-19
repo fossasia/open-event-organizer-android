@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.session.list.viewholder;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.databinding.SessionLayoutBinding;

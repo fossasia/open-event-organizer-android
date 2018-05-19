@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.core.ticket.list;
 
-import android.databinding.DataBindingUtil;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -15,7 +15,7 @@ import org.fossasia.openevent.app.ui.HeaderViewHolder;
 
 import java.util.List;
 
-public class TicketsAdapter extends RecyclerView.Adapter<TicketViewHolder> implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
+public class TicketsAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<TicketViewHolder> implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
 
     private final List<Ticket> tickets;
     private final TicketsPresenter ticketsPresenter;

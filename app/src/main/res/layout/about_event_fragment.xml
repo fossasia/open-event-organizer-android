@@ -13,7 +13,7 @@
             type="org.fossasia.openevent.app.data.copyright.Copyright" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main_content"
         android:layout_width="match_parent"
@@ -21,14 +21,14 @@
         android:fitsSystemWindows="true"
         android:background="@color/color_top_surface">
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-            <android.support.design.widget.CollapsingToolbarLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -58,7 +58,7 @@
                     app:circleImageUrl='@{ event.logoUrl }'
                     app:placeholder="@{ @drawable/ic_photo_shutter }" />
 
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
@@ -66,11 +66,11 @@
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-            </android.support.design.widget.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-        </android.support.design.widget.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -82,7 +82,7 @@
                 bind:copyright="@{ copyright }"
                 layout="@layout/about_event_detail" />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <FrameLayout
             android:id="@+id/progress_bar"
@@ -93,5 +93,5 @@
             <include layout="@layout/progressbar_layout" />
         </FrameLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

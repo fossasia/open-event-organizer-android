@@ -13,7 +13,7 @@ import org.threeten.bp.format.DateTimeParseException;
 
 import timber.log.Timber;
 
-public abstract class AbstractDateTimePicker extends android.support.v7.widget.AppCompatButton {
+public abstract class AbstractDateTimePicker extends androidx.appcompat.widget.AppCompatButton {
     private final ObservableString value = new ObservableString();
     private OnDateTimeChangedListener onDateChangedListener;
 

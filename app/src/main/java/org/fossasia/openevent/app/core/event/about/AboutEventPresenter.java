@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.event.about;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 

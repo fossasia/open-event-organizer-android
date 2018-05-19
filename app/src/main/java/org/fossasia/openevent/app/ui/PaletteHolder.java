@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.ui;
 
 import android.graphics.drawable.Drawable;
-import android.support.v4.util.SparseArrayCompat;
+import androidx.collection.SparseArrayCompat;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -23,8 +23,8 @@ public final class PaletteHolder {
 
     private static class Holder {
         private WeakReference<GlidePalette<Drawable>> glidePalette;
-        private final SparseArrayCompat<WeakReference<ViewGroup>> headerMap = new SparseArrayCompat<>();
-        private final SparseArrayCompat<WeakReference<TextView>> textMap = new SparseArrayCompat<>();
+        private final androidx.collection.SparseArrayCompat<WeakReference<ViewGroup>> headerMap = new androidx.collection.SparseArrayCompat<>();
+        private final androidx.collection.SparseArrayCompat<WeakReference<TextView>> textMap = new SparseArrayCompat<>();
 
         Holder(GlidePalette<Drawable> glidePalette) {
             this.glidePalette = new WeakReference<>(glidePalette);
@@ -88,7 +88,7 @@ public final class PaletteHolder {
         }
     }
 
-    private <T> void setColor(SparseArrayCompat<WeakReference<T>> sparseArray, Consumer<T> consumer) {
+    private <T> void setColor(androidx.collection.SparseArrayCompat<WeakReference<T>> sparseArray, Consumer<T> consumer) {
         for (int i = 0; i < sparseArray.size(); i++) {
             T t = sparseArray.valueAt(i).get();
 

@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.ui;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
 

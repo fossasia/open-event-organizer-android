@@ -24,7 +24,7 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode 4
         versionName "1.0.3alpha"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
             appName: app_name,
@@ -102,16 +102,16 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Support Lib
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation "com.android.support:appcompat-v7:${versions.support_lib}"
-    implementation "com.android.support:cardview-v7:${versions.support_lib}"
-    implementation "com.android.support:recyclerview-v7:${versions.support_lib}"
-    implementation "com.android.support:design:${versions.support_lib}"
-    implementation "com.android.support:palette-v7:${versions.support_lib}"
+    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
+    implementation 'androidx.cardview:cardview:1.0.0-alpha1'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0-alpha1'
+    implementation 'com.google.android.material:material:1.0.0-alpha1'
+    implementation 'androidx.palette:palette:1.0.0-alpha1'
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
     implementation "com.google.android.gms:play-services-vision:${versions.play_services}"
     implementation "com.google.android.gms:play-services-places:${versions.play_services}"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.0'
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"
@@ -123,10 +123,10 @@ dependencies {
     compileOnly 'com.google.code.findbugs:findbugs-annotations:3.0.1'
 
     // Lifecycle
-    implementation "android.arch.lifecycle:runtime:$versions.lifecycle"
-    implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
-    implementation "android.arch.lifecycle:common-java8:$versions.lifecycle"
-    annotationProcessor "android.arch.lifecycle:compiler:$versions.lifecycle"
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.0.0-alpha1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-alpha1'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.0.0-alpha1'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0-alpha1'
 
     // DbFlow
     implementation "com.github.raizlabs.dbflow:dbflow-core:${versions.dbflow}"
@@ -195,7 +195,7 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
     //Testing
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation 'junit:junit:4.12'

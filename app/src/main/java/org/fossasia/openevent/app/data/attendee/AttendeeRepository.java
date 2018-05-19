@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.attendee;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;

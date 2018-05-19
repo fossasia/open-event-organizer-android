@@ -1,12 +1,12 @@
 package org.fossasia.openevent.app.core.feedback.list.viewholder;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 
 import org.fossasia.openevent.app.data.feedback.Feedback;
 import org.fossasia.openevent.app.databinding.FeedbacklistLayoutBinding;
 
-public class FeedbackViewHolder extends RecyclerView.ViewHolder {
+public class FeedbackViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
 
     private final FeedbacklistLayoutBinding binding;
 

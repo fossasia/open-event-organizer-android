@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.common.mvp.view;
 
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.di.Injectable;
@@ -10,7 +10,7 @@ import org.fossasia.openevent.app.ui.ViewUtils;
 
 import dagger.Lazy;
 
-public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements Injectable {
+public abstract class BaseFragment<P extends BasePresenter> extends androidx.fragment.app.Fragment implements Injectable {
 
     protected abstract @StringRes int getTitle();
 

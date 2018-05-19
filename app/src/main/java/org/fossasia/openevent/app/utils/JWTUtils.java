@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.utils;
 
-import android.support.v4.util.SparseArrayCompat;
+import androidx.collection.SparseArrayCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,8 +16,8 @@ public final class JWTUtils {
         // Never Called
     }
 
-    public static SparseArrayCompat<String> decode(String token) {
-        SparseArrayCompat<String> decoded = new SparseArrayCompat<>(2);
+    public static androidx.collection.SparseArrayCompat<String> decode(String token) {
+        androidx.collection.SparseArrayCompat<String> decoded = new SparseArrayCompat<>(2);
 
         String[] split = token.split("\\.");
         decoded.append(0, getJson(split[0]));
@@ -27,14 +27,14 @@ public final class JWTUtils {
     }
 
     public static long getExpiry(String token) throws JSONException {
-        SparseArrayCompat<String> decoded = decode(token);
+        androidx.collection.SparseArrayCompat<String> decoded = decode(token);
 
         // We are using JSONObject instead of GSON as it takes about 5 ms instead of 150 ms taken by GSON
         return Long.parseLong(new JSONObject(decoded.get(1)).get("exp").toString());
     }
 
     public static int getIdentity(String token) throws JSONException {
-        SparseArrayCompat<String> decoded = decode(token);
+        androidx.collection.SparseArrayCompat<String> decoded = decode(token);
 
         return Integer.parseInt(new JSONObject(decoded.get(1)).get("identity").toString());
     }

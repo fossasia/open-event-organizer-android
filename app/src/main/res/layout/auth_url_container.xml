@@ -31,13 +31,13 @@
                 android:textSize="@dimen/text_size_small" />
         </LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/spacing_normal"
             android:visibility="@{ overrideUrl.checked ? View.GONE : View.VISIBLE }">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/baseUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,6 +45,6 @@
                 android:inputType="textUri"
                 android:imeOptions="actionGo"
                 app:go="@{() -> action.run() }"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 </layout>

@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.ticket;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.fossasia.openevent.app.utils.CompareUtils;
 

@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.common;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface Function<T, R> {
     @NonNull

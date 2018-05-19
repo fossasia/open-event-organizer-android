@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.speaker.list.viewholder;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.fossasia.openevent.app.data.speaker.Speaker;
 import org.fossasia.openevent.app.databinding.SpeakerItemBinding;

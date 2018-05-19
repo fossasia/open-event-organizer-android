@@ -2,7 +2,7 @@ package org.fossasia.openevent.app.core.event.chart;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -23,7 +23,7 @@ public class ChartActivity extends BaseInjectActivity<ChartPresenter> implements
     LineChart chart;
 
     @BindView(R.id.fabExit)
-    FloatingActionButton fabExit;
+    com.google.android.material.floatingactionbutton.FloatingActionButton fabExit;
 
     @BindView(R.id.progressBar)
     View progressView;

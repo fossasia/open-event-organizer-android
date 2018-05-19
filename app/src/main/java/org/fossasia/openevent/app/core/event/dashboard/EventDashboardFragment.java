@@ -3,9 +3,9 @@ package org.fossasia.openevent.app.core.event.dashboard;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +47,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     Lazy<EventDashboardPresenter> presenterProvider;
 
     private ConstraintLayout container;
-    private SwipeRefreshLayout refreshLayout;
+    private androidx.swiperefreshlayout.widget.SwipeRefreshLayout refreshLayout;
 
     public EventDashboardFragment() {
         // Required empty public constructor

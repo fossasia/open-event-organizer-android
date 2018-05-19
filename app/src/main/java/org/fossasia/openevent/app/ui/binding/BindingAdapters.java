@@ -3,17 +3,17 @@ package org.fossasia.openevent.app.ui.binding;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.databinding.BindingAdapter;
-import android.databinding.BindingConversion;
-import android.databinding.InverseBindingAdapter;
-import android.databinding.InverseBindingListener;
-import android.databinding.InverseMethod;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.BindingConversion;
+import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
+import androidx.databinding.InverseMethod;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.ViewCompat;
+import androidx.annotation.ColorInt;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -118,7 +118,7 @@ public final class BindingAdapters {
     }
 
     @BindingAdapter("srcCompat")
-    public static void bindSrcCompat(FloatingActionButton fab, Drawable drawable) {
+    public static void bindSrcCompat(com.google.android.material.floatingactionbutton.FloatingActionButton fab, Drawable drawable) {
         fab.setImageDrawable(drawable);
     }
 

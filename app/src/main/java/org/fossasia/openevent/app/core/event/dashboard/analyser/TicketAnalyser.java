@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.event.dashboard.analyser;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.attendee.Attendee;

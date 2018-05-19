@@ -2,14 +2,14 @@ package org.fossasia.openevent.app.core.event.list;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,11 +55,11 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     Lazy<EventsPresenter> presenterProvider;
 
     private FragmentEventListBinding binding;
-    private RecyclerView recyclerView;
-    private SwipeRefreshLayout refreshLayout;
+    private androidx.recyclerview.widget.RecyclerView recyclerView;
+    private androidx.swiperefreshlayout.widget.SwipeRefreshLayout refreshLayout;
 
     private EventsListAdapter eventListAdapter;
-    private RecyclerView.AdapterDataObserver adapterDataObserver;
+    private androidx.recyclerview.widget.RecyclerView.AdapterDataObserver adapterDataObserver;
 
     private Context context;
     private boolean initialized;
@@ -161,12 +161,12 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
             recyclerView = binding.eventRecyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(eventListAdapter);
-            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+            recyclerView.addItemDecoration(new androidx.recyclerview.widget.DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(eventListAdapter);
             recyclerView.addItemDecoration(decoration);
 
-            adapterDataObserver = new RecyclerView.AdapterDataObserver() {
+            adapterDataObserver = new androidx.recyclerview.widget.RecyclerView.AdapterDataObserver() {
                 @Override
                 public void onChanged() {
                     decoration.invalidateHeaders();

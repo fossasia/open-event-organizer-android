@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.robo.ui;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.core.attendee.list.AttendeesFragment;
@@ -77,7 +77,7 @@ public class FragmentInstanceTest<T extends Fragment> extends BaseParameterTest 
         });
     }
 
-    private Fragment getFragment() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    private androidx.fragment.app.Fragment getFragment() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (id == -1) {
             return (Fragment) testFragmentClass.getDeclaredMethod("newInstance").invoke(null);
         } else {

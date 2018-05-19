@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.common.mvp.view;
 
-import android.support.design.widget.BottomSheetDialogFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.di.Injectable;

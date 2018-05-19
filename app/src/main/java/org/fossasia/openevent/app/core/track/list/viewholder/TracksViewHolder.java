@@ -1,12 +1,12 @@
 package org.fossasia.openevent.app.core.track.list.viewholder;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.fossasia.openevent.app.common.Pipe;
 import org.fossasia.openevent.app.data.tracks.Track;
 import org.fossasia.openevent.app.databinding.TrackItemBinding;
 
-public class TracksViewHolder extends RecyclerView.ViewHolder {
+public class TracksViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
     private final TrackItemBinding binding;
     private Track track;
     private Pipe<Track> clickAction;

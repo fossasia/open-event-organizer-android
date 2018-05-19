@@ -1,10 +1,10 @@
 package org.fossasia.openevent.app.utils.ui;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -67,7 +67,7 @@ public class ViewUtilsTest {
     @Test
     public void testSetTitleWithSimpleActivity() {
         FragmentActivity activity = mock(FragmentActivity.class);
-        Fragment fragment = mock(Fragment.class);
+        Fragment fragment = mock(androidx.fragment.app.Fragment.class);
 
         when(fragment.getActivity()).thenReturn(activity);
 
@@ -79,7 +79,7 @@ public class ViewUtilsTest {
     @Test
     public void testSetTitleWithAppCompat() {
         AppCompatActivity activity = mock(AppCompatActivity.class);
-        Fragment fragment = mock(Fragment.class);
+        Fragment fragment = mock(androidx.fragment.app.Fragment.class);
         ActionBar actionBar = mock(ActionBar.class);
 
         when(fragment.getActivity()).thenReturn(activity);

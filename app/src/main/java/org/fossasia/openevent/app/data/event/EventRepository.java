@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.event;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import io.reactivex.Observable;
 

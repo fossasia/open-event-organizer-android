@@ -1,7 +1,7 @@
 package org.fossasia.openevent.app.data.attendee;
 
-import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.mikepenz.fastadapter.items.AbstractItem;

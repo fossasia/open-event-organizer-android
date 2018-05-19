@@ -1,13 +1,13 @@
 package org.fossasia.openevent.app.core.session.list;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +42,7 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
 
     private SessionsAdapter sessionsAdapter;
     private SessionsFragmentBinding binding;
-    private SwipeRefreshLayout refreshLayout;
+    private androidx.swiperefreshlayout.widget.SwipeRefreshLayout refreshLayout;
 
     public static SessionsFragment newInstance(long trackId, long eventId) {
         SessionsFragment fragment = new SessionsFragment();
@@ -106,7 +106,7 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         sessionsAdapter = new SessionsAdapter(getPresenter());
 
         RecyclerView recyclerView = binding.sessionsRecyclerView;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(context));
         recyclerView.setAdapter(sessionsAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }

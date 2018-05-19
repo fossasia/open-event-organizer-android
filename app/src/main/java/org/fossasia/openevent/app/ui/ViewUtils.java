@@ -4,13 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.core.view.ViewCompat;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -44,10 +44,10 @@ public final class ViewUtils {
         setTint(view, Color.parseColor(color));
     }
 
-    public static void setRecyclerViewScrollAwareFabBehaviour(RecyclerView recyclerView, FloatingActionButton fab) {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+    public static void setRecyclerViewScrollAwareFabBehaviour(androidx.recyclerview.widget.RecyclerView recyclerView, com.google.android.material.floatingactionbutton.FloatingActionButton fab) {
+        recyclerView.addOnScrollListener(new androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(androidx.recyclerview.widget.RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
                     fab.hide();
@@ -76,7 +76,7 @@ public final class ViewUtils {
             actionBar.setTitle(title);
     }
 
-    public static void setTitle(Fragment fragment, String title) {
+    public static void setTitle(androidx.fragment.app.Fragment fragment, String title) {
         Activity activity = fragment.getActivity();
 
         if (activity instanceof AppCompatActivity) {
@@ -87,7 +87,7 @@ public final class ViewUtils {
     }
 
     public static void showSnackbar(View view, String message) {
-        Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(view, message, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).show();
     }
 
     public static void showSnackbar(View view, int messageResourceId) {

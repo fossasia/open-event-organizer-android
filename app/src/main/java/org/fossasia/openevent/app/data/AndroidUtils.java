@@ -1,16 +1,16 @@
 package org.fossasia.openevent.app.data;
 
 import android.content.Context;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 
 import javax.inject.Inject;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 import io.reactivex.Completable;
 import timber.log.Timber;
 

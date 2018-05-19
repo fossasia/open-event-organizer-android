@@ -1,8 +1,8 @@
 package org.fossasia.openevent.app.core.attendee.list.listeners;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.mikepenz.fastadapter.FastAdapter;
@@ -21,7 +21,7 @@ public class AttendeeItemCheckInEvent extends ClickEventHook<Attendee> {
 
     @Nullable
     @Override
-    public List<View> onBindMany(@NonNull RecyclerView.ViewHolder viewHolder) {
+    public List<View> onBindMany(@NonNull androidx.recyclerview.widget.RecyclerView.ViewHolder viewHolder) {
         if (viewHolder instanceof AttendeeViewHolder) {
             return EventHookUtil.toList(((AttendeeViewHolder) viewHolder).getRoot());
         }

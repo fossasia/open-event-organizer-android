@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.attendee.list;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 

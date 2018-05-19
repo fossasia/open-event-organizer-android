@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.organizer.update;
 
-import android.support.design.widget.TextInputLayout;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.Erroneous;
@@ -12,7 +12,7 @@ public interface UpdateOrganizerInfoView extends Progressive, Erroneous, Success
 
     void dismiss();
 
-    void validate(TextInputLayout textInputLayout, Function<String, Boolean> function, String str);
+    void validate(com.google.android.material.textfield.TextInputLayout textInputLayout, Function<String, Boolean> function, String str);
 
     void setUser(User user);
 }

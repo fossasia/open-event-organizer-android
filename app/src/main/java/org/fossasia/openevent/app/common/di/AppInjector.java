@@ -3,9 +3,9 @@ package org.fossasia.openevent.app.common.di;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.di.component.DaggerAppComponent;
@@ -67,8 +67,8 @@ public final class AppInjector {
         if (activity instanceof HasSupportFragmentInjector) {
             AndroidInjection.inject(activity);
         }
-        if (activity instanceof FragmentActivity) {
-            ((FragmentActivity) activity).getSupportFragmentManager()
+        if (activity instanceof androidx.fragment.app.FragmentActivity) {
+            ((androidx.fragment.app.FragmentActivity) activity).getSupportFragmentManager()
                 .registerFragmentLifecycleCallbacks(
                     new FragmentManager.FragmentLifecycleCallbacks() {
                         @Override

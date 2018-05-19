@@ -1,12 +1,12 @@
 package org.fossasia.openevent.app.core.attendee.list.viewholders;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.databinding.AttendeeLayoutBinding;
 
-public class AttendeeViewHolder extends RecyclerView.ViewHolder {
+public class AttendeeViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
 
     private final AttendeeLayoutBinding binding;
 

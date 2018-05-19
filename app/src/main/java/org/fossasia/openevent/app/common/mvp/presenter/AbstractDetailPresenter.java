@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.common.mvp.presenter;
 
-import android.support.annotation.CallSuper;
+import androidx.annotation.CallSuper;
 
 public abstract class AbstractDetailPresenter<K, V> extends AbstractBasePresenter<V> implements DetailPresenter<K, V> {
 

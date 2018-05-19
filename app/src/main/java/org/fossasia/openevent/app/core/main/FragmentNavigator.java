@@ -1,8 +1,8 @@
 package org.fossasia.openevent.app.core.main;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.core.attendee.list.AttendeesFragment;
@@ -18,13 +18,13 @@ import org.fossasia.openevent.app.core.track.list.TracksFragment;
 
 class FragmentNavigator {
 
-    private final FragmentManager fragmentManager;
+    private final androidx.fragment.app.FragmentManager fragmentManager;
     private long eventId;
 
     private boolean dashboardActive = true;
     private int lastSelectedNavItemId;
 
-    FragmentNavigator(FragmentManager fragmentManager, long eventId) {
+    FragmentNavigator(androidx.fragment.app.FragmentManager fragmentManager, long eventId) {
         this.fragmentManager = fragmentManager;
         this.eventId = eventId;
     }
@@ -93,7 +93,7 @@ class FragmentNavigator {
 
         fragmentManager.popBackStack();
 
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        androidx.fragment.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
         dashboardActive = navItemId == R.id.nav_dashboard;
         if (dashboardActive) {
             transaction.replace(R.id.fragment_container, fragment);

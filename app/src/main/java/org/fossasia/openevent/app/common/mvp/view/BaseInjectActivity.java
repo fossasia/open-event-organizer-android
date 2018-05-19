@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.common.mvp.view;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import org.fossasia.openevent.app.common.mvp.presenter.BasePresenter;
 
@@ -13,7 +13,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 public abstract class BaseInjectActivity<P extends BasePresenter> extends BaseActivity<P> implements HasSupportFragmentInjector {
 
     @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+    DispatchingAndroidInjector<androidx.fragment.app.Fragment> dispatchingAndroidInjector;
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {

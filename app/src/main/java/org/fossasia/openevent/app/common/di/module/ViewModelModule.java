@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.common.di.module;
 
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProvider;
 
 import org.fossasia.openevent.app.common.di.OrgaViewModelFactory;
 

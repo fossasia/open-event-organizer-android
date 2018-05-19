@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.ContextManager;
 import org.threeten.bp.LocalDateTime;

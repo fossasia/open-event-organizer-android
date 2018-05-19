@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.organizer.password;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;

@@ -45,13 +45,13 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_ticket" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_small"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     android:text="@={ session.title }"
                     app:validateEmpty="@{true}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -119,12 +119,12 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_info" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/subtitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                         android:inputType="text"
                         android:text="@={ session.subtitle }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -148,12 +148,12 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_info" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/level"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
                         android:inputType="text"
                         android:text="@={ BindingAdapters.integerToStr(session.level) }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -177,12 +177,12 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_info" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/comments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
                         android:inputType="text"
                         android:text="@={ session.comments }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -206,12 +206,12 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_info" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
                         android:inputType="text"
                         android:text="@={ session.state }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -252,12 +252,12 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_info" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/language"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -265,7 +265,7 @@
                         android:inputType="text"
                         android:text="@={ session.language }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -281,12 +281,12 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_info" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/short_abstract"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -294,7 +294,7 @@
                         android:inputType="text"
                         android:text="@={ session.shortAbstract }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -310,12 +310,12 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_info" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/long_abstract"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -323,7 +323,7 @@
                         android:inputType="text"
                         android:text="@={ session.longAbstract }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -356,7 +356,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_photo" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/slides_url_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -364,7 +364,7 @@
                     android:paddingLeft="@dimen/spacing_extra_small"
                     android:paddingRight="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/slides_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -372,7 +372,7 @@
                         android:inputType="text"
                         android:text="@={ session.slidesUrl }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -388,7 +388,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_photo" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/audio_url_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -396,7 +396,7 @@
                     android:paddingLeft="@dimen/spacing_extra_small"
                     android:paddingRight="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/audio_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -404,7 +404,7 @@
                         android:inputType="text"
                         android:text="@={ session.audioUrl }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -420,13 +420,13 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_photo" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/video_url_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/video_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -434,7 +434,7 @@
                         android:inputType="text"
                         android:text="@={ session.videoUrl }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -450,7 +450,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_photo" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/signup_url_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -458,7 +458,7 @@
                     android:paddingLeft="@dimen/spacing_extra_small"
                     android:paddingRight="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/signup_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -466,7 +466,7 @@
                         android:inputType="text"
                         android:text="@={ session.signupUrl }" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
         </LinearLayout>

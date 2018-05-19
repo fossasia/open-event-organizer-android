@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.presenter;
 
-import android.databinding.ObservableBoolean;
+import androidx.databinding.ObservableBoolean;
 
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.core.faq.list.FaqListPresenter;

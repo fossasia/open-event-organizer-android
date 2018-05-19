@@ -1,15 +1,15 @@
 package org.fossasia.openevent.app.core.faq.list;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -115,7 +115,7 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
             RecyclerView recyclerView = binding.faqsRecyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(faqsAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setItemAnimator(new androidx.recyclerview.widget.DefaultItemAnimator());
         }
     }
 

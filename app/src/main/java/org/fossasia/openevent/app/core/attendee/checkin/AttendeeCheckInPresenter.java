@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.attendee.checkin;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;

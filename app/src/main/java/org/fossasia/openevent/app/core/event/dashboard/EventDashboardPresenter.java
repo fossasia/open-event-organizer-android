@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.event.dashboard;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;

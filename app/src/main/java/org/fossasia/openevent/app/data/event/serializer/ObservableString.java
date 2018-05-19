@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.data.event.serializer;
 
-import android.databinding.ObservableField;
+import androidx.databinding.ObservableField;
 
 public class ObservableString extends ObservableField<String> {
 

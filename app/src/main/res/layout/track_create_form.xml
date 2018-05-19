@@ -42,12 +42,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_event_note" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/track_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                     android:imeOptions="actionNext"
                     app:validateEmpty="@{true}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -72,12 +72,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_event_note" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/track_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                     android:text="@={ track.description }"
                     app:validateEmpty="@{false}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -100,12 +100,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_color_lens" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/track_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
                     android:text="@={ track.color }"
                     app:validateEmpty="@{true}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
     </LinearLayout>

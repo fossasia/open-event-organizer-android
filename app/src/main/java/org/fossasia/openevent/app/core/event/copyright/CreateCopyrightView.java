@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.event.copyright;
 
-import android.support.design.widget.TextInputLayout;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.Erroneous;

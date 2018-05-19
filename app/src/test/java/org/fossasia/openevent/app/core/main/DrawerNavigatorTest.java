@@ -1,6 +1,6 @@
 package org.fossasia.openevent.app.core.main;
 
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.view.MenuItem;
 
 import org.fossasia.openevent.app.R;

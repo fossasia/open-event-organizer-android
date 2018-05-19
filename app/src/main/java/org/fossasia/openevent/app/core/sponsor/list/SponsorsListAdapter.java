@@ -1,8 +1,8 @@
 package org.fossasia.openevent.app.core.sponsor.list;
 
-import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.DataBindingUtil;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -12,7 +12,7 @@ import org.fossasia.openevent.app.data.sponsor.Sponsor;
 
 import java.util.List;
 
-public class SponsorsListAdapter extends RecyclerView.Adapter<SponsorsViewHolder> {
+public class SponsorsListAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<SponsorsViewHolder> {
 
     private final List<Sponsor> sponsors;
     private final SponsorsPresenter sponsorsPresenter;
