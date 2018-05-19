@@ -63,6 +63,8 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
 
     private Context context;
     private boolean initialized;
+    private boolean editMode;
+    private long id;
 
     /**
      * Use this factory method to create a new instance of
@@ -82,6 +84,7 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
         super.onCreate(savedInstanceState);
         context = getActivity();
         setHasOptionsMenu(true);
+        editMode = false;
     }
 
     @Override
@@ -97,6 +100,15 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItemSort = menu.findItem(R.id.sort);
+        MenuItem menuItemEdit = menu.findItem(R.id.edit);
+        menuItemSort.setVisible(!editMode);
+        menuItemEdit.setVisible(editMode);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sortByEventName:
@@ -105,7 +117,11 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
             case R.id.sortByEventDate:
                 sortEvents(SORTBYDATE);
                 return true;
-            default:
+            case R.id.edit:
+                Intent intent = new Intent(getActivity(), CreateEventActivity.class);
+                intent.putExtra(CreateEventActivity.EVENT_ID, id);
+                startActivity(intent);
+                default:
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -156,7 +172,7 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
 
     private void setupRecyclerView() {
         if (!initialized) {
-            eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus);
+            eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus, getPresenter());
 
             recyclerView = binding.eventRecyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -192,8 +208,10 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
+        if (success) {
             ViewUtils.showSnackbar(recyclerView, R.string.refresh_complete);
+            getPresenter().resetToDefaultState();
+        }
     }
 
     @Override
@@ -213,4 +231,16 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
+    @Override
+    public void changeToEditMode(long id) {
+        editMode = true;
+        this.id = id;
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void changeToNormalMode() {
+        editMode = false;
+        getActivity().invalidateOptionsMenu();
+    }
 }
