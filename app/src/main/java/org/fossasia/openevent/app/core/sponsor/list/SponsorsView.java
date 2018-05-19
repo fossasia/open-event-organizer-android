@@ -10,8 +10,10 @@ public interface SponsorsView extends Progressive, Erroneous, Refreshable, Empti
 
     void openUpdateSponsorFragment(long sponsorId);
 
-    void showAlertDialog(long sponsorId);
+    void showDeleteDialog();
 
-    void showSponsorDeleted(String message);
+    void showMessage(String message);
+
+    void changeToolbarMode(boolean toolbarEdit, boolean toolbarDelete);
 
 }
