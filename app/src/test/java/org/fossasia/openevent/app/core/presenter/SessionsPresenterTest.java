@@ -22,12 +22,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -35,6 +38,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
+@SuppressWarnings("PMD.TooManyMethods")
 public class SessionsPresenterTest {
 
     @Rule
@@ -50,11 +54,15 @@ public class SessionsPresenterTest {
 
     private static final long ID = 10L;
 
-    private static final List<Session> SESSIONS = Arrays.asList(
+    private static final String SESSION_DELETION_SUCCESS = "Sessions Deleted";
+
+    private static List<Session> sessions = new ArrayList<Session>(Arrays.asList(
         Session.builder().id(2L).title("a").build(),
         Session.builder().id(3L).title("b").build(),
         Session.builder().id(4L).title("c").build()
-    );
+    ));
+
+    private static final Session SESSION = Session.builder().id(7L).title("a").build();
 
     @Before
     public void setUp() {
@@ -74,7 +82,7 @@ public class SessionsPresenterTest {
 
     @Test
     public void shouldLoadSessionListAutomatically() {
-        when(sessionRepository.getSessions(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(SESSIONS));
+        when(sessionRepository.getSessions(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(sessions));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         sessionsPresenter.start();
@@ -84,17 +92,17 @@ public class SessionsPresenterTest {
 
     @Test
     public void shouldShowSessionListAutomatically() {
-        when(sessionRepository.getSessions(ID, false)).thenReturn(Observable.fromIterable(SESSIONS));
+        when(sessionRepository.getSessions(ID, false)).thenReturn(Observable.fromIterable(sessions));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         sessionsPresenter.start();
 
-        verify(sessionsView).showResults(SESSIONS);
+        verify(sessionsView).showResults(sessions);
     }
 
     @Test
     public void shouldActivateChangeListenerOnStart() {
-        when(sessionRepository.getSessions(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(SESSIONS));
+        when(sessionRepository.getSessions(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(sessions));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         sessionsPresenter.start();
@@ -120,7 +128,7 @@ public class SessionsPresenterTest {
 
     @Test
     public void shouldShowSessionListOnSwipeRefreshSuccess() {
-        when(sessionRepository.getSessions(ID, true)).thenReturn(Observable.fromIterable(SESSIONS));
+        when(sessionRepository.getSessions(ID, true)).thenReturn(Observable.fromIterable(sessions));
 
         sessionsPresenter.loadSessions(true);
 
@@ -138,7 +146,7 @@ public class SessionsPresenterTest {
 
     @Test
     public void testProgressbarOnSwipeRefreshSuccess() {
-        when(sessionRepository.getSessions(ID, true)).thenReturn(Observable.fromIterable(SESSIONS));
+        when(sessionRepository.getSessions(ID, true)).thenReturn(Observable.fromIterable(sessions));
 
         sessionsPresenter.loadSessions(true);
 
@@ -174,5 +182,55 @@ public class SessionsPresenterTest {
         inOrder.verify(sessionsView).showProgress(true);
         inOrder.verify(sessionsView).onRefreshComplete(true);
         inOrder.verify(sessionsView).showProgress(false);
+    }
+
+    @Test
+    public void shouldDeleteSessionWithIdSuccessfully() {
+        when(sessionRepository.deleteSession(SESSION.getId())).thenReturn(Completable.complete());
+
+        sessionsPresenter.isSessionSelected(SESSION.getId());
+        sessionsPresenter.getSelectedSessions().get(SESSION.getId()).set(true);
+        sessionsPresenter.deleteSession(SESSION.getId());
+
+        assertFalse(sessionsPresenter.isSessionSelected(SESSION.getId()).get());
+    }
+
+    @Test
+    public void shouldDeleteSessionsSuccessfully() {
+        for (Session session : sessionsPresenter.getSessions()) {
+            sessionsPresenter.getSelectedSessions().get(session.getId()).set(true);
+        }
+
+        for (Long sessionId : sessionsPresenter.getSelectedSessions().keySet()) {
+            when(sessionRepository.deleteSession(sessionId)).thenReturn(Completable.complete());
+        }
+
+        sessionsPresenter.deleteSelectedSessions();
+
+        InOrder inOrder = Mockito.inOrder(sessionsView);
+
+        inOrder.verify(sessionsView).showProgress(true);
+        inOrder.verify(sessionsView).showMessage(SESSION_DELETION_SUCCESS);
+        inOrder.verify(sessionsView).showProgress(false);
+
+        assertEquals(sessionsPresenter.getSelectedSessions().size(), 0);
+    }
+
+    @Test
+    public void shouldNotDeleteUnselectedSessions() {
+        for (Long sessionId : sessionsPresenter.getSelectedSessions().keySet()) {
+            when(sessionRepository.deleteSession(sessionId)).thenReturn(Completable.error(Logger.TEST_ERROR));
+        }
+
+        sessionsPresenter.deleteSelectedSessions();
+
+        verify(sessionRepository, Mockito.never()).deleteSession(anyLong());
+    }
+
+    @Test
+    public void shouldResetToolbarToDefaultState() {
+        sessionsPresenter.resetToolbarToDefaultState();
+
+        verify(sessionsView).resetToolbar();
     }
 }

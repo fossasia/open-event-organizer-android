@@ -7,4 +7,10 @@ import org.fossasia.openevent.app.common.mvp.view.Refreshable;
 import org.fossasia.openevent.app.data.session.Session;
 
 public interface SessionsView extends Progressive, Erroneous, Refreshable, Emptiable<Session> {
+
+    void showMessage(String message);
+
+    void changeToDeletingMode();
+
+    void resetToolbar();
 }
