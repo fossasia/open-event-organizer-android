@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.event.list;
 
+import android.databinding.ObservableBoolean;
 import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
@@ -10,6 +11,7 @@ import org.fossasia.openevent.app.utils.service.DateService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,9 +25,11 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class EventsPresenter extends AbstractBasePresenter<EventsView> {
 
     private final List<Event> events = new ArrayList<>();
-
+    private boolean editMode = false;
     private final EventRepository eventsDataRepository;
+    private Event lastEvent = new Event();
 
+    public final HashMap<Event, ObservableBoolean> selectedMap = new HashMap<>();
     public static final int SORTBYDATE = 0;
     public static final int SORTBYNAME = 1;
 
@@ -75,4 +79,44 @@ public class EventsPresenter extends AbstractBasePresenter<EventsView> {
         return super.getView();
     }
 
+    public void unselectEvent(Event event) {
+        if (event != null && selectedMap.containsKey(event))
+            selectedMap.get(event).set(false);
+    }
+
+    public void toolbarEditMode(Event currentEvent) {
+        long id = 0;
+        if (!lastEvent.equals(currentEvent)) {
+            unselectEvent(lastEvent);
+            id = currentEvent.getId();
+        }
+        selectedMap.get(currentEvent).set(true);
+        editMode = true;
+        lastEvent = currentEvent;
+        getView().changeToEditMode(id);
+    }
+
+    public void resetToDefaultState() {
+        unselectEvent(lastEvent);
+        editMode = false;
+        getView().changeToNormalMode();
+    }
+
+    public boolean isEditMode() {
+        return editMode;
+    }
+
+    public ObservableBoolean getEventsSelected(Event event) {
+        if (!selectedMap.containsKey(event)) {
+            selectedMap.put(event, new ObservableBoolean(false));
+        }
+        return selectedMap.get(event);
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        selectedMap.clear();
+        resetToDefaultState();
+    }
 }

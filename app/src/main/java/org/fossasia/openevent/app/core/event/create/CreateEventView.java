@@ -6,6 +6,7 @@ import org.fossasia.openevent.app.common.mvp.view.Erroneous;
 import org.fossasia.openevent.app.common.mvp.view.Progressive;
 import org.fossasia.openevent.app.common.mvp.view.Successful;
 import org.fossasia.openevent.app.common.Function;
+import org.fossasia.openevent.app.data.event.Event;
 
 import java.util.List;
 
@@ -27,4 +28,5 @@ public interface CreateEventView extends Progressive, Erroneous, Successful {
 
     void setDefaultCountry(int index);
 
+    void setEvent(Event event);
 }
