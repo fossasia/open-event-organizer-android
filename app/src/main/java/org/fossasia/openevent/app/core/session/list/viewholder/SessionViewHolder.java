@@ -13,7 +13,7 @@ public class SessionViewHolder extends RecyclerView.ViewHolder {
     private final SessionsPresenter sessionsPresenter;
     private Session session;
     private Pipe<Session> longClickAction;
-    private Runnable clickAction;
+    private Pipe<Long> clickAction;
 
     public SessionViewHolder(SessionLayoutBinding binding, SessionsPresenter sessionsPresenter) {
         super(binding.getRoot());
@@ -27,8 +27,9 @@ public class SessionViewHolder extends RecyclerView.ViewHolder {
             return true;
         });
         binding.getRoot().setOnClickListener(view -> {
-            if (clickAction != null)
-                clickAction.run();
+            if (clickAction != null) {
+                clickAction.push(session.getId());
+           }
         });
     }
 
@@ -36,7 +37,7 @@ public class SessionViewHolder extends RecyclerView.ViewHolder {
         this.longClickAction = longClickAction;
     }
 
-    public void setClickAction(Runnable clickAction) {
+    public void setClickAction(Pipe<Long> clickAction) {
         this.clickAction = clickAction;
     }
 

@@ -30,10 +30,10 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsView> {
 
     private final List<Session> sessions = new ArrayList<>();
-    private final Map<Session, ObservableBoolean> selectedMap = new HashMap<>();
-    private static ObservableBoolean selectedState = new ObservableBoolean(true);
+    private final Map<Long, ObservableBoolean> selectedSessions = new HashMap<>();
     private final SessionRepository sessionRepository;
     private final DatabaseChangeListener<Session> sessionChangeListener;
+    private boolean isToolbarActive;
 
     @Inject
     public SessionsPresenter(SessionRepository sessionRepository, DatabaseChangeListener<Session> sessionChangeListener) {
@@ -51,7 +51,7 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
     public void detach() {
         super.detach();
         sessionChangeListener.stopListening();
-        selectedMap.clear();
+        selectedSessions.clear();
     }
 
     public void loadSessions(boolean forceReload) {
@@ -85,58 +85,75 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
         return sessions;
     }
 
-    public void deleteSession(Map<Session, ObservableBoolean> selectedMap, Session session) {
-        sessionRepository
-            .deleteSession(session.getId())
-            .compose(disposeCompletable(getDisposable()))
-            .doFinally(() -> selectedMap.get(session).set(false))
-            .subscribe(() -> Logger.logSuccess(session), Logger::logError);
+    public Map<Long, ObservableBoolean> getSelectedSessions() {
+        return selectedSessions;
     }
 
-    public void deleteSessions(Map<Session, ObservableBoolean> selectedMap) {
-        Observable.fromIterable(selectedMap.entrySet())
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneous(getView()))
-            .doFinally(() -> getView().showMessage("Sessions Deleted"))
-            .subscribe(entry -> {
-             if (entry.getValue().get()) {
-                 deleteSession(selectedMap, entry.getKey());
-             }
+    public void deleteSession(Long sessionId) {
+        sessionRepository
+            .deleteSession(sessionId)
+            .compose(disposeCompletable(getDisposable()))
+            .subscribe(() -> {
+                selectedSessions.remove(sessionId);
+                Logger.logSuccess(sessionId);
             }, Logger::logError);
     }
 
     public void deleteSelectedSessions() {
-        deleteSessions(selectedMap);
+        Observable.fromIterable(selectedSessions.entrySet())
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .doFinally(() -> {
+                getView().showMessage("Sessions Deleted");
+                resetToolbarToDefaultState();
+            })
+            .subscribe(entry -> {
+                if (entry.getValue().get()) {
+                    deleteSession(entry.getKey());
+                }
+            }, Logger::logError);
     }
 
-    public ObservableBoolean getSessionSelected(Session session) {
-        if (!selectedMap.containsKey(session)) {
-            selectedMap.put(session, new ObservableBoolean(false));
+    public void longClick(Session clickedSession) {
+        if (isToolbarActive)
+            click(clickedSession.getId());
+        else {
+            selectedSessions.get(clickedSession.getId()).set(true);
+            isToolbarActive = true;
+            getView().changeToDeletingMode();
         }
-        return selectedMap.get(session);
     }
 
-    public Map<Session, ObservableBoolean> getSelectedMap() {
-        return selectedMap;
-    }
-
-    public void toolbarDeleteMode(Session currentSession) {
-        if (getSessionSelected(currentSession).equals(selectedState)) {
-            selectedMap.get(currentSession).set(false);
-        } else {
-            selectedMap.get(currentSession).set(true);
+    public void click(Long clickedSessionId) {
+        if (isToolbarActive) {
+            if (countSelected() == 1 && isSessionSelected(clickedSessionId).get()) {
+                selectedSessions.get(clickedSessionId).set(false);
+                resetToolbarToDefaultState();
+            } else if (isSessionSelected(clickedSessionId).get())
+                selectedSessions.get(clickedSessionId).set(false);
+            else
+                selectedSessions.get(clickedSessionId).set(true);
         }
-
-        getView().changeToDeletingMode();
     }
 
-    public void resetToDefaultState() {
-        for (Map.Entry<Session, ObservableBoolean> entry: selectedMap.entrySet()) {
-            if (entry.getValue().equals(selectedState)) {
-                entry.getValue().set(false);
-            }
-        }
-
+    public void resetToolbarToDefaultState() {
+        isToolbarActive = false;
         getView().resetToolbar();
+    }
+
+    public ObservableBoolean isSessionSelected(Long sessionId) {
+        if (!selectedSessions.containsKey(sessionId))
+            selectedSessions.put(sessionId, new ObservableBoolean(false));
+
+        return selectedSessions.get(sessionId);
+    }
+
+    private int countSelected() {
+        int count = 0;
+        for (Long id : selectedSessions.keySet()) {
+            if (selectedSessions.get(id).get())
+                count++;
+        }
+        return count;
     }
 }

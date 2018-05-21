@@ -29,7 +29,8 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
-import static org.junit.Assert.assertFalse;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -187,24 +188,24 @@ public class SessionsPresenterTest {
     public void shouldDeleteSessionWithIdSuccessfully() {
         when(sessionRepository.deleteSession(SESSION.getId())).thenReturn(Completable.complete());
 
-        sessionsPresenter.getSessionSelected(SESSION);
-        sessionsPresenter.getSelectedMap().get(SESSION).set(true);
-        sessionsPresenter.deleteSession(sessionsPresenter.getSelectedMap(), SESSION);
+        sessionsPresenter.isSessionSelected(SESSION.getId());
+        sessionsPresenter.getSelectedSessions().get(SESSION.getId()).set(true);
+        sessionsPresenter.deleteSession(SESSION.getId());
 
-        assertFalse(sessionsPresenter.getSelectedMap().get(SESSION).get());
+        assertFalse(sessionsPresenter.isSessionSelected(SESSION.getId()).get());
     }
 
     @Test
     public void shouldDeleteSessionsSuccessfully() {
-        for (Session session : sessions) {
-            sessionsPresenter.getSessionSelected(session);
-            sessionsPresenter.getSelectedMap().get(session).set(true);
-        }
-        for (Session session : sessionsPresenter.getSelectedMap().keySet()) {
-            when(sessionRepository.deleteSession(session.getId())).thenReturn(Completable.complete());
+        for (Session session : sessionsPresenter.getSessions()) {
+            sessionsPresenter.getSelectedSessions().get(session.getId()).set(true);
         }
 
-        sessionsPresenter.deleteSessions(sessionsPresenter.getSelectedMap());
+        for (Long sessionId : sessionsPresenter.getSelectedSessions().keySet()) {
+            when(sessionRepository.deleteSession(sessionId)).thenReturn(Completable.complete());
+        }
+
+        sessionsPresenter.deleteSelectedSessions();
 
         InOrder inOrder = Mockito.inOrder(sessionsView);
 
@@ -212,35 +213,23 @@ public class SessionsPresenterTest {
         inOrder.verify(sessionsView).showMessage(SESSION_DELETION_SUCCESS);
         inOrder.verify(sessionsView).showProgress(false);
 
-        for (Session session : sessions) {
-            assertFalse(sessionsPresenter.getSelectedMap().get(session).get());
-        }
+        assertEquals(sessionsPresenter.getSelectedSessions().size(), 0);
     }
 
     @Test
     public void shouldNotDeleteUnselectedSessions() {
-        for (Session session : sessions) {
-            sessionsPresenter.getSessionSelected(session);
-        }
-        for (Session session : sessionsPresenter.getSelectedMap().keySet()) {
-            when(sessionRepository.deleteSession(session.getId())).thenReturn(Completable.error(Logger.TEST_ERROR));
+        for (Long sessionId : sessionsPresenter.getSelectedSessions().keySet()) {
+            when(sessionRepository.deleteSession(sessionId)).thenReturn(Completable.error(Logger.TEST_ERROR));
         }
 
-        sessionsPresenter.deleteSessions(sessionsPresenter.getSelectedMap());
+        sessionsPresenter.deleteSelectedSessions();
 
         verify(sessionRepository, Mockito.never()).deleteSession(anyLong());
     }
 
     @Test
-    public void shouldSwitchToToolbarDeleteMode() {
-        sessionsPresenter.toolbarDeleteMode(SESSION);
-
-        verify(sessionsView).changeToDeletingMode();
-    }
-
-    @Test
     public void shouldResetToolbarToDefaultState() {
-        sessionsPresenter.resetToDefaultState();
+        sessionsPresenter.resetToolbarToDefaultState();
 
         verify(sessionsView).resetToolbar();
     }
