@@ -7,11 +7,13 @@
 
         <import type="android.view.View" />
 
-        <import type="org.fossasia.openevent.app.core.sponsor.list.SponsorsPresenter"/>
-
         <variable
             name="sponsor"
             type="org.fossasia.openevent.app.data.sponsor.Sponsor" />
+
+        <variable
+            name="sponsorsPresenter"
+            type="org.fossasia.openevent.app.core.sponsor.list.SponsorsPresenter"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -26,7 +28,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_normal">
+            android:padding="@dimen/spacing_normal"
+            android:background="@{ sponsorsPresenter.isSponsorSelected(sponsor.getId()) ? @color/blue_200 : 0 }"
+            android:foreground="?attr/selectableItemBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,24 +51,6 @@
                     style="@style/TextAppearance.AppCompat.Headline"
                     tools:text="Sponsor Name"
                     android:layout_weight="1"/>
-
-                <ImageButton
-                    android:id="@+id/action_change_sponsor"
-                    android:layout_width="@dimen/spacing_larger"
-                    android:layout_height="@dimen/spacing_larger"
-                    android:layout_gravity="top"
-                    android:background="?android:selectableItemBackground"
-                    android:contentDescription="@string/edit_sponsor"
-                    app:srcCompat="@drawable/ic_edit" />
-
-                <ImageButton
-                    android:id="@+id/action_delete_sponsor"
-                    android:layout_width="@dimen/spacing_larger"
-                    android:layout_height="@dimen/spacing_larger"
-                    android:layout_gravity="top"
-                    android:background="?android:selectableItemBackground"
-                    android:contentDescription="@string/delete_sponsor"
-                    app:srcCompat="@drawable/ic_delete" />
 
             </LinearLayout>
 

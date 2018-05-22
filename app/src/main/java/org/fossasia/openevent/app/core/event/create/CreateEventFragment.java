@@ -55,6 +55,8 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     private Validator validator;
     private ArrayAdapter<CharSequence> currencyAdapter;
     private ArrayAdapter<CharSequence> paymentCountryAdapter;
+    private long eventId = -1;
+    private boolean isUpdateEvent = false;
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private final GoogleApiAvailability googleApiAvailabilityInstance = GoogleApiAvailability.getInstance();
@@ -63,10 +65,24 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
         return new CreateEventFragment();
     }
 
+    public static CreateEventFragment newInstance(long id) {
+        Bundle bundle = new Bundle();
+        bundle.putLong(CreateEventActivity.EVENT_ID, id);
+        CreateEventFragment createEventFragment = new CreateEventFragment();
+        createEventFragment.setArguments(bundle);
+        return createEventFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.event_create_layout, container, false);
         validator = new Validator(binding.form);
+
+        if (getArguments() != null) {
+            Bundle bundle = getArguments();
+            eventId = bundle.getLong(CreateEventActivity.EVENT_ID);
+            isUpdateEvent = eventId != -1;
+        }
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         activity.setSupportActionBar(binding.toolbar);
@@ -80,8 +96,12 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
         setHasOptionsMenu(true);
 
         binding.submit.setOnClickListener(view -> {
-            if (validator.validate())
-                getPresenter().createEvent();
+            if (validator.validate()) {
+                if (isUpdateEvent)
+                    getPresenter().updateEvent();
+                else
+                    getPresenter().createEvent();
+            }
         });
 
         setupSpinners();
@@ -124,6 +144,13 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
         validate(binding.form.externalEventUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.originalImageUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.paypalEmailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
+        if (isUpdateEvent) {
+            binding.form.createEventTitle.setText(getResources().getString(R.string.update_event));
+            getPresenter().loadEvents(eventId);
+        } else {
+            binding.form.createEventTitle.setText(getResources().getString(R.string.create_event));
+        }
+
     }
 
     @Override
@@ -279,5 +306,10 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     private void showLocationLayouts() {
         binding.form.layoutSearchableLocation.setVisibility(View.VISIBLE);
         binding.form.layoutLocationName.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setEvent(Event event) {
+        binding.setEvent(event);
     }
 }

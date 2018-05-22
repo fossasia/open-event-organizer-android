@@ -115,7 +115,6 @@ dependencies {
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "com.evernote:android-job:${versions.android_job}"
     implementation 'com.mikhaellopez:circularprogressbar:1.1.1'
     implementation 'com.github.Ilhasoft:data-binding-validator:1.0.0'
     implementation "io.sentry:sentry-android:${versions.sentry_android}"
@@ -127,6 +126,9 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
     implementation "android.arch.lifecycle:common-java8:$versions.lifecycle"
     annotationProcessor "android.arch.lifecycle:compiler:$versions.lifecycle"
+
+    //WorkManager
+    implementation "android.arch.work:work-runtime:${versions.work_manager}"
 
     // DbFlow
     implementation "com.github.raizlabs.dbflow:dbflow-core:${versions.dbflow}"

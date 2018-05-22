@@ -18,19 +18,15 @@ import org.fossasia.openevent.app.data.tracks.Track;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @Builder
 @Type("session")
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "track")
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
-@EqualsAndHashCode()
 @SuppressWarnings("PMD.TooManyFields")
 public class Session {
 

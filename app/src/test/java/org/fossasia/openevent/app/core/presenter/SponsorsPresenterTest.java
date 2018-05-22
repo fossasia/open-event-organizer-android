@@ -22,12 +22,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -53,6 +56,8 @@ public class SponsorsPresenterTest {
         Sponsor.builder().id(3L).name("abc").build(),
         Sponsor.builder().id(4L).name("pqr").build()
     );
+
+    private static final String SPONSORS_DELETED_SUCCESSFULLY = "Sponsors Deleted";
 
     private SponsorsPresenter sponsorsPresenter;
 
@@ -83,7 +88,7 @@ public class SponsorsPresenterTest {
     }
 
     @Test
-    public void shouldShowTicketsAutomatically() {
+    public void shouldShowSponsorsAutomatically() {
         when(sponsorRepository.getSponsors(ID, false)).thenReturn(Observable.fromIterable(SPONSORS));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
@@ -175,5 +180,55 @@ public class SponsorsPresenterTest {
         inOrder.verify(sponsorsView).showProgress(true);
         inOrder.verify(sponsorsView).onRefreshComplete(true);
         inOrder.verify(sponsorsView).showProgress(false);
+    }
+
+    @Test
+    public void shouldDeleteSponsorSuccessfully() {
+        when(sponsorRepository.deleteSponsor(ID)).thenReturn(Completable.complete());
+
+        sponsorsPresenter.isSponsorSelected(ID);
+        sponsorsPresenter.getSelectedSponsors().get(ID).set(true);
+        sponsorsPresenter.deleteSponsor(ID);
+
+        assertFalse(sponsorsPresenter.isSponsorSelected(ID).get());
+    }
+
+    @Test
+    public void shouldDeleteSponsorsSuccessfully() {
+        for (Sponsor sponsor : sponsorsPresenter.getSponsors()) {
+            sponsorsPresenter.getSelectedSponsors().get(sponsor.getId()).set(true);
+        }
+
+        for (Long sponsorId : sponsorsPresenter.getSelectedSponsors().keySet()) {
+            when(sponsorRepository.deleteSponsor(sponsorId)).thenReturn(Completable.complete());
+        }
+
+        sponsorsPresenter.deleteSelectedSponsors();
+
+        InOrder inOrder = Mockito.inOrder(sponsorsView);
+
+        inOrder.verify(sponsorsView).showProgress(true);
+        inOrder.verify(sponsorsView).showMessage(SPONSORS_DELETED_SUCCESSFULLY);
+        inOrder.verify(sponsorsView).showProgress(false);
+
+        assertEquals(sponsorsPresenter.getSelectedSponsors().size(), 0);
+    }
+
+    @Test
+    public void shouldNotDeleteUnselectedSponsors() {
+        for (Long sponsorId : sponsorsPresenter.getSelectedSponsors().keySet()) {
+            when(sponsorRepository.deleteSponsor(sponsorId)).thenReturn(Completable.error(Logger.TEST_ERROR));
+        }
+
+        sponsorsPresenter.deleteSelectedSponsors();
+
+        verify(sponsorRepository, Mockito.never()).deleteSponsor(anyLong());
+    }
+
+    @Test
+    public void shouldResetToolbarToDefaultState() {
+        sponsorsPresenter.resetToolbarDefaultState();
+
+        verify(sponsorsView).changeToolbarMode(false, false);
     }
 }
