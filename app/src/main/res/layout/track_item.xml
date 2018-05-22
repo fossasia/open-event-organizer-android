@@ -7,7 +7,9 @@
 
         <import type="android.view.View" />
 
-        <import type="org.fossasia.openevent.app.core.track.list.TracksPresenter"/>
+        <variable
+            name="tracksPresenter"
+            type="org.fossasia.openevent.app.core.track.list.TracksPresenter"/>
 
         <variable
             name="track"
@@ -18,49 +20,26 @@
         android:id="@+id/track_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_small">
+        android:layout_margin="@dimen/spacing_small"
+        android:background="@{ tracksPresenter.isTrackSelected(track.getId()) ? @color/blue_200 : @android:color/white }">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            circular_progress_color="android:"
+            android:foreground="?attr/selectableItemBackground">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_small"
-                    android:text='@{ track.name }'
-                    android:background="@{ TracksPresenter.getTrackColor(track) }"
-                    android:textColor='@{ TracksPresenter.getTrackFontColor(track) }'
-                    style="@style/TextAppearance.AppCompat.Headline"
-                    tools:text="Track Name"
-                    android:layout_weight="1"/>
-
-                <ImageButton
-                    android:id="@+id/action_change_track"
-                    android:layout_width="@dimen/spacing_larger"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/edit_track"
-                    android:background="@{ TracksPresenter.getTrackColor(track) }"
-                    android:tint="@{TracksPresenter.getTrackFontColor(track)}"
-                    app:srcCompat="@drawable/ic_edit" />
-
-                <ImageButton
-                    android:id="@+id/action_delete_track"
-                    android:layout_width="@dimen/spacing_larger"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/delete_track"
-                    android:background="@{ TracksPresenter.getTrackColor(track) }"
-                    android:tint="@{TracksPresenter.getTrackFontColor(track)}"
-                    app:srcCompat="@drawable/ic_delete" />
-
-            </LinearLayout>
+                android:padding="@dimen/spacing_small"
+                android:text='@{ track.name }'
+                android:background="@{ tracksPresenter.getTrackColor(track) }"
+                android:textColor='@{ tracksPresenter.getTrackFontColor(track) }'
+                style="@style/TextAppearance.AppCompat.Headline"
+                tools:text="Track Name"/>
 
             <TextView
                 android:layout_width="match_parent"
