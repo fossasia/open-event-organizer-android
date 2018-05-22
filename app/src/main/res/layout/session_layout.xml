@@ -10,6 +10,10 @@
         <import type="org.fossasia.openevent.app.utils.DateUtils" />
 
         <variable
+            name="sessionsPresenter"
+            type="org.fossasia.openevent.app.core.session.list.SessionsPresenter" />
+
+        <variable
             name="session"
             type="org.fossasia.openevent.app.data.session.Session" />
     </data>
@@ -17,6 +21,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:backgroundTint="@{ sessionsPresenter.isSessionSelected(session.getId()).get() ? @color/blue_200 : 0 }"
         android:layout_margin="@dimen/spacing_small">
 
         <LinearLayout
