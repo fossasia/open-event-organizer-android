@@ -26,11 +26,10 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksViewHolder> {
     public TracksViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         TracksViewHolder tracksViewHolder = new TracksViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.track_item, viewGroup, false));
+                R.layout.track_item, viewGroup, false), tracksPresenter);
 
-        tracksViewHolder.setClickAction(tracksPresenter::openSessions);
-        tracksViewHolder.setEditAction(tracksPresenter::updateTrack);
-        tracksViewHolder.setDeleteAction(tracksPresenter::showDeleteAlertDialog);
+        tracksViewHolder.setClickAction(tracksPresenter::click);
+        tracksViewHolder.setLongClickAction(tracksPresenter::longClick);
 
         return tracksViewHolder;
     }
