@@ -12,6 +12,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,6 +36,8 @@ import dagger.Lazy;
 
 public class TracksFragment extends BaseFragment<TracksPresenter> implements TracksView {
     private Context context;
+    private boolean toolbarEdit;
+    private boolean toolbarDelete;
     private long eventId;
     private AlertDialog deleteDialog;
 
@@ -56,6 +61,8 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
         super.onCreate(savedInstanceState);
 
         context = getContext();
+        setHasOptionsMenu(true);
+
         if (getArguments() != null)
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
@@ -119,24 +126,6 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     }
 
     @Override
-    public void showAlertDialog(long trackId) {
-        if (deleteDialog == null)
-            deleteDialog = new AlertDialog.Builder(context)
-                .setTitle(R.string.delete)
-                .setMessage(String.format(getString(R.string.delete_confirmation_message),
-                    getString(R.string.track)))
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    getPresenter().deleteTrack(trackId);
-                })
-                .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .create();
-
-        deleteDialog.show();
-    }
-
-    @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
@@ -163,6 +152,60 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.del:
+                showDeleteDialog();
+                break;
+            case R.id.edit:
+                getPresenter().updateTrack();
+                break;
+            default:
+                // No implementation
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItemEdit = menu.findItem(R.id.edit);
+        MenuItem menuItemDelete = menu.findItem(R.id.del);
+        menuItemEdit.setVisible(toolbarEdit);
+        menuItemDelete.setVisible(toolbarDelete);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_tracks, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void showDeleteDialog() {
+        if (deleteDialog == null)
+            deleteDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.delete)
+                .setMessage(String.format(getString(R.string.delete_confirmation_message),
+                    getString(R.string.tracks)))
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    getPresenter().deleteSelectedTracks();
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create();
+
+        deleteDialog.show();
+    }
+
+    @Override
+    public void changeToolbarMode(boolean toolbarEdit, boolean toolbarDelete) {
+        this.toolbarEdit = toolbarEdit;
+        this.toolbarDelete = toolbarDelete;
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
     protected Lazy<TracksPresenter> getPresenterProvider() {
         return tracksPresenter;
     }
@@ -174,7 +217,7 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     }
 
     @Override
-    public void showTrackDeleted(String message) {
+    public void showMessage(String message) {
         ViewUtils.showSnackbar(binding.getRoot(), message);
     }
 }

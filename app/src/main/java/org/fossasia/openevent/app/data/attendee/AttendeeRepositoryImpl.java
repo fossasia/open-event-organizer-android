@@ -87,7 +87,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
         return repository
             .update(Attendee.class, attendee)
             .concatWith(completableObserver -> {
-                AttendeeCheckInJob.scheduleJob();
+                AttendeeCheckInWork.scheduleWork();
                 if (!repository.isConnected())
                     completableObserver.onError(new Exception("No network present. Added to job queue"));
             })
