@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.auth;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -27,6 +28,7 @@ public class AuthActivity extends AppCompatActivity implements HasSupportFragmen
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
     @Inject
     BackPressHandler backPressHandler;
+    FragmentManager fm = getSupportFragmentManager();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class AuthActivity extends AppCompatActivity implements HasSupportFragmen
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
+            fm.beginTransaction()
                 .replace(R.id.fragment_container, new LoginFragment())
                 .commit();
         }
@@ -47,7 +49,10 @@ public class AuthActivity extends AppCompatActivity implements HasSupportFragmen
 
     @Override
     public void onBackPressed() {
-        backPressHandler.onBackPressed(this, super::onBackPressed);
+        if (fm.getBackStackEntryCount() == 0)
+            backPressHandler.onBackPressed(this, super::onBackPressed);
+        else
+            fm.popBackStack();
     }
 
     @Override
