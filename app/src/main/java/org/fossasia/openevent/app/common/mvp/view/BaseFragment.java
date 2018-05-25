@@ -20,10 +20,13 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         setTitle(getString(getTitle()));
     }
 
-    protected abstract Lazy<P> getPresenterProvider();
+    protected Lazy<P> getPresenterProvider() {
+        return null;
+    }
 
     protected P getPresenter() {
-        return getPresenterProvider().get();
+        Lazy<P> provider = getPresenterProvider();
+        return (provider != null) ? provider.get() : null;
     }
 
     protected void setTitle(String title) {
@@ -33,7 +36,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Override
     public void onStop() {
         super.onStop();
-        getPresenter().detach();
+        P presenter = getPresenter();
+        if (presenter != null)
+            presenter.detach();
     }
 
     @Override
