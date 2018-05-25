@@ -3,7 +3,7 @@ package org.fossasia.openevent.app.common.di.component;
 import org.fossasia.openevent.app.OrgaApplication;
 import org.fossasia.openevent.app.common.di.module.AppModule;
 import org.fossasia.openevent.app.common.di.module.android.ActivityBuildersModule;
-import org.fossasia.openevent.app.data.attendee.AttendeeCheckInJob;
+import org.fossasia.openevent.app.data.attendee.AttendeeCheckInWork;
 
 import javax.inject.Singleton;
 
@@ -21,5 +21,5 @@ public interface AppComponent extends AndroidInjector<OrgaApplication> {
 
     void inject(OrgaApplication orgaApplication);
 
-    void inject(AttendeeCheckInJob attendeeCheckInJob);
+    void inject(AttendeeCheckInWork attendeeCheckInWork);
 }
