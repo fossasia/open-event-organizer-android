@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.core.sponsor.list;
 
 import android.databinding.ObservableBoolean;
+import android.support.annotation.VisibleForTesting;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -97,7 +98,8 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
         return sponsors;
     }
 
-    public void deleteSponsor(Long sponsorId) {
+    @VisibleForTesting
+    protected void deleteSponsor(Long sponsorId) {
         sponsorRepository
             .deleteSponsor(sponsorId)
             .compose(disposeCompletable(getDisposable()))
@@ -172,7 +174,8 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
         return count;
     }
 
-    public Map<Long, ObservableBoolean> getSelectedSponsors() {
+    @VisibleForTesting
+    protected Map<Long, ObservableBoolean> getSelectedSponsors() {
         return selectedSponsors;
     }
 

@@ -1,8 +1,6 @@
-package org.fossasia.openevent.app.core.presenter;
+package org.fossasia.openevent.app.core.sponsor.list;
 
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.core.sponsor.list.SponsorsPresenter;
-import org.fossasia.openevent.app.core.sponsor.list.SponsorsView;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.data.sponsor.SponsorRepository;
@@ -232,3 +230,4 @@ public class SponsorsPresenterTest {
         verify(sponsorsView).changeToolbarMode(false, false);
     }
 }
+
