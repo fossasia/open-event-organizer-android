@@ -33,8 +33,14 @@ public class ForgotPasswordFragment extends BaseFragment<ForgotPasswordPresenter
     private ForgotPasswordFragmentBinding binding;
     private Validator validator;
 
-    public static ForgotPasswordFragment newInstance() {
-        return new ForgotPasswordFragment();
+    private static final String EMAIL = "email";
+
+    public static ForgotPasswordFragment newInstance(String email) {
+        Bundle bundle = new Bundle();
+        bundle.putString(EMAIL, email);
+        ForgotPasswordFragment forgotPasswordFragment = new ForgotPasswordFragment();
+        forgotPasswordFragment.setArguments(bundle);
+        return forgotPasswordFragment;
     }
 
     @Override
@@ -42,6 +48,9 @@ public class ForgotPasswordFragment extends BaseFragment<ForgotPasswordPresenter
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.forgot_password_fragment, container, false);
         validator = new Validator(binding);
+
+        getPresenter().getEmailId().setEmail(getArguments().getString(EMAIL));
+
         return binding.getRoot();
     }
 

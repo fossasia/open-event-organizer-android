@@ -100,8 +100,9 @@ public class LoginFragment extends BaseFragment implements LoginView {
 
     private void openForgotPasswordPage() {
         getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
-            .replace(R.id.fragment_container, new ForgotPasswordFragment())
+            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, R.anim.enter_from_right, R.anim.exit_from_left)
+            .add(R.id.fragment_container, ForgotPasswordFragment.newInstance(binding.getLogin().getEmail()))
+            .addToBackStack(null)
             .commit();
     }
 
