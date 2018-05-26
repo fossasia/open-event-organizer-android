@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.auth.signup;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
+import org.fossasia.openevent.app.core.auth.SharedViewModel;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.databinding.SignUpFragmentBinding;
@@ -32,6 +34,7 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
 
     private SignUpFragmentBinding binding;
     private Validator validator;
+    private SharedViewModel sharedViewModel;
 
     public static SignUpFragment newInstance() {
         return new SignUpFragment();
@@ -42,6 +45,8 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.sign_up_fragment, container, false);
         validator = new Validator(binding);
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        sharedViewModel.getEmail().observe(this, email -> binding.getUser().setEmail(email));
         return binding.getRoot();
     }
 
@@ -69,6 +74,7 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
     }
 
     private void openLoginPage() {
+        sharedViewModel.setEmail(binding.getUser().getEmail());
         getFragmentManager().beginTransaction()
             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             .replace(R.id.fragment_container, new LoginFragment())
