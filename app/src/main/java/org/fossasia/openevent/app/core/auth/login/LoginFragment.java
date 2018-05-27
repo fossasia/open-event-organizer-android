@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
+import org.fossasia.openevent.app.core.auth.SharedViewModel;
 import org.fossasia.openevent.app.core.auth.forgot.request.ForgotPasswordFragment;
 import org.fossasia.openevent.app.core.auth.signup.SignUpFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
@@ -35,6 +36,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
     private LoginViewModel loginFragmentViewModel;
     private LoginFragmentBinding binding;
     private Validator validator;
+    private SharedViewModel sharedViewModel;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -45,6 +47,8 @@ public class LoginFragment extends BaseFragment implements LoginView {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false);
         loginFragmentViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
         validator = new Validator(binding);
         return binding.getRoot();
     }
@@ -92,6 +96,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
     }
 
     private void openSignUpPage() {
+        sharedViewModel.setEmail(binding.getLogin().getEmail());
         getFragmentManager().beginTransaction()
             .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
             .replace(R.id.fragment_container, new SignUpFragment())
@@ -99,6 +104,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
     }
 
     private void openForgotPasswordPage() {
+        sharedViewModel.setEmail(binding.getLogin().getEmail());
         getFragmentManager().beginTransaction()
             .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
             .replace(R.id.fragment_container, new ForgotPasswordFragment())

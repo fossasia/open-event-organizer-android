@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.auth.forgot.request;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
+import org.fossasia.openevent.app.core.auth.SharedViewModel;
 import org.fossasia.openevent.app.core.auth.forgot.submit.ResetPasswordByTokenFragment;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.databinding.ForgotPasswordFragmentBinding;
@@ -32,6 +34,7 @@ public class ForgotPasswordFragment extends BaseFragment<ForgotPasswordPresenter
 
     private ForgotPasswordFragmentBinding binding;
     private Validator validator;
+    private SharedViewModel sharedViewModel;
 
     public static ForgotPasswordFragment newInstance() {
         return new ForgotPasswordFragment();
@@ -42,6 +45,8 @@ public class ForgotPasswordFragment extends BaseFragment<ForgotPasswordPresenter
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.forgot_password_fragment, container, false);
         validator = new Validator(binding);
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        sharedViewModel.getEmail().observe(this, email -> binding.getForgotEmail().setEmail(email));
         return binding.getRoot();
     }
 
@@ -71,6 +76,7 @@ public class ForgotPasswordFragment extends BaseFragment<ForgotPasswordPresenter
     }
 
     private void openLoginPage() {
+        sharedViewModel.setEmail(binding.getForgotEmail().getEmail());
         getFragmentManager().beginTransaction()
             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             .replace(R.id.fragment_container, new LoginFragment())
