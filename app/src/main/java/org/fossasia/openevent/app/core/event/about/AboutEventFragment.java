@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.event.about;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -9,6 +10,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -37,6 +41,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     private static final String EVENT_ID = "id";
     private boolean creatingCopyright = true;
     private AlertDialog deleteDialog;
+    private Drawable shareIcon;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
@@ -95,12 +100,46 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
         compositeDisposable.dispose();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share_event:
+                shareEvent();
+                break;
+            default:
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.action_share_event);
+        shareIcon = menu.findItem(R.id.action_share_event).getIcon();
+        shareIcon.setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
+        menuItem.setVisible(true);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_share, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public void shareEvent() {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getPresenter().getShareableInformation());
+        shareIntent.setType("text/plain");
+        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+    }
+
     private void observeColorChanges() {
         Drawable icon = binding.toolbar.getNavigationIcon();
         Drawable overflowIcon = binding.toolbar.getOverflowIcon();
+
         compositeDisposable.add(toolbarColorChanger.observeColor(binding.appBar, binding.collapsingToolbar)
             .subscribe(color -> {
-                for (Drawable drawable : Arrays.asList(icon, overflowIcon)) {
+                for (Drawable drawable : Arrays.asList(icon, overflowIcon, shareIcon)) {
                     if (drawable != null) drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
                 }
             }));
