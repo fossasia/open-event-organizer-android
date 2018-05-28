@@ -27,7 +27,7 @@ import lombok.ToString;
 @Type("speaker")
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"event", "session", "user"})
+@ToString(exclude = {"event", "user"})
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @SuppressWarnings("PMD.TooManyFields")
@@ -68,8 +68,4 @@ public class Speaker {
     @Relationship("user")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public User user;
-
-    @Relationship("session")
-    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
-    public Session session;
 }

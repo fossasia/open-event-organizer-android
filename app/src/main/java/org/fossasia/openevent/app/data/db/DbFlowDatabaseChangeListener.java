@@ -26,7 +26,7 @@ public class DbFlowDatabaseChangeListener<T> implements DatabaseChangeListener<T
         classType = modelClass;
     }
 
-    @SuppressWarnings("MissingOverride")
+    @Override
     public Observable<ModelChange<T>> getNotifier() {
         return replaySubject
             .doOnSubscribe(disposable -> this.disposable = disposable)
@@ -34,7 +34,7 @@ public class DbFlowDatabaseChangeListener<T> implements DatabaseChangeListener<T
             .observeOn(AndroidSchedulers.mainThread());
     }
 
-    @SuppressWarnings("MissingOverride")
+    @Override
     public void startListening() {
         if (disposable == null || disposable.isDisposed())
             replaySubject = ReplaySubject.create();
@@ -55,7 +55,7 @@ public class DbFlowDatabaseChangeListener<T> implements DatabaseChangeListener<T
         DirectModelNotifier.get().registerForModelChanges(classType, modelModelChangedListener);
     }
 
-    @SuppressWarnings("MissingOverride")
+    @Override
     public void stopListening() {
         if (modelModelChangedListener != null)
             DirectModelNotifier.get().unregisterForModelChanges(classType, modelModelChangedListener);
