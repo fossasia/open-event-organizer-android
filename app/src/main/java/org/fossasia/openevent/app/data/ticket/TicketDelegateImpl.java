@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.utils.CompareUtils;
 
+@SuppressWarnings("ComparableType")
 public class TicketDelegateImpl implements TicketDelegate {
 
     private final Ticket ticket;

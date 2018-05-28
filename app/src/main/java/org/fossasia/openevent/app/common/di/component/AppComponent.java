@@ -19,6 +19,7 @@ import dagger.android.AndroidInjector;
 })
 public interface AppComponent extends AndroidInjector<OrgaApplication> {
 
+    @Override
     void inject(OrgaApplication orgaApplication);
 
     void inject(AttendeeCheckInWork attendeeCheckInWork);

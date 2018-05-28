@@ -13,6 +13,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.data.user.User;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ import lombok.ToString;
 @Type("speaker")
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"event", "sessions", "user"})
+@ToString(exclude = {"event", "session", "user"})
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @SuppressWarnings("PMD.TooManyFields")
@@ -67,4 +68,8 @@ public class Speaker {
     @Relationship("user")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public User user;
+
+    @Relationship("session")
+    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
+    public Session session;
 }

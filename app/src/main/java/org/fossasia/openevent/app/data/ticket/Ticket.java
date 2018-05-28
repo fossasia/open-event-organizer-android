@@ -29,7 +29,7 @@ import lombok.experimental.Delegate;
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @EqualsAndHashCode(exclude = { "ticketDelegate" })
-@SuppressWarnings("PMD.TooManyFields")
+@SuppressWarnings({ "PMD.TooManyFields", "MissingOverride" })
 public class Ticket implements Comparable<Ticket> {
 
     @Delegate

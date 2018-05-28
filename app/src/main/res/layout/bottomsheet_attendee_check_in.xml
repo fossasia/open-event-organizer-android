@@ -73,7 +73,7 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_gravity="center_vertical"
-                        app:srcCompat="@{ checkinAttendee.checking ? @drawable/ic_local_sync : @drawable/ic_server_sync }"/>
+                        app:srcCompat="@{ safeUnbox(checkinAttendee.checking) ? @drawable/ic_local_sync : @drawable/ic_server_sync }"/>
 
                 </LinearLayout>
 

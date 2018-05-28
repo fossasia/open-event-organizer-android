@@ -82,7 +82,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
             .subscribeOn(Schedulers.io());
     }
 
-    @NonNull
+    @Override @NonNull
     public Completable scheduleToggle(Attendee attendee) {
         return repository
             .update(Attendee.class, attendee)

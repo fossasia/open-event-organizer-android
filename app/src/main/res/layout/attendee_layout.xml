@@ -64,7 +64,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="bottom"
-            app:srcCompat="@{ attendee.checking ? @drawable/ic_local_sync : @drawable/ic_server_sync }"/>
+            app:srcCompat="@{ safeUnbox(attendee.checking) ? @drawable/ic_local_sync : @drawable/ic_server_sync }"/>
 
     </LinearLayout>
 </layout>
