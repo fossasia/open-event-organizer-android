@@ -33,11 +33,6 @@ android {
         ]
     }
 
-    tasks.withType(JavaCompile) {
-           // workaround for: https://github.com/google/error-prone/issues/780
-            options.compilerArgs += ['-Xep:ParameterName:OFF']
-    }
-
     buildTypes {
         release {
             minifyEnabled true
