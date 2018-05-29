@@ -13,7 +13,6 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.data.user.User;
 
 import lombok.AllArgsConstructor;

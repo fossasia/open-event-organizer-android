@@ -205,6 +205,9 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
+    // Error Prone
+    errorprone 'com.google.errorprone:error_prone_core:2.0.5'
+
     //Testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
