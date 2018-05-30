@@ -82,7 +82,7 @@ sentry {
 
 configurations.all { config ->
     resolutionStrategy {
-        force 'com.android.support:multidex:1.0.2'
+        force 'com.android.support:multidex:1.0.3'
     }
     if (config.name.contains('UnitTest')) {
         config.resolutionStrategy.eachDependency { details ->
