@@ -59,6 +59,7 @@ android {
     testOptions {
         unitTests {
             includeAndroidResources = true
+            unitTests.returnDefaultValues = true
         }
     }
 }
@@ -199,6 +200,11 @@ dependencies {
     //Testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testImplementation("android.arch.core:core-testing:$versions.lifecycle", {
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-core-utils'
     })
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-inline:2.8.9'
