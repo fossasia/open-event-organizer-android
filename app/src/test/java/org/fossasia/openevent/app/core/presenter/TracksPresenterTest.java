@@ -84,7 +84,7 @@ public class TracksPresenterTest {
     }
 
     @Test
-    public void shouldShowTicketsAutomatically() {
+    public void shouldShowTracksAutomatically() {
         when(trackRepository.getTracks(ID, false)).thenReturn(Observable.fromIterable(TRACKS));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 

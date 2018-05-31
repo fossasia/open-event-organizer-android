@@ -19,7 +19,6 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 
 public class LoginViewModel extends ViewModel {
 
@@ -39,13 +38,11 @@ public class LoginViewModel extends ViewModel {
         this.loginModel = loginModel;
         this.interceptor = interceptor;
         this.sharedPreferenceModel = sharedPreferenceModel;
-        progress.setValue(false);
     }
 
     //for logging into the app
     public void login() {
         compositeDisposable.add(loginModel.login(login)
-            .compose(disposeCompletable(compositeDisposable))
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(() -> isLoggedIn.setValue(true),
