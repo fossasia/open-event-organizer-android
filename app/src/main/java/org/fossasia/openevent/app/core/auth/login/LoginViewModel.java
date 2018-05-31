@@ -17,7 +17,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.disposables.CompositeDisposable;
 
 

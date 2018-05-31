@@ -1,11 +1,10 @@
-package org.fossasia.openevent.app.core.presenter;
+package org.fossasia.openevent.app.core.auth.login;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.lifecycle.Observer;
 
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.core.auth.login.LoginViewModel;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.auth.AuthService;
 import org.fossasia.openevent.app.data.auth.model.Login;
@@ -27,6 +26,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import io.reactivex.Completable;
+
+import static org.mockito.Mockito.verify;
 
 
 @RunWith(JUnit4.class)
@@ -109,7 +110,7 @@ public class LoginViewModelTest {
 
         loginViewModel.getLoginStatus().observeForever(login);
 
-        Mockito.verify(login).onChanged(true);
+        verify(login).onChanged(true);
     }
 
     @Test
@@ -118,28 +119,34 @@ public class LoginViewModelTest {
 
         loginViewModel.getLoginStatus().observeForever(login);
 
-        Mockito.verify(login, Mockito.never()).onChanged(true);
+        verify(login, Mockito.never()).onChanged(true);
     }
 
     @Test
     public void shouldAttachEmailAutomatically() {
         Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(SAVED_EMAILS);
         Mockito.when(authModel.isLoggedIn()).thenReturn(false);
+        Mockito.when(authModel.login(LOGIN))
+            .thenReturn(Completable.complete());
 
         loginViewModel.getEmailList().observeForever(email);
         loginViewModel.getLoginStatus().observeForever(login);
+        loginViewModel.login();
 
-        Mockito.verify(email).onChanged(SAVED_EMAILS);
+        verify(email).onChanged(SAVED_EMAILS);
     }
 
     @Test
     public void shouldNotAttachEmailAutomatically() {
         Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(null);
         Mockito.when(authModel.isLoggedIn()).thenReturn(false);
+        Mockito.when(authModel.login(LOGIN))
+            .thenReturn(Completable.complete());
 
         loginViewModel.getEmailList().observeForever(email);
         loginViewModel.getLoginStatus().observeForever(login);
+        loginViewModel.login();
 
-        Mockito.verify(email, Mockito.never()).onChanged(SAVED_EMAILS);
+        verify(email, Mockito.never()).onChanged(SAVED_EMAILS);
     }
 }
