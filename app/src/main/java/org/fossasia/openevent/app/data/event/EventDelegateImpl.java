@@ -9,7 +9,7 @@ import org.fossasia.openevent.app.utils.service.DateService;
 import java.text.ParseException;
 
 import timber.log.Timber;
-
+@SuppressWarnings("ComparableType")
 public class EventDelegateImpl implements EventDelegate {
 
     private final Event event;
