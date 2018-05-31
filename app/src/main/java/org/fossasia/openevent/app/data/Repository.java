@@ -17,6 +17,7 @@ import lombok.experimental.Delegate;
 /**
  * General Repository class. To be generified in future
  */
+@SuppressWarnings("MissingOverride")
 public final class Repository implements DatabaseRepository, ConnectionStatus {
 
     private final ContextUtils utilModel;
@@ -46,6 +47,7 @@ public final class Repository implements DatabaseRepository, ConnectionStatus {
         return abstractObservable.of(clazz);
     }
 
+    @Override
     public boolean isConnected() {
         return connectionStatus.isConnected();
     }

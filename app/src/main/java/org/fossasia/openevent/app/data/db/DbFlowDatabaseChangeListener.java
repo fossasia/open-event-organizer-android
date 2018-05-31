@@ -26,6 +26,7 @@ public class DbFlowDatabaseChangeListener<T> implements DatabaseChangeListener<T
         classType = modelClass;
     }
 
+    @Override
     public Observable<ModelChange<T>> getNotifier() {
         return replaySubject
             .doOnSubscribe(disposable -> this.disposable = disposable)
@@ -33,6 +34,7 @@ public class DbFlowDatabaseChangeListener<T> implements DatabaseChangeListener<T
             .observeOn(AndroidSchedulers.mainThread());
     }
 
+    @Override
     public void startListening() {
         if (disposable == null || disposable.isDisposed())
             replaySubject = ReplaySubject.create();
@@ -53,6 +55,7 @@ public class DbFlowDatabaseChangeListener<T> implements DatabaseChangeListener<T
         DirectModelNotifier.get().registerForModelChanges(classType, modelModelChangedListener);
     }
 
+    @Override
     public void stopListening() {
         if (modelModelChangedListener != null)
             DirectModelNotifier.get().unregisterForModelChanges(classType, modelModelChangedListener);
@@ -67,7 +70,7 @@ public class DbFlowDatabaseChangeListener<T> implements DatabaseChangeListener<T
         private final T model;
         private final BaseModel.Action action;
 
-        @Override
+        @Override @SuppressWarnings("EqualsHashCode")
         public boolean equals(Object obj) {
             return obj instanceof ModelChange && ((ModelChange) obj).action.equals(action) && ((ModelChange) obj).model.equals(model);
         }

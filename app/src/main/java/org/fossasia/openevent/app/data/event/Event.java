@@ -31,7 +31,7 @@ import lombok.experimental.Delegate;
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @EqualsAndHashCode(exclude = { "eventDelegate", "analytics" })
-@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
+@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields", "MissingOverride" })
 public class Event implements Comparable<Event>, HeaderProvider {
 
     public static final String STATE_DRAFT = "draft";

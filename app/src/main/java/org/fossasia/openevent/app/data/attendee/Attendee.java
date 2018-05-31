@@ -34,7 +34,7 @@ import lombok.experimental.Delegate;
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @EqualsAndHashCode(callSuper = false, exclude = { "attendeeDelegate", "checking" })
 @Table(database = OrgaDatabase.class)
-@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
+@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields", "MissingOverride", "MissingSuperCall" })
 public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider {
 
     @Delegate(types = AttendeeDelegate.class)

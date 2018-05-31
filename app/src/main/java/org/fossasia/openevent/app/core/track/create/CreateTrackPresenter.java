@@ -36,6 +36,7 @@ public class CreateTrackPresenter extends AbstractBasePresenter<CreateTrackView>
         track.setDescription(StringUtils.emptyToNull(track.getDescription()));
     }
 
+    @SuppressWarnings("CheckReturnValue")
     public void createTrack() {
         nullifyEmptyFields(track);
 

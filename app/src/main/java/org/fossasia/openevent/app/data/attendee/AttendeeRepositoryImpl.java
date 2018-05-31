@@ -83,6 +83,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
     }
 
     @NonNull
+    @Override
     public Completable scheduleToggle(Attendee attendee) {
         return repository
             .update(Attendee.class, attendee)

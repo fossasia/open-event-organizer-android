@@ -12,7 +12,7 @@ import org.fossasia.openevent.app.common.model.HeaderProvider;
 import org.fossasia.openevent.app.utils.CompareUtils;
 
 import java.util.List;
-
+@SuppressWarnings("ComparableType")
 public class AttendeeDelegateImpl extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider {
 
     private final Attendee attendee;
