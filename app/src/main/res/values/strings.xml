@@ -242,6 +242,8 @@
     <string name="update_event">Update Event</string>
     <string name="edit_sponsor">Edit Sponsor</string>
     <string name="delete_sponsor">Delete Sponsor</string>
+    <string name="send_to">Send To</string>
+    <string name="share">Share</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
