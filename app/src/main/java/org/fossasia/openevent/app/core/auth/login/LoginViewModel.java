@@ -28,8 +28,8 @@ public class LoginViewModel extends ViewModel {
     private final Preferences sharedPreferenceModel;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private MutableLiveData<String> error = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
+    private final MutableLiveData<String> error = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoggedIn;
     private MutableLiveData<Set<String>> emailList;
 

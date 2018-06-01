@@ -20,13 +20,15 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         setTitle(getString(getTitle()));
     }
 
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     protected Lazy<P> getPresenterProvider() {
         return null;
     }
 
+    @SuppressWarnings("PMD.NullAssignment")
     protected P getPresenter() {
         Lazy<P> provider = getPresenterProvider();
-        return (provider != null) ? provider.get() : null;
+        return (provider == null) ? null : provider.get();
     }
 
     protected void setTitle(String title) {

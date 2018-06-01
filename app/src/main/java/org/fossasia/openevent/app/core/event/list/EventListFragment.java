@@ -44,6 +44,7 @@ import static org.fossasia.openevent.app.core.event.list.EventsPresenter.SORTBYN
  * Use the {@link EventListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public class EventListFragment extends BaseFragment<EventsPresenter> implements EventsView {
     @Inject
     ContextUtils utilModel;
@@ -121,7 +122,8 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
                 Intent intent = new Intent(getActivity(), CreateEventActivity.class);
                 intent.putExtra(CreateEventActivity.EVENT_ID, id);
                 startActivity(intent);
-                default:
+                return true;
+            default:
                 return super.onOptionsItemSelected(item);
         }
     }
