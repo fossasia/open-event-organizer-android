@@ -15,6 +15,7 @@
 
     <dimen name="elevation">1dp</dimen>
 
+    <dimen name="text_size_extra_smaller">10sp</dimen>
     <dimen name="text_size_extra_small">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_normal">16sp</dimen>
