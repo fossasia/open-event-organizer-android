@@ -9,8 +9,8 @@ import org.fossasia.openevent.app.databinding.TrackItemBinding;
 
 public class TracksViewHolder extends RecyclerView.ViewHolder {
     private final TrackItemBinding binding;
+    private final TracksPresenter tracksPresenter;
     private Track track;
-    private TracksPresenter tracksPresenter;
 
     private Pipe<Track> longClickAction;
     private Pipe<Long> clickAction;
