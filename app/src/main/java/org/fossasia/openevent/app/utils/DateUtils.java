@@ -19,6 +19,7 @@ public final class DateUtils {
     public static final String FORMAT_12H = "hh:mm a";
     public static final String FORMAT_24H = "HH:mm";
     public static final String FORMAT_DATE_COMPLETE = "EE, dd MMM yyyy";
+    public static final String FORMAT_DAY_DATE_TIME = "EEE, MMM d, hh:mm a";
     public static final String FORMAT_DAY_COMPLETE = "HH:mm, EE, dd MMM yyyy";
 
     private static final String INVALID_DATE = "Invalid Date";
