@@ -57,7 +57,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
     public void onStart() {
         super.onStart();
 
-        loginFragmentViewModel.getLoginStatus().observe(this, this::handleIntent);
+        loginFragmentViewModel.getLoginStatus().observe(this, (loginStatus) -> handleIntent());
 
         String url = binding.url.baseUrl.getText().toString().trim();
         loginFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
@@ -77,7 +77,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
         binding.forgotPasswordLink.setOnClickListener(view -> openForgotPasswordPage());
     }
 
-    private void handleIntent(Boolean isLoggedIn) {
+    public void handleIntent() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

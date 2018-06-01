@@ -33,6 +33,7 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements SponsorsView {
 
     private Context context;

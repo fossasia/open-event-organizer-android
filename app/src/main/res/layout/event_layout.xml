@@ -5,6 +5,7 @@
     <data>
         <import type="android.view.View" />
         <import type="org.fossasia.openevent.app.data.event.Event" />
+        <import type="org.fossasia.openevent.app.utils.DateUtils" />
 
         <variable
             name="event"
@@ -50,44 +51,63 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/event_name_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="14"
+                        android:paddingBottom="@dimen/spacing_extra_small"
+                        android:paddingEnd="@dimen/spacing_small"
+                        android:paddingLeft="@dimen/spacing_medium"
+                        android:paddingRight="@dimen/spacing_small"
+                        android:paddingStart="@dimen/spacing_medium"
+                        android:paddingTop="@dimen/spacing_tiny"
+                        android:text="@{event.name}"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_normal" />
+
+                    <FrameLayout
+                        android:id="@+id/draft_frame"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:visibility='@{ Event.STATE_DRAFT.equalsIgnoreCase(event.state) ? View.VISIBLE : View.GONE }'>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|bottom"
+                            android:contentDescription="@string/save_icon"
+                            android:paddingEnd="@dimen/spacing_small"
+                            android:paddingLeft="@dimen/spacing_small"
+                            android:paddingRight="@dimen/spacing_small"
+                            android:paddingStart="@dimen/spacing_small"
+                            app:srcCompat="@drawable/ic_save" />
+
+                    </FrameLayout>
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/event_name_textview"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="14"
-                    android:paddingBottom="@dimen/spacing_extra_small"
-                    android:paddingEnd="@dimen/spacing_small"
-                    android:paddingLeft="@dimen/spacing_medium"
-                    android:paddingRight="@dimen/spacing_small"
-                    android:paddingStart="@dimen/spacing_medium"
-                    android:paddingTop="@dimen/spacing_tiny"
-                    android:text="@{event.name}"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_normal" />
+                    android:layout_marginLeft="@dimen/spacing_medium"
+                    android:layout_marginStart="@dimen/spacing_medium"
+                    android:text="@{ DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_DATE_TIME, event.getStartsAt()) }"
+                    android:textColor="@color/grey_600"
+                    android:textSize="@dimen/text_size_extra_small"
+                    android:textAllCaps="true"/>
 
-                <FrameLayout
-                    android:id="@+id/draft_frame"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:visibility='@{ Event.STATE_DRAFT.equalsIgnoreCase(event.state) ? View.VISIBLE : View.GONE }'>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|bottom"
-                        android:contentDescription="@string/save_icon"
-                        android:paddingEnd="@dimen/spacing_small"
-                        android:paddingLeft="@dimen/spacing_small"
-                        android:paddingRight="@dimen/spacing_small"
-                        android:paddingStart="@dimen/spacing_small"
-                        app:srcCompat="@drawable/ic_save" />
-
-                </FrameLayout>
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </layout>

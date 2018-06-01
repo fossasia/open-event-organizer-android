@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
+import org.fossasia.openevent.app.ui.BackPressHandler;
 
 import javax.inject.Inject;
 
@@ -24,6 +25,8 @@ public class AuthActivity extends AppCompatActivity implements HasSupportFragmen
 
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+    @Inject
+    BackPressHandler backPressHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +43,11 @@ public class AuthActivity extends AppCompatActivity implements HasSupportFragmen
                 .replace(R.id.fragment_container, new LoginFragment())
                 .commit();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        backPressHandler.onBackPressed(this, super::onBackPressed);
     }
 
     @Override

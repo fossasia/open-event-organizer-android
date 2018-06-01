@@ -41,7 +41,7 @@ public class MainPresenter extends AbstractBasePresenter<MainView> {
     private User organizer;
 
     @Inject
-    @SuppressWarnings({"checkstyle:parameternumber"})
+    @SuppressWarnings("checkstyle:parameternumber")
     public MainPresenter(Preferences sharedPreferenceModel, AuthService loginModel,
                          EventRepository eventRepository, Bus bus, RxSharedPreferences sharedPreferences,
                          ContextManager contextManager, UserRepository userRepository, CurrencyUtils currencyUtils) {

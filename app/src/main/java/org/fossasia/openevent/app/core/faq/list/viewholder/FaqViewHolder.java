@@ -13,8 +13,8 @@ import org.fossasia.openevent.app.databinding.FaqLayoutBinding;
 public class FaqViewHolder extends RecyclerView.ViewHolder {
 
     private final FaqLayoutBinding binding;
+    private final FaqListPresenter faqListPresenter;
     private Faq faq;
-    private FaqListPresenter faqListPresenter;
     private Pipe<Faq> longClickAction;
     private Runnable clickAction;
 

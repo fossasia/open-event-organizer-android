@@ -26,10 +26,9 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_event_activity);
 
-        long id = getIntent().getLongExtra(EVENT_ID, -1);
-
         if (savedInstanceState == null) {
-            Fragment fragment = (id != -1) ? CreateEventFragment.newInstance(id) : new CreateEventFragment();
+            long id = getIntent().getLongExtra(EVENT_ID, -1);
+            Fragment fragment = (id == -1) ? new CreateEventFragment() : CreateEventFragment.newInstance(id);
             getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment, fragment)
                 .commit();

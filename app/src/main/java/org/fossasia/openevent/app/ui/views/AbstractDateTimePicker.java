@@ -38,6 +38,7 @@ public abstract class AbstractDateTimePicker extends android.support.v7.widget.A
         setValue(isoDate);
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly
     protected void bindTemporal(String date, String format, Function<ZonedDateTime, AlertDialog> dialogProvider) {
         if (date == null)
             return;
@@ -45,11 +46,12 @@ public abstract class AbstractDateTimePicker extends android.support.v7.widget.A
         this.setText(DateUtils.formatDateWithDefault(format, date));
 
         this.setOnClickListener(view -> {
-            ZonedDateTime zonedDateTime = ZonedDateTime.now();
+            ZonedDateTime zonedDateTime;
             try {
                 zonedDateTime = DateUtils.getDate(date);
             } catch (DateTimeParseException pe) {
                 Timber.e(pe);
+                zonedDateTime  = ZonedDateTime.now();
             }
             dialogProvider.apply(zonedDateTime).show();
         });

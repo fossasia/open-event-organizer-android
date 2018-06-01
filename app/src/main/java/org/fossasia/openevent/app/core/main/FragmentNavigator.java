@@ -98,7 +98,7 @@ class FragmentNavigator {
         if (dashboardActive) {
             transaction.replace(R.id.fragment_container, fragment);
         } else {
-            transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+            transaction.add(R.id.fragment_container, fragment).addToBackStack(null);
         }
         transaction.commit();
     }

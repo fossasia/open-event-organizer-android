@@ -13,9 +13,9 @@ import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.data.sponsor.SponsorRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
@@ -33,7 +33,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     private final List<Sponsor> sponsors = new ArrayList<>();
     private final SponsorRepository sponsorRepository;
     private final DatabaseChangeListener<Sponsor> sponsorChangeListener;
-    private final Map<Long, ObservableBoolean> selectedSponsors = new HashMap<>();
+    private final Map<Long, ObservableBoolean> selectedSponsors = new ConcurrentHashMap<>();
     private boolean isToolbarActive;
 
     private static final int EDITABLE_AT_ONCE = 1;
@@ -165,6 +165,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
         return selectedSponsors.get(sponsorId);
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly
     private int countSelected() {
         int count = 0;
         for (Long id : selectedSponsors.keySet()) {
