@@ -23,21 +23,36 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                style="@style/ItemPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                style="@style/ItemPadding">
+                android:orientation="vertical">
 
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Headline"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/spacing_large"
-                    android:layout_marginRight="@dimen/spacing_large"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:text='@{ ticket.name }'
-                    tools:text="Name" />
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/spacing_large"
+                        android:layout_marginRight="@dimen/spacing_large"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text='@{ ticket.name }'
+                        tools:text="Name"
+                        android:layout_weight="0.8"/>
+
+                    <ImageButton
+                        android:id="@+id/printAction"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/print_black"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:layout_gravity="center_vertical"/>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -50,11 +65,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@{ @drawable/ic_ticket }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:drawableStart="@{ @drawable/ic_ticket }"
                     android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_ticket }"
-                    android:drawableStart="@{ @drawable/ic_ticket }"
-                    android:drawablePadding="@dimen/spacing_small"
                     android:text="@{ ticket.type }"
                     android:textAllCaps="true"
                     tools:text="free" />
@@ -62,22 +77,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@{ @drawable/ic_receipt }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:drawableStart="@{ @drawable/ic_receipt }"
                     android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_receipt }"
-                    android:drawableStart="@{ @drawable/ic_receipt }"
-                    android:drawablePadding="@dimen/spacing_small"
                     android:text="@{ ticket.quantity }"
                     tools:text="100" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@{ @drawable/ic_coin }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:drawableStart="@{ @drawable/ic_coin }"
                     android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_coin }"
-                    android:drawableStart="@{ @drawable/ic_coin }"
-                    android:drawablePadding="@dimen/spacing_small"
                     android:text='@{ ContextManager.getCurrency() + " " + ticket.price }'
                     android:visibility='@{ safeUnbox(ticket.price) != 0 ? View.VISIBLE : View.GONE }'
                     tools:text="3.78" />
@@ -85,11 +100,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@{ @drawable/ic_clock }"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:drawableStart="@{ @drawable/ic_clock }"
                     android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_clock }"
-                    android:drawableStart="@{ @drawable/ic_clock }"
-                    android:drawablePadding="@dimen/spacing_small"
                     android:text='@{ ticket.salesStartsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, ticket.salesStartsAt) : "" }'
                     android:textAllCaps="true"
                     tools:text="free" />
@@ -97,18 +112,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/spacing_small"
                     android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
-                    android:drawablePadding="@dimen/spacing_small"
                     android:text='@{ @string/maxOrder + ": " + String.valueOf(safeUnbox(ticket.maxOrder)) }'
                     tools:text="free" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/spacing_small"
                     android:gravity="center_vertical"
                     android:padding="@dimen/spacing_extra_small"
-                    android:drawablePadding="@dimen/spacing_small"
                     android:text='@{ @string/minOrder + ": " + String.valueOf(safeUnbox(ticket.minOrder)) }'
                     tools:text="free" />
             </LinearLayout>
