@@ -47,9 +47,9 @@
 
                     <ImageButton
                         android:id="@+id/printAction"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/print_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_round_print"
                         android:padding="@dimen/spacing_extra_small"
                         android:layout_gravity="center_vertical"/>
                 </LinearLayout>
