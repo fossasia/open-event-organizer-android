@@ -10,4 +10,5 @@ public interface EventsView extends Progressive, Erroneous, Refreshable, Emptiab
 
     void changeToEditMode(long id);
     void changeToNormalMode();
+    void resetEventsList();
 }

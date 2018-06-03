@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_live"
+        android:title="@string/event_state_live"
+        android:icon="@drawable/ic_time"/>
+    <item android:id="@+id/action_upcoming"
+        android:title="@string/event_state_upcoming"
+        android:icon="@drawable/ic_clock"/>
+    <item android:id="@+id/action_past"
+        android:title="@string/event_state_past"
+        android:icon="@drawable/ic_info"/>
+</menu>
