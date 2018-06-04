@@ -4,8 +4,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.util.Log;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -42,17 +44,20 @@ public class ChartAnalyser {
     private final Map<String, Long> freeMap = new ConcurrentHashMap<>();
     private final Map<String, Long> paidMap = new ConcurrentHashMap<>();
     private final Map<String, Long> donationMap = new ConcurrentHashMap<>();
+    private final Map<Integer, Long> checkInTimeMap = new ConcurrentHashMap<>();
 
     private final LineData lineData = new LineData();
 
     private LineDataSet freeSet;
     private LineDataSet paidSet;
     private LineDataSet donationSet;
+    private LineDataSet checkInDataSet;
 
     private long maxTicketSale;
 
     private List<Attendee> attendees;
     private boolean error;
+    private boolean isCheckinChart = false;
 
     @Inject
     protected ChartAnalyser(ContextUtils utilModel, AttendeeRepositoryImpl attendeeRepository) {
@@ -74,6 +79,7 @@ public class ChartAnalyser {
         freeMap.clear();
         paidMap.clear();
         donationMap.clear();
+        checkInTimeMap.clear();
 
         lineData.clearValues();
         maxTicketSale = 0;
@@ -117,11 +123,31 @@ public class ChartAnalyser {
             .doOnComplete(() -> {
                 if (error) throw new IllegalAccessException("No order found");
                 normalizeDataSet();
-                freeSet = setData(freeMap, "Free");
-                paidSet = setData(paidMap, "Paid");
-                donationSet = setData(donationMap, "Donation");
-                prepare();
+                freeSet = setDataForSales(freeMap, "Free");
+                paidSet = setDataForSales(paidMap, "Paid");
+                donationSet = setDataForSales(donationMap, "Donation");
+                prepareForSales();
             });
+    }
+
+    public Completable loadDataCheckIn(long eventId) {
+        clearData();
+        isCheckinChart = true;
+        return getAttendeeSource(eventId).doOnNext(attendee -> {
+           String checkInTime = attendee.getCheckinTimes();
+           Log.i("ChartAnalyzer.class", attendee.getFirstname() + " " + checkInTime);
+           error = checkInTime == null ? true : false;
+           addDataPointForCheckIn(checkInTimeMap, checkInTime);
+        })
+          .toList()
+          .doAfterSuccess(attendees -> this.attendees = attendees)
+          .toCompletable()
+          .doOnComplete(() -> {
+              if (error)
+                  throw new IllegalAccessException("No checkin's found");
+              checkInDataSet = setDataForCheckIn(checkInTimeMap, "checkintime");
+              prepareForCheckIn();
+          });
     }
 
     private void putIfNotPresent(Map<String, Long> map, String key) {
@@ -143,7 +169,7 @@ public class ChartAnalyser {
     }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
-    private LineDataSet setData(Map<String, Long> map, String label) throws ParseException {
+    private LineDataSet setDataForSales(Map<String, Long> map, String label) throws ParseException {
         List<Entry> entries = new ArrayList<>();
         for (Map.Entry<String, Long> entry : map.entrySet()) {
             String date = DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, entry.getKey());
@@ -159,6 +185,19 @@ public class ChartAnalyser {
         return new LineDataSet(entries, label);
     }
 
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
+    private LineDataSet setDataForCheckIn(Map<Integer, Long> map, String label) throws ParseException {
+        List<Entry> entries = new ArrayList<>();
+        for (Map.Entry<Integer, Long> entry : map.entrySet()) {
+            entries.add(new Entry(entry.getKey(), entry.getValue()));
+        }
+        Collections.sort(entries, new EntryXComparator());
+
+        // Add a starting point 2 hrs ago
+        entries.add(0, new Entry(entries.get(0).getX() - 2, 0));
+        return new LineDataSet(entries, label);
+    }
+
     private void addDataPoint(Map<String, Long> map, String dateString) {
         Long amount = map.get(dateString);
         if (amount == null)
@@ -168,6 +207,16 @@ public class ChartAnalyser {
         if (amount > maxTicketSale)
             maxTicketSale = amount;
         map.put(dateString, amount);
+    }
+
+    private void addDataPointForCheckIn(Map<Integer, Long> map, String dateString) {
+        int hour = DateUtils.getDate(dateString).getHour();
+        Long numberOfCheckins = map.get(hour);
+
+        if (numberOfCheckins == null)
+            numberOfCheckins = 0L;
+
+        map.put(hour, ++numberOfCheckins);
     }
 
     @ColorInt
@@ -184,15 +233,19 @@ public class ChartAnalyser {
         lineSet.setCircleHoleRadius(3);
     }
 
-    private void prepare() {
+    private void prepareForSales() {
         initializeLineSet(freeSet, R.color.light_blue_500, R.color.light_blue_100);
         initializeLineSet(paidSet, R.color.purple_500, R.color.purple_100);
         initializeLineSet(donationSet, R.color.red_500, R.color.red_100);
-
         lineData.addDataSet(freeSet);
         lineData.addDataSet(paidSet);
         lineData.addDataSet(donationSet);
         lineData.setDrawValues(false);
+    }
+
+    private void prepareForCheckIn() {
+        initializeLineSet(checkInDataSet, R.color.light_blue_500, R.color.light_blue_100);
+        lineData.addDataSet(checkInDataSet);
     }
 
     @SuppressFBWarnings(
@@ -200,15 +253,21 @@ public class ChartAnalyser {
         justification = "We want granularity to be integer")
     public void showChart(LineChart lineChart) {
         lineChart.setData(lineData);
-        lineChart.getXAxis().setEnabled(false);
+        lineChart.getXAxis().setEnabled(true);
         lineChart.getAxisRight().setEnabled(false);
-        lineChart.getDescription().setEnabled(false);
+        lineChart.getDescription().setEnabled(true);
 
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setGridLineWidth(1);
         yAxis.setGridColor(Color.parseColor("#992ecc71"));
-        if (maxTicketSale > TICKET_SALE_THRESHOLD)
-            yAxis.setGranularity(maxTicketSale / TICKET_SALE_THRESHOLD);
+        if (!isCheckinChart)
+            if (maxTicketSale > TICKET_SALE_THRESHOLD)
+                yAxis.setGranularity(maxTicketSale / TICKET_SALE_THRESHOLD);
+        else {
+            yAxis.setGranularity(1);
+            lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+            lineChart.getXAxis().setGranularity(1f);
+        }
 
         lineChart.animateY(1000);
     }
