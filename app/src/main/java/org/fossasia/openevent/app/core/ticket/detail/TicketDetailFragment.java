@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.ticket.detail;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.print.PrintManager;
 import android.support.annotation.Nullable;
@@ -28,6 +29,7 @@ public class TicketDetailFragment extends BaseBottomSheetFragment<TicketDetailPr
 
     private TicketDetailLayoutBinding binding;
     private long ticketId;
+    private PrintManager printManager;
 
     public static TicketDetailFragment newInstance(long ticketId) {
         Bundle args = new Bundle();
@@ -67,13 +69,12 @@ public class TicketDetailFragment extends BaseBottomSheetFragment<TicketDetailPr
 
     private void doPrint() {
         Ticket ticket = getPresenter().getTicket();
-        PrintManager printManager = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
             String jobName = this.getString(R.string.app_name) +
                 " Document";
 
-            printManager.print(jobName, new MyPrintDocumentAdapter(getActivity(), ticket),
+            printManager.print(jobName, new TicketPrintAdapter(getActivity(), ticket),
                 null);
         } else {
             ViewUtils.showSnackbar(binding.getRoot(), "No Printing Support!");
