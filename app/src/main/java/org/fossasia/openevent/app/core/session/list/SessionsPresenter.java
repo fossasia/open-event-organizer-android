@@ -12,9 +12,9 @@ import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.data.session.SessionRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
@@ -30,7 +30,7 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsView> {
 
     private final List<Session> sessions = new ArrayList<>();
-    private final Map<Long, ObservableBoolean> selectedSessions = new HashMap<>();
+    private final Map<Long, ObservableBoolean> selectedSessions = new ConcurrentHashMap<>();
     private final SessionRepository sessionRepository;
     private final DatabaseChangeListener<Session> sessionChangeListener;
     private boolean isToolbarActive;
@@ -148,6 +148,7 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
         return selectedSessions.get(sessionId);
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly
     private int countSelected() {
         int count = 0;
         for (Long id : selectedSessions.keySet()) {

@@ -34,6 +34,7 @@ import javax.inject.Inject;
 
 import dagger.Lazy;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class TracksFragment extends BaseFragment<TracksPresenter> implements TracksView {
     private Context context;
     private boolean toolbarEdit;

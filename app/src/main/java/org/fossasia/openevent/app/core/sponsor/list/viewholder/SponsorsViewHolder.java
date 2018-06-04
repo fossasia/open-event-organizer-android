@@ -11,8 +11,8 @@ import org.fossasia.openevent.app.databinding.SponsorItemBinding;
 public class SponsorsViewHolder extends RecyclerView.ViewHolder {
 
     private final SponsorItemBinding binding;
+    private final SponsorsPresenter sponsorsPresenter;
     private Sponsor sponsor;
-    private SponsorsPresenter sponsorsPresenter;
 
     private Pipe<Sponsor> longClickAction;
     private Pipe<Long> clickAction;

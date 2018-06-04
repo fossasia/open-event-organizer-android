@@ -67,7 +67,7 @@ public class SpeakersPresenter extends AbstractDetailPresenter<Long, SpeakersVie
         speakersChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
             .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> (action.equals(BaseModel.Action.INSERT)))
+            .filter(action -> action.equals(BaseModel.Action.INSERT))
             .subscribeOn(Schedulers.io())
             .subscribe(speakerModelChange -> loadSpeakers(false), Logger::logError);
     }

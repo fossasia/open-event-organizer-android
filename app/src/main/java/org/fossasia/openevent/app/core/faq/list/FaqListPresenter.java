@@ -12,9 +12,9 @@ import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.faq.FaqRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
@@ -33,7 +33,7 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     private Faq previousFaq = new Faq();
     private final FaqRepository faqRepository;
     private final DatabaseChangeListener<Faq> faqChangeListener;
-    private final Map<Faq, ObservableBoolean> selectedMap = new HashMap<>();
+    private final Map<Faq, ObservableBoolean> selectedMap = new ConcurrentHashMap<>();
 
     @Inject
     public FaqListPresenter(FaqRepository faqRepository, DatabaseChangeListener<Faq> faqChangeListener) {
