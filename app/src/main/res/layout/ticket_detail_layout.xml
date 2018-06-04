@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="org.fossasia.openevent.app.common.ContextManager" />
+
         <import type="org.fossasia.openevent.app.utils.DateUtils" />
+
         <import type="org.fossasia.openevent.app.ui.ViewUtils" />
+
         <import type="android.view.View" />
 
         <variable
@@ -31,7 +36,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal">
 
                     <TextView
                         style="@style/TextAppearance.AppCompat.Headline"
@@ -40,18 +47,19 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="@dimen/spacing_large"
                         android:layout_marginRight="@dimen/spacing_large"
+                        android:layout_weight="0.8"
                         android:padding="@dimen/spacing_extra_small"
                         android:text='@{ ticket.name }'
-                        tools:text="Name"
-                        android:layout_weight="0.8"/>
+                        tools:text="Name" />
 
-                    <ImageButton
+                    <android.support.design.widget.FloatingActionButton
                         android:id="@+id/printAction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_round_print"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:layout_gravity="center_vertical"/>
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="@dimen/spacing_small"
+                        app:backgroundTint="@color/color_top_surface"
+                        app:srcCompat="@drawable/ic_round_print" />
                 </LinearLayout>
 
                 <TextView
