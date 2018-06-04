@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="@dimen/spacing_small"
-                        app:backgroundTint="@color/color_top_surface"
+                        app:backgroundTint="@color/color_accent"
                         app:srcCompat="@drawable/ic_round_print" />
                 </LinearLayout>
 
