@@ -27,12 +27,12 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
 
     private final int TOTAL_PAGES = 1;
     private final Context context;
+    private final Ticket ticket;
     private int pageHeight;
     private int pageWidth;
     private PdfDocument ticketDocument;
-    private final Ticket ticket;
-    Paint paintHeaderText = new Paint();
-    Paint paintTicketDescription = new Paint();
+    private Paint paintHeaderText = new Paint();
+    private Paint paintTicketDescription = new Paint();
 
     public TicketPrintAdapter(Context context, Ticket ticket) {
         this.context = context;
@@ -45,10 +45,8 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
                          CancellationSignal cancellationSignal,
                          LayoutResultCallback callback, Bundle extras) {
         ticketDocument = new PrintedPdfDocument(context, newAttributes);
-        pageHeight =
-            newAttributes.getMediaSize().getHeightMils() / 1000 * 72;
-        pageWidth =
-            newAttributes.getMediaSize().getWidthMils() / 1000 * 72;
+        pageHeight = newAttributes.getMediaSize().getHeightMils() / 1000 * 72;
+        pageWidth = newAttributes.getMediaSize().getWidthMils() / 1000 * 72;
 
         if (cancellationSignal.isCanceled()) {
             callback.onLayoutCancelled();
@@ -56,7 +54,7 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
         }
 
         PrintDocumentInfo.Builder builder = new PrintDocumentInfo
-            .Builder("Ticket_" + ticket.event.getIdentifier() + "_" +ticket.getId() + ".pdf")
+            .Builder("Ticket_" + ticket.getEvent().getIdentifier() + "_" + ticket.getId() + ".pdf")
             .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
             .setPageCount(TOTAL_PAGES);
 
@@ -70,16 +68,12 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
                         CancellationSignal cancellationSignal,
                         WriteResultCallback callback) {
 
-        PdfDocument.PageInfo newPage = new PdfDocument.PageInfo.Builder(pageWidth,
-            pageHeight, TOTAL_PAGES).create();
-
-        PdfDocument.Page page =
-            ticketDocument.startPage(newPage);
+        PdfDocument.PageInfo newPage = new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, TOTAL_PAGES).create();
+        PdfDocument.Page page = ticketDocument.startPage(newPage);
 
         if (cancellationSignal.isCanceled()) {
             callback.onWriteCancelled();
             ticketDocument.close();
-            ticketDocument = null;
             return;
         }
 
