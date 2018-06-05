@@ -15,11 +15,13 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_top_surface">
+        android:background="@color/color_top_surface"
+        app:layout_insetEdge="bottom">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipeContainer"
@@ -65,6 +67,17 @@
             app:layout_anchor="@id/eventRecyclerView"
             app:layout_anchorGravity="bottom|right"
             app:srcCompat="@drawable/ic_add" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@android:color/white"
+            app:itemIconTint="@drawable/bottom_nav_selector"
+            app:itemTextColor="@drawable/bottom_nav_selector"
+            app:menu="@menu/event_list_bottom"
+            app:layout_insetEdge="bottom"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

@@ -65,7 +65,10 @@ public class EventsPresenter extends AbstractBasePresenter<EventsView> {
             .compose(progressiveErroneousRefresh(getView(), forceReload))
             .toSortedList()
             .compose(emptiable(getView(), events))
-            .subscribe(Logger::logSuccess, Logger::logError);
+            .subscribe(something -> {
+                Logger.logSuccess(something);
+                getView().resetEventsList();
+            }, Logger::logError);
     }
 
     private Observable<Event> getEventSource(boolean forceReload) {
