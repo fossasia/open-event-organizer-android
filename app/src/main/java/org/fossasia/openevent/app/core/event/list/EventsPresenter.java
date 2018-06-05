@@ -11,8 +11,9 @@ import org.fossasia.openevent.app.utils.service.DateService;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
@@ -25,11 +26,11 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class EventsPresenter extends AbstractBasePresenter<EventsView> {
 
     private final List<Event> events = new ArrayList<>();
-    private boolean editMode = false;
+    private boolean editMode;
     private final EventRepository eventsDataRepository;
     private Event lastEvent = new Event();
 
-    public final HashMap<Event, ObservableBoolean> selectedMap = new HashMap<>();
+    public final Map<Event, ObservableBoolean> selectedMap = new ConcurrentHashMap<>();
     public static final int SORTBYDATE = 0;
     public static final int SORTBYNAME = 1;
 
@@ -64,7 +65,10 @@ public class EventsPresenter extends AbstractBasePresenter<EventsView> {
             .compose(progressiveErroneousRefresh(getView(), forceReload))
             .toSortedList()
             .compose(emptiable(getView(), events))
-            .subscribe(Logger::logSuccess, Logger::logError);
+            .subscribe(something -> {
+                Logger.logSuccess(something);
+                getView().resetEventsList();
+            }, Logger::logError);
     }
 
     private Observable<Event> getEventSource(boolean forceReload) {
@@ -84,6 +88,7 @@ public class EventsPresenter extends AbstractBasePresenter<EventsView> {
             selectedMap.get(event).set(false);
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly
     public void toolbarEditMode(Event currentEvent) {
         long id = 0;
         if (!lastEvent.equals(currentEvent)) {

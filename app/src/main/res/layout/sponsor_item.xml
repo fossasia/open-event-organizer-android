@@ -41,6 +41,7 @@
                     android:layout_width="@dimen/image_small"
                     android:layout_height="@dimen/image_small"
                     android:scaleType="fitXY"
+                    app:placeholder="@{ @drawable/ic_photo_shutter }"
                     app:imageUrl='@{ sponsor.getLogoUrl }'/>
 
                 <TextView

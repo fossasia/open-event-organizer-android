@@ -27,6 +27,7 @@ public class AttendeeCheckInWork extends Worker {
 
     @NonNull
     @Override
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public WorkerResult doWork() {
         DaggerAppComponent.create().inject(this);
 

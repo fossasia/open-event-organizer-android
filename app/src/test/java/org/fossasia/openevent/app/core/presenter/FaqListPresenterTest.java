@@ -1,7 +1,5 @@
 package org.fossasia.openevent.app.core.presenter;
 
-import android.databinding.ObservableBoolean;
-
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.core.faq.list.FaqListPresenter;
 import org.fossasia.openevent.app.core.faq.list.FaqListView;
@@ -54,7 +52,6 @@ public class FaqListPresenterTest {
     private FaqListPresenter faqListPresenter;
 
     private static final long ID = 10L;
-    private static ObservableBoolean selectedState = new ObservableBoolean(true);
 
     private static final String FAQ_DELETION_SUCCESS = "FAQ Deleted Successfully";
 

@@ -19,7 +19,6 @@ import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.databinding.MainActivityBinding;
 import org.fossasia.openevent.app.databinding.MainNavHeaderBinding;
-import org.fossasia.openevent.app.ui.BackPressHandler;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
@@ -33,8 +32,6 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
 
     @Inject
     Lazy<MainPresenter> presenterProvider;
-    @Inject
-    BackPressHandler backPressHandler;
 
     private FragmentNavigator fragmentNavigator;
     private DrawerNavigator drawerNavigator;
@@ -76,9 +73,9 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (fragmentNavigator.isDashboardActive()) {
-            backPressHandler.onBackPressed(this, super::onBackPressed);
-        } else {
+        } else if (fragmentNavigator.isDashboardActive())
+            super.onBackPressed();
+        else {
             fragmentNavigator.back();
             binding.navView.getMenu().findItem(R.id.nav_dashboard).setChecked(true);
             getSupportActionBar().setTitle(R.string.dashboard);

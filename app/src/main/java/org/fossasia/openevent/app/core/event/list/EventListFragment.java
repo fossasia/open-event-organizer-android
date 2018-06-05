@@ -44,6 +44,7 @@ import static org.fossasia.openevent.app.core.event.list.EventsPresenter.SORTBYN
  * Use the {@link EventListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public class EventListFragment extends BaseFragment<EventsPresenter> implements EventsView {
     @Inject
     ContextUtils utilModel;
@@ -69,7 +70,7 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
+     * <p>
      * parameters can be added in future if required so
      * which can be passed in bundle.
      *
@@ -91,6 +92,24 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_event_list, container, false);
+
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(
+            item -> {
+                switch (item.getItemId()) {
+                    case R.id.action_live:
+                        eventListAdapter.getFilter().filter("live");
+                        return true;
+                    case R.id.action_upcoming:
+                        eventListAdapter.getFilter().filter("upcoming");
+                        return true;
+                    case R.id.action_past:
+                        eventListAdapter.getFilter().filter("past");
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+
         return binding.getRoot();
     }
 
@@ -121,7 +140,8 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
                 Intent intent = new Intent(getActivity(), CreateEventActivity.class);
                 intent.putExtra(CreateEventActivity.EVENT_ID, id);
                 startActivity(intent);
-                default:
+                return true;
+            default:
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -173,6 +193,7 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     private void setupRecyclerView() {
         if (!initialized) {
             eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus, getPresenter());
+            binding.bottomNavigation.setSelectedItemId(R.id.action_live);
 
             recyclerView = binding.eventRecyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -242,5 +263,11 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     public void changeToNormalMode() {
         editMode = false;
         getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void resetEventsList() {
+        eventListAdapter.categorizeEvents();
+        binding.bottomNavigation.setSelectedItemId(R.id.action_live);
     }
 }

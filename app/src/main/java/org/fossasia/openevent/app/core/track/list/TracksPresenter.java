@@ -14,9 +14,9 @@ import org.fossasia.openevent.app.data.tracks.Track;
 import org.fossasia.openevent.app.data.tracks.TrackRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
@@ -34,7 +34,7 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
     private final List<Track> tracks = new ArrayList<>();
     private final TrackRepository trackRepository;
     private final DatabaseChangeListener<Track> trackChangeListener;
-    private final Map<Long, ObservableBoolean> selectedTracks = new HashMap<>();
+    private final Map<Long, ObservableBoolean> selectedTracks = new ConcurrentHashMap<>();
     private boolean isToolbarActive;
 
     private static final int EDITABLE_AT_ONCE = 1;
@@ -183,6 +183,7 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
         return selectedTracks.get(trackId);
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly
     private int countSelected() {
         int count = 0;
         for (Long id : selectedTracks.keySet()) {

@@ -56,7 +56,7 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     private ArrayAdapter<CharSequence> currencyAdapter;
     private ArrayAdapter<CharSequence> paymentCountryAdapter;
     private long eventId = -1;
-    private boolean isUpdateEvent = false;
+    private boolean isUpdateEvent;
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private final GoogleApiAvailability googleApiAvailabilityInstance = GoogleApiAvailability.getInstance();
