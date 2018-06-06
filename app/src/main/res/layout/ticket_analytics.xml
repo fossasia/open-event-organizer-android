@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -29,22 +29,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
                     android:text="@string/sales_summary"
                     android:textAllCaps="true"
-                    android:textSize="@dimen/text_size_small"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:layout_marginLeft="@dimen/spacing_normal"
-                    android:layout_marginStart="@dimen/spacing_normal"/>
+                    android:textSize="@dimen/text_size_small" />
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/chartSales"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginStart="@dimen/spacing_normal"
-                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginBottom="@dimen/spacing_normal"
                     android:layout_marginEnd="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
                     android:layout_marginRight="@dimen/spacing_normal"
-                    android:layout_marginBottom="@dimen/spacing_normal"/>
+                    android:layout_marginStart="@dimen/spacing_normal" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -54,12 +54,12 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/color_shadow"/>
+                        android:background="@color/color_shadow" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_small"
-                        android:background="@color/color_bottom_surface"/>
+                        android:background="@color/color_bottom_surface" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -67,26 +67,27 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_extra_small"
-                android:background="@color/grey_600"
+                android:layout_gravity="end|top"
                 android:alpha="0.6"
-                android:layout_gravity="end|top">
+                android:background="@color/grey_600"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_extra_small">
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/btnChartFullScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_full_screen"
-                    android:background="@android:color/transparent" />
+                    android:background="@android:color/transparent"
+                    app:srcCompat="@drawable/ic_full_screen" />
 
             </LinearLayout>
 
         </FrameLayout>
+
         <FrameLayout
+            android:id="@+id/chartBoxCheckIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/chartBoxCheckIn"
             android:visibility="gone">
 
             <LinearLayout
@@ -94,77 +95,87 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CHECK IN SUMMARY"
-                android:textAllCaps="true"
-                android:textSize="@dimen/text_size_small"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:layout_marginLeft="@dimen/spacing_normal"
-                android:layout_marginStart="@dimen/spacing_normal"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:text="CHECK IN SUMMARY"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/text_size_small" />
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chartCheckIn"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:layout_marginLeft="@dimen/spacing_normal"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_marginRight="@dimen/spacing_normal"
-                android:layout_marginBottom="@dimen/spacing_normal"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartCheckIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginRight="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_shadow"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="TIME"
+                    android:textSize="10sp" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/spacing_small"
-                android:background="@color/color_bottom_surface"/>
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_shadow" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_small"
+                        android:background="@color/color_bottom_surface" />
+                </LinearLayout>
             </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/spacing_extra_small"
-        android:background="@color/grey_600"
-        android:alpha="0.6"
-        android:layout_gravity="end|top">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|top"
+                android:alpha="0.6"
+                android:background="@color/grey_600"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_extra_small">
 
-        <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/btnChartCheckInFullScreen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_full_screen"
-            android:background="@android:color/transparent" />
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/btnChartCheckInFullScreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    app:srcCompat="@drawable/ic_full_screen" />
 
-    </LinearLayout>
+            </LinearLayout>
 
-</FrameLayout>
+        </FrameLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
             android:text="@string/tickets"
             android:textAllCaps="true"
-            android:textSize="@dimen/text_size_small"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:layout_marginStart="@dimen/spacing_normal"/>
+            android:textSize="@dimen/text_size_small" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
             android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/spacing_normal">
+            android:orientation="horizontal">
 
             <include
                 layout="@layout/ticket_analytics_item"
@@ -205,12 +216,12 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/color_shadow"/>
+                android:background="@color/color_shadow" />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spacing_small"
-                android:background="@color/color_bottom_surface"/>
+                android:background="@color/color_bottom_surface" />
         </LinearLayout>
 
     </LinearLayout>

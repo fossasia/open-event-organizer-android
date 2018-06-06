@@ -4,9 +4,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
-import android.util.Log;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -94,6 +94,7 @@ public class ChartAnalyser {
 
     public Completable loadData(long eventId) {
         clearData();
+        isCheckinChart = false;
         return getAttendeeSource(eventId)
             .doOnNext(attendee -> {
                 Order order = attendee.getOrder();
@@ -105,13 +106,13 @@ public class ChartAnalyser {
                 String date = order.getCompletedAt();
                 switch (attendee.getTicket().getType()) {
                     case TicketAnalyser.TICKET_FREE:
-                        addDataPoint(freeMap, date);
+                        addDataPointForSales(freeMap, date);
                         break;
                     case TicketAnalyser.TICKET_DONATION:
-                        addDataPoint(donationMap, date);
+                        addDataPointForSales(donationMap, date);
                         break;
                     case TicketAnalyser.TICKET_PAID:
-                        addDataPoint(paidMap, date);
+                        addDataPointForSales(paidMap, date);
                         break;
                     default:
                         // No action
@@ -126,7 +127,7 @@ public class ChartAnalyser {
                 freeSet = setDataForSales(freeMap, "Free");
                 paidSet = setDataForSales(paidMap, "Paid");
                 donationSet = setDataForSales(donationMap, "Donation");
-                prepareForSales();
+                prepare();
             });
     }
 
@@ -135,9 +136,10 @@ public class ChartAnalyser {
         isCheckinChart = true;
         return getAttendeeSource(eventId).doOnNext(attendee -> {
            String checkInTime = attendee.getCheckinTimes();
-           Log.i("ChartAnalyzer.class", attendee.getFirstname() + " " + checkInTime);
+           int length = checkInTime.split(",").length;
+           String latestCheckInTime = checkInTime.split(",")[length-1];
            error = checkInTime == null ? true : false;
-           addDataPointForCheckIn(checkInTimeMap, checkInTime);
+           addDataPointForCheckIn(checkInTimeMap, latestCheckInTime);
         })
           .toList()
           .doAfterSuccess(attendees -> this.attendees = attendees)
@@ -145,8 +147,8 @@ public class ChartAnalyser {
           .doOnComplete(() -> {
               if (error)
                   throw new IllegalAccessException("No checkin's found");
-              checkInDataSet = setDataForCheckIn(checkInTimeMap, "checkintime");
-              prepareForCheckIn();
+              checkInDataSet = setDataForCheckIn(checkInTimeMap, "check-in time");
+              prepare();
           });
     }
 
@@ -198,7 +200,7 @@ public class ChartAnalyser {
         return new LineDataSet(entries, label);
     }
 
-    private void addDataPoint(Map<String, Long> map, String dateString) {
+    private void addDataPointForSales(Map<String, Long> map, String dateString) {
         Long amount = map.get(dateString);
         if (amount == null)
             amount = 0L;
@@ -225,7 +227,7 @@ public class ChartAnalyser {
     }
 
     private void initializeLineSet(LineDataSet lineSet, @ColorRes int color, @ColorRes int fill) {
-        lineSet.setLineWidth(4);
+        lineSet.setLineWidth(2);
         lineSet.setColor(getColor(color));
         lineSet.setCircleColor(getColor(color));
         lineSet.setCircleColorHole(getColor(fill));
@@ -233,19 +235,20 @@ public class ChartAnalyser {
         lineSet.setCircleHoleRadius(3);
     }
 
-    private void prepareForSales() {
-        initializeLineSet(freeSet, R.color.light_blue_500, R.color.light_blue_100);
-        initializeLineSet(paidSet, R.color.purple_500, R.color.purple_100);
-        initializeLineSet(donationSet, R.color.red_500, R.color.red_100);
-        lineData.addDataSet(freeSet);
-        lineData.addDataSet(paidSet);
-        lineData.addDataSet(donationSet);
-        lineData.setDrawValues(false);
-    }
-
-    private void prepareForCheckIn() {
-        initializeLineSet(checkInDataSet, R.color.light_blue_500, R.color.light_blue_100);
-        lineData.addDataSet(checkInDataSet);
+    private void prepare() {
+        if (!isCheckinChart) {
+            initializeLineSet(freeSet, R.color.light_blue_500, R.color.light_blue_100);
+            initializeLineSet(paidSet, R.color.purple_500, R.color.purple_100);
+            initializeLineSet(donationSet, R.color.red_500, R.color.red_100);
+            lineData.addDataSet(freeSet);
+            lineData.addDataSet(paidSet);
+            lineData.addDataSet(donationSet);
+            lineData.setDrawValues(false);
+        } else {
+            initializeLineSet(checkInDataSet, R.color.light_blue_500, R.color.light_blue_100);
+            lineData.addDataSet(checkInDataSet);
+        }
+    lineData.setDrawValues(false);
     }
 
     @SuppressFBWarnings(
@@ -255,7 +258,8 @@ public class ChartAnalyser {
         lineChart.setData(lineData);
         lineChart.getXAxis().setEnabled(true);
         lineChart.getAxisRight().setEnabled(false);
-        lineChart.getDescription().setEnabled(true);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.getLegend().setEnabled(false);
 
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setGridLineWidth(1);
@@ -269,6 +273,9 @@ public class ChartAnalyser {
             lineChart.getXAxis().setGranularity(1f);
         }
 
+        Description description = new Description();
+        description.setText("");
+        lineChart.setDescription(description);
         lineChart.animateY(1000);
     }
 }
