@@ -28,121 +28,145 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+                <FrameLayout
+                    android:id="@+id/refresh_frame"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:foreground="?selectableItemBackground"
-                    android:visibility="@{ (speakersCall.announcement != null) ? View.VISIBLE : View.GONE }"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:divider="?android:dividerHorizontal"
+                    android:showDividers="end"
+                    android:layout_marginTop="@dimen/spacing_large">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_normal"
-                        android:text='@{ speakersCall.announcement }'
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="?android:textColorSecondary"
-                        android:textSize="@dimen/text_size_extra_large"
-                        android:textStyle="bold" />
+                    <ImageView
+                        android:id="@+id/announcement_imageview"
+                        android:layout_width="@dimen/progressbar_large"
+                        android:layout_height="@dimen/progressbar_large"
+                        android:padding="@dimen/spacing_small"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:layout_gravity="center_horizontal"
+                        android:adjustViewBounds="false"
+                        android:elevation="@dimen/text_size_normal"
+                        android:background="@drawable/circle_placeholder"
+                        android:contentDescription="@string/profile_picture"
+                        android:scaleType="centerCrop"
+                        app:paletteKey='@{ "speakers_call" }'
+                        app:placeholder="@{ @drawable/ic_speaker }"/>
 
-                    <android.support.v7.widget.CardView
+                    <LinearLayout
+                        android:id="@+id/linear_layout_outer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_medium">
+                        android:baselineAligned="false"
+                        android:foreground="?selectableItemBackground"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_normal"
+                            android:layout_marginRight="@dimen/spacing_normal"
+                            android:layout_marginTop="@dimen/spacing_extra_large"
+                            app:cardCornerRadius="10dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="@dimen/spacing_normal"
+                                    android:text="@string/announcement"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                                    android:textColor="?android:textColorSecondary"
+                                    android:textSize="@dimen/text_size_normal"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="@dimen/spacing_normal"
+                                    android:text='@{ speakersCall.announcement }'
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                                    android:textColor="?android:textColorSecondary"
+                                    android:textSize="@dimen/text_size_normal" />
+                            </LinearLayout>
+
+                        </android.support.v7.widget.CardView>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:divider="?android:dividerHorizontal"
+                            android:showDividers="beginning | middle | end"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/spacing_larger">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#dedede"
-                                android:padding="@dimen/spacing_small"
-                                android:text="@string/date_and_time"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                                android:textColor="?android:textColorSecondary" />
+                                android:orientation="horizontal"
+                                android:weightSum="3.5"
+                                android:padding="@dimen/spacing_normal">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@{ @drawable/ic_clock }"
-                                android:drawablePadding="@dimen/spacing_small"
-                                android:drawableStart="@{ @drawable/ic_clock }"
-                                android:text='@{ "Starts: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, speakersCall.startsAt) }'
-                                android:textColor="@color/grey_600"
-                                android:textSize="@dimen/text_size_normal"
-                                android:gravity="center_vertical"
-                                android:padding="@dimen/spacing_small"
-                                android:visibility="@{ (speakersCall.startsAt != null) ? View.VISIBLE : View.GONE }" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:drawableStart="@{ @drawable/ic_clock }"
+                                    android:drawableLeft="@{ @drawable/ic_clock }"
+                                    android:drawablePadding="@dimen/spacing_small"
+                                    android:text="@string/starts_at" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@{ @drawable/ic_clock }"
-                                android:drawablePadding="@dimen/spacing_small"
-                                android:drawableStart="@{ @drawable/ic_clock }"
-                                android:text='@{ "Ends: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, speakersCall.endsAt) }'
-                                android:textColor="@color/grey_600"
-                                android:textSize="@dimen/text_size_normal"
-                                android:gravity="center_vertical"
-                                android:padding="@dimen/spacing_small"
-                                android:visibility="@{ (speakersCall.endsAt != null) ? View.VISIBLE : View.GONE }" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2.5"
+                                    android:textAlignment="textEnd"
+                                    android:padding="@dimen/spacing_small"
+                                    android:text='@{ DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, speakersCall.startsAt) }'
+                                    android:textColor="@color/grey_600"
+                                    android:textSize="@dimen/text_size_normal"
+                                    android:visibility="@{ (speakersCall.startsAt != null) ? View.VISIBLE : View.GONE }"
+                                    android:gravity="end" />
 
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
+                            </LinearLayout>
 
-                    <android.support.v7.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_medium">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#dedede"
-                                android:padding="@dimen/spacing_small"
-                                android:text="@string/details"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                                android:textColor="?android:textColorSecondary" />
+                                android:orientation="horizontal"
+                                android:weightSum="3.5"
+                                android:padding="@dimen/spacing_normal">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@{ @drawable/ic_info }"
-                                android:drawablePadding="@dimen/spacing_small"
-                                android:drawableStart="@{ @drawable/ic_info }"
-                                android:text='@{ "Hash: " + speakersCall.hash }'
-                                android:textColor="@color/grey_600"
-                                android:textSize="@dimen/text_size_normal"
-                                android:gravity="center_vertical"
-                                android:padding="@dimen/spacing_small"
-                                android:visibility="@{ (speakersCall.hash != null) ? View.VISIBLE : View.GONE }" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:drawableStart="@{ @drawable/ic_clock }"
+                                    android:drawableLeft="@{ @drawable/ic_clock }"
+                                    android:drawablePadding="@dimen/spacing_small"
+                                    android:layout_weight="1"
+                                    android:text="@string/ends_at" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:drawableLeft="@{ @drawable/ic_info }"
-                                android:drawablePadding="@dimen/spacing_small"
-                                android:drawableStart="@{ @drawable/ic_info }"
-                                android:text='@{ "Privacy: " + speakersCall.privacy }'
-                                android:textColor="@color/grey_600"
-                                android:textSize="@dimen/text_size_normal"
-                                android:gravity="center_vertical"
-                                android:padding="@dimen/spacing_small"
-                                android:visibility="@{ (speakersCall.privacy != null) ? View.VISIBLE : View.GONE }" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="textEnd"
+                                    android:padding="@dimen/spacing_small"
+                                    android:text='@{ DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, speakersCall.endsAt) }'
+                                    android:textColor="@color/grey_600"
+                                    android:textSize="@dimen/text_size_normal"
+                                    android:layout_weight="2.5"
+                                    android:visibility="@{ (speakersCall.endsAt != null) ? View.VISIBLE : View.GONE }"
+                                    android:gravity="end" />
+                            </LinearLayout>
 
                         </LinearLayout>
-                    </android.support.v7.widget.CardView>
+                    </LinearLayout>
 
-                </LinearLayout>
+
+                </FrameLayout>
             </android.support.v4.widget.SwipeRefreshLayout>
 
         </FrameLayout>
