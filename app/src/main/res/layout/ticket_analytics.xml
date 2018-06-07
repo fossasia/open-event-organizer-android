@@ -44,7 +44,7 @@
                     android:layout_marginEnd="@dimen/spacing_normal"
                     android:layout_marginLeft="@dimen/spacing_normal"
                     android:layout_marginRight="@dimen/spacing_normal"
-                    android:layout_marginStart="@dimen/spacing_normal" />
+                    android:layout_marginStart="@dimen/spacing_normal"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -54,12 +54,12 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/color_shadow" />
+                        android:background="@color/color_shadow"/>
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_small"
-                        android:background="@color/color_bottom_surface" />
+                        android:background="@color/color_bottom_surface"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -101,7 +101,7 @@
                     android:layout_marginLeft="@dimen/spacing_normal"
                     android:layout_marginStart="@dimen/spacing_normal"
                     android:layout_marginTop="@dimen/spacing_normal"
-                    android:text="CHECK IN SUMMARY"
+                    android:text="@string/check_in_summary"
                     android:textAllCaps="true"
                     android:textSize="@dimen/text_size_small" />
 
@@ -120,7 +120,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="TIME"
+                    android:text="@string/check_in_time"
                     android:textSize="10sp" />
 
                 <LinearLayout
@@ -216,12 +216,12 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/color_shadow" />
+                android:background="@color/color_shadow"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spacing_small"
-                android:background="@color/color_bottom_surface" />
+                android:background="@color/color_bottom_surface"/>
         </LinearLayout>
 
     </LinearLayout>

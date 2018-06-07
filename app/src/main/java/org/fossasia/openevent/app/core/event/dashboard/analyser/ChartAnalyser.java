@@ -6,12 +6,14 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.EntryXComparator;
 
 import org.fossasia.openevent.app.R;
@@ -58,6 +60,7 @@ public class ChartAnalyser {
     private List<Attendee> attendees;
     private boolean error;
     private boolean isCheckinChart = false;
+    String[] values = new String[] {"00:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
 
     @Inject
     protected ChartAnalyser(ContextUtils utilModel, AttendeeRepositoryImpl attendeeRepository) {
@@ -268,6 +271,8 @@ public class ChartAnalyser {
             if (maxTicketSale > TICKET_SALE_THRESHOLD)
                 yAxis.setGranularity(maxTicketSale / TICKET_SALE_THRESHOLD);
         else {
+            XAxis xAxis = lineChart.getXAxis();
+            xAxis.setValueFormatter(new MyAxisValueFormatter());
             yAxis.setGranularity(1);
             lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
             lineChart.getXAxis().setGranularity(1f);
@@ -277,5 +282,15 @@ public class ChartAnalyser {
         description.setText("");
         lineChart.setDescription(description);
         lineChart.animateY(1000);
+    }
+
+    public class MyAxisValueFormatter implements IAxisValueFormatter {
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            if (value < 0)
+                return values[24 + (int)value];
+            return values[(int)value];
+        }
     }
 }
