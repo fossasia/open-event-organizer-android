@@ -54,7 +54,7 @@ public class AttendeeCheckInPresenter extends AbstractDetailPresenter<Long, Atte
     }
 
     public void toggleCheckIn() {
-        attendee.checking.set(true);
+        attendee.setChecking(true);
         attendee.isCheckedIn = !attendee.isCheckedIn;
 
         attendeeRepository.scheduleToggle(attendee)

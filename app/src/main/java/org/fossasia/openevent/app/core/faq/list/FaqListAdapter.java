@@ -27,7 +27,7 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqViewHolder> {
     public FaqViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         FaqViewHolder faqViewHolder = new FaqViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.faq_layout, viewGroup, false));
+                R.layout.faq_layout, viewGroup, false), faqListPresenter);
 
         faqViewHolder.setLongClickAction(faqListPresenter::toolbarDeleteMode);
         faqViewHolder.setClickAction(faqListPresenter::resetToDefaultState);

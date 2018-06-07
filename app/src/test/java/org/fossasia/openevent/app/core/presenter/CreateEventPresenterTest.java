@@ -1,11 +1,11 @@
 package org.fossasia.openevent.app.core.presenter;
 
+import org.fossasia.openevent.app.core.event.create.CreateEventPresenter;
+import org.fossasia.openevent.app.core.event.create.CreateEventView;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.utils.CurrencyUtils;
 import org.fossasia.openevent.app.utils.DateUtils;
-import org.fossasia.openevent.app.core.event.create.CreateEventPresenter;
-import org.fossasia.openevent.app.core.event.create.CreateEventView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -59,8 +59,8 @@ public class CreateEventPresenterTest {
         Event event = createEventPresenter.getEvent();
 
         String isoDate = DateUtils.formatDateToIso(LocalDateTime.now());
-        event.getStartsAt().set(isoDate);
-        event.getEndsAt().set(isoDate);
+        event.setStartsAt(isoDate);
+        event.setEndsAt(isoDate);
 
         createEventPresenter.createEvent();
 
@@ -73,8 +73,8 @@ public class CreateEventPresenterTest {
         createEventPresenter.createEvent();
         Event event = createEventPresenter.getEvent();
 
-        event.getStartsAt().set("2011/12/03");
-        event.getEndsAt().set("2011/03/03");
+        event.setStartsAt("2011/12/03");
+        event.setEndsAt("2011/03/03");
         createEventPresenter.createEvent();
 
         verify(createEventView).showError("Please enter date in correct format");
@@ -94,8 +94,8 @@ public class CreateEventPresenterTest {
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
         String isoDateMax = DateUtils.formatDateToIso(LocalDateTime.MAX);
-        event.getStartsAt().set(isoDateNow);
-        event.getEndsAt().set(isoDateMax);
+        event.setStartsAt(isoDateNow);
+        event.setEndsAt(isoDateMax);
 
         createEventPresenter.createEvent();
         assertNull(event.getLogoUrl());
@@ -113,8 +113,8 @@ public class CreateEventPresenterTest {
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
         String isoDateMax = DateUtils.formatDateToIso(LocalDateTime.MAX);
-        event.getStartsAt().set(isoDateNow);
-        event.getEndsAt().set(isoDateMax);
+        event.setStartsAt(isoDateNow);
+        event.setEndsAt(isoDateMax);
 
         createEventPresenter.createEvent();
 
@@ -130,8 +130,8 @@ public class CreateEventPresenterTest {
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
         String isoDateMax = DateUtils.formatDateToIso(LocalDateTime.MAX);
-        event.getStartsAt().set(isoDateNow);
-        event.getEndsAt().set(isoDateMax);
+        event.setStartsAt(isoDateNow);
+        event.setEndsAt(isoDateMax);
 
         createEventPresenter.createEvent();
 
@@ -146,8 +146,8 @@ public class CreateEventPresenterTest {
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
         String isoDateMax = DateUtils.formatDateToIso(LocalDateTime.MAX);
-        event.getStartsAt().set(isoDateNow);
-        event.getEndsAt().set(isoDateMax);
+        event.setStartsAt(isoDateNow);
+        event.setEndsAt(isoDateMax);
 
         createEventPresenter.createEvent();
 
@@ -162,8 +162,8 @@ public class CreateEventPresenterTest {
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
         String isoDateMax = DateUtils.formatDateToIso(LocalDateTime.MAX);
-        event.getStartsAt().set(isoDateNow);
-        event.getEndsAt().set(isoDateMax);
+        event.setStartsAt(isoDateNow);
+        event.setEndsAt(isoDateMax);
 
         createEventPresenter.createEvent();
 

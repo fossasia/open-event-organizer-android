@@ -1,16 +1,20 @@
 package org.fossasia.openevent.app.core.faq.list;
 
+import android.databinding.ObservableBoolean;
+
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
 import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.faq.FaqRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
@@ -29,6 +33,7 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     private Faq previousFaq = new Faq();
     private final FaqRepository faqRepository;
     private final DatabaseChangeListener<Faq> faqChangeListener;
+    private final Map<Faq, ObservableBoolean> selectedMap = new ConcurrentHashMap<>();
 
     @Inject
     public FaqListPresenter(FaqRepository faqRepository, DatabaseChangeListener<Faq> faqChangeListener) {
@@ -45,6 +50,7 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     @Override
     public void detach() {
         super.detach();
+        selectedMap.clear();
         faqChangeListener.stopListening();
     }
 
@@ -95,14 +101,15 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     }
 
     public void unselectFaq(Faq faq) {
-        if (faq != null)
-            faq.getSelected().set(false);
+        if (faq != null && selectedMap.containsKey(faq))
+            selectedMap.get(faq).set(false);
     }
 
     public void toolbarDeleteMode(Faq currentFaq) {
         if (!previousFaq.equals(currentFaq))
             unselectFaq(previousFaq);
 
+        selectedMap.get(currentFaq).set(true);
         previousFaq = currentFaq;
         getView().changeToDeletingMode();
     }
@@ -110,5 +117,16 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     public void resetToDefaultState() {
         unselectFaq(previousFaq);
         getView().resetToolbar();
+    }
+
+    public ObservableBoolean getFaqSelected(Faq faq) {
+        if (!selectedMap.containsKey(faq)) {
+            selectedMap.put(faq, new ObservableBoolean(false));
+        }
+        return selectedMap.get(faq);
+    }
+
+    public Map<Faq, ObservableBoolean> getIsSelected() {
+        return selectedMap;
     }
 }

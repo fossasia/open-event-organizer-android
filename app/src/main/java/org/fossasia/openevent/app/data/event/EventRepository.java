@@ -11,6 +11,7 @@ public interface EventRepository {
     @NonNull
     Observable<Event> getEvents(boolean reload);
 
+    @NonNull
     Observable<Event> updateEvent(Event event);
 
     Observable<Event> createEvent(Event event);

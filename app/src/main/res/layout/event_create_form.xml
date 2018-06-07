@@ -21,6 +21,7 @@
         android:paddingTop="@dimen/const_normal">
 
         <TextView
+            android:id="@+id/createEventTitle"
             style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,8 +29,7 @@
             android:layout_marginBottom="@dimen/spacing_large"
             android:layout_marginEnd="@dimen/spacing_large"
             android:layout_marginRight="@dimen/spacing_large"
-            android:padding="@dimen/spacing_extra_small"
-            android:text="@string/create_event" />
+            android:padding="@dimen/spacing_extra_small" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,12 +79,12 @@
 
             <include
                 layout="@layout/time_picker"
-                bind:date="@{ event.startsAt }"
+                bind:date="@={ event.startsAt }"
                 bind:label="@{ @string/starts_at }"/>
 
             <include
                 layout="@layout/time_picker"
-                bind:date="@{ event.endsAt }"
+                bind:date="@={ event.endsAt }"
                 bind:label="@{ @string/ends_at }"/>
 
             <TextView

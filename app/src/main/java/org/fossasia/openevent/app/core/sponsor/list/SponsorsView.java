@@ -7,4 +7,13 @@ import org.fossasia.openevent.app.common.mvp.view.Refreshable;
 import org.fossasia.openevent.app.data.sponsor.Sponsor;
 
 public interface SponsorsView extends Progressive, Erroneous, Refreshable, Emptiable<Sponsor> {
+
+    void openUpdateSponsorFragment(long sponsorId);
+
+    void showDeleteDialog();
+
+    void showMessage(String message);
+
+    void changeToolbarMode(boolean toolbarEdit, boolean toolbarDelete);
+
 }

@@ -6,4 +6,9 @@ import org.fossasia.openevent.app.common.mvp.view.Progressive;
 import org.fossasia.openevent.app.common.mvp.view.Refreshable;
 import org.fossasia.openevent.app.data.event.Event;
 
-public interface EventsView extends Progressive, Erroneous, Refreshable, Emptiable<Event> { }
+public interface EventsView extends Progressive, Erroneous, Refreshable, Emptiable<Event> {
+
+    void changeToEditMode(long id);
+    void changeToNormalMode();
+    void resetEventsList();
+}

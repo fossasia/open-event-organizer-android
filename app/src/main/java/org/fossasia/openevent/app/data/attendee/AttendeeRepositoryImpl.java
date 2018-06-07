@@ -1,13 +1,12 @@
 package org.fossasia.openevent.app.data.attendee;
 
-import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
 import com.raizlabs.android.dbflow.sql.language.Method;
 
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.data.db.QueryHelper;
 import org.fossasia.openevent.app.data.Repository;
+import org.fossasia.openevent.app.data.db.QueryHelper;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.Event_Table;
 import org.fossasia.openevent.app.utils.DateUtils;
@@ -88,7 +87,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
         return repository
             .update(Attendee.class, attendee)
             .concatWith(completableObserver -> {
-                AttendeeCheckInJob.scheduleJob();
+                AttendeeCheckInWork.scheduleWork();
                 if (!repository.isConnected())
                     completableObserver.onError(new Exception("No network present. Added to job queue"));
             })
@@ -128,7 +127,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
     @Override
     public Observable<Attendee> getPendingCheckIns() {
         return repository.getItems(Attendee.class,
-            Attendee_Table.checking.eq(new ObservableBoolean(true)));
+            Attendee_Table.checking.eq(true));
     }
 
 }

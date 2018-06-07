@@ -20,10 +20,15 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         setTitle(getString(getTitle()));
     }
 
-    protected abstract Lazy<P> getPresenterProvider();
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    protected Lazy<P> getPresenterProvider() {
+        return null;
+    }
 
+    @SuppressWarnings("PMD.NullAssignment")
     protected P getPresenter() {
-        return getPresenterProvider().get();
+        Lazy<P> provider = getPresenterProvider();
+        return (provider == null) ? null : provider.get();
     }
 
     protected void setTitle(String title) {
@@ -33,7 +38,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Override
     public void onStop() {
         super.onStop();
-        getPresenter().detach();
+        P presenter = getPresenter();
+        if (presenter != null)
+            presenter.detach();
     }
 
     @Override

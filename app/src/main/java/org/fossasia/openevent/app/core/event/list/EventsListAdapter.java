@@ -3,30 +3,71 @@ package org.fossasia.openevent.app.core.event.list;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import org.fossasia.openevent.app.common.ContextManager;
+import org.fossasia.openevent.app.common.Pipe;
 import org.fossasia.openevent.app.data.Bus;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.databinding.EventLayoutBinding;
 import org.fossasia.openevent.app.databinding.HeaderLayoutBinding;
 import org.fossasia.openevent.app.ui.HeaderViewHolder;
+import org.fossasia.openevent.app.utils.service.DateService;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder>
-    implements StickyRecyclerHeadersAdapter<HeaderViewHolder> {
+    implements StickyRecyclerHeadersAdapter<HeaderViewHolder>, Filterable {
 
     private final List<Event> events;
-    private final Bus bus;
+    private final List<Event> selectedEvents = new ArrayList<>();
 
+    private final Bus bus;
+    private final EventsPresenter eventsPresenter;
     private boolean sortByName;
 
-    EventsListAdapter(List<Event> events, Bus bus) {
+    EventsListAdapter(List<Event> events, Bus bus, EventsPresenter eventsPresenter) {
         this.events = events;
         this.bus = bus;
+        this.eventsPresenter = eventsPresenter;
+    }
+
+    public void categorizeEvents() {
+
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                selectedEvents.clear();
+                for (Event event : events) {
+                    try {
+                        String category = DateService.getEventStatus(event);
+                        if (constraint.toString().equalsIgnoreCase(category))
+                            selectedEvents.add(event);
+                    } catch (ParseException e) {
+                        Timber.e(e);
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                notifyDataSetChanged();
+            }
+        };
     }
 
     @Override
@@ -34,21 +75,25 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 
         EventLayoutBinding binding = EventLayoutBinding.inflate(layoutInflater, parent, false);
-        return new EventRecyclerViewHolder(binding);
+        EventRecyclerViewHolder eventRecyclerViewHolder = new EventRecyclerViewHolder(binding);
+
+        eventRecyclerViewHolder.onItemLongClick(eventsPresenter::toolbarEditMode);
+        eventRecyclerViewHolder.onItemClick(eventsPresenter::resetToDefaultState);
+        return eventRecyclerViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final EventRecyclerViewHolder holder, int position) {
-        final Event thisEvent = events.get(position);
+        final Event thisEvent = selectedEvents.get(position);
         holder.bind(thisEvent);
     }
 
     @Override
     public long getHeaderId(int position) {
         if (sortByName) {
-            return events.get(position).getName().substring(0, 1).toUpperCase(Locale.getDefault()).hashCode();
+            return selectedEvents.get(position).getName().substring(0, 1).toUpperCase(Locale.getDefault()).hashCode();
         } else {
-            return events.get(position).getHeaderId();
+            return selectedEvents.get(position).getHeaderId();
         }
     }
 
@@ -61,15 +106,15 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     @Override
     public void onBindHeaderViewHolder(HeaderViewHolder headerViewHolder, int i) {
         if (sortByName) {
-            headerViewHolder.bindHeader(events.get(i).getName().substring(0, 1).toUpperCase(Locale.getDefault()));
+            headerViewHolder.bindHeader(selectedEvents.get(i).getName().substring(0, 1).toUpperCase(Locale.getDefault()));
         } else {
-            headerViewHolder.bindHeader(events.get(i).getHeader());
+            headerViewHolder.bindHeader(selectedEvents.get(i).getHeader());
        }
     }
 
     @Override
     public int getItemCount() {
-        return events.size();
+        return selectedEvents.size();
     }
 
     public void setSortByName(boolean sortBy) {
@@ -81,6 +126,8 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
         private final EventLayoutBinding binding;
         private Event event;
         private final long selectedEventId;
+        private Pipe<Event> longClickAction;
+        private Runnable onClick;
 
         EventRecyclerViewHolder(EventLayoutBinding binding) {
             super(binding.getRoot());
@@ -88,7 +135,21 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
 
             binding
                 .getRoot()
-                .setOnClickListener(view -> bus.pushSelectedEvent(event));
+                .setOnClickListener(view -> {
+                    if (eventsPresenter.isEditMode())
+                        onClick.run();
+                    else
+                        bus.pushSelectedEvent(event);
+                });
+
+            binding
+                .getRoot()
+                .setOnLongClickListener(view -> {
+                    if (longClickAction != null) {
+                        longClickAction.push(event);
+                    }
+                    return true;
+                });
 
             final Event selectedEvent = ContextManager.getSelectedEvent();
             selectedEventId = selectedEvent == null ? -1 : selectedEvent.getId();
@@ -99,8 +160,15 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
             binding.setEvent(event);
             binding.setSelectedEventId(selectedEventId);
             binding.executePendingBindings();
+            binding.setEventsPresenter(eventsPresenter);
         }
 
-    }
+        public void onItemLongClick(Pipe<Event> longClickAction) {
+            this.longClickAction = longClickAction;
+        }
 
+        public void onItemClick(Runnable onClick) {
+            this.onClick = onClick;
+        }
+    }
 }

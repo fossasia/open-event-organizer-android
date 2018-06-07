@@ -44,6 +44,7 @@ import static org.fossasia.openevent.app.core.event.list.EventsPresenter.SORTBYN
  * Use the {@link EventListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public class EventListFragment extends BaseFragment<EventsPresenter> implements EventsView {
     @Inject
     ContextUtils utilModel;
@@ -63,11 +64,13 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
 
     private Context context;
     private boolean initialized;
+    private boolean editMode;
+    private long id;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
+     * <p>
      * parameters can be added in future if required so
      * which can be passed in bundle.
      *
@@ -82,18 +85,46 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
         super.onCreate(savedInstanceState);
         context = getActivity();
         setHasOptionsMenu(true);
+        editMode = false;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_event_list, container, false);
+
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(
+            item -> {
+                switch (item.getItemId()) {
+                    case R.id.action_live:
+                        eventListAdapter.getFilter().filter("live");
+                        return true;
+                    case R.id.action_upcoming:
+                        eventListAdapter.getFilter().filter("upcoming");
+                        return true;
+                    case R.id.action_past:
+                        eventListAdapter.getFilter().filter("past");
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+
         return binding.getRoot();
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_events, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItemSort = menu.findItem(R.id.sort);
+        MenuItem menuItemEdit = menu.findItem(R.id.edit);
+        menuItemSort.setVisible(!editMode);
+        menuItemEdit.setVisible(editMode);
     }
 
     @Override
@@ -104,6 +135,11 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
                 return true;
             case R.id.sortByEventDate:
                 sortEvents(SORTBYDATE);
+                return true;
+            case R.id.edit:
+                Intent intent = new Intent(getActivity(), CreateEventActivity.class);
+                intent.putExtra(CreateEventActivity.EVENT_ID, id);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -156,7 +192,8 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
 
     private void setupRecyclerView() {
         if (!initialized) {
-            eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus);
+            eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus, getPresenter());
+            binding.bottomNavigation.setSelectedItemId(R.id.action_live);
 
             recyclerView = binding.eventRecyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -192,8 +229,10 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
+        if (success) {
             ViewUtils.showSnackbar(recyclerView, R.string.refresh_complete);
+            getPresenter().resetToDefaultState();
+        }
     }
 
     @Override
@@ -213,4 +252,22 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
+    @Override
+    public void changeToEditMode(long id) {
+        editMode = true;
+        this.id = id;
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void changeToNormalMode() {
+        editMode = false;
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void resetEventsList() {
+        eventListAdapter.categorizeEvents();
+        binding.bottomNavigation.setSelectedItemId(R.id.action_live);
+    }
 }

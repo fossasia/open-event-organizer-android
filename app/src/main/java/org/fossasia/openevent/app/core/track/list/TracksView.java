@@ -12,7 +12,10 @@ public interface TracksView extends Progressive, Erroneous, Refreshable, Emptiab
 
     void openUpdateTrackFragment(long trackId);
 
-    void showAlertDialog(long trackId);
+    void showDeleteDialog();
 
-    void showTrackDeleted(String message);
+    void showMessage(String message);
+
+    void changeToolbarMode(boolean toolbarEdit, boolean toolbarDelete);
+
 }

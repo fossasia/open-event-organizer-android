@@ -1,13 +1,11 @@
 package org.fossasia.openevent.app.core.presenter;
 
-import android.databinding.ObservableBoolean;
-
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.core.faq.list.FaqListPresenter;
+import org.fossasia.openevent.app.core.faq.list.FaqListView;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.faq.FaqRepository;
-import org.fossasia.openevent.app.core.faq.list.FaqListView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -54,17 +52,16 @@ public class FaqListPresenterTest {
     private FaqListPresenter faqListPresenter;
 
     private static final long ID = 10L;
-    private static ObservableBoolean selectedState = new ObservableBoolean(true);
 
     private static final String FAQ_DELETION_SUCCESS = "FAQ Deleted Successfully";
 
     private static final List<Faq> FAQS = Arrays.asList(
-        Faq.builder().id(2L).question("q").answer("a").selected(selectedState).build(),
-        Faq.builder().id(3L).question("qu").answer("an").selected(selectedState).build(),
-        Faq.builder().id(4L).question("que").answer("ans").selected(selectedState).build()
+        Faq.builder().id(2L).question("q").answer("a").build(),
+        Faq.builder().id(3L).question("qu").answer("an").build(),
+        Faq.builder().id(4L).question("que").answer("ans").build()
     );
 
-    private static final Faq FAQ = Faq.builder().id(5L).question("r").answer("n").selected(selectedState).build();
+    private static final Faq FAQ = Faq.builder().id(5L).question("r").answer("n").build();
 
     @Before
     public void setUp() {
@@ -190,13 +187,14 @@ public class FaqListPresenterTest {
     public void shouldDeleteFaqWithIdSuccessfully() {
         when(faqRepository.deleteFaq(FAQ.getId())).thenReturn(Completable.complete());
 
+        faqListPresenter.getFaqSelected(FAQ);
         faqListPresenter.deleteFaq(FAQ);
 
         InOrder inOrder = Mockito.inOrder(faqListView);
 
         inOrder.verify(faqListView).showProgress(true);
         inOrder.verify(faqListView).showMessage(FAQ_DELETION_SUCCESS);
-        assertFalse(FAQ.getSelected().get());
+        assertFalse(faqListPresenter.getIsSelected().get(FAQ).get());
         inOrder.verify(faqListView).showProgress(false);
     }
 
@@ -211,13 +209,15 @@ public class FaqListPresenterTest {
 
     @Test
     public void shouldUnselectFaq() {
+        faqListPresenter.getFaqSelected(FAQ);
         faqListPresenter.unselectFaq(FAQ);
 
-        assertFalse(FAQ.getSelected().get());
+        assertFalse(faqListPresenter.getIsSelected().get(FAQ).get());
     }
 
     @Test
     public void shouldSwitchToToolbarDeleteMode() {
+        faqListPresenter.getFaqSelected(FAQ);
         faqListPresenter.toolbarDeleteMode(FAQ);
 
         verify(faqListView).changeToDeletingMode();

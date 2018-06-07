@@ -12,6 +12,7 @@ import org.fossasia.openevent.app.core.speaker.list.SpeakersFragment;
 import org.fossasia.openevent.app.core.speakerscall.detail.SpeakersCallFragment;
 import org.fossasia.openevent.app.core.sponsor.list.SponsorsFragment;
 import org.fossasia.openevent.app.core.sponsor.create.CreateSponsorFragment;
+import org.fossasia.openevent.app.core.sponsor.update.UpdateSponsorFragment;
 import org.fossasia.openevent.app.core.ticket.create.CreateTicketFragment;
 import org.fossasia.openevent.app.core.ticket.detail.TicketDetailFragment;
 import org.fossasia.openevent.app.core.ticket.list.TicketsFragment;
@@ -73,6 +74,9 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract CreateSponsorFragment contributeCreateSponsorFragment();
+
+    @ContributesAndroidInjector
+    abstract UpdateSponsorFragment contributeUpdateSponsorFragment();
 
     // Speaker
 

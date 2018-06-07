@@ -1,9 +1,7 @@
 package org.fossasia.openevent.app.data.speakerscall;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
@@ -15,9 +13,6 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.event.serializer.ObservableString;
-import org.fossasia.openevent.app.data.event.serializer.ObservableStringDeserializer;
-import org.fossasia.openevent.app.data.event.serializer.ObservableStringSerializer;
 
 import lombok.Data;
 
@@ -38,11 +33,6 @@ public class SpeakersCall {
     public String announcement;
     public String hash;
     public String privacy;
-
-    @JsonSerialize(using = ObservableStringSerializer.class)
-    @JsonDeserialize(using = ObservableStringDeserializer.class)
-    public ObservableString startsAt = new ObservableString();
-    @JsonSerialize(using = ObservableStringSerializer.class)
-    @JsonDeserialize(using = ObservableStringDeserializer.class)
-    public ObservableString endsAt = new ObservableString();
+    public String startsAt;
+    public String endsAt;
 }

@@ -59,6 +59,7 @@ android {
     testOptions {
         unitTests {
             includeAndroidResources = true
+            unitTests.returnDefaultValues = true
         }
     }
 }
@@ -82,7 +83,7 @@ sentry {
 
 configurations.all { config ->
     resolutionStrategy {
-        force 'com.android.support:multidex:1.0.2'
+        force 'com.android.support:multidex:1.0.3'
     }
     if (config.name.contains('UnitTest')) {
         config.resolutionStrategy.eachDependency { details ->
@@ -111,11 +112,10 @@ dependencies {
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
     implementation "com.google.android.gms:play-services-vision:${versions.play_services}"
     implementation "com.google.android.gms:play-services-places:${versions.play_services}"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "com.evernote:android-job:${versions.android_job}"
     implementation 'com.mikhaellopez:circularprogressbar:1.1.1'
     implementation 'com.github.Ilhasoft:data-binding-validator:1.0.0'
     implementation "io.sentry:sentry-android:${versions.sentry_android}"
@@ -127,6 +127,9 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
     implementation "android.arch.lifecycle:common-java8:$versions.lifecycle"
     annotationProcessor "android.arch.lifecycle:compiler:$versions.lifecycle"
+
+    //WorkManager
+    implementation "android.arch.work:work-runtime:${versions.work_manager}"
 
     // DbFlow
     implementation "com.github.raizlabs.dbflow:dbflow-core:${versions.dbflow}"
@@ -195,8 +198,13 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
     //Testing
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testImplementation("android.arch.core:core-testing:$versions.lifecycle", {
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-core-utils'
     })
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-inline:2.8.9'

@@ -2,6 +2,10 @@ package org.fossasia.openevent.app.core.presenter;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.core.event.dashboard.EventDashboardPresenter;
+import org.fossasia.openevent.app.core.event.dashboard.EventDashboardView;
+import org.fossasia.openevent.app.core.event.dashboard.analyser.ChartAnalyser;
+import org.fossasia.openevent.app.core.event.dashboard.analyser.TicketAnalyser;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
@@ -9,11 +13,6 @@ import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.data.event.EventStatistics;
 import org.fossasia.openevent.app.data.ticket.Ticket;
-import org.fossasia.openevent.app.data.event.serializer.ObservableString;
-import org.fossasia.openevent.app.core.event.dashboard.EventDashboardPresenter;
-import org.fossasia.openevent.app.core.event.dashboard.analyser.ChartAnalyser;
-import org.fossasia.openevent.app.core.event.dashboard.analyser.TicketAnalyser;
-import org.fossasia.openevent.app.core.event.dashboard.EventDashboardView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -88,8 +87,8 @@ public class EventDashboardPresenterTest {
     static {
         // Event set up
         EVENT.setName("Event Name");
-        EVENT.setStartsAt(new ObservableString("2004-05-21T9:30:00"));
-        EVENT.setEndsAt(new ObservableString("2012-09-20T12:23:00"));
+        EVENT.setStartsAt("2004-05-21T9:30:00");
+        EVENT.setEndsAt("2012-09-20T12:23:00");
         EVENT.setTickets(TICKETS);
     }
 

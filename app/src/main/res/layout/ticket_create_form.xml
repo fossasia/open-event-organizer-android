@@ -146,12 +146,12 @@
 
         <include
             layout="@layout/time_picker"
-            bind:date="@{ ticket.salesStartsAt }"
+            bind:date="@={ ticket.salesStartsAt }"
             bind:label="@{ @string/starts_at }"/>
 
         <include
             layout="@layout/time_picker"
-            bind:date="@{ ticket.salesEndsAt }"
+            bind:date="@={ ticket.salesEndsAt }"
             bind:label="@{ @string/ends_at }"/>
 
         <android.support.design.widget.TextInputLayout

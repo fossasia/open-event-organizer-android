@@ -19,14 +19,18 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingInjector;
 
+    public static final String EVENT_ID = "event_id";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_event_activity);
 
         if (savedInstanceState == null) {
+            long id = getIntent().getLongExtra(EVENT_ID, -1);
+            Fragment fragment = (id == -1) ? new CreateEventFragment() : CreateEventFragment.newInstance(id);
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment, new CreateEventFragment())
+                .replace(R.id.fragment, fragment)
                 .commit();
         }
     }

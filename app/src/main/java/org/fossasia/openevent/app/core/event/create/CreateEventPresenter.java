@@ -25,7 +25,7 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView> {
 
     private final EventRepository eventRepository;
-    private final Event event = new Event();
+    private Event event = new Event();
     private final Map<String, String> countryCurrencyMap;
     private final List<String> countryList;
     private final List<String> currencyCodesList;
@@ -36,8 +36,8 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
         LocalDateTime current = LocalDateTime.now();
 
         String isoDate = DateUtils.formatDateToIso(current);
-        event.getStartsAt().set(isoDate);
-        event.getEndsAt().set(isoDate);
+        event.setStartsAt(isoDate);
+        event.setEndsAt(isoDate);
 
         countryCurrencyMap = currencyUtils.getCountryCurrencyMap();
         countryList = new ArrayList<>(countryCurrencyMap.keySet());
@@ -65,8 +65,8 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
 
     private boolean verify() {
         try {
-            ZonedDateTime start = DateUtils.getDate(event.getStartsAt().get());
-            ZonedDateTime end = DateUtils.getDate(event.getEndsAt().get());
+            ZonedDateTime start = DateUtils.getDate(event.getStartsAt());
+            ZonedDateTime end = DateUtils.getDate(event.getEndsAt());
 
             if (!end.isAfter(start)) {
                 getView().showError("End time should be after start time");
@@ -99,6 +99,37 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
             .compose(progressiveErroneous(getView()))
             .subscribe(createdEvent -> {
                 getView().onSuccess("Event Created Successfully");
+                getView().close();
+            }, Logger::logError);
+    }
+
+    private void showEvent() {
+        getView().setEvent(event);
+    }
+
+    //Used for loading the event information on start
+    public void loadEvents(long eventId) {
+        eventRepository
+            .getEvent(eventId, false)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .doFinally(this::showEvent)
+            .subscribe(loadedEvent -> this.event = (Event) loadedEvent, Logger::logError);
+    }
+
+    //method called for updating an event
+    public void updateEvent() {
+        if (!verify())
+            return;
+
+        nullifyEmptyFields(event);
+
+        eventRepository
+            .updateEvent(event)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .subscribe(updatedEvent -> {
+                getView().onSuccess("Event Updated Successfully");
                 getView().close();
             }, Logger::logError);
     }
