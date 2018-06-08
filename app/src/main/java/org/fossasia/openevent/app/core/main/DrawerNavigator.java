@@ -8,6 +8,9 @@ import android.view.MenuItem;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.core.event.about.AboutEventActivity;
+import org.fossasia.openevent.app.core.event.create.CreateEventActivity;
+
+import static org.fossasia.openevent.app.core.event.create.CreateEventActivity.EVENT_ID;
 
 class DrawerNavigator {
 
@@ -31,9 +34,13 @@ class DrawerNavigator {
     void selectItem(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_logout)
+        if (id == R.id.nav_logout) {
             showLogoutDialog();
-        else if (id == R.id.nav_about_event) {
+        } else if (id == R.id.nav_edit_event) {
+            Intent intent = new Intent(context, CreateEventActivity.class);
+            intent.putExtra(EVENT_ID, fragmentNavigator.getEventId());
+            context.startActivity(intent);
+        } else if (id == R.id.nav_about_event) {
             Intent intent = new Intent(context, AboutEventActivity.class);
             intent.putExtra(AboutEventActivity.EVENT_ID, fragmentNavigator.getEventId());
             context.startActivity(intent);
