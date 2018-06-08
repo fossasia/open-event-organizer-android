@@ -12,6 +12,8 @@ public interface SessionRepository {
     @NonNull
     Observable<Session> getSession(long sessionId, boolean reload);
 
+    Observable<Session> getSessionsUnderSpeaker(long speakerId, boolean reload);
+
     Observable<Session> createSession(Session session);
 
     @NonNull

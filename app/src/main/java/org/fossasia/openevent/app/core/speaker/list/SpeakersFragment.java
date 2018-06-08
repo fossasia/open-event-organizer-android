@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.core.speaker.list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.core.speaker.details.SpeakerDetailsActivity;
 import org.fossasia.openevent.app.data.speaker.Speaker;
 import org.fossasia.openevent.app.databinding.SpeakersFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -36,8 +38,6 @@ public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements
     private SpeakersAdapter speakersAdapter;
     private SpeakersFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
-
-    private boolean initialized;
 
     public static SpeakersFragment newInstance(long eventId) {
         SpeakersFragment fragment = new SpeakersFragment();
@@ -61,10 +61,6 @@ public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.speakers_fragment, container, false);
 
-        binding.createSpeakerFab.setOnClickListener(view -> {
-            // create Speaker
-        });
-
         return binding.getRoot();
     }
 
@@ -75,8 +71,6 @@ public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements
         setupRefreshListener();
         getPresenter().attach(eventId, this);
         getPresenter().start();
-
-        initialized = true;
     }
 
     @Override
@@ -91,14 +85,12 @@ public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements
     }
 
     private void setupRecyclerView() {
-        if (!initialized) {
-            speakersAdapter = new SpeakersAdapter(getPresenter());
+        speakersAdapter = new SpeakersAdapter(getPresenter());
 
-            RecyclerView recyclerView = binding.speakersRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(speakersAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-        }
+        RecyclerView recyclerView = binding.speakersRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(speakersAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void setupRefreshListener() {
@@ -139,5 +131,12 @@ public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements
     @Override
     protected Lazy<SpeakersPresenter> getPresenterProvider() {
         return speakersPresenter;
+    }
+
+    @Override
+    public void openSpeakersDetailFragment(long speakerId) {
+        Intent intent = new Intent(context, SpeakerDetailsActivity.class);
+        intent.putExtra(SpeakerDetailsActivity.SPEAKER_ID, speakerId);
+        context.startActivity(intent);
     }
 }

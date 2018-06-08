@@ -19,6 +19,9 @@ public interface SessionApi {
     @GET("sessions/{session_id}")
     Observable<Session> getSession(@Path("session_id") long id);
 
+    @GET("speakers/{id}/sessions")
+    Observable<List<Session>> getSessionsUnderSpeaker(@Path("id") long id);
+
     @POST("sessions")
     Observable<Session> postSession(@Body Session session);
 

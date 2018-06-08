@@ -75,4 +75,8 @@ public class SpeakersPresenter extends AbstractDetailPresenter<Long, SpeakersVie
     public List<Speaker> getSpeakers() {
         return speakers;
     }
+
+    public void click(long speakerId) {
+        getView().openSpeakersDetailFragment(speakerId);
+    }
 }
