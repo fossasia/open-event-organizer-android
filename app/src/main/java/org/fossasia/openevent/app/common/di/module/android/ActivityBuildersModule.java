@@ -7,6 +7,8 @@ import org.fossasia.openevent.app.core.event.create.CreateEventActivity;
 import org.fossasia.openevent.app.core.event.create.CreateEventFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailActivity;
+import org.fossasia.openevent.app.core.speaker.details.SpeakerDetailsActivity;
+import org.fossasia.openevent.app.core.speaker.details.SpeakerDetailsFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -34,5 +36,11 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector
     abstract ChartActivity contributeChartActivity();
+
+    @ContributesAndroidInjector
+    abstract SpeakerDetailsActivity contributeSpeakerDetailsActivity();
+
+    @ContributesAndroidInjector
+    abstract SpeakerDetailsFragment contributeSpeakerDetailsFragment();
 
 }

@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <variable
-            name="sessionsPresenter"
-            type="org.fossasia.openevent.app.core.session.list.SessionsPresenter" />
-
         <variable
             name="session"
             type="org.fossasia.openevent.app.data.session.Session" />
@@ -17,7 +11,6 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:backgroundTint="@{ sessionsPresenter.isSessionSelected(session.getId()).get() ? @color/blue_200 : 0 }"
         android:layout_margin="@dimen/spacing_small">
 
         <include
