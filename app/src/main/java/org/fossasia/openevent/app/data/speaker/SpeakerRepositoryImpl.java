@@ -34,4 +34,25 @@ public class SpeakerRepositoryImpl implements SpeakerRepository {
             .withNetworkObservable(networkObservable)
             .build();
     }
+
+    @Override
+    public Observable<Speaker> getSpeaker(long speakerId, boolean reload) {
+        Observable<Speaker> diskObservable = Observable.defer(() ->
+            repository
+                .getItems(Speaker.class, Speaker_Table.id.eq(speakerId)).take(1)
+        );
+
+        Observable<Speaker> networkObservable = Observable.defer(() ->
+            speakerApi.getSpeaker(speakerId)
+                .doOnNext(speaker -> repository
+                    .save(Speaker.class, speaker)
+                    .subscribe()));
+
+        return repository
+            .observableOf(Speaker.class)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
 }
