@@ -12,6 +12,12 @@
             android:title="@string/attendees" />
 
         <item
+            android:id="@+id/nav_edit_event"
+            android:icon="@drawable/ic_edit"
+            android:title="@string/edit_event"
+            android:checkable="false"/>
+
+        <item
             android:id="@+id/nav_tickets"
             android:icon="@drawable/ic_ticket"
             android:title="@string/tickets" />
@@ -52,7 +58,7 @@
         <item
             android:id="@+id/nav_events"
             android:icon="@drawable/ic_events"
-            android:title="@string/events" />
+            android:title="@string/nav_events" />
     </group>
 
     <group android:id="@+id/mainMenu">
