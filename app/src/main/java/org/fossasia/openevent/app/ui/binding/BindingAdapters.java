@@ -1,6 +1,7 @@
 package org.fossasia.openevent.app.ui.binding;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
@@ -9,6 +10,7 @@ import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
 import android.databinding.InverseMethod;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +19,9 @@ import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
@@ -178,5 +182,21 @@ public final class BindingAdapters {
     @InverseBindingAdapter(attribute = "value")
     public static String getRealValue(TimePicker timePicker) {
         return timePicker.getValue().get();
+    }
+
+    @BindingAdapter("imageOnClick")
+    public static void bindOnImageButtonClickListener(ImageButton imageButton, String url) {
+        imageButton.setOnClickListener(view -> {
+            if (url != null) {
+                Context context = imageButton.getContext();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                if (intent.resolveActivity(context.getPackageManager()) != null) {
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(context, "No Web browser found", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

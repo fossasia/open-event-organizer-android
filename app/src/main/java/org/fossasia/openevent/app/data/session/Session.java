@@ -13,6 +13,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.speaker.Speaker;
 import org.fossasia.openevent.app.data.tracks.Track;
 
 import lombok.AllArgsConstructor;
@@ -37,6 +38,10 @@ public class Session {
     @Relationship("track")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Track track;
+
+    @Relationship("speaker")
+    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.NO_ACTION)
+    public Speaker speaker;
 
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)

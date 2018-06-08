@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.attendee.list;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
@@ -165,6 +166,8 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             scanQr.putExtra(MainActivity.EVENT_KEY, eventId);
             startActivity(scanQr);
         });
+
+        binding.fabScanQr.getDrawable().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
         return binding.getRoot();
     }
 
