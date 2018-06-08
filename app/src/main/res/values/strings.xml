@@ -33,6 +33,7 @@
     <string name="title_feedbacks">Feedbacks</string>
     <string name="feedback">Feedback</string>
     <string name="forgot_password_link">Forgot Password</string>
+    <string name="speaker_details">Speaker Details</string>
 
     <!-- Place Holders -->
     <string name="date_placeholder">May 25th 2017</string>
@@ -248,6 +249,12 @@
     <string name="event_state_live">Live</string>
     <string name="event_state_past">Past</string>
     <string name="event_state_upcoming">Upcoming</string>
+    <string name="facebook_icon">Facebook Icon</string>
+    <string name="linkedin_icon">LinkedIn icon</string>
+    <string name="twitter_icon">Twitter Icon</string>
+    <string name="github_icon">Github Icon</string>
+    <string name="domain_icon">Domain Icon</string>
+    <string name="speaker_details_activity">Speaker Details Activity</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
