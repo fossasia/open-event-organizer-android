@@ -42,6 +42,11 @@
             android:title="@string/speakers"/>
 
         <item
+            android:id="@+id/nav_speakers_call"
+            android:icon="@drawable/ic_speaker"
+            android:title="@string/speakers_call"/>
+
+        <item
             android:id="@+id/nav_about_event"
             android:icon="@drawable/ic_info"
             android:title="@string/about"
