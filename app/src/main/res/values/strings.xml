@@ -247,6 +247,7 @@
     <string name="event_state_live">Live</string>
     <string name="event_state_past">Past</string>
     <string name="event_state_upcoming">Upcoming</string>
+    <string name="update_session">Update Session</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

@@ -39,6 +39,7 @@ public class CreateSessionPresenterTest {
 
     private CreateSessionPresenter createSessionPresenter;
     private static final Session SESSION = Session.builder().id(2L).title("dd").build();
+    private static final String ERROR = "Error";
     private static final long EVENT_ID = 5L;
     private static final long TRACK_ID = 5L;
 
@@ -139,14 +140,54 @@ public class CreateSessionPresenterTest {
         session.setStartsAt(isoDateNow);
         session.setEndsAt(isoDateThen);
 
-        when(sessionRepository.createSession(createSessionPresenter.getSession())).thenReturn(Observable.error(new Throwable("Error")));
+        when(sessionRepository.createSession(createSessionPresenter.getSession())).thenReturn(Observable.error(new Throwable(ERROR)));
 
         createSessionPresenter.createSession(TRACK_ID, EVENT_ID);
 
         InOrder inOrder = Mockito.inOrder(createSessionView);
 
         inOrder.verify(createSessionView).showProgress(true);
-        inOrder.verify(createSessionView).showError("Error");
+        inOrder.verify(createSessionView).showError(ERROR);
+        inOrder.verify(createSessionView).showProgress(false);
+    }
+
+    @Test
+    public void shouldShowSuccessOnUpdated() {
+        Session session = createSessionPresenter.getSession();
+
+        String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
+        String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);
+        session.setStartsAt(isoDateNow);
+        session.setEndsAt(isoDateThen);
+
+        when(sessionRepository.updateSession(createSessionPresenter.getSession())).thenReturn(Observable.just(SESSION));
+
+        createSessionPresenter.updateSession(TRACK_ID, EVENT_ID);
+
+        InOrder inOrder = Mockito.inOrder(createSessionView);
+
+        inOrder.verify(createSessionView).showProgress(true);
+        inOrder.verify(createSessionView).onSuccess(anyString());
+        inOrder.verify(createSessionView).showProgress(false);
+    }
+
+    @Test
+    public void shouldShowErrorOnUpdateFailure() {
+        Session session = createSessionPresenter.getSession();
+
+        String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
+        String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);
+        session.setStartsAt(isoDateNow);
+        session.setEndsAt(isoDateThen);
+
+        when(sessionRepository.updateSession(createSessionPresenter.getSession())).thenReturn(Observable.error(new Throwable(ERROR)));
+
+        createSessionPresenter.updateSession(TRACK_ID, EVENT_ID);
+
+        InOrder inOrder = Mockito.inOrder(createSessionView);
+
+        inOrder.verify(createSessionView).showProgress(true);
+        inOrder.verify(createSessionView).showError(ERROR);
         inOrder.verify(createSessionView).showProgress(false);
     }
 }
