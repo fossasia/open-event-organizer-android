@@ -10,4 +10,7 @@ public interface SpeakerApi {
 
     @GET("events/{id}/speakers?include=event&fields[event]=id&page[size]=0")
     Observable<List<Speaker>> getSpeakers(@Path("id") long id);
+
+    @GET("speakers/{speaker_id}")
+    Observable<Speaker> getSpeaker(@Path("speaker_id") long id);
 }
