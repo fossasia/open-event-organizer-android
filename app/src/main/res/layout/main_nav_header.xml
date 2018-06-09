@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:paletteText='@{ "event_header" }'
-                android:text='@{ event.startsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.startsAt) : "" }'/>
+                android:text='@{ event.startsAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_DATE_TIME, event.startsAt) : "" }'/>
         </LinearLayout>
     </LinearLayout>
 </layout>

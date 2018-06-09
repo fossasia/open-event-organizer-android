@@ -33,6 +33,7 @@
     <string name="title_feedbacks">Feedbacks</string>
     <string name="feedback">Feedback</string>
     <string name="forgot_password_link">Forgot Password</string>
+    <string name="speaker_details">Speaker Details</string>
 
     <!-- Place Holders -->
     <string name="date_placeholder">May 25th 2017</string>
@@ -79,6 +80,7 @@
     <string name="dashboard">Dashboard</string>
     <string name="attendees">Attendees</string>
     <string name="events">Events</string>
+    <string name="nav_events">My Events</string>
     <string name="log_out">Log Out</string>
     <string name="settings">Settings</string>
     <string name="event_background">Event Background</string>
@@ -237,7 +239,9 @@
     <string name="subtitle">Subtitle</string>
     <string name="title">Title</string>
     <string name="session_abstract">Abstract</string>
+    <string name="speakers_call">Speakers Call</string>
     <string name="speakers_photo">Speaker\'s Photo</string>
+    <string name="announcement">Announcement</string>
     <string name="edit_event">Edit Event</string>
     <string name="update_event">Update Event</string>
     <string name="edit_sponsor">Edit Sponsor</string>
@@ -246,6 +250,15 @@
     <string name="share">Share</string>
     <string name="check_in_summary">CHECK IN SUMMARY</string>
     <string name="check_in_time">TIME</string>
+    <string name="event_state_live">Live</string>
+    <string name="event_state_past">Past</string>
+    <string name="event_state_upcoming">Upcoming</string>
+    <string name="facebook_icon">Facebook Icon</string>
+    <string name="linkedin_icon">LinkedIn icon</string>
+    <string name="twitter_icon">Twitter Icon</string>
+    <string name="github_icon">Github Icon</string>
+    <string name="domain_icon">Domain Icon</string>
+    <string name="speaker_details_activity">Speaker Details Activity</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

@@ -43,11 +43,11 @@ public class FragmentNavigatorTest {
     @Test
     public void testFragmentLoading() {
         when(fragmentManager.beginTransaction()).thenReturn(fragmentTransaction);
-        when(fragmentTransaction.add(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
+        when(fragmentTransaction.replace(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
 
-        verify(fragmentTransaction).add(any(Integer.TYPE), isA(SettingsFragment.class));
+        verify(fragmentTransaction).replace(any(Integer.TYPE), isA(SettingsFragment.class));
         verify(fragmentTransaction).addToBackStack(null);
         verify(fragmentTransaction).commit();
         verifyNoMoreInteractions(fragmentTransaction);
@@ -56,17 +56,17 @@ public class FragmentNavigatorTest {
     @Test
     public void testOtherFragmentLoading() {
         when(fragmentManager.beginTransaction()).thenReturn(fragmentTransaction);
-        when(fragmentTransaction.add(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
+        when(fragmentTransaction.replace(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
         fragmentNavigator.loadFragment(R.id.nav_events);
 
         InOrder inOrder = Mockito.inOrder(fragmentTransaction);
-        inOrder.verify(fragmentTransaction).add(any(Integer.TYPE), isA(SettingsFragment.class));
+        inOrder.verify(fragmentTransaction).replace(any(Integer.TYPE), isA(SettingsFragment.class));
         inOrder.verify(fragmentTransaction).addToBackStack(null);
         inOrder.verify(fragmentTransaction).commit();
 
-        inOrder.verify(fragmentTransaction).add(any(Integer.TYPE), isA(EventListFragment.class));
+        inOrder.verify(fragmentTransaction).replace(any(Integer.TYPE), isA(EventListFragment.class));
         inOrder.verify(fragmentTransaction).addToBackStack(null);
         inOrder.verify(fragmentTransaction).commit();
         inOrder.verifyNoMoreInteractions();
@@ -75,13 +75,13 @@ public class FragmentNavigatorTest {
     @Test
     public void testSameFragmentLoading() {
         when(fragmentManager.beginTransaction()).thenReturn(fragmentTransaction);
-        when(fragmentTransaction.add(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
+        when(fragmentTransaction.replace(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
         fragmentNavigator.loadFragment(R.id.nav_settings);
         fragmentNavigator.loadFragment(R.id.nav_settings);
 
-        verify(fragmentTransaction).add(any(Integer.TYPE), isA(SettingsFragment.class));
+        verify(fragmentTransaction).replace(any(Integer.TYPE), isA(SettingsFragment.class));
         verify(fragmentTransaction).addToBackStack(null);
         verify(fragmentTransaction).commit();
         verifyNoMoreInteractions(fragmentTransaction);
@@ -90,7 +90,7 @@ public class FragmentNavigatorTest {
     @Test
     public void testPopBackStack() {
         when(fragmentManager.beginTransaction()).thenReturn(fragmentTransaction);
-        when(fragmentTransaction.add(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
+        when(fragmentTransaction.replace(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
 
@@ -102,7 +102,7 @@ public class FragmentNavigatorTest {
         assertTrue(fragmentNavigator.isDashboardActive());
 
         when(fragmentManager.beginTransaction()).thenReturn(fragmentTransaction);
-        when(fragmentTransaction.add(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
+        when(fragmentTransaction.replace(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
         assertFalse(fragmentNavigator.isDashboardActive());
@@ -111,7 +111,7 @@ public class FragmentNavigatorTest {
     @Test
     public void testBack() {
         when(fragmentManager.beginTransaction()).thenReturn(fragmentTransaction);
-        when(fragmentTransaction.add(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
+        when(fragmentTransaction.replace(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
 

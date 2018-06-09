@@ -7,4 +7,5 @@ import org.fossasia.openevent.app.common.mvp.view.Refreshable;
 import org.fossasia.openevent.app.data.speaker.Speaker;
 
 public interface SpeakersView extends Progressive, Erroneous, Refreshable, Emptiable<Speaker> {
+    void openSpeakersDetailFragment(long speakerId);
 }

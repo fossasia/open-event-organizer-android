@@ -11,6 +11,7 @@ import org.fossasia.openevent.app.core.event.list.EventListFragment;
 import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
 import org.fossasia.openevent.app.core.settings.SettingsFragment;
+import org.fossasia.openevent.app.core.speakerscall.detail.SpeakersCallFragment;
 import org.fossasia.openevent.app.core.speaker.list.SpeakersFragment;
 import org.fossasia.openevent.app.core.sponsor.list.SponsorsFragment;
 import org.fossasia.openevent.app.core.ticket.list.TicketsFragment;
@@ -86,6 +87,9 @@ class FragmentNavigator {
             case R.id.nav_speaker:
                 fragment = SpeakersFragment.newInstance(eventId);
                 break;
+            case R.id.nav_speakers_call:
+                fragment = SpeakersCallFragment.newInstance(eventId);
+                break;
             default:
                 fragment = EventDashboardFragment.newInstance(eventId);
                 break;
@@ -98,7 +102,7 @@ class FragmentNavigator {
         if (dashboardActive) {
             transaction.replace(R.id.fragment_container, fragment);
         } else {
-            transaction.add(R.id.fragment_container, fragment).addToBackStack(null);
+            transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
         }
         transaction.commit();
     }

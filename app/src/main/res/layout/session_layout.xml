@@ -5,10 +5,6 @@
 
     <data>
 
-        <import type="android.view.View" />
-
-        <import type="org.fossasia.openevent.app.utils.DateUtils" />
-
         <variable
             name="sessionsPresenter"
             type="org.fossasia.openevent.app.core.session.list.SessionsPresenter" />
@@ -24,63 +20,9 @@
         app:backgroundTint="@{ sessionsPresenter.isSessionSelected(session.getId()).get() ? @color/blue_200 : 0 }"
         android:layout_margin="@dimen/spacing_small">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:foreground="?selectableItemBackground"
-            android:gravity="center_vertical">
+        <include
+            layout="@layout/session_layout_core"
+            bind:session="@{ session }"/>
 
-            <LinearLayout
-                style="@style/ItemPadding"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_small"
-                    android:text='@{ session.title }'
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@{ @drawable/ic_info }"
-                    android:drawablePadding="@dimen/spacing_small"
-                    android:drawableStart="@{ @drawable/ic_info }"
-                    android:text='@{ session.subtitle }'
-                    android:textColor="@color/grey_600"
-                    android:textSize="@dimen/text_size_extra_small"
-                    android:visibility="@{ (session.subtitle != null) ? View.VISIBLE : View.GONE }" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@{ @drawable/ic_clock }"
-                    android:drawablePadding="@dimen/spacing_small"
-                    android:drawableStart="@{ @drawable/ic_clock }"
-                    android:text='@{ "Starts: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, session.startsAt) }'
-                    android:textColor="@color/grey_600"
-                    android:textSize="@dimen/text_size_extra_small"
-                    android:visibility="@{ (session.startsAt != null) ? View.VISIBLE : View.GONE }" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@{ @drawable/ic_clock }"
-                    android:drawablePadding="@dimen/spacing_small"
-                    android:drawableStart="@{ @drawable/ic_clock }"
-                    android:text='@{ "Ends: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, session.endsAt) }'
-                    android:textColor="@color/grey_600"
-                    android:textSize="@dimen/text_size_extra_small"
-                    android:visibility="@{ (session.endsAt != null) ? View.VISIBLE : View.GONE }"/>
-
-            </LinearLayout>
-        </LinearLayout>
     </android.support.v7.widget.CardView>
 </layout>

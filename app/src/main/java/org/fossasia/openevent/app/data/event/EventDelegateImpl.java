@@ -6,10 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.fossasia.openevent.app.utils.service.DateService;
 
-import java.text.ParseException;
-
-import timber.log.Timber;
-
 public class EventDelegateImpl implements EventDelegate {
 
     private final Event event;
@@ -26,13 +22,9 @@ public class EventDelegateImpl implements EventDelegate {
     @Override
     @JsonIgnore
     public String getHeader() {
-        try {
-            return DateService.getEventStatus(event);
-        } catch (ParseException e) {
-            Timber.e(e);
-        }
-
-        return "INVALID";
+        if (event.getState() != null)
+            return event.getState();
+        return "";
     }
 
     @Override
