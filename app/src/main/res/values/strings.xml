@@ -80,6 +80,7 @@
     <string name="dashboard">Dashboard</string>
     <string name="attendees">Attendees</string>
     <string name="events">Events</string>
+    <string name="nav_events">My Events</string>
     <string name="log_out">Log Out</string>
     <string name="settings">Settings</string>
     <string name="event_background">Event Background</string>
@@ -238,7 +239,9 @@
     <string name="subtitle">Subtitle</string>
     <string name="title">Title</string>
     <string name="session_abstract">Abstract</string>
+    <string name="speakers_call">Speakers Call</string>
     <string name="speakers_photo">Speaker\'s Photo</string>
+    <string name="announcement">Announcement</string>
     <string name="edit_event">Edit Event</string>
     <string name="update_event">Update Event</string>
     <string name="edit_sponsor">Edit Sponsor</string>

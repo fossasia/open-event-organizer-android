@@ -17,6 +17,7 @@ import org.fossasia.openevent.app.data.event.EventStatistics;
 import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.feedback.Feedback;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
+import org.fossasia.openevent.app.data.speakerscall.SpeakersCall;
 import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.data.speaker.Speaker;
 import org.fossasia.openevent.app.data.sponsor.Sponsor;
@@ -58,9 +59,8 @@ public class NetworkModule {
 
     @Provides
     Class[] providesMappedClasses() {
-        return new Class[]{Event.class, Attendee.class, Ticket.class, User.class,
-            EventStatistics.class, Faq.class, Copyright.class, Feedback.class, Track.class,
-                Session.class, Sponsor.class, Speaker.class};
+        return new Class[]{Event.class, Attendee.class, Ticket.class, User.class, EventStatistics.class,
+            Faq.class, Copyright.class, Feedback.class, Track.class, Session.class, Sponsor.class, Speaker.class, SpeakersCall.class};
     }
 
     @Provides

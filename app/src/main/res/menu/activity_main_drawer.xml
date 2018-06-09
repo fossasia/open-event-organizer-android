@@ -8,19 +8,19 @@
             android:title="@string/dashboard" />
         <item
             android:id="@+id/nav_attendees"
-            android:icon="@drawable/ic_attendees"
-            android:title="@string/attendees" />
+            android:icon="@drawable/qrcode_scan"
+            android:title="@string/check_in" />
+
+        <item
+            android:id="@+id/nav_edit_event"
+            android:icon="@drawable/ic_edit"
+            android:title="@string/edit_event"
+            android:checkable="false"/>
 
         <item
             android:id="@+id/nav_tickets"
             android:icon="@drawable/ic_ticket"
             android:title="@string/tickets" />
-
-        <item
-            android:id="@+id/nav_about_event"
-            android:icon="@drawable/ic_info"
-            android:title="@string/about"
-            android:checkable="false"/>
 
         <item
             android:id="@+id/nav_feedback"
@@ -46,13 +46,24 @@
             android:id="@+id/nav_speaker"
             android:icon="@drawable/ic_people"
             android:title="@string/speakers"/>
+
+        <item
+            android:id="@+id/nav_speakers_call"
+            android:icon="@drawable/ic_speaker"
+            android:title="@string/speakers_call"/>
+
+        <item
+            android:id="@+id/nav_about_event"
+            android:icon="@drawable/ic_info"
+            android:title="@string/about"
+            android:checkable="false"/>
     </group>
 
     <group android:id="@+id/eventsMenu" android:checkableBehavior="single">
         <item
             android:id="@+id/nav_events"
             android:icon="@drawable/ic_events"
-            android:title="@string/events" />
+            android:title="@string/nav_events" />
     </group>
 
     <group android:id="@+id/mainMenu">
