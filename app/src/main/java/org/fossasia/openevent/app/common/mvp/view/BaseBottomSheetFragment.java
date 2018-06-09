@@ -16,15 +16,21 @@ public abstract class BaseBottomSheetFragment<P extends BasePresenter> extends B
         OrgaApplication.getRefWatcher(getActivity()).watch(this);
     }
 
-    protected abstract Lazy<P> getPresenterProvider();
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    protected Lazy<P> getPresenterProvider() {
+        return null;
+    }
 
     protected P getPresenter() {
-        return getPresenterProvider().get();
+        Lazy<P> provider = getPresenterProvider();
+        return (provider != null) ? provider.get() : null;
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        getPresenter().detach();
+        P presenter = getPresenter();
+        if (presenter != null)
+            presenter.detach();
     }
 }

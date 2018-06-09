@@ -1,10 +1,13 @@
 package org.fossasia.openevent.app.data.speakerscall;
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Repository;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class SpeakersCallRepositoryImpl implements SpeakersCallRepository {
 
@@ -34,5 +37,23 @@ public class SpeakersCallRepositoryImpl implements SpeakersCallRepository {
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
+    }
+
+    @Override
+    public Observable<SpeakersCall> createSpeakersCall(SpeakersCall speakersCall) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return speakersCallApi
+            .postSpeakersCall(speakersCall)
+            .doOnNext(created -> {
+                created.setEvent(speakersCall.getEvent());
+                repository
+                    .save(SpeakersCall.class, created)
+                    .subscribe();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 }

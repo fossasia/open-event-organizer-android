@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,11 +25,18 @@ import org.fossasia.openevent.app.ui.ViewUtils;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
-public class MainActivity extends BaseInjectActivity<MainPresenter> implements NavigationView.OnNavigationItemSelectedListener, MainView {
+public class MainActivity extends BaseInjectActivity<MainPresenter> implements
+    NavigationView.OnNavigationItemSelectedListener, MainView, HasSupportFragmentInjector {
 
     public static final String EVENT_KEY = "event";
     private long eventId = -1;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     @Inject
     Lazy<MainPresenter> presenterProvider;
@@ -108,6 +116,11 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
         this.eventId = eventId;
         fragmentNavigator.setEventId(eventId);
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, true);
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return dispatchingAndroidInjector;
     }
 
     @Override
