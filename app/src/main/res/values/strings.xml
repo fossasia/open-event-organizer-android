@@ -260,6 +260,7 @@
     <string name="create_speakers_call">Create Speakers Call</string>
     <string name="privacy">Privacy</string>
     <string name="hash">Hash</string>
+    <string name="other_url">Other URL</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
