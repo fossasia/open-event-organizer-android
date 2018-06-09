@@ -257,6 +257,7 @@
     <string name="github_icon">Github Icon</string>
     <string name="domain_icon">Domain Icon</string>
     <string name="speaker_details_activity">Speaker Details Activity</string>
+    <string name="other_url">Other URL</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
