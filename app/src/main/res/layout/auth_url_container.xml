@@ -41,7 +41,7 @@
                 android:id="@+id/baseUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/base_url"
+                android:hint="@string/other_url"
                 android:inputType="textUri"
                 android:imeOptions="actionGo"
                 app:go="@{() -> action.run() }"/>

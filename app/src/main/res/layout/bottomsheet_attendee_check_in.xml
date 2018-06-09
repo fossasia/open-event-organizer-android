@@ -21,8 +21,7 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_top_surface">
+        android:layout_height="wrap_content">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -30,39 +29,246 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                style="@style/ItemPadding">
-
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Headline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/spacing_large"
-                    android:layout_marginRight="@dimen/spacing_large"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:text='@{ checkinAttendee.firstname + " " + checkinAttendee.lastname }'
-                    tools:text="Name"
-                    android:visibility="@{ (checkinAttendee.firstname != null) ? View.VISIBLE : View.GONE }" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:text="@{ checkinAttendee.email }"
-                    tools:text="xyz@example.com"
-                    android:visibility="@{ (checkinAttendee.email != null) ? View.VISIBLE : View.GONE }" />
+                android:background="@color/color_top_surface">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_margin="@dimen/spacing_normal"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    style="@style/ItemPadding">
 
                     <TextView
-                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        style="@style/TextAppearance.AppCompat.Headline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text='@{ checkinAttendee.firstname + " " + checkinAttendee.lastname }'
+                        tools:text="Name"
+                        android:visibility="@{ (checkinAttendee.firstname != null) ? View.VISIBLE : View.GONE }" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text="@{ checkinAttendee.email }"
+                        tools:text="xyz@example.com"
+                        android:visibility="@{ (checkinAttendee.email != null) ? View.VISIBLE : View.GONE }" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:drawableLeft="@{ @drawable/ic_time }"
+                        android:drawableStart="@{ @drawable/ic_time }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:text="@{ checkinAttendee.order.status }"
+                        android:textAllCaps="true"
+                        tools:text="free"
+                        android:visibility="@{ (checkinAttendee.order.status != null) ? View.VISIBLE : View.GONE }" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:drawableLeft="@{ @drawable/ic_ticket }"
+                        android:drawableStart="@{ @drawable/ic_ticket }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:text="@{ checkinAttendee.ticket.type }"
+                        android:textAllCaps="true"
+                        tools:text="free"
+                        android:visibility="@{ (checkinAttendee.ticket.type != null) ? View.VISIBLE : View.GONE }" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:drawableLeft="@{ @drawable/ic_coin }"
+                        android:drawableStart="@{ @drawable/ic_coin }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:text='@{ ContextManager.getCurrency() + " " + checkinAttendee.ticket.price }'
+                        android:visibility='@{ checkinAttendee.ticket.type.equalsIgnoreCase("paid") ? View.VISIBLE : View.GONE }'
+                        tools:text="3.78" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:drawableLeft="@{ @drawable/ic_clock }"
+                        android:drawableStart="@{ @drawable/ic_clock }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:text='@{ checkinAttendee.order.completedAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, checkinAttendee.order.completedAt) : "ORDER INCOMPLETE" }'
+                        android:textAllCaps="true"
+                        tools:text="free" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:drawableLeft="@{ @drawable/ic_receipt }"
+                        android:drawableStart="@{ @drawable/ic_receipt }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:text="@{ checkinAttendee.order.identifier }"
+                        android:textAllCaps="true"
+                        android:textStyle="bold"
+                        tools:text="free"
+                        android:visibility="@{ (checkinAttendee.order.identifier != null) ? View.VISIBLE : View.GONE }"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:drawableLeft="@{ @drawable/ic_ray }"
+                        android:drawableStart="@{ @drawable/ic_ray }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:visibility="@{ checkinAttendee.order.paidVia == null ? View.GONE : View.VISIBLE }"
+                        android:text="@{ checkinAttendee.order.paidVia }"
+                        android:textAllCaps="true"
+                        tools:text="free" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/Base.TextAppearance.AppCompat.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:layout_marginTop="@dimen/spacing_extra_small"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/text_size_normal"
+                            android:text="@string/details"
+                            tools:text="@string/details"/>
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/switchAttendeeDetailsState"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_small"
+                            android:layout_marginTop="@dimen/spacing_extra_small"
+                            android:checked="false"
+                            android:onCheckedChanged="@{ (switch, checked) -> checked ? attendeeDetailsLayout.setVisibility(View.VISIBLE) : attendeeDetailsLayout.setVisibility(View.GONE)  }"
+                            android:layout_marginStart="@dimen/spacing_small" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/attendee_details_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:visibility="@{ checkinAttendee.address == null ? View.GONE : View.VISIBLE }"
+                            android:drawableLeft="@{ @drawable/ic_home }"
+                            android:drawableStart="@{ @drawable/ic_home }"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:text='@{ @string/address + ":  " +  checkinAttendee.address }'
+                            tools:text="@string/address"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:visibility="@{ checkinAttendee.city == null ? View.GONE : View.VISIBLE }"
+                            android:drawableLeft="@{ @drawable/ic_location }"
+                            android:drawableStart="@{ @drawable/ic_location }"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:text='@{ @string/city + ":  " +  checkinAttendee.city }'
+                            tools:text="@string/city"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:visibility="@{ checkinAttendee.state == null ? View.GONE : View.VISIBLE }"
+                            android:drawableLeft="@{ @drawable/ic_location }"
+                            android:drawableStart="@{ @drawable/ic_location }"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:text='@{ @string/state +  ":  " + checkinAttendee.state }'
+                            tools:text="@string/state"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:visibility="@{ checkinAttendee.country == null ? View.GONE : View.VISIBLE }"
+                            android:drawableLeft="@{ @drawable/ic_location }"
+                            android:drawableStart="@{ @drawable/ic_location }"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:text='@{ @string/country + ":  " + checkinAttendee.country }'
+                            tools:text="@string/country"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{ checkinAttendee.pdfUrl == null ? View.GONE : View.VISIBLE }"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/spacing_small"
+                                android:padding="@dimen/spacing_extra_small"
+                                android:drawableLeft="@{ @drawable/ic_link }"
+                                android:drawableStart="@{ @drawable/ic_link }"
+                                android:text="@string/pdf_url_colon" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text='@{ checkinAttendee.pdfUrl }'
+                                android:autoLink="web"
+                                tools:text="@string/pdf_url"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_small"
+                        android:onClick="@{() -> presenter.toggleCheckIn() }"
+                        app:backgroundTint="@{ checkinAttendee.isCheckedIn ? @color/red_500 : @color/light_green_500 }"
+                        app:fabSize="mini"
+                        app:srcCompat="@{ checkinAttendee.isCheckedIn ? @drawable/ic_checkout : @drawable/ic_checkin }"
+                        app:tint="@android:color/white" />
+
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:padding="@dimen/spacing_extra_small"
                         android:text="@{ checkinAttendee.isCheckedIn ? @string/checked_in : @string/checked_out }"
                         android:textAllCaps="true"
@@ -73,210 +279,15 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_gravity="center_vertical"
-                        app:srcCompat="@{ checkinAttendee.checking ? @drawable/ic_local_sync : @drawable/ic_server_sync }"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_time }"
-                    android:drawableStart="@{ @drawable/ic_time }"
-                    android:drawablePadding="@dimen/spacing_small"
-                    android:text="@{ checkinAttendee.order.status }"
-                    android:textAllCaps="true"
-                    tools:text="free"
-                    android:visibility="@{ (checkinAttendee.order.status != null) ? View.VISIBLE : View.GONE }" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_ticket }"
-                    android:drawableStart="@{ @drawable/ic_ticket }"
-                    android:drawablePadding="@dimen/spacing_small"
-                    android:text="@{ checkinAttendee.ticket.type }"
-                    android:textAllCaps="true"
-                    tools:text="free"
-                    android:visibility="@{ (checkinAttendee.ticket.type != null) ? View.VISIBLE : View.GONE }" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_coin }"
-                    android:drawableStart="@{ @drawable/ic_coin }"
-                    android:drawablePadding="@dimen/spacing_small"
-                    android:text='@{ ContextManager.getCurrency() + " " + checkinAttendee.ticket.price }'
-                    android:visibility='@{ checkinAttendee.ticket.type.equalsIgnoreCase("paid") ? View.VISIBLE : View.GONE }'
-                    tools:text="3.78" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_clock }"
-                    android:drawableStart="@{ @drawable/ic_clock }"
-                    android:drawablePadding="@dimen/spacing_small"
-                    android:text='@{ checkinAttendee.order.completedAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, checkinAttendee.order.completedAt) : "INCOMPLETE" }'
-                    android:textAllCaps="true"
-                    tools:text="free" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_receipt }"
-                    android:drawableStart="@{ @drawable/ic_receipt }"
-                    android:drawablePadding="@dimen/spacing_small"
-                    android:text="@{ checkinAttendee.order.identifier }"
-                    android:textAllCaps="true"
-                    android:textStyle="bold"
-                    tools:text="free"
-                    android:visibility="@{ (checkinAttendee.order.identifier != null) ? View.VISIBLE : View.GONE }"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:drawableLeft="@{ @drawable/ic_ray }"
-                    android:drawableStart="@{ @drawable/ic_ray }"
-                    android:drawablePadding="@dimen/spacing_small"
-                    android:visibility="@{ checkinAttendee.order.paidVia == null ? View.GONE : View.VISIBLE }"
-                    android:text="@{ checkinAttendee.order.paidVia }"
-                    android:textAllCaps="true"
-                    tools:text="free" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/Base.TextAppearance.AppCompat.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:layout_marginTop="@dimen/spacing_extra_small"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/text_size_normal"
-                        android:text="@string/details"
-                        tools:text="@string/details"/>
-
-                    <android.support.v7.widget.SwitchCompat
-                        android:id="@+id/switchAttendeeDetailsState"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/spacing_small"
-                        android:layout_marginTop="@dimen/spacing_extra_small"
-                        android:checked="false"
-                        android:onCheckedChanged="@{ (switch, checked) -> checked ? attendeeDetailsLayout.setVisibility(View.VISIBLE) : attendeeDetailsLayout.setVisibility(View.GONE)  }"
-                        android:layout_marginStart="@dimen/spacing_small" />
-
-                 </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/attendee_details_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:visibility="@{ checkinAttendee.address == null ? View.GONE : View.VISIBLE }"
-                        android:drawableLeft="@{ @drawable/ic_home }"
-                        android:drawableStart="@{ @drawable/ic_home }"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:text='@{ @string/address + ":  " +  checkinAttendee.address }'
-                        tools:text="@string/address"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:visibility="@{ checkinAttendee.city == null ? View.GONE : View.VISIBLE }"
-                        android:drawableLeft="@{ @drawable/ic_location }"
-                        android:drawableStart="@{ @drawable/ic_location }"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:text='@{ @string/city + ":  " +  checkinAttendee.city }'
-                        tools:text="@string/city"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:visibility="@{ checkinAttendee.state == null ? View.GONE : View.VISIBLE }"
-                        android:drawableLeft="@{ @drawable/ic_location }"
-                        android:drawableStart="@{ @drawable/ic_location }"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:text='@{ @string/state +  ":  " + checkinAttendee.state }'
-                        tools:text="@string/state"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:visibility="@{ checkinAttendee.country == null ? View.GONE : View.VISIBLE }"
-                        android:drawableLeft="@{ @drawable/ic_location }"
-                        android:drawableStart="@{ @drawable/ic_location }"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:text='@{ @string/country + ":  " + checkinAttendee.country }'
-                        tools:text="@string/country"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="@{ checkinAttendee.pdfUrl == null ? View.GONE : View.VISIBLE }"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="@dimen/spacing_small"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:drawableLeft="@{ @drawable/ic_link }"
-                            android:drawableStart="@{ @drawable/ic_link }"
-                            android:text="@string/pdf_url_colon" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:text='@{ checkinAttendee.pdfUrl }'
-                            android:autoLink="web"
-                            tools:text="@string/pdf_url"/>
-
-                    </LinearLayout>
+                        android:layout_marginStart="@dimen/spacing_small"
+                        app:srcCompat="@{ checkinAttendee.checking ? @drawable/ic_local_sync : @drawable/ic_server_sync }" />
 
                 </LinearLayout>
+
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_margin="@dimen/spacing_normal"
-            android:onClick="@{() -> presenter.toggleCheckIn() }"
-            app:backgroundTint="@{ checkinAttendee.isCheckedIn ? @color/red_500 : @color/light_green_500 }"
-            app:fabSize="mini"
-            app:srcCompat="@{ checkinAttendee.isCheckedIn ? @drawable/ic_checkout : @drawable/ic_checkin }"
-            app:tint="@android:color/white" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
