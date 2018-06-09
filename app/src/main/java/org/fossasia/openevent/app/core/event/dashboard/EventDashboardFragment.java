@@ -90,14 +90,6 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
                 openChart.putExtra(EVENT_ID, initialEventId);
                 startActivity(openChart);
             });
-
-        binding.ticketAnalytics.btnChartCheckInFullScreen.setOnClickListener(
-            v-> {
-                Intent openChart = new Intent(getActivity(), ChartActivity.class);
-                openChart.putExtra(EVENT_ID, initialEventId);
-                startActivity(openChart);
-            }
-        );
         return binding.getRoot();
     }
 

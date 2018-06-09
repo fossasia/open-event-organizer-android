@@ -139,25 +139,6 @@
                         android:background="@color/color_bottom_surface" />
                 </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|top"
-                android:alpha="0.6"
-                android:background="@color/grey_600"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_extra_small">
-
-                <android.support.v7.widget.AppCompatImageButton
-                    android:id="@+id/btnChartCheckInFullScreen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    app:srcCompat="@drawable/ic_full_screen" />
-
-            </LinearLayout>
-
         </FrameLayout>
 
         <TextView
