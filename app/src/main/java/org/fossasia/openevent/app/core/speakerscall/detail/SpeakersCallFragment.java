@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.speakerscall.detail;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.core.speakerscall.create.CreateSpeakersCallFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.speakerscall.SpeakersCall;
 import org.fossasia.openevent.app.databinding.SpeakersCallFragmentBinding;
@@ -53,7 +55,10 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.speakers_call_fragment, container, false);
-
+        binding.createSpeakersCallFab.setOnClickListener(view -> {
+            BottomSheetDialogFragment bottomSheetDialogFragment = CreateSpeakersCallFragment.newInstance(eventId);
+            bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+        });
         return binding.getRoot();
     }
 
@@ -110,9 +115,11 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
     public void showResult(SpeakersCall speakersCall) {
         if (speakersCall == null) {
             ViewUtils.showView(binding.emptyView, true);
+            binding.fabFrame.setVisibility(View.VISIBLE);
             return;
         }
 
+        ViewUtils.showView(binding.emptyView, false);
         binding.setSpeakersCall(speakersCall);
         binding.executePendingBindings();
     }
