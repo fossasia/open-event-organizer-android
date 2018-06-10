@@ -248,6 +248,8 @@
     <string name="delete_sponsor">Delete Sponsor</string>
     <string name="send_to">Send To</string>
     <string name="share">Share</string>
+    <string name="check_in_summary">CHECK IN SUMMARY</string>
+    <string name="check_in_time">TIME</string>
     <string name="event_state_live">Live</string>
     <string name="event_state_past">Past</string>
     <string name="event_state_upcoming">Upcoming</string>
