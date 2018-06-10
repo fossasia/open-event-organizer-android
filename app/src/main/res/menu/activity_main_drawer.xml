@@ -23,6 +23,11 @@
             android:title="@string/tickets" />
 
         <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_order"
+            android:title="@string/orders" />
+
+        <item
             android:id="@+id/nav_feedback"
             android:icon="@drawable/ic_feedback"
             android:title="@string/feedback" />
