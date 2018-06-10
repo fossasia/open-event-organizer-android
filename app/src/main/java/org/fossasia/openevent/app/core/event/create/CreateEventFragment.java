@@ -37,6 +37,7 @@ import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.databinding.EventCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.utils.Utils;
 import org.fossasia.openevent.app.utils.ValidateUtils;
 
 import java.util.Arrays;
@@ -189,7 +190,7 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     public void shareEvent() {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getPresenter().getShareableInformation());
+        shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(getPresenter().getEvent()));
         shareIntent.setType("text/plain");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
