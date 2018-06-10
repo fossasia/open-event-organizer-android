@@ -15,6 +15,7 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.databinding.SessionCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.utils.ValidateUtils;
@@ -34,14 +35,28 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
     private SessionCreateLayoutBinding binding;
     private Validator validator;
     public static final String TRACK_KEY = "track";
+    private static final String SESSION_KEY = "session_id";
+
+    private boolean isSessionUpdating;
     private long trackId;
     private long eventId;
+    private long sessionId = -1;
 
     public static CreateSessionFragment newInstance(long trackId, long eventId) {
         CreateSessionFragment fragment = new CreateSessionFragment();
         Bundle args = new Bundle();
         args.putLong(TRACK_KEY, trackId);
         args.putLong(MainActivity.EVENT_KEY, eventId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static CreateSessionFragment newInstance(long trackId, long eventId, long sessionId) {
+        CreateSessionFragment fragment = new CreateSessionFragment();
+        Bundle args = new Bundle();
+        args.putLong(TRACK_KEY, trackId);
+        args.putLong(MainActivity.EVENT_KEY, eventId);
+        args.putLong(SESSION_KEY, sessionId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,6 +68,13 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
         if (getArguments() != null) {
             trackId = getArguments().getLong(TRACK_KEY);
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+            sessionId = getArguments().getLong(SESSION_KEY);
+
+            if (sessionId == -1 || sessionId == 0) {
+                isSessionUpdating = false;
+            } else {
+                isSessionUpdating = true;
+            }
         }
     }
 
@@ -63,7 +85,11 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
 
         binding.sessionCreate.setOnClickListener(view -> {
             if (validator.validate()) {
-                getPresenter().createSession(trackId, eventId);
+                if (isSessionUpdating) {
+                    getPresenter().updateSession(trackId, eventId);
+                } else {
+                    getPresenter().createSession(trackId, eventId);
+                }
             }
         });
 
@@ -75,6 +101,13 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
         super.onStart();
         getPresenter().attach(this);
         binding.setSession(getPresenter().getSession());
+
+        if (isSessionUpdating) {
+            binding.form.sessionFormTitle.setText(getResources().getString(R.string.update_session));
+            getPresenter().loadSession(sessionId);
+        } else {
+            binding.form.sessionFormTitle.setText(getResources().getString(R.string.create_session));
+        }
 
         validate(binding.form.slidesUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.audioUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -111,6 +144,11 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
                 // Nothing here
             }
         });
+    }
+
+    @Override
+    public void setSession(Session session) {
+        binding.setSession(session);
     }
 
     @Override

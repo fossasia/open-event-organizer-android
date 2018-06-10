@@ -20,7 +20,7 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionView> {
 
     private final SessionRepository sessionRepository;
-    private final Session session = new Session();
+    private Session session = new Session();
 
     @Inject
     public CreateSessionPresenter(SessionRepository sessionRepository) {
@@ -63,6 +63,38 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
         session.setAudioUrl(StringUtils.emptyToNull(session.getAudioUrl()));
         session.setVideoUrl(StringUtils.emptyToNull(session.getVideoUrl()));
         session.setSignupUrl(StringUtils.emptyToNull(session.getSignupUrl()));
+    }
+
+    //Used for loading the session information on start
+    public void loadSession(long sessionId) {
+        sessionRepository
+            .getSession(sessionId, false)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .doFinally(this::showSession)
+            .subscribe(loadedSession -> this.session = (Session) loadedSession, Logger::logError);
+    }
+
+    private void showSession() {
+        getView().setSession(session);
+    }
+
+    //method called for updating an session
+    public void updateSession(long trackId, long eventId) {
+        Track track = new Track();
+        Event event = new Event();
+
+        track.setId(trackId);
+        event.setId(eventId);
+        session.setTrack(track);
+        session.setEvent(event);
+
+        sessionRepository
+            .updateSession(session)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .subscribe(updatedSession -> getView().onSuccess("Session Updated Successfully"),
+                Logger::logError);
     }
 
     public void createSession(long trackId, long eventId) {

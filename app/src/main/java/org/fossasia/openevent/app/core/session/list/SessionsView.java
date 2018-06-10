@@ -10,7 +10,9 @@ public interface SessionsView extends Progressive, Erroneous, Refreshable, Empti
 
     void showMessage(String message);
 
-    void changeToDeletingMode();
+    void changeToolbarMode(boolean editMode, boolean deleteMode);
 
     void resetToolbar();
+
+    void openUpdateSessionFragment(long sessionId);
 }
