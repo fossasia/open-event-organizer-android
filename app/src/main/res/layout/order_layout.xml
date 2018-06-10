@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="org.fossasia.openevent.app.common.ContextManager" />
+
+        <variable
+            name="order"
+            type="org.fossasia.openevent.app.data.order.Order" />
+    </data>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:divider="?android:dividerHorizontal"
+            android:showDividers="end"
+            android:foreground="?selectableItemBackground"
+            android:baselineAligned="false"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_small">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{ "ID: " + order.identifier }'
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="6dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text='@{ "Status: " + order.status }'
+                        android:textSize="@dimen/text_size_extra_small"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginRight="16dp"
+                        android:layout_gravity="end"
+                        android:textAlignment="viewEnd"
+                        android:text='@{ "Amount: " + order.amount }'
+                        android:textSize="@dimen/text_size_extra_small"
+                        android:layout_marginEnd="16dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:maxLines="1"
+                    android:text='@{ "Transaction Id: " + order.transactionId }'
+                    android:textSize="@dimen/text_size_extra_small" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+</layout>
