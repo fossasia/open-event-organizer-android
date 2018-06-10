@@ -158,4 +158,20 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
         event.setPaymentCurrency(paymentCurrency);
         getView().setPaymentCurrency(currencyCodesList.indexOf(paymentCurrency));
     }
+    
+    public String getShareableInformation() {
+        String doubleLineBreak = "\n\n";
+        StringBuilder data = new StringBuilder(20);
+        data.append(event.getName())
+            .append(doubleLineBreak)
+            .append("Starts: ").append(DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.getStartsAt()))
+            .append(doubleLineBreak)
+            .append("Ends at: ").append(DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.getEndsAt()));
+
+        if (event.getExternalEventUrl() != null) {
+            data.append(doubleLineBreak).append("Url: ").append(event.getExternalEventUrl());
+        }
+
+        return data.toString();
+    }
 }
