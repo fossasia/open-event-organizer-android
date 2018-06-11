@@ -39,6 +39,7 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     private long trackId;
     private long eventId;
     private boolean deletingMode;
+    private boolean editMode;
     private AlertDialog deleteDialog;
 
     @Inject
@@ -65,6 +66,7 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         super.onCreate(savedInstanceState);
 
         deletingMode = false;
+        editMode = false;
         context = getContext();
         setHasOptionsMenu(true);
 
@@ -96,6 +98,14 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     public void openCreateSessionFragment() {
         getFragmentManager().beginTransaction()
             .replace(R.id.fragment_container, CreateSessionFragment.newInstance(trackId, eventId))
+            .addToBackStack(null)
+            .commit();
+    }
+
+    @Override
+    public void openUpdateSessionFragment(long sessionId) {
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, CreateSessionFragment.newInstance(trackId, eventId, sessionId))
             .addToBackStack(null)
             .commit();
     }
@@ -141,6 +151,9 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
             case R.id.del:
                 showDeleteDialog();
                 break;
+            case R.id.edit:
+                getPresenter().updateSession();
+                break;
             default:
                 // No implementation
         }
@@ -151,6 +164,8 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem menuItem = menu.findItem(R.id.del);
+        MenuItem menuItemEdit = menu.findItem(R.id.edit);
+        menuItemEdit.setVisible(editMode);
         menuItem.setVisible(deletingMode);
     }
 
@@ -178,14 +193,16 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     }
 
     @Override
-    public void changeToDeletingMode() {
-        deletingMode = true;
+    public void changeToolbarMode(boolean editMode, boolean deleteMode) {
+        this.editMode = editMode;
+        this.deletingMode = deleteMode;
         getActivity().invalidateOptionsMenu();
     }
 
     @Override
     public void resetToolbar() {
         deletingMode = false;
+        editMode = false;
         getActivity().invalidateOptionsMenu();
     }
 
