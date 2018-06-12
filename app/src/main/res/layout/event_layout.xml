@@ -21,7 +21,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@{ eventsPresenter.getEventsSelected(event) ? @color/blue_200 : (Event.STATE_DRAFT.equalsIgnoreCase(event.state)) ? @color/event_state_draft : android.R.attr.selectableItemBackground}"
+        android:background="@{ (Event.STATE_DRAFT.equalsIgnoreCase(event.state)) ? @color/event_state_draft : android.R.attr.selectableItemBackground }"
         android:orientation="horizontal">
 
         <FrameLayout
