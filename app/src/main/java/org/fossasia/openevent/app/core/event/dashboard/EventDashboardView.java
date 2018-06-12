@@ -12,9 +12,13 @@ import org.fossasia.openevent.app.data.event.EventStatistics;
 
 public interface EventDashboardView extends Progressive, Erroneous, Successful, Refreshable, ItemResult<Event> {
 
-    LineChart getChartView();
+    LineChart getSalesChartView();
 
-    void showChart(boolean show);
+    LineChart getCheckinTimeChartView();
+
+    void showChartSales(boolean show);
+
+    void showChartCheckIn(boolean show);
 
     void showStatistics(EventStatistics eventStatistics);
 }

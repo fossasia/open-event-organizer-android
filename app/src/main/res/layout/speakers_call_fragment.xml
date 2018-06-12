@@ -32,6 +32,7 @@
                     android:id="@+id/refresh_frame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="@{ (speakersCall != null) ? View.VISIBLE : View.GONE}"
                     android:divider="?android:dividerHorizontal"
                     android:showDividers="end"
                     android:layout_marginTop="@dimen/spacing_large">
@@ -168,6 +169,27 @@
                 </FrameLayout>
             </android.support.v4.widget.SwipeRefreshLayout>
 
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fab_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:visibility="gone"
+            android:elevation="1dp"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/createSpeakersCallFab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:fabSize="normal"
+                app:srcCompat="@drawable/ic_add"
+                app:tint="@android:color/white" />
         </FrameLayout>
 
         <FrameLayout

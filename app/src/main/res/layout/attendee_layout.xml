@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <import type="android.view.View" />
@@ -29,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_normal"
                 android:textColor="@android:color/black"
-                android:text='@{attendee.firstname + " " + attendee.lastname}' />
+                android:text='@{attendee.firstname + " " + attendee.lastname}'
+                tools:text="FirstName LastName"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -37,6 +39,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:text="@{attendee.email}"
+                tools:text="email@site.com"
                 android:textSize="@dimen/text_size_extra_small"/>
 
             <TextView
@@ -46,6 +49,7 @@
                 android:ellipsize="end"
                 android:textAllCaps="true"
                 android:text="@{attendee.ticket.type}"
+                tools:text="Ticket Type"
                 android:textSize="@dimen/text_size_extra_small"/>
 
         </LinearLayout>
