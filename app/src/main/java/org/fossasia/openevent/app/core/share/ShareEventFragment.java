@@ -15,7 +15,6 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
@@ -91,7 +90,7 @@ public class ShareEventFragment extends BaseFragment implements ShareEventView {
         try {
             startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            ViewUtils.showSnackbar(binding.getRoot(), "There are no email clients installed");
         }
     }
 
@@ -99,11 +98,11 @@ public class ShareEventFragment extends BaseFragment implements ShareEventView {
         ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         String eventUrl = shareEventViewModel.getShareableUrl();
         if (eventUrl == null) {
-            Toast.makeText(getActivity(), "Event does not have a Public URL", Toast.LENGTH_SHORT).show();
+            ViewUtils.showSnackbar(binding.getRoot(), "Event does not have a Public URL");
         } else {
             ClipData clip = ClipData.newPlainText("Event URL", shareEventViewModel.getShareableUrl());
             clipboard.setPrimaryClip(clip);
-            Toast.makeText(getActivity(), "Event URL Copied to Clipboard", Toast.LENGTH_SHORT).show();
+            ViewUtils.showSnackbar(binding.getRoot(), "Event URL Copied to Clipboard");
         }
     }
 
