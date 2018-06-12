@@ -120,7 +120,7 @@ public class ShareEventFragment extends BaseFragment implements ShareEventView {
 
     @Override
     protected int getTitle() {
-        return R.string.speaker_details;
+        return R.string.share;
     }
 
     @Override
