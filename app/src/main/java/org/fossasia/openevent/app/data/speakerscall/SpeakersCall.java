@@ -14,10 +14,16 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.event.Event;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @Type("speakers-call")
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 public class SpeakersCall {

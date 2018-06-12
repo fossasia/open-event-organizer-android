@@ -31,6 +31,8 @@ public abstract class ViewModelModule {
     @ViewModelKey(OrdersViewModel.class)
     public abstract ViewModel bindOrdersViewModel(OrdersViewModel ordersViewModel);
 
+    @Binds
+    @IntoMap
     @ViewModelKey(CreateSpeakersCallViewModel.class)
     public abstract ViewModel bindCreateSpeakersCallViewModel(CreateSpeakersCallViewModel createSpeakersCallViewModel);
 

@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.data.speakerscall;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -13,4 +14,8 @@ public interface SpeakersCallApi {
 
     @POST("speakers-calls")
     Observable<SpeakersCall> postSpeakersCall(@Body SpeakersCall speakersCall);
+
+    @PATCH("speakers-calls/{id}")
+    Observable<SpeakersCall> updateSpeakersCall(@Path("id") long id, @Body SpeakersCall speakersCall);
+
 }
