@@ -58,6 +58,11 @@
             android:title="@string/speakers_call"/>
 
         <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_share"
+            android:title="@string/share" />
+
+        <item
             android:id="@+id/nav_about_event"
             android:icon="@drawable/ic_info"
             android:title="@string/about"
