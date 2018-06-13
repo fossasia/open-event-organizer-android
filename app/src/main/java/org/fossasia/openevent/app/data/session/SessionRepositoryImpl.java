@@ -80,24 +80,6 @@ public class SessionRepositoryImpl implements SessionRepository {
     }
 
     @Override
-    public Observable<Session> getSessionsUnderSpeaker(long speakerId, boolean reload) {
-        Observable<Session> diskObservable = Observable.defer(() ->
-            repository.getItems(Session.class, Session_Table.speaker_id.eq(speakerId))
-        );
-
-        Observable<Session> networkObservable = Observable.defer(() ->
-            sessionApi.getSessionsUnderSpeaker(speakerId)
-                .doOnNext(sessions -> repository.syncSave(Session.class, sessions, Session::getId, Session_Table.id).subscribe())
-                .flatMapIterable(sessions -> sessions));
-
-        return repository.observableOf(Session.class)
-            .reload(reload)
-            .withDiskObservable(diskObservable)
-            .withNetworkObservable(networkObservable)
-            .build();
-    }
-
-    @Override
     public Observable<Session> createSession(Session session) {
         if (!repository.isConnected()) {
             return Observable.error(new Throwable(Constants.NO_NETWORK));

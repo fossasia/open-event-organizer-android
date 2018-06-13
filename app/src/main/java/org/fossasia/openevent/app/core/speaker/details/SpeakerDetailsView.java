@@ -10,6 +10,4 @@ import org.fossasia.openevent.app.data.speaker.Speaker;
 import java.util.List;
 
 public interface SpeakerDetailsView extends Progressive, Erroneous, Refreshable, ItemResult<Speaker> {
-
-    void showSessions(List<Session> sessions);
 }

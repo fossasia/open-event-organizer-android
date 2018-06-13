@@ -107,7 +107,6 @@ public class SpeakerDetailsFragment extends BaseFragment implements SpeakerDetai
 
     private void loadSpeaker(boolean reload) {
         speakerDetailsViewModel.getSpeaker(speakerId, reload).observe(this, this::showResult);
-        speakerDetailsViewModel.getSessionsUnderSpeaker().observe(this, this::showSessions);
     }
 
     @Override
@@ -123,11 +122,7 @@ public class SpeakerDetailsFragment extends BaseFragment implements SpeakerDetai
     @Override
     public void showResult(Speaker item) {
         binding.setSpeaker(item);
-    }
-
-    @Override
-    public void showSessions(List<Session> sessions) {
-        speakersSessionsAdapter.setSessions(sessions);
+        speakersSessionsAdapter.setSessions(item.getSessions());
     }
 
     @Override
