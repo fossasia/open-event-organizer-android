@@ -24,6 +24,7 @@ import io.reactivex.schedulers.Schedulers;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.emptiable;
+import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneous;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousCompletable;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
@@ -34,6 +35,7 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     private final FaqRepository faqRepository;
     private final DatabaseChangeListener<Faq> faqChangeListener;
     private final Map<Faq, ObservableBoolean> selectedMap = new ConcurrentHashMap<>();
+    private boolean isContextualModeActive;
 
     @Inject
     public FaqListPresenter(FaqRepository faqRepository, DatabaseChangeListener<Faq> faqChangeListener) {
@@ -91,13 +93,23 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
             .compose(disposeCompletable(getDisposable()))
             .compose(progressiveErroneousCompletable(getView()))
             .subscribe(() -> {
-                getView().showMessage("FAQ Deleted Successfully");
-                unselectFaq(faq);
+                selectedMap.remove(faq);
+                Logger.logSuccess(faq);
             }, Logger::logError);
     }
 
     public void deleteSelectedFaq() {
-        deleteFaq(previousFaq);
+        Observable.fromIterable(selectedMap.entrySet())
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .doFinally(() -> {
+                getView().showMessage("Faq's Deleted Successfully");
+            })
+            .subscribe(entry -> {
+                if (entry.getValue().get()) {
+                    deleteFaq(entry.getKey());
+                }
+            }, Logger::logError);
     }
 
     public void unselectFaq(Faq faq) {
@@ -105,18 +117,36 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
             selectedMap.get(faq).set(false);
     }
 
-    public void toolbarDeleteMode(Faq currentFaq) {
-        if (!previousFaq.equals(currentFaq))
-            unselectFaq(previousFaq);
-
-        selectedMap.get(currentFaq).set(true);
-        previousFaq = currentFaq;
-        getView().changeToDeletingMode();
+    public void resetToDefaultState() {
+        isContextualModeActive = false;
+        unSelectFaqList();
+        getView().exitContextualMenuMode();
     }
 
-    public void resetToDefaultState() {
-        unselectFaq(previousFaq);
-        getView().resetToolbar();
+    public void onSingleSelect(Faq currentFaq) {
+        if (isContextualModeActive) {
+            if (countSelected() == 1 && getFaqSelected(currentFaq).get()) {
+                selectedMap.get(currentFaq).set(false);
+                getView().exitContextualMenuMode();
+            } else if (getFaqSelected(currentFaq).get()) {
+                selectedMap.get(currentFaq).set(false);
+            } else {
+                previousFaq = currentFaq;
+                selectedMap.get(currentFaq).set(true);
+            }
+        }
+    }
+
+    public void onLongSelect(Faq currentFaq) {
+        if (!isContextualModeActive) {
+            getView().enterContextualMenuMode();
+        }
+        if (!previousFaq.equals(currentFaq)) {
+            unselectFaq(previousFaq);
+        }
+        selectedMap.get(currentFaq).set(true);
+        previousFaq = currentFaq;
+        isContextualModeActive = true;
     }
 
     public ObservableBoolean getFaqSelected(Faq faq) {
@@ -129,4 +159,21 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     public Map<Faq, ObservableBoolean> getIsSelected() {
         return selectedMap;
     }
+
+    public void unSelectFaqList() {
+        for (Faq faq  : selectedMap.keySet()) {
+            unselectFaq(faq);
+        }
+    }
+
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly
+    private int countSelected() {
+        int count = 0;
+        for (Faq faq : selectedMap.keySet()) {
+            if (selectedMap.get(faq).get())
+                count++;
+        }
+        return count;
+    }
 }
+

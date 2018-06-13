@@ -10,7 +10,7 @@ public interface FaqListView extends Progressive, Erroneous, Refreshable, Emptia
 
     void showMessage(String message);
 
-    void changeToDeletingMode();
+    void exitContextualMenuMode();
 
-    void resetToolbar();
+    void enterContextualMenuMode();
 }
