@@ -29,8 +29,8 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqViewHolder> {
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.faq_layout, viewGroup, false), faqListPresenter);
 
-        faqViewHolder.setLongClickAction(faqListPresenter::toolbarDeleteMode);
-        faqViewHolder.setClickAction(faqListPresenter::resetToDefaultState);
+        faqViewHolder.setLongClickAction(faqListPresenter::onLongSelect);
+        faqViewHolder.setClickAction(faqListPresenter::onSingleSelect);
 
         return faqViewHolder;
     }

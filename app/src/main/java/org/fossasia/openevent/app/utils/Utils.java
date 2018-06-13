@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.utils;
 
+import org.fossasia.openevent.app.data.event.Event;
+
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -51,6 +53,22 @@ public final class Utils {
             .takeWhile(thisItem -> !propertyMatcher.isEqual(thisItem, item))
             .count()
             .map(count -> count == items.size() ? -1 : count.intValue());
+    }
+
+    public static String getShareableInformation(Event event) {
+        String doubleLineBreak = "\n\n";
+        StringBuilder data = new StringBuilder(20);
+        data.append(event.getName())
+            .append(doubleLineBreak)
+            .append("Starts: ").append(DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.getStartsAt()))
+            .append(doubleLineBreak)
+            .append("Ends at: ").append(DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, event.getEndsAt()));
+
+        if (event.getExternalEventUrl() != null) {
+            data.append(doubleLineBreak).append("Url: ").append(event.getExternalEventUrl());
+        }
+
+        return data.toString();
     }
 
 }

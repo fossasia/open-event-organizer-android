@@ -16,7 +16,7 @@ public class FaqViewHolder extends RecyclerView.ViewHolder {
     private final FaqListPresenter faqListPresenter;
     private Faq faq;
     private Pipe<Faq> longClickAction;
-    private Runnable clickAction;
+    private Pipe<Faq> clickAction;
 
     public FaqViewHolder(FaqLayoutBinding binding, FaqListPresenter faqListPresenter) {
         super(binding.getRoot());
@@ -32,7 +32,7 @@ public class FaqViewHolder extends RecyclerView.ViewHolder {
         });
         binding.getRoot().setOnClickListener(view -> {
             if (clickAction != null)
-                clickAction.run();
+                clickAction.push(faq);
         });
     }
 
@@ -40,7 +40,7 @@ public class FaqViewHolder extends RecyclerView.ViewHolder {
         this.longClickAction = longClickAction;
     }
 
-    public void setClickAction(Runnable clickAction) {
+    public void setClickAction(Pipe<Faq> clickAction) {
         this.clickAction = clickAction;
     }
 

@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import org.fossasia.openevent.app.common.di.OrgaViewModelFactory;
 import org.fossasia.openevent.app.core.auth.login.LoginViewModel;
 import org.fossasia.openevent.app.core.orders.list.OrdersViewModel;
+import org.fossasia.openevent.app.core.share.ShareEventViewModel;
 import org.fossasia.openevent.app.core.speaker.details.SpeakerDetailsViewModel;
 import org.fossasia.openevent.app.core.speakerscall.create.CreateSpeakersCallViewModel;
 
@@ -35,6 +36,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateSpeakersCallViewModel.class)
     public abstract ViewModel bindCreateSpeakersCallViewModel(CreateSpeakersCallViewModel createSpeakersCallViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ShareEventViewModel.class)
+    public abstract ViewModel bindShareEventViewModel(ShareEventViewModel shareEventViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
