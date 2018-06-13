@@ -26,4 +26,6 @@ public interface DatabaseRepository {
     @SuppressWarnings("unchecked")
     Completable deleteAll(Class<?>... typeClass);
 
+    <T, V> Observable<T> getJoinedItems(Class<T> typeClass, Class<V> joinedClass,
+                                        SQLOperator typeClassConditions, SQLOperator joinedClassConditions);
 }

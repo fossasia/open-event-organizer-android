@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import org.fossasia.openevent.app.data.session.Session;
-import org.fossasia.openevent.app.data.session.SessionRepository;
 import org.fossasia.openevent.app.data.speaker.Speaker;
 import org.fossasia.openevent.app.data.speaker.SpeakerRepository;
 import org.fossasia.openevent.app.utils.ErrorUtils;
@@ -20,18 +19,15 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 
 public class SpeakerDetailsViewModel extends ViewModel {
     private final SpeakerRepository speakerRepository;
-    private final SessionRepository sessionRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private MutableLiveData<Speaker> speakerLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<Session>> sessionLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private MutableLiveData<String> error = new MutableLiveData<>();
 
     @Inject
-    public SpeakerDetailsViewModel(SpeakerRepository speakerRepository, SessionRepository sessionRepository) {
+    public SpeakerDetailsViewModel(SpeakerRepository speakerRepository) {
         this.speakerRepository = speakerRepository;
-        this.sessionRepository = sessionRepository;
         progress.setValue(false);
     }
 
@@ -43,17 +39,10 @@ public class SpeakerDetailsViewModel extends ViewModel {
             .compose(dispose(compositeDisposable))
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
-            .doOnNext(speaker -> speakerLiveData.setValue(speaker))
-            .flatMap(speaker -> sessionRepository.getSessionsUnderSpeaker(speakerId, reload))
-            .toList()
-            .subscribe(sessionList -> sessionLiveData.setValue(sessionList),
+            .subscribe(speaker -> speakerLiveData.setValue(speaker),
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
 
         return speakerLiveData;
-    }
-
-    protected LiveData<List<Session>> getSessionsUnderSpeaker() {
-        return sessionLiveData;
     }
 
     protected LiveData<Boolean> getProgress() {

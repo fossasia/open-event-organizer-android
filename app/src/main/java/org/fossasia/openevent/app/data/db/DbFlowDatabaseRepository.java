@@ -42,6 +42,19 @@ public class DbFlowDatabaseRepository implements DatabaseRepository {
     }
 
     @Override
+    public <T, V> Observable<T> getJoinedItems(Class<T> typeClass, Class<V> joinedClass,
+                                               SQLOperator typeClassConditions,
+                                               SQLOperator joinedClassConditions) {
+        return RXSQLite.rx(SQLite.select()
+            .from(typeClass)
+            .leftOuterJoin(joinedClass)
+            .on(typeClassConditions)
+            .where(joinedClassConditions))
+            .queryList()
+            .flattenAsObservable(items -> items);
+    }
+
+    @Override
     public <T> Completable save(Class<T> classType, T item) {
         return Completable.fromAction(() -> {
             ModelAdapter<T> modelAdapter = FlowManager.getModelAdapter(classType);
