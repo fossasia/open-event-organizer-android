@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.faq.list;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -10,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +39,6 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
 
     private Context context;
     private long eventId;
-    private boolean deletingMode;
     private AlertDialog deleteDialog;
 
     @Inject
@@ -49,8 +50,9 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
     private FaqListAdapter faqsAdapter;
     private FaqsFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
-
+    private ActionMode actionMode;
     private boolean initialized;
+    private int statusBarColor;
 
     public static FaqListFragment newInstance(long eventId) {
         FaqListFragment fragment = new FaqListFragment();
@@ -64,7 +66,6 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        deletingMode = false;
         context = getContext();
         setHasOptionsMenu(true);
 
@@ -97,6 +98,48 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
         initialized = true;
     }
 
+    public ActionMode.Callback actionCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_faqs, menu);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //hold current color of status bar
+                statusBarColor = getActivity().getWindow().getStatusBarColor();
+                //set the default color
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.color_top_surface));
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+             return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.del:
+                    showDeleteDialog();
+                    break;
+                default:
+                    return false;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+            getPresenter().resetToDefaultState();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //return to "old" color of status bar
+                getActivity().getWindow().setStatusBarColor(statusBarColor);
+            }
+        }
+    };
+
     @Override
     protected int getTitle() {
         return R.string.faq;
@@ -128,30 +171,6 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.del:
-                showDeleteDialog();
-                break;
-            default:
-                // No implementation
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem menuItem = menu.findItem(R.id.del);
-        menuItem.setVisible(deletingMode);
-    }
-
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_faqs, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
     public void showDeleteDialog() {
         if (deleteDialog == null)
             deleteDialog = new AlertDialog.Builder(context)
@@ -160,10 +179,10 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
                     getString(R.string.question)))
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                     getPresenter().deleteSelectedFaq();
-                    resetToolbar();
+                    getPresenter().resetToDefaultState();
                 })
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    dialog.dismiss(); getPresenter().resetToDefaultState();
+                    dialog.dismiss();
                 })
                 .create();
 
@@ -171,15 +190,14 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
     }
 
     @Override
-    public void changeToDeletingMode() {
-        deletingMode = true;
-        getActivity().invalidateOptionsMenu();
+    public void enterContextualMenuMode() {
+        actionMode = getActivity().startActionMode(actionCallback);
     }
 
     @Override
-    public void resetToolbar() {
-        deletingMode = false;
-        getActivity().invalidateOptionsMenu();
+    public void exitContextualMenuMode() {
+        if (actionMode != null)
+            actionMode.finish();
     }
 
     @Override
@@ -199,7 +217,7 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
 
     @Override
     public void onRefreshComplete(boolean success) {
-        resetToolbar();
+        getPresenter().resetToDefaultState();
         if (success)
             ViewUtils.showSnackbar(binding.faqsRecyclerView, R.string.refresh_complete);
     }
