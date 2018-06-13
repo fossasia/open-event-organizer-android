@@ -40,7 +40,7 @@ public class SpeakersCallPresenter extends AbstractDetailPresenter<Long, Speaker
         speakersCallChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
             .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT))
+            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.UPDATE))
             .subscribeOn(Schedulers.io())
             .subscribe(speakersCallModelChange -> loadSpeakersCall(false), Logger::logError);
     }
@@ -59,5 +59,16 @@ public class SpeakersCallPresenter extends AbstractDetailPresenter<Long, Speaker
         else {
             return speakersCallRepository.getSpeakersCall(getId(), forceReload);
         }
+    }
+
+    public long getSpeakersCallId() {
+        if (speakersCall == null)
+            return -1;
+        else
+            return speakersCall.getId();
+    }
+
+    public SpeakersCall getSpeakersCall() {
+        return speakersCall;
     }
 }

@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,7 +16,6 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.core.speakerscall.create.CreateSpeakersCallFragment;
-import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.speakerscall.SpeakersCall;
 import org.fossasia.openevent.app.databinding.SpeakersCallFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -27,13 +29,11 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
     private long eventId;
 
     @Inject
-    ContextUtils utilModel;
-
-    @Inject
     Lazy<SpeakersCallPresenter> speakersCallPresenter;
 
     private SpeakersCallFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
+    private boolean editMode = false;
 
     public static SpeakersCallFragment newInstance(long eventId) {
         SpeakersCallFragment fragment = new SpeakersCallFragment();
@@ -46,6 +46,8 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
 
         if (getArguments() != null)
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
@@ -68,6 +70,10 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
         setupRefreshListener();
         getPresenter().attach(eventId, this);
         getPresenter().start();
+
+        if (getPresenter().getSpeakersCall() != null) {
+            editMode = true;
+        }
     }
 
     @Override
@@ -83,11 +89,35 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
-        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
             getPresenter().loadSpeakersCall(true);
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit:
+                BottomSheetDialogFragment bottomSheetDialogFragment = CreateSpeakersCallFragment.newInstance(eventId, true);
+                bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+                break;
+            default:
+                // No implementation
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItemEdit = menu.findItem(R.id.edit);
+        menuItemEdit.setVisible(editMode);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_speakers_call, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -114,12 +144,15 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
     @Override
     public void showResult(SpeakersCall speakersCall) {
         if (speakersCall == null) {
+            editMode = false;
             ViewUtils.showView(binding.emptyView, true);
             binding.fabFrame.setVisibility(View.VISIBLE);
             return;
         }
 
         ViewUtils.showView(binding.emptyView, false);
+        editMode = true;
+        getActivity().invalidateOptionsMenu();
         binding.setSpeakersCall(speakersCall);
         binding.executePendingBindings();
     }
