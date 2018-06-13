@@ -19,10 +19,11 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class CreateSpeakersCallViewModel extends ViewModel {
 
-    private final SpeakersCallRepository speakersCallRepository;
-    private final SpeakersCall speakersCall = new SpeakersCall();
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private SpeakersCall speakersCall = new SpeakersCall();
 
+    private final SpeakersCallRepository speakersCallRepository;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final MutableLiveData<SpeakersCall> speakersCallLive = new MutableLiveData<>();
     private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<String> success = new MutableLiveData<>();
@@ -39,13 +40,37 @@ public class CreateSpeakersCallViewModel extends ViewModel {
         Event event = new Event();
 
         event.setId(eventId);
-        speakersCall.setEvent(event);
+        speakersCallLive.getValue().setEvent(event);
 
-        compositeDisposable.add(speakersCallRepository.createSpeakersCall(speakersCall)
+        compositeDisposable.add(speakersCallRepository.createSpeakersCall(speakersCallLive.getValue())
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(var -> success.setValue("Speakers Call Created Successfully"),
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+    }
+
+    public void updateSpeakersCall(long eventId) {
+        if (!verify())
+            return;
+
+        Event event = new Event();
+
+        event.setId(eventId);
+        speakersCallLive.getValue().setEvent(event);
+
+        compositeDisposable.add(speakersCallRepository.updateSpeakersCall(speakersCallLive.getValue())
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() -> progress.setValue(false))
+            .subscribe(var -> success.setValue("Speakers Call Updated Successfully"),
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+    }
+
+    public SpeakersCall loadSpeakersCall(long id, boolean reload) {
+        compositeDisposable.add(speakersCallRepository.getSpeakersCall(id, reload)
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() -> progress.setValue(false))
+            .subscribe(speakersCallLive::setValue, throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+        return speakersCallLive.getValue();
     }
 
     public void initialize() {
@@ -54,12 +79,13 @@ public class CreateSpeakersCallViewModel extends ViewModel {
         String isoDate = DateUtils.formatDateToIso(current);
         speakersCall.setStartsAt(isoDate);
         speakersCall.setEndsAt(isoDate);
+        speakersCallLive.setValue(speakersCall);
     }
 
     private boolean verify() {
         try {
-            ZonedDateTime start = DateUtils.getDate(speakersCall.getStartsAt());
-            ZonedDateTime end = DateUtils.getDate(speakersCall.getEndsAt());
+            ZonedDateTime start = DateUtils.getDate(speakersCallLive.getValue().getStartsAt());
+            ZonedDateTime end = DateUtils.getDate(speakersCallLive.getValue().getEndsAt());
 
             if (!end.isAfter(start)) {
                 error.setValue("End time should be after start time");
@@ -84,8 +110,8 @@ public class CreateSpeakersCallViewModel extends ViewModel {
         return progress;
     }
 
-    public SpeakersCall getSpeakersCall() {
-        return speakersCall;
+    public LiveData<SpeakersCall> getSpeakersCall() {
+        return speakersCallLive;
     }
 
     @Override
