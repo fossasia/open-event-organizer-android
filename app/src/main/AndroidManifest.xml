@@ -53,6 +53,10 @@
             android:name=".core.organizer.detail.OrganizerDetailActivity"
             android:label="@string/title_activity_organizer_detail"
             android:theme="@style/AppTheme.Main.Light" />
+        <activity android:name=".core.speaker.details.SpeakerDetailsActivity"
+            android:label="@string/speaker_details_activity"
+            android:theme="@style/AppTheme.Main"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${GOOGLE_PLACES_API_KEY}"/>

@@ -28,16 +28,18 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class SessionRepositoryTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private SessionRepositoryImpl sessionRepository;
-    private static final Session SESSION = new Session();
+    private static final Session SESSION = Session.builder().id(10L).title("a").build();
     private static final Track TRACK = new Track();
     private static final long ID = 10L;
 
@@ -119,5 +121,42 @@ public class SessionRepositoryTest {
         sessionRepository.getSessions(ID, true).subscribe();
 
         verify(repository).syncSave(eq(Session.class), eq(sessions), any(), any());
+    }
+
+    // Session update tests
+
+    @Test
+    public void shouldCallUpdateSessionService() {
+        when(repository.isConnected()).thenReturn(true);
+        when(sessionApi.updateSession(ID, SESSION)).thenReturn(Observable.empty());
+
+        sessionRepository.updateSession(SESSION).subscribe();
+
+        verify(sessionApi).updateSession(ID, SESSION);
+    }
+
+    @Test
+    public void shouldUpdateUpdatedSession() {
+        Session updated = mock(Session.class);
+
+        when(repository.isConnected()).thenReturn(true);
+        when(sessionApi.updateSession(ID, SESSION)).thenReturn(Observable.just(updated));
+        when(repository.update(eq(Session.class), eq(updated))).thenReturn(Completable.complete());
+
+        sessionRepository.updateSession(SESSION).subscribe();
+
+        verify(repository).update(Session.class, updated);
+    }
+
+    // Session delete tests
+
+    @Test
+    public void shouldCallDeleteSessionService() {
+        when(repository.isConnected()).thenReturn(true);
+        when(sessionApi.deleteSession(ID)).thenReturn(Completable.complete());
+
+        sessionRepository.deleteSession(ID).subscribe();
+
+        verify(sessionApi).deleteSession(ID);
     }
 }

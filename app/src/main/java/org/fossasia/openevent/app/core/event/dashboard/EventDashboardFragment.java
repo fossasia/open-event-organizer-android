@@ -165,12 +165,23 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     }
 
     @Override
-    public LineChart getChartView() {
-        return binding.ticketAnalytics.chart;
+    public LineChart getSalesChartView() {
+        return binding.ticketAnalytics.chartSales;
     }
 
     @Override
-    public void showChart(boolean show) {
+    public LineChart getCheckinTimeChartView() {
+        return binding.ticketAnalytics.chartCheckIn;
+    }
+
+    @Override
+    public void showChartSales(boolean show) {
         ViewUtils.showView(binding.ticketAnalytics.chartBox, show);
     }
+
+    @Override
+    public void showChartCheckIn(boolean show) {
+        ViewUtils.showView(binding.ticketAnalytics.chartBoxCheckIn, show);
+    }
+
 }

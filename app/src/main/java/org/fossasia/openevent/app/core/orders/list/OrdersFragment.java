@@ -1,0 +1,161 @@
+package org.fossasia.openevent.app.core.orders.list;
+
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
+import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.data.ContextUtils;
+import org.fossasia.openevent.app.data.order.Order;
+import org.fossasia.openevent.app.databinding.OrdersFragmentBinding;
+import org.fossasia.openevent.app.ui.ViewUtils;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+@SuppressWarnings("PMD.TooManyMethods")
+public class OrdersFragment extends BaseFragment implements OrdersView {
+
+    private Context context;
+    private long eventId;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    private OrdersViewModel ordersViewModel;
+
+    @Inject
+    ContextUtils utilModel;
+
+    private OrdersAdapter ordersAdapter;
+    private OrdersFragmentBinding binding;
+    private SwipeRefreshLayout refreshLayout;
+
+    private boolean initialized;
+
+    public static OrdersFragment newInstance(long eventId) {
+        OrdersFragment fragment = new OrdersFragment();
+        Bundle args = new Bundle();
+        args.putLong(MainActivity.EVENT_KEY, eventId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        context = getContext();
+        setHasOptionsMenu(true);
+
+        if (getArguments() != null)
+            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.orders_fragment, container, false);
+        ordersViewModel = ViewModelProviders.of(this, viewModelFactory).get(OrdersViewModel.class);
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setupRecyclerView();
+        setupRefreshListener();
+
+        ordersViewModel.getProgress().observe(this, this::showProgress);
+        ordersViewModel.getError().observe(this, this::showError);
+        loadOrders(false);
+
+        initialized = true;
+    }
+
+    @Override
+    protected int getTitle() {
+        return R.string.orders;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        refreshLayout.setOnRefreshListener(null);
+    }
+
+    private void setupRecyclerView() {
+        if (!initialized) {
+            ordersAdapter = new OrdersAdapter();
+
+            RecyclerView recyclerView = binding.ordersRecyclerView;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(ordersAdapter);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+        }
+    }
+
+    private void setupRefreshListener() {
+        refreshLayout = binding.swipeContainer;
+        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+            loadOrders(true);
+        });
+    }
+
+    private void loadOrders(boolean reload) {
+        ordersViewModel.getOrders(eventId, reload).observe(this, this::showResults);
+    }
+
+    @Override
+    public void showError(String error) {
+        ViewUtils.showSnackbar(binding.getRoot(), error);
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        ViewUtils.showView(binding.progressBar, show);
+    }
+
+    @Override
+    public void showResults(List<Order> orders) {
+        if (orders.isEmpty()) {
+            showEmptyView(true);
+            return;
+        }
+
+        showEmptyView(false);
+        ordersAdapter.setOrders(orders);
+    }
+
+    @Override
+    public void showEmptyView(boolean show) {
+        ViewUtils.showView(binding.emptyView, show);
+    }
+
+    @Override
+    public void onRefreshComplete(boolean success) {
+        if (success)
+            ViewUtils.showSnackbar(binding.ordersRecyclerView, R.string.refresh_complete);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        ViewUtils.showSnackbar(binding.ordersRecyclerView, message);
+    }
+}

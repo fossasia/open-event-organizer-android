@@ -102,6 +102,7 @@ public class EventDashboardPresenterTest {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
         when(chartAnalyser.loadData(EVENT.getId())).thenReturn(Completable.complete());
+        when(chartAnalyser.loadDataCheckIn(EVENT.getId())).thenReturn(Completable.complete());
     }
 
     @After

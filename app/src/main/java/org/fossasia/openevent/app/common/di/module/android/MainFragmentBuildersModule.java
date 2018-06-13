@@ -7,10 +7,13 @@ import org.fossasia.openevent.app.core.event.list.EventListFragment;
 import org.fossasia.openevent.app.core.faq.create.CreateFaqFragment;
 import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
+import org.fossasia.openevent.app.core.orders.list.OrdersFragment;
 import org.fossasia.openevent.app.core.settings.SettingsFragment;
+import org.fossasia.openevent.app.core.share.ShareEventFragment;
 import org.fossasia.openevent.app.core.speaker.list.SpeakersFragment;
-import org.fossasia.openevent.app.core.sponsor.list.SponsorsFragment;
+import org.fossasia.openevent.app.core.speakerscall.detail.SpeakersCallFragment;
 import org.fossasia.openevent.app.core.sponsor.create.CreateSponsorFragment;
+import org.fossasia.openevent.app.core.sponsor.list.SponsorsFragment;
 import org.fossasia.openevent.app.core.sponsor.update.UpdateSponsorFragment;
 import org.fossasia.openevent.app.core.ticket.create.CreateTicketFragment;
 import org.fossasia.openevent.app.core.ticket.detail.TicketDetailFragment;
@@ -81,5 +84,18 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract SpeakersFragment contributeSpeakersFragment();
+
+    //SpeakersCall
+
+    @ContributesAndroidInjector
+    abstract SpeakersCallFragment contributeSpeakersCallFragment();
+
+    // Order
+    @ContributesAndroidInjector
+    abstract OrdersFragment contributeOrdersFragment();
+
+    // Share
+    @ContributesAndroidInjector
+    abstract ShareEventFragment contributeShareEventFragment();
 }
 

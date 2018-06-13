@@ -13,18 +13,24 @@ import org.fossasia.openevent.app.data.speaker.Speaker;
 import java.util.List;
 
 public class SpeakersAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
+    private final SpeakersPresenter speakersPresenter;
     private final List<Speaker> speakers;
 
     public SpeakersAdapter(SpeakersPresenter speakersPresenter) {
+        this.speakersPresenter = speakersPresenter;
         this.speakers = speakersPresenter.getSpeakers();
     }
 
     @NonNull
     @Override
     public SpeakerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        return new SpeakerViewHolder(
+        SpeakerViewHolder speakerViewHolder = new SpeakerViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.speaker_item, viewGroup, false));
+
+        speakerViewHolder.setClickAction(speakersPresenter::click);
+
+        return speakerViewHolder;
     }
 
     @Override

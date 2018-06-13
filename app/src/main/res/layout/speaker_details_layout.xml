@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="speaker"
+            type="org.fossasia.openevent.app.data.speaker.Speaker" />
+    </data>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_small">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/speaker_bio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_medium"
+                        android:text='@{ speaker.shortBiography }'
+                        android:visibility="@{ (speaker.shortBiography != null) ? View.VISIBLE : View.GONE }" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ededed"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/action_speakers_fb"
+                            android:layout_width="@dimen/spacing_larger"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/facebook_icon"
+                            app:imageOnClick="@{ speaker.facebook }"
+                            android:background="#ededed"
+                            android:visibility="@{ (speaker.facebook != null) ? View.VISIBLE : View.GONE }"
+                            app:srcCompat="@drawable/ic_facebook_colored" />
+
+                        <ImageButton
+                            android:id="@+id/action_speakers_linkedin"
+                            android:layout_width="@dimen/spacing_larger"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/linkedin_icon"
+                            app:imageOnClick="@{ speaker.linkedin }"
+                            android:background="#ededed"
+                            android:visibility="@{ (speaker.linkedin != null) ? View.VISIBLE : View.GONE }"
+                            app:srcCompat="@drawable/ic_linkedin_colored"/>
+
+                        <ImageButton
+                            android:id="@+id/action_speakers_twitter"
+                            android:layout_width="@dimen/spacing_larger"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/twitter_icon"
+                            app:imageOnClick="@{ speaker.twitter }"
+                            android:background="#ededed"
+                            android:visibility="@{ (speaker.twitter != null) ? View.VISIBLE : View.GONE }"
+                            app:srcCompat="@drawable/ic_twitter_colored"/>
+
+                        <ImageButton
+                            android:id="@+id/action_speakers_github"
+                            android:layout_width="@dimen/spacing_larger"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/github_icon"
+                            app:imageOnClick="@{ speaker.github }"
+                            android:background="#ededed"
+                            android:visibility="@{ (speaker.github != null) ? View.VISIBLE : View.GONE }"
+                            app:srcCompat="@drawable/ic_github_colored"/>
+
+                        <ImageButton
+                            android:id="@+id/action_speakers_website"
+                            android:layout_width="@dimen/spacing_larger"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/domain_icon"
+                            app:imageOnClick="@{ speaker.website }"
+                            android:background="#ededed"
+                            android:visibility="@{ (speaker.website != null) ? View.VISIBLE : View.GONE }"
+                            app:srcCompat="@drawable/ic_domain_colored"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/sessionsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/spacing_extra_small"
+                android:clipToPadding="false"
+                tools:listitem="@layout/speaker_session_layout" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>
