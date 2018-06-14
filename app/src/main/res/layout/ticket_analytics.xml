@@ -155,14 +155,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_marginLeft="@dimen/spacing_normal"
             android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/spacing_normal">
 
             <include
                 layout="@layout/ticket_analytics_item"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 bind:color='@{"light_blue"}'
                 bind:completed="@{event.analytics.soldFreeTickets}"
                 bind:ticketName="@{@string/ticket_free}"
@@ -170,9 +171,8 @@
 
             <include
                 layout="@layout/ticket_analytics_item"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 bind:color='@{"purple"}'
                 bind:completed="@{event.analytics.soldPaidTickets}"
                 bind:ticketName="@{@string/ticket_paid}"
@@ -180,9 +180,8 @@
 
             <include
                 layout="@layout/ticket_analytics_item"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 bind:color='@{"red"}'
                 bind:completed="@{event.analytics.soldDonationTickets}"
                 bind:ticketName="@{@string/ticket_donation}"

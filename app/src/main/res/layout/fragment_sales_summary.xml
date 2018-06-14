@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="event"
+            type="org.fossasia.openevent.app.data.event.Event" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/spacing_normal"
+        android:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="@android:color/white">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tickets_sold"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:textSize="@dimen/text_size_normal"/>
+
+            <include
+                layout="@layout/ticket_analytics_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:color='@{"light_blue"}'
+                bind:completed="@{event.analytics.soldFreeTickets}"
+                bind:ticketName="@{@string/ticket_free}"
+                bind:total="@{event.analytics.freeTickets}" />
+
+            <include
+                layout="@layout/ticket_analytics_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:color='@{"purple"}'
+                bind:completed="@{event.analytics.soldPaidTickets}"
+                bind:ticketName="@{@string/ticket_paid}"
+                bind:total="@{event.analytics.paidTickets}" />
+
+            <include
+                layout="@layout/ticket_analytics_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:color='@{"red"}'
+                bind:completed="@{event.analytics.soldDonationTickets}"
+                bind:ticketName="@{@string/ticket_donation}"
+                bind:total="@{event.analytics.donationTickets}" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/emptyView"
+            android:visibility="gone">
+
+            <include layout="@layout/empty_layout" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/progressbar_layout" />
+        </FrameLayout>
+
+    </FrameLayout>
+
+</layout>
