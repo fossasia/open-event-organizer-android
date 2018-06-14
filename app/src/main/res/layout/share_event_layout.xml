@@ -54,6 +54,7 @@
                             android:contentDescription="@string/event_thumbnail"
                             android:scaleType="fitXY"
                             app:paletteKey='@{ "event_header" }'
+                            app:paletteImageUrl="@{ event.largeImageUrl }"
                             app:placeholder="@{ @drawable/header}" />
 
                         <LinearLayout
