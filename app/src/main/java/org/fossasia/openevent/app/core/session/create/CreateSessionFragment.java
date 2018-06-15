@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Function;
@@ -173,6 +174,11 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
 
     @Override
     public void onSuccess(String message) {
-        ViewUtils.showSnackbar(binding.getRoot(), message);
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void dismiss() {
+        getFragmentManager().popBackStack();
     }
 }

@@ -93,8 +93,10 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
             .updateSession(session)
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneous(getView()))
-            .subscribe(updatedSession -> getView().onSuccess("Session Updated Successfully"),
-                Logger::logError);
+            .subscribe(updatedSession -> {
+                    getView().onSuccess("Session Updated Successfully");
+                    getView().dismiss();
+            }, Logger::logError);
     }
 
     public void createSession(long trackId, long eventId) {
@@ -115,6 +117,9 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
             .createSession(session)
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneous(getView()))
-            .subscribe(createdSession -> getView().onSuccess("Session Created"), Logger::logError);
+            .subscribe(createdSession -> {
+                getView().onSuccess("Session Created");
+                getView().dismiss();
+            }, Logger::logError);
     }
 }
