@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.track.create;
 
+import android.graphics.Color;
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
@@ -8,6 +9,7 @@ import org.fossasia.openevent.app.data.tracks.Track;
 import org.fossasia.openevent.app.data.tracks.TrackRepository;
 import org.fossasia.openevent.app.utils.StringUtils;
 
+import java.util.Random;
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
@@ -17,6 +19,7 @@ public class CreateTrackPresenter extends AbstractBasePresenter<CreateTrackView>
 
     private final TrackRepository trackRepository;
     private final Track track = new Track();
+    private int colorRed, colorGreen, colorBlue, colorRGB;
 
     @Inject
     public CreateTrackPresenter(TrackRepository trackRepository) {
@@ -25,7 +28,7 @@ public class CreateTrackPresenter extends AbstractBasePresenter<CreateTrackView>
 
     @Override
     public void start() {
-        // nothing to do
+        track.setColor(getRandomColor());
     }
 
     public Track getTrack() {
@@ -52,5 +55,30 @@ public class CreateTrackPresenter extends AbstractBasePresenter<CreateTrackView>
                 getView().onSuccess("Track Created");
                 getView().dismiss();
             }, Logger::logError);
+    }
+
+    public String getRandomColor() {
+        Random random = new Random();
+        colorRed = random.nextInt(255);
+        colorGreen = random.nextInt(255);
+        colorBlue = random.nextInt(255);
+        colorRGB = Color.rgb(colorRed, colorGreen, colorBlue);
+        return String.format("#%06X",(0xFFFFFF & colorRGB));
+    }
+
+    public int getRed() {
+        return colorRed;
+    }
+
+    public int getGreen() {
+        return colorGreen;
+    }
+
+    public int getBlue() {
+        return colorBlue;
+    }
+
+    public int getColorRGB() {
+        return colorRGB;
     }
 }
