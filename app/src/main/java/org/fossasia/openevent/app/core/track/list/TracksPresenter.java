@@ -35,7 +35,7 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
     private final TrackRepository trackRepository;
     private final DatabaseChangeListener<Track> trackChangeListener;
     private final Map<Long, ObservableBoolean> selectedTracks = new ConcurrentHashMap<>();
-    private boolean isToolbarActive;
+    private boolean isContextualModeActive;
 
     private static final int EDITABLE_AT_ONCE = 1;
     @Inject
@@ -109,7 +109,7 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
             if (selectedTracks.get(id).get()) {
                 getView().openUpdateTrackFragment(id);
                 selectedTracks.get(id).set(false);
-                resetToolbarDefaultState();
+                resetToolbarToDefaultState();
                 return;
             }
         }
@@ -131,7 +131,7 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
             .compose(progressiveErroneous(getView()))
             .doFinally(() -> {
                 getView().showMessage("Tracks Deleted");
-                resetToolbarDefaultState();
+                resetToolbarToDefaultState();
             })
             .subscribe(entry -> {
                 if (entry.getValue().get()) {
@@ -141,21 +141,21 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
     }
 
     public void longClick(Track clickedTrack) {
-        if (isToolbarActive)
+        if (isContextualModeActive)
             click(clickedTrack.getId());
         else {
             selectedTracks.get(clickedTrack.getId()).set(true);
-            isToolbarActive = true;
+            isContextualModeActive = true;
+            getView().enterContextualMenuMode();
             getView().changeToolbarMode(true, true);
         }
     }
 
     public void click(Long clickedTrackId) {
-        if (isToolbarActive) {
-
+        if (isContextualModeActive) {
             if (countSelected() == 1 && isTrackSelected(clickedTrackId).get()) {
                 selectedTracks.get(clickedTrackId).set(false);
-                resetToolbarDefaultState();
+                resetToolbarToDefaultState();
             } else if (countSelected() == 2 && isTrackSelected(clickedTrackId).get()) {
                 selectedTracks.get(clickedTrackId).set(false);
                 getView().changeToolbarMode(true, true);
@@ -171,9 +171,10 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
             getView().openSessionsFragment(clickedTrackId);
     }
 
-    public void resetToolbarDefaultState() {
-        isToolbarActive = false;
+    public void resetToolbarToDefaultState() {
+        isContextualModeActive = false;
         getView().changeToolbarMode(false, false);
+        getView().exitContextualMenuMode();
     }
 
     public ObservableBoolean isTrackSelected(Long trackId) {
@@ -181,6 +182,13 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
             selectedTracks.put(trackId, new ObservableBoolean(false));
 
         return selectedTracks.get(trackId);
+    }
+
+    public void unselectTracksList() {
+        for (Long tracksId : selectedTracks.keySet()) {
+            if (tracksId != null && selectedTracks.containsKey(tracksId))
+                selectedTracks.get(tracksId).set(false);
+        }
     }
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly
