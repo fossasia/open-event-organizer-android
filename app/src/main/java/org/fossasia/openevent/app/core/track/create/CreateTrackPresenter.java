@@ -19,7 +19,7 @@ public class CreateTrackPresenter extends AbstractBasePresenter<CreateTrackView>
 
     private final TrackRepository trackRepository;
     private final Track track = new Track();
-    private int colorRed, colorGreen, colorBlue;
+    private int colorRed, colorGreen, colorBlue, colorRGB;
 
     @Inject
     public CreateTrackPresenter(TrackRepository trackRepository) {
@@ -62,7 +62,7 @@ public class CreateTrackPresenter extends AbstractBasePresenter<CreateTrackView>
         colorRed = random.nextInt(255);
         colorGreen = random.nextInt(255);
         colorBlue = random.nextInt(255);
-        int colorRGB = Color.rgb(colorRed, colorGreen, colorBlue);
+        colorRGB = Color.rgb(colorRed, colorGreen, colorBlue);
         return String.format("#%06X",(0xFFFFFF & colorRGB));
     }
 
@@ -78,4 +78,7 @@ public class CreateTrackPresenter extends AbstractBasePresenter<CreateTrackView>
         return colorBlue;
     }
 
+    public int getColorRGB() {
+        return colorRGB;
+    }
 }

@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.track.update;
 
+import android.graphics.Color;
+
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
@@ -75,5 +77,9 @@ public class UpdateTrackPresenter extends AbstractBasePresenter<UpdateTrackView>
     public int getBlue() {
         String colorBlue = track.getColor();
         return Integer.valueOf(colorBlue.substring(5, 7), 16);
+    }
+
+    public int getColorRGB() {
+        return Color.rgb(getRed(), getGreen(), getBlue());
     }
 }

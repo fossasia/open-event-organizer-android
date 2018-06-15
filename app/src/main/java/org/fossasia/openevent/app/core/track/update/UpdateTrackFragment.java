@@ -26,7 +26,7 @@ import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 public class UpdateTrackFragment extends BaseBottomSheetFragment<UpdateTrackPresenter> implements UpdateTrackView {
 
     private static final String TRACK_ID = "id";
-    private ColorPicker colorPicker;
+    private ColorPicker colorPickerDialog;
 
     @Inject
     Lazy<UpdateTrackPresenter> presenterProvider;
@@ -67,16 +67,19 @@ public class UpdateTrackFragment extends BaseBottomSheetFragment<UpdateTrackPres
     }
 
     private void setColorPicker() {
-        if (colorPicker == null)
-            colorPicker = new ColorPicker(getActivity(), getPresenter().getRed(), getPresenter().getGreen(), getPresenter().getBlue());
+        if (colorPickerDialog == null)
+            colorPickerDialog = new ColorPicker(getActivity(), getPresenter().getRed(), getPresenter().getGreen(), getPresenter().getBlue());
+
+        binding.form.colorPicker.setBackgroundColor(getPresenter().getColorRGB());
 
         binding.form.colorPicker.setOnClickListener(view -> {
-            colorPicker.show();
+            colorPickerDialog.show();
         });
 
-        colorPicker.setCallback(color -> {
+        colorPickerDialog.setCallback(color -> {
             binding.form.trackColor.setText(String.format("#%06X", (0xFFFFFF & color)));
-            colorPicker.dismiss();
+            binding.form.colorPicker.setBackgroundColor(color);
+            colorPickerDialog.dismiss();
         });
     }
 

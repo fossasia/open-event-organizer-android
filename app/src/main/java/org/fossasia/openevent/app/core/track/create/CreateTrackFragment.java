@@ -27,7 +27,7 @@ public class CreateTrackFragment extends BaseBottomSheetFragment<CreateTrackPres
 
     private TrackCreateLayoutBinding binding;
     private Validator validator;
-    private ColorPicker colorPicker;
+    private ColorPicker colorPickerDialog;
 
     public static CreateTrackFragment newInstance() {
         return new CreateTrackFragment();
@@ -56,16 +56,19 @@ public class CreateTrackFragment extends BaseBottomSheetFragment<CreateTrackPres
     }
 
     private void setColorPicker() {
-        if (colorPicker == null)
-            colorPicker = new ColorPicker(getActivity(), getPresenter().getRed(), getPresenter().getGreen(), getPresenter().getBlue());
+        if (colorPickerDialog == null)
+            colorPickerDialog = new ColorPicker(getActivity(), getPresenter().getRed(), getPresenter().getGreen(), getPresenter().getBlue());
+
+        binding.form.colorPicker.setBackgroundColor(getPresenter().getColorRGB());
 
         binding.form.colorPicker.setOnClickListener(view -> {
-            colorPicker.show();
+            colorPickerDialog.show();
         });
 
-        colorPicker.setCallback(color -> {
+        colorPickerDialog.setCallback(color -> {
             binding.form.trackColor.setText(String.format("#%06X", (0xFFFFFF & color)));
-            colorPicker.dismiss();
+            binding.form.colorPicker.setBackgroundColor(color);
+            colorPickerDialog.dismiss();
         });
     }
 
