@@ -12,7 +12,9 @@ public interface SessionsView extends Progressive, Erroneous, Refreshable, Empti
 
     void changeToolbarMode(boolean editMode, boolean deleteMode);
 
-    void resetToolbar();
-
     void openUpdateSessionFragment(long sessionId);
+
+    void exitContextualMenuMode();
+
+    void enterContextualMenuMode();
 }
