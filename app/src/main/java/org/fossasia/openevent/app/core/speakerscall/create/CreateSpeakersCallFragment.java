@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.data.speakerscall.SpeakersCall;
 import org.fossasia.openevent.app.databinding.SpeakersCallCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -25,6 +26,8 @@ import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
 public class CreateSpeakersCallFragment extends BaseBottomSheetFragment implements CreateSpeakersCallView {
 
+    private static final String SPEAKERS_CALL_UPDATE = "speakers_update";
+
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
@@ -33,11 +36,21 @@ public class CreateSpeakersCallFragment extends BaseBottomSheetFragment implemen
     private SpeakersCallCreateLayoutBinding binding;
     private Validator validator;
     private long eventId;
+    private boolean isSpeakersCallUpdating = false;
 
     public static CreateSpeakersCallFragment newInstance(long eventId) {
         CreateSpeakersCallFragment fragment = new CreateSpeakersCallFragment();
         Bundle args = new Bundle();
         args.putLong(MainActivity.EVENT_KEY, eventId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static CreateSpeakersCallFragment newInstance(long eventId, boolean updateSpeakersCall) {
+        CreateSpeakersCallFragment fragment = new CreateSpeakersCallFragment();
+        Bundle args = new Bundle();
+        args.putLong(MainActivity.EVENT_KEY, eventId);
+        args.putBoolean(SPEAKERS_CALL_UPDATE, updateSpeakersCall);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,6 +61,7 @@ public class CreateSpeakersCallFragment extends BaseBottomSheetFragment implemen
 
         if (getArguments() != null) {
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+            isSpeakersCallUpdating = getArguments().getBoolean(SPEAKERS_CALL_UPDATE);
         }
     }
 
@@ -60,27 +74,38 @@ public class CreateSpeakersCallFragment extends BaseBottomSheetFragment implemen
         createSpeakersCallViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateSpeakersCallViewModel.class);
         validator = new Validator(binding.form);
 
+        binding.submit.setOnClickListener(view -> {
+            if (!validator.validate())
+                return;
+
+            ViewUtils.hideKeyboard(view);
+            if (isSpeakersCallUpdating) {
+                createSpeakersCallViewModel.updateSpeakersCall(eventId);
+            } else {
+                createSpeakersCallViewModel.createSpeakersCall(eventId);
+            }
+        });
+
         return binding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        createSpeakersCallViewModel.initialize();
+        createSpeakersCallViewModel.getSpeakersCall().observe(this, this::showSpeakersCall);
         createSpeakersCallViewModel.getProgress().observe(this, this::showProgress);
         createSpeakersCallViewModel.getError().observe(this, this::showError);
         createSpeakersCallViewModel.getSuccess().observe(this, this::onSuccess);
 
-        binding.setSpeakersCall(createSpeakersCallViewModel.getSpeakersCall());
+        if (isSpeakersCallUpdating) {
+            createSpeakersCallViewModel.loadSpeakersCall(eventId, false);
+        } else {
+            createSpeakersCallViewModel.initialize();
+        }
+    }
 
-        binding.submit.setOnClickListener(view -> {
-            if (!validator.validate())
-                return;
-
-            ViewUtils.hideKeyboard(view);
-            createSpeakersCallViewModel.createSpeakersCall(eventId);
-        });
+    public void showSpeakersCall(SpeakersCall speakersCall) {
+        binding.setSpeakersCall(speakersCall);
     }
 
     @Override

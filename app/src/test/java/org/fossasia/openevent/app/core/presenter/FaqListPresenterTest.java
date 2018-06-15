@@ -53,8 +53,6 @@ public class FaqListPresenterTest {
 
     private static final long ID = 10L;
 
-    private static final String FAQ_DELETION_SUCCESS = "FAQ Deleted Successfully";
-
     private static final List<Faq> FAQS = Arrays.asList(
         Faq.builder().id(2L).question("q").answer("a").build(),
         Faq.builder().id(3L).question("qu").answer("an").build(),
@@ -188,14 +186,10 @@ public class FaqListPresenterTest {
         when(faqRepository.deleteFaq(FAQ.getId())).thenReturn(Completable.complete());
 
         faqListPresenter.getFaqSelected(FAQ);
+        faqListPresenter.getIsSelected().get(FAQ).set(true);
         faqListPresenter.deleteFaq(FAQ);
 
-        InOrder inOrder = Mockito.inOrder(faqListView);
-
-        inOrder.verify(faqListView).showProgress(true);
-        inOrder.verify(faqListView).showMessage(FAQ_DELETION_SUCCESS);
-        assertFalse(faqListPresenter.getIsSelected().get(FAQ).get());
-        inOrder.verify(faqListView).showProgress(false);
+        assertFalse(faqListPresenter.getFaqSelected(FAQ).get());
     }
 
     @Test
@@ -218,15 +212,15 @@ public class FaqListPresenterTest {
     @Test
     public void shouldSwitchToToolbarDeleteMode() {
         faqListPresenter.getFaqSelected(FAQ);
-        faqListPresenter.toolbarDeleteMode(FAQ);
+        faqListPresenter.onLongSelect(FAQ);
 
-        verify(faqListView).changeToDeletingMode();
+        verify(faqListView).enterContextualMenuMode();
     }
 
     @Test
     public void shouldResetToolbarToDefaultState() {
         faqListPresenter.resetToDefaultState();
 
-        verify(faqListView).resetToolbar();
+        verify(faqListView).exitContextualMenuMode();
     }
 }

@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.data.speakerscall;
 
+import android.support.annotation.NonNull;
+
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Repository;
 
@@ -53,6 +55,22 @@ public class SpeakersCallRepositoryImpl implements SpeakersCallRepository {
                     .save(SpeakersCall.class, created)
                     .subscribe();
             })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Observable<SpeakersCall> updateSpeakersCall(SpeakersCall speakersCall) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return speakersCallApi
+            .updateSpeakersCall(speakersCall.getId(), speakersCall)
+            .doOnNext(updatedSpeakersCall -> repository
+                .update(SpeakersCall.class, updatedSpeakersCall)
+                .subscribe())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
