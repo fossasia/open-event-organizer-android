@@ -197,6 +197,9 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
+    //colorpicker
+    implementation 'com.pes.materialcolorpicker:library:1.2.0'
+
     //Testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
