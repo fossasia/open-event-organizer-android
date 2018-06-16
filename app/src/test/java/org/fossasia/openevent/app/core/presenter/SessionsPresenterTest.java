@@ -231,6 +231,7 @@ public class SessionsPresenterTest {
     public void shouldResetToolbarToDefaultState() {
         sessionsPresenter.resetToolbarToDefaultState();
 
-        verify(sessionsView).resetToolbar();
+        verify(sessionsView).exitContextualMenuMode();
+        verify(sessionsView).changeToolbarMode(false, false);
     }
 }

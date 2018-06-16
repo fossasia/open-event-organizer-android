@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.sponsor.list;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -10,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,10 +39,12 @@ import dagger.Lazy;
 public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements SponsorsView {
 
     private Context context;
-    private boolean toolbarEdit;
-    private boolean toolbarDelete;
+    private boolean deletingMode;
+    private boolean editMode;
     private long eventId;
     private AlertDialog deleteDialog;
+    private ActionMode actionMode;
+    private int statusBarColor;
 
     @Inject
     ContextUtils utilModel;
@@ -67,7 +71,6 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
         super.onCreate(savedInstanceState);
 
         context = getContext();
-        setHasOptionsMenu(true);
 
         if (getArguments() != null)
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
@@ -81,6 +84,7 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
 
             openCreateSponsorFragment();
         });
+
         return binding.getRoot();
     }
 
@@ -134,42 +138,73 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.del:
-                showDeleteDialog();
-                break;
-            case R.id.edit:
-                getPresenter().updateSponsor();
-                break;
-            default:
-                // No implementation
+    public ActionMode.Callback actionCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_sponsors, menu);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //hold current color of status bar
+                statusBarColor = getActivity().getWindow().getStatusBarColor();
+                //set the default color
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.color_top_surface));
+            }
+            return true;
         }
-        return super.onOptionsItemSelected(item);
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            MenuItem menuItemDelete = menu.findItem(R.id.del);
+            MenuItem menuItemEdit = menu.findItem(R.id.edit);
+            menuItemEdit.setVisible(editMode);
+            menuItemDelete.setVisible(deletingMode);
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.del:
+                    showDeleteDialog();
+                    break;
+                case R.id.edit:
+                    getPresenter().updateSponsor();
+                    break;
+                default:
+                    return false;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+            getPresenter().unselectSponsorsList();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //return to "old" color of status bar
+                getActivity().getWindow().setStatusBarColor(statusBarColor);
+            }
+        }
+    };
+
+    @Override
+    public void enterContextualMenuMode() {
+        actionMode = getActivity().startActionMode(actionCallback);
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem menuItemEdit = menu.findItem(R.id.edit);
-        MenuItem menuItemDelete = menu.findItem(R.id.del);
-        menuItemEdit.setVisible(toolbarEdit);
-        menuItemDelete.setVisible(toolbarDelete);
+    public void exitContextualMenuMode() {
+        if (actionMode != null)
+            actionMode.finish();
     }
 
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_sponsors, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public void showDeleteDialog() {
         if (deleteDialog == null)
             deleteDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.delete)
                 .setMessage(String.format(getString(R.string.delete_confirmation_message),
-                    getString(R.string.sponsors)))
+                    getString(R.string.session)))
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                     getPresenter().deleteSelectedSponsors();
                 })
@@ -182,10 +217,13 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     }
 
     @Override
-    public void changeToolbarMode(boolean toolbarEdit, boolean toolbarDelete) {
-        this.toolbarEdit = toolbarEdit;
-        this.toolbarDelete = toolbarDelete;
-        getActivity().invalidateOptionsMenu();
+    public void changeToolbarMode(boolean editMode, boolean deleteMode) {
+        this.editMode = editMode;
+        this.deletingMode = deleteMode;
+
+        if (actionMode != null) {
+            actionMode.invalidate();
+        }
     }
 
     @Override
