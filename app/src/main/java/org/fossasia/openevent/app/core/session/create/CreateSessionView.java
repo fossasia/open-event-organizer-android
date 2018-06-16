@@ -13,4 +13,6 @@ public interface CreateSessionView extends Progressive, Erroneous, Successful {
     void validate(TextInputLayout textInputLayout, Function<String, Boolean> function, String str);
 
     void setSession(Session session);
+
+    void dismiss();
 }
