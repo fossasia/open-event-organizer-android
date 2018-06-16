@@ -34,7 +34,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     private final SponsorRepository sponsorRepository;
     private final DatabaseChangeListener<Sponsor> sponsorChangeListener;
     private final Map<Long, ObservableBoolean> selectedSponsors = new ConcurrentHashMap<>();
-    private boolean isToolbarActive;
+    private boolean isContextualModeActive;
 
     private static final int EDITABLE_AT_ONCE = 1;
 
@@ -61,7 +61,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
             if (selectedSponsors.get(id).get()) {
                 getView().openUpdateSponsorFragment(id);
                 selectedSponsors.get(id).set(false);
-                resetToolbarDefaultState();
+                resetToolbarToDefaultState();
                 return;
             }
         }
@@ -115,7 +115,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
             .compose(progressiveErroneous(getView()))
             .doFinally(() -> {
                 getView().showMessage("Sponsors Deleted");
-                resetToolbarDefaultState();
+                resetToolbarToDefaultState();
             })
             .subscribe(entry -> {
                 if (entry.getValue().get()) {
@@ -125,21 +125,21 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     }
 
     public void longClick(Sponsor clickedSponsor) {
-        if (isToolbarActive)
+        if (isContextualModeActive)
             click(clickedSponsor.getId());
         else {
             selectedSponsors.get(clickedSponsor.getId()).set(true);
-            isToolbarActive = true;
+            isContextualModeActive = true;
+            getView().enterContextualMenuMode();
             getView().changeToolbarMode(true, true);
         }
     }
 
     public void click(Long clickedSponsorId) {
-        if (isToolbarActive) {
-
+        if (isContextualModeActive) {
             if (countSelected() == 1 && isSponsorSelected(clickedSponsorId).get()) {
                 selectedSponsors.get(clickedSponsorId).set(false);
-                resetToolbarDefaultState();
+                resetToolbarToDefaultState();
             } else if (countSelected() == 2 && isSponsorSelected(clickedSponsorId).get()) {
                 selectedSponsors.get(clickedSponsorId).set(false);
                 getView().changeToolbarMode(true, true);
@@ -153,9 +153,10 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
         }
     }
 
-    public void resetToolbarDefaultState() {
-        isToolbarActive = false;
+    public void resetToolbarToDefaultState() {
+        isContextualModeActive = false;
         getView().changeToolbarMode(false, false);
+        getView().exitContextualMenuMode();
     }
 
     public ObservableBoolean isSponsorSelected(Long sponsorId) {
@@ -163,6 +164,13 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
             selectedSponsors.put(sponsorId, new ObservableBoolean(false));
 
         return selectedSponsors.get(sponsorId);
+    }
+
+    public void unselectSponsorsList() {
+        for (Long sessionId  : selectedSponsors.keySet()) {
+            if (sessionId != null && selectedSponsors.containsKey(sessionId))
+                selectedSponsors.get(sessionId).set(false);
+        }
     }
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly

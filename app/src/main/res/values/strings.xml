@@ -265,6 +265,8 @@
     <string name="privacy">Privacy</string>
     <string name="hash">Hash</string>
     <string name="other_url">Other URL</string>
+    <string name="device_name">Device Name</string>
+    <string name="device_name_summary">Name your device to track check-ins and sales processed by this device in your Open Event account</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
