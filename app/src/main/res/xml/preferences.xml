@@ -13,4 +13,9 @@
 
     </android.support.v7.preference.PreferenceCategory>
 
+    <android.support.v7.preference.EditTextPreference
+        android:key="device_name"
+        android:title="Device Name"
+        android:summary="@string/device_name_summary"/>
+
 </android.support.v7.preference.PreferenceScreen>
