@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.track.list;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,6 +43,8 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     private boolean toolbarDelete;
     private long eventId;
     private AlertDialog deleteDialog;
+    private ActionMode actionMode;
+    private int statusBarColor;
 
     @Inject
     Lazy<TracksPresenter> tracksPresenter;
@@ -89,6 +93,55 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
         getPresenter().attach(eventId, this);
         getPresenter().start();
     }
+
+    public ActionMode.Callback actionCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_tracks, menu);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //hold current color of status bar
+                statusBarColor = getActivity().getWindow().getStatusBarColor();
+                //set the default color
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.color_top_surface));
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            MenuItem menuItemDelete = menu.findItem(R.id.del);
+            MenuItem menuItemEdit = menu.findItem(R.id.edit);
+            menuItemEdit.setVisible(toolbarEdit);
+            menuItemDelete.setVisible(toolbarDelete);
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.del:
+                    showDeleteDialog();
+                    break;
+                case R.id.edit:
+                    getPresenter().updateTrack();
+                    break;
+                default:
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+            getPresenter().resetToolbarToDefaultState();
+            getPresenter().unselectTracksList();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //return to "old" color of status bar
+                getActivity().getWindow().setStatusBarColor(statusBarColor);
+            }
+        }
+    };
 
     @Override
     protected int getTitle() {
@@ -153,35 +206,6 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.del:
-                showDeleteDialog();
-                break;
-            case R.id.edit:
-                getPresenter().updateTrack();
-                break;
-            default:
-                // No implementation
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem menuItemEdit = menu.findItem(R.id.edit);
-        MenuItem menuItemDelete = menu.findItem(R.id.del);
-        menuItemEdit.setVisible(toolbarEdit);
-        menuItemDelete.setVisible(toolbarDelete);
-    }
-
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_tracks, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public void showDeleteDialog() {
         if (deleteDialog == null)
             deleteDialog = new AlertDialog.Builder(context)
@@ -203,7 +227,19 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
     public void changeToolbarMode(boolean toolbarEdit, boolean toolbarDelete) {
         this.toolbarEdit = toolbarEdit;
         this.toolbarDelete = toolbarDelete;
-        getActivity().invalidateOptionsMenu();
+        if (actionMode != null)
+            actionMode.invalidate();
+    }
+
+    @Override
+    public void exitContextualMenuMode() {
+        if (actionMode != null)
+            actionMode.finish();
+    }
+
+    @Override
+    public void enterContextualMenuMode() {
+        actionMode = getActivity().startActionMode(actionCallback);
     }
 
     @Override
