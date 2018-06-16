@@ -33,7 +33,7 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
     private final Map<Long, ObservableBoolean> selectedSessions = new ConcurrentHashMap<>();
     private final SessionRepository sessionRepository;
     private final DatabaseChangeListener<Session> sessionChangeListener;
-    private boolean isToolbarActive;
+    private boolean isContextualModeActive;
 
     private static final int EDITABLE_AT_ONCE = 1;
 
@@ -53,7 +53,6 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
     public void detach() {
         super.detach();
         sessionChangeListener.stopListening();
-        selectedSessions.clear();
     }
 
     public void loadSessions(boolean forceReload) {
@@ -129,17 +128,18 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
     }
 
     public void longClick(Session clickedSession) {
-        if (isToolbarActive)
+        if (isContextualModeActive)
             click(clickedSession.getId());
         else {
             selectedSessions.get(clickedSession.getId()).set(true);
-            isToolbarActive = true;
+            isContextualModeActive = true;
+            getView().enterContextualMenuMode();
             getView().changeToolbarMode(true, true);
         }
     }
 
     public void click(Long clickedSessionId) {
-        if (isToolbarActive) {
+        if (isContextualModeActive) {
             if (countSelected() == 1 && isSessionSelected(clickedSessionId).get()) {
                 selectedSessions.get(clickedSessionId).set(false);
                 resetToolbarToDefaultState();
@@ -160,8 +160,16 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
     }
 
     public void resetToolbarToDefaultState() {
-        isToolbarActive = false;
-        getView().resetToolbar();
+        isContextualModeActive = false;
+        getView().changeToolbarMode(false, false);
+        getView().exitContextualMenuMode();
+    }
+
+    public void unselectSessionList() {
+        for (Long sessionId  : selectedSessions.keySet()) {
+            if (sessionId != null && selectedSessions.containsKey(sessionId))
+                selectedSessions.get(sessionId).set(false);
+        }
     }
 
     public ObservableBoolean isSessionSelected(Long sessionId) {
