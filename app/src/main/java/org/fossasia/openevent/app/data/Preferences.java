@@ -12,6 +12,10 @@ public interface Preferences {
 
     void setLong(String key, long value);
 
+    boolean getBoolean(String key, boolean defaultValue);
+
+    void setBoolean(String key, boolean value);
+
     Set<String> getStringSet(String key, Set<String> defaultValue);
 
     void saveStringSet(String key, Set<String> value);

@@ -354,4 +354,13 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     public void setEvent(Event event) {
         binding.setEvent(event);
     }
+
+    @Override
+    public void setPaymentBinding(Event event) {
+        binding.form.paypalPayment.setChecked(event.canPayByPaypal);
+        binding.form.stripePayment.setChecked(event.canPayByStripe);
+        binding.form.bankPayment.setChecked(event.canPayByBank);
+        binding.form.chequePayment.setChecked(event.canPayByCheque);
+        binding.form.onsitePayment.setChecked(event.canPayOnsite);
+    }
 }

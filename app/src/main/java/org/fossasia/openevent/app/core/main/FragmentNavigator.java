@@ -11,6 +11,7 @@ import org.fossasia.openevent.app.core.event.list.EventListFragment;
 import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
 import org.fossasia.openevent.app.core.orders.list.OrdersFragment;
+import org.fossasia.openevent.app.core.settings.EventSettingsFragment;
 import org.fossasia.openevent.app.core.settings.SettingsFragment;
 import org.fossasia.openevent.app.core.share.ShareEventFragment;
 import org.fossasia.openevent.app.core.speakerscall.detail.SpeakersCallFragment;
@@ -70,6 +71,9 @@ class FragmentNavigator {
                 break;
             case R.id.nav_orders:
                 fragment = OrdersFragment.newInstance(eventId);
+                break;
+            case R.id.nav_event_settings:
+                fragment = EventSettingsFragment.newInstance();
                 break;
             case R.id.nav_events:
                 fragment = EventListFragment.newInstance();
