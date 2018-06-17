@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.event.create;
 
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
+import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.utils.CurrencyUtils;
@@ -19,20 +20,32 @@ import java.util.TimeZone;
 
 import javax.inject.Inject;
 
+import static org.fossasia.openevent.app.common.Constants.PREF_ACCEPT_BANK_TRANSFER;
+import static org.fossasia.openevent.app.common.Constants.PREF_ACCEPT_CHEQUE;
+import static org.fossasia.openevent.app.common.Constants.PREF_ACCEPT_PAYPAL;
+import static org.fossasia.openevent.app.common.Constants.PREF_ACCEPT_STRIPE;
+import static org.fossasia.openevent.app.common.Constants.PREF_BANK_DETAILS;
+import static org.fossasia.openevent.app.common.Constants.PREF_CHEQUE_DETAILS;
+import static org.fossasia.openevent.app.common.Constants.PREF_PAYMENT_ACCEPT_ONSITE;
+import static org.fossasia.openevent.app.common.Constants.PREF_PAYMENT_ONSITE_DETAILS;
+import static org.fossasia.openevent.app.common.Constants.PREF_PAYPAL_EMAIL;
+import static org.fossasia.openevent.app.common.Constants.PREF_USE_PAYMENT_PREFS;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneous;
 
 public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView> {
 
     private final EventRepository eventRepository;
+    private final Preferences preferences;
     private Event event = new Event();
     private final Map<String, String> countryCurrencyMap;
     private final List<String> countryList;
     private final List<String> currencyCodesList;
 
     @Inject
-    public CreateEventPresenter(EventRepository eventRepository, CurrencyUtils currencyUtils) {
+    public CreateEventPresenter(EventRepository eventRepository, CurrencyUtils currencyUtils, Preferences preferences) {
         this.eventRepository = eventRepository;
+        this.preferences = preferences;
         LocalDateTime current = LocalDateTime.now();
 
         String isoDate = DateUtils.formatDateToIso(current);
@@ -57,6 +70,8 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
         getView().setDefaultCountry(
             countryList.indexOf(Locale.getDefault().getDisplayCountry())
         );
+
+        setPaymentPreferences(preferences);
     }
 
     public Event getEvent() {
@@ -157,5 +172,39 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
         String paymentCurrency = countryCurrencyMap.get(paymentCountry);
         event.setPaymentCurrency(paymentCurrency);
         getView().setPaymentCurrency(currencyCodesList.indexOf(paymentCurrency));
+    }
+
+    public void setPaymentPreferences(Preferences preferences) {
+        if (preferences.getBoolean(PREF_USE_PAYMENT_PREFS, false)) {
+            event.setCanPayByPaypal(
+                preferences.getBoolean(PREF_ACCEPT_PAYPAL, false)
+            );
+            event.setPaypalEmail(
+                preferences.getString(PREF_PAYPAL_EMAIL, null)
+            );
+            event.setCanPayByStripe(
+                preferences.getBoolean(PREF_ACCEPT_STRIPE, false)
+            );
+            event.setCanPayByBank(
+                preferences.getBoolean(PREF_ACCEPT_BANK_TRANSFER, false)
+            );
+            event.setBankDetails(
+                preferences.getString(PREF_BANK_DETAILS, null)
+            );
+            event.setCanPayByCheque(
+                preferences.getBoolean(PREF_ACCEPT_CHEQUE, false)
+            );
+            event.setChequeDetails(
+                preferences.getString(PREF_CHEQUE_DETAILS, null)
+            );
+            event.setCanPayOnsite(
+                preferences.getBoolean(PREF_PAYMENT_ACCEPT_ONSITE, false)
+            );
+            event.setOnsiteDetails(
+                preferences.getString(PREF_PAYMENT_ONSITE_DETAILS, null)
+            );
+
+            getView().setPaymentBinding(event);
+        }
     }
 }

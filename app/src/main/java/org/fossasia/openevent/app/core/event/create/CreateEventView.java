@@ -20,6 +20,8 @@ public interface CreateEventView extends Progressive, Erroneous, Successful {
 
     void setPaymentCurrency(int index);
 
+    void setPaymentBinding(Event event);
+
     void close();
 
     List<String> getTimeZoneList();

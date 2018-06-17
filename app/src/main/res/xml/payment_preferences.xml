@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="use_payment_prefs"
+        android:title="@string/use_payment_prefs"
+        android:summaryOn="@string/using_payment_preferences"
+        android:summaryOff="@string/not_using_payment_preferences"
+        android:defaultValue="false" />
+
+    <PreferenceCategory
+        android:title="Paypal">
+        <CheckBoxPreference
+            android:key="accept_paypal"
+            android:title="@string/accept_payment_through_paypal"
+            android:defaultValue="false"/>
+
+        <EditTextPreference
+            android:key="paypal_email"
+            android:title="@string/paypal_email" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Stripe">
+        <CheckBoxPreference
+            android:key="accept_stripe"
+            android:title="@string/accept_payment_through_stripe"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Cheque">
+        <CheckBoxPreference
+            android:key="accept_cheque"
+            android:title="@string/accept_payment_by_cheque"
+            android:defaultValue="false"/>
+
+        <EditTextPreference
+            android:key="cheque_details"
+            android:title="@string/cheque_details" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Bank Transfer">
+        <CheckBoxPreference
+            android:key="accept_bank_transfers"
+            android:title="@string/accept_payment_by_bank_transfer"
+            android:defaultValue="false"/>
+
+        <EditTextPreference
+            android:key="bank_details"
+            android:title="@string/bank_details" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Onsite Payment">
+        <CheckBoxPreference
+            android:key="accept_onsite"
+            android:title="@string/accept_payment_at_the_event_onsite"
+            android:defaultValue="false"/>
+
+        <EditTextPreference
+            android:key="onsite_details"
+            android:title="@string/onsite_details" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
+
