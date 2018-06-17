@@ -1,14 +1,9 @@
 package org.fossasia.openevent.app.core.settings;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Constants;
@@ -21,33 +16,33 @@ public class EventSettingsFragment extends PreferenceFragmentCompat {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        view.setBackgroundColor(getResources().getColor(R.color.color_top_surface));
-        return view;
-    }
-
-    @Override
-    public void onCreatePreferencesFix(@Nullable Bundle bundle, String rootKey) {
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         PreferenceManager manager = getPreferenceManager();
         manager.setSharedPreferencesName(Constants.FOSS_PREFS);
 
         setPreferencesFromResource(R.xml.event_preferences, rootKey);
-
-        findPreference("payment_preferences").setOnPreferenceClickListener(preference -> {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction
-                .replace(R.id.fragment_container, PaymentPrefsFragment.newInstance())
-                .addToBackStack(null)
-                .commit();
-            return true;
-        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ViewUtils.setTitle(this, getString(R.string.settings));
+        ViewUtils.setTitle(this, getString(R.string.event_settings));
     }
 
+
+    @Override
+    public void onDisplayPreferenceDialog(Preference preference) {
+        CountryPreferenceFragmentCompat dialogFragment = null;
+        if (preference instanceof CountryPreference)
+            dialogFragment = CountryPreferenceFragmentCompat.newInstance(Constants.PREF_PAYMENT_COUNTRY);
+
+        if (dialogFragment != null) {
+            dialogFragment.setTargetFragment(this, 1);
+            dialogFragment.show(this.getFragmentManager(),
+                "android.support.v7.preference" +
+                    ".PreferenceFragment.DIALOG");
+        } else {
+            super.onDisplayPreferenceDialog(preference);
+        }
+    }
 }
