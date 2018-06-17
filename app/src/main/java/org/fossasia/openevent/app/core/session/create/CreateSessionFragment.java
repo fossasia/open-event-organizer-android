@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
@@ -94,7 +95,15 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
             }
         });
 
+        setUpSpinner();
         return binding.getRoot();
+    }
+
+    private void setUpSpinner() {
+        ArrayAdapter<String> sessionStateAdapter;
+        sessionStateAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getPresenter().getSessionStateList());
+        sessionStateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.form.spinner.setAdapter(sessionStateAdapter);
     }
 
     @Override
@@ -181,4 +190,5 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
     public void dismiss() {
         getFragmentManager().popBackStack();
     }
+
 }

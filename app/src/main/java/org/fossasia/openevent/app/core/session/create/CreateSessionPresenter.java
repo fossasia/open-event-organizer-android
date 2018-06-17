@@ -12,6 +12,8 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
@@ -21,6 +23,7 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
 
     private final SessionRepository sessionRepository;
     private Session session = new Session();
+    private List<String> sessionStateList = new ArrayList<>();
 
     @Inject
     public CreateSessionPresenter(SessionRepository sessionRepository) {
@@ -121,5 +124,13 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
                 getView().onSuccess("Session Created");
                 getView().dismiss();
             }, Logger::logError);
+    }
+
+    public List<String> getSessionStateList() {
+        sessionStateList.add("draft");
+        sessionStateList.add("accepted");
+        sessionStateList.add("pending");
+        sessionStateList.add("confirmed");
+        return sessionStateList;
     }
 }
