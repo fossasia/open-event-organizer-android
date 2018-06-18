@@ -38,7 +38,7 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
     private Validator validator;
     public static final String TRACK_KEY = "track";
     private static final String SESSION_KEY = "session_id";
-    private ArrayAdapter<String> sessionStateAdapter;
+    private ArrayAdapter<CharSequence> sessionStateAdapter;
 
     private boolean isSessionUpdating;
     private long trackId;
@@ -102,7 +102,7 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
     }
 
     private void setUpSpinner() {
-        sessionStateAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, getPresenter().getSessionStateList());
+        sessionStateAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.sessions_state, android.R.layout.simple_spinner_item);
         sessionStateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.form.spinner.setAdapter(sessionStateAdapter);
     }
@@ -194,5 +194,4 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
     public void dismiss() {
         getFragmentManager().popBackStack();
     }
-
 }
