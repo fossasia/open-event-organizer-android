@@ -253,7 +253,6 @@
     <string name="check_in_time">TIME</string>
     <string name="event_state_live">Live</string>
     <string name="event_state_past">Past</string>
-    <string name="event_state_upcoming">Upcoming</string>
     <string name="update_session">Update Session</string>
     <string name="facebook_icon">Facebook Icon</string>
     <string name="linkedin_icon">LinkedIn icon</string>

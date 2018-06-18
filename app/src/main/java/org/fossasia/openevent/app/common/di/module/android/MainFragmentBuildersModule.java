@@ -3,8 +3,9 @@ package org.fossasia.openevent.app.common.di.module.android;
 import org.fossasia.openevent.app.core.attendee.checkin.AttendeeCheckInFragment;
 import org.fossasia.openevent.app.core.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.core.event.dashboard.EventDashboardFragment;
+import org.fossasia.openevent.app.core.event.list.pager.ListPageFragment;
 import org.fossasia.openevent.app.core.event.list.EventListFragment;
-import org.fossasia.openevent.app.core.event.list.SalesSummaryFragment;
+import org.fossasia.openevent.app.core.event.list.sales.SalesSummaryFragment;
 import org.fossasia.openevent.app.core.faq.create.CreateFaqFragment;
 import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
@@ -34,6 +35,9 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract EventListFragment contributeEventListFragment();
+
+    @ContributesAndroidInjector
+    abstract ListPageFragment contributeEventListChildFragment();
 
     @ContributesAndroidInjector
     abstract SalesSummaryFragment contributeSalesSummaryFragment();
