@@ -26,7 +26,7 @@ import lombok.ToString;
 @Type("speaker")
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"event", "sessions", "user"})
+@ToString(exclude = {"event", "user"})
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @SuppressWarnings("PMD.TooManyFields")
