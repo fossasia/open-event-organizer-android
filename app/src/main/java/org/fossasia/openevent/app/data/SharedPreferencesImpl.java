@@ -43,6 +43,18 @@ public class SharedPreferencesImpl implements Preferences {
     }
 
     @Override
+    public boolean getBoolean(String key, boolean defaultValue) {
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    @Override
+    public void setBoolean(String key, boolean value) {
+        android.content.SharedPreferences.Editor editor = getEditor();
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
+
+    @Override
     public Set<String> getStringSet(String key, Set<String> defaultValue) {
         return sharedPreferences.getStringSet(key, defaultValue);
     }

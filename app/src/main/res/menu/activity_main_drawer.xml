@@ -67,6 +67,13 @@
             android:icon="@drawable/ic_info"
             android:title="@string/about"
             android:checkable="false"/>
+
+        <item
+            android:id="@+id/nav_event_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/event_settings"
+            android:checkable="true"/>
+
     </group>
 
     <group android:id="@+id/eventsMenu" android:checkableBehavior="single">

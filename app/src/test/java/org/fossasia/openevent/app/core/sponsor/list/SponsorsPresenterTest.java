@@ -225,8 +225,9 @@ public class SponsorsPresenterTest {
 
     @Test
     public void shouldResetToolbarToDefaultState() {
-        sponsorsPresenter.resetToolbarDefaultState();
+        sponsorsPresenter.resetToolbarToDefaultState();
 
+        verify(sponsorsView).exitContextualMenuMode();
         verify(sponsorsView).changeToolbarMode(false, false);
     }
 }

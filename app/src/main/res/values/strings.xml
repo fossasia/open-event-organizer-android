@@ -156,7 +156,7 @@
     <string name="accept_payment_by_bank_transfer">Accept Payment By Bank Transfer</string>
     <string name="enter_your_bank_details">Enter your Bank Details</string>
     <string name="enter_your_onsite_details">Enter your onsite details</string>
-    <string name="accept_payment_at_the_event_onsite">Accept Payment at the event (onsite)</string>
+    <string name="accept_payment_at_the_event_onsite">Accept Payment at the event site</string>
     <string name="graphics">Graphics</string>
     <string name="logo_url">Logo Url</string>
     <string name="original_image_url">Original Image Url</string>
@@ -265,6 +265,16 @@
     <string name="privacy">Privacy</string>
     <string name="hash">Hash</string>
     <string name="other_url">Other URL</string>
+    <string name="device_name">Device Name</string>
+    <string name="device_name_summary">Name your device to track check-ins and sales processed by this device in your Open Event account</string>
+    <string name="event_settings">Event Settings</string>
+    <string name="event_payment_preferences">Payment Preferences</string>
+    <string name="use_payment_prefs">Use Payment Preferences</string>
+    <string name="using_payment_preferences">Using Payment Preferences when creating events</string>
+    <string name="not_using_payment_preferences">Not using Payment Preferences when creating events</string>
+    <string name="bank_details">Bank Details</string>
+    <string name="cheque_details">Cheque Details</string>
+    <string name="onsite_details">OnSite Details</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
