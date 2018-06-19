@@ -1,11 +1,14 @@
 package org.fossasia.openevent.app.core.sponsor.create;
 
+import android.support.annotation.VisibleForTesting;
+
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.data.sponsor.SponsorRepository;
+import org.fossasia.openevent.app.utils.StringUtils;
 
 import javax.inject.Inject;
 
@@ -31,11 +34,21 @@ public class CreateSponsorPresenter extends AbstractBasePresenter<CreateSponsorV
         return sponsor;
     }
 
+    @VisibleForTesting
+    protected void nullifyEmptyFields(Sponsor sponsor) {
+        sponsor.setDescription(StringUtils.emptyToNull(sponsor.getDescription()));
+        sponsor.setLogoUrl(StringUtils.emptyToNull(sponsor.getLogoUrl()));
+        sponsor.setUrl(StringUtils.emptyToNull(sponsor.getUrl()));
+        sponsor.setType(StringUtils.emptyToNull(sponsor.getType()));
+    }
+
     public void createSponsor() {
         long eventId = ContextManager.getSelectedEvent().getId();
         Event event = new Event();
         event.setId(eventId);
         sponsor.setEvent(event);
+
+        nullifyEmptyFields(sponsor);
 
         sponsorRepository
             .createSponsor(sponsor)
