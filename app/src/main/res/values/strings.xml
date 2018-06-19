@@ -861,4 +861,11 @@
         <item>Zulu</item>
     </string-array>
 
+    <string-array name="sessions_state">
+        <item>draft</item>
+        <item>accepted</item>
+        <item>pending</item>
+        <item>confirmed</item>
+    </string-array>
+
 </resources>

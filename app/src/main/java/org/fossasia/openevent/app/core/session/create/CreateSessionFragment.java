@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
@@ -37,6 +38,7 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
     private Validator validator;
     public static final String TRACK_KEY = "track";
     private static final String SESSION_KEY = "session_id";
+    private ArrayAdapter<CharSequence> sessionStateAdapter;
 
     private boolean isSessionUpdating;
     private long trackId;
@@ -94,7 +96,15 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
             }
         });
 
+        setUpSpinner();
+
         return binding.getRoot();
+    }
+
+    private void setUpSpinner() {
+        sessionStateAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.sessions_state, android.R.layout.simple_spinner_item);
+        sessionStateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.form.spinner.setAdapter(sessionStateAdapter);
     }
 
     @Override
@@ -150,6 +160,9 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
     @Override
     public void setSession(Session session) {
         binding.setSession(session);
+        String state = getPresenter().getSession().getState();
+        int statePosition = sessionStateAdapter.getPosition(state);
+        binding.form.spinner.setSelection(statePosition);
     }
 
     @Override
