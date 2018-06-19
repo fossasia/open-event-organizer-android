@@ -119,7 +119,7 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
 
     @JsonIgnore
     @Column
-    public Boolean checking;
+    public boolean checking;
 
     public Attendee() { }
 }
