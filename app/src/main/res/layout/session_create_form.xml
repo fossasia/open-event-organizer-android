@@ -159,7 +159,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/level"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:text="@={ BindingAdapters.integerToStr(session.level) }" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -194,6 +194,14 @@
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:padding="@dimen/spacing_extra_small"
+                android:textSize="@dimen/text_size_small"
+                android:text="State"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -207,20 +215,13 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_info" />
 
-                <android.support.design.widget.TextInputLayout
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
+                    android:onItemSelected="@{ (parent, v, pos, id) ->  session.setState(parent.getItemAtPosition(pos).toString())  }">
+                </android.support.v7.widget.AppCompatSpinner>
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/state"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/state"
-                        android:inputType="text"
-                        android:text="@={ session.state }" />
-
-                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
 
