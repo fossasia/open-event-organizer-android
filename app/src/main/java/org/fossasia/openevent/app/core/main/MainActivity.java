@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.main;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -36,6 +38,9 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
     private long eventId = -1;
 
     @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     @Inject
@@ -46,6 +51,7 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
 
     private MainActivityBinding binding;
     private MainNavHeaderBinding headerBinding;
+    private OrganizerViewModel organizerViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,8 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
         headerBinding = MainNavHeaderBinding.bind(binding.navView.getHeaderView(0));
+
+        organizerViewModel = ViewModelProviders.of(this, viewModelFactory).get(OrganizerViewModel.class);
 
         setSupportActionBar(binding.main.toolbar);
 
@@ -75,6 +83,8 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
         super.onStart();
         getPresenter().attach(this);
         getPresenter().start();
+
+        organizerViewModel.getOrganizer().observe(this, this::showOrganizer);
     }
 
     @Override

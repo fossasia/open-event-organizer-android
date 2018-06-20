@@ -6,19 +6,15 @@ import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.auth.AuthService;
 import org.fossasia.openevent.app.data.Bus;
 import org.fossasia.openevent.app.data.Preferences;
+import org.fossasia.openevent.app.data.auth.AuthService;
 import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.event.EventRepository;
-import org.fossasia.openevent.app.data.user.UserRepository;
 import org.fossasia.openevent.app.utils.CurrencyUtils;
 import org.fossasia.openevent.app.utils.DateUtils;
 
 import javax.inject.Inject;
-
-import io.reactivex.Observable;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
@@ -32,26 +28,22 @@ public class MainPresenter extends AbstractBasePresenter<MainView> {
     private final Preferences sharedPreferenceModel;
     private final AuthService loginModel;
     private final EventRepository eventRepository;
-    private final UserRepository userRepository;
     private final RxSharedPreferences sharedPreferences;
     private final Bus bus;
     private final ContextManager contextManager;
     private final CurrencyUtils currencyUtils;
 
-    private User organizer;
-
     @Inject
     @SuppressWarnings("checkstyle:parameternumber")
     public MainPresenter(Preferences sharedPreferenceModel, AuthService loginModel,
                          EventRepository eventRepository, Bus bus, RxSharedPreferences sharedPreferences,
-                         ContextManager contextManager, UserRepository userRepository, CurrencyUtils currencyUtils) {
+                         ContextManager contextManager, CurrencyUtils currencyUtils) {
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.loginModel = loginModel;
         this.eventRepository = eventRepository;
         this.bus = bus;
         this.sharedPreferences = sharedPreferences;
         this.contextManager = contextManager;
-        this.userRepository = userRepository;
         this.currencyUtils = currencyUtils;
     }
 
@@ -73,13 +65,6 @@ public class MainPresenter extends AbstractBasePresenter<MainView> {
                 currencyUtils.getCurrencySymbol(event.getPaymentCurrency())
                     .subscribe(ContextManager::setCurrency, Logger::logError);
                 showEvent(event);
-            }, Logger::logError);
-
-        getOrganizerObservable()
-            .compose(dispose(getDisposable()))
-            .subscribe(user -> {
-                this.organizer = user;
-                getView().showOrganizer(user);
             }, Logger::logError);
 
         long storedEventId = sharedPreferenceModel.getLong(EVENT_KEY, -1);
@@ -110,13 +95,6 @@ public class MainPresenter extends AbstractBasePresenter<MainView> {
     private void showEvent(Event event) {
         getView().setEventId(event.getId());
         getView().showDashboard();
-    }
-
-    private Observable<User> getOrganizerObservable() {
-        if (organizer != null && isRotated())
-            return Observable.just(organizer);
-        else
-            return userRepository.getOrganizer(false);
     }
 
     public void logout() {
