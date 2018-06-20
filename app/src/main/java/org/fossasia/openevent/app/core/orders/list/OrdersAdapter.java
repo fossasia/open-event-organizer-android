@@ -16,13 +16,24 @@ import java.util.List;
 public class OrdersAdapter extends RecyclerView.Adapter<OrderViewHolder> {
 
     private List<Order> orders;
+    private final OrdersViewModel ordersViewModel;
+    private DiffUtil.DiffResult result;
+
+
+    public OrdersAdapter(OrdersViewModel ordersViewModel) {
+        this.ordersViewModel = ordersViewModel;
+    }
 
     @NonNull
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        return new OrderViewHolder(
+        OrderViewHolder orderViewHolder = new OrderViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.order_layout, viewGroup, false));
+
+        orderViewHolder.setClickAction(ordersViewModel::click);
+
+        return orderViewHolder;
     }
 
     @Override
@@ -44,7 +55,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrderViewHolder> {
             orders = newOrders;
             notifyItemRangeInserted(0, newOrders.size());
         } else {
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
                 public int getOldListSize() {
                     return orders.size();
