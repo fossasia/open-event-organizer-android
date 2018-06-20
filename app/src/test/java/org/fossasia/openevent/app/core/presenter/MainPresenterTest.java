@@ -44,7 +44,6 @@ public class MainPresenterTest {
     @Mock private Preferences sharedPreferenceModel;
     @Mock private RxSharedPreferences rxSharedPreferences;
     @Mock private EventRepository eventRepository;
-    @Mock private UserRepository userRepository;
 
     private static final PublishSubject<Event> PUBLISHER = PublishSubject.create();
 
@@ -52,12 +51,11 @@ public class MainPresenterTest {
 
     private static final long EVENT_ID = 2L;
     private static final Event EVENT = Event.builder().id(2L).paymentCurrency("INR").build();
-    private static final User ORGANIZER = User.builder().id(3).build();
 
     @Before
     public void setUp() {
         mainPresenter = new MainPresenter(sharedPreferenceModel, loginModel, eventRepository, bus,
-            rxSharedPreferences, contextManager, userRepository, currencyUtils);
+            rxSharedPreferences, contextManager, currencyUtils);
         mainPresenter.attach(mainView);
     }
 
@@ -67,7 +65,6 @@ public class MainPresenterTest {
 
         when(bus.getSelectedEvent()).thenReturn(PUBLISHER);
 
-        when(userRepository.getOrganizer(anyBoolean())).thenReturn(Observable.just(ORGANIZER));
         when(eventRepository.getEvent(anyLong(), anyBoolean())).thenReturn(Observable.just(EVENT));
     }
 
