@@ -8,6 +8,7 @@ import org.fossasia.openevent.app.core.event.list.SalesSummaryFragment;
 import org.fossasia.openevent.app.core.faq.create.CreateFaqFragment;
 import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
+import org.fossasia.openevent.app.core.orders.detail.OrderDetailFragment;
 import org.fossasia.openevent.app.core.orders.list.OrdersFragment;
 import org.fossasia.openevent.app.core.settings.SettingsFragment;
 import org.fossasia.openevent.app.core.share.ShareEventFragment;
@@ -24,6 +25,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 @Module
+@SuppressWarnings("PMD.TooManyMethods")
 public abstract class MainFragmentBuildersModule {
 
     // Event
@@ -95,8 +97,12 @@ public abstract class MainFragmentBuildersModule {
     abstract SpeakersCallFragment contributeSpeakersCallFragment();
 
     // Order
+
     @ContributesAndroidInjector
     abstract OrdersFragment contributeOrdersFragment();
+
+    @ContributesAndroidInjector
+    abstract OrderDetailFragment contributeOrderDetailFragment();
 
     // Share
     @ContributesAndroidInjector

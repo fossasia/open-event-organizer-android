@@ -32,7 +32,7 @@
     <string name="event_title_here">Event Title Here</string>
     <string name="title_feedbacks">Feedbacks</string>
     <string name="feedback">Feedback</string>
-    <string name="forgot_password_link">Forgot Password</string>
+    <string name="forgot_password_link">I forgot my password</string>
     <string name="speaker_details">Speaker Details</string>
 
     <!-- Place Holders -->
@@ -215,7 +215,7 @@
     <string name="pick_from_map">Pick from Map</string>
     <string name="save_icon">Save Icon</string>
     <string name="use_date_time_picker">Use Picker</string>
-    <string name="welcome">Hi, Organiser!</string>
+    <string name="welcome">Let\'s get started</string>
     <string name="delete_copyright">Delete Copyright</string>
     <string name="year_validation_error">Please Enter a Valid Year</string>
     <string name="delete_confirmation_message">Are you sure you want to delete the %s?</string>
@@ -277,6 +277,8 @@
     <string name="onsite_details">OnSite Details</string>
     <string name="default_payment_country">Select the default Payment Country</string>
     <string name="payment_preference">Payment Settings</string>
+    <string name="order_details">Order Details</string>
+    <string name="order_identifier">Order Identifier</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
@@ -861,6 +863,13 @@
         <item>W-SU</item>
         <item>WET</item>
         <item>Zulu</item>
+    </string-array>
+
+    <string-array name="sessions_state">
+        <item>draft</item>
+        <item>accepted</item>
+        <item>pending</item>
+        <item>confirmed</item>
     </string-array>
 
 </resources>

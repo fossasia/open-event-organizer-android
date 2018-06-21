@@ -133,7 +133,7 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            actionMode = null;
+            actionMode.finish();
             getPresenter().resetToolbarToDefaultState();
             getPresenter().unselectTracksList();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

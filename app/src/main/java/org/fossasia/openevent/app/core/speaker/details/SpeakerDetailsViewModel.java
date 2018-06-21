@@ -23,10 +23,10 @@ public class SpeakerDetailsViewModel extends ViewModel {
     private final SessionRepository sessionRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private MutableLiveData<Speaker> speakerLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<Session>> sessionLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private MutableLiveData<String> error = new MutableLiveData<>();
+    private final MutableLiveData<Speaker> speakerLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<Session>> sessionLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
+    private final MutableLiveData<String> error = new MutableLiveData<>();
 
     @Inject
     public SpeakerDetailsViewModel(SpeakerRepository speakerRepository, SessionRepository sessionRepository) {

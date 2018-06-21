@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="order"
+            type="org.fossasia.openevent.app.data.order.Order" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_top_surface">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@+id/refresh_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_top_surface">
+
+                    <LinearLayout
+                        style="@style/ItemPadding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_normal"
+                        android:background="@android:color/white"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:text="@string/order_identifier"
+                            android:textAllCaps="true"
+                            tools:text="free" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:text='@{ order.identifier }'
+                            android:textColor="#000000"
+                            tools:text="Identifier" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:text="@string/event_name"
+                            android:textAllCaps="true"
+                            android:visibility="@{ (order.event.name != null) ? View.VISIBLE : View.GONE }"
+                            tools:text="Event Name" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:text="@{ order.event.name }"
+                            android:visibility="@{ (order.event.name != null) ? View.VISIBLE : View.GONE }"
+                            tools:text="Event Name" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:text='@{ "Status" + ": " + order.status }'
+                            android:visibility="@{ (order.status != null) ? View.VISIBLE : View.GONE }"
+                            tools:text="Status" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:text='@{ "Amount" + ":  " + order.amount }'
+                            tools:text="Amount" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:text='@{ "Paid Via" + ":  " +  order.paidVia }'
+                            android:visibility="@{ order.paidVia == null ? View.GONE : View.VISIBLE }"
+                            tools:text="Paid Via" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:text='@{ "Payment Mode" +  ":  " + order.paymentMode }'
+                            android:visibility="@{ order.paymentMode == null ? View.GONE : View.VISIBLE }"
+                            tools:text="Payment Mode" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:text='@{ "Address" + ":  " + order.city + order.state + order.country }'
+                            android:visibility="@{ order.country == null || order.city == null || order.state == null ? View.GONE : View.VISIBLE }"
+                            tools:text="Country" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_extra_small"
+                            android:text='@{ "Expiry" + ":  " + order.expMonth + order.expYear }'
+                            android:visibility="@{ order.expMonth == null || order.expYear == null ? View.GONE : View.VISIBLE }"
+                            tools:text="Exp Month" />
+
+                    </LinearLayout>
+                </FrameLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/empty_layout" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/progressbar_layout" />
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
