@@ -34,6 +34,7 @@ public class SpeakersSessionsAdapter extends RecyclerView.Adapter<SessionViewHol
         return sessions == null ? 0 : sessions.size();
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DU Anomaly
     protected void setSessions(final List<Session> newSessions) {
         if (sessions == null) {
             sessions = newSessions;

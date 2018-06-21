@@ -33,7 +33,7 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
 
     private SpeakersCallFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
-    private boolean editMode = false;
+    private boolean editMode;
 
     public static SpeakersCallFragment newInstance(long eventId) {
         SpeakersCallFragment fragment = new SpeakersCallFragment();

@@ -39,6 +39,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrderViewHolder> {
         return orders.size();
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DU Anomaly
     protected void setOrders(final List<Order> newOrders) {
         if (orders == null) {
             orders = newOrders;

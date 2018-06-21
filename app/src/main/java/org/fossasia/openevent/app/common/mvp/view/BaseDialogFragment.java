@@ -21,9 +21,10 @@ public class BaseDialogFragment<P extends BasePresenter> extends DialogFragment 
         return null;
     }
 
+    @SuppressWarnings("PMD.NullAssignment")
     protected P getPresenter() {
         Lazy<P> provider = getPresenterProvider();
-        return (provider != null) ? provider.get() : null;
+        return (provider == null) ? null : provider.get();
     }
 
     @Override
