@@ -67,11 +67,11 @@ public class TicketDetailFragment extends BaseBottomSheetFragment<TicketDetailPr
     }
 
     private void doPrint() {
-        Ticket ticket = getPresenter().getTicket();
         PrintManager printManager;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
             String jobName = this.getString(R.string.app_name) + " Document";
+            Ticket ticket = getPresenter().getTicket();
             printManager.print(jobName, new TicketPrintAdapter(getActivity(), ticket), null);
         } else {
             ViewUtils.showSnackbar(binding.getRoot(), "No Printing Support!");

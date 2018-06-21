@@ -65,7 +65,6 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
 
     private Context context;
     private boolean initialized;
-    private long id;
 
     /**
      * Use this factory method to create a new instance of

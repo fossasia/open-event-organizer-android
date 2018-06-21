@@ -7,6 +7,8 @@
 
         <import type="org.fossasia.openevent.app.utils.DateUtils" />
 
+        <import type="org.fossasia.openevent.app.utils.StringUtils"/>
+
         <variable
             name="event"
             type="org.fossasia.openevent.app.data.event.Event" />
@@ -163,7 +165,7 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
                         android:text='@{ event.searchableLocationName }'
-                        android:visibility="@{ event.searchableLocationName != null ? View.VISIBLE : View.GONE }" />
+                        android:visibility="@{ StringUtils.emptyToNull(event.searchableLocationName) != null ? View.VISIBLE : View.GONE }" />
 
                 </LinearLayout>
 
@@ -197,7 +199,7 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
                         android:text='@{ event.paymentCountry }'
-                        android:visibility="@{ (event.paymentCountry != null) ? View.VISIBLE : View.GONE }" />
+                        android:visibility="@{ (StringUtils.emptyToNull(event.paymentCountry) != null) ? View.VISIBLE : View.GONE }" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -208,7 +210,7 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
                         android:text='@{ event.paymentCurrency }'
-                        android:visibility="@{ (event.paymentCurrency != null) ? View.VISIBLE : View.GONE }"/>
+                        android:visibility="@{ (StringUtils.emptyToNull(event.paymentCurrency) != null) ? View.VISIBLE : View.GONE }"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -261,7 +263,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
-                android:visibility='@{ event.codeOfConduct.equals("") ? View.GONE : View.VISIBLE }'>
+                android:visibility='@{ StringUtils.emptyToNull(event.codeOfConduct) == null ? View.GONE : View.VISIBLE }'>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -285,8 +287,7 @@
                         android:drawableStart="@{ @drawable/ic_gavel }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:text='@{ event.codeOfConduct }'
-                        android:visibility="@{ event.codeOfConduct != null ? View.VISIBLE : View.GONE }" />
+                        android:text='@{ event.codeOfConduct }' />
 
                 </LinearLayout>
 
@@ -296,7 +297,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
-                android:visibility='@{ event.description.equals("") ? View.GONE : View.VISIBLE }'>
+                android:visibility='@{ StringUtils.emptyToNull(event.description) == null ? View.GONE : View.VISIBLE }'>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -386,7 +387,7 @@
                         android:drawableStart="@{ @drawable/ic_person }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:visibility='@{ copyright.holder == null ? View.GONE : View.VISIBLE }'
+                        android:visibility='@{ StringUtils.emptyToNull(copyright.holder) == null ? View.GONE : View.VISIBLE }'
                         android:text='@{ copyright.holder }' />
 
                     <TextView
@@ -397,7 +398,7 @@
                         android:drawableStart="@{ @drawable/ic_events }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:visibility='@{ copyright.year == null ? View.GONE : View.VISIBLE }'
+                        android:visibility='@{ StringUtils.emptyToNull(copyright.year) == null ? View.GONE : View.VISIBLE }'
                         android:text='@{ copyright.year }' />
 
                     <TextView
@@ -408,7 +409,7 @@
                         android:drawableStart="@{ @drawable/ic_copyright }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:visibility='@{ copyright.licence == null ? View.GONE : View.VISIBLE }'
+                        android:visibility='@{ StringUtils.emptyToNull(copyright.licence) == null ? View.GONE : View.VISIBLE }'
                         android:text='@{ copyright.licence }' />
 
                     <TextView
@@ -419,7 +420,7 @@
                         android:drawableStart="@{ @drawable/ic_email }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:visibility='@{ copyright.licenceUrl == null ? View.GONE : View.VISIBLE }'
+                        android:visibility='@{ StringUtils.emptyToNull(copyright.licenceUrl) == null ? View.GONE : View.VISIBLE }'
                         android:text='@{ copyright.licenceUrl }' />
 
 

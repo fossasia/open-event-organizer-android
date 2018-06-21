@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import dagger.Lazy;
 import io.reactivex.disposables.CompositeDisposable;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implements AboutEventVew {
 
     private AboutEventFragmentBinding binding;
