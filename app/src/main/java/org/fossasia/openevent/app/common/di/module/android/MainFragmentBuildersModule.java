@@ -24,6 +24,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 @Module
+@SuppressWarnings("PMD.TooManyMethods")
 public abstract class MainFragmentBuildersModule {
 
     // Event

@@ -63,7 +63,7 @@ public class CreateTrackPresenter extends AbstractBasePresenter<CreateTrackView>
         colorGreen = random.nextInt(255);
         colorBlue = random.nextInt(255);
         colorRGB = Color.rgb(colorRed, colorGreen, colorBlue);
-        return String.format("#%06X",(0xFFFFFF & colorRGB));
+        return String.format("#%06X", 0xFFFFFF & colorRGB);
     }
 
     public int getRed() {

@@ -36,7 +36,7 @@ public class CreateSpeakersCallFragment extends BaseBottomSheetFragment implemen
     private SpeakersCallCreateLayoutBinding binding;
     private Validator validator;
     private long eventId;
-    private boolean isSpeakersCallUpdating = false;
+    private boolean isSpeakersCallUpdating;
 
     public static CreateSpeakersCallFragment newInstance(long eventId) {
         CreateSpeakersCallFragment fragment = new CreateSpeakersCallFragment();

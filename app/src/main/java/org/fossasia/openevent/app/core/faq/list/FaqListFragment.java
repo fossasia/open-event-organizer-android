@@ -131,7 +131,7 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            actionMode = null;
+            actionMode.finish();
             getPresenter().resetToDefaultState();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //return to "old" color of status bar

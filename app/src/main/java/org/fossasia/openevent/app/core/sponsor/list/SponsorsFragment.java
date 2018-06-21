@@ -179,7 +179,7 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            actionMode = null;
+            actionMode.finish();
             getPresenter().unselectSponsorsList();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //return to "old" color of status bar

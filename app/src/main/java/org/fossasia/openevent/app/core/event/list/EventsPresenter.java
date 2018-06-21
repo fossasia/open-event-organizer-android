@@ -85,8 +85,4 @@ public class EventsPresenter extends AbstractBasePresenter<EventsView> {
         getView().closeSalesSummary();
     }
 
-    @Override
-    public void detach() {
-        super.detach();
-    }
 }

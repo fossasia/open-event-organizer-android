@@ -36,6 +36,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 
+@SuppressWarnings("PMD.TooManyFields")
 public class ChartAnalyser {
 
     private static final int TICKET_SALE_THRESHOLD = 5;
@@ -59,8 +60,10 @@ public class ChartAnalyser {
 
     private List<Attendee> attendees;
     private boolean error;
-    private boolean isCheckinChart = false;
-    String[] values = new String[] {"00:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
+    private boolean isCheckinChart;
+    String[] values = new String[] {"00:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00",
+        "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00",
+        "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
 
     @Inject
     protected ChartAnalyser(ContextUtils utilModel, AttendeeRepositoryImpl attendeeRepository) {
@@ -140,7 +143,7 @@ public class ChartAnalyser {
         return getAttendeeSource(eventId).doOnNext(attendee -> {
            String checkInTime = attendee.getCheckinTimes();
            int length = checkInTime.split(",").length;
-           String latestCheckInTime = checkInTime.split(",")[length-1];
+           String latestCheckInTime = checkInTime.split(",")[length - 1];
            error = checkInTime == null ? true : false;
            addDataPointForCheckIn(checkInTimeMap, latestCheckInTime);
         })
@@ -239,7 +242,10 @@ public class ChartAnalyser {
     }
 
     private void prepare() {
-        if (!isCheckinChart) {
+        if (isCheckinChart) {
+            initializeLineSet(checkInDataSet, R.color.light_blue_500, R.color.light_blue_100);
+            lineData.addDataSet(checkInDataSet);
+        } else {
             initializeLineSet(freeSet, R.color.light_blue_500, R.color.light_blue_100);
             initializeLineSet(paidSet, R.color.purple_500, R.color.purple_100);
             initializeLineSet(donationSet, R.color.red_500, R.color.red_100);
@@ -247,9 +253,6 @@ public class ChartAnalyser {
             lineData.addDataSet(paidSet);
             lineData.addDataSet(donationSet);
             lineData.setDrawValues(false);
-        } else {
-            initializeLineSet(checkInDataSet, R.color.light_blue_500, R.color.light_blue_100);
-            lineData.addDataSet(checkInDataSet);
         }
     lineData.setDrawValues(false);
     }
@@ -289,8 +292,8 @@ public class ChartAnalyser {
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
             if (value < 0)
-                return values[24 + (int)value];
-            return values[(int)value];
+                return values[24 + (int) value];
+            return values[(int) value];
         }
     }
 }
