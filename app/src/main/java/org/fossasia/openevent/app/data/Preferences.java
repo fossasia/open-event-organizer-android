@@ -22,4 +22,7 @@ public interface Preferences {
 
     void addStringSetElement(String key, String value);
 
+    void setInt(String key, int value);
+
+    int getInt(String key, int value);
 }

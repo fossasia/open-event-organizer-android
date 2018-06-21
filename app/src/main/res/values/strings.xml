@@ -275,6 +275,8 @@
     <string name="bank_details">Bank Details</string>
     <string name="cheque_details">Cheque Details</string>
     <string name="onsite_details">OnSite Details</string>
+    <string name="default_payment_country">Select the default Payment Country</string>
+    <string name="payment_preference">Payment Settings</string>
     <string name="order_details">Order Details</string>
     <string name="order_identifier">Order Identifier</string>
 
