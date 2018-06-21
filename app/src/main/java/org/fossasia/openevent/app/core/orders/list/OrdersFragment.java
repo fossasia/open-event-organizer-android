@@ -17,10 +17,12 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.core.orders.detail.OrderDetailFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.order.Order;
 import org.fossasia.openevent.app.databinding.OrdersFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.utils.Utils;
 
 import java.util.List;
 
@@ -43,8 +45,6 @@ public class OrdersFragment extends BaseFragment implements OrdersView {
     private OrdersAdapter ordersAdapter;
     private OrdersFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
-
-    private boolean initialized;
 
     public static OrdersFragment newInstance(long eventId) {
         OrdersFragment fragment = new OrdersFragment();
@@ -82,9 +82,8 @@ public class OrdersFragment extends BaseFragment implements OrdersView {
 
         ordersViewModel.getProgress().observe(this, this::showProgress);
         ordersViewModel.getError().observe(this, this::showError);
+        ordersViewModel.getClickedOrderIdentifier().observe(this, this::openOrderDetail);
         loadOrders(false);
-
-        initialized = true;
     }
 
     @Override
@@ -99,14 +98,12 @@ public class OrdersFragment extends BaseFragment implements OrdersView {
     }
 
     private void setupRecyclerView() {
-        if (!initialized) {
-            ordersAdapter = new OrdersAdapter();
+            ordersAdapter = new OrdersAdapter(ordersViewModel);
 
             RecyclerView recyclerView = binding.ordersRecyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(ordersAdapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-        }
     }
 
     private void setupRefreshListener() {
@@ -120,6 +117,18 @@ public class OrdersFragment extends BaseFragment implements OrdersView {
 
     private void loadOrders(boolean reload) {
         ordersViewModel.getOrders(eventId, reload).observe(this, this::showResults);
+    }
+
+    private void openOrderDetail(String orderIdentifier) {
+        if (Utils.isEmpty(orderIdentifier))
+            return;
+
+        ordersViewModel.unselectListItem();
+
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, OrderDetailFragment.newInstance(eventId, orderIdentifier))
+            .addToBackStack(null)
+            .commit();
     }
 
     @Override
