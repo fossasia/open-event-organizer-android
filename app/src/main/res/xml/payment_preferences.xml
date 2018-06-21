@@ -2,67 +2,69 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <CheckBoxPreference
+        android:defaultValue="false"
         android:key="use_payment_prefs"
-        android:title="@string/use_payment_prefs"
-        android:summaryOn="@string/using_payment_preferences"
         android:summaryOff="@string/not_using_payment_preferences"
-        android:defaultValue="false" />
+        android:summaryOn="@string/using_payment_preferences"
+        android:title="@string/use_payment_prefs" />
 
-    <PreferenceCategory
-        android:title="Paypal">
+    <PreferenceCategory android:title="Paypal">
         <CheckBoxPreference
+            android:defaultValue="false"
             android:key="accept_paypal"
-            android:title="@string/accept_payment_through_paypal"
-            android:defaultValue="false"/>
+            android:title="@string/accept_payment_through_paypal" />
 
         <EditTextPreference
             android:key="paypal_email"
             android:title="@string/paypal_email" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="Stripe">
+    <PreferenceCategory android:title="Stripe">
         <CheckBoxPreference
+            android:defaultValue="false"
             android:key="accept_stripe"
-            android:title="@string/accept_payment_through_stripe"
-            android:defaultValue="false"/>
+            android:title="@string/accept_payment_through_stripe" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="Cheque">
+
+    <PreferenceCategory android:title="Cheque">
         <CheckBoxPreference
+            android:defaultValue="false"
             android:key="accept_cheque"
-            android:title="@string/accept_payment_by_cheque"
-            android:defaultValue="false"/>
+            android:title="@string/accept_payment_by_cheque" />
 
         <EditTextPreference
             android:key="cheque_details"
             android:title="@string/cheque_details" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="Bank Transfer">
+    <PreferenceCategory android:title="Bank Transfer">
         <CheckBoxPreference
+            android:defaultValue="false"
             android:key="accept_bank_transfers"
-            android:title="@string/accept_payment_by_bank_transfer"
-            android:defaultValue="false"/>
+            android:title="@string/accept_payment_by_bank_transfer" />
 
         <EditTextPreference
             android:key="bank_details"
             android:title="@string/bank_details" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="Onsite Payment">
+    <PreferenceCategory android:title="Onsite Payment">
         <CheckBoxPreference
+            android:defaultValue="false"
             android:key="accept_onsite"
-            android:title="@string/accept_payment_at_the_event_onsite"
-            android:defaultValue="false"/>
+            android:title="@string/accept_payment_at_the_event_onsite" />
 
         <EditTextPreference
             android:key="onsite_details"
             android:title="@string/onsite_details" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="Payment Country">
+        <org.fossasia.openevent.app.core.settings.CountryPreference
+            android:key="key"
+            android:summary="@string/default_payment_country"
+            android:title="@string/payment_country" />
+    </PreferenceCategory>
 </PreferenceScreen>
 

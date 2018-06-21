@@ -73,6 +73,18 @@ public class SharedPreferencesImpl implements Preferences {
         saveStringSet(key, set);
     }
 
+    @Override
+    public void setInt(String key, int value) {
+        android.content.SharedPreferences.Editor editor = getEditor();
+        editor.putInt(key, value);
+        editor.apply();
+    }
+
+    @Override
+    public int getInt(String key, int value) {
+        return sharedPreferences.getInt(key, value);
+    }
+
     private android.content.SharedPreferences.Editor getEditor() {
         return sharedPreferences.edit();
     }
