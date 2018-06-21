@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseInjectActivity;
 import org.fossasia.openevent.app.core.auth.AuthActivity;
@@ -21,6 +22,9 @@ import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.databinding.MainActivityBinding;
 import org.fossasia.openevent.app.databinding.MainNavHeaderBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -34,6 +38,8 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
 
     public static final String EVENT_KEY = "event";
     private long eventId = -1;
+    private List<Integer> drawerItems = Arrays.asList(R.id.nav_feedback, R.id.nav_faq, R.id.nav_track,
+        R.id.nav_sponsor, R.id.nav_speaker, R.id.nav_speakers_call, R.id.nav_about_event);
 
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
@@ -116,6 +122,12 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
         this.eventId = eventId;
         fragmentNavigator.setEventId(eventId);
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, true);
+
+        if (BuildConfig.HIDE_DRAWER_ITEMS) {
+            for (Integer itemId : drawerItems) {
+                binding.navView.getMenu().findItem(itemId).setVisible(false);
+            }
+        }
     }
 
     @Override
