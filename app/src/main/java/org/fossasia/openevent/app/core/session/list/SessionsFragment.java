@@ -181,7 +181,7 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            actionMode = null;
+            actionMode.finish();
             getPresenter().resetToolbarToDefaultState();
             getPresenter().unselectSessionList();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

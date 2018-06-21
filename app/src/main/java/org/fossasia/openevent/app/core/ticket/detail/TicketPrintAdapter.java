@@ -25,14 +25,14 @@ import java.io.IOException;
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class TicketPrintAdapter extends PrintDocumentAdapter {
 
-    private final int TOTAL_PAGES = 1;
+    private static final int TOTAL_PAGES = 1;
     private final Context context;
     private final Ticket ticket;
     private int pageHeight;
     private int pageWidth;
     private PdfDocument ticketDocument;
-    private Paint paintHeaderText = new Paint();
-    private Paint paintTicketDescription = new Paint();
+    private final Paint paintHeaderText = new Paint();
+    private final Paint paintTicketDescription = new Paint();
 
     public TicketPrintAdapter(Context context, Ticket ticket) {
         this.context = context;
@@ -68,14 +68,14 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
                         CancellationSignal cancellationSignal,
                         WriteResultCallback callback) {
 
-        PdfDocument.PageInfo newPage = new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, TOTAL_PAGES).create();
-        PdfDocument.Page page = ticketDocument.startPage(newPage);
-
         if (cancellationSignal.isCanceled()) {
             callback.onWriteCancelled();
             ticketDocument.close();
             return;
         }
+
+        PdfDocument.PageInfo newPage = new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, TOTAL_PAGES).create();
+        PdfDocument.Page page = ticketDocument.startPage(newPage);
 
         drawPage(page);
         ticketDocument.finishPage(page);
@@ -95,7 +95,7 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
     private void drawPage(PdfDocument.Page page) {
         Canvas canvas = page.getCanvas();
         int titleBaseLine = 72;
-        final int leftMargin = 54;
+        int leftMargin = 54;
 
         paintHeaderText.setColor(Color.BLACK);
         paintTicketDescription.setTextSize(40);
@@ -105,7 +105,11 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
         paintTicketDescription.setTextSize(14);
         canvas.drawText("Ticket Name: " + ticket.getName(), leftMargin, titleBaseLine + 55, paintTicketDescription);
         canvas.drawText("Ticket Type: " + ticket.getType(), leftMargin, titleBaseLine + 85, paintTicketDescription);
-        canvas.drawText("Ticket Sales Start At: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, ticket.getSalesStartsAt()), leftMargin, titleBaseLine + 115, paintTicketDescription);
+        canvas.drawText("Ticket Sales Start At: " + DateUtils.formatDateWithDefault(
+            DateUtils.FORMAT_DAY_COMPLETE, ticket.getSalesStartsAt()),
+            leftMargin,
+            titleBaseLine + 115,
+            paintTicketDescription);
         canvas.drawText("Ticket Min Order: " + ticket.getMinOrder(), leftMargin, titleBaseLine + 145, paintTicketDescription);
         canvas.drawText("Ticket Max Order: " + ticket.getMaxOrder(), leftMargin, titleBaseLine + 175, paintTicketDescription);
         if (ticket.getPrice() != 0)

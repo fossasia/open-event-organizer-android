@@ -19,7 +19,7 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class CreateSpeakersCallViewModel extends ViewModel {
 
-    private SpeakersCall speakersCall = new SpeakersCall();
+    private final SpeakersCall speakersCall = new SpeakersCall();
 
     private final SpeakersCallRepository speakersCallRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();

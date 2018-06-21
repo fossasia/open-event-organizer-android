@@ -66,7 +66,7 @@ public class CreateTrackFragment extends BaseBottomSheetFragment<CreateTrackPres
         });
 
         colorPickerDialog.setCallback(color -> {
-            binding.form.trackColor.setText(String.format("#%06X", (0xFFFFFF & color)));
+            binding.form.trackColor.setText(String.format("#%06X", 0xFFFFFF & color));
             binding.form.colorPicker.setBackgroundColor(color);
             colorPickerDialog.dismiss();
         });

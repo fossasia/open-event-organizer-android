@@ -21,9 +21,9 @@ public class OrdersViewModel extends ViewModel {
     private final OrderRepository orderRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private MutableLiveData<List<Order>> ordersLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private MutableLiveData<String> error = new MutableLiveData<>();
+    private final MutableLiveData<List<Order>> ordersLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
+    private final MutableLiveData<String> error = new MutableLiveData<>();
 
     @Inject
     public OrdersViewModel(OrderRepository orderRepository) {
