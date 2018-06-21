@@ -206,6 +206,8 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
     }
 
     public int getCountryIndex() {
-        return preferences.getInt(Constants.PREF_PAYMENT_COUNTRY, countryList.indexOf(Locale.getDefault().getDisplayCountry()));
+        if (preferences.getBoolean(PREF_USE_PAYMENT_PREFS, false))
+            return preferences.getInt(Constants.PREF_PAYMENT_COUNTRY, 0);
+        return  countryList.indexOf(Locale.getDefault().getDisplayCountry());
     }
 }
