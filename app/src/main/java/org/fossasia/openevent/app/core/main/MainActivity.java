@@ -52,6 +52,7 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
     private MainActivityBinding binding;
     private MainNavHeaderBinding headerBinding;
     private OrganizerViewModel organizerViewModel;
+    private EventViewModel eventViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
         headerBinding = MainNavHeaderBinding.bind(binding.navView.getHeaderView(0));
 
         organizerViewModel = ViewModelProviders.of(this, viewModelFactory).get(OrganizerViewModel.class);
+        eventViewModel = ViewModelProviders.of(this, viewModelFactory).get(EventViewModel.class);
 
         setSupportActionBar(binding.main.toolbar);
 
@@ -85,6 +87,11 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
         getPresenter().start();
 
         organizerViewModel.getOrganizer().observe(this, this::showOrganizer);
+        eventViewModel.getEventId().observe(this, this::setEventId);
+        eventViewModel.getSelectedEvent().observe(this, this::showResult);
+        eventViewModel.getError().observe(this, this::showError);
+        eventViewModel.getShowDashboard().observe(this, aVoid -> this.showDashboard());
+        eventViewModel.getShowEventList().observe(this, aVoid -> this.showEventList());
     }
 
     @Override

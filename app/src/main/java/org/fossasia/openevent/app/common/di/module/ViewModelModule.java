@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider;
 
 import org.fossasia.openevent.app.common.di.OrgaViewModelFactory;
 import org.fossasia.openevent.app.core.auth.login.LoginViewModel;
+import org.fossasia.openevent.app.core.main.EventViewModel;
 import org.fossasia.openevent.app.core.orders.detail.OrderDetailViewModel;
 import org.fossasia.openevent.app.core.main.OrganizerViewModel;
 import org.fossasia.openevent.app.core.orders.list.OrdersViewModel;
@@ -53,6 +54,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(OrganizerViewModel.class)
     public abstract ViewModel bindOrganizerViewModel(OrganizerViewModel organizerViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EventViewModel.class)
+    public abstract ViewModel bindEventViewModel(EventViewModel eventViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
