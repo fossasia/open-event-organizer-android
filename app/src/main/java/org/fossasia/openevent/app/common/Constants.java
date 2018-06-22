@@ -21,6 +21,8 @@ public final class Constants {
     public static final String PREF_PAYMENT_ACCEPT_ONSITE = "accept_onsite";
     public static final String PREF_PAYMENT_ONSITE_DETAILS = "onsite_details";
     public static final String PREF_PAYMENT_COUNTRY = "key";
+    public static final String PREF_USER_PASSWORD = "user_password";
+    public static final String PREF_USER_EMAIL = "user_email";
 
     private Constants() {
         // Never Called

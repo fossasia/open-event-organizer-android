@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import org.fossasia.openevent.app.core.auth.signup.SignUpFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.databinding.LoginFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.utils.EncryptionUtils;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -43,8 +45,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false);
         loginFragmentViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
@@ -70,11 +71,30 @@ public class LoginFragment extends BaseFragment implements LoginView {
             if (!validator.validate())
                 return;
 
+            loginFragmentViewModel.getLogin().setEmail(binding.emailDropdown.getText().toString());
+            loginFragmentViewModel.getLogin().setPassword(binding.userPassword.getText().toString());
+
             ViewUtils.hideKeyboard(view);
             loginFragmentViewModel.login();
         });
         binding.signUpLink.setOnClickListener(view -> openSignUpPage());
         binding.forgotPasswordLink.setOnClickListener(view -> openForgotPasswordPage());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String decryptedEmail;
+        String decryptedPassword;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            decryptedEmail = EncryptionUtils.decryptString(getActivity(), loginFragmentViewModel.getUserEmail());
+            decryptedPassword = EncryptionUtils.decryptString(getActivity(), loginFragmentViewModel.getUserPassword());
+        } else {
+            decryptedEmail = loginFragmentViewModel.getUserEmail();
+            decryptedPassword = loginFragmentViewModel.getUserPassword();
+        }
+        binding.userPassword.setText(decryptedPassword);
+        binding.emailDropdown.setText(decryptedEmail);
     }
 
     public void handleIntent() {
