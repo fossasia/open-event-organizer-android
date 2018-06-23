@@ -20,6 +20,7 @@ public final class Constants {
     public static final String PREF_CHEQUE_DETAILS = "cheque_details";
     public static final String PREF_PAYMENT_ACCEPT_ONSITE = "accept_onsite";
     public static final String PREF_PAYMENT_ONSITE_DETAILS = "onsite_details";
+    public static final String PREF_PAYMENT_COUNTRY = "key";
 
     private Constants() {
         // Never Called

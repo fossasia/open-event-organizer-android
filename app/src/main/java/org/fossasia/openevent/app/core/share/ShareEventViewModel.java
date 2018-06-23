@@ -20,9 +20,9 @@ public class ShareEventViewModel extends ViewModel {
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private MutableLiveData<Event> eventLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private MutableLiveData<String> error = new MutableLiveData<>();
+    private final MutableLiveData<Event> eventLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
+    private final MutableLiveData<String> error = new MutableLiveData<>();
 
     @Inject
     public ShareEventViewModel(EventRepository eventRepository) {

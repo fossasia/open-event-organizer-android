@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.main;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -42,6 +44,9 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
         R.id.nav_sponsor, R.id.nav_speaker, R.id.nav_speakers_call, R.id.nav_about_event);
 
     @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     @Inject
@@ -52,6 +57,8 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
 
     private MainActivityBinding binding;
     private MainNavHeaderBinding headerBinding;
+    private OrganizerViewModel organizerViewModel;
+    private EventViewModel eventViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,9 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
         headerBinding = MainNavHeaderBinding.bind(binding.navView.getHeaderView(0));
+
+        organizerViewModel = ViewModelProviders.of(this, viewModelFactory).get(OrganizerViewModel.class);
+        eventViewModel = ViewModelProviders.of(this, viewModelFactory).get(EventViewModel.class);
 
         setSupportActionBar(binding.main.toolbar);
 
@@ -81,6 +91,13 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
         super.onStart();
         getPresenter().attach(this);
         getPresenter().start();
+
+        organizerViewModel.getOrganizer().observe(this, this::showOrganizer);
+        eventViewModel.getEventId().observe(this, this::setEventId);
+        eventViewModel.getSelectedEvent().observe(this, this::showResult);
+        eventViewModel.getError().observe(this, this::showError);
+        eventViewModel.getShowDashboard().observe(this, aVoid -> this.showDashboard());
+        eventViewModel.getShowEventList().observe(this, aVoid -> this.showEventList());
     }
 
     @Override

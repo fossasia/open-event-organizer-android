@@ -95,12 +95,12 @@ public class ShareEventFragment extends BaseFragment implements ShareEventView {
     }
 
     public void copyUrlToClipboard() {
-        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         String eventUrl = shareEventViewModel.getShareableUrl();
         if (eventUrl == null) {
             ViewUtils.showSnackbar(binding.getRoot(), "Event does not have a Public URL");
         } else {
             ClipData clip = ClipData.newPlainText("Event URL", shareEventViewModel.getShareableUrl());
+            ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setPrimaryClip(clip);
             ViewUtils.showSnackbar(binding.getRoot(), "Event URL Copied to Clipboard");
         }

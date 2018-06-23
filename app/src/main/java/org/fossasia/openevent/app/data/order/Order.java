@@ -17,15 +17,18 @@ import org.fossasia.openevent.app.data.event.Event;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
-@Type("order")
 @Builder
+@Type("order")
 @AllArgsConstructor
+@ToString(exclude = {"event"})
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Order {
+
     @PrimaryKey
     @Id(LongIdHandler.class)
     public Long id;

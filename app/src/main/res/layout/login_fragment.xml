@@ -43,7 +43,8 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/spacing_normal">
+                    android:paddingBottom="@dimen/spacing_normal"
+                    android:paddingTop="@dimen/spacing_normal">
 
                     <android.support.v7.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/email_dropdown"
@@ -80,7 +81,7 @@
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btnLogin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     app:backgroundTint="@color/color_accent"

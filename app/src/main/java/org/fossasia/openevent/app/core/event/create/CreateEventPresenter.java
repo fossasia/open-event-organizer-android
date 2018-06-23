@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.event.create;
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.Preferences;
@@ -59,16 +60,12 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
 
     @Override
     public void start() {
-        getView().attachCountryList(countryList);
+        getView().attachCountryList(countryList, getCountryIndex());
         getView().attachCurrencyCodesList(currencyCodesList);
 
         List<String> timeZoneList = getView().getTimeZoneList();
         getView().setDefaultTimeZone(
             timeZoneList.indexOf(TimeZone.getDefault().getID())
-        );
-
-        getView().setDefaultCountry(
-            countryList.indexOf(Locale.getDefault().getDisplayCountry())
         );
 
         setPaymentPreferences(preferences);
@@ -206,5 +203,11 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
 
             getView().setPaymentBinding(event);
         }
+    }
+
+    public int getCountryIndex() {
+        if (preferences.getBoolean(PREF_USE_PAYMENT_PREFS, false))
+            return preferences.getInt(Constants.PREF_PAYMENT_COUNTRY, 0);
+        return  countryList.indexOf(Locale.getDefault().getDisplayCountry());
     }
 }

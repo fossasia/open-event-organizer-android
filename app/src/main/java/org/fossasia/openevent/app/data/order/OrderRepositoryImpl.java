@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.data.order;
 
+import android.support.annotation.NonNull;
+
 import org.fossasia.openevent.app.data.Repository;
 
 import javax.inject.Inject;
@@ -29,6 +31,28 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .flatMapIterable(orders -> orders));
 
         return repository.observableOf(Order.class)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Order> getOrder(String orderIdentifier, boolean reload) {
+        Observable<Order> diskObservable = Observable.defer(() ->
+            repository
+                .getItems(Order.class, Order_Table.identifier.eq(orderIdentifier)).take(1)
+        );
+
+        Observable<Order> networkObservable = Observable.defer(() ->
+            orderApi.getOrder(orderIdentifier)
+                .doOnNext(order -> repository
+                    .save(Order.class, order)
+                    .subscribe()));
+
+        return repository
+            .observableOf(Order.class)
             .reload(reload)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)

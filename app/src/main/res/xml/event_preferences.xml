@@ -2,7 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
+        android:key="scan_settings"
+        android:title="@string/scan_settings"/>
+
+    <Preference
         android:key="payment_preferences"
-        android:title="Payment Preferences"/>
+        android:title="@string/payment_preference"/>
 
 </PreferenceScreen>

@@ -37,6 +37,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onResume() {
         super.onResume();
-        ViewUtils.setTitle(this, getString(R.string.settings));
+        ViewUtils.setTitle(this, getString(R.string.device_settings));
     }
 }

@@ -232,9 +232,11 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     }
 
     @Override
-    public void attachCountryList(List<String> countryList) {
+    public void attachCountryList(List<String> countryList, int countryIndex) {
         paymentCountryAdapter.addAll(countryList);
         binding.form.paymentCountrySpinner.setAdapter(paymentCountryAdapter);
+        if (!isUpdateEvent)
+            binding.form.paymentCountrySpinner.setSelection(countryIndex);
     }
 
     @Override
@@ -276,11 +278,6 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     @Override
     public void setDefaultTimeZone(int index) {
         binding.form.timezoneSpinner.setSelection(index);
-    }
-
-    @Override
-    public void setDefaultCountry(int index) {
-        binding.form.paymentCountrySpinner.setSelection(index);
     }
 
     private void setupPlacePicker() {
@@ -353,6 +350,9 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     @Override
     public void setEvent(Event event) {
         binding.setEvent(event);
+        String paymentCountry = getPresenter().getEvent().getPaymentCountry();
+        int countryIndex = paymentCountryAdapter.getPosition(paymentCountry);
+        binding.form.paymentCountrySpinner.setSelection(countryIndex);
     }
 
     @Override

@@ -42,12 +42,21 @@ public class EventSettingsFragment extends PreferenceFragmentCompat {
                 .commit();
             return true;
         });
+
+        findPreference("scan_settings").setOnPreferenceClickListener(preference -> {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction
+                .replace(R.id.fragment_container, ScanSettings.newInstance())
+                .addToBackStack(null)
+                .commit();
+            return true;
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ViewUtils.setTitle(this, getString(R.string.settings));
+        ViewUtils.setTitle(this, getString(R.string.event_settings));
     }
 
 }

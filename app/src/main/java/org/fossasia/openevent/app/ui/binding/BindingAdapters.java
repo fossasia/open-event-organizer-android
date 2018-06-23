@@ -191,10 +191,10 @@ public final class BindingAdapters {
                 Context context = imageButton.getContext();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
-                if (intent.resolveActivity(context.getPackageManager()) != null) {
-                    context.startActivity(intent);
-                } else {
+                if (intent.resolveActivity(context.getPackageManager()) == null) {
                     Toast.makeText(context, "No Web browser found", Toast.LENGTH_SHORT).show();
+                } else {
+                    context.startActivity(intent);
                 }
             }
         });

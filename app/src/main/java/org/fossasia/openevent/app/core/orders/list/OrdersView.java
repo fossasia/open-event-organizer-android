@@ -9,6 +9,4 @@ import org.fossasia.openevent.app.data.order.Order;
 public interface OrdersView extends Progressive, Erroneous, Refreshable, Emptiable<Order> {
 
     void showMessage(String message);
-
-//    void showOrders(List<Order> orders);
 }
