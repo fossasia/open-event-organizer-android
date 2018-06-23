@@ -7,6 +7,7 @@ import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.auth.AuthService;
+import org.fossasia.openevent.app.data.auth.EncryptionService;
 import org.fossasia.openevent.app.data.auth.model.Login;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.junit.Before;
@@ -44,6 +45,8 @@ public class LoginViewModelTest {
     private AuthService authModel;
     @Mock
     private HostSelectionInterceptor interceptor;
+    @Mock
+    private EncryptionService encryptionService;
 
     private static final String EMAIL = "test";
     private static final String PASSWORD = "test";
@@ -62,7 +65,7 @@ public class LoginViewModelTest {
 
     @Before
     public void setUp() {
-        loginViewModel = new LoginViewModel(authModel, interceptor, sharedPreferenceModel);
+        loginViewModel = new LoginViewModel(authModel, interceptor, sharedPreferenceModel, encryptionService);
         loginViewModel.getLogin().setEmail(EMAIL);
         loginViewModel.getLogin().setPassword(PASSWORD);
     }

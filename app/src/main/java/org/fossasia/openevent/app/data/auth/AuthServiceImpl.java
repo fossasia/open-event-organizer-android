@@ -1,8 +1,5 @@
 package org.fossasia.openevent.app.data.auth;
 
-import android.content.Context;
-import android.os.Build;
-
 import org.fossasia.openevent.app.data.auth.model.ChangePassword;
 import org.fossasia.openevent.app.data.auth.model.CustomObjectWrapper;
 import org.fossasia.openevent.app.data.auth.model.Login;
@@ -11,7 +8,6 @@ import org.fossasia.openevent.app.data.auth.model.SubmitToken;
 import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Repository;
-import org.fossasia.openevent.app.utils.EncryptionUtils;
 
 import javax.inject.Inject;
 
@@ -28,9 +24,6 @@ public class AuthServiceImpl implements AuthService {
     private final AuthHolder authHolder;
     private final Repository repository;
     private final AuthApi authApi;
-
-    @Inject
-    Context context;
 
     @Inject
     public AuthServiceImpl(AuthHolder authHolder, Repository repository, AuthApi authApi) {
