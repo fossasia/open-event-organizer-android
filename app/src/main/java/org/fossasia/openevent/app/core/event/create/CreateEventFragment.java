@@ -61,6 +61,7 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     private Validator validator;
     private ArrayAdapter<CharSequence> currencyAdapter;
     private ArrayAdapter<CharSequence> paymentCountryAdapter;
+    private ArrayAdapter<CharSequence> timezoneAdapter;
     private long eventId = -1;
     private boolean isUpdateEvent;
 
@@ -122,6 +123,10 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         paymentCountryAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
         paymentCountryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timezoneAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
+        timezoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timezoneAdapter.addAll(getTimeZoneList());
+        binding.form.timezoneSpinner.setAdapter(timezoneAdapter);
 
         binding.form.paymentCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -351,8 +356,13 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     public void setEvent(Event event) {
         binding.setEvent(event);
         String paymentCountry = getPresenter().getEvent().getPaymentCountry();
+        String timezone = getPresenter().getEvent().getTimezone();
+
+        int timezoneIndex = timezoneAdapter.getPosition(timezone);
         int countryIndex = paymentCountryAdapter.getPosition(paymentCountry);
+
         binding.form.paymentCountrySpinner.setSelection(countryIndex);
+        binding.form.timezoneSpinner.setSelection(timezoneIndex);
     }
 
     @Override
