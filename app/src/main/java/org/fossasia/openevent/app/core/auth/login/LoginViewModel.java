@@ -9,6 +9,7 @@ import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.auth.AuthService;
+import org.fossasia.openevent.app.data.auth.EncryptionService;
 import org.fossasia.openevent.app.data.auth.model.Login;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.utils.ErrorUtils;
@@ -23,6 +24,8 @@ import io.reactivex.disposables.CompositeDisposable;
 public class LoginViewModel extends ViewModel {
 
     private final AuthService loginModel;
+    private final EncryptionService encryptionService;
+
     private final Login login = new Login();
     private final HostSelectionInterceptor interceptor;
     private final Preferences sharedPreferenceModel;
@@ -34,10 +37,15 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Set<String>> emailList;
 
     @Inject
-    public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor, Preferences sharedPreferenceModel) {
+    public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor, Preferences sharedPreferenceModel, EncryptionService encryptionService) {
         this.loginModel = loginModel;
         this.interceptor = interceptor;
         this.sharedPreferenceModel = sharedPreferenceModel;
+        this.encryptionService = encryptionService;
+    }
+
+    public void encryption() {
+        encryptionService.setEncryption(login);
     }
 
     //for logging into the app
@@ -97,12 +105,12 @@ public class LoginViewModel extends ViewModel {
         compositeDisposable.dispose();
     }
 
-    public String getUserPassword() {
-        return sharedPreferenceModel.getString(Constants.PREF_USER_PASSWORD, "null");
+    public String getDecryptedEmail() {
+        return encryptionService.getEmail();
     }
 
-    public String getUserEmail() {
-        return sharedPreferenceModel.getString(Constants.PREF_USER_EMAIL, "null");
+    public String getDecryptedPassword() {
+        return encryptionService.getUserpassword();
     }
 
 }

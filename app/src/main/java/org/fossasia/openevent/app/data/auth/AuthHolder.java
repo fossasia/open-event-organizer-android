@@ -95,4 +95,12 @@ public final class AuthHolder {
     void saveEncryptedPassword(String password) {
         sharedPreferenceModel.saveString(Constants.PREF_USER_PASSWORD, password);
     }
+
+    public String getEmail() {
+        return sharedPreferenceModel.getString(Constants.PREF_USER_EMAIL, null);
+    }
+
+    public String getPassword() {
+        return sharedPreferenceModel.getString(Constants.PREF_USER_PASSWORD, null);
+    }
 }

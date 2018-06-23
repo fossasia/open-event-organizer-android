@@ -8,6 +8,8 @@ import org.fossasia.openevent.app.data.RxBus;
 import org.fossasia.openevent.app.data.auth.AuthService;
 import org.fossasia.openevent.app.data.Bus;
 import org.fossasia.openevent.app.data.SharedPreferencesImpl;
+import org.fossasia.openevent.app.data.auth.EncryptionService;
+import org.fossasia.openevent.app.data.auth.EncryptionServiceImpl;
 import org.fossasia.openevent.app.data.network.ConnectionStatus;
 import org.fossasia.openevent.app.data.network.ConnectionStatusImpl;
 
@@ -39,4 +41,7 @@ public abstract class ModelModule {
     @Singleton
     abstract AuthService bindsLoginModule(AuthServiceImpl authModel);
 
+    @Binds
+    @Singleton
+    abstract EncryptionService bindsEncryption(EncryptionServiceImpl encryptionModel);
 }

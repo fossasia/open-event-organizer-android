@@ -53,13 +53,6 @@ public class AuthServiceImpl implements AuthService {
                 String token = loginResponse.getAccessToken();
                 authHolder.login(token);
                 authHolder.saveEmail(login.getEmail());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                    authHolder.saveEncryptedEmail(EncryptionUtils.encryptString(context, login.getEmail()));
-                    authHolder.saveEncryptedPassword(EncryptionUtils.encryptString(context, login.getPassword()));
-                } else {
-                    authHolder.saveEncryptedEmail(login.getEmail());
-                    authHolder.saveEncryptedPassword(login.getPassword());
-                }
                 return isPreviousUser();
             })
             .flatMapCompletable(isPrevious -> {
