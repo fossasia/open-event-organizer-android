@@ -1,5 +1,7 @@
-package org.fossasia.openevent.app.core.auth.forgot.submit;
+package org.fossasia.openevent.app.core.auth.reset;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +11,7 @@ import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
-import org.fossasia.openevent.app.core.auth.forgot.request.ForgotPasswordFragment;
+import org.fossasia.openevent.app.core.auth.SharedViewModel;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.databinding.ResetPasswordByTokenFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -17,26 +19,27 @@ import org.fossasia.openevent.app.ui.ViewUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class ResetPasswordByTokenFragment extends BaseFragment<ResetPasswordByTokenPresenter> implements ResetPasswordByTokenView {
+public class ResetPasswordFragment extends BaseFragment implements ResetPasswordView {
 
     @Inject
-    Lazy<ResetPasswordByTokenPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
+    private ResetPasswordViewModel resetPasswordViewModel;
     private ResetPasswordByTokenFragmentBinding binding;
     private Validator validator;
 
-    public static ResetPasswordByTokenFragment newInstance() {
-        return new ResetPasswordByTokenFragment();
+    public static ResetPasswordFragment newInstance() {
+        return new ResetPasswordFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.reset_password_by_token_fragment, container, false);
+        resetPasswordViewModel = ViewModelProviders.of(this, viewModelFactory).get(ResetPasswordViewModel.class);
         validator = new Validator(binding);
         return binding.getRoot();
     }
@@ -44,9 +47,13 @@ public class ResetPasswordByTokenFragment extends BaseFragment<ResetPasswordByTo
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        binding.setSubmitToken(getPresenter().getSubmitToken());
-        getPresenter().start();
+
+        binding.setSubmitToken(resetPasswordViewModel.getSubmitToken());
+
+        resetPasswordViewModel.getProgress().observe(this, this::showProgress);
+        resetPasswordViewModel.getError().observe(this, this::showError);
+        resetPasswordViewModel.getSuccess().observe(this, this::onSuccess);
+        resetPasswordViewModel.getMessage().observe(this, this::showMessage);
 
         binding.btnResetPassword.setOnClickListener(view -> {
             if (!validator.validate())
@@ -60,31 +67,29 @@ public class ResetPasswordByTokenFragment extends BaseFragment<ResetPasswordByTo
             }
 
             String url = binding.url.baseUrl.getText().toString().trim();
-            getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
-            getPresenter().submitRequest();
+            resetPasswordViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
+            resetPasswordViewModel.submitRequest();
         });
 
         binding.loginLink.setOnClickListener(view -> openLoginPage());
 
-        binding.resendTokenLink.setOnClickListener(view -> openForgotPasswordPage());
+        binding.resendTokenLink.setOnClickListener(view -> resendToken());
+    }
+
+    private void resendToken() {
+        SharedViewModel sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        resetPasswordViewModel.requestToken(sharedViewModel.getEmail().getValue());
     }
 
     @Override
     protected int getTitle() {
-        return R.string.forgot_password_link;
+        return R.string.reset_password;
     }
 
     private void openLoginPage() {
         getFragmentManager().beginTransaction()
             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             .replace(R.id.fragment_container, new LoginFragment())
-            .commit();
-    }
-
-    private void openForgotPasswordPage() {
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .replace(R.id.fragment_container, new ForgotPasswordFragment())
             .commit();
     }
 
@@ -106,8 +111,7 @@ public class ResetPasswordByTokenFragment extends BaseFragment<ResetPasswordByTo
     }
 
     @Override
-    public Lazy<ResetPasswordByTokenPresenter> getPresenterProvider() {
-        return presenterProvider;
+    public void showMessage(String message) {
+        ViewUtils.showSnackbar(binding.getRoot(), message);
     }
-
 }

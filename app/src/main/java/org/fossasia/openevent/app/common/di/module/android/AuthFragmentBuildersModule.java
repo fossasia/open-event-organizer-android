@@ -1,7 +1,6 @@
 package org.fossasia.openevent.app.common.di.module.android;
 
-import org.fossasia.openevent.app.core.auth.forgot.request.ForgotPasswordFragment;
-import org.fossasia.openevent.app.core.auth.forgot.submit.ResetPasswordByTokenFragment;
+import org.fossasia.openevent.app.core.auth.reset.ResetPasswordFragment;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.core.auth.signup.SignUpFragment;
 
@@ -12,10 +11,7 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class AuthFragmentBuildersModule {
 
     @ContributesAndroidInjector
-    abstract ForgotPasswordFragment contributeForgotPasswordfragment();
-
-    @ContributesAndroidInjector
-    abstract ResetPasswordByTokenFragment contributeResetPasswordFragment();
+    abstract ResetPasswordFragment contributeResetPasswordFragment();
 
     @ContributesAndroidInjector
     abstract LoginFragment contributeLoginFragment();
