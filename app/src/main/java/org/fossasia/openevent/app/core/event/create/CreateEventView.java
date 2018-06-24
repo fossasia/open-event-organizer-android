@@ -27,6 +27,6 @@ public interface CreateEventView extends Progressive, Erroneous, Successful {
     List<String> getTimeZoneList();
 
     void setDefaultTimeZone(int index);
-    
+
     void setEvent(Event event);
 }
