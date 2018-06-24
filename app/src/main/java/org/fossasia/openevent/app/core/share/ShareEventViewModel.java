@@ -40,7 +40,7 @@ public class ShareEventViewModel extends ViewModel {
                   this.event = event;
                   eventLiveData.setValue(event);
                 },
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
 
         return eventLiveData;
     }

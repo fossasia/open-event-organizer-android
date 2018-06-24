@@ -46,7 +46,7 @@ public class LoginViewModel extends ViewModel {
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(() -> isLoggedIn.setValue(true),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
     public LiveData<String> getError() {
