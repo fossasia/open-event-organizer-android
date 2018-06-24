@@ -83,8 +83,8 @@ public class LoginFragment extends BaseFragment implements LoginView {
     @Override
     public void onResume() {
         super.onResume();
-        binding.emailDropdown.setText(loginFragmentViewModel.getDecryptedEmail());
-        binding.userPassword.setText(loginFragmentViewModel.getDecryptedPassword());
+        binding.emailDropdown.setText(loginFragmentViewModel.getEmail());
+        binding.userPassword.setText(loginFragmentViewModel.getUserpassword());
     }
 
     public void handleIntent() {

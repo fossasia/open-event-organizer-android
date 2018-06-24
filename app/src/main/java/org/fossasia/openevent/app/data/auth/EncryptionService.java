@@ -1,12 +1,9 @@
 package org.fossasia.openevent.app.data.auth;
 
-import org.fossasia.openevent.app.data.auth.model.Login;
+import org.fossasia.openevent.app.data.auth.model.Encryption;
 
 public interface EncryptionService {
 
-    void setEncryption(Login login);
+    void setEncryption(Encryption encryption);
 
-    String getEmail();
-
-    String getUserpassword();
 }

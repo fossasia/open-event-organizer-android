@@ -3,6 +3,8 @@ package org.fossasia.openevent.app.core.auth.login;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
+import android.os.Build;
 
 
 import org.fossasia.openevent.app.BuildConfig;
@@ -10,8 +12,10 @@ import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.auth.AuthService;
 import org.fossasia.openevent.app.data.auth.EncryptionService;
+import org.fossasia.openevent.app.data.auth.model.Encryption;
 import org.fossasia.openevent.app.data.auth.model.Login;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
+import org.fossasia.openevent.app.utils.EncryptionUtils;
 import org.fossasia.openevent.app.utils.ErrorUtils;
 
 import java.util.Set;
@@ -27,6 +31,7 @@ public class LoginViewModel extends ViewModel {
     private final EncryptionService encryptionService;
 
     private final Login login = new Login();
+    private final Encryption encryption = new Encryption();
     private final HostSelectionInterceptor interceptor;
     private final Preferences sharedPreferenceModel;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -37,6 +42,9 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Set<String>> emailList;
 
     @Inject
+    Context context;
+
+    @Inject
     public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor, Preferences sharedPreferenceModel, EncryptionService encryptionService) {
         this.loginModel = loginModel;
         this.interceptor = interceptor;
@@ -45,7 +53,9 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void encryption() {
-        encryptionService.setEncryption(login);
+        encryption.setEmail(login.getEmail());
+        encryption.setPassword(login.getPassword());
+        encryptionService.setEncryption(encryption);
     }
 
     //for logging into the app
@@ -105,12 +115,24 @@ public class LoginViewModel extends ViewModel {
         compositeDisposable.dispose();
     }
 
-    public String getDecryptedEmail() {
-        return encryptionService.getEmail();
+     public String getEmail() {
+        String email;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            email = EncryptionUtils.decryptString(context, sharedPreferenceModel.getString(Constants.PREF_USER_EMAIL, null));
+        } else {
+            email = sharedPreferenceModel.getString(Constants.PREF_USER_EMAIL, null);
+        }
+        return email;
     }
 
-    public String getDecryptedPassword() {
-        return encryptionService.getUserpassword();
+    public String getUserpassword() {
+        String password;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            password = EncryptionUtils.decryptString(context, sharedPreferenceModel.getString(Constants.PREF_USER_PASSWORD, null));
+        } else {
+            password = sharedPreferenceModel.getString(Constants.PREF_USER_PASSWORD, null);
+        }
+        return password;
     }
 
 }
