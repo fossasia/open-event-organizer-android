@@ -46,7 +46,7 @@ public class CreateSpeakersCallViewModel extends ViewModel {
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(var -> success.setValue("Speakers Call Created Successfully"),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void updateSpeakersCall(long eventId) {
@@ -62,14 +62,14 @@ public class CreateSpeakersCallViewModel extends ViewModel {
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(var -> success.setValue("Speakers Call Updated Successfully"),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
     public SpeakersCall loadSpeakersCall(long id, boolean reload) {
         compositeDisposable.add(speakersCallRepository.getSpeakersCall(id, reload)
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
-            .subscribe(speakersCallLive::setValue, throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+            .subscribe(speakersCallLive::setValue, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
         return speakersCallLive.getValue();
     }
 

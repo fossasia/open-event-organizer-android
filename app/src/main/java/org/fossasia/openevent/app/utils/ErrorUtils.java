@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.utils;
 
+import org.fossasia.openevent.app.data.error.Error;
 import org.json.JSONObject;
 
 import okhttp3.ResponseBody;
@@ -11,6 +12,7 @@ public final class ErrorUtils {
     public static final String SOURCE = "source";
     public static final String POINTER = "pointer";
     public static final String DETAIL = "detail";
+    public static final String TITLE = "title";
 
     public static final int POINTER_LENGTH = 3;
 
@@ -22,38 +24,66 @@ public final class ErrorUtils {
     public static final int REQUEST_TIMEOUT = 408;
     public static final int UNPROCESSABLE_ENTITY = 422;
 
-    private ErrorUtils() {
+    public ErrorUtils() {
         // Never Called
     }
 
-    public static String getMessage(Throwable throwable) {
+    public static Error getMessage(Throwable throwable) {
+        Error error = new Error();
         if (throwable instanceof HttpException) {
-            switch (((HttpException) throwable).code()) {
-                case BAD_REQUEST:
-                    return "Something went wrong! Please check any empty field of a form.";
-                case UNAUTHORIZED:
-                    return "Invalid Credentials! Please check your credentials.";
-                case FORBIDDEN:
-                    return "Sorry, you are not authorized to make this request.";
-                case NOT_FOUND:
-                    return "Sorry, we couldn't find what you were looking for.";
-                case METHOD_NOT_ALLOWED:
-                    return "Sorry, this request is not allowed.";
-                case REQUEST_TIMEOUT:
-                    return "Sorry, request timeout. Please retry after some time.";
-                case UNPROCESSABLE_ENTITY:
-                    ResponseBody responseBody = ((HttpException) throwable).response().errorBody();
-                    return getErrorDetails(responseBody);
-                default:
-                    return throwable.getMessage();
+            int errorCode = ((HttpException) throwable).code();
+
+            if (errorCode == BAD_REQUEST || errorCode == UNAUTHORIZED || errorCode == FORBIDDEN || errorCode == NOT_FOUND ||
+                errorCode == METHOD_NOT_ALLOWED || errorCode == REQUEST_TIMEOUT) {
+                error = getErrorTitleAndDetails(throwable);
+            } else if (errorCode == UNPROCESSABLE_ENTITY) {
+                error = getErrorDetails(throwable);
+            } else {
+                error.setDetail(throwable.getMessage());
+                return error;
             }
-        } else {
-            return throwable.getMessage();
         }
+
+        if (Utils.isEmpty(error.getDetail()))
+            error.setDetail(throwable.getMessage());
+
+        return error;
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public static String getErrorDetails(ResponseBody responseBody) {
+    public static Error getErrorDetails(Throwable throwable) {
+        Error error = new Error();
+        ResponseBody responseBody = ((HttpException) throwable).response().errorBody();
+
+        try {
+            JSONObject jsonObject = new JSONObject(responseBody.string());
+            JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
+            JSONObject errorSource = new JSONObject(jsonArray.get(SOURCE).toString());
+
+            try {
+                String pointedField = getPointedField(errorSource.getString(POINTER));
+                if (pointedField == null) {
+                    error.setDetail(jsonArray.get(DETAIL).toString());
+                } else {
+                    error.setPointer(pointedField);
+                    error.setDetail(jsonArray.get(DETAIL).toString().replace(".", ""));
+                }
+
+            } catch (Exception e) {
+                error.setDetail(jsonArray.get(DETAIL).toString());
+            }
+
+        } catch (Exception e) {
+            // Do nothing
+        }
+        return error;
+    }
+
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    public static Error getErrorTitleAndDetails(Throwable throwable) {
+        Error error = new Error();
+        ResponseBody responseBody = ((HttpException) throwable).response().errorBody();
+
         try {
             JSONObject jsonObject = new JSONObject(responseBody.string());
             JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
@@ -62,17 +92,23 @@ public final class ErrorUtils {
             try {
                 String pointedField = getPointedField(errorSource.getString(POINTER));
 
-                if (pointedField == null)
-                    return jsonArray.get(DETAIL).toString();
-                else
-                    return jsonArray.get(DETAIL).toString().replace(".", "") + ": " + pointedField;
+                if (pointedField == null) {
+                    error.setDetail(jsonArray.get(DETAIL).toString());
+                } else {
+                    error.setPointer(pointedField);
+                    error.setDetail(jsonArray.get(DETAIL).toString().replace(".", ""));
+                }
+                error.setTitle(jsonArray.get(TITLE).toString());
+
             } catch (Exception e) {
-                return jsonArray.get(DETAIL).toString();
+                error.setTitle(jsonArray.get(TITLE).toString());
+                error.setDetail(jsonArray.get(DETAIL).toString());
             }
 
         } catch (Exception e) {
-            return null;
+            // Do Nothing
         }
+        return error;
     }
 
     public static String getPointedField(String pointerString) {
