@@ -29,7 +29,7 @@ public class CountryPreference extends DialogPreference {
 
     @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {
-        return a.getInt(index,0);
+        return a.getInt(index, 0);
     }
 
     public int getCountry() {
