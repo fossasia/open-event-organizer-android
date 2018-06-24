@@ -3,7 +3,6 @@ package org.fossasia.openevent.app.core.auth.login;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.os.Build;
 
 
@@ -41,10 +40,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Boolean> isLoggedIn;
     private MutableLiveData<Set<String>> emailList;
 
-    @Inject
-    Context context;
-
-    @Inject
+   @Inject
     public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor, Preferences sharedPreferenceModel, EncryptionService encryptionService) {
         this.loginModel = loginModel;
         this.interceptor = interceptor;
@@ -118,7 +114,7 @@ public class LoginViewModel extends ViewModel {
      public String getEmail() {
         String email;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            email = EncryptionUtils.decryptString(context, sharedPreferenceModel.getString(Constants.PREF_USER_EMAIL, null));
+            email = EncryptionUtils.decryptString(encryption.getContext(), sharedPreferenceModel.getString(Constants.PREF_USER_EMAIL, null));
         } else {
             email = sharedPreferenceModel.getString(Constants.PREF_USER_EMAIL, null);
         }
@@ -128,7 +124,7 @@ public class LoginViewModel extends ViewModel {
     public String getUserpassword() {
         String password;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            password = EncryptionUtils.decryptString(context, sharedPreferenceModel.getString(Constants.PREF_USER_PASSWORD, null));
+            password = EncryptionUtils.decryptString(encryption.getContext(), sharedPreferenceModel.getString(Constants.PREF_USER_PASSWORD, null));
         } else {
             password = sharedPreferenceModel.getString(Constants.PREF_USER_PASSWORD, null);
         }
