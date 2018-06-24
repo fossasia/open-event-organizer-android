@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.session.list;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +41,10 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     private long trackId;
     private long eventId;
     private boolean deletingMode;
+    private boolean editMode;
     private AlertDialog deleteDialog;
+    private ActionMode actionMode;
+    private int statusBarColor;
 
     @Inject
     ContextUtils utilModel;
@@ -64,9 +69,7 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        deletingMode = false;
         context = getContext();
-        setHasOptionsMenu(true);
 
         if (getArguments() != null) {
             trackId = getArguments().getLong(TRACK_KEY);
@@ -101,6 +104,14 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     }
 
     @Override
+    public void openUpdateSessionFragment(long sessionId) {
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, CreateSessionFragment.newInstance(trackId, eventId, sessionId))
+            .addToBackStack(null)
+            .commit();
+    }
+
+    @Override
     protected int getTitle() {
         return R.string.session;
     }
@@ -129,34 +140,71 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
         });
     }
 
+    public ActionMode.Callback actionCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_sessions, menu);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //hold current color of status bar
+                statusBarColor = getActivity().getWindow().getStatusBarColor();
+                //set the default color
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.color_top_surface));
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            MenuItem menuItemDelete = menu.findItem(R.id.del);
+            MenuItem menuItemEdit = menu.findItem(R.id.edit);
+            menuItemEdit.setVisible(editMode);
+            menuItemDelete.setVisible(deletingMode);
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.del:
+                    showDeleteDialog();
+                    break;
+                case R.id.edit:
+                    getPresenter().updateSession();
+                    break;
+                default:
+                    return false;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode.finish();
+            getPresenter().resetToolbarToDefaultState();
+            getPresenter().unselectSessionList();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //return to "old" color of status bar
+                getActivity().getWindow().setStatusBarColor(statusBarColor);
+            }
+        }
+    };
+
+    @Override
+    public void enterContextualMenuMode() {
+        actionMode = getActivity().startActionMode(actionCallback);
+    }
+
+    @Override
+    public void exitContextualMenuMode() {
+        if (actionMode != null)
+            actionMode.finish();
+    }
+
     @Override
     public Lazy<SessionsPresenter> getPresenterProvider() {
         return sessionsPresenter;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.del:
-                showDeleteDialog();
-                break;
-            default:
-                // No implementation
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem menuItem = menu.findItem(R.id.del);
-        menuItem.setVisible(deletingMode);
-    }
-
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_sessions, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     public void showDeleteDialog() {
@@ -167,7 +215,6 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
                     getString(R.string.session)))
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                     getPresenter().deleteSelectedSessions();
-                    resetToolbar();
                 })
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {
                     dialog.dismiss();
@@ -178,15 +225,12 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     }
 
     @Override
-    public void changeToDeletingMode() {
-        deletingMode = true;
-        getActivity().invalidateOptionsMenu();
-    }
+    public void changeToolbarMode(boolean editMode, boolean deleteMode) {
+        this.editMode = editMode;
+        this.deletingMode = deleteMode;
 
-    @Override
-    public void resetToolbar() {
-        deletingMode = false;
-        getActivity().invalidateOptionsMenu();
+        if (actionMode != null)
+            actionMode.invalidate();
     }
 
     @Override

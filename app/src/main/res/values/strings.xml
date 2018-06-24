@@ -32,7 +32,7 @@
     <string name="event_title_here">Event Title Here</string>
     <string name="title_feedbacks">Feedbacks</string>
     <string name="feedback">Feedback</string>
-    <string name="forgot_password_link">Forgot Password</string>
+    <string name="forgot_password_link">I forgot my password</string>
     <string name="speaker_details">Speaker Details</string>
 
     <!-- Place Holders -->
@@ -80,8 +80,9 @@
     <string name="dashboard">Dashboard</string>
     <string name="attendees">Attendees</string>
     <string name="events">Events</string>
+    <string name="nav_events">My Events</string>
     <string name="log_out">Log Out</string>
-    <string name="settings">Settings</string>
+    <string name="device_settings">Device Settings</string>
     <string name="event_background">Event Background</string>
     <string name="create_ticket">Create Ticket</string>
     <string name="ticket_name">Ticket Name</string>
@@ -155,7 +156,7 @@
     <string name="accept_payment_by_bank_transfer">Accept Payment By Bank Transfer</string>
     <string name="enter_your_bank_details">Enter your Bank Details</string>
     <string name="enter_your_onsite_details">Enter your onsite details</string>
-    <string name="accept_payment_at_the_event_onsite">Accept Payment at the event (onsite)</string>
+    <string name="accept_payment_at_the_event_onsite">Accept Payment at the event site</string>
     <string name="graphics">Graphics</string>
     <string name="logo_url">Logo Url</string>
     <string name="original_image_url">Original Image Url</string>
@@ -214,7 +215,7 @@
     <string name="pick_from_map">Pick from Map</string>
     <string name="save_icon">Save Icon</string>
     <string name="use_date_time_picker">Use Picker</string>
-    <string name="welcome">Hi, Organiser!</string>
+    <string name="welcome">Let\'s get started</string>
     <string name="delete_copyright">Delete Copyright</string>
     <string name="year_validation_error">Please Enter a Valid Year</string>
     <string name="delete_confirmation_message">Are you sure you want to delete the %s?</string>
@@ -238,22 +239,52 @@
     <string name="subtitle">Subtitle</string>
     <string name="title">Title</string>
     <string name="session_abstract">Abstract</string>
+    <string name="speakers_call">Speakers Call</string>
     <string name="speakers_photo">Speaker\'s Photo</string>
+    <string name="announcement">Announcement</string>
     <string name="edit_event">Edit Event</string>
     <string name="update_event">Update Event</string>
     <string name="edit_sponsor">Edit Sponsor</string>
     <string name="delete_sponsor">Delete Sponsor</string>
     <string name="send_to">Send To</string>
     <string name="share">Share</string>
+    <string name="check_in_summary">CHECK IN SUMMARY</string>
+    <string name="check_in_time">TIME</string>
     <string name="event_state_live">Live</string>
     <string name="event_state_past">Past</string>
     <string name="event_state_upcoming">Upcoming</string>
+    <string name="update_session">Update Session</string>
     <string name="facebook_icon">Facebook Icon</string>
     <string name="linkedin_icon">LinkedIn icon</string>
     <string name="twitter_icon">Twitter Icon</string>
     <string name="github_icon">Github Icon</string>
     <string name="domain_icon">Domain Icon</string>
     <string name="speaker_details_activity">Speaker Details Activity</string>
+    <string name="orders">Orders</string>
+    <string name="create_speakers_call">Create Speakers Call</string>
+    <string name="privacy">Privacy</string>
+    <string name="hash">Hash</string>
+    <string name="other_url">Other URL</string>
+    <string name="device_name">Device Name</string>
+    <string name="device_name_summary">Name your device to track check-ins and sales processed by this device in your Open Event account</string>
+    <string name="event_settings">Event Settings</string>
+    <string name="event_payment_preferences">Payment Preferences</string>
+    <string name="use_payment_prefs">Use Payment Preferences</string>
+    <string name="using_payment_preferences">Using Payment Preferences when creating events</string>
+    <string name="not_using_payment_preferences">Not using Payment Preferences when creating events</string>
+    <string name="bank_details">Bank Details</string>
+    <string name="cheque_details">Cheque Details</string>
+    <string name="onsite_details">OnSite Details</string>
+    <string name="default_payment_country">Select the default Payment Country</string>
+    <string name="payment_preference">Payment Preferences</string>
+    <string name="order_details">Order Details</string>
+    <string name="order_identifier">Order Identifier</string>
+    <string name="scan_settings">Scan Settings</string>
+    <string name="check_out">Check Out</string>
+    <string name="check_in_settings_summary">Scanning will scan check attendees in</string>
+    <string name="check_out_settings_summary">Scanning will scan check attendees out</string>
+    <string name="validate_settings_summary">Scanning will check if a ticket is valid</string>
+    <string name="validate">Validate</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
@@ -838,6 +869,13 @@
         <item>W-SU</item>
         <item>WET</item>
         <item>Zulu</item>
+    </string-array>
+
+    <string-array name="sessions_state">
+        <item>draft</item>
+        <item>accepted</item>
+        <item>pending</item>
+        <item>confirmed</item>
     </string-array>
 
 </resources>

@@ -33,7 +33,9 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
     private final Map<Long, ObservableBoolean> selectedSessions = new ConcurrentHashMap<>();
     private final SessionRepository sessionRepository;
     private final DatabaseChangeListener<Session> sessionChangeListener;
-    private boolean isToolbarActive;
+    private boolean isContextualModeActive;
+
+    private static final int EDITABLE_AT_ONCE = 1;
 
     @Inject
     public SessionsPresenter(SessionRepository sessionRepository, DatabaseChangeListener<Session> sessionChangeListener) {
@@ -51,7 +53,6 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
     public void detach() {
         super.detach();
         sessionChangeListener.stopListening();
-        selectedSessions.clear();
     }
 
     public void loadSessions(boolean forceReload) {
@@ -76,7 +77,8 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
         sessionChangeListener.getNotifier()
             .compose(dispose(getDisposable()))
             .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.DELETE))
+            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.UPDATE) ||
+                action.equals(BaseModel.Action.DELETE))
             .subscribeOn(Schedulers.io())
             .subscribe(sessionModelChange -> loadSessions(false), Logger::logError);
     }
@@ -114,31 +116,60 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
             }, Logger::logError);
     }
 
+    public void updateSession() {
+        for (Long id : selectedSessions.keySet()) {
+            if (selectedSessions.get(id).get()) {
+                getView().openUpdateSessionFragment(id);
+                selectedSessions.get(id).set(false);
+                resetToolbarToDefaultState();
+                return;
+            }
+        }
+    }
+
     public void longClick(Session clickedSession) {
-        if (isToolbarActive)
+        if (isContextualModeActive)
             click(clickedSession.getId());
         else {
             selectedSessions.get(clickedSession.getId()).set(true);
-            isToolbarActive = true;
-            getView().changeToDeletingMode();
+            isContextualModeActive = true;
+            getView().enterContextualMenuMode();
+            getView().changeToolbarMode(true, true);
         }
     }
 
     public void click(Long clickedSessionId) {
-        if (isToolbarActive) {
+        if (isContextualModeActive) {
             if (countSelected() == 1 && isSessionSelected(clickedSessionId).get()) {
                 selectedSessions.get(clickedSessionId).set(false);
                 resetToolbarToDefaultState();
-            } else if (isSessionSelected(clickedSessionId).get())
+            } else if (countSelected() == 2 && isSessionSelected(clickedSessionId).get()) {
                 selectedSessions.get(clickedSessionId).set(false);
-            else
+                getView().changeToolbarMode(true, true);
+            } else if (isSessionSelected(clickedSessionId).get()) {
+                selectedSessions.get(clickedSessionId).set(false);
+            } else {
                 selectedSessions.get(clickedSessionId).set(true);
+            }
+
+            if (countSelected() > EDITABLE_AT_ONCE) {
+                getView().changeToolbarMode(false, true);
+            }
+
         }
     }
 
     public void resetToolbarToDefaultState() {
-        isToolbarActive = false;
-        getView().resetToolbar();
+        isContextualModeActive = false;
+        getView().changeToolbarMode(false, false);
+        getView().exitContextualMenuMode();
+    }
+
+    public void unselectSessionList() {
+        for (Long sessionId  : selectedSessions.keySet()) {
+            if (sessionId != null && selectedSessions.containsKey(sessionId))
+                selectedSessions.get(sessionId).set(false);
+        }
     }
 
     public ObservableBoolean isSessionSelected(Long sessionId) {

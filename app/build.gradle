@@ -112,7 +112,7 @@ dependencies {
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
     implementation "com.google.android.gms:play-services-vision:${versions.play_services}"
     implementation "com.google.android.gms:play-services-places:${versions.play_services}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"
@@ -196,6 +196,9 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:${versions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+
+    //colorpicker
+    implementation 'com.pes.materialcolorpicker:library:1.2.0'
 
     //Testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.data.tracks.Track;
@@ -25,6 +26,7 @@ import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 public class UpdateTrackFragment extends BaseBottomSheetFragment<UpdateTrackPresenter> implements UpdateTrackView {
 
     private static final String TRACK_ID = "id";
+    private ColorPicker colorPickerDialog;
 
     @Inject
     Lazy<UpdateTrackPresenter> presenterProvider;
@@ -64,9 +66,27 @@ public class UpdateTrackFragment extends BaseBottomSheetFragment<UpdateTrackPres
         getPresenter().loadTrack(trackId);
     }
 
+    private void setColorPicker() {
+        if (colorPickerDialog == null)
+            colorPickerDialog = new ColorPicker(getActivity(), getPresenter().getRed(), getPresenter().getGreen(), getPresenter().getBlue());
+
+        binding.form.colorPicker.setBackgroundColor(getPresenter().getColorRGB());
+
+        binding.form.colorPicker.setOnClickListener(view -> {
+            colorPickerDialog.show();
+        });
+
+        colorPickerDialog.setCallback(color -> {
+            binding.form.trackColor.setText(String.format("#%06X", 0xFFFFFF & color));
+            binding.form.colorPicker.setBackgroundColor(color);
+            colorPickerDialog.dismiss();
+        });
+    }
+
     @Override
     public void setTrack(Track track) {
         binding.setTrack(track);
+        setColorPicker();
     }
 
     @Override

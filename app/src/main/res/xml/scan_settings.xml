@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="check_in"
+        android:title="@string/check_in"
+        android:defaultValue="true"
+        android:summary="@string/check_in_settings_summary" />
+
+    <CheckBoxPreference
+        android:key="check_out"
+        android:title="@string/check_out"
+        android:defaultValue="false"
+        android:summary="@string/check_out_settings_summary" />
+
+    <CheckBoxPreference
+        android:key="validate"
+        android:title="@string/validate"
+        android:defaultValue="false"
+        android:summary="@string/validate_settings_summary" />
+
+</PreferenceScreen>

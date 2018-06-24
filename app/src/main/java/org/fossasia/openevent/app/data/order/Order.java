@@ -4,24 +4,31 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
+import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
+import org.fossasia.openevent.app.data.event.Event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
-@Type("order")
 @Builder
+@Type("order")
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@ToString(exclude = {"event"})
+@JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Order {
+
     @PrimaryKey
     @Id(LongIdHandler.class)
     public Long id;
@@ -48,6 +55,10 @@ public class Order {
     public String discountCodeId;
     public String brand;
     public String last4;
+
+    @Relationship("event")
+    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
+    public Event event;
 
     public Order() { }
 }

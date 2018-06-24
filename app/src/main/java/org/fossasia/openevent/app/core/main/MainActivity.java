@@ -1,10 +1,13 @@
 package org.fossasia.openevent.app.core.main;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,11 +27,21 @@ import org.fossasia.openevent.app.ui.ViewUtils;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
-public class MainActivity extends BaseInjectActivity<MainPresenter> implements NavigationView.OnNavigationItemSelectedListener, MainView {
+public class MainActivity extends BaseInjectActivity<MainPresenter> implements
+    NavigationView.OnNavigationItemSelectedListener, MainView, HasSupportFragmentInjector {
 
     public static final String EVENT_KEY = "event";
     private long eventId = -1;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     @Inject
     Lazy<MainPresenter> presenterProvider;
@@ -38,6 +51,8 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
 
     private MainActivityBinding binding;
     private MainNavHeaderBinding headerBinding;
+    private OrganizerViewModel organizerViewModel;
+    private EventViewModel eventViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +60,9 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
         headerBinding = MainNavHeaderBinding.bind(binding.navView.getHeaderView(0));
+
+        organizerViewModel = ViewModelProviders.of(this, viewModelFactory).get(OrganizerViewModel.class);
+        eventViewModel = ViewModelProviders.of(this, viewModelFactory).get(EventViewModel.class);
 
         setSupportActionBar(binding.main.toolbar);
 
@@ -67,6 +85,13 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
         super.onStart();
         getPresenter().attach(this);
         getPresenter().start();
+
+        organizerViewModel.getOrganizer().observe(this, this::showOrganizer);
+        eventViewModel.getEventId().observe(this, this::setEventId);
+        eventViewModel.getSelectedEvent().observe(this, this::showResult);
+        eventViewModel.getError().observe(this, this::showError);
+        eventViewModel.getShowDashboard().observe(this, aVoid -> this.showDashboard());
+        eventViewModel.getShowEventList().observe(this, aVoid -> this.showEventList());
     }
 
     @Override
@@ -108,6 +133,11 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements N
         this.eventId = eventId;
         fragmentNavigator.setEventId(eventId);
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, true);
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return dispatchingAndroidInjector;
     }
 
     @Override

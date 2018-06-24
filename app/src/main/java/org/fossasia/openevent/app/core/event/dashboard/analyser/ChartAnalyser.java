@@ -6,10 +6,14 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.EntryXComparator;
 
 import org.fossasia.openevent.app.R;
@@ -32,6 +36,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 
+@SuppressWarnings("PMD.TooManyFields")
 public class ChartAnalyser {
 
     private static final int TICKET_SALE_THRESHOLD = 5;
@@ -42,17 +47,23 @@ public class ChartAnalyser {
     private final Map<String, Long> freeMap = new ConcurrentHashMap<>();
     private final Map<String, Long> paidMap = new ConcurrentHashMap<>();
     private final Map<String, Long> donationMap = new ConcurrentHashMap<>();
+    private final Map<Integer, Long> checkInTimeMap = new ConcurrentHashMap<>();
 
     private final LineData lineData = new LineData();
 
     private LineDataSet freeSet;
     private LineDataSet paidSet;
     private LineDataSet donationSet;
+    private LineDataSet checkInDataSet;
 
     private long maxTicketSale;
 
     private List<Attendee> attendees;
     private boolean error;
+    private boolean isCheckinChart;
+    String[] values = new String[] {"00:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00",
+        "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00",
+        "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
 
     @Inject
     protected ChartAnalyser(ContextUtils utilModel, AttendeeRepositoryImpl attendeeRepository) {
@@ -74,6 +85,7 @@ public class ChartAnalyser {
         freeMap.clear();
         paidMap.clear();
         donationMap.clear();
+        checkInTimeMap.clear();
 
         lineData.clearValues();
         maxTicketSale = 0;
@@ -88,6 +100,7 @@ public class ChartAnalyser {
 
     public Completable loadData(long eventId) {
         clearData();
+        isCheckinChart = false;
         return getAttendeeSource(eventId)
             .doOnNext(attendee -> {
                 Order order = attendee.getOrder();
@@ -99,13 +112,13 @@ public class ChartAnalyser {
                 String date = order.getCompletedAt();
                 switch (attendee.getTicket().getType()) {
                     case TicketAnalyser.TICKET_FREE:
-                        addDataPoint(freeMap, date);
+                        addDataPointForSales(freeMap, date);
                         break;
                     case TicketAnalyser.TICKET_DONATION:
-                        addDataPoint(donationMap, date);
+                        addDataPointForSales(donationMap, date);
                         break;
                     case TicketAnalyser.TICKET_PAID:
-                        addDataPoint(paidMap, date);
+                        addDataPointForSales(paidMap, date);
                         break;
                     default:
                         // No action
@@ -117,11 +130,32 @@ public class ChartAnalyser {
             .doOnComplete(() -> {
                 if (error) throw new IllegalAccessException("No order found");
                 normalizeDataSet();
-                freeSet = setData(freeMap, "Free");
-                paidSet = setData(paidMap, "Paid");
-                donationSet = setData(donationMap, "Donation");
+                freeSet = setDataForSales(freeMap, "Free");
+                paidSet = setDataForSales(paidMap, "Paid");
+                donationSet = setDataForSales(donationMap, "Donation");
                 prepare();
             });
+    }
+
+    public Completable loadDataCheckIn(long eventId) {
+        clearData();
+        isCheckinChart = true;
+        return getAttendeeSource(eventId).doOnNext(attendee -> {
+           String checkInTime = attendee.getCheckinTimes();
+           int length = checkInTime.split(",").length;
+           String latestCheckInTime = checkInTime.split(",")[length - 1];
+           error = checkInTime == null ? true : false;
+           addDataPointForCheckIn(checkInTimeMap, latestCheckInTime);
+        })
+          .toList()
+          .doAfterSuccess(attendees -> this.attendees = attendees)
+          .toCompletable()
+          .doOnComplete(() -> {
+              if (error)
+                  throw new IllegalAccessException("No checkin's found");
+              checkInDataSet = setDataForCheckIn(checkInTimeMap, "check-in time");
+              prepare();
+          });
     }
 
     private void putIfNotPresent(Map<String, Long> map, String key) {
@@ -143,7 +177,7 @@ public class ChartAnalyser {
     }
 
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
-    private LineDataSet setData(Map<String, Long> map, String label) throws ParseException {
+    private LineDataSet setDataForSales(Map<String, Long> map, String label) throws ParseException {
         List<Entry> entries = new ArrayList<>();
         for (Map.Entry<String, Long> entry : map.entrySet()) {
             String date = DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, entry.getKey());
@@ -159,7 +193,20 @@ public class ChartAnalyser {
         return new LineDataSet(entries, label);
     }
 
-    private void addDataPoint(Map<String, Long> map, String dateString) {
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
+    private LineDataSet setDataForCheckIn(Map<Integer, Long> map, String label) throws ParseException {
+        List<Entry> entries = new ArrayList<>();
+        for (Map.Entry<Integer, Long> entry : map.entrySet()) {
+            entries.add(new Entry(entry.getKey(), entry.getValue()));
+        }
+        Collections.sort(entries, new EntryXComparator());
+
+        // Add a starting point 2 hrs ago
+        entries.add(0, new Entry(entries.get(0).getX() - 2, 0));
+        return new LineDataSet(entries, label);
+    }
+
+    private void addDataPointForSales(Map<String, Long> map, String dateString) {
         Long amount = map.get(dateString);
         if (amount == null)
             amount = 0L;
@@ -170,13 +217,23 @@ public class ChartAnalyser {
         map.put(dateString, amount);
     }
 
+    private void addDataPointForCheckIn(Map<Integer, Long> map, String dateString) {
+        int hour = DateUtils.getDate(dateString).getHour();
+        Long numberOfCheckins = map.get(hour);
+
+        if (numberOfCheckins == null)
+            numberOfCheckins = 0L;
+
+        map.put(hour, ++numberOfCheckins);
+    }
+
     @ColorInt
     private int getColor(@ColorRes int colorId) {
         return utilModel.getResourceColor(colorId);
     }
 
     private void initializeLineSet(LineDataSet lineSet, @ColorRes int color, @ColorRes int fill) {
-        lineSet.setLineWidth(4);
+        lineSet.setLineWidth(2);
         lineSet.setColor(getColor(color));
         lineSet.setCircleColor(getColor(color));
         lineSet.setCircleColorHole(getColor(fill));
@@ -185,14 +242,19 @@ public class ChartAnalyser {
     }
 
     private void prepare() {
-        initializeLineSet(freeSet, R.color.light_blue_500, R.color.light_blue_100);
-        initializeLineSet(paidSet, R.color.purple_500, R.color.purple_100);
-        initializeLineSet(donationSet, R.color.red_500, R.color.red_100);
-
-        lineData.addDataSet(freeSet);
-        lineData.addDataSet(paidSet);
-        lineData.addDataSet(donationSet);
-        lineData.setDrawValues(false);
+        if (isCheckinChart) {
+            initializeLineSet(checkInDataSet, R.color.light_blue_500, R.color.light_blue_100);
+            lineData.addDataSet(checkInDataSet);
+        } else {
+            initializeLineSet(freeSet, R.color.light_blue_500, R.color.light_blue_100);
+            initializeLineSet(paidSet, R.color.purple_500, R.color.purple_100);
+            initializeLineSet(donationSet, R.color.red_500, R.color.red_100);
+            lineData.addDataSet(freeSet);
+            lineData.addDataSet(paidSet);
+            lineData.addDataSet(donationSet);
+            lineData.setDrawValues(false);
+        }
+    lineData.setDrawValues(false);
     }
 
     @SuppressFBWarnings(
@@ -200,16 +262,38 @@ public class ChartAnalyser {
         justification = "We want granularity to be integer")
     public void showChart(LineChart lineChart) {
         lineChart.setData(lineData);
-        lineChart.getXAxis().setEnabled(false);
+        lineChart.getXAxis().setEnabled(true);
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getDescription().setEnabled(false);
+        lineChart.getLegend().setEnabled(false);
 
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setGridLineWidth(1);
         yAxis.setGridColor(Color.parseColor("#992ecc71"));
-        if (maxTicketSale > TICKET_SALE_THRESHOLD)
-            yAxis.setGranularity(maxTicketSale / TICKET_SALE_THRESHOLD);
+        if (!isCheckinChart)
+            if (maxTicketSale > TICKET_SALE_THRESHOLD)
+                yAxis.setGranularity(maxTicketSale / TICKET_SALE_THRESHOLD);
+        else {
+            XAxis xAxis = lineChart.getXAxis();
+            xAxis.setValueFormatter(new MyAxisValueFormatter());
+            yAxis.setGranularity(1);
+            lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+            lineChart.getXAxis().setGranularity(1f);
+        }
 
+        Description description = new Description();
+        description.setText("");
+        lineChart.setDescription(description);
         lineChart.animateY(1000);
+    }
+
+    public class MyAxisValueFormatter implements IAxisValueFormatter {
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            if (value < 0)
+                return values[24 + (int) value];
+            return values[(int) value];
+        }
     }
 }

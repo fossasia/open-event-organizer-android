@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -13,6 +15,9 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,6 +37,7 @@ import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.databinding.EventCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.utils.Utils;
 import org.fossasia.openevent.app.utils.ValidateUtils;
 
 import java.util.Arrays;
@@ -154,6 +160,42 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share_event:
+                shareEvent();
+                break;
+            default:
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.action_share_event);
+        Drawable shareIcon = menu.findItem(R.id.action_share_event).getIcon();
+        shareIcon.setColorFilter(getResources().getColor(android.R.color.black), PorterDuff.Mode.SRC_ATOP);
+        if (isUpdateEvent)
+            menuItem.setVisible(true);
+        else
+            menuItem.setVisible(false);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_share, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public void shareEvent() {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(getPresenter().getEvent()));
+        shareIntent.setType("text/plain");
+        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+    }
+
+    @Override
     public void validate(TextInputLayout textInputLayout, Function<String, Boolean> validationReference, String errorResponse) {
         textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
 
@@ -190,9 +232,11 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     }
 
     @Override
-    public void attachCountryList(List<String> countryList) {
+    public void attachCountryList(List<String> countryList, int countryIndex) {
         paymentCountryAdapter.addAll(countryList);
         binding.form.paymentCountrySpinner.setAdapter(paymentCountryAdapter);
+        if (!isUpdateEvent)
+            binding.form.paymentCountrySpinner.setSelection(countryIndex);
     }
 
     @Override
@@ -234,11 +278,6 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     @Override
     public void setDefaultTimeZone(int index) {
         binding.form.timezoneSpinner.setSelection(index);
-    }
-
-    @Override
-    public void setDefaultCountry(int index) {
-        binding.form.paymentCountrySpinner.setSelection(index);
     }
 
     private void setupPlacePicker() {
@@ -311,5 +350,17 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     @Override
     public void setEvent(Event event) {
         binding.setEvent(event);
+        String paymentCountry = getPresenter().getEvent().getPaymentCountry();
+        int countryIndex = paymentCountryAdapter.getPosition(paymentCountry);
+        binding.form.paymentCountrySpinner.setSelection(countryIndex);
+    }
+
+    @Override
+    public void setPaymentBinding(Event event) {
+        binding.form.paypalPayment.setChecked(event.canPayByPaypal);
+        binding.form.stripePayment.setChecked(event.canPayByStripe);
+        binding.form.bankPayment.setChecked(event.canPayByBank);
+        binding.form.chequePayment.setChecked(event.canPayByCheque);
+        binding.form.onsitePayment.setChecked(event.canPayOnsite);
     }
 }

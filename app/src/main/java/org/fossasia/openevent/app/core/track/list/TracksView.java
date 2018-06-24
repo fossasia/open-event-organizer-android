@@ -18,4 +18,7 @@ public interface TracksView extends Progressive, Erroneous, Refreshable, Emptiab
 
     void changeToolbarMode(boolean toolbarEdit, boolean toolbarDelete);
 
+    void exitContextualMenuMode();
+
+    void enterContextualMenuMode();
 }

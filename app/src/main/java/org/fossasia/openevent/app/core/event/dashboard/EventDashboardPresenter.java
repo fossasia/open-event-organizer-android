@@ -56,7 +56,8 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
         if (getView() == null)
             return;
 
-        loadChart();
+        loadSalesChart();
+        loadCheckInTimesChart();
         getEventSource(forceReload)
             .compose(dispose(getDisposable()))
             .compose(result(getView()))
@@ -73,7 +74,8 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
 
                 if (forceReload) {
                     chartAnalyser.reset();
-                    loadChart();
+                    loadSalesChart();
+                    loadCheckInTimesChart();
                 }
             }, Logger::logError);
 
@@ -107,13 +109,24 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
         }
     }
 
-    private void loadChart() {
+    private void loadSalesChart() {
+        chartAnalyser.showChart(getView().getSalesChartView());
         chartAnalyser.loadData(getId())
             .compose(disposeCompletable(getDisposable()))
             .subscribe(() -> {
-                getView().showChart(true);
-                chartAnalyser.showChart(getView().getChartView());
-            }, throwable -> getView().showChart(false));
+                getView().showChartSales(true);
+                chartAnalyser.showChart(getView().getSalesChartView());
+            }, throwable -> getView().showChartSales(false));
+    }
+
+    private void loadCheckInTimesChart() {
+        chartAnalyser.showChart(getView().getCheckinTimeChartView());
+        chartAnalyser.loadDataCheckIn(getId())
+            .compose(disposeCompletable(getDisposable()))
+            .subscribe(() -> {
+                getView().showChartCheckIn(true);
+                chartAnalyser.showChart(getView().getCheckinTimeChartView());
+            }, throwable -> getView().showChartCheckIn(false));
     }
 
     private Observable<Event> getEventSource(boolean forceReload) {

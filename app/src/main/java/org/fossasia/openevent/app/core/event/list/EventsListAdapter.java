@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.event.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -33,6 +34,8 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
     private final Bus bus;
     private final EventsPresenter eventsPresenter;
     private boolean sortByName;
+
+    private boolean isLongPressed;
 
     EventsListAdapter(List<Event> events, Bus bus, EventsPresenter eventsPresenter) {
         this.events = events;
@@ -77,8 +80,8 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
         EventLayoutBinding binding = EventLayoutBinding.inflate(layoutInflater, parent, false);
         EventRecyclerViewHolder eventRecyclerViewHolder = new EventRecyclerViewHolder(binding);
 
-        eventRecyclerViewHolder.onItemLongClick(eventsPresenter::toolbarEditMode);
-        eventRecyclerViewHolder.onItemClick(eventsPresenter::resetToDefaultState);
+        eventRecyclerViewHolder.onItemLongClick(eventsPresenter::openSalesSummary);
+        eventRecyclerViewHolder.onItemLongClickReleased(eventsPresenter::closeSalesSummary);
         return eventRecyclerViewHolder;
     }
 
@@ -126,8 +129,9 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
         private final EventLayoutBinding binding;
         private Event event;
         private final long selectedEventId;
-        private Pipe<Event> longClickAction;
+        private Pipe<Long> longClickAction;
         private Runnable onClick;
+        private Runnable onLongClickReleased;
 
         EventRecyclerViewHolder(EventLayoutBinding binding) {
             super(binding.getRoot());
@@ -136,19 +140,28 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
             binding
                 .getRoot()
                 .setOnClickListener(view -> {
-                    if (eventsPresenter.isEditMode())
-                        onClick.run();
-                    else
-                        bus.pushSelectedEvent(event);
+                    bus.pushSelectedEvent(event);
                 });
 
             binding
                 .getRoot()
                 .setOnLongClickListener(view -> {
-                    if (longClickAction != null) {
-                        longClickAction.push(event);
+                    if (longClickAction != null && !isLongPressed) {
+                        longClickAction.push(event.id);
+                        isLongPressed = true;
                     }
                     return true;
+                });
+
+            binding
+                .getRoot()
+                .setOnTouchListener((view, motionEvent) -> {
+                    view.onTouchEvent(motionEvent);
+                    if (motionEvent.getAction() == MotionEvent.ACTION_UP && isLongPressed) {
+                        onLongClickReleased.run();
+                        isLongPressed = false;
+                    }
+                    return false;
                 });
 
             final Event selectedEvent = ContextManager.getSelectedEvent();
@@ -163,12 +176,16 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
             binding.setEventsPresenter(eventsPresenter);
         }
 
-        public void onItemLongClick(Pipe<Event> longClickAction) {
+        public void onItemLongClick(Pipe<Long> longClickAction) {
             this.longClickAction = longClickAction;
         }
 
         public void onItemClick(Runnable onClick) {
             this.onClick = onClick;
+        }
+
+        public void onItemLongClickReleased(Runnable onLongClickReleased) {
+            this.onLongClickReleased = onLongClickReleased;
         }
     }
 }

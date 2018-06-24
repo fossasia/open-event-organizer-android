@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -64,8 +65,6 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
 
     private Context context;
     private boolean initialized;
-    private boolean editMode;
-    private long id;
 
     /**
      * Use this factory method to create a new instance of
@@ -85,7 +84,6 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
         super.onCreate(savedInstanceState);
         context = getActivity();
         setHasOptionsMenu(true);
-        editMode = false;
     }
 
     @Override
@@ -119,15 +117,6 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem menuItemSort = menu.findItem(R.id.sort);
-        MenuItem menuItemEdit = menu.findItem(R.id.edit);
-        menuItemSort.setVisible(!editMode);
-        menuItemEdit.setVisible(editMode);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sortByEventName:
@@ -135,11 +124,6 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
                 return true;
             case R.id.sortByEventDate:
                 sortEvents(SORTBYDATE);
-                return true;
-            case R.id.edit:
-                Intent intent = new Intent(getActivity(), CreateEventActivity.class);
-                intent.putExtra(CreateEventActivity.EVENT_ID, id);
-                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -231,7 +215,6 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     public void onRefreshComplete(boolean success) {
         if (success) {
             ViewUtils.showSnackbar(recyclerView, R.string.refresh_complete);
-            getPresenter().resetToDefaultState();
         }
     }
 
@@ -253,21 +236,21 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     }
 
     @Override
-    public void changeToEditMode(long id) {
-        editMode = true;
-        this.id = id;
-        getActivity().invalidateOptionsMenu();
-    }
-
-    @Override
-    public void changeToNormalMode() {
-        editMode = false;
-        getActivity().invalidateOptionsMenu();
-    }
-
-    @Override
     public void resetEventsList() {
         eventListAdapter.categorizeEvents();
         binding.bottomNavigation.setSelectedItemId(R.id.action_live);
+    }
+
+    @Override
+    public void openSalesSummary(Long eventId) {
+        DialogFragment fragment = SalesSummaryFragment.newInstance(eventId);
+        fragment.show(getFragmentManager(), "summary");
+    }
+
+    @Override
+    public void closeSalesSummary() {
+        DialogFragment fragment = ((DialogFragment) getFragmentManager().findFragmentByTag("summary"));
+        if (fragment != null)
+            fragment.dismiss();
     }
 }

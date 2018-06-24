@@ -41,6 +41,44 @@ public class SessionRepositoryImpl implements SessionRepository {
             .build();
     }
 
+    @NonNull
+    @Override
+    public Observable<Session> getSession(long trackId, boolean reload) {
+        Observable<Session> diskObservable = Observable.defer(() ->
+            repository
+                .getItems(Session.class, Session_Table.id.eq(trackId)).take(1)
+        );
+
+        Observable<Session> networkObservable = Observable.defer(() ->
+            sessionApi.getSession(trackId)
+                .doOnNext(session -> repository
+                    .save(Session.class, session)
+                    .subscribe()));
+
+        return repository
+            .observableOf(Session.class)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Session> updateSession(Session session) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return sessionApi
+            .updateSession(session.getId(), session)
+            .doOnNext(updatedSession -> repository
+                .update(Session.class, updatedSession)
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
     @Override
     public Observable<Session> getSessionsUnderSpeaker(long speakerId, boolean reload) {
         Observable<Session> diskObservable = Observable.defer(() ->

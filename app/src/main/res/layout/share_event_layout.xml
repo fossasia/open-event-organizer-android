@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="org.fossasia.openevent.app.utils.DateUtils" />
+
+        <variable
+            name="event"
+            type="org.fossasia.openevent.app.data.event.Event" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_top_surface">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:divider="?android:dividerHorizontal"
+                    android:orientation="vertical"
+                    android:showDividers="middle | end"
+                    android:visibility="@{ (event != null) ? View.VISIBLE : View.GONE}">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_normal"
+                        android:layout_marginLeft="@dimen/spacing_normal"
+                        android:layout_marginRight="@dimen/spacing_normal"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:elevation="@dimen/spacing_normal"
+                        app:cardCornerRadius="6dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="260dp"
+                            android:contentDescription="@string/event_thumbnail"
+                            android:scaleType="fitXY"
+                            app:paletteKey='@{ "event_header" }'
+                            app:paletteImageUrl="@{ event.largeImageUrl }"
+                            app:placeholder="@{ @drawable/header}" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:foreground="?selectableItemBackground"
+                            android:orientation="vertical"
+                            android:padding="@dimen/text_size_small">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{ DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_DATE_TIME, event.startsAt) }"
+                                android:textColor="#ffffff"
+                                android:textSize="@dimen/text_size_small" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{ event.name }"
+                                android:textColor="#ffffff"
+                                android:textSize="@dimen/text_size_large"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_normal"
+                        android:layout_marginRight="@dimen/spacing_normal"
+                        android:layout_marginStart="@dimen/spacing_normal"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/copy_link"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingEnd="@dimen/spacing_normal"
+                            android:paddingLeft="@dimen/spacing_small"
+                            android:paddingRight="@dimen/spacing_normal"
+                            android:paddingStart="@dimen/spacing_small"
+                            android:paddingTop="@dimen/spacing_small">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/event_thumbnail"
+                                app:srcCompat="@{ @drawable/ic_link}" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/event_copy_link"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="14"
+                                    android:paddingBottom="@dimen/spacing_extra_small"
+                                    android:paddingEnd="@dimen/spacing_small"
+                                    android:paddingLeft="@dimen/spacing_medium"
+                                    android:paddingRight="@dimen/spacing_small"
+                                    android:paddingStart="@dimen/spacing_medium"
+                                    android:paddingTop="@dimen/spacing_tiny"
+                                    android:text="Copy Link"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_normal" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_normal"
+                        android:layout_marginRight="@dimen/spacing_normal"
+                        android:layout_marginStart="@dimen/spacing_normal"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/email_link"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingEnd="@dimen/spacing_normal"
+                            android:paddingLeft="@dimen/spacing_small"
+                            android:paddingRight="@dimen/spacing_normal"
+                            android:paddingStart="@dimen/spacing_small"
+                            android:paddingTop="@dimen/spacing_normal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="Email"
+                                app:srcCompat="@{ @drawable/ic_email }" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/event_share_email"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="14"
+                                    android:paddingBottom="@dimen/spacing_extra_small"
+                                    android:paddingEnd="@dimen/spacing_small"
+                                    android:paddingLeft="@dimen/spacing_medium"
+                                    android:paddingRight="@dimen/spacing_small"
+                                    android:paddingStart="@dimen/spacing_medium"
+                                    android:paddingTop="@dimen/spacing_tiny"
+                                    android:text="Email"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_normal" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_normal"
+                        android:layout_marginRight="@dimen/spacing_normal"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/more_link"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingEnd="@dimen/spacing_normal"
+                            android:paddingLeft="@dimen/spacing_small"
+                            android:paddingRight="@dimen/spacing_normal"
+                            android:paddingStart="@dimen/spacing_small"
+                            android:paddingTop="@dimen/spacing_normal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="More"
+                                app:srcCompat="@{ @drawable/ic_more }" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/event_share_more"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="14"
+                                    android:paddingBottom="@dimen/spacing_extra_small"
+                                    android:paddingEnd="@dimen/spacing_small"
+                                    android:paddingLeft="@dimen/spacing_medium"
+                                    android:paddingRight="@dimen/spacing_small"
+                                    android:paddingStart="@dimen/spacing_medium"
+                                    android:paddingTop="@dimen/spacing_tiny"
+                                    android:text="More"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_normal" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/empty_layout" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/progressbar_layout" />
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

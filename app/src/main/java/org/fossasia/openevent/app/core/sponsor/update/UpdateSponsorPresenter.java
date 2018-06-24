@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.sponsor.update;
 
+import android.support.annotation.VisibleForTesting;
+
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
@@ -40,8 +42,12 @@ public class UpdateSponsorPresenter extends AbstractBasePresenter<UpdateSponsorV
         getView().setSponsor(sponsor);
     }
 
-    private void nullifyEmptyFields(Sponsor sponsor) {
+    @VisibleForTesting
+    protected void nullifyEmptyFields(Sponsor sponsor) {
         sponsor.setDescription(StringUtils.emptyToNull(sponsor.getDescription()));
+        sponsor.setLogoUrl(StringUtils.emptyToNull(sponsor.getLogoUrl()));
+        sponsor.setUrl(StringUtils.emptyToNull(sponsor.getUrl()));
+        sponsor.setType(StringUtils.emptyToNull(sponsor.getType()));
     }
 
     public void updateSponsor() {

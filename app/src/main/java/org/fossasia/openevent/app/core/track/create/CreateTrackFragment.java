@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.databinding.TrackCreateLayoutBinding;
@@ -26,6 +27,7 @@ public class CreateTrackFragment extends BaseBottomSheetFragment<CreateTrackPres
 
     private TrackCreateLayoutBinding binding;
     private Validator validator;
+    private ColorPicker colorPickerDialog;
 
     public static CreateTrackFragment newInstance() {
         return new CreateTrackFragment();
@@ -44,11 +46,30 @@ public class CreateTrackFragment extends BaseBottomSheetFragment<CreateTrackPres
         return binding.getRoot();
     }
 
-    @Override
+   @Override
     public void onStart() {
         super.onStart();
         getPresenter().attach(this);
+        getPresenter().start();
+        setColorPicker();
         binding.setTrack(getPresenter().getTrack());
+    }
+
+    private void setColorPicker() {
+        if (colorPickerDialog == null)
+            colorPickerDialog = new ColorPicker(getActivity(), getPresenter().getRed(), getPresenter().getGreen(), getPresenter().getBlue());
+
+        binding.form.colorPicker.setBackgroundColor(getPresenter().getColorRGB());
+
+        binding.form.colorPicker.setOnClickListener(view -> {
+            colorPickerDialog.show();
+        });
+
+        colorPickerDialog.setCallback(color -> {
+            binding.form.trackColor.setText(String.format("#%06X", 0xFFFFFF & color));
+            binding.form.colorPicker.setBackgroundColor(color);
+            colorPickerDialog.dismiss();
+        });
     }
 
     @Override
