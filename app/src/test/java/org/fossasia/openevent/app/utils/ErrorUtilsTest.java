@@ -2,22 +2,26 @@ package org.fossasia.openevent.app.utils;
 
 import android.accounts.Account;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.net.URL;
 
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 import retrofit2.Response;
-import timber.log.Timber;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -25,51 +29,87 @@ import static org.junit.Assert.assertNull;
 @RunWith(JUnit4.class)
 public class ErrorUtilsTest {
 
-    private static String content1;
-    private static String content2;
-    private static String content3;
-    private static String contentType = "application/vnd.api+json";
+    public String contentType = "application/vnd.api+json";
 
-    static {
-        URI uri1 = null;
-        URI uri2 = null;
-        URI uri3 = null;
+    public URL url1;
+    public URL url2;
+    public URL url3;
+    public URL url4;
+    public URL url5;
+
+    public String content1 = null;
+    public String content2 = null;
+    public String content3 = null;
+    public String content4 = null;
+    public String content5 = null;
+
+    public HttpException httpException1;
+    public HttpException httpException2;
+    public HttpException httpException3;
+    public HttpException httpException4;
+    public HttpException httpException5;
+
+    public ResponseBody RESPONSE_BODY_1;
+    public ResponseBody RESPONSE_BODY_2;
+    public ResponseBody RESPONSE_BODY_3;
+    public ResponseBody RESPONSE_BODY_4;
+    public ResponseBody RESPONSE_BODY_5;
+
+    public Response<Account> ERROR_RESPONSE_1;
+    public Response<Account> ERROR_RESPONSE_2;
+    public Response<Account> ERROR_RESPONSE_3;
+    public Response<Account> ERROR_RESPONSE_4;
+    public Response<Account> ERROR_RESPONSE_5;
+
+    @Before
+    public void setUp() {
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
+        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+
+        url1 = Resources.getResource("raw/content1.json");
+        url2 = Resources.getResource("raw/content2.json");
+        url3 = Resources.getResource("raw/content3.json");
+        url4 =  Resources.getResource("raw/content4.json");
+        url5 = Resources.getResource("raw/content5.json");
 
         try {
-            uri1 = ErrorUtilsTest.class.getClassLoader().getResource("raw/content1.json").toURI();
-            uri2 = ErrorUtilsTest.class.getClassLoader().getResource("raw/content2.json").toURI();
-            uri3 = ErrorUtilsTest.class.getClassLoader().getResource("raw/content3.json").toURI();
-        } catch (URISyntaxException e) {
-            Timber.e(e.getMessage());
-        }
-        try {
-            content1 = new String(Files.readAllBytes(Paths.get(uri1)), Charset.forName("utf-8"));
-            content2 = new String(Files.readAllBytes(Paths.get(uri2)), Charset.forName("utf-8"));
-            content3 = new String(Files.readAllBytes(Paths.get(uri3)), Charset.forName("utf-8"));
+            content1 = Resources.toString(url1, Charsets.UTF_8);
+            content2 = Resources.toString(url2, Charsets.UTF_8);
+            content3 = Resources.toString(url3, Charsets.UTF_8);
+            content4 = Resources.toString(url4, Charsets.UTF_8);
+            content5 = Resources.toString(url5, Charsets.UTF_8);
         } catch (IOException e) {
-            Timber.e(e.getMessage());
+            e.printStackTrace();
         }
+
+        RESPONSE_BODY_1 = ResponseBody.create(MediaType.parse(contentType), content1);
+        ERROR_RESPONSE_1 = Response.error(422, RESPONSE_BODY_1);
+
+        RESPONSE_BODY_2 = ResponseBody.create(MediaType.parse(contentType), content2);
+        ERROR_RESPONSE_2 = Response.error(422, RESPONSE_BODY_2);
+
+        RESPONSE_BODY_3 = ResponseBody.create(MediaType.parse(contentType), content3);
+        ERROR_RESPONSE_3 = Response.error(422, RESPONSE_BODY_3);
+
+        RESPONSE_BODY_4 = ResponseBody.create(MediaType.parse(contentType), content4);
+        ERROR_RESPONSE_4 = Response.error(400, RESPONSE_BODY_4);
+
+        RESPONSE_BODY_5 = ResponseBody.create(MediaType.parse(contentType), content5);
+        ERROR_RESPONSE_5 = Response.error(400, RESPONSE_BODY_5);
+
+        httpException1 = new HttpException(ERROR_RESPONSE_1);
+        httpException2 = new HttpException(ERROR_RESPONSE_2);
+        httpException3 = new HttpException(ERROR_RESPONSE_3);
+        httpException4 = new HttpException(ERROR_RESPONSE_4);
+        httpException5 = new HttpException(ERROR_RESPONSE_5);
     }
 
-    private static final ResponseBody RESPONSE_BODY = ResponseBody.create(MediaType.parse(contentType), content1);
-    private static final Response<Account> ERROR_RESPONSE = Response.error(400, RESPONSE_BODY);
-
-    private static final ResponseBody RESPONSE_BODY_1 = ResponseBody.create(MediaType.parse(contentType), content1);
-    private static final Response<Account> ERROR_RESPONSE_1 = Response.error(422, RESPONSE_BODY_1);
-
-    private static final ResponseBody RESPONSE_BODY_2 = ResponseBody.create(MediaType.parse(contentType), content2);
-    private static final Response<Account> ERROR_RESPONSE_2 = Response.error(422, RESPONSE_BODY_2);
-
-    private static final ResponseBody RESPONSE_BODY_3 = ResponseBody.create(MediaType.parse(contentType), content3);
-    private static final Response<Account> ERROR_RESPONSE_3 = Response.error(422, RESPONSE_BODY_3);
-
-    private static final ResponseBody RESPONSE_BODY_4 = ResponseBody.create(MediaType.parse(contentType), content1);
-    private static final Response<Account> ERROR_RESPONSE_4 = Response.error(422, RESPONSE_BODY_4);
-
-    private static HttpException httpException = new HttpException(ERROR_RESPONSE);
-    private static HttpException httpException1 = new HttpException(ERROR_RESPONSE_1);
-
-    private static IOException ioException = new IOException();
+    @After
+    public void tearDown() {
+        RxJavaPlugins.reset();
+        RxAndroidPlugins.reset();
+    }
 
     @Test
     public void shouldReturnNullOnNullAnsEmptyPointedField() throws IOException, URISyntaxException {
@@ -92,22 +132,17 @@ public class ErrorUtilsTest {
 
     @Test
     public void shouldReturnErrorDetailsWithPointedFieldSuccessfully() {
-        String str = String.valueOf(ErrorUtils.getErrorDetails(ERROR_RESPONSE_4.errorBody()));
+        String str = String.valueOf(ErrorUtils.getErrorDetails(httpException1));
 
-        assertEquals("Missing data for required field: licence", str);
+        assertEquals("Missing data for required field - licence", str);
     }
 
     @Test
-    public void shouldReturnErrorDetailsWithNullPointedFieldSuccessfully() {
-        String str = String.valueOf(ErrorUtils.getErrorDetails(ERROR_RESPONSE_2.errorBody()));
+    public void shouldReturnErrorDetailsWithNullOrEmptyPointedFieldSuccessfully() {
+        String str = String.valueOf(ErrorUtils.getErrorDetails(httpException3));
+        String str1 = String.valueOf(ErrorUtils.getErrorDetails(httpException2));
 
-        assertEquals("Missing data for required field.", str);
-    }
-
-    @Test
-    public void shouldReturnErrorDetailsWithEmptyPointedFieldSuccessfully() {
-        String str = String.valueOf(ErrorUtils.getErrorDetails(ERROR_RESPONSE_3.errorBody()));
-
+        assertEquals("Missing data for required field.", str1);
         assertEquals("Missing data for required field.", str);
     }
 
@@ -115,20 +150,26 @@ public class ErrorUtilsTest {
     public void shouldReturnErrorMessageSuccessfully() {
         String str = String.valueOf(ErrorUtils.getMessage(httpException1));
 
-        assertEquals("Missing data for required field: licence", str);
+        assertEquals("Missing data for required field - licence", str);
+
+        str = String.valueOf(ErrorUtils.getMessage(httpException5));
+
+        assertEquals("Access Forbidden: Co-Organizer access required - order_id", str);
+
     }
 
     @Test
-    public void shouldReturnStoredErrorMessageSuccessfully() {
-        String str = String.valueOf(ErrorUtils.getMessage(httpException));
+    public void shouldReturnErrorMessageTitleAndDetailSuccessfully() {
+        String str = String.valueOf(ErrorUtils.getErrorTitleAndDetails(httpException4));
 
-        assertEquals("Something went wrong! Please check any empty field of a form.", str);
+        assertEquals("Bad Request: The URL does not exist", str);
     }
 
     @Test
-    public void shouldReturnOtherThrowableErrorMessageSuccessfully() {
-        String str = String.valueOf(ErrorUtils.getMessage(ioException));
+    public void shouldReturnErrorMessageTitleDetailAndPointerSuccessfully() {
+        String str = String.valueOf(ErrorUtils.getErrorTitleAndDetails(httpException5));
 
-        assertEquals("null", str);
+        assertEquals("Access Forbidden: Co-Organizer access required - order_id", str);
     }
+
 }

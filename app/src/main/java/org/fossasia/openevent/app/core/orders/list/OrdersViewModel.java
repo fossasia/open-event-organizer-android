@@ -42,7 +42,7 @@ public class OrdersViewModel extends ViewModel {
             .doFinally(() -> progress.setValue(false))
             .toList()
             .subscribe(ordersLiveData::setValue,
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
 
         return ordersLiveData;
     }

@@ -41,7 +41,7 @@ public class OrderDetailViewModel extends ViewModel {
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(order -> orderLiveData.setValue(order),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
 
         if (!reload) {
             getEvent(eventId);
@@ -56,7 +56,7 @@ public class OrderDetailViewModel extends ViewModel {
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(event -> orderLiveData.getValue().setEvent(event),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
     protected LiveData<Boolean> getProgress() {

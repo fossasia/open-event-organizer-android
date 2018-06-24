@@ -47,7 +47,7 @@ public class SpeakerDetailsViewModel extends ViewModel {
             .flatMap(speaker -> sessionRepository.getSessionsUnderSpeaker(speakerId, reload))
             .toList()
             .subscribe(sessionList -> sessionLiveData.setValue(sessionList),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
 
         return speakerLiveData;
     }
