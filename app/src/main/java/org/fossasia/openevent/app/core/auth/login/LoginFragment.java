@@ -73,8 +73,8 @@ public class LoginFragment extends BaseFragment implements LoginView {
             loginFragmentViewModel.getLogin().setPassword(binding.userPassword.getText().toString());
 
             ViewUtils.hideKeyboard(view);
-            loginFragmentViewModel.encryption();
             loginFragmentViewModel.login();
+            loginFragmentViewModel.encryption();
         });
         binding.signUpLink.setOnClickListener(view -> openSignUpPage());
         binding.forgotPasswordLink.setOnClickListener(view -> openForgotPasswordPage());
@@ -83,8 +83,8 @@ public class LoginFragment extends BaseFragment implements LoginView {
     @Override
     public void onResume() {
         super.onResume();
-        binding.emailDropdown.setText(loginFragmentViewModel.getEmail());
-        binding.userPassword.setText(loginFragmentViewModel.getUserpassword());
+        binding.emailDropdown.setText(loginFragmentViewModel.getDecryptedEmail());
+        binding.userPassword.setText(loginFragmentViewModel.getDecryptedPassword());
     }
 
     public void handleIntent() {

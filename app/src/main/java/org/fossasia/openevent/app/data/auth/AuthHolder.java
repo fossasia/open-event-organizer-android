@@ -87,20 +87,4 @@ public final class AuthHolder {
     void saveEmail(String email) {
         sharedPreferenceModel.addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, email);
     }
-
-    void saveEncryptedEmail(String email) {
-        sharedPreferenceModel.saveString(Constants.PREF_USER_EMAIL, email);
-    }
-
-    void saveEncryptedPassword(String password) {
-        sharedPreferenceModel.saveString(Constants.PREF_USER_PASSWORD, password);
-    }
-
-    public String getEmail() {
-        return sharedPreferenceModel.getString(Constants.PREF_USER_EMAIL, null);
-    }
-
-    public String getPassword() {
-        return sharedPreferenceModel.getString(Constants.PREF_USER_PASSWORD, null);
-    }
 }
