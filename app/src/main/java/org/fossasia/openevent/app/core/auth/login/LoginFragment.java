@@ -63,27 +63,21 @@ public class LoginFragment extends BaseFragment implements LoginView {
         loginFragmentViewModel.getProgress().observe(this, this::showProgress);
         loginFragmentViewModel.getError().observe(this, this::showError);
         loginFragmentViewModel.getEmailList().observe(this, this::attachEmails);
+        loginFragmentViewModel.getLogin().observe(this, login -> {
+            binding.emailDropdown.setText(login.getEmail());
+            binding.userPassword.setText(login.getPassword());
+        });
 
-        binding.setLogin(loginFragmentViewModel.getLogin());
+        binding.setLogin(loginFragmentViewModel.getLogin().getValue());
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
-
-            loginFragmentViewModel.getLogin().setEmail(binding.emailDropdown.getText().toString());
-            loginFragmentViewModel.getLogin().setPassword(binding.userPassword.getText().toString());
 
             ViewUtils.hideKeyboard(view);
             loginFragmentViewModel.login();
         });
         binding.signUpLink.setOnClickListener(view -> openSignUpPage());
         binding.forgotPasswordLink.setOnClickListener(view -> openForgotPasswordPage());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        binding.emailDropdown.setText(loginFragmentViewModel.getDecryptedEmail());
-        binding.userPassword.setText(loginFragmentViewModel.getDecryptedPassword());
     }
 
     public void handleIntent() {

@@ -34,6 +34,7 @@ public class LoginViewModel extends ViewModel {
 
     private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
+    private final MutableLiveData<Login>  decryptedLogin = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoggedIn;
     private MutableLiveData<Set<String>> emailList;
 
@@ -50,15 +51,7 @@ public class LoginViewModel extends ViewModel {
         String encryptedPassword = encryptionService.encrypt(login.getPassword());
         sharedPreferenceModel.saveString(PREF_USER_EMAIL, encryptedEmail);
         sharedPreferenceModel.saveString(PREF_USER_PASSWORD, encryptedPassword);
-   }
-
-   public String getDecryptedEmail() {
-      return encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_EMAIL, null));
-   }
-
-   public String getDecryptedPassword() {
-       return encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_PASSWORD, null));
-   }
+    }
 
     //for logging into the app
     public void login() {
@@ -96,8 +89,13 @@ public class LoginViewModel extends ViewModel {
         interceptor.setInterceptor(baseUrl);
     }
 
-    public Login getLogin() {
-        return login;
+    public LiveData<Login> getLogin() {
+        String email = encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_EMAIL, null));
+        String password = encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_PASSWORD, null));
+        login.setEmail(email);
+        login.setPassword(password);
+        decryptedLogin.setValue(login);
+        return decryptedLogin;
     }
 
     //fetching the email list from the shared preferences
@@ -118,4 +116,10 @@ public class LoginViewModel extends ViewModel {
         super.onCleared();
         compositeDisposable.dispose();
     }
+
+    //used only for testing
+    public Login getDecryptedLoginCredentials() {
+        return login;
+    }
+
 }

@@ -66,8 +66,8 @@ public class LoginViewModelTest {
     @Before
     public void setUp() {
         loginViewModel = new LoginViewModel(authModel, interceptor, sharedPreferenceModel, encryptionService);
-        loginViewModel.getLogin().setEmail(EMAIL);
-        loginViewModel.getLogin().setPassword(PASSWORD);
+        loginViewModel.getDecryptedLoginCredentials().setEmail(EMAIL);
+        loginViewModel.getDecryptedLoginCredentials().setPassword(PASSWORD);
     }
 
     @Test
