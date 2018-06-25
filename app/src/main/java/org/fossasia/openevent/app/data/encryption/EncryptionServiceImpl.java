@@ -10,8 +10,10 @@ import android.util.Log;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
@@ -26,9 +28,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
 import javax.security.auth.x500.X500Principal;
 
@@ -53,7 +60,10 @@ public class EncryptionServiceImpl implements EncryptionService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             return encryptString(credential);
         } else {
-            return credential;
+            SecretKey secretKey = generateKey(ALIAS);
+            byte[] byteArray = encryptMsg(credential, secretKey);
+            String encryptedString = new String(byteArray);
+            return encryptedString;
         }
     }
 
@@ -62,32 +72,30 @@ public class EncryptionServiceImpl implements EncryptionService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             return decryptString(encryptedCredentials);
         } else {
-            return encryptedCredentials;
+            return decryptMsg(encryptedCredentials.getBytes(), generateKey(ALIAS));
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     private String encryptString(String toEncrypt) {
-        try {
-            final KeyStore.PrivateKeyEntry privateKeyEntry = getPrivateKey();
-            if (privateKeyEntry != null) {
-                final PublicKey publicKey = privateKeyEntry.getCertificate().getPublicKey();
-
-                // Encrypt the text
-                Cipher input = Cipher.getInstance(CYPHER);
-                input.init(Cipher.ENCRYPT_MODE, publicKey);
-
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, input);
-                cipherOutputStream.write(toEncrypt.getBytes(ENCODING));
-                cipherOutputStream.close();
-
-                byte[] vals = outputStream.toByteArray();
-                return Base64.encodeToString(vals, Base64.DEFAULT);
+        if (toEncrypt != null) {
+            try {
+                final KeyStore.PrivateKeyEntry privateKeyEntry = getPrivateKey();
+                if (privateKeyEntry != null) {
+                    final PublicKey publicKey = privateKeyEntry.getCertificate().getPublicKey();
+                    Cipher input = Cipher.getInstance(CYPHER);
+                    input.init(Cipher.ENCRYPT_MODE, publicKey);
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, input);
+                    cipherOutputStream.write(toEncrypt.getBytes(ENCODING));
+                    cipherOutputStream.close();
+                    byte[] vals = outputStream.toByteArray();
+                    return Base64.encodeToString(vals, Base64.DEFAULT);
+                }
+            } catch (Exception e) {
+                Timber.e(Log.getStackTraceString(e));
+                return null;
             }
-        } catch (Exception e) {
-            Timber.e(Log.getStackTraceString(e));
-            return null;
         }
         return null;
     }
@@ -211,5 +219,68 @@ public class EncryptionServiceImpl implements EncryptionService {
         final KeyPair kp = kpGenerator.generateKeyPair();
         Timber.d("Public Key is: " + kp.getPublic().toString());
     }
+
+    /*
+    * The following methods are specifically taken into use when the API level is
+    * less than 18
+    *
+    */
+     private byte[] encryptMsg(String message, SecretKey secret) {
+
+     Cipher cipher;
+     byte[] cipherText = new byte[0];
+
+     if (message != null) {
+         try {
+             cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+             cipher.init(Cipher.ENCRYPT_MODE, secret);
+             cipherText = cipher.doFinal(message.getBytes("UTF-8"));
+         } catch (NoSuchAlgorithmException e) {
+             e.printStackTrace();
+         } catch (NoSuchPaddingException e) {
+             e.printStackTrace();
+         } catch (InvalidKeyException e) {
+             e.printStackTrace();
+         } catch (IllegalBlockSizeException e) {
+             e.printStackTrace();
+         } catch (BadPaddingException e) {
+             e.printStackTrace();
+         } catch (UnsupportedEncodingException e) {
+             e.printStackTrace();
+         }
+         return cipherText;
+     }
+        return null;
+     }
+
+    private String decryptMsg(byte[] cipherText, SecretKey secret) {
+        /* Decrypt the message, given derived encContentValues and initialization vector. */
+        Cipher cipher = null;
+        String decryptString = null;
+
+        try {
+            cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, secret);
+            decryptString = new String(cipher.doFinal(cipherText), "UTF-8");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        }
+        return decryptString;
+    }
+
+    private SecretKey generateKey(String password) {
+        return new SecretKeySpec(password.getBytes(), "AES");
+    }
+
 }
 
