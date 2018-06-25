@@ -74,7 +74,6 @@ public class LoginFragment extends BaseFragment implements LoginView {
 
             ViewUtils.hideKeyboard(view);
             loginFragmentViewModel.login();
-            loginFragmentViewModel.encryption();
         });
         binding.signUpLink.setOnClickListener(view -> openSignUpPage());
         binding.forgotPasswordLink.setOnClickListener(view -> openForgotPasswordPage());

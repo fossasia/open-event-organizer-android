@@ -7,7 +7,7 @@ import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.auth.AuthService;
-import org.fossasia.openevent.app.data.auth.EncryptionService;
+import org.fossasia.openevent.app.data.encryption.EncryptionService;
 import org.fossasia.openevent.app.data.auth.model.Login;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.junit.Before;

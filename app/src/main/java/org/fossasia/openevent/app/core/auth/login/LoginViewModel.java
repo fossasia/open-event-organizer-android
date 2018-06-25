@@ -9,7 +9,7 @@ import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.auth.AuthService;
-import org.fossasia.openevent.app.data.auth.EncryptionService;
+import org.fossasia.openevent.app.data.encryption.EncryptionService;
 import org.fossasia.openevent.app.data.auth.model.Login;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.utils.ErrorUtils;
@@ -29,13 +29,15 @@ public class LoginViewModel extends ViewModel {
     private final HostSelectionInterceptor interceptor;
     private final Preferences sharedPreferenceModel;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final String PREF_USER_PASSWORD = "user_password";
+    private final String PREF_USER_EMAIL = "user_email";
 
     private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoggedIn;
     private MutableLiveData<Set<String>> emailList;
 
-   @Inject
+    @Inject
     public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor, Preferences sharedPreferenceModel, EncryptionService encryptionService) {
         this.loginModel = loginModel;
         this.interceptor = interceptor;
@@ -46,16 +48,16 @@ public class LoginViewModel extends ViewModel {
     public void encryption() {
         String encryptedEmail = encryptionService.encrypt(login.getEmail());
         String encryptedPassword = encryptionService.encrypt(login.getPassword());
-        sharedPreferenceModel.saveString(Constants.PREF_USER_EMAIL, encryptedEmail);
-        sharedPreferenceModel.saveString(Constants.PREF_USER_PASSWORD, encryptedPassword);
+        sharedPreferenceModel.saveString(PREF_USER_EMAIL, encryptedEmail);
+        sharedPreferenceModel.saveString(PREF_USER_PASSWORD, encryptedPassword);
    }
 
    public String getDecryptedEmail() {
-      return encryptionService.decrypt(sharedPreferenceModel.getString(Constants.PREF_USER_EMAIL, null));
+      return encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_EMAIL, null));
    }
 
    public String getDecryptedPassword() {
-       return encryptionService.decrypt(sharedPreferenceModel.getString(Constants.PREF_USER_PASSWORD, null));
+       return encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_PASSWORD, null));
    }
 
     //for logging into the app
@@ -65,7 +67,9 @@ public class LoginViewModel extends ViewModel {
             .doFinally(() -> progress.setValue(false))
             .subscribe(() -> isLoggedIn.setValue(true),
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
-    }
+
+        encryption();
+   }
 
     public LiveData<String> getError() {
         return error;

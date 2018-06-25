@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.data.auth;
+package org.fossasia.openevent.app.data.encryption;
 
 import android.content.Context;
 import android.os.Build;
@@ -36,9 +36,9 @@ import timber.log.Timber;
 
 public class EncryptionServiceImpl implements EncryptionService {
 
-    private Context context;
+    private final Context context;
     private static final String KEYSTORE = "AndroidKeyStore";
-    private static final String ALIAS = "MY_APP";
+    private static final String ALIAS = "openevent_orga";
     private static final String TYPE_RSA = "RSA";
     private static final String CYPHER = "RSA/ECB/PKCS1Padding";
     private static final String ENCODING = "UTF-8";
@@ -51,7 +51,7 @@ public class EncryptionServiceImpl implements EncryptionService {
     @Override
     public String encrypt(String credential) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            return encryptString(context, credential);
+            return encryptString(credential);
         } else {
             return credential;
         }
@@ -60,16 +60,16 @@ public class EncryptionServiceImpl implements EncryptionService {
     @Override
     public String decrypt(String encryptedCredentials) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            return decryptString(context, encryptedCredentials);
+            return decryptString(encryptedCredentials);
         } else {
             return encryptedCredentials;
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private String encryptString(Context context, String toEncrypt) {
+    private String encryptString(String toEncrypt) {
         try {
-            final KeyStore.PrivateKeyEntry privateKeyEntry = getPrivateKey(context);
+            final KeyStore.PrivateKeyEntry privateKeyEntry = getPrivateKey();
             if (privateKeyEntry != null) {
                 final PublicKey publicKey = privateKeyEntry.getCertificate().getPublicKey();
 
@@ -93,9 +93,9 @@ public class EncryptionServiceImpl implements EncryptionService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private String decryptString(Context context, String encrypted) {
+    private String decryptString(String encrypted) {
         try {
-            KeyStore.PrivateKeyEntry privateKeyEntry = getPrivateKey(context);
+            KeyStore.PrivateKeyEntry privateKeyEntry = getPrivateKey();
             if (privateKeyEntry != null) {
                 final PrivateKey privateKey = privateKeyEntry.getPrivateKey();
 
@@ -127,7 +127,7 @@ public class EncryptionServiceImpl implements EncryptionService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private KeyStore.PrivateKeyEntry getPrivateKey(Context context) throws KeyStoreException,
+    private KeyStore.PrivateKeyEntry getPrivateKey() throws KeyStoreException,
         CertificateException, NoSuchAlgorithmException,
         IOException, UnrecoverableEntryException {
 
@@ -143,7 +143,7 @@ public class EncryptionServiceImpl implements EncryptionService {
             Timber.w("No key found under alias: " + ALIAS);
             Timber.w("Generating new key...");
             try {
-                createKeys(context);
+                createKeys();
 
                 // reload keystore
                 ks = KeyStore.getInstance(KEYSTORE);
@@ -181,7 +181,7 @@ public class EncryptionServiceImpl implements EncryptionService {
      * this application will be able to access the keys.
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private void createKeys(Context context) throws NoSuchProviderException,
+    private void createKeys() throws NoSuchProviderException,
         NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         // Create a start and end time, for the validity range of the key pair that's about to be
         // generated.

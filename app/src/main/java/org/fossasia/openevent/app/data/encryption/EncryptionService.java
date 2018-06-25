@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.data.auth;
+package org.fossasia.openevent.app.data.encryption;
 
 
 public interface EncryptionService {
