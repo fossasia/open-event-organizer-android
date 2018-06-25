@@ -82,7 +82,7 @@ public class OrdersFragment extends BaseFragment implements OrdersView {
 
         ordersViewModel.getProgress().observe(this, this::showProgress);
         ordersViewModel.getError().observe(this, this::showError);
-        ordersViewModel.getClickedOrderIdentifier().observe(this, this::openOrderDetail);
+        ordersViewModel.getClickedOrder().observe(this, this::openOrderDetail);
         loadOrders(false);
     }
 
@@ -98,12 +98,12 @@ public class OrdersFragment extends BaseFragment implements OrdersView {
     }
 
     private void setupRecyclerView() {
-            ordersAdapter = new OrdersAdapter(ordersViewModel);
+        ordersAdapter = new OrdersAdapter(ordersViewModel);
 
-            RecyclerView recyclerView = binding.ordersRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(ordersAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+        RecyclerView recyclerView = binding.ordersRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(ordersAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void setupRefreshListener() {
@@ -119,14 +119,14 @@ public class OrdersFragment extends BaseFragment implements OrdersView {
         ordersViewModel.getOrders(eventId, reload).observe(this, this::showResults);
     }
 
-    private void openOrderDetail(String orderIdentifier) {
-        if (Utils.isEmpty(orderIdentifier))
+    private void openOrderDetail(Order order) {
+        if (order == null)
             return;
 
         ordersViewModel.unselectListItem();
 
         getFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, OrderDetailFragment.newInstance(eventId, orderIdentifier))
+            .replace(R.id.fragment_container, OrderDetailFragment.newInstance(eventId, order.getIdentifier(), order.getId()))
             .addToBackStack(null)
             .commit();
     }

@@ -9,7 +9,7 @@ import org.fossasia.openevent.app.databinding.OrderLayoutBinding;
 public class OrderViewHolder extends RecyclerView.ViewHolder {
 
     private final OrderLayoutBinding binding;
-    private Pipe<String> clickAction;
+    private Pipe<Order> clickAction;
     private Order order;
 
     public OrderViewHolder(OrderLayoutBinding binding) {
@@ -18,12 +18,12 @@ public class OrderViewHolder extends RecyclerView.ViewHolder {
 
         binding.getRoot().setOnClickListener(view -> {
             if (clickAction != null) {
-                clickAction.push(order.getIdentifier());
+                clickAction.push(order);
             }
         });
     }
 
-    public void setClickAction(Pipe<String> clickAction) {
+    public void setClickAction(Pipe<Order> clickAction) {
         this.clickAction = clickAction;
     }
 

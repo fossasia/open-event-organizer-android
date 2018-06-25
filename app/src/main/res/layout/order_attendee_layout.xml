@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="attendee"
+            type="org.fossasia.openevent.app.data.attendee.Attendee" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_tiny"
+        android:background="@android:color/white"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="@dimen/spacing_small"
+            android:layout_height="match_parent"
+            android:background="@{ attendee.isCheckedIn ? @color/light_green_500 : @color/red_500 }"
+            android:contentDescription="@string/check_in_status" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{attendee.firstname + " " + attendee.lastname}'
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_normal"
+                tools:text="FirstName LastName" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{ attendee.isCheckedIn ? @string/swipe_left_to_check_out : @string/swipe_right_to_check_in }"
+                android:textSize="@dimen/text_size_extra_small"
+                tools:text="Checked Status" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

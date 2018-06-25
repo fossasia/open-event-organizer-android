@@ -279,6 +279,8 @@
     <string name="payment_preference">Payment Settings</string>
     <string name="order_details">Order Details</string>
     <string name="order_identifier">Order Identifier</string>
+    <string name="swipe_left_to_check_out">Swipe left to check out</string>
+    <string name="swipe_right_to_check_in">Swipe right to check in</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
