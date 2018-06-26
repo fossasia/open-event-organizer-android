@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.auth.login;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.VisibleForTesting;
 
 
 import org.fossasia.openevent.app.BuildConfig;
@@ -34,7 +35,7 @@ public class LoginViewModel extends ViewModel {
 
     private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
-    private final MutableLiveData<Login>  decryptedLogin = new MutableLiveData<>();
+    private final MutableLiveData<Login> decryptedLogin = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoggedIn;
     private MutableLiveData<Set<String>> emailList;
 
@@ -46,7 +47,7 @@ public class LoginViewModel extends ViewModel {
         this.encryptionService = encryptionService;
     }
 
-    public void encryption() {
+    private void encryptUserCredentials() {
         String encryptedEmail = encryptionService.encrypt(login.getEmail());
         String encryptedPassword = encryptionService.encrypt(login.getPassword());
         sharedPreferenceModel.saveString(PREF_USER_EMAIL, encryptedEmail);
@@ -58,11 +59,12 @@ public class LoginViewModel extends ViewModel {
         compositeDisposable.add(loginModel.login(login)
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
-            .subscribe(() -> isLoggedIn.setValue(true),
+            .subscribe(() -> {
+                    encryptUserCredentials();
+                    isLoggedIn.setValue(true);
+                },
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
-
-        encryption();
-   }
+    }
 
     public LiveData<String> getError() {
         return error;
@@ -90,11 +92,12 @@ public class LoginViewModel extends ViewModel {
     }
 
     public LiveData<Login> getLogin() {
-        String email = encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_EMAIL, null));
-        String password = encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_PASSWORD, null));
-        login.setEmail(email);
-        login.setPassword(password);
-        decryptedLogin.setValue(login);
+        if (decryptedLogin.getValue() == null) {
+            login.setEmail(encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_EMAIL, null)));
+            login.setPassword(encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_PASSWORD, null)));
+            decryptedLogin.setValue(login);
+            return decryptedLogin;
+        }
         return decryptedLogin;
     }
 
@@ -117,8 +120,8 @@ public class LoginViewModel extends ViewModel {
         compositeDisposable.dispose();
     }
 
-    //used only for testing
-    public Login getDecryptedLoginCredentials() {
+    @VisibleForTesting
+    public Login getLoginModel() {
         return login;
     }
 

@@ -64,11 +64,9 @@ public class LoginFragment extends BaseFragment implements LoginView {
         loginFragmentViewModel.getError().observe(this, this::showError);
         loginFragmentViewModel.getEmailList().observe(this, this::attachEmails);
         loginFragmentViewModel.getLogin().observe(this, login -> {
-            binding.emailDropdown.setText(login.getEmail());
-            binding.userPassword.setText(login.getPassword());
+            binding.setLogin(login);
         });
 
-        binding.setLogin(loginFragmentViewModel.getLogin().getValue());
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
