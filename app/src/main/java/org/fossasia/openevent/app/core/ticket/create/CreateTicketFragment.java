@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
+import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.databinding.TicketCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -21,7 +21,7 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateTicketFragment extends BaseBottomSheetFragment<CreateTicketPresenter> implements CreateTicketView {
+public class CreateTicketFragment extends BaseFragment<CreateTicketPresenter> implements CreateTicketView {
 
     @Inject
     Lazy<CreateTicketPresenter> presenterProvider;
@@ -56,6 +56,11 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<CreateTicketPr
     }
 
     @Override
+    protected int getTitle() {
+        return R.string.create_ticket;
+    }
+
+    @Override
     public Lazy<CreateTicketPresenter> getPresenterProvider() {
         return presenterProvider;
     }
@@ -73,5 +78,10 @@ public class CreateTicketFragment extends BaseBottomSheetFragment<CreateTicketPr
     @Override
     public void onSuccess(String message) {
         ViewUtils.showSnackbar(binding.getRoot(), message);
+    }
+
+    @Override
+    public void dismiss() {
+        getFragmentManager().popBackStack();
     }
 }

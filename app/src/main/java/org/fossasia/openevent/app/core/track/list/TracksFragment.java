@@ -78,8 +78,7 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
         binding = DataBindingUtil.inflate(inflater, R.layout.tracks_fragment, container, false);
 
         binding.createTrackFab.setOnClickListener(view -> {
-            BottomSheetDialogFragment bottomSheetDialogFragment = CreateTrackFragment.newInstance();
-            bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+            openCreateTrackFragment();
         });
 
         return binding.getRoot();
@@ -92,6 +91,13 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
         setupRefreshListener();
         getPresenter().attach(eventId, this);
         getPresenter().start();
+    }
+
+    public void openCreateTrackFragment() {
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, CreateTrackFragment.newInstance())
+            .addToBackStack(null)
+            .commit();
     }
 
     public ActionMode.Callback actionCallback = new ActionMode.Callback() {

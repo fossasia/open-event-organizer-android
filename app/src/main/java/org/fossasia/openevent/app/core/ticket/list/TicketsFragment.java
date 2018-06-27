@@ -48,8 +48,6 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
     private TicketsFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    private boolean initialized;
-
     public static TicketsFragment newInstance(long eventId) {
         TicketsFragment fragment = new TicketsFragment();
         Bundle args = new Bundle();
@@ -72,9 +70,8 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.tickets_fragment, container, false);
         binding.createTicketFab.setOnClickListener(view -> {
-            BottomSheetDialogFragment bottomSheetDialogFragment = CreateTicketFragment.newInstance();
-            bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
-        });
+            openCreateTicketFragment();
+       });
         return binding.getRoot();
     }
 
@@ -85,8 +82,6 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
         setupRefreshListener();
         getPresenter().attach(eventId, this);
         getPresenter().start();
-
-        initialized = true;
     }
 
     @Override
@@ -101,27 +96,32 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
         ticketsAdapter.unregisterAdapterDataObserver(adapterDataObserver);
     }
 
+    public void openCreateTicketFragment() {
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, CreateTicketFragment.newInstance())
+            .addToBackStack(null)
+            .commit();
+    }
+
     private void setupRecyclerView() {
-        if (!initialized) {
-            ticketsAdapter = new TicketsAdapter(getPresenter());
+        ticketsAdapter = new TicketsAdapter(getPresenter());
 
-            RecyclerView recyclerView = binding.ticketsRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(ticketsAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(ticketsAdapter);
-            recyclerView.addItemDecoration(decoration);
-            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        RecyclerView recyclerView = binding.ticketsRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(ticketsAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(ticketsAdapter);
+        recyclerView.addItemDecoration(decoration);
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
 
-            adapterDataObserver = new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onChanged() {
-                    decoration.invalidateHeaders();
-                }
-            };
+        adapterDataObserver = new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                decoration.invalidateHeaders();
+            }
+        };
 
-            ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createTicketFab);
-        }
+        ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createTicketFab);
 
         ticketsAdapter.registerAdapterDataObserver(adapterDataObserver);
     }
