@@ -36,11 +36,11 @@ public final class ViewTransformers {
     }
 
     public static <T, V extends Erroneous> ObservableTransformer<T, T> erroneous(V view) {
-        return observable -> observable.doOnError(throwable -> view.showError(ErrorUtils.getMessage(throwable)));
+        return observable -> observable.doOnError(throwable -> view.showError(ErrorUtils.getMessage(throwable).toString()));
     }
 
     public static <V extends Erroneous> CompletableTransformer erroneousCompletable(V view) {
-        return completable -> completable.doOnError(throwable -> view.showError(ErrorUtils.getMessage(throwable)));
+        return completable -> completable.doOnError(throwable -> view.showError(ErrorUtils.getMessage(throwable).toString()));
     }
 
     private static <T, V extends Progressive> ObservableTransformer<T, T> progressive(V view) {

@@ -12,6 +12,7 @@ import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.auth.AuthService;
 import org.fossasia.openevent.app.data.encryption.EncryptionService;
 import org.fossasia.openevent.app.data.auth.model.Login;
+import org.fossasia.openevent.app.data.auth.model.RequestToken;
 import org.fossasia.openevent.app.data.network.HostSelectionInterceptor;
 import org.fossasia.openevent.app.utils.ErrorUtils;
 
@@ -37,6 +38,7 @@ public class LoginViewModel extends ViewModel {
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<Login> decryptedLogin = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoggedIn;
+    private final MutableLiveData<Boolean> isTokenSent = new MutableLiveData<>();
     private MutableLiveData<Set<String>> emailList;
 
     @Inject
@@ -63,7 +65,7 @@ public class LoginViewModel extends ViewModel {
                     encryptUserCredentials();
                     isLoggedIn.setValue(true);
                 },
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
     public LiveData<String> getError() {
@@ -125,4 +127,18 @@ public class LoginViewModel extends ViewModel {
         return login;
     }
 
+    public void requestToken() {
+        RequestToken requestToken = new RequestToken();
+        requestToken.setEmail(login.getEmail());
+
+        compositeDisposable.add(loginModel.requestToken(requestToken)
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() -> progress.setValue(false))
+            .subscribe(() -> isTokenSent.setValue(true),
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+    }
+
+    public LiveData<Boolean> getIsTokenSent() {
+        return isTokenSent;
+    }
 }

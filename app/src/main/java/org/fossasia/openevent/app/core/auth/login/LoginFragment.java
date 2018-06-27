@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.auth.SharedViewModel;
-import org.fossasia.openevent.app.core.auth.forgot.request.ForgotPasswordFragment;
+import org.fossasia.openevent.app.core.auth.reset.ResetPasswordFragment;
 import org.fossasia.openevent.app.core.auth.signup.SignUpFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.databinding.LoginFragmentBinding;
@@ -66,6 +66,12 @@ public class LoginFragment extends BaseFragment implements LoginView {
         loginFragmentViewModel.getLogin().observe(this, login -> {
             binding.setLogin(login);
         });
+        loginFragmentViewModel.getIsTokenSent().observe(this, (value) -> {
+            getFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
+                .replace(R.id.fragment_container, new ResetPasswordFragment())
+                .commit();
+        });
 
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
@@ -75,7 +81,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
             loginFragmentViewModel.login();
         });
         binding.signUpLink.setOnClickListener(view -> openSignUpPage());
-        binding.forgotPasswordLink.setOnClickListener(view -> openForgotPasswordPage());
+        binding.forgotPasswordLink.setOnClickListener(view -> clickForgotPassword());
     }
 
     public void handleIntent() {
@@ -104,12 +110,12 @@ public class LoginFragment extends BaseFragment implements LoginView {
             .commit();
     }
 
-    private void openForgotPasswordPage() {
+    private void clickForgotPassword() {
+        if (!validator.validate(binding.emailDropdown))
+            return;
+
+        loginFragmentViewModel.requestToken();
         sharedViewModel.setEmail(binding.getLogin().getEmail());
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
-            .replace(R.id.fragment_container, new ForgotPasswordFragment())
-            .commit();
     }
 
     @Override
