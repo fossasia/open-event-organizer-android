@@ -43,8 +43,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false);
         loginFragmentViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
@@ -64,6 +63,9 @@ public class LoginFragment extends BaseFragment implements LoginView {
         loginFragmentViewModel.getProgress().observe(this, this::showProgress);
         loginFragmentViewModel.getError().observe(this, this::showError);
         loginFragmentViewModel.getEmailList().observe(this, this::attachEmails);
+        loginFragmentViewModel.getLogin().observe(this, login -> {
+            binding.setLogin(login);
+        });
         loginFragmentViewModel.getIsTokenSent().observe(this, (value) -> {
             getFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
@@ -71,7 +73,6 @@ public class LoginFragment extends BaseFragment implements LoginView {
                 .commit();
         });
 
-        binding.setLogin(loginFragmentViewModel.getLogin());
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
