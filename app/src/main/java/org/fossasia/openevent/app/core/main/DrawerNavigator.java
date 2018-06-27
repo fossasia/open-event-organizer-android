@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ class DrawerNavigator {
     private final FragmentNavigator fragmentNavigator;
 
     private AlertDialog logoutDialog;
+    private final String GOOGLE_FORM_LINK = "https://docs.google.com/forms/d/e/1FAIpQLSfJ-v1mbmNp1ChpsikHDx6HZ5G9Bq8ELCivckPPcYlOAFOy2Q/viewform?usp=sf_link";
 
     DrawerNavigator(Context context, FragmentNavigator fragmentNavigator, MainPresenter mainPresenter) {
         this.context = context;
@@ -44,6 +46,10 @@ class DrawerNavigator {
             Intent intent = new Intent(context, AboutEventActivity.class);
             intent.putExtra(AboutEventActivity.EVENT_ID, fragmentNavigator.getEventId());
             context.startActivity(intent);
+        } else if (id == R.id.nav_suggestion) {
+            Intent googleFormIntent = new Intent(Intent.ACTION_VIEW);
+            googleFormIntent.setData(Uri.parse(GOOGLE_FORM_LINK));
+            context.startActivity(googleFormIntent);
         } else
             fragmentNavigator.loadFragment(id);
     }
