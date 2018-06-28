@@ -113,7 +113,7 @@ public class AttendeePresenterTest {
     @Test
     public void shouldShowAttendeeError() {
         when(attendeeRepository.getAttendees(ID, false))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeeRepository, attendeesView);
 
@@ -198,7 +198,7 @@ public class AttendeePresenterTest {
     @Test
     public void shouldShowEmptyViewOnSwipeRefreshError() {
         when(attendeeRepository.getAttendees(ID, true))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeesView);
 
@@ -212,7 +212,7 @@ public class AttendeePresenterTest {
     @Test
     public void shouldNotShowScanButtonOnSwipeRefreshError() {
         when(attendeeRepository.getAttendees(ID, true))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeesView);
 
@@ -228,7 +228,7 @@ public class AttendeePresenterTest {
         attendeesPresenter.setAttendeeList(ATTENDEES);
 
         when(attendeeRepository.getAttendees(ID, true))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeesView);
 
@@ -288,7 +288,7 @@ public class AttendeePresenterTest {
     @Test
     public void shouldRefreshAttendeesOnError() {
         when(attendeeRepository.getAttendees(ID, true))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeeRepository, attendeesView);
 

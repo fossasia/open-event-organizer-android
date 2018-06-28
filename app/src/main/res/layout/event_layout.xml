@@ -13,10 +13,7 @@
         <variable
             name="selectedEventId"
             type="Long" />
-        <variable
-            name="eventsPresenter"
-            type="org.fossasia.openevent.app.core.event.list.EventsPresenter" />
-        </data>
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
