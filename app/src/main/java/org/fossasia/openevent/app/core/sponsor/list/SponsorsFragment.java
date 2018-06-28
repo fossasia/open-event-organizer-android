@@ -56,8 +56,6 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     private SponsorsFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    private boolean initialized;
-
     public static SponsorsFragment newInstance(long eventId) {
         SponsorsFragment fragment = new SponsorsFragment();
         Bundle args = new Bundle();
@@ -81,7 +79,6 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.sponsors_fragment, container, false);
         binding.createSponsorFab.setOnClickListener(view -> {
-
             openCreateSponsorFragment();
         });
 
@@ -89,9 +86,10 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     }
 
     public void openCreateSponsorFragment() {
-
-        BottomSheetDialogFragment bottomSheetDialogFragment = CreateSponsorFragment.newInstance();
-        bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, CreateSponsorFragment.newInstance())
+            .addToBackStack(null)
+            .commit();
     }
 
     @Override
@@ -101,8 +99,6 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
         setupRefreshListener();
         getPresenter().attach(eventId, this);
         getPresenter().start();
-
-        initialized = true;
     }
 
     @Override
@@ -117,16 +113,14 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     }
 
     private void setupRecyclerView() {
-        if (!initialized) {
-            sponsorsListAdapter = new SponsorsListAdapter(getPresenter());
+        sponsorsListAdapter = new SponsorsListAdapter(getPresenter());
 
-            RecyclerView recyclerView = binding.sponsorsRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(sponsorsListAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+        RecyclerView recyclerView = binding.sponsorsRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(sponsorsListAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-            ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createSponsorFab);
-        }
+        ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createSponsorFab);
     }
 
     private void setupRefreshListener() {
