@@ -47,7 +47,6 @@ public class LoginFragment extends BaseFragment implements LoginView {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false);
         loginFragmentViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
         validator = new Validator(binding);
         return binding.getRoot();
     }
@@ -65,6 +64,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
         loginFragmentViewModel.getEmailList().observe(this, this::attachEmails);
         loginFragmentViewModel.getLogin().observe(this, login -> {
             binding.setLogin(login);
+            sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
         });
         loginFragmentViewModel.getIsTokenSent().observe(this, (value) -> {
             getFragmentManager().beginTransaction()
