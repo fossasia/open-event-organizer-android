@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.event.create;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -46,16 +48,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPresenter> implements CreateEventView {
+public class UpdateEventFragment extends BaseBottomSheetFragment implements CreateEventView {
 
     @Inject
-    Lazy<CreateEventPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
     private EventCreateLayoutBinding binding;
     private Validator validator;
@@ -63,32 +64,32 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     private ArrayAdapter<CharSequence> paymentCountryAdapter;
     private ArrayAdapter<CharSequence> timezoneAdapter;
     private long eventId = -1;
-    private boolean isUpdateEvent;
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private final GoogleApiAvailability googleApiAvailabilityInstance = GoogleApiAvailability.getInstance();
+    private CreateEventViewModel createEventViewModel;
 
-    public static CreateEventFragment newInstance() {
-        return new CreateEventFragment();
+    public static UpdateEventFragment newInstance() {
+        return new UpdateEventFragment();
     }
 
-    public static CreateEventFragment newInstance(long id) {
+    public static UpdateEventFragment newInstance(long id) {
         Bundle bundle = new Bundle();
         bundle.putLong(CreateEventActivity.EVENT_ID, id);
-        CreateEventFragment createEventFragment = new CreateEventFragment();
-        createEventFragment.setArguments(bundle);
-        return createEventFragment;
+        UpdateEventFragment updateEventFragment = new UpdateEventFragment();
+        updateEventFragment.setArguments(bundle);
+        return updateEventFragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.event_create_layout, container, false);
         validator = new Validator(binding.form);
+        createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
 
         if (getArguments() != null) {
             Bundle bundle = getArguments();
             eventId = bundle.getLong(CreateEventActivity.EVENT_ID);
-            isUpdateEvent = eventId != -1;
         }
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
@@ -104,14 +105,13 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
-                if (isUpdateEvent)
-                    getPresenter().updateEvent();
-                else
-                    getPresenter().createEvent();
+                createEventViewModel.updateEvent();
             }
         });
 
         setupSpinners();
+        attachCountryList(createEventViewModel.getCountryList());
+        attachCurrencyCodesList(createEventViewModel.getCurrencyCodesList());
 
         setupPlacePicker();
 
@@ -132,7 +132,8 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                getPresenter().onPaymentCountrySelected(adapterView.getItemAtPosition(i).toString());
+                int index = createEventViewModel.onPaymentCountrySelected(adapterView.getItemAtPosition(i).toString());
+                setPaymentCurrency(index);
             }
 
             @Override
@@ -146,22 +147,21 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        binding.setEvent(getPresenter().getEvent());
-        getPresenter().start();
+        createEventViewModel.getProgress().observe(this, this::showProgress);
+        createEventViewModel.getErrorMessage().observe(this, this::showError);
+        createEventViewModel.getEventLiveData().observe(this, event -> {
+            setEvent(event);
+            setPaymentBinding(event);
+        });
+        createEventViewModel.getCloseState().observe(this, this::close);
 
         validate(binding.form.ticketUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.logoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.externalEventUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.originalImageUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.paypalEmailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
-        if (isUpdateEvent) {
-            binding.form.createEventTitle.setText(getResources().getString(R.string.update_event));
-            getPresenter().loadEvents(eventId);
-        } else {
-            binding.form.createEventTitle.setText(getResources().getString(R.string.create_event));
-        }
-
+        binding.form.createEventTitle.setText(getResources().getString(R.string.update_event));
+        createEventViewModel.loadEvents(eventId);
     }
 
     @Override
@@ -181,10 +181,7 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
         MenuItem menuItem = menu.findItem(R.id.action_share_event);
         Drawable shareIcon = menu.findItem(R.id.action_share_event).getIcon();
         shareIcon.setColorFilter(getResources().getColor(android.R.color.black), PorterDuff.Mode.SRC_ATOP);
-        if (isUpdateEvent)
-            menuItem.setVisible(true);
-        else
-            menuItem.setVisible(false);
+        menuItem.setVisible(true);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -195,7 +192,7 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     public void shareEvent() {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(getPresenter().getEvent()));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(createEventViewModel.getEvent()));
         shareIntent.setType("text/plain");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
@@ -237,22 +234,16 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     }
 
     @Override
-    public void attachCountryList(List<String> countryList, int countryIndex) {
+    public void attachCountryList(List<String> countryList) {
         paymentCountryAdapter.addAll(countryList);
         binding.form.paymentCountrySpinner.setAdapter(paymentCountryAdapter);
-        if (!isUpdateEvent)
-            binding.form.paymentCountrySpinner.setSelection(countryIndex);
+        binding.form.paymentCountrySpinner.setSelection(createEventViewModel.getCountryIndex());
     }
 
     @Override
     public void attachCurrencyCodesList(List<String> currencyCodesList) {
         currencyAdapter.addAll(currencyCodesList);
         binding.form.currencySpinner.setAdapter(currencyAdapter);
-    }
-
-    @Override
-    public Lazy<CreateEventPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override
@@ -271,18 +262,13 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     }
 
     @Override
-    public void close() {
+    public void close(boolean bool) {
         getActivity().finish();
     }
 
     @Override
     public List<String> getTimeZoneList() {
         return Arrays.asList(getResources().getStringArray(R.array.timezones));
-    }
-
-    @Override
-    public void setDefaultTimeZone(int index) {
-        binding.form.timezoneSpinner.setSelection(index);
     }
 
     private void setupPlacePicker() {
@@ -342,7 +328,7 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
 
             binding.form.locationName.setText(place.getAddress());
             binding.form.searchableLocationName.setText(
-                getPresenter().getSearchableLocationName(place.getAddress().toString())
+                createEventViewModel.getSearchableLocationName(place.getAddress().toString())
             );
         }
     }
@@ -355,8 +341,8 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     @Override
     public void setEvent(Event event) {
         binding.setEvent(event);
-        String paymentCountry = getPresenter().getEvent().getPaymentCountry();
-        String timezone = getPresenter().getEvent().getTimezone();
+        String paymentCountry = createEventViewModel.getEvent().getPaymentCountry();
+        String timezone = createEventViewModel.getEvent().getTimezone();
 
         int timezoneIndex = timezoneAdapter.getPosition(timezone);
         int countryIndex = paymentCountryAdapter.getPosition(paymentCountry);
@@ -372,5 +358,6 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
         binding.form.bankPayment.setChecked(event.canPayByBank);
         binding.form.chequePayment.setChecked(event.canPayByCheque);
         binding.form.onsitePayment.setChecked(event.canPayOnsite);
+        binding.setEvent(event);
     }
 }

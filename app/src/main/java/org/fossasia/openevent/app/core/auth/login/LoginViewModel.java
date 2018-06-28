@@ -60,7 +60,6 @@ public class LoginViewModel extends ViewModel {
     public void login() {
         compositeDisposable.add(loginModel.login(login)
             .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
             .subscribe(() -> {
                     encryptUserCredentials();
                     isLoggedIn.setValue(true);

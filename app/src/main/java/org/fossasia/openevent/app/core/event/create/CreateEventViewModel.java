@@ -1,7 +1,10 @@
 package org.fossasia.openevent.app.core.event.create;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
+
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.common.mvp.presenter.AbstractBasePresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.event.Event;
@@ -21,6 +24,8 @@ import java.util.TimeZone;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 import static org.fossasia.openevent.app.common.Constants.PREF_ACCEPT_BANK_TRANSFER;
 import static org.fossasia.openevent.app.common.Constants.PREF_ACCEPT_CHEQUE;
 import static org.fossasia.openevent.app.common.Constants.PREF_ACCEPT_PAYPAL;
@@ -31,20 +36,26 @@ import static org.fossasia.openevent.app.common.Constants.PREF_PAYMENT_ACCEPT_ON
 import static org.fossasia.openevent.app.common.Constants.PREF_PAYMENT_ONSITE_DETAILS;
 import static org.fossasia.openevent.app.common.Constants.PREF_PAYPAL_EMAIL;
 import static org.fossasia.openevent.app.common.Constants.PREF_USE_PAYMENT_PREFS;
-import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
-import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveErroneous;
 
-public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView> {
+
+public class CreateEventViewModel extends ViewModel {
 
     private final EventRepository eventRepository;
-    private final Preferences preferences;
     private Event event = new Event();
+    private final Preferences preferences;
     private final Map<String, String> countryCurrencyMap;
     private final List<String> countryList;
     private final List<String> currencyCodesList;
 
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private MutableLiveData<String> onSuccess = new MutableLiveData<>();
+    private MutableLiveData<String> onError = new MutableLiveData<>();
+    private MutableLiveData<Boolean> progress = new MutableLiveData<>();
+    private MutableLiveData<Boolean> close = new MutableLiveData<>();
+    private MutableLiveData<Event> eventMutableLiveData = new MutableLiveData<>();
+
     @Inject
-    public CreateEventPresenter(EventRepository eventRepository, CurrencyUtils currencyUtils, Preferences preferences) {
+    public CreateEventViewModel(EventRepository eventRepository, CurrencyUtils currencyUtils, Preferences preferences) {
         this.eventRepository = eventRepository;
         this.preferences = preferences;
         LocalDateTime current = LocalDateTime.now();
@@ -56,39 +67,51 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
         countryCurrencyMap = currencyUtils.getCountryCurrencyMap();
         countryList = new ArrayList<>(countryCurrencyMap.keySet());
         currencyCodesList = currencyUtils.getCurrencyCodesList();
-    }
-
-    @Override
-    public void start() {
-        getView().attachCountryList(countryList, getCountryIndex());
-        getView().attachCurrencyCodesList(currencyCodesList);
-
-        List<String> timeZoneList = getView().getTimeZoneList();
-        getView().setDefaultTimeZone(
-            timeZoneList.indexOf(TimeZone.getDefault().getID())
-        );
 
         setPaymentPreferences(preferences);
+
+    }
+
+    public int setTimeZoneList(List<String> timeZoneList) {
+        return timeZoneList.indexOf(TimeZone.getDefault().getID());
+    }
+
+    public List<String> getCountryList() {
+        return countryList;
+    }
+
+    public List<String> getCurrencyCodesList() {
+        return currencyCodesList;
     }
 
     public Event getEvent() {
         return event;
     }
 
+    public LiveData<Event> getEventLiveData() {
+        eventMutableLiveData.setValue(event);
+        return eventMutableLiveData;
+    }
+
     private boolean verify() {
+        if (event.getName() == null) {
+            onError.setValue("Event Name cannot be empty");
+            return false;
+        }
         try {
             ZonedDateTime start = DateUtils.getDate(event.getStartsAt());
             ZonedDateTime end = DateUtils.getDate(event.getEndsAt());
 
             if (!end.isAfter(start)) {
-                getView().showError("End time should be after start time");
+                onError.setValue("End time should be after start time");
                 return false;
             }
             return true;
         } catch (DateTimeParseException pe) {
-            getView().showError("Please enter date in correct format");
+            onError.setValue("Please enter date in correct format");
             return false;
         }
+
     }
 
     protected void nullifyEmptyFields(Event event) {
@@ -105,45 +128,30 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
 
         nullifyEmptyFields(event);
 
-        eventRepository
+        compositeDisposable.add(eventRepository
             .createEvent(event)
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneous(getView()))
+            .doOnSubscribe(disposable->progress.setValue(true))
+            .doFinally(()->progress.setValue(false))
             .subscribe(createdEvent -> {
-                getView().onSuccess("Event Created Successfully");
-                getView().close();
-            }, Logger::logError);
+                onSuccess.setValue("Event Created Successfully");
+                close.setValue(true);
+            }, Logger::logError));
     }
 
-    private void showEvent() {
-        getView().setEvent(event);
+    public LiveData<String> getSuccessMessage() {
+        return onSuccess;
     }
 
-    //Used for loading the event information on start
-    public void loadEvents(long eventId) {
-        eventRepository
-            .getEvent(eventId, false)
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneous(getView()))
-            .doFinally(this::showEvent)
-            .subscribe(loadedEvent -> this.event = (Event) loadedEvent, Logger::logError);
+    public LiveData<String> getErrorMessage() {
+        return onError;
     }
 
-    //method called for updating an event
-    public void updateEvent() {
-        if (!verify())
-            return;
+    public LiveData<Boolean> getCloseState() {
+        return close;
+    }
 
-        nullifyEmptyFields(event);
-
-        eventRepository
-            .updateEvent(event)
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneous(getView()))
-            .subscribe(updatedEvent -> {
-                getView().onSuccess("Event Updated Successfully");
-                getView().close();
-            }, Logger::logError);
+    public LiveData<Boolean> getProgress() {
+        return progress;
     }
 
     /**
@@ -164,11 +172,11 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
      * auto-selects paymentCurrency when paymentCountry is selected.
      * @param paymentCountry chosen payment country
      */
-    void onPaymentCountrySelected(String paymentCountry) {
+    public int onPaymentCountrySelected(String paymentCountry) {
         event.setPaymentCountry(paymentCountry);
         String paymentCurrency = countryCurrencyMap.get(paymentCountry);
         event.setPaymentCurrency(paymentCurrency);
-        getView().setPaymentCurrency(currencyCodesList.indexOf(paymentCurrency));
+        return currencyCodesList.indexOf(paymentCurrency);
     }
 
     public void setPaymentPreferences(Preferences preferences) {
@@ -200,8 +208,6 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
             event.setOnsiteDetails(
                 preferences.getString(PREF_PAYMENT_ONSITE_DETAILS, null)
             );
-
-            getView().setPaymentBinding(event);
         }
     }
 
@@ -210,4 +216,36 @@ public class CreateEventPresenter extends AbstractBasePresenter<CreateEventView>
             return preferences.getInt(Constants.PREF_PAYMENT_COUNTRY, 0);
         return  countryList.indexOf(Locale.getDefault().getDisplayCountry());
     }
+
+    //Used for loading the event information on start
+    public void loadEvents(long eventId) {
+        compositeDisposable.add(eventRepository
+            .getEvent(eventId, false)
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() ->{
+                progress.setValue(false);
+                getEventLiveData();
+            })
+            .subscribe(loadedEvent -> this.event = (Event) loadedEvent, Logger::logError));
+    }
+
+    //method called for updating an event
+    public void updateEvent() {
+        if (!verify())
+            return;
+
+        nullifyEmptyFields(event);
+
+        compositeDisposable.add(
+        eventRepository
+            .updateEvent(event)
+            .doOnSubscribe(disposable-> progress.setValue(true))
+            .doFinally(()->progress.setValue(false))
+            .subscribe(updatedEvent -> {
+                onSuccess.setValue("Event Updated Successfully");
+                close.setValue(true);
+            }, Logger::logError));
+    }
+
 }
+

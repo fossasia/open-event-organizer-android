@@ -880,4 +880,11 @@
         <item>confirmed</item>
     </string-array>
 
+    <string-array name="stepLabels">
+        <item>Step 1</item>
+        <item>Step 2</item>
+        <item>Step 3</item>
+        <item>Step 4</item>
+    </string-array>
+
 </resources>
