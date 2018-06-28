@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Function;
-import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
+import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.databinding.SponsorCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.utils.ValidateUtils;
@@ -25,7 +25,7 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateSponsorFragment extends BaseBottomSheetFragment<CreateSponsorPresenter> implements CreateSponsorView {
+public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> implements CreateSponsorView {
 
     @Inject
     Lazy<CreateSponsorPresenter> presenterProvider;
@@ -76,6 +76,11 @@ public class CreateSponsorFragment extends BaseBottomSheetFragment<CreateSponsor
     }
 
     @Override
+    protected int getTitle() {
+        return R.string.create_sponsor;
+    }
+
+    @Override
     protected Lazy<CreateSponsorPresenter> getPresenterProvider() {
         return presenterProvider;
     }
@@ -108,5 +113,10 @@ public class CreateSponsorFragment extends BaseBottomSheetFragment<CreateSponsor
                 // Nothing here
             }
         });
+    }
+
+    @Override
+    public void dismiss() {
+        getFragmentManager().popBackStack();
     }
 }
