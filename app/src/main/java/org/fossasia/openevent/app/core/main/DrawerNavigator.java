@@ -16,16 +16,16 @@ import static org.fossasia.openevent.app.core.event.create.CreateEventActivity.E
 class DrawerNavigator {
 
     private final Context context;
-    private final MainPresenter mainPresenter;
     private final FragmentNavigator fragmentNavigator;
+    private final OrganizerViewModel organizerViewModel;
 
     private AlertDialog logoutDialog;
     private final String GOOGLE_FORM_LINK = "https://docs.google.com/forms/d/e/1FAIpQLSfJ-v1mbmNp1ChpsikHDx6HZ5G9Bq8ELCivckPPcYlOAFOy2Q/viewform?usp=sf_link";
 
-    DrawerNavigator(Context context, FragmentNavigator fragmentNavigator, MainPresenter mainPresenter) {
+    DrawerNavigator(Context context, FragmentNavigator fragmentNavigator, OrganizerViewModel organizerViewModel) {
         this.context = context;
         this.fragmentNavigator = fragmentNavigator;
-        this.mainPresenter = mainPresenter;
+        this.organizerViewModel = organizerViewModel;
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
@@ -59,7 +59,7 @@ class DrawerNavigator {
             logoutDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.logout_confirmation)
                 .setMessage(R.string.logout_confirmation_message)
-                .setPositiveButton(R.string.ok, (dialog, which) -> mainPresenter.logout())
+                .setPositiveButton(R.string.ok, (dialog, which) -> organizerViewModel.logout())
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .create();
 
