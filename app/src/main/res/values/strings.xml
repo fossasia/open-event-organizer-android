@@ -287,6 +287,8 @@
     <string name="validate">Validate</string>
     <string name="check_your_email">Check your email!</string>
     <string name="check_email_reset_password_msg">We just sent you an email with a token to reset your password.</string>
+    <string name="done">Done</string>
+    <string name="nav_suggestions">Suggestions</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

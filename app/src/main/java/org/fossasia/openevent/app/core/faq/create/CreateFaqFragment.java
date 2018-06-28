@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
+import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.databinding.FaqCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -21,7 +21,7 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateFaqFragment extends BaseBottomSheetFragment<CreateFaqPresenter> implements CreateFaqView {
+public class CreateFaqFragment extends BaseFragment<CreateFaqPresenter> implements CreateFaqView {
 
     @Inject
     Lazy<CreateFaqPresenter> presenterProvider;
@@ -56,6 +56,11 @@ public class CreateFaqFragment extends BaseBottomSheetFragment<CreateFaqPresente
     }
 
     @Override
+    protected int getTitle() {
+        return R.string.create_faq;
+    }
+
+    @Override
     public Lazy<CreateFaqPresenter> getPresenterProvider() {
         return presenterProvider;
     }
@@ -73,5 +78,10 @@ public class CreateFaqFragment extends BaseBottomSheetFragment<CreateFaqPresente
     @Override
     public void onSuccess(String message) {
         ViewUtils.showSnackbar(binding.getRoot(), message);
+    }
+
+    @Override
+    public void dismiss() {
+        getFragmentManager().popBackStack();
     }
 }

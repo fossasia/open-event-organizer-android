@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -51,7 +50,6 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
     private FaqsFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
     private ActionMode actionMode;
-    private boolean initialized;
     private int statusBarColor;
 
     public static FaqListFragment newInstance(long eventId) {
@@ -80,8 +78,7 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
 
         binding.createFaqFab.setOnClickListener(view -> {
             getPresenter().resetToDefaultState();
-            BottomSheetDialogFragment bottomSheetDialogFragment = CreateFaqFragment.newInstance();
-            bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+            openCreateFaqFragment();
         });
 
         return binding.getRoot();
@@ -94,8 +91,13 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
         setupRefreshListener();
         getPresenter().attach(eventId, this);
         getPresenter().start();
+    }
 
-        initialized = true;
+    public void openCreateFaqFragment() {
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, CreateFaqFragment.newInstance())
+            .addToBackStack(null)
+            .commit();
     }
 
     public ActionMode.Callback actionCallback = new ActionMode.Callback() {
@@ -152,14 +154,12 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
     }
 
     private void setupRecyclerView() {
-        if (!initialized) {
-            faqsAdapter = new FaqListAdapter(getPresenter());
+        faqsAdapter = new FaqListAdapter(getPresenter());
 
-            RecyclerView recyclerView = binding.faqsRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(faqsAdapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-        }
+        RecyclerView recyclerView = binding.faqsRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(faqsAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void setupRefreshListener() {
