@@ -18,6 +18,7 @@
         android:background="@color/color_top_surface">
 
         <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -133,6 +134,17 @@
                             tools:text="Exp Month" />
 
                     </LinearLayout>
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/printAction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|bottom"
+                        android:layout_margin="@dimen/spacing_small"
+                        app:backgroundTint="@color/color_accent"
+                        android:tint="@android:color/white"
+                        app:srcCompat="@drawable/ic_round_print" />
+
                 </FrameLayout>
             </android.support.v4.widget.SwipeRefreshLayout>
 
