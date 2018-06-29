@@ -76,19 +76,19 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         orderDetailViewModel.getOrder(orderIdentifier, eventId, false).observe(this, this::showOrderDetails);
         orderDetailViewModel.getProgress().observe(this, this::showProgress);
         orderDetailViewModel.getError().observe(this, this::showError);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            binding.printAction.setVisibility(View.GONE);
+
         binding.printAction.setOnClickListener(view -> {
             doPrint();
         });
     }
 
     private void doPrint() {
-        PrintManager printManager;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
+            PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
             String jobName = this.getString(R.string.app_name) + " Document";
             printManager.print(jobName, new OrderDetailsPrintAdapter(getActivity(), order), null);
-        } else {
-            ViewUtils.showSnackbar(binding.getRoot(), "No Printing Support!");
         }
     }
 
