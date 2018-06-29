@@ -57,6 +57,10 @@ public class EncryptionServiceImpl implements EncryptionService {
 
     @Override
     public String encrypt(String credential) {
+        if (credential == null) {
+            return null;
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             return encryptString(credential);
         } else {
@@ -69,6 +73,10 @@ public class EncryptionServiceImpl implements EncryptionService {
 
     @Override
     public String decrypt(String encryptedCredentials) {
+        if (encryptedCredentials == null) {
+            return null;
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             return decryptString(encryptedCredentials);
         } else {
@@ -78,24 +86,22 @@ public class EncryptionServiceImpl implements EncryptionService {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     private String encryptString(String toEncrypt) {
-        if (toEncrypt != null) {
-            try {
-                final KeyStore.PrivateKeyEntry privateKeyEntry = getPrivateKey();
-                if (privateKeyEntry != null) {
-                    final PublicKey publicKey = privateKeyEntry.getCertificate().getPublicKey();
-                    Cipher input = Cipher.getInstance(CYPHER);
-                    input.init(Cipher.ENCRYPT_MODE, publicKey);
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, input);
-                    cipherOutputStream.write(toEncrypt.getBytes(ENCODING));
-                    cipherOutputStream.close();
-                    byte[] vals = outputStream.toByteArray();
-                    return Base64.encodeToString(vals, Base64.DEFAULT);
-                }
-            } catch (Exception e) {
-                Timber.e(Log.getStackTraceString(e));
-                return null;
+        try {
+            final KeyStore.PrivateKeyEntry privateKeyEntry = getPrivateKey();
+            if (privateKeyEntry != null) {
+                final PublicKey publicKey = privateKeyEntry.getCertificate().getPublicKey();
+                Cipher input = Cipher.getInstance(CYPHER);
+                input.init(Cipher.ENCRYPT_MODE, publicKey);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, input);
+                cipherOutputStream.write(toEncrypt.getBytes(ENCODING));
+                cipherOutputStream.close();
+                byte[] vals = outputStream.toByteArray();
+                return Base64.encodeToString(vals, Base64.DEFAULT);
             }
+        } catch (Exception e) {
+            Timber.e(Log.getStackTraceString(e));
+            return null;
         }
         return null;
     }
@@ -228,17 +234,15 @@ public class EncryptionServiceImpl implements EncryptionService {
         Cipher cipher;
         byte[] cipherText = new byte[0];
 
-        if (message != null) {
-            try {
-                cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-                cipher.init(Cipher.ENCRYPT_MODE, secret);
-                cipherText = cipher.doFinal(message.getBytes("UTF-8"));
-            } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException e) {
-                Timber.w(e);
-            }
-            return cipherText;
+        try {
+            cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secret);
+            cipherText = cipher.doFinal(message.getBytes("UTF-8"));
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException e) {
+            Timber.w(e);
+            return null;
         }
-        return null;
+        return cipherText;
     }
 
     private String decryptString(byte[] cipherText, SecretKey secret) {
@@ -252,6 +256,7 @@ public class EncryptionServiceImpl implements EncryptionService {
             decryptString = new String(cipher.doFinal(cipherText), "UTF-8");
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException e) {
             Timber.w(e);
+            return null;
         }
         return decryptString;
     }
