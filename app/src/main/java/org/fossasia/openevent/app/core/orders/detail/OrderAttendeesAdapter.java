@@ -31,11 +31,7 @@ public class OrderAttendeesAdapter extends RecyclerView.Adapter<OrderAttendeesVi
 
     @Override
     public int getItemCount() {
-        if (attendees == null) {
-            return 0;
-        }
-
-        return attendees.size();
+        return attendees == null ? 0 : attendees.size();
     }
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DU Anomaly

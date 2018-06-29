@@ -22,7 +22,6 @@ import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.order.Order;
 import org.fossasia.openevent.app.databinding.OrdersFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
-import org.fossasia.openevent.app.utils.Utils;
 
 import java.util.List;
 
