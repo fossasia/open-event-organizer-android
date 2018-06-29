@@ -82,7 +82,7 @@
     <string name="events">Events</string>
     <string name="nav_events">My Events</string>
     <string name="log_out">Log Out</string>
-    <string name="settings">Settings</string>
+    <string name="device_settings">Device Settings</string>
     <string name="event_background">Event Background</string>
     <string name="create_ticket">Create Ticket</string>
     <string name="ticket_name">Ticket Name</string>
@@ -276,11 +276,21 @@
     <string name="cheque_details">Cheque Details</string>
     <string name="onsite_details">OnSite Details</string>
     <string name="default_payment_country">Select the default Payment Country</string>
-    <string name="payment_preference">Payment Settings</string>
+    <string name="payment_preference">Payment Preferences</string>
     <string name="order_details">Order Details</string>
     <string name="order_identifier">Order Identifier</string>
     <string name="swipe_left_to_check_out">Swipe left to check out</string>
     <string name="swipe_right_to_check_in">Swipe right to check in</string>
+    <string name="scan_settings">Scan Settings</string>
+    <string name="check_out">Check Out</string>
+    <string name="check_in_settings_summary">Scanning will scan check attendees in</string>
+    <string name="check_out_settings_summary">Scanning will scan check attendees out</string>
+    <string name="validate_settings_summary">Scanning will check if a ticket is valid</string>
+    <string name="validate">Validate</string>
+    <string name="check_your_email">Check your email!</string>
+    <string name="check_email_reset_password_msg">We just sent you an email with a token to reset your password.</string>
+    <string name="done">Done</string>
+    <string name="nav_suggestions">Suggestions</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

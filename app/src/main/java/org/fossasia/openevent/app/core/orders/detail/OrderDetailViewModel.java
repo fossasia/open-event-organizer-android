@@ -48,7 +48,7 @@ public class OrderDetailViewModel extends ViewModel {
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(order -> orderLiveData.setValue(order),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
 
         if (!reload) {
             getEvent(eventId);
@@ -63,7 +63,7 @@ public class OrderDetailViewModel extends ViewModel {
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(event -> orderLiveData.getValue().setEvent(event),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
     public LiveData<List<Attendee>> getAttendeesUnderOrder(String orderIdentifier, long orderId, boolean reload) {
@@ -76,7 +76,7 @@ public class OrderDetailViewModel extends ViewModel {
             .doFinally(() -> progress.setValue(false))
             .toList()
             .subscribe(attendeesLiveData::setValue,
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
 
         return attendeesLiveData;
     }
@@ -89,7 +89,7 @@ public class OrderDetailViewModel extends ViewModel {
             .subscribe(() -> {
                     //Nothing here
                  },
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable))));
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
     public Boolean getCheckedInStatus(int index) {

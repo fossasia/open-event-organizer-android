@@ -22,7 +22,7 @@ public class DrawerNavigatorTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private MainPresenter mainPresenter;
+    private OrganizerViewModel organizerViewModel;
     @Mock
     private FragmentNavigator fragmentNavigator;
     @Mock
@@ -34,7 +34,7 @@ public class DrawerNavigatorTest {
 
     @Before
     public void setUp() {
-        drawerNavigator = new DrawerNavigator(null, fragmentNavigator, mainPresenter);
+        drawerNavigator = new DrawerNavigator(null, fragmentNavigator, organizerViewModel);
     }
 
     @Test

@@ -6,10 +6,16 @@
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_dashboard"
             android:title="@string/dashboard" />
+
         <item
             android:id="@+id/nav_attendees"
             android:icon="@drawable/qrcode_scan"
             android:title="@string/check_in" />
+
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_order"
+            android:title="@string/orders" />
 
         <item
             android:id="@+id/nav_edit_event"
@@ -23,14 +29,14 @@
             android:title="@string/tickets" />
 
         <item
-            android:id="@+id/nav_orders"
-            android:icon="@drawable/ic_order"
-            android:title="@string/orders" />
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_share"
+            android:title="@string/share" />
 
         <item
             android:id="@+id/nav_feedback"
             android:icon="@drawable/ic_feedback"
-            android:title="@string/feedback" />
+            android:title="@string/feedback"/>
 
         <item
             android:id="@+id/nav_faq"
@@ -58,15 +64,11 @@
             android:title="@string/speakers_call"/>
 
         <item
-            android:id="@+id/nav_share"
-            android:icon="@drawable/ic_share"
-            android:title="@string/share" />
-
-        <item
             android:id="@+id/nav_about_event"
             android:icon="@drawable/ic_info"
             android:title="@string/about"
-            android:checkable="false"/>
+            android:checkable="false"
+            android:visible="false"/>
 
         <item
             android:id="@+id/nav_event_settings"
@@ -88,8 +90,13 @@
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
-            android:title="@string/settings"
+            android:title="@string/device_settings"
             android:checkable="true"/>
+
+        <item
+            android:id="@+id/nav_suggestion"
+            android:icon="@drawable/ic_feedback"
+            android:title="@string/nav_suggestions"/>
 
         <item
             android:id="@+id/nav_logout"

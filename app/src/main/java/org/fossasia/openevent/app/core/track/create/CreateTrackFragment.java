@@ -8,8 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
+import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.databinding.TrackCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -20,7 +21,7 @@ import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateTrackFragment extends BaseBottomSheetFragment<CreateTrackPresenter> implements CreateTrackView {
+public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> implements CreateTrackView {
 
     @Inject
     Lazy<CreateTrackPresenter> presenterProvider;
@@ -88,7 +89,17 @@ public class CreateTrackFragment extends BaseBottomSheetFragment<CreateTrackPres
     }
 
     @Override
+    protected int getTitle() {
+        return R.string.create_track;
+    }
+
+    @Override
     protected Lazy<CreateTrackPresenter> getPresenterProvider() {
         return presenterProvider;
+    }
+
+    @Override
+    public void dismiss() {
+        getFragmentManager().popBackStack();
     }
 }

@@ -141,7 +141,7 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldShowEventError() {
         when(eventRepository.getEvent(ID, false))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
 
@@ -155,7 +155,7 @@ public class EventDashboardPresenterTest {
         when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(EVENT));
         when(attendeeRepository.getAttendees(ID, false))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
 
@@ -170,7 +170,7 @@ public class EventDashboardPresenterTest {
         when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(EVENT));
         when(attendeeRepository.getAttendees(ID, false))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
 
@@ -214,7 +214,7 @@ public class EventDashboardPresenterTest {
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
         when(eventRepository.getEventStatistics(ID))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         eventDashboardPresenter.loadDetails(false);
 
@@ -243,7 +243,7 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldHideProgressbarOnEventError() {
         when(eventRepository.getEvent(ID, false))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
@@ -259,7 +259,7 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldHideProgressbarOnAttendeeError() {
         when(attendeeRepository.getAttendees(ID, false))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(EVENT));
@@ -278,7 +278,7 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldHideProgressbarOnEventStatisticsError() {
         when(eventRepository.getEventStatistics(ID))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
@@ -297,10 +297,10 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldHideProgressbarOnCompleteError() {
         when(eventRepository.getEvent(ID, false))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         when(eventRepository.getEventStatistics(ID))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -333,7 +333,7 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldHideRefreshLayoutOnEventError() {
         when(eventRepository.getEvent(ID, true))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
@@ -350,7 +350,7 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldHideRefreshLayoutOnAttendeeError() {
         when(attendeeRepository.getAttendees(ID, true))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         when(eventRepository.getEvent(ID, true))
             .thenReturn(Observable.just(EVENT));
@@ -376,7 +376,7 @@ public class EventDashboardPresenterTest {
             .thenReturn(Observable.fromIterable(ATTENDEES));
 
         when(eventRepository.getEventStatistics(ID))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -390,10 +390,10 @@ public class EventDashboardPresenterTest {
     @Test
     public void shouldHideRefreshLayoutOnCompleteError() {
         when(eventRepository.getEvent(ID, true))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         when(eventRepository.getEventStatistics(ID))
-            .thenReturn(Util.ERROR_OBSERVABLE);
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -416,7 +416,7 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldNotToggleEventStateOnError() {
-        when(eventRepository.updateEvent(any(Event.class))).thenReturn(Util.ERROR_OBSERVABLE);
+        when(eventRepository.updateEvent(any(Event.class))).thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         // Defined locally as a work around for unexpected failureg
         Event event = Event.builder().id(6L).state(Event.STATE_PUBLISHED).build();
@@ -439,7 +439,7 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldShowErrorMessageOnToggleError() {
-        when(eventRepository.updateEvent(any(Event.class))).thenReturn(Util.ERROR_OBSERVABLE);
+        when(eventRepository.updateEvent(any(Event.class))).thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         eventDashboardPresenter.setEvent(EVENT);
         eventDashboardPresenter.toggleState();

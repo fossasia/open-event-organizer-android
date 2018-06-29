@@ -11,11 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.mvp.view.BaseInjectActivity;
 import org.fossasia.openevent.app.core.auth.AuthActivity;
 import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailActivity;
 import org.fossasia.openevent.app.data.event.Event;
@@ -24,27 +25,28 @@ import org.fossasia.openevent.app.databinding.MainActivityBinding;
 import org.fossasia.openevent.app.databinding.MainNavHeaderBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.inject.Inject;
 
-import dagger.Lazy;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public class MainActivity extends BaseInjectActivity<MainPresenter> implements
+public class MainActivity extends AppCompatActivity implements
     NavigationView.OnNavigationItemSelectedListener, MainView, HasSupportFragmentInjector {
 
     public static final String EVENT_KEY = "event";
     private long eventId = -1;
+    private List<Integer> drawerItems = Arrays.asList(R.id.nav_feedback, R.id.nav_faq, R.id.nav_track,
+        R.id.nav_sponsor, R.id.nav_speaker, R.id.nav_speakers_call, R.id.nav_about_event);
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
-
-    @Inject
-    Lazy<MainPresenter> presenterProvider;
 
     private FragmentNavigator fragmentNavigator;
     private DrawerNavigator drawerNavigator;
@@ -75,7 +77,7 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
 
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentNavigator = new FragmentNavigator(getSupportFragmentManager(), eventId);
-        drawerNavigator = new DrawerNavigator(this, fragmentNavigator, getPresenter());
+        drawerNavigator = new DrawerNavigator(this, fragmentNavigator, organizerViewModel);
 
         headerBinding.profile.setOnClickListener(view -> startActivity(new Intent(this, OrganizerDetailActivity.class)));
     }
@@ -83,10 +85,13 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
     @Override
     protected void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        getPresenter().start();
 
+        organizerViewModel.setLocalDatePreferenceAction();
         organizerViewModel.getOrganizer().observe(this, this::showOrganizer);
+        organizerViewModel.getLogoutAction().observe(this, aVoid -> this.onLogout());
+        organizerViewModel.getLocalDatePreferenceAction().observe(this, aVoid -> this.invalidateDateViews());
+        organizerViewModel.getError().observe(this, this::showError);
+        eventViewModel.onStart();
         eventViewModel.getEventId().observe(this, this::setEventId);
         eventViewModel.getSelectedEvent().observe(this, this::showResult);
         eventViewModel.getError().observe(this, this::showError);
@@ -124,15 +129,16 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
     }
 
     @Override
-    public Lazy<MainPresenter> getPresenterProvider() {
-        return presenterProvider;
-    }
-
-    @Override
     public void setEventId(long eventId) {
         this.eventId = eventId;
         fragmentNavigator.setEventId(eventId);
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, true);
+
+        if (BuildConfig.HIDE_DRAWER_ITEMS) {
+            for (Integer itemId : drawerItems) {
+                binding.navView.getMenu().findItem(itemId).setVisible(false);
+            }
+        }
     }
 
     @Override

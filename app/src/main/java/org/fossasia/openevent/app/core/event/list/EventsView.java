@@ -8,7 +8,6 @@ import org.fossasia.openevent.app.data.event.Event;
 
 public interface EventsView extends Progressive, Erroneous, Refreshable, Emptiable<Event> {
 
-    void resetEventsList();
     void openSalesSummary(Long id);
     void closeSalesSummary();
 }
