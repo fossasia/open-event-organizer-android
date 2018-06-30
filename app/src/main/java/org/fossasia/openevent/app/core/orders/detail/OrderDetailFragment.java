@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.print.PrintManager;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,32 +20,40 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.order.Order;
 import org.fossasia.openevent.app.databinding.OrderDetailFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 public class OrderDetailFragment extends BaseFragment implements OrderDetailView {
 
-    private static final String ORDER_KEY = "order_id";
+    private static final String ORDER_IDENTIFIER_KEY = "order_identifier";
+    private static final String ORDER_ID_KEY = "order_id";
     private String orderIdentifier;
     private long eventId;
     private Order order;
+    private long orderId;
+    private Context context;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
     private OrderDetailViewModel orderDetailViewModel;
+    private OrderAttendeesAdapter orderAttendeesAdapter;
 
     private OrderDetailFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    public static OrderDetailFragment newInstance(long eventId, String orderIdentifier) {
+    public static OrderDetailFragment newInstance(long eventId, String orderIdentifier, Long orderId) {
         OrderDetailFragment fragment = new OrderDetailFragment();
         Bundle args = new Bundle();
         args.putLong(MainActivity.EVENT_KEY, eventId);
-        args.putString(ORDER_KEY, orderIdentifier);
+        args.putString(ORDER_IDENTIFIER_KEY, orderIdentifier);
+        args.putLong(ORDER_ID_KEY, orderId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +64,11 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
 
         setHasOptionsMenu(true);
 
+        context = getContext();
+
         if (getArguments() != null) {
-            orderIdentifier = getArguments().getString(ORDER_KEY);
+            orderIdentifier = getArguments().getString(ORDER_IDENTIFIER_KEY);
+            orderId = getArguments().getLong(ORDER_ID_KEY);
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
         }
     }
@@ -72,10 +87,13 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
     public void onStart() {
         super.onStart();
         setupRefreshListener();
+        setupRecyclerView();
 
         orderDetailViewModel.getOrder(orderIdentifier, eventId, false).observe(this, this::showOrderDetails);
         orderDetailViewModel.getProgress().observe(this, this::showProgress);
         orderDetailViewModel.getError().observe(this, this::showError);
+        loadAttendees(false);
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
             binding.printAction.setVisibility(View.GONE);
 
@@ -103,12 +121,30 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         refreshLayout.setOnRefreshListener(null);
     }
 
+    private void setupRecyclerView() {
+        orderAttendeesAdapter = new OrderAttendeesAdapter();
+
+        RecyclerView recyclerView = binding.attendeesRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(orderAttendeesAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        SwipeController swipeController = new SwipeController(orderDetailViewModel, orderAttendeesAdapter, context);
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
+    }
+
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
             orderDetailViewModel.getOrder(orderIdentifier, eventId, true).observe(this, this::showOrderDetails);
         });
+    }
+
+    private void loadAttendees(boolean reload) {
+        orderDetailViewModel.getAttendeesUnderOrder(orderIdentifier, orderId, reload).observe(this, this::showResults);
     }
 
     @Override
@@ -119,6 +155,16 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
     @Override
     public void showProgress(boolean show) {
         ViewUtils.showView(binding.progressBar, show);
+    }
+
+    @Override
+    public void showResults(List<Attendee> attendees) {
+        orderAttendeesAdapter.setAttendees(attendees);
+    }
+
+    @Override
+    public void showEmptyView(boolean show) {
+        ViewUtils.showView(binding.emptyView, show);
     }
 
     @Override

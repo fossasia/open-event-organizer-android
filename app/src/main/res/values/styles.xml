@@ -48,4 +48,14 @@
     <style name="ExpandedAppBar" parent="@style/TextAppearance.Design.CollapsingToolbar.Expanded">
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+    <style name="SubmitButton">
+        <item name="android:padding">@dimen/spacing_submit_button</item>
+        <item name="android:background">@color/green_500</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

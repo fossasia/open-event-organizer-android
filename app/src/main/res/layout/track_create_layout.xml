@@ -12,7 +12,7 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/color_top_surface">
 
         <android.support.v4.widget.NestedScrollView
@@ -25,23 +25,12 @@
                 layout="@layout/track_create_form" />
         </android.support.v4.widget.NestedScrollView>
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal"
-            android:layout_marginTop="@dimen/spacing_normal">
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/submit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:backgroundTint="@color/light_green_500"
-                app:fabSize="normal"
-                app:srcCompat="@drawable/ic_check"
-                app:tint="@android:color/white" />
+        <Button
+            style="@style/SubmitButton"
+            android:id="@+id/submit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/submit_button_width"
+            android:text="@string/done"/>
 
             <FrameLayout
                 android:layout_width="@dimen/progressbar_large"
@@ -57,8 +46,6 @@
                     android:visibility="gone" />
 
             </FrameLayout>
-
-        </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

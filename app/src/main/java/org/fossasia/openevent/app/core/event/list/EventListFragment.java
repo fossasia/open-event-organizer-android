@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.event.list;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -34,10 +36,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.Lazy;
-
-import static org.fossasia.openevent.app.core.event.list.EventsPresenter.SORTBYDATE;
-import static org.fossasia.openevent.app.core.event.list.EventsPresenter.SORTBYNAME;
+import static org.fossasia.openevent.app.core.event.list.EventsViewModel.SORTBYDATE;
+import static org.fossasia.openevent.app.core.event.list.EventsViewModel.SORTBYNAME;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +46,7 @@ import static org.fossasia.openevent.app.core.event.list.EventsPresenter.SORTBYN
  * create an instance of this fragment.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class EventListFragment extends BaseFragment<EventsPresenter> implements EventsView {
+public class EventListFragment extends BaseFragment implements EventsView {
     @Inject
     ContextUtils utilModel;
 
@@ -54,7 +54,9 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     Bus bus;
 
     @Inject
-    Lazy<EventsPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
+
+    private EventsViewModel eventsViewModel;
 
     private FragmentEventListBinding binding;
     private RecyclerView recyclerView;
@@ -90,6 +92,8 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_event_list, container, false);
+
+        eventsViewModel = ViewModelProviders.of(this, viewModelFactory).get(EventsViewModel.class);
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(
             item -> {
@@ -131,16 +135,11 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     }
 
     private void sortEvents(int sortBy) {
-        getPresenter().sortBy(sortBy);
+        eventsViewModel.sortBy(sortBy);
         eventListAdapter.setSortByName(sortBy == SORTBYNAME);
-        binding.setVariable(BR.events, getPresenter().getEvents());
+        binding.setVariable(BR.events, eventsViewModel.getEvents());
         binding.executePendingBindings();
         eventListAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public Lazy<EventsPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override
@@ -148,13 +147,26 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
         super.onStart();
         setupRecyclerView();
         setupRefreshListener();
-        getPresenter().attach(this);
-        binding.setEvents(getPresenter().getEvents());
-        getPresenter().start();
+        eventsViewModel.loadUserEvents(false);
+        binding.setEvents(eventsViewModel.getEvents().getValue());
 
         initialized = true;
 
         binding.createEventFab.setOnClickListener(view -> openCreateEventFragment());
+
+        eventsViewModel.getProgress().observe(this, this::showProgress);
+        eventsViewModel.getError().observe(this, this::showError);
+        eventsViewModel.getSuccess().observe(this, this::onRefreshComplete);
+        eventsViewModel.getEvents().observe(this, (events) -> {
+            eventListAdapter.updateList(events);
+            binding.bottomNavigation.setSelectedItemId(
+                binding.bottomNavigation.getSelectedItemId()
+            );
+            if (events.isEmpty())
+                this.showEmptyView(true);
+            else
+                this.showEmptyView(false);
+        });
     }
 
     public void openCreateEventFragment() {
@@ -176,7 +188,7 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
 
     private void setupRecyclerView() {
         if (!initialized) {
-            eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus, getPresenter());
+            eventListAdapter = new EventsListAdapter(eventsViewModel.getEvents().getValue(), bus, this);
             binding.bottomNavigation.setSelectedItemId(R.id.action_live);
 
             recyclerView = binding.eventRecyclerView;
@@ -202,7 +214,7 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            getPresenter().loadUserEvents(true);
+            eventsViewModel.loadUserEvents(true);
         });
     }
 
@@ -222,7 +234,6 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     public void showResults(List<Event> events) {
         binding.setVariable(BR.events, events);
         binding.executePendingBindings();
-        eventListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -233,12 +244,6 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
-    }
-
-    @Override
-    public void resetEventsList() {
-        eventListAdapter.categorizeEvents();
-        binding.bottomNavigation.setSelectedItemId(R.id.action_live);
     }
 
     @Override

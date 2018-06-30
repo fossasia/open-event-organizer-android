@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.event.list;
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,24 +29,51 @@ import timber.log.Timber;
 class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecyclerViewHolder>
     implements StickyRecyclerHeadersAdapter<HeaderViewHolder>, Filterable {
 
-    private final List<Event> events;
+    private List<Event> events;
     private final List<Event> selectedEvents = new ArrayList<>();
 
     private final Bus bus;
-    private final EventsPresenter eventsPresenter;
     private boolean sortByName;
 
     private boolean isLongPressed;
 
-    EventsListAdapter(List<Event> events, Bus bus, EventsPresenter eventsPresenter) {
+    private final EventListFragment fragment;
+
+    EventsListAdapter(List<Event> events, Bus bus, EventListFragment fragment) {
         this.events = events;
         this.bus = bus;
-        this.eventsPresenter = eventsPresenter;
+        this.fragment = fragment;
     }
 
-    public void categorizeEvents() {
+    public void updateList(List<Event> newEvents) {
+        if (events == null) {
+            events = newEvents;
+            notifyItemRangeInserted(0, newEvents.size());
+        } else {
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                @Override
+                public int getOldListSize() {
+                    return events.size();
+                }
 
-        notifyDataSetChanged();
+                @Override
+                public int getNewListSize() {
+                    return newEvents.size();
+                }
+
+                @Override
+                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                    return events.get(oldItemPosition).getId() == newEvents.get(newItemPosition).getId();
+                }
+
+                @Override
+                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                    return events.get(oldItemPosition).equals(newEvents.get(newItemPosition));
+                }
+            });
+            events = newEvents;
+            diffResult.dispatchUpdatesTo(this);
+        }
     }
 
     @Override
@@ -80,8 +108,8 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
         EventLayoutBinding binding = EventLayoutBinding.inflate(layoutInflater, parent, false);
         EventRecyclerViewHolder eventRecyclerViewHolder = new EventRecyclerViewHolder(binding);
 
-        eventRecyclerViewHolder.onItemLongClick(eventsPresenter::openSalesSummary);
-        eventRecyclerViewHolder.onItemLongClickReleased(eventsPresenter::closeSalesSummary);
+        eventRecyclerViewHolder.onItemLongClick(fragment::openSalesSummary);
+        eventRecyclerViewHolder.onItemLongClickReleased(fragment::closeSalesSummary);
         return eventRecyclerViewHolder;
     }
 
@@ -130,7 +158,6 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
         private Event event;
         private final long selectedEventId;
         private Pipe<Long> longClickAction;
-        private Runnable onClick;
         private Runnable onLongClickReleased;
 
         EventRecyclerViewHolder(EventLayoutBinding binding) {
@@ -173,15 +200,10 @@ class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventRecy
             binding.setEvent(event);
             binding.setSelectedEventId(selectedEventId);
             binding.executePendingBindings();
-            binding.setEventsPresenter(eventsPresenter);
         }
 
         public void onItemLongClick(Pipe<Long> longClickAction) {
             this.longClickAction = longClickAction;
-        }
-
-        public void onItemClick(Runnable onClick) {
-            this.onClick = onClick;
         }
 
         public void onItemLongClickReleased(Runnable onLongClickReleased) {

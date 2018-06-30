@@ -86,7 +86,7 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
         binding = DataBindingUtil.inflate(inflater, R.layout.session_create_layout, container, false);
         validator = new Validator(binding.form);
 
-        binding.sessionCreate.setOnClickListener(view -> {
+        binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
                 if (isSessionUpdating) {
                     getPresenter().updateSession(trackId, eventId);
@@ -114,10 +114,7 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
         binding.setSession(getPresenter().getSession());
 
         if (isSessionUpdating) {
-            binding.form.sessionFormTitle.setText(getResources().getString(R.string.update_session));
             getPresenter().loadSession(sessionId);
-        } else {
-            binding.form.sessionFormTitle.setText(getResources().getString(R.string.create_session));
         }
 
         validate(binding.form.slidesUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -167,7 +164,11 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
 
     @Override
     protected int getTitle() {
-        return R.string.create_session;
+        if (isSessionUpdating) {
+            return R.string.update_session;
+        } else {
+            return R.string.create_session;
+        }
     }
 
     @Override

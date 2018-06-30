@@ -13,6 +13,9 @@ public interface AttendeeRepository {
     @NonNull
     Observable<Attendee> getAttendees(long eventId, boolean reload);
 
+    @NonNull
+    Observable<Attendee> getAttendeesUnderOrder(String orderIdentifier, long orderId, boolean reload);
+
     Completable scheduleToggle(Attendee attendee);
 
     @NonNull

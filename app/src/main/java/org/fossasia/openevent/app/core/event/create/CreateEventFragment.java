@@ -33,7 +33,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Function;
-import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
+import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.databinding.EventCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -52,7 +52,7 @@ import timber.log.Timber;
 import static android.app.Activity.RESULT_OK;
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPresenter> implements CreateEventView {
+public class CreateEventFragment extends BaseFragment<CreateEventPresenter> implements CreateEventView {
 
     @Inject
     Lazy<CreateEventPresenter> presenterProvider;
@@ -104,10 +104,11 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
-                if (isUpdateEvent)
+                if (isUpdateEvent) {
                     getPresenter().updateEvent();
-                else
+                } else {
                     getPresenter().createEvent();
+                }
             }
         });
 
@@ -155,13 +156,10 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
         validate(binding.form.externalEventUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.originalImageUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.paypalEmailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
-        if (isUpdateEvent) {
-            binding.form.createEventTitle.setText(getResources().getString(R.string.update_event));
-            getPresenter().loadEvents(eventId);
-        } else {
-            binding.form.createEventTitle.setText(getResources().getString(R.string.create_event));
-        }
 
+        if (isUpdateEvent) {
+            getPresenter().loadEvents(eventId);
+        }
     }
 
     @Override
@@ -248,6 +246,15 @@ public class CreateEventFragment extends BaseBottomSheetFragment<CreateEventPres
     public void attachCurrencyCodesList(List<String> currencyCodesList) {
         currencyAdapter.addAll(currencyCodesList);
         binding.form.currencySpinner.setAdapter(currencyAdapter);
+    }
+
+    @Override
+    protected int getTitle() {
+        if (isUpdateEvent) {
+            return R.string.update_event;
+        } else {
+            return R.string.create_event;
+        }
     }
 
     @Override
