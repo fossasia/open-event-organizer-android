@@ -279,6 +279,8 @@
     <string name="payment_preference">Payment Preferences</string>
     <string name="order_details">Order Details</string>
     <string name="order_identifier">Order Identifier</string>
+    <string name="swipe_left_to_check_out">Swipe left to check out</string>
+    <string name="swipe_right_to_check_in">Swipe right to check in</string>
     <string name="scan_settings">Scan Settings</string>
     <string name="check_out">Check Out</string>
     <string name="check_in_settings_summary">Scanning will scan check attendees in</string>

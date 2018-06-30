@@ -69,6 +69,24 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
             .build();
     }
 
+    @Override
+    public Observable<Attendee> getAttendeesUnderOrder(String orderIdentifier, long orderId, boolean reload) {
+        Observable<Attendee> diskObservable = Observable.defer(() ->
+            repository.getItems(Attendee.class, Attendee_Table.order_id.eq(orderId))
+        );
+
+        Observable<Attendee> networkObservable = Observable.defer(() ->
+            attendeeApi.getAttendeesUnderOrder(orderIdentifier)
+                .doOnNext(attendees -> repository.syncSave(Attendee.class, attendees, Attendee::getId, Attendee_Table.id).subscribe())
+                .flatMapIterable(attendees -> attendees));
+
+        return repository.observableOf(Attendee.class)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
     @NonNull
     @Override
     public Observable<Long> getCheckedInAttendees(long eventId) {
