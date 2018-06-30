@@ -17,8 +17,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrderViewHolder> {
 
     private List<Order> orders;
     private final OrdersViewModel ordersViewModel;
-    private DiffUtil.DiffResult result;
-
 
     public OrdersAdapter(OrdersViewModel ordersViewModel) {
         this.ordersViewModel = ordersViewModel;
@@ -56,7 +54,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrderViewHolder> {
             orders = newOrders;
             notifyItemRangeInserted(0, newOrders.size());
         } else {
-            result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
                 public int getOldListSize() {
                     return orders.size();
