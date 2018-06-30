@@ -231,34 +231,26 @@ public class EncryptionServiceImpl implements EncryptionService {
     *
     */
     private byte[] encryptString(String message, SecretKey secret) {
-        Cipher cipher;
-        byte[] cipherText = new byte[0];
-
         try {
-            cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secret);
-            cipherText = cipher.doFinal(message.getBytes("UTF-8"));
+            return cipher.doFinal(message.getBytes("UTF-8"));
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException e) {
             Timber.w(e);
             return null;
         }
-        return cipherText;
     }
 
     private String decryptString(byte[] cipherText, SecretKey secret) {
         /* Decrypt the message, given derived encContentValues and initialization vector. */
-        Cipher cipher = null;
-        String decryptString = null;
-
         try {
-            cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secret);
-            decryptString = new String(cipher.doFinal(cipherText), "UTF-8");
+            return new String(cipher.doFinal(cipherText), "UTF-8");
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException e) {
             Timber.w(e);
             return null;
         }
-        return decryptString;
     }
 
     private SecretKey generateKey(String password) {
