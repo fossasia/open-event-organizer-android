@@ -50,6 +50,7 @@
                     android:id="@+id/organizer_firstname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/first_name"
                     android:text="@={ user.firstName }"
                     app:validateEmpty="@{true}" />
 
@@ -77,6 +78,7 @@
                     android:id="@+id/organizer_lastname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/last_name"
                     android:text="@={ user.lastName }"
                     app:validateEmpty="@{true}" />
 
@@ -208,7 +210,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_link" />
+                app:srcCompat="@drawable/ic_facebook" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -236,7 +238,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_link" />
+                app:srcCompat="@drawable/ic_instagram" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -292,7 +294,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_link" />
+                app:srcCompat="@drawable/ic_twitter" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -320,7 +322,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_link" />
+                app:srcCompat="@drawable/ic_google_plus" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
