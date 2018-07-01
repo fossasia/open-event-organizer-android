@@ -4,7 +4,9 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
+import android.print.PrintManager;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -33,6 +35,7 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
     private static final String ORDER_ID_KEY = "order_id";
     private String orderIdentifier;
     private long eventId;
+    private Order order;
     private long orderId;
     private Context context;
 
@@ -90,6 +93,21 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         orderDetailViewModel.getProgress().observe(this, this::showProgress);
         orderDetailViewModel.getError().observe(this, this::showError);
         loadAttendees(false);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            binding.printAction.setVisibility(View.GONE);
+
+        binding.printAction.setOnClickListener(view -> {
+            doPrint();
+        });
+    }
+
+    private void doPrint() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
+            String jobName = this.getString(R.string.app_name) + " Document";
+            printManager.print(jobName, new OrderDetailsPrintAdapter(getActivity(), order), null);
+        }
     }
 
     @Override
@@ -157,5 +175,6 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
 
     public void showOrderDetails(Order order) {
         binding.setOrder(order);
+        this.order = order;
     }
 }
