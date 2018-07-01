@@ -94,7 +94,7 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
             StrictMode.setVmPolicy(
                 new StrictMode.VmPolicy.Builder()
                     .detectAll()
-                    .penaltyDeath()
+                    .penaltyLog()
                     .build());
 
             Timber.plant(new Timber.DebugTree());
