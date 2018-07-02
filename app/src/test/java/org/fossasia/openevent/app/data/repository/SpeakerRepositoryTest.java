@@ -88,6 +88,30 @@ public class SpeakerRepositoryTest {
             .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
+    @Test
+    public void shouldReturnConnectionErrorOnGetSpeakerWithReload() {
+        when(repository.isConnected()).thenReturn(false);
+
+        Observable<Speaker> speakerObservable = speakerRepository.getSpeaker(ID, true);
+
+        speakerObservable
+            .test()
+            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+
+    }
+
+    @Test
+    public void shouldReturnConnectionErrorOnGetSpeakerWithNoneSaved() {
+        when(repository.isConnected()).thenReturn(false);
+        when(repository.getItems(eq(Speaker.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+
+        Observable<Speaker> speakerObservable = speakerRepository.getSpeaker(ID, true);
+
+        speakerObservable
+            .test()
+            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+    }
+
     // Network up tests
 
     @Test
@@ -125,5 +149,39 @@ public class SpeakerRepositoryTest {
         speakerRepository.getSpeakers(ID, true).subscribe();
 
         verify(repository).syncSave(eq(Speaker.class), eq(speakers), any(), any());
+    }
+
+    @Test
+    public void shouldCallGetSpeakerServiceOnReload() {
+        when(repository.isConnected()).thenReturn(true);
+        when(speakerApi.getSpeaker(ID)).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Speaker.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+
+        speakerRepository.getSpeaker(ID, true).subscribe();
+
+        verify(speakerApi).getSpeaker(ID);
+    }
+
+    @Test
+    public void shouldCallGetSpeakerServiceWithNoneSaved() {
+        when(repository.isConnected()).thenReturn(true);
+        when(speakerApi.getSpeaker(ID)).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Speaker.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+
+        speakerRepository.getSpeaker(ID, false).subscribe();
+
+        verify(speakerApi).getSpeaker(ID);
+    }
+
+    @Test
+    public void shouldSaveSpeakerOnGet() {
+        when(repository.isConnected()).thenReturn(true);
+        when(speakerApi.getSpeaker(ID)).thenReturn(Observable.just(SPEAKER));
+        when(repository.save(eq(Speaker.class), eq(SPEAKER))).thenReturn(Completable.complete());
+        when(repository.getItems(eq(Speaker.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+
+        speakerRepository.getSpeaker(ID, true).subscribe();
+
+        verify(repository).save(Speaker.class, SPEAKER);
     }
 }
