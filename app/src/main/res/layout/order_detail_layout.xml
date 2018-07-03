@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="order"
+            type="org.fossasia.openevent.app.data.order.Order" />
+    </data>
+
+    <LinearLayout
+        style="@style/ItemPadding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginRight="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="@dimen/spacing_extra_small"
+            android:text="@string/order_identifier"
+            android:textAllCaps="true"
+            tools:text="free" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_extra_small"
+            android:text='@{ order.identifier }'
+            android:textColor="#000000"
+            tools:text="Identifier" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="@dimen/spacing_extra_small"
+            android:text="@string/event_name"
+            android:textAllCaps="true"
+            android:visibility="@{ (order.event.name != null) ? View.VISIBLE : View.GONE }"
+            tools:text="Event Name" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:gravity="center_vertical"
+            android:padding="@dimen/spacing_extra_small"
+            android:text="@{ order.event.name }"
+            android:textColor="@android:color/black"
+            android:visibility="@{ (order.event.name != null) ? View.VISIBLE : View.GONE }"
+            tools:text="Event Name" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:padding="@dimen/spacing_extra_small">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/status"
+                    android:visibility="@{ (order.status != null) ? View.VISIBLE : View.GONE }"
+                    tools:text="Status" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ order.status }"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="@{ (order.status != null) ? View.VISIBLE : View.GONE }"
+                    tools:text="Status" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/date"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:visibility="@{ order.completedAt == null ? View.GONE : View.VISIBLE }"
+                    tools:text="Completed At" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ order.completedAt }"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="@{ order.completedAt == null ? View.GONE : View.VISIBLE }"
+                    tools:text="Completed At" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:padding="@dimen/spacing_extra_small">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/payment_mode"
+                    android:visibility="@{ order.paymentMode == null ? View.GONE : View.VISIBLE }"
+                    tools:text="Status" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ order.paymentMode }"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="@{ order.paymentMode == null ? View.GONE : View.VISIBLE }"
+                    tools:text="Status" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:text="@string/paidVia"
+                    android:visibility="@{ (order.paidVia != null) ? View.VISIBLE : View.GONE }"
+                    tools:text="Paid Via" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ order.paidVia }"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="@{ (order.paidVia != null) ? View.VISIBLE : View.GONE }"
+                    tools:text="Paid Via" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
+

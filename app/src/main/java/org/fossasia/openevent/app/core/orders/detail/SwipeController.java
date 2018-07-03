@@ -11,6 +11,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.core.orders.detail.adapter.OrderAttendeesAdapter;
 
 public class SwipeController extends ItemTouchHelper.SimpleCallback {
 
