@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.core.orders.detail;
+package org.fossasia.openevent.app.core.orders.detail.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
@@ -35,7 +35,7 @@ public class OrderAttendeesAdapter extends RecyclerView.Adapter<OrderAttendeesVi
     }
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DU Anomaly
-    protected void setAttendees(final List<Attendee> newAttendees) {
+    public void setAttendees(final List<Attendee> newAttendees) {
         if (attendees == null) {
             attendees = newAttendees;
             notifyItemRangeInserted(0, newAttendees.size());

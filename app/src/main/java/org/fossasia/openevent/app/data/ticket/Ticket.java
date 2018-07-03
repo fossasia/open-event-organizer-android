@@ -13,6 +13,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.fossasia.openevent.app.data.db.configuration.OrgaDatabase;
 import org.fossasia.openevent.app.data.event.Event;
+import org.fossasia.openevent.app.data.order.Order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,6 +57,10 @@ public class Ticket implements Comparable<Ticket> {
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;
+
+    @Relationship("order")
+    @ForeignKey(onDelete = ForeignKeyAction.CASCADE, saveForeignKeyModel = true)
+    public Order order;
 
     public Ticket() { }
 }

@@ -9,6 +9,8 @@ import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
 import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.data.order.Order;
 import org.fossasia.openevent.app.data.order.OrderRepository;
+import org.fossasia.openevent.app.data.ticket.Ticket;
+import org.fossasia.openevent.app.data.ticket.TicketRepository;
 import org.fossasia.openevent.app.utils.ErrorUtils;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class OrderDetailViewModel extends ViewModel {
 
     private final OrderRepository orderRepository;
     private final EventRepository eventRepository;
+    private final TicketRepository ticketRepository;
     private final AttendeeRepository attendeeRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -30,12 +33,15 @@ public class OrderDetailViewModel extends ViewModel {
     private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<List<Attendee>> attendeesLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<Ticket>> ticketsLiveData = new MutableLiveData<>();
 
     @Inject
-    public OrderDetailViewModel(OrderRepository orderRepository, EventRepository eventRepository, AttendeeRepository attendeeRepository) {
+    public OrderDetailViewModel(OrderRepository orderRepository, EventRepository eventRepository,
+                                AttendeeRepository attendeeRepository, TicketRepository ticketRepository) {
         this.orderRepository = orderRepository;
         this.eventRepository = eventRepository;
         this.attendeeRepository = attendeeRepository;
+        this.ticketRepository = ticketRepository;
         progress.setValue(false);
     }
 
@@ -47,7 +53,7 @@ public class OrderDetailViewModel extends ViewModel {
             .compose(dispose(compositeDisposable))
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
-            .subscribe(order -> orderLiveData.setValue(order),
+            .subscribe(orderLiveData::setValue,
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
 
         if (!reload) {
@@ -79,6 +85,21 @@ public class OrderDetailViewModel extends ViewModel {
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
 
         return attendeesLiveData;
+    }
+
+    public LiveData<List<Ticket>> getTicketsUnderOrder(String orderIdentifier, long orderId, boolean reload) {
+        if (ticketsLiveData.getValue() != null && !reload)
+            return ticketsLiveData;
+
+        compositeDisposable.add(ticketRepository.getTicketsUnderOrder(orderIdentifier, orderId, reload)
+            .compose(dispose(compositeDisposable))
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() -> progress.setValue(false))
+            .toList()
+            .subscribe(ticketsLiveData::setValue,
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+
+        return ticketsLiveData;
     }
 
     public void toggleCheckIn(int index) {
