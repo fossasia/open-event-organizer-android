@@ -22,6 +22,7 @@ import static org.fossasia.openevent.app.core.main.MainActivity.EVENT_KEY;
 
 public class EventViewModel extends ViewModel {
     private final Preferences sharedPreferenceModel;
+    private boolean initialized = false;
     private final Bus bus;
     private final CurrencyUtils currencyUtils;
     private final EventRepository eventRepository;
@@ -43,6 +44,10 @@ public class EventViewModel extends ViewModel {
     }
 
     protected void onStart() {
+        if (initialized)
+            return;
+
+        initialized = true;
         compositeDisposable.add(bus.getSelectedEvent()
             .subscribe(event -> {
                 sharedPreferenceModel.setLong(EVENT_KEY, event.getId());
