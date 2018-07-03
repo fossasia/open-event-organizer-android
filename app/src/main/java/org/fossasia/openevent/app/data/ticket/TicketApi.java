@@ -18,6 +18,9 @@ public interface TicketApi {
     @GET("events/{id}/tickets?include=event&fields[event]=id&page[size]=0")
     Observable<List<Ticket>> getTickets(@Path("id") long id);
 
+    @GET("orders/{id}/tickets?include=event&fields[event]=id&page[size]=0")
+    Observable<List<Ticket>> getTicketsUnderOrder(@Path("id") String id);
+
     @GET("tickets/{id}")
     Observable<Ticket> getTicket(@Path("id") long id);
 

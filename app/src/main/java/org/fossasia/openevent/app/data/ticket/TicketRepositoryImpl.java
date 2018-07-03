@@ -95,6 +95,24 @@ public class TicketRepositoryImpl implements TicketRepository {
             .build();
     }
 
+    @Override
+    public Observable<Ticket> getTicketsUnderOrder(String orderIdentifier, long orderId, boolean reload) {
+        Observable<Ticket> diskObservable = Observable.defer(() ->
+            repository.getItems(Ticket.class, Ticket_Table.order_id.eq(orderId))
+        );
+
+        Observable<Ticket> networkObservable = Observable.defer(() ->
+            ticketApi.getTicketsUnderOrder(orderIdentifier)
+                .doOnNext(tickets -> repository.syncSave(Ticket.class, tickets, Ticket::getId, Ticket_Table.id).subscribe())
+                .flatMapIterable(tickets -> tickets));
+
+        return repository.observableOf(Ticket.class)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
     @NonNull
     @Override
     public Completable deleteTicket(long id) {

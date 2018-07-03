@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.print.PrintManager;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -20,8 +19,12 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.core.orders.detail.adapter.OrderAttendeesAdapter;
+import org.fossasia.openevent.app.core.orders.detail.adapter.OrderDetailsPrintAdapter;
+import org.fossasia.openevent.app.core.orders.detail.adapter.OrderTicketsAdapter;
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.order.Order;
+import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.databinding.OrderDetailFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
@@ -44,6 +47,7 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
 
     private OrderDetailViewModel orderDetailViewModel;
     private OrderAttendeesAdapter orderAttendeesAdapter;
+    private OrderTicketsAdapter orderTicketsAdapter;
 
     private OrderDetailFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
@@ -92,7 +96,7 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         orderDetailViewModel.getOrder(orderIdentifier, eventId, false).observe(this, this::showOrderDetails);
         orderDetailViewModel.getProgress().observe(this, this::showProgress);
         orderDetailViewModel.getError().observe(this, this::showError);
-        loadAttendees(false);
+        loadData(false);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
             binding.printAction.setVisibility(View.GONE);
@@ -123,16 +127,20 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
 
     private void setupRecyclerView() {
         orderAttendeesAdapter = new OrderAttendeesAdapter();
+        orderTicketsAdapter = new OrderTicketsAdapter();
 
-        RecyclerView recyclerView = binding.attendeesRecyclerView;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(orderAttendeesAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        RecyclerView attendeesRecyclerView = binding.attendeesRecyclerView;
+        attendeesRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        attendeesRecyclerView.setAdapter(orderAttendeesAdapter);
+
+        RecyclerView ticketsRecyclerView = binding.ticketsRecyclerView;
+        ticketsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        ticketsRecyclerView.setAdapter(orderTicketsAdapter);
 
         SwipeController swipeController = new SwipeController(orderDetailViewModel, orderAttendeesAdapter, context);
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
-        itemTouchhelper.attachToRecyclerView(recyclerView);
+        itemTouchhelper.attachToRecyclerView(attendeesRecyclerView);
     }
 
     private void setupRefreshListener() {
@@ -140,11 +148,8 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
             orderDetailViewModel.getOrder(orderIdentifier, eventId, true).observe(this, this::showOrderDetails);
+            loadData(true);
         });
-    }
-
-    private void loadAttendees(boolean reload) {
-        orderDetailViewModel.getAttendeesUnderOrder(orderIdentifier, orderId, reload).observe(this, this::showResults);
     }
 
     @Override
@@ -157,12 +162,23 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         ViewUtils.showView(binding.progressBar, show);
     }
 
-    @Override
-    public void showResults(List<Attendee> attendees) {
+    public void loadData(boolean reload) {
+        orderDetailViewModel.getAttendeesUnderOrder(orderIdentifier, orderId, reload).observe(this, this::showAttendees);
+        orderDetailViewModel.getTicketsUnderOrder(orderIdentifier, orderId, reload).observe(this, this::showTickets);
+    }
+
+    public void showAttendees(List<Attendee> attendees) {
         orderAttendeesAdapter.setAttendees(attendees);
     }
 
-    @Override
+    public void showTickets(List<Ticket> tickets) {
+        if (tickets == null || tickets.isEmpty()) {
+            binding.ticketsInfo.setVisibility(View.GONE);
+            return;
+        }
+        orderTicketsAdapter.setTickets(tickets);
+    }
+
     public void showEmptyView(boolean show) {
         ViewUtils.showView(binding.emptyView, show);
     }
@@ -176,5 +192,9 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
     public void showOrderDetails(Order order) {
         binding.setOrder(order);
         this.order = order;
+
+        if (order == null) {
+            showEmptyView(true);
+        }
     }
 }
