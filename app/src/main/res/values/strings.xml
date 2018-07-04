@@ -292,6 +292,11 @@
     <string name="check_email_reset_password_msg">We just sent you an email with a token to reset your password.</string>
     <string name="done">Done</string>
     <string name="nav_suggestions">Suggestions</string>
+    <string name="total_paid">Total Paid</string>
+    <string name="status">Status</string>
+    <string name="date">Date</string>
+    <string name="paidVia">Paid Via</string>
+    <string name="payment_mode">Payment Mode</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

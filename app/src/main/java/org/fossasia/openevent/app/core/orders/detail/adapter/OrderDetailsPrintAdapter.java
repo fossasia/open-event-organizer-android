@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.core.orders.detail;
+package org.fossasia.openevent.app.core.orders.detail.adapter;
 
 import android.content.Context;
 import android.graphics.Canvas;
