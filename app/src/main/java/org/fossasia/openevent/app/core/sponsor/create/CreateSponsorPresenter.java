@@ -18,7 +18,7 @@ import static org.fossasia.openevent.app.common.rx.ViewTransformers.progressiveE
 public class CreateSponsorPresenter extends AbstractBasePresenter<CreateSponsorView> {
 
     private final SponsorRepository sponsorRepository;
-    private final Sponsor sponsor = new Sponsor();
+    private Sponsor sponsor = new Sponsor();
 
     @Inject
     public CreateSponsorPresenter(SponsorRepository sponsorRepository) {
@@ -56,6 +56,37 @@ public class CreateSponsorPresenter extends AbstractBasePresenter<CreateSponsorV
             .compose(progressiveErroneous(getView()))
             .subscribe(createdSponsor -> {
                 getView().onSuccess("Sponsor Created");
+                getView().dismiss();
+            }, Logger::logError);
+    }
+
+    public void loadSponsor(long sponsorId) {
+        sponsorRepository
+            .getSponsor(sponsorId, false)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .doFinally(this::showSponsor)
+            .subscribe(loadedSponsor -> this.sponsor = loadedSponsor, Logger::logError);
+    }
+
+    private void showSponsor() {
+        getView().setSponsor(sponsor);
+    }
+
+    public void updateSponsor() {
+        nullifyEmptyFields(sponsor);
+
+        long eventId = ContextManager.getSelectedEvent().getId();
+        Event event = new Event();
+        event.setId(eventId);
+        sponsor.setEvent(event);
+
+        sponsorRepository
+            .updateSponsor(sponsor)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneous(getView()))
+            .subscribe(updatedSponsor -> {
+                getView().onSuccess("Sponsor Updated");
                 getView().dismiss();
             }, Logger::logError);
     }
