@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="org.fossasia.openevent.app.ui.binding.BindingAdapters" />
+
+        <variable
+            name="event"
+            type="org.fossasia.openevent.app.data.event.Event" />
+    </data>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            style="@style/ItemPadding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/const_normal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/create_event"
+                    android:padding="@dimen/spacing_extra_small"
+                    app:srcCompat="@drawable/ic_ticket" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/event_name"
+                        android:text="@={ event.name }"
+                        app:validateEmpty="@{true}" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/date_and_time"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <include
+                    layout="@layout/time_picker"
+                    bind:date="@={ event.startsAt }"
+                    bind:label="@{ @string/starts_at }" />
+
+                <include
+                    layout="@layout/time_picker"
+                    bind:date="@={ event.endsAt }"
+                    bind:label="@{ @string/ends_at }" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:padding="@dimen/spacing_medium"
+                    android:text="@string/timezone"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/timezone"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_clock" />
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/timezone_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/timezones"
+                        android:onItemSelected="@{ (parent, v, pos, id) ->  event.setTimezone(parent.getItemAtPosition(pos).toString())  }" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_extra_small"
+                    android:layout_marginStart="@dimen/spacing_extra_small"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:divider="?android:dividerHorizontal"
+                    android:showDividers="beginning"
+                    android:text="@string/location_details"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/button_place_picker"
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_extra_small"
+                    android:text="@string/pick_from_map"
+                    android:textColor="@color/purple_500" />
+
+                <LinearLayout
+                    android:id="@+id/layout_searchable_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/searchable_location_name"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_location" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/searchable_location_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/searchable_location_name"
+                            android:inputType="text"
+                            android:text="@={ event.searchableLocationName }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_location_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/location_name"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_location" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/location_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/location_name"
+                            android:inputType="text"
+                            android:text="@={ event.locationName }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_latitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/latitude"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_location" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/latitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/latitude"
+                            android:inputType="numberDecimal"
+                            android:text="@={ BindingAdapters.doubleToStr(event.latitude) }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_longitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/longitude"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_location" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/longitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/longitude"
+                            android:inputType="numberDecimal"
+                            android:text="@={ BindingAdapters.doubleToStr(event.longitude) }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/map_shown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/show_map" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</layout>
