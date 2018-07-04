@@ -10,10 +10,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
+import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.databinding.SponsorCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.utils.ValidateUtils;
@@ -32,9 +34,19 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
 
     private SponsorCreateLayoutBinding binding;
     private Validator validator;
+    private long sponsorId;
+    private boolean isUpdateSponsor;
 
     public static CreateSponsorFragment newInstance() {
         return new CreateSponsorFragment();
+    }
+
+    public static CreateSponsorFragment newInstance(long sponsorId) {
+        Bundle bundle = new Bundle();
+        bundle.putLong("sponsor_id", sponsorId);
+        CreateSponsorFragment createSponsorFragment = CreateSponsorFragment.newInstance();
+        createSponsorFragment.setArguments(bundle);
+        return createSponsorFragment;
     }
 
     @Override
@@ -42,9 +54,18 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
         binding =  DataBindingUtil.inflate(inflater, R.layout.sponsor_create_layout, container, false);
         validator = new Validator(binding.form);
 
+        if (getArguments() != null) {
+            Bundle bundle = getArguments();
+            sponsorId = bundle.getLong("sponsor_id");
+            isUpdateSponsor = sponsorId != -1;
+        }
+
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
-                getPresenter().createSponsor();
+                if (isUpdateSponsor)
+                    getPresenter().updateSponsor();
+                else
+                    getPresenter().createSponsor();
         });
 
         return binding.getRoot();
@@ -58,6 +79,8 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
 
         validate(binding.form.sponsorSponsorUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.sponsorSponsorLogoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+        if (isUpdateSponsor)
+           getPresenter().loadSponsor(sponsorId);
     }
 
     @Override
@@ -67,7 +90,7 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
 
     @Override
     public void onSuccess(String message) {
-        ViewUtils.showSnackbar(binding.getRoot(), message);
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -77,7 +100,10 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
 
     @Override
     protected int getTitle() {
-        return R.string.create_sponsor;
+        if (isUpdateSponsor)
+            return R.string.update_sponsor;
+        else
+            return R.string.create_sponsor;
     }
 
     @Override
@@ -119,4 +145,10 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
     public void dismiss() {
         getFragmentManager().popBackStack();
     }
+
+    @Override
+    public void setSponsor(Sponsor sponsor) {
+        binding.setSponsor(sponsor);
+    }
+
 }
