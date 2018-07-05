@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,7 +22,6 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.core.sponsor.create.CreateSponsorFragment;
-import org.fossasia.openevent.app.core.sponsor.update.UpdateSponsorFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.databinding.SponsorsFragmentBinding;
@@ -258,7 +256,9 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
 
     @Override
     public void openUpdateSponsorFragment(long sponsorId) {
-        BottomSheetDialogFragment bottomSheetDialogFragment = UpdateSponsorFragment.newInstance(sponsorId);
-        bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, CreateSponsorFragment.newInstance(sponsorId))
+            .addToBackStack(null)
+            .commit();
     }
 }
