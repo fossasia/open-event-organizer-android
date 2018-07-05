@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.speakerscall.create;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.speakerscall.SpeakersCall;
@@ -112,6 +113,11 @@ public class CreateSpeakersCallViewModel extends ViewModel {
 
     public LiveData<SpeakersCall> getSpeakersCall() {
         return speakersCallLive;
+    }
+
+    @VisibleForTesting
+    protected void setSpeakersCall(SpeakersCall speakersCall) {
+        speakersCallLive.setValue(speakersCall);
     }
 
     @Override
