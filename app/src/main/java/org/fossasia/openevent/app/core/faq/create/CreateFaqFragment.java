@@ -43,6 +43,8 @@ public class CreateFaqFragment extends BaseFragment<CreateFaqPresenter> implemen
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
                 getPresenter().createFaq();
+
+            ViewUtils.hideKeyboard(binding.getRoot());
         });
 
         return binding.getRoot();
