@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.faq.create;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -17,15 +19,15 @@ import org.fossasia.openevent.app.ui.ViewUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateFaqFragment extends BaseFragment<CreateFaqPresenter> implements CreateFaqView {
+public class CreateFaqFragment extends BaseFragment implements CreateFaqView {
 
     @Inject
-    Lazy<CreateFaqPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
+    private CreateFaqViewModel createFaqViewModel;
     private FaqCreateLayoutBinding binding;
     private Validator validator;
 
@@ -38,31 +40,30 @@ public class CreateFaqFragment extends BaseFragment<CreateFaqPresenter> implemen
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         binding =  DataBindingUtil.inflate(localInflater, R.layout.faq_create_layout, container, false);
+        createFaqViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateFaqViewModel.class);
         validator = new Validator(binding.form);
-
-        binding.submit.setOnClickListener(view -> {
-            if (validator.validate())
-                getPresenter().createFaq();
-        });
-
         return binding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        binding.setFaq(getPresenter().getFaq());
+        createFaqViewModel.getProgress().observe(this, this::showProgress);
+        createFaqViewModel.getDismiss().observe(this,(dismiss) -> dismiss());
+        createFaqViewModel.getSuccess().observe(this, this::onSuccess);
+        createFaqViewModel.getError().observe(this, this::showError);
+
+        binding.submit.setOnClickListener(view -> {
+            if (validator.validate())
+                createFaqViewModel.createFaq();
+        });
+
+        binding.setFaq(createFaqViewModel.getFaq());
     }
 
     @Override
     protected int getTitle() {
         return R.string.create_faq;
-    }
-
-    @Override
-    public Lazy<CreateFaqPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override
@@ -80,7 +81,6 @@ public class CreateFaqFragment extends BaseFragment<CreateFaqPresenter> implemen
         ViewUtils.showSnackbar(binding.getRoot(), message);
     }
 
-    @Override
     public void dismiss() {
         getFragmentManager().popBackStack();
     }
