@@ -3,8 +3,10 @@ package org.fossasia.openevent.app.data.user;
 import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
 import org.fossasia.openevent.app.data.auth.AuthHolder;
+import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
@@ -18,6 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserApi userApi;
     private final Repository repository;
     private final AuthHolder authHolder;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public UserRepositoryImpl(UserApi userApi, Repository repository, AuthHolder authHolder) {
@@ -42,6 +45,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         return repository.observableOf(User.class)
             .reload(reload)
+            .withRateLimiterConfig("Organizer", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

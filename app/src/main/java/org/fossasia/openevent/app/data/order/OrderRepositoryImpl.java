@@ -2,7 +2,9 @@ package org.fossasia.openevent.app.data.order;
 
 import android.support.annotation.NonNull;
 
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
+import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
@@ -12,6 +14,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     private final OrderApi orderApi;
     private final Repository repository;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public OrderRepositoryImpl(OrderApi orderApi, Repository repository) {
@@ -32,6 +35,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
         return repository.observableOf(Order.class)
             .reload(reload)
+            .withRateLimiterConfig("Orders", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
@@ -54,6 +58,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         return repository
             .observableOf(Order.class)
             .reload(reload)
+            .withRateLimiterConfig("Order", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

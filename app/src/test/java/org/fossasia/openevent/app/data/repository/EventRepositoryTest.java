@@ -1,15 +1,15 @@
 package org.fossasia.openevent.app.data.repository;
 
-import org.fossasia.openevent.app.data.auth.AuthHolder;
-import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.AbstractObservable;
 import org.fossasia.openevent.app.data.Repository;
+import org.fossasia.openevent.app.data.auth.AuthHolder;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventApi;
 import org.fossasia.openevent.app.data.event.EventRepositoryImpl;
 import org.fossasia.openevent.app.data.event.Event_Table;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.user.UserApi;
 import org.fossasia.openevent.app.data.user.UserRepositoryImpl;
 import org.junit.After;

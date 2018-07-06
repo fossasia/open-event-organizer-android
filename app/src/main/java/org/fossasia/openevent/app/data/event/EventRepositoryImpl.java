@@ -2,10 +2,12 @@ package org.fossasia.openevent.app.data.event;
 
 import android.support.annotation.NonNull;
 
-import org.fossasia.openevent.app.data.auth.AuthHolder;
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.data.ticket.Ticket;
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
+import org.fossasia.openevent.app.data.auth.AuthHolder;
+import org.fossasia.openevent.app.data.ticket.Ticket;
+import org.threeten.bp.Duration;
 
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class EventRepositoryImpl implements EventRepository {
     private final Repository repository;
     private final EventApi eventApi;
     private final AuthHolder authHolder;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public EventRepositoryImpl(Repository repository, EventApi eventApi, AuthHolder authHolder) {
@@ -64,6 +67,7 @@ public class EventRepositoryImpl implements EventRepository {
 
         return repository.observableOf(Event.class)
             .reload(reload)
+            .withRateLimiterConfig("Event", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
@@ -83,6 +87,7 @@ public class EventRepositoryImpl implements EventRepository {
 
         return repository.observableOf(Event.class)
             .reload(reload)
+            .withRateLimiterConfig("Events", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

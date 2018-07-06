@@ -3,7 +3,9 @@ package org.fossasia.openevent.app.data.sponsor;
 import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
+import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
@@ -16,6 +18,7 @@ public class SponsorRepositoryImpl implements SponsorRepository {
 
     private final Repository repository;
     private final SponsorApi sponsorApi;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public SponsorRepositoryImpl(Repository repository, SponsorApi sponsorApi) {
@@ -39,6 +42,7 @@ public class SponsorRepositoryImpl implements SponsorRepository {
 
         return repository.observableOf(Sponsor.class)
             .reload(reload)
+            .withRateLimiterConfig("Sponsors", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
@@ -61,6 +65,7 @@ public class SponsorRepositoryImpl implements SponsorRepository {
         return repository
             .observableOf(Sponsor.class)
             .reload(reload)
+            .withRateLimiterConfig("Sponsor", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

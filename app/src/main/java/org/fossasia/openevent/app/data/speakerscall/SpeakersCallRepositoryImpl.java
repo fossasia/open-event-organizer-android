@@ -3,7 +3,9 @@ package org.fossasia.openevent.app.data.speakerscall;
 import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
+import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
@@ -15,6 +17,7 @@ public class SpeakersCallRepositoryImpl implements SpeakersCallRepository {
 
     private final SpeakersCallApi speakersCallApi;
     private final Repository repository;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public SpeakersCallRepositoryImpl(SpeakersCallApi speakersCallApi, Repository repository) {
@@ -36,6 +39,7 @@ public class SpeakersCallRepositoryImpl implements SpeakersCallRepository {
 
         return repository.observableOf(SpeakersCall.class)
             .reload(reload)
+            .withRateLimiterConfig("SpeakersCall", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

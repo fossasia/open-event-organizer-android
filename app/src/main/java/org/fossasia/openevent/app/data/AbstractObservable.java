@@ -21,7 +21,9 @@ public final class AbstractObservable {
 
     public static final class AbstractObservableBuilder<T> {
         private final ConnectionStatus connectionStatus;
+        private RateLimiter<String> rateLimiter;
         private boolean reload;
+        private String rateLimiterKey;
         private Observable<T> diskObservable;
         private Observable<T> networkObservable;
 
@@ -31,6 +33,13 @@ public final class AbstractObservable {
 
         public AbstractObservableBuilder<T> reload(boolean reload) {
             this.reload = reload;
+
+            return this;
+        }
+
+        public AbstractObservableBuilder<T> withRateLimiterConfig(String rateLimiterKey, RateLimiter<String> rateLimiter) {
+            this.rateLimiter = rateLimiter;
+            this.rateLimiterKey = rateLimiterKey;
 
             return this;
         }
@@ -61,12 +70,19 @@ public final class AbstractObservable {
 
         @NonNull
         private Observable<T> getConnectionObservable() {
-            if (connectionStatus.isConnected())
-                return networkObservable
-                    .doOnNext(item -> Timber.d("Loaded %s From Network on Thread %s",
-                        item.getClass(), Thread.currentThread().getName()));
-            else
+            if (connectionStatus.isConnected()) {
+                if (reload || rateLimiter.shouldFetch(rateLimiterKey)) {
+                    return networkObservable
+                        .doOnNext(item -> Timber.d("Loaded %s From Network on Thread %s",
+                            item.getClass(), Thread.currentThread().getName()));
+                } else {
+                    return Observable.empty();
+                }
+            }
+            else {
+                rateLimiter.reset(rateLimiterKey);
                 return Observable.error(new Throwable(Constants.NO_NETWORK));
+            }
         }
 
         @NonNull
@@ -78,8 +94,9 @@ public final class AbstractObservable {
 
         @NonNull
         public Observable<T> build() {
-            if (diskObservable == null || networkObservable == null)
-                throw new IllegalStateException("Network or Disk observable not provided");
+            if (diskObservable == null || networkObservable == null
+                || rateLimiter == null || rateLimiterKey == null)
+                throw new IllegalStateException("Network observable, Disk observable, Rate limiter or Rate limiter key not provided");
 
             return Observable
                 .defer(getReloadCallable())
@@ -99,5 +116,4 @@ public final class AbstractObservable {
     public <T> AbstractObservableBuilder<T> of(Class<T> clazz) {
         return new AbstractObservableBuilder<>(connectionStatus);
     }
-
 }
