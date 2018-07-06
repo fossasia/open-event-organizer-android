@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface CreateEventView extends Progressive, Erroneous, Successful {
 
-    void validate(TextInputLayout textInputLayout, Function<String, Boolean> fuck, String tsr);
+    void validate(TextInputLayout textInputLayout, Function<String, Boolean> validation, String str);
 
     void attachCountryList(List<String> countryList);
 

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 
 public class PagerAdapter extends FragmentPagerAdapter {
+    private final int PAGE_COUNT = 3;
     public PagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -27,6 +28,6 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return PAGE_COUNT;
     }
 }

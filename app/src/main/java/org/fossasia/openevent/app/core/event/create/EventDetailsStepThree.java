@@ -14,18 +14,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
-import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.databinding.EventDetailsStepThreeBinding;
 import org.fossasia.openevent.app.utils.ValidateUtils;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -41,8 +36,6 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     private EventDetailsStepThreeBinding binding;
     private CreateEventViewModel createEventViewModel;
     private Validator validator;
-    private ArrayAdapter<CharSequence> currencyAdapter;
-    private ArrayAdapter<CharSequence> paymentCountryAdapter;
 
     public static Fragment newInstance() {
         return new EventDetailsStepThree();
@@ -63,44 +56,17 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
         createEventViewModel.getSuccessMessage().observe(this, this::onSuccess);
         createEventViewModel.getErrorMessage().observe(this, this::showError);
         createEventViewModel.getCloseState().observe(this, isClosed -> close());
-        createEventViewModel.getEventLiveData().observe(this, this::setPaymentBinding);
         createEventViewModel.getProgress().observe(this, this::showProgress);
+        createEventViewModel.getEvent().isTaxEnabled = true;
 
         validate(binding.logoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.externalEventUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.originalImageUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.paypalEmailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
 
         getActivity().findViewById(R.id.btn_submit).setOnClickListener(view -> {
             if (validator.validate()) {
                 createEventViewModel.createEvent();
             }
-        });
-
-        setupSpinners();
-        attachCountryList(createEventViewModel.getCountryList());
-        attachCurrencyCodesList(createEventViewModel.getCurrencyCodesList());
-    }
-
-    private void setupSpinners() {
-        currencyAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
-        currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        paymentCountryAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
-        paymentCountryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        binding.paymentCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int index = createEventViewModel.onPaymentCountrySelected(adapterView.getItemAtPosition(i).toString());
-                setPaymentCurrency(index);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //do nothing
-            }
-
         });
     }
 
@@ -136,24 +102,6 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     }
 
     @Override
-    public void setPaymentCurrency(int index) {
-        binding.currencySpinner.setSelection(index);
-    }
-
-    @Override
-    public void attachCountryList(List<String> countryList) {
-        paymentCountryAdapter.addAll(countryList);
-        binding.paymentCountrySpinner.setAdapter(paymentCountryAdapter);
-        binding.paymentCountrySpinner.setSelection(createEventViewModel.getCountryIndex());
-    }
-
-    @Override
-    public void attachCurrencyCodesList(List<String> currencyCodesList) {
-        currencyAdapter.addAll(currencyCodesList);
-        binding.currencySpinner.setAdapter(currencyAdapter);
-    }
-
-    @Override
     public void showError(String error) {
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
@@ -172,13 +120,4 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
         getActivity().finish();
     }
 
-    @Override
-    public void setPaymentBinding(Event event) {
-        binding.paypalPayment.setChecked(event.canPayByPaypal);
-        binding.stripePayment.setChecked(event.canPayByStripe);
-        binding.bankPayment.setChecked(event.canPayByBank);
-        binding.chequePayment.setChecked(event.canPayByCheque);
-        binding.onsitePayment.setChecked(event.canPayOnsite);
-        binding.setEvent(event);
-    }
 }

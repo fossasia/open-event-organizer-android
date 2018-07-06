@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.event.create;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,7 +20,12 @@ import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.databinding.EventDetailsStepTwoBinding;
 import org.fossasia.openevent.app.utils.ValidateUtils;
 
-public class EventDetailsStepTwo extends BaseBottomSheetFragment implements EventDetailsStepTwoView{
+import javax.inject.Inject;
+
+public class EventDetailsStepTwo extends BaseBottomSheetFragment implements EventDetailsStepTwoView {
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     private EventDetailsStepTwoBinding binding;
 
@@ -26,11 +33,13 @@ public class EventDetailsStepTwo extends BaseBottomSheetFragment implements Even
         return new EventDetailsStepTwo();
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.event_details_step_two, container, false);
+        CreateEventViewModel createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
+        createEventViewModel.getEvent().isSponsorsEnabled = true;
+        createEventViewModel.getEvent().isSessionsSpeakersEnabled = true;
         return binding.getRoot();
     }
 
