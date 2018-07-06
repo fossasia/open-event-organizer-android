@@ -3,7 +3,9 @@ package org.fossasia.openevent.app.data.faq;
 import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
+import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
@@ -16,6 +18,7 @@ public class FaqRepositoryImpl implements FaqRepository {
 
     private final FaqApi faqApi;
     private final Repository repository;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public FaqRepositoryImpl(FaqApi faqApi, Repository repository) {
@@ -36,6 +39,7 @@ public class FaqRepositoryImpl implements FaqRepository {
 
         return repository.observableOf(Faq.class)
             .reload(reload)
+            .withRateLimiterConfig("Faqs", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
