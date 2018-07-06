@@ -1,6 +1,8 @@
 package org.fossasia.openevent.app.data.speaker;
 
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
+import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
@@ -10,6 +12,7 @@ public class SpeakerRepositoryImpl implements SpeakerRepository {
 
     private final SpeakerApi speakerApi;
     private final Repository repository;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public SpeakerRepositoryImpl(SpeakerApi speakerApi, Repository repository) {
@@ -30,6 +33,7 @@ public class SpeakerRepositoryImpl implements SpeakerRepository {
 
         return repository.observableOf(Speaker.class)
             .reload(reload)
+            .withRateLimiterConfig("Speakers", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
@@ -51,6 +55,7 @@ public class SpeakerRepositoryImpl implements SpeakerRepository {
         return repository
             .observableOf(Speaker.class)
             .reload(reload)
+            .withRateLimiterConfig("Speaker", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

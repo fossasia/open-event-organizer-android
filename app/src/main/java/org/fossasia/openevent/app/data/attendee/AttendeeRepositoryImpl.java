@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import com.raizlabs.android.dbflow.sql.language.Method;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
 import org.fossasia.openevent.app.data.db.QueryHelper;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.Event_Table;
 import org.fossasia.openevent.app.utils.DateUtils;
+import org.threeten.bp.Duration;
 import org.threeten.bp.LocalDateTime;
 
 import javax.inject.Inject;
@@ -25,6 +27,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
 
     private final Repository repository;
     private final AttendeeApi attendeeApi;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public AttendeeRepositoryImpl(Repository repository, AttendeeApi attendeeApi) {
@@ -43,6 +46,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
         // There is no use case where we'll need to load single attendee from network
         return repository.observableOf(Attendee.class)
             .reload(reload)
+            .withRateLimiterConfig("Attendee", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(Observable.empty())
             .build();
@@ -64,6 +68,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
 
         return repository.observableOf(Attendee.class)
             .reload(reload)
+            .withRateLimiterConfig("Attendees", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
@@ -82,6 +87,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
 
         return repository.observableOf(Attendee.class)
             .reload(reload)
+            .withRateLimiterConfig("AttendeesUnderOrder", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
