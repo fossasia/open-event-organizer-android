@@ -22,8 +22,6 @@ public interface CreateEventView extends Progressive, Erroneous, Successful {
 
     void setPaymentBinding(Event event);
 
-    void close(boolean bool);
-
     List<String> getTimeZoneList();
 
     void setEvent(Event event);

@@ -18,8 +18,6 @@ public interface EventDetailsStepThreeView extends Progressive, Erroneous, Succe
 
     void setPaymentCurrency(int index);
 
-    void close(boolean bool);
-
     void setPaymentBinding(Event event);
 
     void validate(TextInputLayout textInputLayout, Function<String, Boolean> fuck, String tsr);

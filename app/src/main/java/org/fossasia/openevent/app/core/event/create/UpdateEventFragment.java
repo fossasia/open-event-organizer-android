@@ -153,7 +153,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             setEvent(event);
             setPaymentBinding(event);
         });
-        createEventViewModel.getCloseState().observe(this, this::close);
+        createEventViewModel.getCloseState().observe(this, isClose -> close());
 
         validate(binding.form.ticketUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.logoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -267,8 +267,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void close(boolean bool) {
+    public void close() {
         getActivity().finish();
     }
 

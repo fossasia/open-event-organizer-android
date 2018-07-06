@@ -1,10 +1,10 @@
 package org.fossasia.openevent.app.core.event.create;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.common.livedata.SingleEventLiveData;
 import org.fossasia.openevent.app.common.rx.Logger;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.event.Event;
@@ -48,11 +48,11 @@ public class CreateEventViewModel extends ViewModel {
     private final List<String> currencyCodesList;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private MutableLiveData<String> onSuccess = new MutableLiveData<>();
-    private MutableLiveData<String> onError = new MutableLiveData<>();
-    private MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private MutableLiveData<Boolean> close = new MutableLiveData<>();
-    private MutableLiveData<Event> eventMutableLiveData = new MutableLiveData<>();
+    private SingleEventLiveData<String> onSuccess = new SingleEventLiveData<>();
+    private SingleEventLiveData<String> onError = new SingleEventLiveData<>();
+    private SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private SingleEventLiveData<Void> close = new SingleEventLiveData<>();
+    private SingleEventLiveData<Event> eventMutableLiveData = new SingleEventLiveData<>();
 
     @Inject
     public CreateEventViewModel(EventRepository eventRepository, CurrencyUtils currencyUtils, Preferences preferences) {
@@ -134,7 +134,7 @@ public class CreateEventViewModel extends ViewModel {
             .doFinally(()->progress.setValue(false))
             .subscribe(createdEvent -> {
                 onSuccess.setValue("Event Created Successfully");
-                close.setValue(true);
+                close.call();
             }, Logger::logError));
     }
 
@@ -146,7 +146,7 @@ public class CreateEventViewModel extends ViewModel {
         return onError;
     }
 
-    public LiveData<Boolean> getCloseState() {
+    public LiveData<Void> getCloseState() {
         return close;
     }
 
@@ -243,7 +243,7 @@ public class CreateEventViewModel extends ViewModel {
             .doFinally(()->progress.setValue(false))
             .subscribe(updatedEvent -> {
                 onSuccess.setValue("Event Updated Successfully");
-                close.setValue(true);
+                close.call();
             }, Logger::logError));
     }
 

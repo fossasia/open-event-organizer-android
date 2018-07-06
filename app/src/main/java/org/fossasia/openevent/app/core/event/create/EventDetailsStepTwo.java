@@ -18,8 +18,6 @@ import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
 import org.fossasia.openevent.app.databinding.EventDetailsStepTwoBinding;
 import org.fossasia.openevent.app.utils.ValidateUtils;
 
-
-
 public class EventDetailsStepTwo extends BaseBottomSheetFragment implements EventDetailsStepTwoView{
 
     private EventDetailsStepTwoBinding binding;

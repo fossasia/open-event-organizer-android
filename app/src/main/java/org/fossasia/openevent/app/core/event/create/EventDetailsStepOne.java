@@ -36,7 +36,6 @@ import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 
-
 public class EventDetailsStepOne extends BaseBottomSheetFragment implements EventDetailsStepOneView {
 
     @Inject

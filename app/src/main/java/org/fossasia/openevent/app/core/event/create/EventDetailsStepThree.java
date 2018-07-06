@@ -62,7 +62,7 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
         super.onStart();
         createEventViewModel.getSuccessMessage().observe(this, this::onSuccess);
         createEventViewModel.getErrorMessage().observe(this, this::showError);
-        createEventViewModel.getCloseState().observe(this, this::close);
+        createEventViewModel.getCloseState().observe(this, isClosed -> close());
         createEventViewModel.getEventLiveData().observe(this, this::setPaymentBinding);
         createEventViewModel.getProgress().observe(this, this::showProgress);
 
@@ -168,8 +168,7 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void close(boolean bool) {
+    public void close() {
         getActivity().finish();
     }
 
