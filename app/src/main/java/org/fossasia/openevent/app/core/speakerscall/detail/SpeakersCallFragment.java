@@ -3,7 +3,6 @@ package org.fossasia.openevent.app.core.speakerscall.detail;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,10 +57,16 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.speakers_call_fragment, container, false);
         binding.createSpeakersCallFab.setOnClickListener(view -> {
-            BottomSheetDialogFragment bottomSheetDialogFragment = CreateSpeakersCallFragment.newInstance(eventId);
-            bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+            openCreateSpeakersCallFragment();
         });
         return binding.getRoot();
+    }
+
+    public void openCreateSpeakersCallFragment() {
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, CreateSpeakersCallFragment.newInstance(eventId))
+            .addToBackStack(null)
+            .commit();
     }
 
     @Override
@@ -99,8 +104,10 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit:
-                BottomSheetDialogFragment bottomSheetDialogFragment = CreateSpeakersCallFragment.newInstance(eventId, true);
-                bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
+                getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, CreateSpeakersCallFragment.newInstance(eventId, true))
+                    .addToBackStack(null)
+                    .commit();
                 break;
             default:
                 // No implementation
