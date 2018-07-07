@@ -3,6 +3,7 @@ package org.fossasia.openevent.app.core.orders.detail;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
@@ -117,11 +118,16 @@ public class OrderDetailViewModel extends ViewModel {
         return attendeesLiveData.getValue().get(index).isCheckedIn;
     }
 
-    protected LiveData<Boolean> getProgress() {
+    @VisibleForTesting
+    public void setAttendees(List<Attendee> attendees) {
+        attendeesLiveData.setValue(attendees);
+    }
+
+    public LiveData<Boolean> getProgress() {
         return progress;
     }
 
-    protected LiveData<String> getError() {
+    public LiveData<String> getError() {
         return error;
     }
 
