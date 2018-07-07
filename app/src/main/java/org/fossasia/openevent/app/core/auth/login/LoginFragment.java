@@ -66,10 +66,11 @@ public class LoginFragment extends BaseFragment implements LoginView {
             binding.setLogin(login);
             sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
         });
-        loginFragmentViewModel.getIsTokenSent().observe(this, (value) -> {
+        loginFragmentViewModel.getTokenSentAction().observe(this, aVoid -> {
             getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
+                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .replace(R.id.fragment_container, new ResetPasswordFragment())
+                .addToBackStack(null)
                 .commit();
         });
 
@@ -105,8 +106,9 @@ public class LoginFragment extends BaseFragment implements LoginView {
     private void openSignUpPage() {
         sharedViewModel.setEmail(binding.getLogin().getEmail());
         getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
+            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             .replace(R.id.fragment_container, new SignUpFragment())
+            .addToBackStack(null)
             .commit();
     }
 
