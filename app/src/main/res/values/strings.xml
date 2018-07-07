@@ -297,6 +297,7 @@
     <string name="date">Date</string>
     <string name="paidVia">Paid Via</string>
     <string name="payment_mode">Payment Mode</string>
+    <string name="update_speakers_call">Update Speakers Call</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
