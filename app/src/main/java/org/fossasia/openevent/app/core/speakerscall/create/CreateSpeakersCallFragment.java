@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
+import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.data.speakerscall.SpeakersCall;
 import org.fossasia.openevent.app.databinding.SpeakersCallCreateLayoutBinding;
@@ -24,7 +24,7 @@ import br.com.ilhasoft.support.validation.Validator;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateSpeakersCallFragment extends BaseBottomSheetFragment implements CreateSpeakersCallView {
+public class CreateSpeakersCallFragment extends BaseFragment implements CreateSpeakersCallView {
 
     private static final String SPEAKERS_CALL_UPDATE = "speakers_update";
 
@@ -122,5 +122,19 @@ public class CreateSpeakersCallFragment extends BaseBottomSheetFragment implemen
     public void onSuccess(String message) {
         ViewUtils.showSnackbar(binding.getRoot(), message);
         dismiss();
+    }
+
+    @Override
+    protected int getTitle() {
+        if (isSpeakersCallUpdating) {
+            return R.string.update_speakers_call;
+        } else {
+            return R.string.create_speakers_call;
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        getFragmentManager().popBackStack();
     }
 }
