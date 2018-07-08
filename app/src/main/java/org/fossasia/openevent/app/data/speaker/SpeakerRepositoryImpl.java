@@ -55,7 +55,6 @@ public class SpeakerRepositoryImpl implements SpeakerRepository {
         return repository
             .observableOf(Speaker.class)
             .reload(reload)
-            .withRateLimiterConfig("Speaker", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

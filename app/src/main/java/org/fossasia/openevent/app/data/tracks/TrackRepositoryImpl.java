@@ -80,7 +80,6 @@ public class TrackRepositoryImpl implements TrackRepository {
         return repository
             .observableOf(Track.class)
             .reload(reload)
-            .withRateLimiterConfig("Track", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
