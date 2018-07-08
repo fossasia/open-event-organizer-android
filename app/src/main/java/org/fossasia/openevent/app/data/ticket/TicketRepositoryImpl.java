@@ -73,7 +73,6 @@ public class TicketRepositoryImpl implements TicketRepository {
         return repository
             .observableOf(Ticket.class)
             .reload(reload)
-            .withRateLimiterConfig("Ticket", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

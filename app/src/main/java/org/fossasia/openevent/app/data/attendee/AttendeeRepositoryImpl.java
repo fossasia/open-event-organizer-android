@@ -46,7 +46,6 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
         // There is no use case where we'll need to load single attendee from network
         return repository.observableOf(Attendee.class)
             .reload(reload)
-            .withRateLimiterConfig("Attendee", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(Observable.empty())
             .build();
