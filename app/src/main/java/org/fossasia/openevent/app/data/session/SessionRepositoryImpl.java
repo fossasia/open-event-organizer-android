@@ -62,7 +62,6 @@ public class SessionRepositoryImpl implements SessionRepository {
         return repository
             .observableOf(Session.class)
             .reload(reload)
-            .withRateLimiterConfig("Session", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
@@ -97,7 +96,6 @@ public class SessionRepositoryImpl implements SessionRepository {
 
         return repository.observableOf(Session.class)
             .reload(reload)
-            .withRateLimiterConfig("SessionsUnderSpeaker", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
