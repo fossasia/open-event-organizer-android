@@ -47,11 +47,11 @@ public class OrdersViewModel extends ViewModel {
         return ordersLiveData;
     }
 
-    protected LiveData<Boolean> getProgress() {
+    public LiveData<Boolean> getProgress() {
         return progress;
     }
 
-    protected LiveData<String> getError() {
+    public LiveData<String> getError() {
         return error;
     }
 

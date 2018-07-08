@@ -42,6 +42,8 @@ public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> impl
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
                 getPresenter().createTrack();
+
+            ViewUtils.hideKeyboard(binding.getRoot());
         });
 
         return binding.getRoot();

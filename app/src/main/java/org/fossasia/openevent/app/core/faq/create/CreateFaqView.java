@@ -6,6 +6,4 @@ import org.fossasia.openevent.app.common.mvp.view.Successful;
 
 public interface CreateFaqView extends Progressive, Erroneous, Successful {
 
-    void dismiss();
-
 }

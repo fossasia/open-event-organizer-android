@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.core.event.list;
+package org.fossasia.openevent.app.core.event.list.sales;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;

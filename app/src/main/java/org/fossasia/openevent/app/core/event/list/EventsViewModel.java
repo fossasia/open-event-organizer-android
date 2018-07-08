@@ -9,6 +9,7 @@ import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.utils.ErrorUtils;
 import org.fossasia.openevent.app.utils.service.DateService;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,10 +17,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 public class EventsViewModel extends ViewModel {
 
-    private final MutableLiveData<List<Event>> events = new MutableLiveData<List<Event>>();
+    private final MutableLiveData<List<Event>> events = new MutableLiveData<>();
+    private final MutableLiveData<List<Event>> liveEvents = new MutableLiveData<>();
+    private final MutableLiveData<List<Event>> pastEvents = new MutableLiveData<>();
+    private final MutableLiveData<List<Event>> draftEvents = new MutableLiveData<>();
+
     private final EventRepository eventsDataRepository;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -36,8 +42,13 @@ public class EventsViewModel extends ViewModel {
         this.eventsDataRepository = eventsDataRepository;
     }
 
-    public LiveData<List<Event>> getEvents() {
-        return events;
+    public LiveData<List<Event>> getEvents(int position) {
+        switch (position) {
+            case 0: return liveEvents;
+            case 1: return pastEvents;
+            case 2: return draftEvents;
+            default: return events;
+        }
     }
 
     public void sortBy(int criteria) {
@@ -46,10 +57,10 @@ public class EventsViewModel extends ViewModel {
         else {
             Collections.sort(events.getValue(), DateService::compareEventDates);
         }
+        filter();
     }
 
     public void loadUserEvents(boolean forceReload) {
-        events.setValue(new ArrayList<>());
 
         compositeDisposable.add(eventsDataRepository.getEvents(forceReload)
             .toSortedList()
@@ -58,6 +69,7 @@ public class EventsViewModel extends ViewModel {
             .subscribe(newEvents -> {
                 events.setValue(newEvents);
                 success.setValue(true);
+                filter();
             }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
@@ -73,4 +85,26 @@ public class EventsViewModel extends ViewModel {
         return success;
     }
 
+    public void filter() {
+        List<Event> live = new ArrayList<>();
+        List<Event> past = new ArrayList<>();
+        List<Event> draft = new ArrayList<>();
+
+        for (Event event : events.getValue()) {
+            try {
+                if (event.getState().equals("draft"))
+                    draft.add(event);
+                else if ("past".equalsIgnoreCase(DateService.getEventStatus(event)))
+                    past.add(event);
+                else
+                    live.add(event);
+            } catch (ParseException e) {
+                Timber.e(e);
+            }
+        }
+
+        liveEvents.setValue(live);
+        pastEvents.setValue(past);
+        draftEvents.setValue(draft);
+    }
 }

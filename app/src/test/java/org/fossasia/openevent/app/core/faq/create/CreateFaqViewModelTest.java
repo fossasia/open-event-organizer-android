@@ -1,15 +1,19 @@
-package org.fossasia.openevent.app.core.presenter;
+package org.fossasia.openevent.app.core.faq.create;
+
+import android.arch.core.executor.testing.InstantTaskExecutorRule;
+import android.arch.lifecycle.Observer;
 
 import org.fossasia.openevent.app.common.ContextManager;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.faq.FaqRepository;
-import org.fossasia.openevent.app.core.faq.create.CreateFaqPresenter;
-import org.fossasia.openevent.app.core.faq.create.CreateFaqView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,30 +25,39 @@ import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class CreateFaqPresenterTest {
+@RunWith(JUnit4.class)
+public class CreateFaqViewModelTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Mock
-    private CreateFaqView createFaqView;
+    @Rule
+    public TestRule rule = new InstantTaskExecutorRule();
+
     @Mock
     private FaqRepository faqRepository;
     @Mock
     private Event event;
 
-    private CreateFaqPresenter createFaqPresenter;
+    private CreateFaqViewModel createFaqViewModel;
+
+    @Mock
+    Observer<String> error;
+    @Mock
+    Observer<Boolean> progress;
+    @Mock
+    Observer<String> success;
+    @Mock
+    Observer<Void> dismiss;
 
     @Before
     public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
-
         ContextManager.setSelectedEvent(event);
-        createFaqPresenter = new CreateFaqPresenter(faqRepository);
-        createFaqPresenter.attach(createFaqView);
+
+        createFaqViewModel = new CreateFaqViewModel(faqRepository);
         ContextManager.setSelectedEvent(null);
     }
 
@@ -56,35 +69,43 @@ public class CreateFaqPresenterTest {
 
     @Test
     public void shouldShowSuccessOnCreated() {
-        Faq faq = createFaqPresenter.getFaq();
+        String successString = "Faq Created";
+        Faq faq = createFaqViewModel.getFaq();
         when(faqRepository.createFaq(faq)).thenReturn(Observable.just(faq));
         ContextManager.setSelectedEvent(event);
 
-        createFaqPresenter.createFaq();
+        InOrder inOrder = Mockito.inOrder(progress, dismiss, success);
 
-        InOrder inOrder = Mockito.inOrder(createFaqView);
+        createFaqViewModel.getProgress().observeForever(progress);
+        createFaqViewModel.getDismiss().observeForever(dismiss);
+        createFaqViewModel.getSuccess().observeForever(success);
 
-        inOrder.verify(createFaqView).showProgress(true);
-        inOrder.verify(createFaqView).onSuccess(anyString());
-        inOrder.verify(createFaqView).dismiss();
-        inOrder.verify(createFaqView).showProgress(false);
+        createFaqViewModel.createFaq();
+
+        inOrder.verify(progress).onChanged(true);
+        inOrder.verify(success).onChanged(successString);
+        inOrder.verify(dismiss).onChanged(null);
+        inOrder.verify(progress).onChanged(false);
 
         ContextManager.setSelectedEvent(null);
     }
 
     @Test
     public void shouldShowErrorOnFailure() {
-        Faq faq = createFaqPresenter.getFaq();
+        Faq faq = createFaqViewModel.getFaq();
         when(faqRepository.createFaq(faq)).thenReturn(Observable.error(new Throwable("Error")));
         ContextManager.setSelectedEvent(event);
 
-        createFaqPresenter.createFaq();
+        InOrder inOrder = Mockito.inOrder(progress, error);
 
-        InOrder inOrder = Mockito.inOrder(createFaqView);
+        createFaqViewModel.getProgress().observeForever(progress);
+        createFaqViewModel.getError().observeForever(error);
 
-        inOrder.verify(createFaqView).showProgress(true);
-        inOrder.verify(createFaqView).showError("Error");
-        inOrder.verify(createFaqView).showProgress(false);
+        createFaqViewModel.createFaq();
+
+        inOrder.verify(progress).onChanged(true);
+        inOrder.verify(error).onChanged("Error");
+        inOrder.verify(progress).onChanged(false);
 
         ContextManager.setSelectedEvent(null);
     }

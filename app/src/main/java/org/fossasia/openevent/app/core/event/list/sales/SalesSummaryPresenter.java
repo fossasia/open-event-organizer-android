@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app.core.event.list;
+package org.fossasia.openevent.app.core.event.list.sales;
 
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.data.attendee.Attendee;
