@@ -58,7 +58,6 @@ public class OrderRepositoryImpl implements OrderRepository {
         return repository
             .observableOf(Order.class)
             .reload(reload)
-            .withRateLimiterConfig("Order", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

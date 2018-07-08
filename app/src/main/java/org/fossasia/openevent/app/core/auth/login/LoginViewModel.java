@@ -8,6 +8,7 @@ import android.support.annotation.VisibleForTesting;
 
 import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.common.livedata.SingleEventLiveData;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.auth.AuthService;
 import org.fossasia.openevent.app.data.encryption.EncryptionService;
@@ -31,18 +32,19 @@ public class LoginViewModel extends ViewModel {
     private final HostSelectionInterceptor interceptor;
     private final Preferences sharedPreferenceModel;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private final String PREF_USER_PASSWORD = "user_password";
-    private final String PREF_USER_EMAIL = "user_email";
+    private static final String PREF_USER_PASSWORD = "user_password";
+    private static final String PREF_USER_EMAIL = "user_email";
 
     private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<Login> decryptedLogin = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoggedIn;
-    private final MutableLiveData<Boolean> isTokenSent = new MutableLiveData<>();
+    private final SingleEventLiveData<Void> tokenSentAction = new SingleEventLiveData<>();
     private MutableLiveData<Set<String>> emailList;
 
     @Inject
-    public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor, Preferences sharedPreferenceModel, EncryptionService encryptionService) {
+    public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor,
+                          Preferences sharedPreferenceModel, EncryptionService encryptionService) {
         this.loginModel = loginModel;
         this.interceptor = interceptor;
         this.sharedPreferenceModel = sharedPreferenceModel;
@@ -134,11 +136,11 @@ public class LoginViewModel extends ViewModel {
         compositeDisposable.add(loginModel.requestToken(requestToken)
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
-            .subscribe(() -> isTokenSent.setValue(true),
+            .subscribe(tokenSentAction::call,
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
-    public LiveData<Boolean> getIsTokenSent() {
-        return isTokenSent;
+    public LiveData<Void> getTokenSentAction() {
+        return tokenSentAction;
     }
 }
