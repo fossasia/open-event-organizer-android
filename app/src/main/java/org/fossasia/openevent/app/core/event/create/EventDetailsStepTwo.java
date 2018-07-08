@@ -29,6 +29,8 @@ public class EventDetailsStepTwo extends BaseBottomSheetFragment implements Even
 
     private EventDetailsStepTwoBinding binding;
 
+    private CreateEventViewModel createEventViewModel;
+
     public static EventDetailsStepTwo newInstance() {
         return new EventDetailsStepTwo();
     }
@@ -37,7 +39,7 @@ public class EventDetailsStepTwo extends BaseBottomSheetFragment implements Even
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.event_details_step_two, container, false);
-        CreateEventViewModel createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
+        createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
         createEventViewModel.getEvent().isSponsorsEnabled = true;
         createEventViewModel.getEvent().isSessionsSpeakersEnabled = true;
         return binding.getRoot();
@@ -46,6 +48,7 @@ public class EventDetailsStepTwo extends BaseBottomSheetFragment implements Even
     @Override
     public void onStart() {
         super.onStart();
+        binding.setEvent(createEventViewModel.getEvent());
         validate(binding.ticketUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
     }
 
