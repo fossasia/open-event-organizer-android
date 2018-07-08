@@ -296,6 +296,9 @@
     <string name="date">Date</string>
     <string name="paidVia">Paid Via</string>
     <string name="payment_mode">Payment Mode</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="create">Create</string>
     <string name="update_speakers_call">Update Speakers Call</string>
 
     <string-array name="timezones">
@@ -888,6 +891,12 @@
         <item>accepted</item>
         <item>pending</item>
         <item>confirmed</item>
+    </string-array>
+
+    <string-array name="stepLabels">
+        <item>Step 1</item>
+        <item>Step 2</item>
+        <item>Step 3</item>
     </string-array>
 
 </resources>

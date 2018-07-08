@@ -202,6 +202,9 @@ dependencies {
     //colorpicker
     implementation 'com.pes.materialcolorpicker:library:1.2.0'
 
+    //stepper
+    implementation 'com.github.badoualy:stepper-indicator:1.0.7'
+
     //Testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

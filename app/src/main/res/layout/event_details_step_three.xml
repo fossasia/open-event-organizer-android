@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="org.fossasia.openevent.app.ui.binding.BindingAdapters" />
+
+        <variable
+            name="event"
+            type="org.fossasia.openevent.app.data.event.Event" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_medium"
+            android:divider="?android:dividerHorizontal"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:textStyle="bold"
+                    android:text="@string/graphics"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/logo_url"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_photo" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/logo_url_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/logo_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/logo_url"
+                            android:inputType="text"
+                            android:text="@={ event.logoUrl }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/original_image_url"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_photo" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/original_image_url_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/spacing_extra_small"
+                        android:paddingLeft="@dimen/spacing_extra_small"
+                        android:paddingRight="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/original_image_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/original_image_url"
+                            android:inputType="text"
+                            android:text="@={ event.originalImageUrl }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:textStyle="bold"
+                    android:text="@string/event_state"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <RadioGroup
+                    android:id="@+id/state_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <RadioButton
+                        android:id="@+id/draft_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onCheckedChanged='@{ (switch, checked) -> (checked == true) ? event.setState("draft") : event.setState("published") }'
+                        android:text="@string/draft" />
+
+                    <RadioButton
+                        android:id="@+id/published_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/published" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:textStyle="bold"
+                    android:text="@string/others"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/description"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_info" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/description"
+                            android:inputType="text"
+                            android:text="@={ event.description }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/external_event_url"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_link" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/external_event_url_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/external_event_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/external_event_url"
+                            android:inputType="textWebEmailAddress"
+                            android:text="@={ event.externalEventUrl }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/progressbar_layout" />
+        </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>
+</layout>
