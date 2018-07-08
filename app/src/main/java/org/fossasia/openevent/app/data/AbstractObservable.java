@@ -71,16 +71,18 @@ public final class AbstractObservable {
         @NonNull
         private Observable<T> getConnectionObservable() {
             if (connectionStatus.isConnected()) {
-                if (reload || rateLimiter.shouldFetch(rateLimiterKey)) {
+                if (reload || rateLimiter == null || rateLimiter.shouldFetch(rateLimiterKey)) {
                     return networkObservable
                         .doOnNext(item -> Timber.d("Loaded %s From Network on Thread %s",
                             item.getClass(), Thread.currentThread().getName()));
-                } else {
-                    return Observable.empty();
                 }
+                // this statement will only be executed when disk returned empty and data was refreshed within the last 10 minutes.
+                return Observable.empty();
             }
             else {
-                rateLimiter.reset(rateLimiterKey);
+                if (rateLimiter != null)
+                    rateLimiter.reset(rateLimiterKey);
+
                 return Observable.error(new Throwable(Constants.NO_NETWORK));
             }
         }
@@ -94,9 +96,8 @@ public final class AbstractObservable {
 
         @NonNull
         public Observable<T> build() {
-            if (diskObservable == null || networkObservable == null
-                || rateLimiter == null || rateLimiterKey == null)
-                throw new IllegalStateException("Network observable, Disk observable, Rate limiter or Rate limiter key not provided");
+            if (diskObservable == null || networkObservable == null)
+                throw new IllegalStateException("Network or Disk observable not provided");
 
             return Observable
                 .defer(getReloadCallable())

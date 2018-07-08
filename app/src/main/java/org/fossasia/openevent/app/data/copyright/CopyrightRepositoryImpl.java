@@ -3,9 +3,7 @@ package org.fossasia.openevent.app.data.copyright;
 import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
-import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,7 +18,6 @@ public class CopyrightRepositoryImpl implements CopyrightRepository {
 
     private final Repository repository;
     private final CopyrightApi copyrightApi;
-    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public CopyrightRepositoryImpl(Repository repository, CopyrightApi copyrightApi) {
@@ -62,7 +59,6 @@ public class CopyrightRepositoryImpl implements CopyrightRepository {
 
         return repository.observableOf(Copyright.class)
             .reload(reload)
-            .withRateLimiterConfig("Copyright", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

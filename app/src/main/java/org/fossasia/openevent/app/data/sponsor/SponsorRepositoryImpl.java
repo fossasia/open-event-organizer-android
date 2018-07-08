@@ -65,7 +65,6 @@ public class SponsorRepositoryImpl implements SponsorRepository {
         return repository
             .observableOf(Sponsor.class)
             .reload(reload)
-            .withRateLimiterConfig("Sponsor", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
