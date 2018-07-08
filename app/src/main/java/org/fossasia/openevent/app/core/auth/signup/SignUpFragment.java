@@ -12,13 +12,13 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.auth.SharedViewModel;
-import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.databinding.SignUpFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
+import androidx.navigation.fragment.NavHostFragment;
 import br.com.ilhasoft.support.validation.Validator;
 import dagger.Lazy;
 
@@ -35,10 +35,6 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
     private SignUpFragmentBinding binding;
     private Validator validator;
     private SharedViewModel sharedViewModel;
-
-    public static SignUpFragment newInstance() {
-        return new SignUpFragment();
-    }
 
     @Nullable
     @Override
@@ -75,10 +71,12 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
 
     private void openLoginPage() {
         sharedViewModel.setEmail(binding.getUser().getEmail());
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .replace(R.id.fragment_container, new LoginFragment())
-            .commit();
+        NavHostFragment.findNavController(this).navigate(R.id.loginFragment);
+
+//        getFragmentManager().beginTransaction()
+//            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+//            .replace(R.id.fragment_container, new LoginFragment())
+//            .commit();
     }
 
     @Override

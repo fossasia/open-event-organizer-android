@@ -7,10 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 
 import javax.inject.Inject;
 
+import androidx.navigation.Navigation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjector;
@@ -36,10 +36,13 @@ public class AuthActivity extends AppCompatActivity implements HasSupportFragmen
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new LoginFragment())
-                .commit();
+            Navigation.findNavController(this, R.id.auth_fragment_container).navigate(R.id.loginFragment);
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return Navigation.findNavController(this, R.id.auth_fragment_container).navigateUp();
     }
 
     @Override

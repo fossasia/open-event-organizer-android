@@ -16,7 +16,7 @@ android {
         exclude 'META-INF/LICENSE'
     }
 
-    compileSdkVersion versions.compileSdk
+    compileSdkVersion 27
     buildToolsVersion versions.buildTools
     defaultConfig {
         applicationId "org.fossasia.eventyay"
@@ -102,7 +102,7 @@ check {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // Support Lib
     implementation 'com.android.support:multidex:1.0.3'
@@ -129,6 +129,10 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
     implementation "android.arch.lifecycle:common-java8:$versions.lifecycle"
     annotationProcessor "android.arch.lifecycle:compiler:$versions.lifecycle"
+
+    // Navigation
+    implementation "android.arch.navigation:navigation-fragment:${versions.navigation}"
+    implementation "android.arch.navigation:navigation-ui:${versions.navigation}"
 
     //WorkManager
     implementation "android.arch.work:work-runtime:${versions.work_manager}"
@@ -168,7 +172,7 @@ dependencies {
     implementation 'me.xdrop:fuzzywuzzy:1.1.9'
 
     // Glide
-    implementation ("com.github.florent37:glidepalette:2.1.0") {
+    implementation('com.github.florent37:glidepalette:2.1.0') {
         transitive = false
     }
     implementation "com.github.bumptech.glide:glide:${versions.glide}"

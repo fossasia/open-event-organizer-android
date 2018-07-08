@@ -12,12 +12,12 @@ import android.widget.Toast;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.auth.SharedViewModel;
-import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.databinding.ResetPasswordByTokenFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
 import javax.inject.Inject;
 
+import androidx.navigation.fragment.NavHostFragment;
 import br.com.ilhasoft.support.validation.Validator;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
@@ -30,10 +30,6 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
     private ResetPasswordViewModel resetPasswordViewModel;
     private ResetPasswordByTokenFragmentBinding binding;
     private Validator validator;
-
-    public static ResetPasswordFragment newInstance() {
-        return new ResetPasswordFragment();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,10 +83,7 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
     }
 
     private void openLoginPage() {
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .replace(R.id.fragment_container, new LoginFragment())
-            .commit();
+        NavHostFragment.findNavController(this).navigate(R.id.loginFragment);
     }
 
     @Override

@@ -13,8 +13,6 @@ import android.widget.ArrayAdapter;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.auth.SharedViewModel;
-import org.fossasia.openevent.app.core.auth.reset.ResetPasswordFragment;
-import org.fossasia.openevent.app.core.auth.signup.SignUpFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
 import org.fossasia.openevent.app.databinding.LoginFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -24,6 +22,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import androidx.navigation.fragment.NavHostFragment;
 import br.com.ilhasoft.support.validation.Validator;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
@@ -37,10 +36,6 @@ public class LoginFragment extends BaseFragment implements LoginView {
     private LoginFragmentBinding binding;
     private Validator validator;
     private SharedViewModel sharedViewModel;
-
-    public static LoginFragment newInstance() {
-        return new LoginFragment();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,12 +61,8 @@ public class LoginFragment extends BaseFragment implements LoginView {
             binding.setLogin(login);
             sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
         });
-        loginFragmentViewModel.getIsTokenSent().observe(this, (value) -> {
-            getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
-                .replace(R.id.fragment_container, new ResetPasswordFragment())
-                .commit();
-        });
+        loginFragmentViewModel.getIsTokenSent().observe(this, (value) ->
+            NavHostFragment.findNavController(this).navigate(R.id.resetPasswordFragment));
 
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
@@ -104,10 +95,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
 
     private void openSignUpPage() {
         sharedViewModel.setEmail(binding.getLogin().getEmail());
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
-            .replace(R.id.fragment_container, new SignUpFragment())
-            .commit();
+        NavHostFragment.findNavController(this).navigate(R.id.signUpFragment);
     }
 
     private void clickForgotPassword() {
