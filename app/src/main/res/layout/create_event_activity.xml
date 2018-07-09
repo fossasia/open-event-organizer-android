@@ -12,9 +12,6 @@
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:layout_marginTop="100dp" />
 
         <com.badoualy.stepperindicator.StepperIndicator
@@ -41,8 +38,8 @@
             <Button
                 android:id="@+id/btn_prev"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.5"
                 android:background="@color/color_accent"
                 android:text="@string/previous"
                 android:textAllCaps="true"

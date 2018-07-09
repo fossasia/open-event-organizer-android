@@ -471,12 +471,14 @@
                 android:textSize="@dimen/text_size_normal" />
 
             <CheckBox
+                android:id="@+id/enableSponsor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onCheckedChanged="@{ (switch, checked) -> event.setSponsorsEnabled(checked) }"
                 android:text="@string/enable_sponsors" />
 
             <CheckBox
+                android:id="@+id/enableSession"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onCheckedChanged="@{ (switch, checked) -> event.setSessionsSpeakersEnabled(checked) }"

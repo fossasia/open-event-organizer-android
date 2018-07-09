@@ -53,6 +53,7 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     @Override
     public void onStart() {
         super.onStart();
+        binding.setEvent(createEventViewModel.getEvent());
         createEventViewModel.getSuccessMessage().observe(this, this::onSuccess);
         createEventViewModel.getErrorMessage().observe(this, this::showError);
         createEventViewModel.getCloseState().observe(this, isClosed -> close());
