@@ -130,8 +130,8 @@ public class CreateEventViewModel extends ViewModel {
 
         compositeDisposable.add(eventRepository
             .createEvent(event)
-            .doOnSubscribe(disposable->progress.setValue(true))
-            .doFinally(()->progress.setValue(false))
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() -> progress.setValue(false))
             .subscribe(createdEvent -> {
                 onSuccess.setValue("Event Created Successfully");
                 close.setValue(null);
@@ -214,7 +214,7 @@ public class CreateEventViewModel extends ViewModel {
     public int getCountryIndex() {
         if (preferences.getBoolean(PREF_USE_PAYMENT_PREFS, false))
             return preferences.getInt(Constants.PREF_PAYMENT_COUNTRY, 0);
-        return  countryList.indexOf(Locale.getDefault().getDisplayCountry());
+        return countryList.indexOf(Locale.getDefault().getDisplayCountry());
     }
 
     //Used for loading the event information on start
@@ -222,11 +222,11 @@ public class CreateEventViewModel extends ViewModel {
         compositeDisposable.add(eventRepository
             .getEvent(eventId, false)
             .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() ->{
+            .doFinally(() -> {
                 progress.setValue(false);
                 getEventLiveData();
             })
-            .subscribe(loadedEvent -> this.event = (Event) loadedEvent, Logger::logError));
+            .subscribe(loadedEvent -> this.event = loadedEvent, Logger::logError));
     }
 
     //method called for updating an event
@@ -237,14 +237,14 @@ public class CreateEventViewModel extends ViewModel {
         nullifyEmptyFields(event);
 
         compositeDisposable.add(
-        eventRepository
-            .updateEvent(event)
-            .doOnSubscribe(disposable-> progress.setValue(true))
-            .doFinally(()->progress.setValue(false))
-            .subscribe(updatedEvent -> {
-                onSuccess.setValue("Event Updated Successfully");
-                close.setValue(null);
-            }, Logger::logError));
+            eventRepository
+                .updateEvent(event)
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(updatedEvent -> {
+                    onSuccess.setValue("Event Updated Successfully");
+                    close.setValue(null);
+                }, Logger::logError));
     }
 
 }

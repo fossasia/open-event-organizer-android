@@ -64,6 +64,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     private ArrayAdapter<CharSequence> paymentCountryAdapter;
     private ArrayAdapter<CharSequence> timezoneAdapter;
     private long eventId = -1;
+    private int countryIndex = -1;
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private final GoogleApiAvailability googleApiAvailabilityInstance = GoogleApiAvailability.getInstance();
@@ -346,14 +347,23 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     @Override
     public void setEvent(Event event) {
         binding.setEvent(event);
-        String paymentCountry = createEventViewModel.getEvent().getPaymentCountry();
         String timezone = createEventViewModel.getEvent().getTimezone();
+        if (createEventViewModel.getEvent().getPaymentCountry() != null) {
+            String paymentCountry = createEventViewModel.getEvent().getPaymentCountry();
+            countryIndex = paymentCountryAdapter.getPosition(paymentCountry);
+        } else {
+            countryIndex = createEventViewModel.getCountryIndex();
+        }
 
         int timezoneIndex = timezoneAdapter.getPosition(timezone);
-        int countryIndex = paymentCountryAdapter.getPosition(paymentCountry);
 
         binding.form.paymentCountrySpinner.setSelection(countryIndex);
         binding.form.timezoneSpinner.setSelection(timezoneIndex);
+        binding.form.enableSponsor.setChecked(event.isSponsorsEnabled);
+        binding.form.enableSession.setChecked(event.isSessionsSpeakersEnabled);
+        binding.form.enableTax.setChecked(event.isTaxEnabled);
+        binding.form.ticketingDetails.setChecked(event.isTicketingEnabled);
+        binding.form.organizerInfo.setChecked(event.hasOrganizerInfo);
     }
 
     @Override
