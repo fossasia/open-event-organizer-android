@@ -1,9 +1,10 @@
 package org.fossasia.openevent.app.core.presenter;
 
 import org.fossasia.openevent.app.common.rx.Logger;
-import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailPresenter;
 import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailView;
+import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
+import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.data.user.UserRepositoryImpl;
 import org.junit.After;
 import org.junit.Before;
@@ -35,13 +36,16 @@ public class OrganizerDetailPresenterTest {
     private OrganizerDetailView organizerDetailView;
     @Mock
     private UserRepositoryImpl userRepository;
+    @Mock
+    private DatabaseChangeListener<User> databaseChangeListener;
+
     private OrganizerDetailPresenter organizerDetailPresenter;
 
     private static final User USER = new User();
 
     @Before
     public void setUp() {
-        organizerDetailPresenter = new OrganizerDetailPresenter(userRepository);
+        organizerDetailPresenter = new OrganizerDetailPresenter(userRepository, databaseChangeListener);
         organizerDetailPresenter.attach(organizerDetailView);
 
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());

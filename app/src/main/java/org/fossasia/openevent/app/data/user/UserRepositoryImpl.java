@@ -14,7 +14,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UserRepositoryImpl implements UserRepository {
 
-
     private final UserApi userApi;
     private final Repository repository;
     private final AuthHolder authHolder;
@@ -57,6 +56,25 @@ public class UserRepositoryImpl implements UserRepository {
             .doOnNext(updatedUser -> repository
                 .update(User.class, updatedUser)
                 .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Observable<ImageUrl> uploadProfileImage(User user, Image image) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return userApi.postImage(image)
+            .doOnNext(imageUrl -> {
+                user.setAvatarUrl(imageUrl.url);
+
+                repository
+                .update(User.class, user)
+                .subscribe();
+            })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
