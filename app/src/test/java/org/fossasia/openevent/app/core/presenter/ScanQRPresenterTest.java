@@ -109,7 +109,6 @@ public class ScanQRPresenterTest {
 
         scanQRPresenter.start();
 
-        verify(scanQRView).loadCamera();
     }
 
     @Test
@@ -177,7 +176,6 @@ public class ScanQRPresenterTest {
         scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
-        inOrder.verify(scanQRView).loadCamera();
         scanQRPresenter.onCameraLoaded();
         inOrder.verify(scanQRView).startScan();
     }
@@ -206,7 +204,6 @@ public class ScanQRPresenterTest {
         scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
-        inOrder.verify(scanQRView).loadCamera();
         scanQRPresenter.onCameraLoaded();
         inOrder.verify(scanQRView).requestCameraPermission();
         scanQRPresenter.cameraPermissionGranted(true);
@@ -238,7 +235,6 @@ public class ScanQRPresenterTest {
         scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
-        inOrder.verify(scanQRView).loadCamera();
         scanQRPresenter.onCameraLoaded();
         inOrder.verify(scanQRView).requestCameraPermission();
         scanQRPresenter.cameraPermissionGranted(false);

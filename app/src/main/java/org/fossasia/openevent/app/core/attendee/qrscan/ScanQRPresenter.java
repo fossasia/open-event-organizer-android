@@ -70,7 +70,7 @@ public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
         loadAttendees();
 
         getView().showProgress(true);
-        getView().loadCamera();
+        onCameraLoaded();
     }
 
     public void pauseScan() {
