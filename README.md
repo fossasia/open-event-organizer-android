@@ -47,22 +47,18 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 <table>
   <tr>
     <td><img src="docs/_static/login.png"></td>
-    <td><img src="docs/_static/signup.png"></td>
-    <td><img src="docs/_static/navigation.png"></td>
+    <td><img src="docs/_static/dashboard_one.png"></td>
+    <td><img src="docs/_static/dashboard_two.png"></td>
   </tr>
-  <tr>
-    <td><img src="docs/_static/dashboard.png"></td>
+    <tr>
     <td><img src="docs/_static/attendees.png"></td>
     <td><img src="docs/_static/checkin.png"></td>
+    <td><img src="docs/_static/order_checkin.png"></td>
   </tr>
   <tr>
-    <td><img src="docs/_static/about.png"></td>
+    <td><img src="docs/_static/create_ticket.png"></td>
+    <td><img src="docs/_static/navigation.png"></td>
     <td><img src="docs/_static/organizer.png"></td>
-    <td><img src="docs/_static/organizer_content.png"></td>
-  </tr>
-   <tr>
-    <td><img src="https://user-images.githubusercontent.com/23634977/34945795-8d03341e-fa2a-11e7-840a-03e7838867e5.jpg"></td>
-    <td><img src="https://user-images.githubusercontent.com/23634977/34945794-8b5dd402-fa2a-11e7-8a4b-6650b0bc8b7a.jpg"></td>
   </tr>
 </table>
 
