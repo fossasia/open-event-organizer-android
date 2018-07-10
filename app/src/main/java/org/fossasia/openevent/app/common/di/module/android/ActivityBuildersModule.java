@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.common.di.module.android;
 
+import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRActivity;
 import org.fossasia.openevent.app.core.auth.AuthActivity;
 import org.fossasia.openevent.app.core.event.about.AboutEventActivity;
 import org.fossasia.openevent.app.core.event.chart.ChartActivity;
@@ -25,6 +26,9 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector(modules = AuthFragmentBuildersModule.class)
     abstract AuthActivity contributeAuthActivity();
+
+    @ContributesAndroidInjector(modules = BarcodeFragmentBuildersModule.class)
+    abstract ScanQRActivity contributeScanQRActivity();
 
     @ContributesAndroidInjector(modules = AboutFragmentBuildersModule.class)
     abstract AboutEventActivity contributeEventActivity();
