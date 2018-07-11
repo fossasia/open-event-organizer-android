@@ -4,18 +4,24 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.auth.SharedViewModel;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.databinding.SignUpFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.utils.ValidateUtils;
 
 import javax.inject.Inject;
 
@@ -56,6 +62,8 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
         getPresenter().attach(this);
         binding.setUser(getPresenter().getUser());
 
+        validate(binding.emailLayout , ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
+
         binding.btnSignUp.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
@@ -71,6 +79,37 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
             getPresenter().signUp();
         });
         binding.loginLink.setOnClickListener(view -> openLoginPage());
+    }
+
+    @Override
+    public void validate(TextInputLayout textInputLayout, Function<String, Boolean> validationReference, String errorResponse) {
+        textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Nothing here
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (validationReference.apply(charSequence.toString())) {
+                    textInputLayout.setError(null);
+                    textInputLayout.setErrorEnabled(false);
+                } else {
+                    textInputLayout.setErrorEnabled(true);
+                    textInputLayout.setError(errorResponse);
+                }
+                if (TextUtils.isEmpty(charSequence)) {
+                    textInputLayout.setError(null);
+                    textInputLayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Nothing here
+            }
+        });
     }
 
     private void openLoginPage() {
