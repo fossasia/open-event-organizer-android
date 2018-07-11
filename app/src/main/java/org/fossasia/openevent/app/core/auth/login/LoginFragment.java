@@ -56,9 +56,6 @@ public class LoginFragment extends BaseFragment implements LoginView {
         super.onStart();
 
         loginFragmentViewModel.getLoginStatus().observe(this, (loginStatus) -> handleIntent());
-
-        String url = binding.url.baseUrl.getText().toString().trim();
-        loginFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
         loginFragmentViewModel.getProgress().observe(this, this::showProgress);
         loginFragmentViewModel.getError().observe(this, this::showError);
         loginFragmentViewModel.getEmailList().observe(this, this::attachEmails);
@@ -79,6 +76,8 @@ public class LoginFragment extends BaseFragment implements LoginView {
                 return;
 
             ViewUtils.hideKeyboard(view);
+            String url = binding.url.baseUrl.getText().toString().trim();
+            loginFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             loginFragmentViewModel.login();
         });
         binding.signUpLink.setOnClickListener(view -> openSignUpPage());
