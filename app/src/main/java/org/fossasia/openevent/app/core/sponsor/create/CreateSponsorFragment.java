@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.sponsor.create;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,17 +25,17 @@ import org.fossasia.openevent.app.utils.ValidateUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> implements CreateSponsorView {
+public class CreateSponsorFragment extends BaseFragment implements CreateSponsorView {
 
     @Inject
-    Lazy<CreateSponsorPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
     private SponsorCreateLayoutBinding binding;
     private Validator validator;
+    private CreateSponsorViewModel createSponsorViewModel;
     private long sponsorId;
     private boolean isUpdateSponsor;
 
@@ -52,6 +54,7 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding =  DataBindingUtil.inflate(inflater, R.layout.sponsor_create_layout, container, false);
+        createSponsorViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateSponsorViewModel.class);
         validator = new Validator(binding.form);
 
         if (getArguments() != null) {
@@ -63,9 +66,11 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
                 if (isUpdateSponsor)
-                    getPresenter().updateSponsor();
+                    createSponsorViewModel.updateSponsor();
                 else
-                    getPresenter().createSponsor();
+                    createSponsorViewModel.createSponsor();
+
+            ViewUtils.hideKeyboard(binding.getRoot());
         });
 
         return binding.getRoot();
@@ -74,13 +79,17 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        binding.setSponsor(getPresenter().getSponsor());
+        createSponsorViewModel.getProgress().observe(this, this::showProgress);
+        createSponsorViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
+        createSponsorViewModel.getSuccess().observe(this, this::onSuccess);
+        createSponsorViewModel.getError().observe(this, this::showError);
+        createSponsorViewModel.getSponsorLiveData().observe(this, this::setSponsor);
+        binding.setSponsor(createSponsorViewModel.getSponsor());
 
         validate(binding.form.sponsorSponsorUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.sponsorSponsorLogoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         if (isUpdateSponsor)
-           getPresenter().loadSponsor(sponsorId);
+            createSponsorViewModel.loadSponsor(sponsorId);
     }
 
     @Override
@@ -104,11 +113,6 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
             return R.string.update_sponsor;
         else
             return R.string.create_sponsor;
-    }
-
-    @Override
-    protected Lazy<CreateSponsorPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     public void validate(TextInputLayout textInputLayout, Function<String, Boolean> validationReference, String errorResponse) {
@@ -141,7 +145,6 @@ public class CreateSponsorFragment extends BaseFragment<CreateSponsorPresenter> 
         });
     }
 
-    @Override
     public void dismiss() {
         getFragmentManager().popBackStack();
     }
