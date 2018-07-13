@@ -4,6 +4,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface UserApi {
@@ -13,4 +14,7 @@ public interface UserApi {
 
     @GET("users/{id}")
     Observable<User> getOrganizer(@Path("id") long id);
+
+    @POST("upload/image")
+    Observable<ImageUrl> postImage(@Body Image image);
 }

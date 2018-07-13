@@ -59,4 +59,23 @@ public class UserRepositoryImpl implements UserRepository {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @NonNull
+    @Override
+    public Observable<ImageUrl> uploadProfileImage(User user, Image image) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return userApi.postImage(image)
+            .doOnNext(imageUrl -> {
+                user.setAvatarUrl(imageUrl.url);
+
+                repository
+                .update(User.class, user)
+                .subscribe();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
 }

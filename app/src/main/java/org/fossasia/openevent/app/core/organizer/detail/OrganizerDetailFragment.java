@@ -1,6 +1,12 @@
 package org.fossasia.openevent.app.core.organizer.detail;
 
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -20,15 +26,20 @@ import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.user.User;
 import org.fossasia.openevent.app.databinding.OrganizerDetailFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.utils.UploadUtils;
+
+import java.io.FileNotFoundException;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import timber.log.Timber;
 
 public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresenter> implements OrganizerDetailView {
 
     private OrganizerDetailFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
+    public static final int PICK_IMAGE = 1;
 
     @Inject
     ContextUtils utilModel;
@@ -58,6 +69,41 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
         setupRefreshListener();
         getPresenter().attach(this);
         getPresenter().start();
+
+        binding.detail.uploadProfilePic.setOnClickListener(view -> uploadImage());
+    }
+
+    public void uploadImage() {
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Profile Photo");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+        startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (data != null && requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            Uri targetUri = data.getData();
+            ContentResolver contentResolver = getContext().getContentResolver();
+            String type = UploadUtils.getMimeTypeFromUri(contentResolver, targetUri);
+
+            try {
+                Bitmap bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(targetUri));
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, false);
+                String imageString = UploadUtils.convertBitmapToString(resizedBitmap, type);
+
+                getPresenter().uploadImage(imageString);
+            } catch (FileNotFoundException e) {
+                Timber.d(e);
+            }
+        }
     }
 
     @Override

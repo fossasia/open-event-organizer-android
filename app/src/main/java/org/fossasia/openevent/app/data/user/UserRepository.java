@@ -8,4 +8,6 @@ public interface UserRepository {
     Observable<User> updateUser(User user);
 
     Observable<User> getOrganizer(boolean reload);
+
+    Observable<ImageUrl> uploadProfileImage(User user, Image image);
 }

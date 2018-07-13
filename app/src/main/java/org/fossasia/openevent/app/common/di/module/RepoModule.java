@@ -92,5 +92,4 @@ public abstract class RepoModule {
     @Binds
     @Singleton
     abstract OrderRepository bindsOrderRepository(OrderRepositoryImpl orderRepository);
-
 }

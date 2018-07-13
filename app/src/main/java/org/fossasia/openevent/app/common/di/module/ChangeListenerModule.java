@@ -11,6 +11,7 @@ import org.fossasia.openevent.app.data.speakerscall.SpeakersCall;
 import org.fossasia.openevent.app.data.sponsor.Sponsor;
 import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.data.tracks.Track;
+import org.fossasia.openevent.app.data.user.User;
 
 import dagger.Module;
 import dagger.Provides;
@@ -61,5 +62,10 @@ public class ChangeListenerModule {
     @Provides
     DatabaseChangeListener<SpeakersCall> providesSpeakerCallChangeListener() {
         return new DbFlowDatabaseChangeListener<>(SpeakersCall.class);
+    }
+
+    @Provides
+    DatabaseChangeListener<User> providesUserChangeListener() {
+        return new DbFlowDatabaseChangeListener<>(User.class);
     }
 }
