@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else if (fragmentNavigator.isDashboardActive())
             super.onBackPressed();
+        else if (eventId == -1)
+            finish();
         else {
             fragmentNavigator.back();
             binding.navView.getMenu().findItem(R.id.nav_dashboard).setChecked(true);
