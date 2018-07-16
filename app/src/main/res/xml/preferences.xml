@@ -18,4 +18,8 @@
         android:title="Device Name"
         android:summary="@string/device_name_summary"/>
 
+    <Preference
+        android:key="sales_data_display"
+        android:title="Sales Data Display" />
+
 </android.support.v7.preference.PreferenceScreen>

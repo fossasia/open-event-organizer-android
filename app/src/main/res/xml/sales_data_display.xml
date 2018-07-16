@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="gross_sales"
+        android:title="@string/gross_sales"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="net_sales"
+        android:title="Net Sales"
+        android:defaultValue="false" />
+</PreferenceScreen>

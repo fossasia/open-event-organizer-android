@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.settings;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         manager.setSharedPreferencesName(Constants.FOSS_PREFS);
 
         setPreferencesFromResource(R.xml.preferences, rootKey);
+
+        findPreference("sales_data_display").setOnPreferenceClickListener(preference -> {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction
+                .replace(R.id.fragment_container, SalesDataSettings.newInstance())
+                .addToBackStack(null)
+                .commit();
+            return true;
+        });
     }
 
     @Override
