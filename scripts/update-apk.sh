@@ -14,6 +14,13 @@ fi
 
 git clone --quiet --branch=apk https://niranjan94:$GITHUB_API_KEY@github.com/fossasia/open-event-orga-app apk > /dev/null
 cd apk
+
+if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
+	/bin/rm -f *
+else
+	/bin/rm -f app-debug.apk app-release.apk
+fi
+
 \cp -r ../app/build/outputs/apk/*/**.apk .
 \cp -r ../app/build/outputs/apk/debug/output.json debug-output.json
 \cp -r ../app/build/outputs/apk/release/output.json release-output.json
@@ -27,9 +34,11 @@ if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
 	${ANDROID_HOME}/build-tools/27.0.3/zipalign -v -p 4 app-release-unaligned.apk app-release.apk
 fi
 
-for file in app*; do
-  mv $file test-${file%%}
-done
+if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
+    for file in app*; do
+          cp $file eventyay-organizer-master-${file%%}
+    done
+fi
 
 # Create a new branch that will contains only latest apk
 git checkout --orphan temporary
@@ -53,4 +62,4 @@ if [ "$TRAVIS_BRANCH" != "$PUBLISH_BRANCH" ]; then
 fi
 
 gem install fastlane
-fastlane supply --apk test-app-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
+fastlane supply --apk app-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
