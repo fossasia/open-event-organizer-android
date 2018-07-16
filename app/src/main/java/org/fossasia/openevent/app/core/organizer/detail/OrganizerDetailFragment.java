@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.organizer.detail;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -8,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,13 +36,13 @@ import java.io.FileNotFoundException;
 import javax.inject.Inject;
 
 import dagger.Lazy;
-import timber.log.Timber;
 
 public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresenter> implements OrganizerDetailView {
 
     private OrganizerDetailFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
-    public static final int PICK_IMAGE = 1;
+    public static final int PICK_IMAGE = 2;
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
 
     @Inject
     ContextUtils utilModel;
@@ -70,7 +73,19 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
         getPresenter().attach(this);
         getPresenter().start();
 
-        binding.detail.uploadProfilePic.setOnClickListener(view -> uploadImage());
+        binding.detail.uploadProfilePic.setOnClickListener(view -> requestRead());
+    }
+
+    public void requestRead() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Snackbar.make(binding.getRoot(), R.string.storage_access_required,
+                Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                REQUEST_READ_EXTERNAL_STORAGE)).show();
+        } else {
+            uploadImage();
+        }
     }
 
     public void uploadImage() {
@@ -101,7 +116,7 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
 
                 getPresenter().uploadImage(imageString);
             } catch (FileNotFoundException e) {
-                Timber.d(e);
+                ViewUtils.showSnackbar(binding.mainContent, R.string.image_upload_error);
             }
         }
     }
