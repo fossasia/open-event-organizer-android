@@ -305,6 +305,11 @@
     <string name="eventyay_organizer">Eventyay Organizer</string>
     <string name="rate_us">Rate Us</string>
     <string name="app_version_key">app_version</string>
+    <string name="restrict_all">Restrict All</string>
+    <string name="check_in_restrictions">Check In Restrictions</string>
+    <string name="check_in_restrictions_key">check_in_restrictions</string>
+    <string name="scan_settings_key">scan_settings</string>
+    <string name="payment_preference_key">payment_preferences</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
