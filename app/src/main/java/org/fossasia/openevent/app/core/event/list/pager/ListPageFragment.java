@@ -12,8 +12,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -82,7 +80,6 @@ public class ListPageFragment extends Fragment implements ListPageView, Injectab
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -94,11 +91,6 @@ public class ListPageFragment extends Fragment implements ListPageView, Injectab
         eventsViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EventsViewModel.class);
 
         return binding.getRoot();
-    }
-
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_events, menu);
     }
 
     @Override

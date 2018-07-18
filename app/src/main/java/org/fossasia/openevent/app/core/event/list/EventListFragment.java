@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -98,6 +100,8 @@ public class EventListFragment extends BaseFragment implements EventsView {
 
         binding.createEventFab.setOnClickListener(view -> openCreateEventFragment());
 
+        setHasOptionsMenu(true);
+
         return binding.getRoot();
     }
 
@@ -125,6 +129,12 @@ public class EventListFragment extends BaseFragment implements EventsView {
             refreshLayout.setRefreshing(false);
             eventsViewModel.loadUserEvents(true);
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_events, menu);
     }
 
     @Override
