@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
+import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -32,6 +33,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         manager.setSharedPreferencesName(Constants.FOSS_PREFS);
 
         setPreferencesFromResource(R.xml.preferences, rootKey);
+
+        findPreference("app_version").setTitle("Version " + BuildConfig.VERSION_NAME);
     }
 
     @Override

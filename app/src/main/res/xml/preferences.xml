@@ -19,4 +19,11 @@
         android:title="Device Name"
         android:summary="@string/device_name_summary"/>
 
+    <PreferenceCategory android:title="@string/organizer">
+
+        <Preference
+            android:selectable="false"
+            android:key="app_version" />
+    </PreferenceCategory>
+
 </android.support.v7.preference.PreferenceScreen>
