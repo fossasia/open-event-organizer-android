@@ -303,6 +303,7 @@
     <string name="collect_attendee_info">Collect attendee information</string>
     <string name="attendee_info">Attendee Information</string>
     <string name="organizer">Organizer</string>
+    <string name="rate_us">Rate Us</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

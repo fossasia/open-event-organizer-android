@@ -19,11 +19,18 @@
         android:title="Device Name"
         android:summary="@string/device_name_summary"/>
 
+    <PreferenceCategory android:title="@string/about">
+        <Preference
+            android:key="rate_us"
+            android:title="@string/rate_us"
+            android:selectable="true"
+            android:summary="Love us? Rate us on Google Play." />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/organizer">
 
-        <Preference
-            android:selectable="false"
-            android:key="app_version" />
-    </PreferenceCategory>
+    <Preference
+        android:selectable="false"
+        android:key="app_version" />
 
 </android.support.v7.preference.PreferenceScreen>

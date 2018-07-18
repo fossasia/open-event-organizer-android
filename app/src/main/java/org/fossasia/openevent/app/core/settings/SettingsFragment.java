@@ -1,5 +1,8 @@
 package org.fossasia.openevent.app.core.settings;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceManager;
@@ -35,6 +38,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
         findPreference("app_version").setTitle("Version " + BuildConfig.VERSION_NAME);
+
+        findPreference("rate_us").setOnPreferenceClickListener(preference -> {
+            Uri uri = Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID);
+            Intent playStoreIntent = new Intent(Intent.ACTION_VIEW, uri);
+            try {
+                startActivity(playStoreIntent);
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+            }
+            return true;
+        });
     }
 
     @Override

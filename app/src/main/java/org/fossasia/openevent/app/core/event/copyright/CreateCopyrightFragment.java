@@ -113,7 +113,7 @@ public class CreateCopyrightFragment extends BaseFragment<CreateCopyrightPresent
 
     @Override
     protected int getTitle() {
-        return R.string.copyright;
+        return R.string.create_copyright;
     }
 
     @Override
