@@ -89,7 +89,7 @@ public class UpdateCopyrightFragment extends BaseFragment<UpdateCopyrightPresent
 
     @Override
     protected int getTitle() {
-        return R.string.copyright;
+        return R.string.edit_copyright;
     }
 
     @Override

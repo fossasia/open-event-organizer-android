@@ -23,4 +23,12 @@
         android:key="sales_data_display"
         android:title="Sales Data Display" />
 
+    <PreferenceCategory android:title="@string/about">
+        <Preference
+            android:key="rate_us"
+            android:title="@string/rate_us"
+            android:selectable="true"
+            android:summary="Love us? Rate us on Google Play." />
+    </PreferenceCategory>
+
 </android.support.v7.preference.PreferenceScreen>
