@@ -19,6 +19,8 @@ import org.fossasia.openevent.app.ui.ViewUtils;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
+    private static final String VERSION = "Version";
+
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
     }
@@ -37,7 +39,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
-        findPreference("app_version").setTitle("Version " + BuildConfig.VERSION_NAME);
+        findPreference(getString(R.string.app_version_key)).setTitle(VERSION + " " + BuildConfig.VERSION_NAME);
 
         findPreference("rate_us").setOnPreferenceClickListener(preference -> {
             Uri uri = Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID);
