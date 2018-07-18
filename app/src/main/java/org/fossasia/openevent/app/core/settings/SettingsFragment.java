@@ -38,10 +38,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
-        findPreference("sales_data_display").setOnPreferenceClickListener(preference -> {
+        findPreference(getString(R.string.sales_data_display_key)).setOnPreferenceClickListener(preference -> {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction
-                .replace(R.id.fragment_container, SalesDataSettings.newInstance())
+            transaction.replace(R.id.fragment_container, SalesDataSettings.newInstance())
                 .addToBackStack(null)
                 .commit();
             return true;

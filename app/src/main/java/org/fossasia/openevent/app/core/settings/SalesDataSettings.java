@@ -17,6 +17,9 @@ import org.fossasia.openevent.app.ui.ViewUtils;
 
 public class SalesDataSettings extends PreferenceFragmentCompat {
 
+    private static final String NET_SALES = "net_sales";
+    private static final String GROSS_SALES = "gross_sales";
+
     public static SalesDataSettings newInstance() {
         return new SalesDataSettings();
     }
@@ -36,17 +39,17 @@ public class SalesDataSettings extends PreferenceFragmentCompat {
 
         setPreferencesFromResource(R.xml.sales_data_display, rootKey);
 
-        CheckBoxPreference netSales = (CheckBoxPreference) findPreference("net_sales");
-        CheckBoxPreference grossSales = (CheckBoxPreference) findPreference("gross_sales");
+        CheckBoxPreference netSales = (CheckBoxPreference) findPreference(NET_SALES);
+        CheckBoxPreference grossSales = (CheckBoxPreference) findPreference(GROSS_SALES);
 
         Preference.OnPreferenceChangeListener listener = (preference, newValue) -> {
             String key = preference.getKey();
 
             switch (key) {
-                case "gross_sales":
+                case GROSS_SALES:
                     netSales.setChecked(false);
                     break;
-                case "net_sales":
+                case NET_SALES:
                     grossSales.setChecked(false);
                     break;
                 default:
@@ -55,8 +58,8 @@ public class SalesDataSettings extends PreferenceFragmentCompat {
             return (Boolean) newValue;
         };
 
-        grossSales.setOnPreferenceChangeListener(listener);
         netSales.setOnPreferenceChangeListener(listener);
+        grossSales.setOnPreferenceChangeListener(listener);
     }
 
     @Override
@@ -64,5 +67,4 @@ public class SalesDataSettings extends PreferenceFragmentCompat {
         super.onResume();
         ViewUtils.setTitle(this, getString(R.string.sales_data_display));
     }
-
 }
