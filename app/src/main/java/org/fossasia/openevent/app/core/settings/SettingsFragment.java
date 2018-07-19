@@ -48,6 +48,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
             return true;
         });
+
+        findPreference(getString(R.string.privacy_policy_key)).setOnPreferenceClickListener(preference -> {
+            String url = "https://eventyay.com/privacy-policy/";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+            return true;
+        });
     }
 
     @Override

@@ -303,6 +303,8 @@
     <string name="collect_attendee_info">Collect attendee information</string>
     <string name="attendee_info">Attendee Information</string>
     <string name="rate_us">Rate Us</string>
+    <string name="privacy_policy_key">privacy_policy</string>
+    <string name="privacy_policy">Privacy Policy</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
