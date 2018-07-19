@@ -302,9 +302,11 @@
     <string name="update_speakers_call">Update Speakers Call</string>
     <string name="collect_attendee_info">Collect attendee information</string>
     <string name="attendee_info">Attendee Information</string>
+    <string name="eventyay_organizer">Eventyay Organizer</string>
     <string name="rate_us">Rate Us</string>
     <string name="privacy_policy_key">privacy_policy</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="app_version_key">app_version</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
