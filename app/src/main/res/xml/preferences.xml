@@ -26,9 +26,15 @@
     <PreferenceCategory android:title="@string/about">
         <Preference
             android:key="rate_us"
-            android:title="@string/rate_us"
+            android:title="Rate Us"
             android:selectable="true"
             android:summary="Love us? Rate us on Google Play." />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/eventyay_organizer">
+        <Preference
+            android:selectable="false"
+            android:key="@string/app_version_key" />
     </PreferenceCategory>
 
 </android.support.v7.preference.PreferenceScreen>

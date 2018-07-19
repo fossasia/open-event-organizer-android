@@ -303,8 +303,10 @@
     <string name="sales_data_display">Sales Data Display</string>
     <string name="collect_attendee_info">Collect attendee information</string>
     <string name="attendee_info">Attendee Information</string>
+    <string name="eventyay_organizer">Eventyay Organizer</string>
     <string name="rate_us">Rate Us</string>
     <string name="sales_data_display_key">sales_data_display</string>
+    <string name="app_version_key">app_version</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
