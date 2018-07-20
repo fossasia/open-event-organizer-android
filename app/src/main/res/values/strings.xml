@@ -307,6 +307,9 @@
     <string name="rate_us">Rate Us</string>
     <string name="sales_data_display_key">sales_data_display</string>
     <string name="app_version_key">app_version</string>
+    <string name="gross_sales_key">gross_sales</string>
+    <string name="net_sales_key">net_sales</string>
+    <string name="net_sales">Net Sales</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
