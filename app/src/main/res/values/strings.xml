@@ -305,6 +305,10 @@
     <string name="eventyay_organizer">Eventyay Organizer</string>
     <string name="rate_us">Rate Us</string>
     <string name="app_version_key">app_version</string>
+    <string name="unpublish_confirmation_message">Unpublishing will put your event back to a draft state.</string>
+    <string name="successfull_publish_message">Congrats! Your event is live. Spread the word about your event.</string>
+    <string name="unpublish_event">Unpublish Event</string>
+    <string name="share_event">Share Event</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

@@ -21,4 +21,10 @@ public interface EventDashboardView extends Progressive, Erroneous, Successful, 
     void showChartCheckIn(boolean show);
 
     void showStatistics(EventStatistics eventStatistics);
+
+    void showEventUnpublishDialog();
+
+    void showShareDialog();
+
+    void switchEventState();
 }

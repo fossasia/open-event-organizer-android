@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventStatistics;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -36,6 +39,8 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
 
     private long initialEventId;
     private EventDetailBinding binding;
+    private AlertDialog unpublishDialog;
+    private AlertDialog shareDialog;
 
     @Inject
     Context context;
@@ -184,4 +189,48 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
         ViewUtils.showView(binding.ticketAnalytics.chartBoxCheckIn, show);
     }
 
+    private void shareEvent() {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(getPresenter().getEvent()));
+        shareIntent.setType("text/plain");
+        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+    }
+
+    public void switchEventState() {
+        binding.switchEventState.toggle();
+    }
+
+    @Override
+    public void showEventUnpublishDialog() {
+        if (unpublishDialog == null) {
+            unpublishDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.myDialog))
+                .setTitle(R.string.unpublish_event)
+                .setMessage(getString(R.string.unpublish_confirmation_message))
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    getPresenter().toggleState();
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create();
+        }
+
+        unpublishDialog.show();
+    }
+
+    @Override
+    public void showShareDialog() {
+        if (shareDialog == null) {
+            shareDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.myDialog))
+                .setTitle(R.string.share_event)
+                .setMessage(getString(R.string.successfull_publish_message))
+                .setNeutralButton(R.string.share, (dialog, which) -> {
+                    shareEvent();
+                })
+                .create();
+        }
+
+        shareDialog.show();
+    }
 }

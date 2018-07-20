@@ -11,8 +11,8 @@ import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
 import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.data.event.EventStatistics;
 import org.fossasia.openevent.app.data.event.EventRepository;
+import org.fossasia.openevent.app.data.event.EventStatistics;
 
 import java.util.List;
 
@@ -82,6 +82,15 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
         loadEventStatistics(forceReload);
     }
 
+    public void confirmToggle() {
+        if (Event.STATE_PUBLISHED.equals(event.state)) {
+            getView().switchEventState();
+            getView().showEventUnpublishDialog();
+        } else {
+            toggleState();
+        }
+    }
+
     public void toggleState() {
         event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT;
         eventRepository.updateEvent(event)
@@ -90,11 +99,13 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
             .doFinally(() -> getView().showResult(event))
             .subscribe(updatedEvent -> {
                 event.state = updatedEvent.state;
-                final int successMessage = Event.STATE_PUBLISHED.equals(event.state) ? R.string.publish_success : R.string.draft_success;
-                getView().onSuccess(utilModel.getResourceString(successMessage));
+                if (Event.STATE_PUBLISHED.equals(event.state)) {
+                    getView().showShareDialog();
+                }else {
+                    getView().onSuccess(utilModel.getResourceString(R.string.draft_success));
+                }
             },
             throwable -> event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT);
-
     }
 
     private void loadEventStatistics(boolean forceReload) {
