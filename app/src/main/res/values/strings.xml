@@ -305,6 +305,8 @@
     <string name="eventyay_organizer">Eventyay Organizer</string>
     <string name="rate_us">Rate Us</string>
     <string name="app_version_key">app_version</string>
+    <string name="acknowledgements">Acknowledgements</string>
+    <string name="acknowledgements_key">acknowledgement</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

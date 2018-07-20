@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import org.fossasia.openevent.app.BuildConfig;
@@ -50,6 +51,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("http://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
             }
+            return true;
+        });
+
+        findPreference(getString(R.string.acknowledgements_key)).setOnPreferenceClickListener(preference -> {
+            startActivity(new Intent(getActivity(), OssLicensesMenuActivity.class));
             return true;
         });
     }

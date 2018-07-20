@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.sentry.android.gradle'
 apply plugin: 'com.noveogroup.android.check'
 apply from: './jacoco.gradle'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
 
 def app_name = System.getenv('app_name') ?: "eventyay organizer"
 def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
@@ -204,6 +205,9 @@ dependencies {
 
     //stepper
     implementation 'com.github.badoualy:stepper-indicator:1.0.7'
+
+    //open-source licenses
+    implementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 
     //Testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
