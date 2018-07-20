@@ -119,7 +119,7 @@ dependencies {
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation 'com.mikhaellopez:circularprogressbar:1.1.1'
+    implementation 'com.mikhaellopez:circularprogressbar:2.0.0'
     implementation 'com.github.Ilhasoft:data-binding-validator:1.0.0'
     implementation "io.sentry:sentry-android:${versions.sentry_android}"
     implementation "com.github.PhilJay:MPAndroidChart:${versions.mp_android_chart}"
