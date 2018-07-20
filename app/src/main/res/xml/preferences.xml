@@ -27,8 +27,8 @@
             android:summary="Love us? Rate us on Google Play." />
 
         <Preference
-            android:key="@string/privacy_policy_key"
-            android:title="@string/privacy_policy"
+            android:key="@string/legal_key"
+            android:title="@string/legal"
             android:selectable="true" />
     </PreferenceCategory>
 

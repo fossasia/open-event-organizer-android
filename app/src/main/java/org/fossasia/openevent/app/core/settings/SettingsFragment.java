@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,11 +54,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-        findPreference(getString(R.string.privacy_policy_key)).setOnPreferenceClickListener(preference -> {
-            String url = "https://eventyay.com/privacy-policy/";
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
-            startActivity(intent);
+        findPreference(getString(R.string.legal_key)).setOnPreferenceClickListener(preference -> {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction
+                .replace(R.id.fragment_container, LegalPreferenceFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
             return true;
         });
     }
