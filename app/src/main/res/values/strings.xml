@@ -313,6 +313,8 @@
     <string name="terms_of_service">Terms of Service</string>
     <string name="cookie_policy">Cookie Policy</string>
     <string name="legal_key">legal_key</string>
+    <string name="signup_agreement">By signing up, I agree to Eventyay\'s</string>
+    <string name="and">and</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

@@ -1,7 +1,9 @@
 package org.fossasia.openevent.app.core.auth.signup;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.auth.SharedViewModel;
@@ -78,6 +81,9 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
             getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
             getPresenter().signUp();
         });
+
+        binding.privacyPolicy.setOnClickListener(view -> openPrivacyPolicy());
+        binding.termsOfUse.setOnClickListener(view -> openTermsOfUse());
         binding.loginLink.setOnClickListener(view -> openLoginPage());
     }
 
@@ -110,6 +116,18 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
                 // Nothing here
             }
         });
+    }
+
+    private void openPrivacyPolicy() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(Constants.PRIVACY_POLICY_URL));
+        startActivity(intent);
+    }
+
+    private void openTermsOfUse() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(Constants.TERMS_OF_USE_URL));
+        startActivity(intent);
     }
 
     private void openLoginPage() {
