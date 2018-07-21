@@ -169,7 +169,7 @@ dependencies {
     implementation 'me.xdrop:fuzzywuzzy:1.1.9'
 
     // Glide
-    implementation ("com.github.florent37:glidepalette:2.1.0") {
+    implementation ("com.github.florent37:glidepalette:2.1.2") {
         transitive = false
     }
     implementation "com.github.bumptech.glide:glide:${versions.glide}"
