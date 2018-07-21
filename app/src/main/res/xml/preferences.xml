@@ -30,6 +30,11 @@
             android:key="@string/legal_key"
             android:title="@string/legal"
             android:selectable="true" />
+
+        <Preference
+            android:key="@string/acknowledgements_key"
+            android:selectable="true"
+            android:title="@string/acknowledgements" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/eventyay_organizer">

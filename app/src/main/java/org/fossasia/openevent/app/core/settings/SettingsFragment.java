@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import org.fossasia.openevent.app.BuildConfig;
@@ -58,8 +59,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction
                 .replace(R.id.fragment_container, LegalPreferenceFragment.newInstance())
-                .addToBackStack(null)
                 .commit();
+            return true;
+        });
+
+        findPreference(getString(R.string.acknowledgements_key)).setOnPreferenceClickListener(preference -> {
+            startActivity(new Intent(getActivity(), OssLicensesMenuActivity.class));
             return true;
         });
     }

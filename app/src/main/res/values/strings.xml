@@ -315,6 +315,8 @@
     <string name="legal_key">legal_key</string>
     <string name="signup_agreement">By signing up, I agree to Eventyay\'s</string>
     <string name="and">and</string>
+    <string name="acknowledgements">Acknowledgements</string>
+    <string name="acknowledgements_key">acknowledgement</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
