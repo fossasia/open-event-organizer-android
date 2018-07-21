@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.Runnable;
 import org.fossasia.openevent.app.utils.Utils;
 
 import timber.log.Timber;
