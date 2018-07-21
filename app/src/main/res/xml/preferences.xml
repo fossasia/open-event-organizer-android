@@ -19,6 +19,10 @@
         android:title="Device Name"
         android:summary="@string/device_name_summary"/>
 
+    <Preference
+        android:key="@string/sales_data_display_key"
+        android:title="@string/sales_data_display" />
+
     <PreferenceCategory android:title="@string/about">
         <Preference
             android:key="rate_us"
