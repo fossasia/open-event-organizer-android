@@ -2,6 +2,8 @@ package org.fossasia.openevent.app.core.event.dashboard;
 
 import android.support.annotation.VisibleForTesting;
 
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.presenter.AbstractDetailPresenter;
 import org.fossasia.openevent.app.common.rx.Logger;
@@ -10,15 +12,19 @@ import org.fossasia.openevent.app.core.event.dashboard.analyser.TicketAnalyser;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
+import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
+import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.data.event.EventStatistics;
+import org.fossasia.openevent.app.utils.Utils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.dispose;
 import static org.fossasia.openevent.app.common.rx.ViewTransformers.disposeCompletable;
@@ -36,20 +42,24 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
     private final TicketAnalyser ticketAnalyser;
     private final ChartAnalyser chartAnalyser;
     private final ContextUtils utilModel;
+    private final DatabaseChangeListener<Event> eventChangeListener;
 
     @Inject
     public EventDashboardPresenter(EventRepository eventRepository, AttendeeRepository attendeeRepository,
-                                   TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser, ContextUtils utilModel) {
+                                   TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser, ContextUtils utilModel,
+                                   DatabaseChangeListener<Event> eventChangeListener) {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
         this.attendeeRepository = attendeeRepository;
         this.chartAnalyser = chartAnalyser;
         this.utilModel = utilModel;
+        this.eventChangeListener = eventChangeListener;
     }
 
     @Override
     public void start() {
         loadDetails(false);
+        listenChanges();
     }
 
     public void loadDetails(boolean forceReload) {
@@ -82,10 +92,23 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
         loadEventStatistics(forceReload);
     }
 
+    private void listenChanges() {
+        eventChangeListener.startListening();
+        eventChangeListener.getNotifier()
+            .compose(dispose(getDisposable()))
+            .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
+            .filter(action -> action.equals(BaseModel.Action.UPDATE))
+            .subscribeOn(Schedulers.io())
+            .subscribe(speakersCallModelChange -> loadDetails(false), Logger::logError);
+    }
+
     public void confirmToggle() {
         if (Event.STATE_PUBLISHED.equals(event.state)) {
             getView().switchEventState();
             getView().showEventUnpublishDialog();
+        } else if (Utils.isEmpty(event.getLocationName())) {
+            getView().switchEventState();
+            getView().showEventLocationDialog();
         } else {
             toggleState();
         }
@@ -100,8 +123,8 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
             .subscribe(updatedEvent -> {
                 event.state = updatedEvent.state;
                 if (Event.STATE_PUBLISHED.equals(event.state)) {
-                    getView().showShareDialog();
-                }else {
+                    getView().showEventShareDialog();
+                } else {
                     getView().onSuccess(utilModel.getResourceString(R.string.draft_success));
                 }
             },

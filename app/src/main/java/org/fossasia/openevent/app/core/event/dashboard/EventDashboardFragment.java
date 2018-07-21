@@ -17,6 +17,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.event.chart.ChartActivity;
+import org.fossasia.openevent.app.core.event.create.CreateEventActivity;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventStatistics;
@@ -40,7 +41,6 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     private long initialEventId;
     private EventDetailBinding binding;
     private AlertDialog unpublishDialog;
-    private AlertDialog shareDialog;
 
     @Inject
     Context context;
@@ -189,12 +189,28 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
         ViewUtils.showView(binding.ticketAnalytics.chartBoxCheckIn, show);
     }
 
-    private void shareEvent() {
+    public void shareEvent() {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(getPresenter().getEvent()));
         shareIntent.setType("text/plain");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+    }
+
+    public void openEditEvent() {
+        Intent intent = new Intent(context, CreateEventActivity.class);
+        intent.putExtra(EVENT_ID, initialEventId);
+        context.startActivity(intent);
+    }
+
+    public void showEventLocationDialog() {
+        ViewUtils.showDialog(this, getString(R.string.event_location),
+            getString(R.string.event_location_required), getString(R.string.add_location), this::openEditEvent);
+    }
+
+    public void showEventShareDialog() {
+        ViewUtils.showDialog(this, getString(R.string.share_event),
+            getString(R.string.successfull_publish_message), getString(R.string.share), this::shareEvent);
     }
 
     public void switchEventState() {
@@ -204,7 +220,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     @Override
     public void showEventUnpublishDialog() {
         if (unpublishDialog == null) {
-            unpublishDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.myDialog))
+            unpublishDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialog))
                 .setTitle(R.string.unpublish_event)
                 .setMessage(getString(R.string.unpublish_confirmation_message))
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
@@ -217,20 +233,5 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
         }
 
         unpublishDialog.show();
-    }
-
-    @Override
-    public void showShareDialog() {
-        if (shareDialog == null) {
-            shareDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.myDialog))
-                .setTitle(R.string.share_event)
-                .setMessage(getString(R.string.successfull_publish_message))
-                .setNeutralButton(R.string.share, (dialog, which) -> {
-                    shareEvent();
-                })
-                .create();
-        }
-
-        shareDialog.show();
     }
 }

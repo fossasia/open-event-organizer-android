@@ -9,11 +9,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.Runnable;
 import org.fossasia.openevent.app.utils.Utils;
 
 import timber.log.Timber;
@@ -94,4 +98,19 @@ public final class ViewUtils {
         Snackbar.make(view, messageResourceId, Snackbar.LENGTH_SHORT).show();
     }
 
+    public static void showDialog(Fragment fragment, String title, String message, String buttonTitle, Runnable runnable) {
+        Activity activity = fragment.getActivity();
+
+        if (activity instanceof AppCompatActivity) {
+            AlertDialog alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.AlertDialog))
+                .setTitle(title)
+                .setMessage(message)
+                .setNeutralButton(buttonTitle, (dialog, which) -> runnable.run())
+                .create();
+
+            alertDialog.show();
+        } else {
+            Timber.e("Fragment %s is not attached to any Activity", fragment);
+        }
+    }
 }

@@ -59,7 +59,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="myDialog" parent="Theme.AppCompat.Dialog">
+    <style name="AlertDialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="colorAccent">@color/color_accent</item>
         <item name="android:textColorPrimary">@android:color/black</item>

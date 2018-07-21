@@ -24,7 +24,9 @@ public interface EventDashboardView extends Progressive, Erroneous, Successful, 
 
     void showEventUnpublishDialog();
 
-    void showShareDialog();
-
     void switchEventState();
+
+    void showEventLocationDialog();
+
+    void showEventShareDialog();
 }
