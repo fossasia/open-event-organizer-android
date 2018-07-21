@@ -310,6 +310,8 @@
     <string name="gross_sales_key">gross_sales</string>
     <string name="net_sales_key">net_sales</string>
     <string name="net_sales">Net Sales</string>
+    <string name="acknowledgements">Acknowledgements</string>
+    <string name="acknowledgements_key">acknowledgement</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
