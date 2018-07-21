@@ -28,14 +28,12 @@ public class TicketSettingsViewModel extends ViewModel {
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final SingleEventLiveData<Void> ticketUpdatedAction = new SingleEventLiveData<>();
 
-    private long eventId;
-
     @Inject
     public TicketSettingsViewModel(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
     }
 
-    public void loadTickets() {
+    public void loadTickets(long eventId) {
         compositeDisposable.add(ticketRepository.getTickets(eventId, true)
             .toSortedList()
             .doOnSubscribe(disposable -> progress.setValue(true))
@@ -83,7 +81,4 @@ public class TicketSettingsViewModel extends ViewModel {
         return ticketUpdatedAction;
     }
 
-    public void setEventId(long eventId) {
-        this.eventId = eventId;
-    }
 }

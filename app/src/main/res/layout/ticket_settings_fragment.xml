@@ -8,7 +8,7 @@
 
         <View
             android:background="@color/grey_400"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/spacing_tiniest"
             android:layout_width="match_parent" />
 
         <LinearLayout
@@ -27,7 +27,9 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text='@string/restrict_all'/>
+                    android:text='@string/restrict_all'
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_normal"/>
 
                 <android.support.v7.widget.AppCompatCheckBox
                     android:id="@+id/restrict_all_checkbox"

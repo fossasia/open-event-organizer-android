@@ -49,8 +49,9 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
         super.onCreate(savedInstanceState);
 
         context = getContext();
-        if (getArguments() != null)
+        if (getArguments() != null) {
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+        }
     }
 
     @Override
@@ -66,7 +67,6 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
         binding = DataBindingUtil.inflate(inflater, R.layout.ticket_settings_fragment, container, false);
 
         ticketSettingsViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(TicketSettingsViewModel.class);
-        ticketSettingsViewModel.setEventId(eventId);
 
         ticketSettingsViewModel.getProgress().observe(this, this::showProgress);
         ticketSettingsViewModel.getError().observe(this, this::showError);
@@ -78,7 +78,7 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
             checkRestrictAll();
         });
 
-        ticketSettingsViewModel.loadTickets();
+        ticketSettingsViewModel.loadTickets(eventId);
 
         binding.restrictAll.setOnClickListener(v -> {
             restrictAll(!binding.restrictAllCheckbox.isChecked());
@@ -93,6 +93,10 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly
     private void checkRestrictAll() {
+        if (ticketSettingsViewModel.getTickets() == null) {
+            return;
+        }
+
         boolean restrictAll = true;
 
         for (Ticket ticket : ticketSettingsViewModel.getTickets().getValue()) {
@@ -128,7 +132,7 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
         refreshLayout = binding.swipeContainer;
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            ticketSettingsViewModel.loadTickets();
+            ticketSettingsViewModel.loadTickets(eventId);
         });
     }
 

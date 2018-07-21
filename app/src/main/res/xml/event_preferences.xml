@@ -11,6 +11,6 @@
 
     <Preference
         android:key="@string/check_in_restrictions_key"
-        android:title="Check In Restrictions"/>
+        android:title="@string/check_in_restrictions"/>
 
 </PreferenceScreen>

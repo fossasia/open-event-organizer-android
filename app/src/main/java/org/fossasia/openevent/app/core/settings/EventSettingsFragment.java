@@ -2,7 +2,6 @@ package org.fossasia.openevent.app.core.settings;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +31,9 @@ public class EventSettingsFragment extends PreferenceFragmentCompat {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null)
+        if (getArguments() != null) {
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+        }
     }
 
     @Override
@@ -51,8 +51,7 @@ public class EventSettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.event_preferences, rootKey);
 
         findPreference(getString(R.string.payment_preference_key)).setOnPreferenceClickListener(preference -> {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction
+            getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, PaymentPrefsFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
@@ -60,18 +59,15 @@ public class EventSettingsFragment extends PreferenceFragmentCompat {
         });
 
         findPreference(getString(R.string.scan_settings_key)).setOnPreferenceClickListener(preference -> {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction
+            getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, ScanSettings.newInstance())
                 .addToBackStack(null)
                 .commit();
             return true;
         });
 
-
         findPreference(getString(R.string.check_in_restrictions_key)).setOnPreferenceClickListener(preference -> {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction
+            getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, CheckInRestrictions.newInstance(eventId))
                 .addToBackStack(null)
                 .commit();
