@@ -307,6 +307,13 @@
     <string name="rate_us">Rate Us</string>
     <string name="sales_data_display_key">sales_data_display</string>
     <string name="app_version_key">app_version</string>
+    <string name="unpublish_confirmation_message">Unpublishing will put your event back to a draft state.</string>
+    <string name="successfull_publish_message">Congrats! Your event is live. Spread the word about your event.</string>
+    <string name="unpublish_event">Unpublish Event</string>
+    <string name="share_event">Share Event</string>
+    <string name="event_location_required">Please add event location to publish the event</string>
+    <string name="add_location">Add Location</string>
+    <string name="event_location">Event Location</string>
     <string name="gross_sales_key">gross_sales</string>
     <string name="net_sales_key">net_sales</string>
     <string name="net_sales">Net Sales</string>
