@@ -312,6 +312,8 @@
     <string name="event_location_required">Please add event location to publish the event</string>
     <string name="add_location">Add Location</string>
     <string name="event_location">Event Location</string>
+    <string name="acknowledgements">Acknowledgements</string>
+    <string name="acknowledgements_key">acknowledgement</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
