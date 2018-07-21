@@ -59,6 +59,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction
                 .replace(R.id.fragment_container, LegalPreferenceFragment.newInstance())
+                .addToBackStack(null)
                 .commit();
             return true;
         });

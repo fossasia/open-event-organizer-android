@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.auth.SharedViewModel;
@@ -44,6 +43,10 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
     private SignUpFragmentBinding binding;
     private Validator validator;
     private SharedViewModel sharedViewModel;
+
+    public final String EVENTYAY_BASE_URL = "https://eventyay.com";
+    public final String PRIVACY_POLICY_URL = EVENTYAY_BASE_URL + "/privacy-policy/";
+    public final String TERMS_OF_USE_URL = EVENTYAY_BASE_URL + "/terms/";
 
     public static SignUpFragment newInstance() {
         return new SignUpFragment();
@@ -120,13 +123,13 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
 
     private void openPrivacyPolicy() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(Constants.PRIVACY_POLICY_URL));
+        intent.setData(Uri.parse(PRIVACY_POLICY_URL));
         startActivity(intent);
     }
 
     private void openTermsOfUse() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(Constants.TERMS_OF_USE_URL));
+        intent.setData(Uri.parse(TERMS_OF_USE_URL));
         startActivity(intent);
     }
 

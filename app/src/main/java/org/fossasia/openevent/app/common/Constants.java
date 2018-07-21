@@ -21,9 +21,6 @@ public final class Constants {
     public static final String PREF_PAYMENT_ACCEPT_ONSITE = "accept_onsite";
     public static final String PREF_PAYMENT_ONSITE_DETAILS = "onsite_details";
     public static final String PREF_PAYMENT_COUNTRY = "key";
-    public static final String PRIVACY_POLICY_URL = "https://eventyay.com/privacy-policy/";
-    public static final String COOKIE_POLICY_URL = "https://eventyay.com/cookie-policy/";
-    public static final String TERMS_OF_USE_URL = "https://eventyay.com/terms/";
 
     private Constants() {
         // Never Called
