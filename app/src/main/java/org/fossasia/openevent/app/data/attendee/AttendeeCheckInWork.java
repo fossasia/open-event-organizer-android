@@ -28,7 +28,7 @@ public class AttendeeCheckInWork extends Worker {
     @NonNull
     @Override
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    public WorkerResult doWork() {
+    public Worker.Result doWork() {
         DaggerAppComponent.create().inject(this);
 
         Timber.d("Running attendee checkin work");
@@ -43,11 +43,11 @@ public class AttendeeCheckInWork extends Worker {
                 Timber.e("Attendee Check In Work Failed for attendee status -> %ss\n" +
                     "With error: %s\n" +
                     "The work is rescheduled", attendee, exception.getMessage());
-                return WorkerResult.RETRY;
+                return Worker.Result.RETRY;
             }
         }
 
-        return WorkerResult.SUCCESS;
+        return Worker.Result.SUCCESS;
     }
 
     public static void scheduleWork() {

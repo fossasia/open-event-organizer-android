@@ -9,6 +9,7 @@ import org.fossasia.openevent.app.core.event.dashboard.analyser.TicketAnalyser;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
+import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.data.event.EventStatistics;
@@ -33,6 +34,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -61,6 +63,8 @@ public class EventDashboardPresenterTest {
     private ChartAnalyser chartAnalyser;
     @Mock
     private ContextUtils utilModel;
+    @Mock
+    private DatabaseChangeListener<Event> databaseChangeListener;
 
     private static final long ID = 42L;
     private EventDashboardPresenter eventDashboardPresenter;
@@ -94,7 +98,8 @@ public class EventDashboardPresenterTest {
 
     @Before
     public void setUp() {
-        eventDashboardPresenter = new EventDashboardPresenter(eventRepository, attendeeRepository, ticketAnalyser, chartAnalyser, utilModel);
+        eventDashboardPresenter = new EventDashboardPresenter(eventRepository, attendeeRepository,
+            ticketAnalyser, chartAnalyser, utilModel, databaseChangeListener);
 
         eventDashboardPresenter.attach(EVENT.getId(), eventDetailView);
 
@@ -113,6 +118,8 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldLoadEventAndAttendeesAndStatisticsAutomatically() {
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
 
@@ -181,6 +188,8 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldLoadAttendeesSuccessfully() {
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
         when(eventRepository.getEvent(ID, false))
@@ -195,6 +204,8 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldLoadEventStatisticsSuccessfully() {
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
         when(eventRepository.getEvent(ID, false))
@@ -223,6 +234,8 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideProgressbarCorrectly() {
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
 
@@ -242,6 +255,8 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideProgressbarOnEventError() {
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
         when(eventRepository.getEvent(ID, false))
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
@@ -258,6 +273,8 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideProgressbarOnAttendeeError() {
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
@@ -277,6 +294,8 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideProgressbarOnEventStatisticsError() {
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
@@ -296,6 +315,8 @@ public class EventDashboardPresenterTest {
 
     @Test
     public void shouldHideProgressbarOnCompleteError() {
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
         when(eventRepository.getEvent(ID, false))
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
