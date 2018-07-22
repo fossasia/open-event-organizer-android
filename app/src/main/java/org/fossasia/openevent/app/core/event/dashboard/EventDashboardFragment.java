@@ -200,6 +200,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     public void openEditEvent() {
         Intent intent = new Intent(context, CreateEventActivity.class);
         intent.putExtra(EVENT_ID, initialEventId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
