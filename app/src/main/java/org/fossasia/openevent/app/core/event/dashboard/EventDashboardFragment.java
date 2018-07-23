@@ -21,6 +21,7 @@ import org.fossasia.openevent.app.core.event.create.CreateEventActivity;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventStatistics;
+import org.fossasia.openevent.app.data.order.OrderStatistics;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.utils.Utils;
@@ -103,6 +104,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
         super.onStart();
         getPresenter().attach(initialEventId, this);
         binding.eventStatistics.switchEventStatistics.setChecked(false);
+        binding.orderStatistics.switchOrderStatistics.setChecked(false);
         binding.setPresenter(getPresenter());
         setupRefreshListener();
         getPresenter().start();
@@ -156,6 +158,12 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     @Override
     public void showStatistics(EventStatistics eventStatistics) {
         binding.setEventStats(eventStatistics);
+        binding.executePendingBindings();
+    }
+
+    @Override
+    public void showOrderStatistics(OrderStatistics orderStatistics) {
+        binding.setOrderStats(orderStatistics);
         binding.executePendingBindings();
     }
 

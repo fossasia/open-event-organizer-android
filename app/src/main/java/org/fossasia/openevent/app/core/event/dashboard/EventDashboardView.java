@@ -9,6 +9,7 @@ import org.fossasia.openevent.app.common.mvp.view.Refreshable;
 import org.fossasia.openevent.app.common.mvp.view.Successful;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventStatistics;
+import org.fossasia.openevent.app.data.order.OrderStatistics;
 
 public interface EventDashboardView extends Progressive, Erroneous, Successful, Refreshable, ItemResult<Event> {
 
@@ -21,6 +22,8 @@ public interface EventDashboardView extends Progressive, Erroneous, Successful, 
     void showChartCheckIn(boolean show);
 
     void showStatistics(EventStatistics eventStatistics);
+
+    void showOrderStatistics(OrderStatistics orderStatistics);
 
     void showEventUnpublishDialog();
 
