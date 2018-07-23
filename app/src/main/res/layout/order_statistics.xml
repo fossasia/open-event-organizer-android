@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="org.fossasia.openevent.app.ui.binding.BindingAdapters" />
+
+        <variable
+            name="orderStatistics"
+            type="org.fossasia.openevent.app.data.order.OrderStatistics" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/order_statistics_outer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/order_statistics_toggle_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_order_statistics_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:layout_marginEnd="@dimen/spacing_small"
+                android:layout_marginRight="@dimen/spacing_small"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:text="@string/order_statistics"
+                android:textSize="@dimen/text_size_normal" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switch_order_statistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginRight="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:checked="false"
+                android:onCheckedChanged='@{ (switch, checked) -> checked ? orderSalesLayout.setVisibility(View.VISIBLE) : orderSalesLayout.setVisibility(View.GONE) }' />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/order_sales_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/order_statistics_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_weight="49"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_normal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{orderStatistics.orders.completed}"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{"/" + orderStatistics.orders.total}'
+                        android:textSize="@dimen/text_size_small" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/orders"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <ProgressBar
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:progress="@{orderStatistics.orders.total == 0 ? 0 : (int) ((orderStatistics.orders.completed*100)/orderStatistics.orders.total)}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_extra_small"
+                        android:layout_marginStart="@dimen/spacing_extra_small"
+                        android:text='@{(orderStatistics.orders.total == 0 ? 0 : (int) ((orderStatistics.orders.completed*100)/orderStatistics.orders.total)) + "%"}' />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/rl_separator"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_weight="1"
+                android:background="@color/color_bottom_surface" />
+
+            <LinearLayout
+                android:id="@+id/sales_statistics_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="49"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_normal" >
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_sales_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{orderStatistics.sales.completed}"
+                        android:textSize="@dimen/text_size_large"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{"/" + orderStatistics.sales.total}'
+                        android:textSize="@dimen/text_size_small" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sales"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <ProgressBar
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:progress="@{orderStatistics.sales.total == 0 ? 0 : (int) ((orderStatistics.sales.completed*100)/orderStatistics.sales.total)}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_extra_small"
+                        android:layout_marginStart="@dimen/spacing_extra_small"
+                        android:text='@{(orderStatistics.sales.total == 0 ? 0 : (int) ((orderStatistics.sales.completed*100)/orderStatistics.sales.total)) + "%"}' />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/frame_separator_four"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_small"
+            android:layout_marginTop="8dp"
+            android:background="@color/color_bottom_surface" />
+
+    </LinearLayout>
+</layout>
