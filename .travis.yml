@@ -20,7 +20,7 @@ install:
   - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-27"
 script:
   - ./gradlew build
-  - ./gradlew testDebugUnitTestCoverage
+  - ./gradlew testFdroidDebugUnitTestCoverage
 after_success:
     - bash <(curl -s https://codecov.io/bash)
     - bash scripts/prep-key.sh
