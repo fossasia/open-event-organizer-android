@@ -307,6 +307,11 @@
     <string name="rate_us">Rate Us</string>
     <string name="sales_data_display_key">sales_data_display</string>
     <string name="app_version_key">app_version</string>
+    <string name="restrict_all">Restrict All</string>
+    <string name="check_in_restrictions">Check In Restrictions</string>
+    <string name="check_in_restrictions_key">check_in_restrictions</string>
+    <string name="scan_settings_key">scan_settings</string>
+    <string name="payment_preference_key">payment_preferences</string>
     <string name="unpublish_confirmation_message">Unpublishing will put your event back to a draft state.</string>
     <string name="successfull_publish_message">Congrats! Your event is live. Spread the word about your event.</string>
     <string name="unpublish_event">Unpublish Event</string>

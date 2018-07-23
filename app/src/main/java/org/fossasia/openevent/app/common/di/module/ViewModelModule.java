@@ -14,6 +14,7 @@ import org.fossasia.openevent.app.core.main.EventViewModel;
 import org.fossasia.openevent.app.core.orders.detail.OrderDetailViewModel;
 import org.fossasia.openevent.app.core.main.OrganizerViewModel;
 import org.fossasia.openevent.app.core.orders.list.OrdersViewModel;
+import org.fossasia.openevent.app.core.settings.restriction.TicketSettingsViewModel;
 import org.fossasia.openevent.app.core.share.ShareEventViewModel;
 import org.fossasia.openevent.app.core.speaker.details.SpeakerDetailsViewModel;
 import org.fossasia.openevent.app.core.speakerscall.create.CreateSpeakersCallViewModel;
@@ -95,6 +96,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SignUpViewModel.class)
     public abstract ViewModel bindSignUpViewModel(SignUpViewModel signUpViewModel);
+    
+    @Binds
+    @IntoMap
+    @ViewModelKey(TicketSettingsViewModel.class)
+    public abstract ViewModel bindTicketSettingsViewModel(TicketSettingsViewModel ticketSettingsViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);

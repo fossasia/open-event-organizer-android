@@ -12,6 +12,9 @@ public interface TicketRepository {
     Observable<Ticket> createTicket(Ticket ticket);
 
     @NonNull
+    Observable<Ticket> updateTicket(Ticket ticket);
+
+    @NonNull
     Observable<Ticket> getTicket(long ticketId, boolean reload);
 
     @NonNull
