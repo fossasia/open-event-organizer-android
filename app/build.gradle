@@ -170,7 +170,7 @@ dependencies {
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxjava}"
-    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3'
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
     // Fast Adapter
     implementation('com.mikepenz:fastadapter:3.0.4@aar') {

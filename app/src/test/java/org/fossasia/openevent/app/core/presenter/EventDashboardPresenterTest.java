@@ -13,6 +13,8 @@ import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.data.event.EventStatistics;
+import org.fossasia.openevent.app.data.order.OrderRepository;
+import org.fossasia.openevent.app.data.order.OrderStatistics;
 import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.junit.After;
 import org.junit.Before;
@@ -56,6 +58,8 @@ public class EventDashboardPresenterTest {
     @Mock
     private EventRepository eventRepository;
     @Mock
+    private OrderRepository orderRepository;
+    @Mock
     private TicketAnalyser ticketAnalyser;
     @Mock
     private AttendeeRepository attendeeRepository;
@@ -72,6 +76,7 @@ public class EventDashboardPresenterTest {
     private static final Event EVENT = Event.builder().id(ID).state(Event.STATE_PUBLISHED).build();
     private static final Event TOGGLED_EVENT = Event.builder().id(ID).state(Event.STATE_DRAFT).build();
     private static final EventStatistics EVENT_STATISTICS = EventStatistics.builder().id("2").build();
+    private static final OrderStatistics ORDER_STATISTICS = OrderStatistics.builder().id(2L).build();
 
     private static final List<Attendee> ATTENDEES = Arrays.asList(
         Attendee.builder().isCheckedIn(false).build(),
@@ -99,7 +104,7 @@ public class EventDashboardPresenterTest {
     @Before
     public void setUp() {
         eventDashboardPresenter = new EventDashboardPresenter(eventRepository, attendeeRepository,
-            ticketAnalyser, chartAnalyser, utilModel, databaseChangeListener);
+            orderRepository, ticketAnalyser, chartAnalyser, utilModel, databaseChangeListener);
 
         eventDashboardPresenter.attach(EVENT.getId(), eventDetailView);
 
@@ -129,11 +134,15 @@ public class EventDashboardPresenterTest {
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
 
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
+
         eventDashboardPresenter.start();
 
         verify(eventRepository).getEvent(ID, false);
         verify(attendeeRepository).getAttendees(ID, false);
         verify(eventRepository).getEventStatistics(ID);
+        verify(orderRepository).getOrderStatisticsForEvent(ID, false);
     }
 
     @Test
@@ -151,6 +160,8 @@ public class EventDashboardPresenterTest {
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
 
         eventDashboardPresenter.loadDetails(false);
 
@@ -165,6 +176,8 @@ public class EventDashboardPresenterTest {
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
 
         eventDashboardPresenter.loadDetails(false);
 
@@ -180,6 +193,8 @@ public class EventDashboardPresenterTest {
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
 
         eventDashboardPresenter.loadDetails(false);
 
@@ -196,6 +211,8 @@ public class EventDashboardPresenterTest {
             .thenReturn(Observable.just(EVENT));
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
 
         eventDashboardPresenter.start();
 
@@ -212,6 +229,8 @@ public class EventDashboardPresenterTest {
             .thenReturn(Observable.just(EVENT));
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
 
         eventDashboardPresenter.start();
 
@@ -225,6 +244,42 @@ public class EventDashboardPresenterTest {
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
         when(eventRepository.getEventStatistics(ID))
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
+
+        eventDashboardPresenter.loadDetails(false);
+
+        verify(eventDetailView).showError(Logger.TEST_MESSAGE);
+    }
+
+    @Test
+    public void shouldLoadOrderStatisticsSuccessfully() {
+        when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+
+        when(attendeeRepository.getAttendees(ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
+        when(eventRepository.getEvent(ID, false))
+            .thenReturn(Observable.just(EVENT));
+        when(eventRepository.getEventStatistics(ID))
+            .thenReturn(Observable.just(EVENT_STATISTICS));
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
+
+        eventDashboardPresenter.start();
+
+        verify(eventDetailView).showOrderStatistics(ORDER_STATISTICS);
+    }
+
+    @Test
+    public void shouldShowOrderStatisticsError() {
+        when(eventRepository.getEvent(ID, false))
+            .thenReturn(Observable.just(EVENT));
+        when(attendeeRepository.getAttendees(ID, false))
+            .thenReturn(Observable.fromIterable(ATTENDEES));
+        when(eventRepository.getEventStatistics(ID))
+            .thenReturn(Observable.just(EVENT_STATISTICS));
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         eventDashboardPresenter.loadDetails(false);
@@ -245,6 +300,9 @@ public class EventDashboardPresenterTest {
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
 
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
+
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
         eventDashboardPresenter.start();
@@ -262,6 +320,9 @@ public class EventDashboardPresenterTest {
 
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
+
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -284,6 +345,9 @@ public class EventDashboardPresenterTest {
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
 
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
+
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
         eventDashboardPresenter.start();
@@ -305,6 +369,9 @@ public class EventDashboardPresenterTest {
         when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(EVENT));
 
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
+
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
         eventDashboardPresenter.start();
@@ -322,6 +389,9 @@ public class EventDashboardPresenterTest {
 
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
+
+        when(orderRepository.getOrderStatisticsForEvent(ID, false))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -342,6 +412,9 @@ public class EventDashboardPresenterTest {
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
 
+        when(orderRepository.getOrderStatisticsForEvent(ID, true))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
+
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
         eventDashboardPresenter.loadDetails(true);
@@ -358,6 +431,9 @@ public class EventDashboardPresenterTest {
 
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
+
+        when(orderRepository.getOrderStatisticsForEvent(ID, true))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
@@ -379,6 +455,9 @@ public class EventDashboardPresenterTest {
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(Observable.just(EVENT_STATISTICS));
 
+        when(orderRepository.getOrderStatisticsForEvent(ID, true))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
+
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
         eventDashboardPresenter.loadDetails(true);
@@ -399,6 +478,9 @@ public class EventDashboardPresenterTest {
         when(eventRepository.getEventStatistics(ID))
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
+        when(orderRepository.getOrderStatisticsForEvent(ID, true))
+            .thenReturn(Observable.just(ORDER_STATISTICS));
+
         InOrder inOrder = Mockito.inOrder(eventDetailView);
 
         eventDashboardPresenter.loadDetails(true);
@@ -414,6 +496,9 @@ public class EventDashboardPresenterTest {
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         when(eventRepository.getEventStatistics(ID))
+            .thenReturn(TestUtil.ERROR_OBSERVABLE);
+
+        when(orderRepository.getOrderStatisticsForEvent(ID, true))
             .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(eventDetailView);

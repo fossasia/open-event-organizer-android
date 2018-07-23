@@ -58,6 +58,22 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @NonNull
     @Override
+    public Observable<Ticket> updateTicket(Ticket ticket) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return ticketApi
+            .updateTicket(ticket.getId(), ticket)
+            .doOnNext(updatedTicket -> repository
+                .update(Ticket.class, updatedTicket)
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
     public Observable<Ticket> getTicket(long ticketId, boolean reload) {
         Observable<Ticket> diskObservable = Observable.defer(() ->
             repository
