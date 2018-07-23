@@ -1,18 +1,19 @@
 package org.fossasia.openevent.app.common.di.module.android;
 
 import org.fossasia.openevent.app.core.attendee.checkin.AttendeeCheckInFragment;
+import org.fossasia.openevent.app.core.attendee.history.CheckInHistoryFragment;
 import org.fossasia.openevent.app.core.attendee.list.AttendeesFragment;
 import org.fossasia.openevent.app.core.event.dashboard.EventDashboardFragment;
-import org.fossasia.openevent.app.core.event.list.pager.ListPageFragment;
 import org.fossasia.openevent.app.core.event.list.EventListFragment;
+import org.fossasia.openevent.app.core.event.list.pager.ListPageFragment;
 import org.fossasia.openevent.app.core.event.list.sales.SalesSummaryFragment;
 import org.fossasia.openevent.app.core.faq.create.CreateFaqFragment;
 import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
 import org.fossasia.openevent.app.core.orders.detail.OrderDetailFragment;
 import org.fossasia.openevent.app.core.orders.list.OrdersFragment;
-import org.fossasia.openevent.app.core.settings.restriction.CheckInRestrictions;
 import org.fossasia.openevent.app.core.settings.SettingsFragment;
+import org.fossasia.openevent.app.core.settings.restriction.CheckInRestrictions;
 import org.fossasia.openevent.app.core.share.ShareEventFragment;
 import org.fossasia.openevent.app.core.speaker.list.SpeakersFragment;
 import org.fossasia.openevent.app.core.speakerscall.detail.SpeakersCallFragment;
@@ -50,6 +51,9 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract AttendeesFragment contributeAttendeeFragment();
+
+    @ContributesAndroidInjector
+    abstract CheckInHistoryFragment contributeCheckInHistoryFragment();
 
     // Ticket
     @ContributesAndroidInjector

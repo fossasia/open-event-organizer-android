@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseBottomSheetFragment;
+import org.fossasia.openevent.app.core.attendee.history.CheckInHistoryFragment;
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.databinding.BottomsheetAttendeeCheckInBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
@@ -62,6 +63,18 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<AttendeeChe
         binding.setPresenter(getPresenter());
         binding.switchAttendeeDetailsState.setChecked(false);
         getPresenter().start();
+
+        binding.activityLog.setOnClickListener(view -> openCheckInHistoryFragment());
+    }
+
+    private void openCheckInHistoryFragment() {
+        getFragmentManager().beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            .replace(R.id.fragment_container, CheckInHistoryFragment.newInstance(attendeeId))
+            .addToBackStack(null)
+            .commit();
+
+        dismiss();
     }
 
     @Override

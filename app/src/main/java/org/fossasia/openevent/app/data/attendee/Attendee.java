@@ -115,6 +115,11 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     @Column
     public String checkinTimes;
 
+    // Migration 16 additions
+
+    @Column
+    public String checkoutTimes;
+
     // Non model entities
 
     @JsonIgnore

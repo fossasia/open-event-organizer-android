@@ -246,7 +246,7 @@ public final class OrgaDatabase {
 
         @Override
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
-            Timber.d("Running migration for DB version 14");
+            Timber.d("Running migration for DB version 15");
 
             Class<?>[] recreated = new Class[] {SpeakersCall.class};
 
@@ -255,6 +255,23 @@ public final class OrgaDatabase {
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
             }
+        }
+    }
+
+    @Migration(version = 16, database = OrgaDatabase.class)
+    public static class MigrationTo16 extends AlterTableMigration<Attendee> {
+
+        public MigrationTo16(Class<Attendee> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            super.onPreMigrate();
+            List<String> addedColumns = Arrays.asList("checkoutTimes");
+
+            for (String column : addedColumns)
+                addColumn(SQLiteType.TEXT, column);
         }
     }
 }

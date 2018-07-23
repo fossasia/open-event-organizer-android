@@ -4,14 +4,15 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import org.fossasia.openevent.app.common.di.OrgaViewModelFactory;
-import org.fossasia.openevent.app.core.auth.reset.ResetPasswordViewModel;
+import org.fossasia.openevent.app.core.attendee.history.CheckInHistoryViewModel;
 import org.fossasia.openevent.app.core.auth.login.LoginViewModel;
-import org.fossasia.openevent.app.core.event.list.EventsViewModel;
+import org.fossasia.openevent.app.core.auth.reset.ResetPasswordViewModel;
 import org.fossasia.openevent.app.core.event.create.CreateEventViewModel;
+import org.fossasia.openevent.app.core.event.list.EventsViewModel;
 import org.fossasia.openevent.app.core.faq.create.CreateFaqViewModel;
 import org.fossasia.openevent.app.core.main.EventViewModel;
-import org.fossasia.openevent.app.core.orders.detail.OrderDetailViewModel;
 import org.fossasia.openevent.app.core.main.OrganizerViewModel;
+import org.fossasia.openevent.app.core.orders.detail.OrderDetailViewModel;
 import org.fossasia.openevent.app.core.orders.list.OrdersViewModel;
 import org.fossasia.openevent.app.core.settings.restriction.TicketSettingsViewModel;
 import org.fossasia.openevent.app.core.share.ShareEventViewModel;
@@ -95,6 +96,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TicketSettingsViewModel.class)
     public abstract ViewModel bindTicketSettingsViewModel(TicketSettingsViewModel ticketSettingsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CheckInHistoryViewModel.class)
+    public abstract ViewModel bindCheckInHistoryViewModel(CheckInHistoryViewModel checkInHistoryViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);

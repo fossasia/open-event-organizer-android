@@ -224,4 +224,5 @@ dependencies {
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-supportv4:${versions.roboelectric}"
+    implementation "com.github.vipulasri:timelineview:${versions.timelineView}"
 }
