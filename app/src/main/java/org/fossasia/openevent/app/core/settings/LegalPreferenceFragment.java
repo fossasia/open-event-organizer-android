@@ -17,10 +17,10 @@ import org.fossasia.openevent.app.ui.ViewUtils;
 
 public class LegalPreferenceFragment extends PreferenceFragmentCompat {
 
-    public final String EVENTYAY_BASE_URL = "https://eventyay.com";
-    public final String PRIVACY_POLICY_URL = EVENTYAY_BASE_URL + "/privacy-policy/";
-    public final String COOKIE_POLICY_URL = EVENTYAY_BASE_URL + "/cookie-policy/";
-    public final String TERMS_OF_USE_URL = EVENTYAY_BASE_URL + "/terms/";
+    public static final String EVENTYAY_BASE_URL = "https://eventyay.com";
+    public final String privacyPolicyUrl = EVENTYAY_BASE_URL + "/privacy-policy/";
+    public final String cookiePolicyUrl = EVENTYAY_BASE_URL + "/cookie-policy/";
+    public final String termsOfUseUrl = EVENTYAY_BASE_URL + "/terms/";
 
     public static LegalPreferenceFragment newInstance() {
         return new LegalPreferenceFragment();
@@ -42,21 +42,21 @@ public class LegalPreferenceFragment extends PreferenceFragmentCompat {
 
         findPreference(getString(R.string.privacy_policy_key)).setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(PRIVACY_POLICY_URL));
+            intent.setData(Uri.parse(privacyPolicyUrl));
             startActivity(intent);
             return true;
         });
 
         findPreference(getString(R.string.terms_of_service_key)).setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(TERMS_OF_USE_URL));
+            intent.setData(Uri.parse(termsOfUseUrl));
             startActivity(intent);
             return true;
         });
 
         findPreference(getString(R.string.cookie_policy_key)).setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(COOKIE_POLICY_URL));
+            intent.setData(Uri.parse(cookiePolicyUrl));
             startActivity(intent);
             return true;
         });
