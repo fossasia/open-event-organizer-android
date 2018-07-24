@@ -10,4 +10,6 @@ public interface OrderRepository {
 
     @NonNull
     Observable<Order> getOrder(String orderIdentifier, boolean reload);
+
+    Observable<OrderStatistics> getOrderStatisticsForEvent(long eventId, boolean reload);
 }

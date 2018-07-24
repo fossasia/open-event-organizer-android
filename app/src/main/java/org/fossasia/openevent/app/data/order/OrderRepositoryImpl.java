@@ -62,4 +62,25 @@ public class OrderRepositoryImpl implements OrderRepository {
             .withNetworkObservable(networkObservable)
             .build();
     }
+
+    @Override
+    public Observable<OrderStatistics> getOrderStatisticsForEvent(long eventId, boolean reload) {
+        Observable<OrderStatistics> diskObservable = Observable.defer(() ->
+            repository
+                .getItems(OrderStatistics.class, OrderStatistics_Table.event_id.eq(eventId)).take(1)
+        );
+
+        Observable<OrderStatistics> networkObservable = Observable.defer(() ->
+            orderApi.getOrderStatisticsForEvent(eventId)
+                .doOnNext(orderStatistics -> repository
+                    .save(OrderStatistics.class, orderStatistics)
+                    .subscribe()));
+
+        return repository
+            .observableOf(OrderStatistics.class)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
 }
