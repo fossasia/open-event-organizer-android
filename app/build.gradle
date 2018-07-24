@@ -65,6 +65,18 @@ android {
             unitTests.returnDefaultValues = true
         }
     }
+
+    flavorDimensions "default"
+
+    productFlavors {
+        fdroid {
+            dimension "default"
+        }
+
+        playStore {
+            dimension "default"
+        }
+    }
 }
 
 repositories {
