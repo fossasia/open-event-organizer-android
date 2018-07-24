@@ -30,6 +30,8 @@ import javax.inject.Inject;
 import br.com.ilhasoft.support.validation.Validator;
 import dagger.Lazy;
 
+import static org.fossasia.openevent.app.core.settings.LegalPreferenceFragment.PRIVACY_POLICY_URL;
+import static org.fossasia.openevent.app.core.settings.LegalPreferenceFragment.TERMS_OF_USE_URL;
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
 public class SignUpFragment extends BaseFragment<SignUpPresenter> implements SignUpView {
@@ -43,10 +45,6 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
     private SignUpFragmentBinding binding;
     private Validator validator;
     private SharedViewModel sharedViewModel;
-
-    public final String EVENTYAY_BASE_URL = "https://eventyay.com";
-    public final String PRIVACY_POLICY_URL = EVENTYAY_BASE_URL + "/privacy-policy/";
-    public final String TERMS_OF_USE_URL = EVENTYAY_BASE_URL + "/terms/";
 
     public static SignUpFragment newInstance() {
         return new SignUpFragment();

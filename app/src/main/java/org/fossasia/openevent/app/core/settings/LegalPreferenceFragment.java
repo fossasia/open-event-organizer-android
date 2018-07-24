@@ -17,10 +17,9 @@ import org.fossasia.openevent.app.ui.ViewUtils;
 
 public class LegalPreferenceFragment extends PreferenceFragmentCompat {
 
-    public static final String EVENTYAY_BASE_URL = "https://eventyay.com";
-    public final String privacyPolicyUrl = EVENTYAY_BASE_URL + "/privacy-policy/";
-    public final String cookiePolicyUrl = EVENTYAY_BASE_URL + "/cookie-policy/";
-    public final String termsOfUseUrl = EVENTYAY_BASE_URL + "/terms/";
+    public static final String PRIVACY_POLICY_URL = "https://eventyay.com/privacy-policy/";
+    public static final String COOKIE_POLICY_URL = "https://eventyay.com/cookie-policy/";
+    public static final String TERMS_OF_USE_URL = "https://eventyay.com/terms/";
 
     public static LegalPreferenceFragment newInstance() {
         return new LegalPreferenceFragment();
@@ -42,21 +41,21 @@ public class LegalPreferenceFragment extends PreferenceFragmentCompat {
 
         findPreference(getString(R.string.privacy_policy_key)).setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(privacyPolicyUrl));
+            intent.setData(Uri.parse(PRIVACY_POLICY_URL));
             startActivity(intent);
             return true;
         });
 
         findPreference(getString(R.string.terms_of_service_key)).setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(termsOfUseUrl));
+            intent.setData(Uri.parse(TERMS_OF_USE_URL));
             startActivity(intent);
             return true;
         });
 
         findPreference(getString(R.string.cookie_policy_key)).setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(cookiePolicyUrl));
+            intent.setData(Uri.parse(COOKIE_POLICY_URL));
             startActivity(intent);
             return true;
         });
