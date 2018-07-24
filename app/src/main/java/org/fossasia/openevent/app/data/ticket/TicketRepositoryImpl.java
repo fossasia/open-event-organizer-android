@@ -6,12 +6,14 @@ import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
 import com.raizlabs.android.dbflow.sql.language.Method;
 
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.data.db.QueryHelper;
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.attendee.Attendee_Table;
+import org.fossasia.openevent.app.data.db.QueryHelper;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.Event_Table;
+import org.threeten.bp.Duration;
 
 import java.util.NoSuchElementException;
 
@@ -27,6 +29,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     private final TicketApi ticketApi;
     private final Repository repository;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public TicketRepositoryImpl(TicketApi ticketApi, Repository repository) {
@@ -49,6 +52,22 @@ public class TicketRepositoryImpl implements TicketRepository {
                     .save(Ticket.class, created)
                     .subscribe();
             })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Observable<Ticket> updateTicket(Ticket ticket) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return ticketApi
+            .updateTicket(ticket.getId(), ticket)
+            .doOnNext(updatedTicket -> repository
+                .update(Ticket.class, updatedTicket)
+                .subscribe())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
@@ -90,6 +109,26 @@ public class TicketRepositoryImpl implements TicketRepository {
 
         return repository.observableOf(Ticket.class)
             .reload(reload)
+            .withRateLimiterConfig("Tickets", rateLimiter)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
+    @Override
+    public Observable<Ticket> getTicketsUnderOrder(String orderIdentifier, long orderId, boolean reload) {
+        Observable<Ticket> diskObservable = Observable.defer(() ->
+            repository.getItems(Ticket.class, Ticket_Table.order_id.eq(orderId))
+        );
+
+        Observable<Ticket> networkObservable = Observable.defer(() ->
+            ticketApi.getTicketsUnderOrder(orderIdentifier)
+                .doOnNext(tickets -> repository.syncSave(Ticket.class, tickets, Ticket::getId, Ticket_Table.id).subscribe())
+                .flatMapIterable(tickets -> tickets));
+
+        return repository.observableOf(Ticket.class)
+            .reload(reload)
+            .withRateLimiterConfig("TicketsUnderOrder", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

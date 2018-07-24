@@ -94,6 +94,11 @@
             android:checkable="true"/>
 
         <item
+            android:id="@+id/nav_suggestion"
+            android:icon="@drawable/ic_feedback"
+            android:title="@string/nav_suggestions"/>
+
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout"
             android:title="@string/log_out" />

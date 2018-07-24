@@ -68,7 +68,7 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
 
             String url = binding.url.baseUrl.getText().toString().trim();
             resetPasswordViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
-            resetPasswordViewModel.submitRequest();
+            resetPasswordViewModel.submitRequest(resetPasswordViewModel.getSubmitToken());
         });
 
         binding.loginLink.setOnClickListener(view -> openLoginPage());

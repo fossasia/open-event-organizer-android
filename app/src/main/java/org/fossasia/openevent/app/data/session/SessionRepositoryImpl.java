@@ -3,7 +3,9 @@ package org.fossasia.openevent.app.data.session;
 import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
+import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
@@ -16,6 +18,7 @@ public class SessionRepositoryImpl implements SessionRepository {
 
     private final SessionApi sessionApi;
     private final Repository repository;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public SessionRepositoryImpl(SessionApi sessionApi, Repository repository) {
@@ -36,6 +39,7 @@ public class SessionRepositoryImpl implements SessionRepository {
 
         return repository.observableOf(Session.class)
             .reload(reload)
+            .withRateLimiterConfig("Sessions", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

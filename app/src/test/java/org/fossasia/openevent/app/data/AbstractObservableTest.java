@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.threeten.bp.Duration;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -31,6 +32,7 @@ public class AbstractObservableTest {
     public MockitoRule rule = MockitoJUnit.rule();
 
     private AbstractObservable abstractObservable;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Mock
     private ConnectionStatus connectionStatus;
@@ -54,6 +56,7 @@ public class AbstractObservableTest {
 
         abstractObservable.of(String.class)
             .reload(false)
+            .withRateLimiterConfig("Test disk value", rateLimiter)
             .withDiskObservable(Observable.defer(() ->
                 Observable.just(DISK)))
             .withNetworkObservable(Observable.defer(() ->
@@ -70,6 +73,7 @@ public class AbstractObservableTest {
         when(connectionStatus.isConnected()).thenReturn(true);
         abstractObservable.of(String.class)
             .reload(false)
+            .withRateLimiterConfig("Test Network", rateLimiter)
             .withDiskObservable(Observable.empty())
             .withNetworkObservable(Observable.defer(() ->
                 Observable.just(networkString)))
@@ -85,6 +89,7 @@ public class AbstractObservableTest {
 
         abstractObservable.of(String.class)
             .reload(false)
+            .withRateLimiterConfig("Test Network not called", rateLimiter)
             .withDiskObservable(Observable.defer(() ->
                 Observable.just(DISK)))
             .withNetworkObservable(networkObservable)
@@ -102,6 +107,7 @@ public class AbstractObservableTest {
         when(connectionStatus.isConnected()).thenReturn(true);
         abstractObservable.of(String.class)
             .reload(true)
+            .withRateLimiterConfig("Test Network called", rateLimiter)
             .withDiskObservable(Observable.defer(() ->
                 Observable.just(DISK)))
             .withNetworkObservable(networkObservable)
@@ -114,8 +120,10 @@ public class AbstractObservableTest {
     @Test
     public void throwError() {
         when(connectionStatus.isConnected()).thenReturn(false);
+
         abstractObservable.of(String.class)
             .reload(true)
+            .withRateLimiterConfig("Test error thrown", rateLimiter)
             .withDiskObservable(Observable.defer(() ->
                 Observable.just(DISK)))
             .withNetworkObservable(Observable.just("Test"))
@@ -127,8 +135,10 @@ public class AbstractObservableTest {
     @Test
     public void throwErrorNoReload() {
         when(connectionStatus.isConnected()).thenReturn(false);
+
         abstractObservable.of(String.class)
             .reload(false)
+            .withRateLimiterConfig("Test throw error no reload", rateLimiter)
             .withDiskObservable(Observable.empty())
             .withNetworkObservable(Observable.just("Test"))
             .build()

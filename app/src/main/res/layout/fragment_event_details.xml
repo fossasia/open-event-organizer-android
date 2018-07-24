@@ -17,6 +17,10 @@
         <variable
             name="eventStats"
             type="org.fossasia.openevent.app.data.event.EventStatistics" />
+
+        <variable
+            name="orderStats"
+            type="org.fossasia.openevent.app.data.order.OrderStatistics" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -50,7 +54,7 @@
                         android:layout_marginTop="@dimen/spacing_normal"
                         android:layout_marginBottom="@dimen/spacing_normal"
                         android:checked='@{ event.state.equalsIgnoreCase("published") ? true : false }'
-                        android:onClick="@{ () -> presenter.toggleState() }"
+                        android:onClick="@{ () -> presenter.confirmToggle() }"
                         bind:layout_constraintEnd_toEndOf="parent"
                         bind:layout_constraintTop_toTopOf="parent" />
 
@@ -293,12 +297,27 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/event_statistics_frame"
+                        android:id="@+id/order_statistics_frame"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         bind:layout_constraintEnd_toEndOf="parent"
                         bind:layout_constraintStart_toStartOf="parent"
                         bind:layout_constraintTop_toBottomOf="@id/ticket_analytics_fame">
+
+                        <include
+                            android:id="@+id/order_statistics"
+                            layout="@layout/order_statistics"
+                            bind:orderStatistics="@{orderStats}" />
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/event_statistics_frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        bind:layout_constraintEnd_toEndOf="parent"
+                        bind:layout_constraintStart_toStartOf="parent"
+                        bind:layout_constraintTop_toBottomOf="@+id/order_statistics_frame">
 
                         <include
                             android:id="@+id/event_statistics"

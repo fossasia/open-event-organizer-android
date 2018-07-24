@@ -24,7 +24,7 @@ public class OrdersViewModel extends ViewModel {
     private final MutableLiveData<List<Order>> ordersLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
-    private MutableLiveData<String> orderIdentifierLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Order> orderLiveData = new MutableLiveData<>();
 
     @Inject
     public OrdersViewModel(OrderRepository orderRepository) {
@@ -47,31 +47,31 @@ public class OrdersViewModel extends ViewModel {
         return ordersLiveData;
     }
 
-    protected LiveData<Boolean> getProgress() {
+    public LiveData<Boolean> getProgress() {
         return progress;
     }
 
-    protected LiveData<String> getError() {
+    public LiveData<String> getError() {
         return error;
     }
 
-    public void click(String orderIdentifier) {
-        orderIdentifierLiveData.setValue(orderIdentifier);
+    public void click(Order order) {
+        orderLiveData.setValue(order);
     }
 
     public void unselectListItem() {
-        orderIdentifierLiveData.setValue(null);
+        orderLiveData.setValue(null);
     }
 
-    protected LiveData<String> getClickedOrderIdentifier() {
-        return orderIdentifierLiveData;
+    protected LiveData<Order> getClickedOrder() {
+        return orderLiveData;
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
         compositeDisposable.dispose();
-        orderIdentifierLiveData.setValue(null);
+        orderLiveData.setValue(null);
     }
 
 }

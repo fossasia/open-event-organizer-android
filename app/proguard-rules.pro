@@ -35,11 +35,7 @@
 
 -dontwarn com.google.errorprone.**
 
--keep class org.fossasia.openevent.app.data.models.** {
-  *;
-}
-
--keep class org.fossasia.openevent.app.data.models.json.** {
+-keep class org.fossasia.openevent.app.data.** {
   *;
 }
 
@@ -63,3 +59,4 @@
 
 -keep public class * extends com.bumptech.glide.module.AppGlideModule
 -keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
+-ignorewarnings

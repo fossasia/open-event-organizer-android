@@ -6,6 +6,70 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp" />
+
+        <com.badoualy.stepperindicator.StepperIndicator
+            android:id="@+id/stepper_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_large"
+            app:stpi_animDuration="200"
+            app:stpi_circleColor="@color/blue_200"
+            app:stpi_circleRadius="10dp"
+            app:stpi_indicatorColor="@color/green_500"
+            app:stpi_labels="@array/stepLabels"
+            app:stpi_showDoneIcon="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:background="@color/color_accent">
+
+            <Button
+                android:id="@+id/btn_prev"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@color/color_accent"
+                android:text="@string/previous"
+                android:textAllCaps="true"
+                android:visibility="gone"
+                android:layout_gravity="bottom|start"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/color_accent"
+                android:text="@string/next"
+                android:textAllCaps="true"
+                android:layout_weight="0.5"
+                android:layout_gravity="bottom"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/color_accent"
+                android:text="@string/create"
+                android:textAllCaps="true"
+                android:layout_weight="0.5"
+                android:visibility="gone"
+                android:layout_gravity="bottom"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+    </FrameLayout>
 </layout>

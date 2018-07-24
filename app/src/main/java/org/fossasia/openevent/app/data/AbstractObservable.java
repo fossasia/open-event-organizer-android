@@ -21,7 +21,9 @@ public final class AbstractObservable {
 
     public static final class AbstractObservableBuilder<T> {
         private final ConnectionStatus connectionStatus;
+        private RateLimiter<String> rateLimiter;
         private boolean reload;
+        private String rateLimiterKey;
         private Observable<T> diskObservable;
         private Observable<T> networkObservable;
 
@@ -31,6 +33,13 @@ public final class AbstractObservable {
 
         public AbstractObservableBuilder<T> reload(boolean reload) {
             this.reload = reload;
+
+            return this;
+        }
+
+        public AbstractObservableBuilder<T> withRateLimiterConfig(String rateLimiterKey, RateLimiter<String> rateLimiter) {
+            this.rateLimiter = rateLimiter;
+            this.rateLimiterKey = rateLimiterKey;
 
             return this;
         }
@@ -61,12 +70,21 @@ public final class AbstractObservable {
 
         @NonNull
         private Observable<T> getConnectionObservable() {
-            if (connectionStatus.isConnected())
-                return networkObservable
-                    .doOnNext(item -> Timber.d("Loaded %s From Network on Thread %s",
-                        item.getClass(), Thread.currentThread().getName()));
-            else
+            if (connectionStatus.isConnected()) {
+                if (reload || rateLimiter == null || rateLimiter.shouldFetch(rateLimiterKey)) {
+                    return networkObservable
+                        .doOnNext(item -> Timber.d("Loaded %s From Network on Thread %s",
+                            item.getClass(), Thread.currentThread().getName()));
+                }
+                // this statement will only be executed when disk returned empty and data was refreshed within the last 10 minutes.
+                return Observable.empty();
+            }
+            else {
+                if (rateLimiter != null)
+                    rateLimiter.reset(rateLimiterKey);
+
                 return Observable.error(new Throwable(Constants.NO_NETWORK));
+            }
         }
 
         @NonNull
@@ -99,5 +117,4 @@ public final class AbstractObservable {
     public <T> AbstractObservableBuilder<T> of(Class<T> clazz) {
         return new AbstractObservableBuilder<>(connectionStatus);
     }
-
 }

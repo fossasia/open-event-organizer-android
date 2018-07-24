@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import com.raizlabs.android.dbflow.sql.language.Method;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
 import org.fossasia.openevent.app.data.db.QueryHelper;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.Event_Table;
 import org.fossasia.openevent.app.utils.DateUtils;
+import org.threeten.bp.Duration;
 import org.threeten.bp.LocalDateTime;
 
 import javax.inject.Inject;
@@ -25,6 +27,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
 
     private final Repository repository;
     private final AttendeeApi attendeeApi;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public AttendeeRepositoryImpl(Repository repository, AttendeeApi attendeeApi) {
@@ -64,6 +67,26 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
 
         return repository.observableOf(Attendee.class)
             .reload(reload)
+            .withRateLimiterConfig("Attendees", rateLimiter)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
+    @Override
+    public Observable<Attendee> getAttendeesUnderOrder(String orderIdentifier, long orderId, boolean reload) {
+        Observable<Attendee> diskObservable = Observable.defer(() ->
+            repository.getItems(Attendee.class, Attendee_Table.order_id.eq(orderId))
+        );
+
+        Observable<Attendee> networkObservable = Observable.defer(() ->
+            attendeeApi.getAttendeesUnderOrder(orderIdentifier)
+                .doOnNext(attendees -> repository.syncSave(Attendee.class, attendees, Attendee::getId, Attendee_Table.id).subscribe())
+                .flatMapIterable(attendees -> attendees));
+
+        return repository.observableOf(Attendee.class)
+            .reload(reload)
+            .withRateLimiterConfig("AttendeesUnderOrder", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

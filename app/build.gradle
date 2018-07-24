@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.sentry.android.gradle'
 apply plugin: 'com.noveogroup.android.check'
 apply from: './jacoco.gradle'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
 
 def app_name = System.getenv('app_name') ?: "eventyay organizer"
 def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
@@ -19,11 +20,11 @@ android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
     defaultConfig {
-        applicationId "org.fossasia.eventyay"
+        applicationId "com.eventyay.organizer"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 4
-        versionName "1.0.3alpha"
+        versionCode 6
+        versionName "1.0.5alpha"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
@@ -37,9 +38,9 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", "DEFAULT_BASE_URL", '"https://api.eventyay.com/v1/"'
+            buildConfigField "String", "DEFAULT_BASE_URL", '"https://open-event-api.herokuapp.com/v1/"'
             buildConfigField 'Boolean', 'HIDE_DRAWER_ITEMS', 'true'
-            resValue "string", "default_base_url", '"https://api.eventyay.com/v1/"'
+            resValue "string", "default_base_url", '"https://open-event-api.herokuapp.com/v1/"'
         }
         debug {
             testCoverageEnabled = true
@@ -62,6 +63,18 @@ android {
         unitTests {
             includeAndroidResources = true
             unitTests.returnDefaultValues = true
+        }
+    }
+
+    flavorDimensions "default"
+
+    productFlavors {
+        fdroid {
+            dimension "default"
+        }
+
+        playStore {
+            dimension "default"
         }
     }
 }
@@ -118,7 +131,7 @@ dependencies {
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation 'com.mikhaellopez:circularprogressbar:1.1.1'
+    implementation 'com.mikhaellopez:circularprogressbar:2.0.0'
     implementation 'com.github.Ilhasoft:data-binding-validator:1.0.0'
     implementation "io.sentry:sentry-android:${versions.sentry_android}"
     implementation "com.github.PhilJay:MPAndroidChart:${versions.mp_android_chart}"
@@ -151,13 +164,13 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
     implementation 'com.github.jasminb:jsonapi-converter:0.8.1'
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxjava}"
-    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3'
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
     // Fast Adapter
     implementation('com.mikepenz:fastadapter:3.0.4@aar') {
@@ -168,7 +181,7 @@ dependencies {
     implementation 'me.xdrop:fuzzywuzzy:1.1.9'
 
     // Glide
-    implementation ("com.github.florent37:glidepalette:2.1.0") {
+    implementation ("com.github.florent37:glidepalette:2.1.2") {
         transitive = false
     }
     implementation "com.github.bumptech.glide:glide:${versions.glide}"
@@ -200,7 +213,13 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
     //colorpicker
-    implementation 'com.pes.materialcolorpicker:library:1.2.0'
+    implementation 'com.pes.materialcolorpicker:library:1.2.4'
+
+    //stepper
+    implementation 'com.github.badoualy:stepper-indicator:1.0.7'
+
+    //open-source licenses
+    implementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 
     //Testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
@@ -212,7 +231,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-core-utils'
     })
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-inline:2.8.9'
+    testImplementation 'org.mockito:mockito-inline:2.19.1'
     testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.fossasia.openevent.app.utils.DateUtils;
 import org.fossasia.openevent.app.utils.service.DateService;
 
 public class EventDelegateImpl implements EventDelegate {
@@ -23,7 +24,7 @@ public class EventDelegateImpl implements EventDelegate {
     @JsonIgnore
     public String getHeader() {
         if (event.getState() != null)
-            return event.getState();
+            return DateUtils.formatDateWithDefault(DateUtils.FORMAT_MONTH, event.getStartsAt());
         return "";
     }
 

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <import type="android.view.View" />
+        <import type="org.fossasia.openevent.app.common.ContextManager" />
 
         <variable
             name="order"
@@ -18,6 +20,7 @@
         android:background="@color/color_top_surface">
 
         <FrameLayout
+            android:id="@+id/order_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -26,116 +29,139 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <FrameLayout
-                    android:id="@+id/refresh_frame"
+                <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/color_top_surface">
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                     <LinearLayout
-                        style="@style/ItemPadding"
+                        android:id="@+id/refresh_frame"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_normal"
-                        android:background="@android:color/white"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_top_surface"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:text="@string/order_identifier"
-                            android:textAllCaps="true"
-                            tools:text="free" />
+                            android:layout_margin="@dimen/spacing_normal"
+                            android:background="@android:color/white"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:text='@{ order.identifier }'
-                            android:textColor="#000000"
-                            tools:text="Identifier" />
+                            <include
+                                android:id="@+id/include_order_detail"
+                                layout="@layout/order_detail_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_normal"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                bind:order='@{ order }' />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:text="@string/event_name"
-                            android:textAllCaps="true"
-                            android:visibility="@{ (order.event.name != null) ? View.VISIBLE : View.GONE }"
-                            tools:text="Event Name" />
+                            <LinearLayout
+                                android:id="@+id/tickets_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:text="@{ order.event.name }"
-                            android:visibility="@{ (order.event.name != null) ? View.VISIBLE : View.GONE }"
-                            tools:text="Event Name" />
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layerType="software"
+                                    android:src="@drawable/dotted" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:text='@{ "Status" + ": " + order.status }'
-                            android:visibility="@{ (order.status != null) ? View.VISIBLE : View.GONE }"
-                            tools:text="Status" />
+                                <TextView
+                                    android:id="@+id/ticket_heading"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_normal"
+                                    android:paddingTop="@dimen/spacing_medium"
+                                    android:paddingLeft="@dimen/spacing_medium"
+                                    android:paddingRight="@dimen/spacing_medium"
+                                    android:layout_marginLeft="@dimen/spacing_small"
+                                    android:layout_marginStart="@dimen/spacing_small"
+                                    android:text="@string/ticket"
+                                    android:textAllCaps="true" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:text='@{ "Amount" + ":  " + order.amount }'
-                            tools:text="Amount" />
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/ticketsRecyclerView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/spacing_small"
+                                    android:layout_marginStart="@dimen/spacing_small"
+                                    android:clipToPadding="false"
+                                    tools:listitem="@layout/order_ticket_layout" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:text='@{ "Paid Via" + ":  " +  order.paidVia }'
-                            android:visibility="@{ order.paidVia == null ? View.GONE : View.VISIBLE }"
-                            tools:text="Paid Via" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/spacing_normal"
+                                    android:orientation="horizontal"
+                                    android:weightSum="5">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:text='@{ "Payment Mode" +  ":  " + order.paymentMode }'
-                            android:visibility="@{ order.paymentMode == null ? View.GONE : View.VISIBLE }"
-                            tools:text="Payment Mode" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="4"
+                                        android:text="@string/total_paid"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/text_size_normal"
+                                        tools:text="Total Paid" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:text='@{ "Address" + ":  " + order.city + order.state + order.country }'
-                            android:visibility="@{ order.country == null || order.city == null || order.state == null ? View.GONE : View.VISIBLE }"
-                            tools:text="Country" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="right"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/text_size_normal"
+                                        android:text='@{ ContextManager.getCurrency() + " " + safeUnbox(order.amount) }'
+                                        tools:text="Amount" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:text='@{ "Expiry" + ":  " + order.expMonth + order.expYear }'
-                            android:visibility="@{ order.expMonth == null || order.expYear == null ? View.GONE : View.VISIBLE }"
-                            tools:text="Exp Month" />
+                            android:layout_margin="@dimen/spacing_normal"
+                            android:orientation="vertical">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/attendeesRecyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clipToPadding="false"
+                                tools:listitem="@layout/order_attendee_layout" />
+                        </LinearLayout>
 
                     </LinearLayout>
-                </FrameLayout>
+
+                </android.support.v4.widget.NestedScrollView>
             </android.support.v4.widget.SwipeRefreshLayout>
 
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@+id/order_frame"
+            app:layout_anchorGravity="bottom|right"
+            android:visibility="@{ order == null ? View.GONE : View.VISIBLE }">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/printAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginRight="@dimen/spacing_normal"
+                app:fabSize="normal"
+                android:tint="@android:color/white"
+                app:backgroundTint="@color/color_accent"
+                app:srcCompat="@drawable/ic_round_print"  />
         </FrameLayout>
 
         <FrameLayout

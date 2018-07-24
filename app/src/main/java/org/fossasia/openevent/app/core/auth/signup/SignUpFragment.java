@@ -1,33 +1,39 @@
 package org.fossasia.openevent.app.core.auth.signup;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.common.Function;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.auth.SharedViewModel;
 import org.fossasia.openevent.app.core.auth.login.LoginFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.databinding.SignUpFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
+import org.fossasia.openevent.app.utils.ValidateUtils;
 
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class SignUpFragment extends BaseFragment<SignUpPresenter> implements SignUpView {
+public class SignUpFragment extends BaseFragment implements SignUpView {
 
     @Inject
-    Lazy<SignUpPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
     @Inject
     ContextUtils utilModel;
@@ -35,6 +41,7 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
     private SignUpFragmentBinding binding;
     private Validator validator;
     private SharedViewModel sharedViewModel;
+    private SignUpViewModel signUpViewModel;
 
     public static SignUpFragment newInstance() {
         return new SignUpFragment();
@@ -47,14 +54,19 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
         validator = new Validator(binding);
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         sharedViewModel.getEmail().observe(this, email -> binding.getUser().setEmail(email));
+        signUpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SignUpViewModel.class);
         return binding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        binding.setUser(getPresenter().getUser());
+        binding.setUser(signUpViewModel.getUser());
+
+        validate(binding.emailLayout , ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
+        signUpViewModel.getProgress().observe(this, this::showProgress);
+        signUpViewModel.getSuccess().observe(this, this::onSuccess);
+        signUpViewModel.getError().observe(this, this::showError);
 
         binding.btnSignUp.setOnClickListener(view -> {
             if (!validator.validate())
@@ -62,15 +74,46 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
 
             String password = binding.password.getText().toString();
             String confirmPassword = binding.confirmPassword.getText().toString();
-            if (!(getPresenter().arePasswordsEqual(password, confirmPassword))) {
+            if (!(signUpViewModel.arePasswordsEqual(password, confirmPassword))) {
                 return;
             }
 
             String url = binding.url.baseUrl.getText().toString().trim();
-            getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
-            getPresenter().signUp();
+            signUpViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
+            signUpViewModel.signUp();
         });
         binding.loginLink.setOnClickListener(view -> openLoginPage());
+    }
+
+    @Override
+    public void validate(TextInputLayout textInputLayout, Function<String, Boolean> validationReference, String errorResponse) {
+        textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Nothing here
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (validationReference.apply(charSequence.toString())) {
+                    textInputLayout.setError(null);
+                    textInputLayout.setErrorEnabled(false);
+                } else {
+                    textInputLayout.setErrorEnabled(true);
+                    textInputLayout.setError(errorResponse);
+                }
+                if (TextUtils.isEmpty(charSequence)) {
+                    textInputLayout.setError(null);
+                    textInputLayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Nothing here
+            }
+        });
     }
 
     private void openLoginPage() {
@@ -95,11 +138,6 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
     @Override
     public void showProgress(boolean show) {
         showView(binding.progressBar, show);
-    }
-
-    @Override
-    public Lazy<SignUpPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override

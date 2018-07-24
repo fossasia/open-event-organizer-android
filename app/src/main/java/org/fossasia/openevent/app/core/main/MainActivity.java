@@ -11,12 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
 import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.common.mvp.view.BaseInjectActivity;
 import org.fossasia.openevent.app.core.auth.AuthActivity;
 import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailActivity;
 import org.fossasia.openevent.app.data.event.Event;
@@ -30,12 +30,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.Lazy;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public class MainActivity extends BaseInjectActivity<MainPresenter> implements
+public class MainActivity extends AppCompatActivity implements
     NavigationView.OnNavigationItemSelectedListener, MainView, HasSupportFragmentInjector {
 
     public static final String EVENT_KEY = "event";
@@ -48,9 +47,6 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
 
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
-
-    @Inject
-    Lazy<MainPresenter> presenterProvider;
 
     private FragmentNavigator fragmentNavigator;
     private DrawerNavigator drawerNavigator;
@@ -81,7 +77,7 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
 
         binding.navView.getMenu().setGroupVisible(R.id.subMenu, false);
         fragmentNavigator = new FragmentNavigator(getSupportFragmentManager(), eventId);
-        drawerNavigator = new DrawerNavigator(this, fragmentNavigator, getPresenter());
+        drawerNavigator = new DrawerNavigator(this, fragmentNavigator, organizerViewModel);
 
         headerBinding.profile.setOnClickListener(view -> startActivity(new Intent(this, OrganizerDetailActivity.class)));
     }
@@ -89,10 +85,13 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
     @Override
     protected void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        getPresenter().start();
 
+        organizerViewModel.setLocalDatePreferenceAction();
         organizerViewModel.getOrganizer().observe(this, this::showOrganizer);
+        organizerViewModel.getLogoutAction().observe(this, aVoid -> this.onLogout());
+        organizerViewModel.getLocalDatePreferenceAction().observe(this, aVoid -> this.invalidateDateViews());
+        organizerViewModel.getError().observe(this, this::showError);
+        eventViewModel.onStart();
         eventViewModel.getEventId().observe(this, this::setEventId);
         eventViewModel.getSelectedEvent().observe(this, this::showResult);
         eventViewModel.getError().observe(this, this::showError);
@@ -106,6 +105,8 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else if (fragmentNavigator.isDashboardActive())
             super.onBackPressed();
+        else if (eventId == -1)
+            finish();
         else {
             fragmentNavigator.back();
             binding.navView.getMenu().findItem(R.id.nav_dashboard).setChecked(true);
@@ -127,11 +128,6 @@ public class MainActivity extends BaseInjectActivity<MainPresenter> implements
         });
         binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public Lazy<MainPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override

@@ -12,10 +12,16 @@ public interface TicketRepository {
     Observable<Ticket> createTicket(Ticket ticket);
 
     @NonNull
+    Observable<Ticket> updateTicket(Ticket ticket);
+
+    @NonNull
     Observable<Ticket> getTicket(long ticketId, boolean reload);
 
     @NonNull
     Observable<Ticket> getTickets(long eventId, boolean reload);
+
+    @NonNull
+    Observable<Ticket> getTicketsUnderOrder(String orderIdentifier, long orderId, boolean reload);
 
     @NonNull
     Completable deleteTicket(long id);

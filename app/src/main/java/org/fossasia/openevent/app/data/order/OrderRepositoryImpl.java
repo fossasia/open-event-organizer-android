@@ -2,7 +2,9 @@ package org.fossasia.openevent.app.data.order;
 
 import android.support.annotation.NonNull;
 
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
+import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
@@ -12,6 +14,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     private final OrderApi orderApi;
     private final Repository repository;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public OrderRepositoryImpl(OrderApi orderApi, Repository repository) {
@@ -32,6 +35,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
         return repository.observableOf(Order.class)
             .reload(reload)
+            .withRateLimiterConfig("Orders", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
@@ -53,6 +57,27 @@ public class OrderRepositoryImpl implements OrderRepository {
 
         return repository
             .observableOf(Order.class)
+            .reload(reload)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
+    @Override
+    public Observable<OrderStatistics> getOrderStatisticsForEvent(long eventId, boolean reload) {
+        Observable<OrderStatistics> diskObservable = Observable.defer(() ->
+            repository
+                .getItems(OrderStatistics.class, OrderStatistics_Table.event_id.eq(eventId)).take(1)
+        );
+
+        Observable<OrderStatistics> networkObservable = Observable.defer(() ->
+            orderApi.getOrderStatisticsForEvent(eventId)
+                .doOnNext(orderStatistics -> repository
+                    .save(OrderStatistics.class, orderStatistics)
+                    .subscribe()));
+
+        return repository
+            .observableOf(OrderStatistics.class)
             .reload(reload)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)

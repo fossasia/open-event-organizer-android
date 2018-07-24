@@ -6,13 +6,20 @@ import android.arch.lifecycle.ViewModelProvider;
 import org.fossasia.openevent.app.common.di.OrgaViewModelFactory;
 import org.fossasia.openevent.app.core.auth.reset.ResetPasswordViewModel;
 import org.fossasia.openevent.app.core.auth.login.LoginViewModel;
+import org.fossasia.openevent.app.core.auth.signup.SignUpViewModel;
+import org.fossasia.openevent.app.core.event.list.EventsViewModel;
+import org.fossasia.openevent.app.core.event.create.CreateEventViewModel;
+import org.fossasia.openevent.app.core.faq.create.CreateFaqViewModel;
 import org.fossasia.openevent.app.core.main.EventViewModel;
 import org.fossasia.openevent.app.core.orders.detail.OrderDetailViewModel;
 import org.fossasia.openevent.app.core.main.OrganizerViewModel;
 import org.fossasia.openevent.app.core.orders.list.OrdersViewModel;
+import org.fossasia.openevent.app.core.settings.restriction.TicketSettingsViewModel;
 import org.fossasia.openevent.app.core.share.ShareEventViewModel;
 import org.fossasia.openevent.app.core.speaker.details.SpeakerDetailsViewModel;
 import org.fossasia.openevent.app.core.speakerscall.create.CreateSpeakersCallViewModel;
+import org.fossasia.openevent.app.core.sponsor.create.CreateSponsorViewModel;
+import org.fossasia.openevent.app.core.ticket.create.CreateTicketViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -65,6 +72,41 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(EventViewModel.class)
     public abstract ViewModel bindEventViewModel(EventViewModel eventViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EventsViewModel.class)
+    public abstract ViewModel bindEventsViewModel(EventsViewModel eventsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateEventViewModel.class)
+    public abstract ViewModel bindCreateEventViewModel(CreateEventViewModel eventViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateFaqViewModel.class)
+    public abstract ViewModel bindCreateFaqViewModel(CreateFaqViewModel faqViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateSponsorViewModel.class)
+    public abstract ViewModel bindCreateSponsorViewModel(CreateSponsorViewModel sponsorViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateTicketViewModel.class)
+    public abstract ViewModel bindCreateTicketViewModel(CreateTicketViewModel ticketViewModel);
+   
+    @Binds
+    @IntoMap 
+    @ViewModelKey(SignUpViewModel.class)
+    public abstract ViewModel bindSignUpViewModel(SignUpViewModel signUpViewModel);
+    
+    @Binds
+    @IntoMap
+    @ViewModelKey(TicketSettingsViewModel.class)
+    public abstract ViewModel bindTicketSettingsViewModel(TicketSettingsViewModel ticketSettingsViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);

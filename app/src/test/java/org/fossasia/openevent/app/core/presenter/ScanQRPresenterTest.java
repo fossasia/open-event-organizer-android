@@ -2,11 +2,13 @@ package org.fossasia.openevent.app.core.presenter;
 
 import com.google.android.gms.vision.barcode.Barcode;
 
+import org.fossasia.openevent.app.R;
+import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRPresenter;
+import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRView;
+import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.attendee.AttendeeRepository;
 import org.fossasia.openevent.app.data.order.Order;
-import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRPresenter;
-import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,7 +31,8 @@ import io.reactivex.schedulers.Schedulers;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.inOrder;
@@ -44,6 +47,7 @@ public class ScanQRPresenterTest {
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock private ScanQRView scanQRView;
     @Mock private AttendeeRepository attendeeRepository;
+    @Mock private Preferences preferences;
 
     private static final long EVENT_ID = 32;
     private ScanQRPresenter scanQRPresenter;
@@ -76,10 +80,10 @@ public class ScanQRPresenterTest {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
-        scanQRPresenter = new ScanQRPresenter(attendeeRepository);
+        scanQRPresenter = new ScanQRPresenter(attendeeRepository, preferences);
         scanQRPresenter.attach(EVENT_ID, scanQRView);
 
-        BARCODE_1.displayValue = "Test Barcode 1";
+        BARCODE_1.displayValue = "test4-91";
         BARCODE_2.displayValue = "Test Barcode 2";
 
         for (int i = 0; i < ATTENDEES.size(); i++)
@@ -109,7 +113,6 @@ public class ScanQRPresenterTest {
 
         scanQRPresenter.start();
 
-        verify(scanQRView).loadCamera();
     }
 
     @Test
@@ -177,7 +180,6 @@ public class ScanQRPresenterTest {
         scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
-        inOrder.verify(scanQRView).loadCamera();
         scanQRPresenter.onCameraLoaded();
         inOrder.verify(scanQRView).startScan();
     }
@@ -206,7 +208,6 @@ public class ScanQRPresenterTest {
         scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
-        inOrder.verify(scanQRView).loadCamera();
         scanQRPresenter.onCameraLoaded();
         inOrder.verify(scanQRView).requestCameraPermission();
         scanQRPresenter.cameraPermissionGranted(true);
@@ -238,7 +239,6 @@ public class ScanQRPresenterTest {
         scanQRPresenter.start();
 
         InOrder inOrder = inOrder(scanQRView);
-        inOrder.verify(scanQRView).loadCamera();
         scanQRPresenter.onCameraLoaded();
         inOrder.verify(scanQRView).requestCameraPermission();
         scanQRPresenter.cameraPermissionGranted(false);
@@ -271,7 +271,7 @@ public class ScanQRPresenterTest {
         scanQRPresenter.setAttendees(ATTENDEES);
         sendBarcodeBurst(BARCODE_1);
 
-        verify(scanQRView, atMost(1)).showBarcodeData(BARCODE_1.displayValue);
+        verify(scanQRView, atMost(1)).onScannedAttendee(ATTENDEES.get(3));
     }
 
     @Test
@@ -290,11 +290,12 @@ public class ScanQRPresenterTest {
 
         InOrder inOrder = inOrder(scanQRView);
 
-        inOrder.verify(scanQRView).showBarcodeData(BARCODE_1.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(BARCODE_2.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(BARCODE_1.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(BARCODE_2.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(BARCODE_1.displayValue);
+        inOrder.verify(scanQRView).onScannedAttendee(ATTENDEES.get(3));
+        inOrder.verify(scanQRView).showMessage(R.string.invalid_ticket, false);
+        inOrder.verify(scanQRView).onScannedAttendee(ATTENDEES.get(3));
+        inOrder.verify(scanQRView).showMessage(R.string.invalid_ticket, false);
+        inOrder.verify(scanQRView).onScannedAttendee(ATTENDEES.get(3));
+
         inOrder.verifyNoMoreInteractions();
     }
 
@@ -317,10 +318,11 @@ public class ScanQRPresenterTest {
 
         InOrder inOrder = inOrder(scanQRView);
 
-        inOrder.verify(scanQRView).showBarcodeData(BARCODE_1.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(BARCODE_2.displayValue);
-        inOrder.verify(scanQRView).showBarcodeData(BARCODE_1.displayValue);
-        inOrder.verify(scanQRView, never()).showBarcodeData(anyString());
+        inOrder.verify(scanQRView).onScannedAttendee(ATTENDEES.get(3));
+        inOrder.verify(scanQRView).showMessage(R.string.invalid_ticket, false);
+        inOrder.verify(scanQRView).onScannedAttendee(ATTENDEES.get(3));
+        inOrder.verify(scanQRView, never()).showMessage(anyInt(), anyBoolean());
+
     }
 
     @Test
@@ -328,12 +330,21 @@ public class ScanQRPresenterTest {
         sendNullInterleaved();
 
         verify(scanQRView, never()).onScannedAttendee(any(Attendee.class));
+        verify(scanQRView, never()).showMessage(anyInt(), anyBoolean());
+    }
+
+    private void sendWrongNullInterleaved() {
+        sendBarcodeBurst(BARCODE_2);
+        sendBarcodeBurst(null);
+        sendBarcodeBurst(BARCODE_2);
+        sendBarcodeBurst(null);
+        sendBarcodeBurst(BARCODE_2);
     }
 
     @Test
     public void shouldNotSendAttendeeOnWrongBarcodeDetection() {
         scanQRPresenter.setAttendees(ATTENDEES);
-        sendNullInterleaved();
+        sendWrongNullInterleaved();
 
         verify(scanQRView, never()).onScannedAttendee(any(Attendee.class));
     }

@@ -20,6 +20,7 @@ public class ResetPasswordViewModel extends ViewModel {
     private final AuthService tokenSubmitModel;
     private final HostSelectionInterceptor interceptor;
     private final SubmitToken submitToken = new SubmitToken();
+    private final RequestToken requestToken = new RequestToken();
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -30,7 +31,7 @@ public class ResetPasswordViewModel extends ViewModel {
 
     @Inject
     public ResetPasswordViewModel(AuthService tokenSubmitModel,
-                                         HostSelectionInterceptor interceptor) {
+                                  HostSelectionInterceptor interceptor) {
         this.tokenSubmitModel = tokenSubmitModel;
         this.interceptor = interceptor;
     }
@@ -39,8 +40,12 @@ public class ResetPasswordViewModel extends ViewModel {
         return submitToken;
     }
 
-    public void submitRequest() {
-        compositeDisposable.add(tokenSubmitModel.submitToken(submitToken)
+    public RequestToken getRequestToken() {
+        return requestToken;
+    }
+
+    public void submitRequest(SubmitToken token) {
+        compositeDisposable.add(tokenSubmitModel.submitToken(token)
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(() -> success.setValue("Password Changed Successfully"),
@@ -53,8 +58,7 @@ public class ResetPasswordViewModel extends ViewModel {
     }
 
     public void requestToken(String email) {
-        RequestToken requestToken = new RequestToken();
-        requestToken.setEmail(email);
+        getRequestToken().setEmail(email);
 
         compositeDisposable.add(tokenSubmitModel.requestToken(requestToken)
             .doOnSubscribe(disposable -> progress.setValue(true))

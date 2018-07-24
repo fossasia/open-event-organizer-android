@@ -43,12 +43,10 @@ public class LoginFragment extends BaseFragment implements LoginView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false);
         loginFragmentViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
         validator = new Validator(binding);
         return binding.getRoot();
     }
@@ -58,25 +56,28 @@ public class LoginFragment extends BaseFragment implements LoginView {
         super.onStart();
 
         loginFragmentViewModel.getLoginStatus().observe(this, (loginStatus) -> handleIntent());
-
-        String url = binding.url.baseUrl.getText().toString().trim();
-        loginFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
         loginFragmentViewModel.getProgress().observe(this, this::showProgress);
         loginFragmentViewModel.getError().observe(this, this::showError);
         loginFragmentViewModel.getEmailList().observe(this, this::attachEmails);
-        loginFragmentViewModel.getIsTokenSent().observe(this, (value) -> {
+        loginFragmentViewModel.getLogin().observe(this, login -> {
+            binding.setLogin(login);
+            sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
+        });
+        loginFragmentViewModel.getTokenSentAction().observe(this, aVoid -> {
             getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
+                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .replace(R.id.fragment_container, new ResetPasswordFragment())
+                .addToBackStack(null)
                 .commit();
         });
 
-        binding.setLogin(loginFragmentViewModel.getLogin());
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
             ViewUtils.hideKeyboard(view);
+            String url = binding.url.baseUrl.getText().toString().trim();
+            loginFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             loginFragmentViewModel.login();
         });
         binding.signUpLink.setOnClickListener(view -> openSignUpPage());
@@ -104,8 +105,9 @@ public class LoginFragment extends BaseFragment implements LoginView {
     private void openSignUpPage() {
         sharedViewModel.setEmail(binding.getLogin().getEmail());
         getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
+            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             .replace(R.id.fragment_container, new SignUpFragment())
+            .addToBackStack(null)
             .commit();
     }
 

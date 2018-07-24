@@ -14,7 +14,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UserRepositoryImpl implements UserRepository {
 
-
     private final UserApi userApi;
     private final Repository repository;
     private final AuthHolder authHolder;

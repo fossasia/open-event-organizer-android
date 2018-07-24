@@ -22,6 +22,7 @@ import static org.fossasia.openevent.app.core.main.MainActivity.EVENT_KEY;
 
 public class EventViewModel extends ViewModel {
     private final Preferences sharedPreferenceModel;
+    private boolean initialized = false;
     private final Bus bus;
     private final CurrencyUtils currencyUtils;
     private final EventRepository eventRepository;
@@ -40,13 +41,14 @@ public class EventViewModel extends ViewModel {
         this.bus = bus;
         this.currencyUtils = currencyUtils;
         this.eventRepository = eventRepository;
-
-        onStart();
     }
 
-    private void onStart() {
-        bus.getSelectedEvent()
-            .compose(dispose(compositeDisposable))
+    protected void onStart() {
+        if (initialized)
+            return;
+
+        initialized = true;
+        compositeDisposable.add(bus.getSelectedEvent()
             .subscribe(event -> {
                 sharedPreferenceModel.setLong(EVENT_KEY, event.getId());
                 ContextManager.setSelectedEvent(event);
@@ -56,7 +58,7 @@ public class EventViewModel extends ViewModel {
             }, throwable -> {
                 Logger.logError(throwable);
                 error.setValue(throwable.getMessage());
-            });
+            }));
 
         long storedEventId = sharedPreferenceModel.getLong(EVENT_KEY, -1);
 
@@ -76,13 +78,12 @@ public class EventViewModel extends ViewModel {
             return;
         }
 
-        eventRepository
+        compositeDisposable.add(eventRepository
             .getEvent(storedEventId, false)
-            .compose(dispose(compositeDisposable))
             .subscribe(bus::pushSelectedEvent, throwable -> {
                 Logger.logError(throwable);
                 error.setValue(throwable.getMessage());
-            });
+            }));
     }
 
     private void showEventList() {

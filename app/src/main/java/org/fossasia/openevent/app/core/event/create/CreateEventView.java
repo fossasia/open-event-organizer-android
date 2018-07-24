@@ -12,9 +12,9 @@ import java.util.List;
 
 public interface CreateEventView extends Progressive, Erroneous, Successful {
 
-    void validate(TextInputLayout textInputLayout, Function<String, Boolean> fuck, String tsr);
+    void validate(TextInputLayout textInputLayout, Function<String, Boolean> validation, String str);
 
-    void attachCountryList(List<String> countryList, int countryIndex);
+    void attachCountryList(List<String> countryList);
 
     void attachCurrencyCodesList(List<String> currencyCodesList);
 
@@ -22,11 +22,7 @@ public interface CreateEventView extends Progressive, Erroneous, Successful {
 
     void setPaymentBinding(Event event);
 
-    void close();
-
     List<String> getTimeZoneList();
-
-    void setDefaultTimeZone(int index);
 
     void setEvent(Event event);
 }

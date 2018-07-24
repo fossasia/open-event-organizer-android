@@ -2,10 +2,10 @@ package org.fossasia.openevent.app.data.event;
 
 import android.support.annotation.NonNull;
 
-import org.fossasia.openevent.app.data.auth.AuthHolder;
 import org.fossasia.openevent.app.common.Constants;
-import org.fossasia.openevent.app.data.ticket.Ticket;
 import org.fossasia.openevent.app.data.Repository;
+import org.fossasia.openevent.app.data.auth.AuthHolder;
+import org.fossasia.openevent.app.data.ticket.Ticket;
 
 import java.util.List;
 

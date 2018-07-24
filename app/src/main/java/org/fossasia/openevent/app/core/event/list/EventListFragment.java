@@ -1,116 +1,137 @@
 package org.fossasia.openevent.app.core.event.list;
 
-import android.content.Context;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.android.databinding.library.baseAdapters.BR;
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.event.create.CreateEventActivity;
-import org.fossasia.openevent.app.data.Bus;
+import org.fossasia.openevent.app.core.event.list.pager.ListPageFragment;
 import org.fossasia.openevent.app.data.ContextUtils;
-import org.fossasia.openevent.app.data.event.Event;
-import org.fossasia.openevent.app.databinding.FragmentEventListBinding;
+import org.fossasia.openevent.app.databinding.EventListFragmentBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.Lazy;
-
-import static org.fossasia.openevent.app.core.event.list.EventsPresenter.SORTBYDATE;
-import static org.fossasia.openevent.app.core.event.list.EventsPresenter.SORTBYNAME;
+import static org.fossasia.openevent.app.core.event.list.EventsViewModel.SORTBYDATE;
+import static org.fossasia.openevent.app.core.event.list.EventsViewModel.SORTBYNAME;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * Use the {@link EventListFragment#newInstance} factory method to
- * create an instance of this fragment.
+ *
  */
-@SuppressWarnings("PMD.TooManyMethods")
-public class EventListFragment extends BaseFragment<EventsPresenter> implements EventsView {
+public class EventListFragment extends BaseFragment implements EventsView {
     @Inject
     ContextUtils utilModel;
 
     @Inject
-    Bus bus;
+    ViewModelProvider.Factory viewModelFactory;
 
-    @Inject
-    Lazy<EventsPresenter> presenterProvider;
+    EventsViewModel eventsViewModel;
 
-    private FragmentEventListBinding binding;
-    private RecyclerView recyclerView;
+    private EventListFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    private EventsListAdapter eventListAdapter;
-    private RecyclerView.AdapterDataObserver adapterDataObserver;
+    public static final String[] EVENT_TYPE = {"live", "past", "draft"};
+    public static final String POSITION = "position";
 
-    private Context context;
-    private boolean initialized;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * <p>
-     * parameters can be added in future if required so
-     * which can be passed in bundle.
-     *
-     * @return A new instance of fragment EventListFragment.
-     */
     public static EventListFragment newInstance() {
         return new EventListFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        context = getActivity();
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_event_list, container, false);
+        // Inflate the layout for this fragment
+        binding = DataBindingUtil.inflate(inflater, R.layout.event_list_fragment, container, false);
 
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(
-            item -> {
-                switch (item.getItemId()) {
-                    case R.id.action_live:
-                        eventListAdapter.getFilter().filter("live");
-                        return true;
-                    case R.id.action_upcoming:
-                        eventListAdapter.getFilter().filter("upcoming");
-                        return true;
-                    case R.id.action_past:
-                        eventListAdapter.getFilter().filter("past");
-                        return true;
-                    default:
-                        return false;
-                }
-            });
+        eventsViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EventsViewModel.class);
+        eventsViewModel.getSuccess().observe(this, this::onRefreshComplete);
+        eventsViewModel.getError().observe(this, this::showError);
+        eventsViewModel.getProgress().observe(this, this::showProgress);
+
+        eventsViewModel.loadUserEvents(false);
+
+        binding.tab.setupWithViewPager(binding.pager);
+
+        binding.pager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+            @Override
+            public int getCount() {
+                return EVENT_TYPE.length;
+            }
+
+            @Override
+            public Fragment getItem(int position) {
+                Fragment fragment = ListPageFragment.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putInt(POSITION, position);
+                fragment.setArguments(bundle);
+                return fragment;
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return EVENT_TYPE[position];
+            }
+        });
+
+        binding.pager.setOnTouchListener((v, event) -> {
+            binding.swipeContainer.setEnabled(false);
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                    binding.swipeContainer.setEnabled(true);
+            }
+            return false;
+        });
+
+        binding.createEventFab.setOnClickListener(view -> openCreateEventFragment());
+
+        setHasOptionsMenu(true);
 
         return binding.getRoot();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        setupRefreshListener();
+    }
+
+    public void openCreateEventFragment() {
+        Intent intent = new Intent(getActivity(), CreateEventActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        refreshLayout.setOnRefreshListener(null);
+    }
+
+    private void setupRefreshListener() {
+        refreshLayout = binding.swipeContainer;
+        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+            eventsViewModel.loadUserEvents(true);
+        });
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_events, menu);
@@ -120,90 +141,19 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sortByEventName:
-                sortEvents(SORTBYNAME);
+                eventsViewModel.sortBy(SORTBYNAME);
                 return true;
             case R.id.sortByEventDate:
-                sortEvents(SORTBYDATE);
+                eventsViewModel.sortBy(SORTBYDATE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void sortEvents(int sortBy) {
-        getPresenter().sortBy(sortBy);
-        eventListAdapter.setSortByName(sortBy == SORTBYNAME);
-        binding.setVariable(BR.events, getPresenter().getEvents());
-        binding.executePendingBindings();
-        eventListAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public Lazy<EventsPresenter> getPresenterProvider() {
-        return presenterProvider;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        setupRecyclerView();
-        setupRefreshListener();
-        getPresenter().attach(this);
-        binding.setEvents(getPresenter().getEvents());
-        getPresenter().start();
-
-        initialized = true;
-
-        binding.createEventFab.setOnClickListener(view -> openCreateEventFragment());
-    }
-
-    public void openCreateEventFragment() {
-        Intent intent = new Intent(getActivity(), CreateEventActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     protected int getTitle() {
         return R.string.events;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        refreshLayout.setOnRefreshListener(null);
-        eventListAdapter.unregisterAdapterDataObserver(adapterDataObserver);
-    }
-
-    private void setupRecyclerView() {
-        if (!initialized) {
-            eventListAdapter = new EventsListAdapter(getPresenter().getEvents(), bus, getPresenter());
-            binding.bottomNavigation.setSelectedItemId(R.id.action_live);
-
-            recyclerView = binding.eventRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(eventListAdapter);
-            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(eventListAdapter);
-            recyclerView.addItemDecoration(decoration);
-
-            adapterDataObserver = new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onChanged() {
-                    decoration.invalidateHeaders();
-                }
-            };
-        }
-        eventListAdapter.registerAdapterDataObserver(adapterDataObserver);
-    }
-
-    private void setupRefreshListener() {
-        refreshLayout = binding.swipeContainer;
-        refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            getPresenter().loadUserEvents(true);
-        });
     }
 
     @Override
@@ -214,20 +164,8 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
     @Override
     public void onRefreshComplete(boolean success) {
         if (success) {
-            ViewUtils.showSnackbar(recyclerView, R.string.refresh_complete);
+            ViewUtils.showSnackbar(binding.getRoot(), R.string.refresh_complete);
         }
-    }
-
-    @Override
-    public void showResults(List<Event> events) {
-        binding.setVariable(BR.events, events);
-        binding.executePendingBindings();
-        eventListAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showEmptyView(boolean show) {
-        ViewUtils.showView(binding.emptyView, show);
     }
 
     @Override
@@ -235,22 +173,4 @@ public class EventListFragment extends BaseFragment<EventsPresenter> implements 
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
 
-    @Override
-    public void resetEventsList() {
-        eventListAdapter.categorizeEvents();
-        binding.bottomNavigation.setSelectedItemId(R.id.action_live);
-    }
-
-    @Override
-    public void openSalesSummary(Long eventId) {
-        DialogFragment fragment = SalesSummaryFragment.newInstance(eventId);
-        fragment.show(getFragmentManager(), "summary");
-    }
-
-    @Override
-    public void closeSalesSummary() {
-        DialogFragment fragment = ((DialogFragment) getFragmentManager().findFragmentByTag("summary"));
-        if (fragment != null)
-            fragment.dismiss();
-    }
 }

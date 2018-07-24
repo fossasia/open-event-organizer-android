@@ -4,7 +4,9 @@ package org.fossasia.openevent.app.data.tracks;
 import android.support.annotation.NonNull;
 
 import org.fossasia.openevent.app.common.Constants;
+import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
+import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
@@ -16,6 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 public class TrackRepositoryImpl implements TrackRepository {
     private final TrackApi trackApi;
     private final Repository repository;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
 
     @Inject
     public TrackRepositoryImpl(TrackApi trackApi, Repository repository) {
@@ -36,6 +39,7 @@ public class TrackRepositoryImpl implements TrackRepository {
 
         return repository.observableOf(Track.class)
             .reload(reload)
+            .withRateLimiterConfig("Tracks", rateLimiter)
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();

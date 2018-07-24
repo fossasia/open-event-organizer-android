@@ -2,6 +2,7 @@ package org.fossasia.openevent.app.core.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
@@ -15,15 +16,16 @@ import static org.fossasia.openevent.app.core.event.create.CreateEventActivity.E
 class DrawerNavigator {
 
     private final Context context;
-    private final MainPresenter mainPresenter;
     private final FragmentNavigator fragmentNavigator;
+    private final OrganizerViewModel organizerViewModel;
 
     private AlertDialog logoutDialog;
+    private final String GOOGLE_FORM_LINK = "https://docs.google.com/forms/d/e/1FAIpQLSfJ-v1mbmNp1ChpsikHDx6HZ5G9Bq8ELCivckPPcYlOAFOy2Q/viewform?usp=sf_link";
 
-    DrawerNavigator(Context context, FragmentNavigator fragmentNavigator, MainPresenter mainPresenter) {
+    DrawerNavigator(Context context, FragmentNavigator fragmentNavigator, OrganizerViewModel organizerViewModel) {
         this.context = context;
         this.fragmentNavigator = fragmentNavigator;
-        this.mainPresenter = mainPresenter;
+        this.organizerViewModel = organizerViewModel;
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
@@ -44,6 +46,10 @@ class DrawerNavigator {
             Intent intent = new Intent(context, AboutEventActivity.class);
             intent.putExtra(AboutEventActivity.EVENT_ID, fragmentNavigator.getEventId());
             context.startActivity(intent);
+        } else if (id == R.id.nav_suggestion) {
+            Intent googleFormIntent = new Intent(Intent.ACTION_VIEW);
+            googleFormIntent.setData(Uri.parse(GOOGLE_FORM_LINK));
+            context.startActivity(googleFormIntent);
         } else
             fragmentNavigator.loadFragment(id);
     }
@@ -53,7 +59,7 @@ class DrawerNavigator {
             logoutDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.logout_confirmation)
                 .setMessage(R.string.logout_confirmation_message)
-                .setPositiveButton(R.string.ok, (dialog, which) -> mainPresenter.logout())
+                .setPositiveButton(R.string.ok, (dialog, which) -> organizerViewModel.logout())
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .create();
 

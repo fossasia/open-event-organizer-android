@@ -44,11 +44,11 @@
         <activity
             android:name=".core.event.about.AboutEventActivity"
             android:label="@string/title_activity_about_event"
-            android:theme="@style/AppTheme.Main" />
+            android:theme="@style/AppTheme.Main.Light"/>
         <activity
             android:name=".core.event.create.CreateEventActivity"
-            android:label="@string/title_activity_about_event"
-            android:theme="@style/AppTheme.Main" />
+            android:label="@string/create_event"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".core.organizer.detail.OrganizerDetailActivity"
             android:label="@string/title_activity_organizer_detail"

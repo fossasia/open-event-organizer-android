@@ -17,9 +17,7 @@ public interface ScanQRView extends Progressive {
 
     void showBarcodePanel(boolean show);
 
-    void showBarcodeData(@NonNull String data);
-
-    void loadCamera();
+    void showMessage(@NonNull int stringRes, boolean matched);
 
     void startScan();
 
