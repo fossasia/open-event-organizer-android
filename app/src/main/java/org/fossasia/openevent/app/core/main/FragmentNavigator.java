@@ -73,7 +73,7 @@ class FragmentNavigator {
                 fragment = OrdersFragment.newInstance(eventId);
                 break;
             case R.id.nav_event_settings:
-                fragment = EventSettingsFragment.newInstance();
+                fragment = EventSettingsFragment.newInstance(eventId);
                 break;
             case R.id.nav_events:
                 fragment = EventListFragment.newInstance();

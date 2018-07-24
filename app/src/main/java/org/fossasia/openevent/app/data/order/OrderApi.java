@@ -13,4 +13,7 @@ public interface OrderApi {
 
     @GET("orders/{identifier}?include=event")
     Observable<Order> getOrder(@Path("identifier") String identifier);
+
+    @GET("events/{event_id}/order-statistics")
+    Observable<OrderStatistics> getOrderStatisticsForEvent(@Path("event_id") long id);
 }
