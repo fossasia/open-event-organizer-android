@@ -42,7 +42,7 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
 
     @Id(LongIdHandler.class)
     @PrimaryKey
-    public long id;
+    public Long id;
     @Column
     public String city;
     @Column

@@ -10,7 +10,7 @@ import retrofit2.http.Path;
 
 public interface AttendeeApi {
 
-    @GET("events/{id}/attendees?include=order,ticket,event&fields[event]=id&fields[ticket]=id&page[size]=0")
+    @GET("events/{id}/attendees?include=event&fields[event]=id&page[size]=0")
     Observable<List<Attendee>> getAttendees(@Path("id") long id);
 
     @GET("orders/{id}/attendees?include=order,ticket,event&fields[event]=id&fields[ticket]=id&page[size]=0")
