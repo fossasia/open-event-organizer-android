@@ -176,7 +176,6 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
     @Override
     public void onScannedAttendee(Attendee attendee) {
         getPresenter().pauseScan();
-        ViewUtils.setTint(barcodePanel, ContextCompat.getColor(this, R.color.green_a400));
         showToggleDialog(attendee.getId());
     }
 
@@ -186,8 +185,11 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
     }
 
     @Override
-    public void showBarcodeData(String data) {
-        barcodePanel.setText(data);
+    public void showMessage(int stringRes, boolean matched) {
+        barcodePanel.setText(getString(stringRes));
+        ViewUtils.setTint(barcodePanel,
+            ContextCompat.getColor(this, matched ? R.color.green_a400 : R.color.red_500)
+        );
     }
 
     @Override

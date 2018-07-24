@@ -36,25 +36,25 @@ public class ScanSettings extends PreferenceFragmentCompat {
 
         setPreferencesFromResource(R.xml.scan_settings, rootKey);
 
-        CheckBoxPreference checkOut = (CheckBoxPreference) findPreference("check_out");
-        CheckBoxPreference validate = (CheckBoxPreference) findPreference("validate");
-        CheckBoxPreference checkIn = (CheckBoxPreference) findPreference("check_in");
+        CheckBoxPreference checkOut = (CheckBoxPreference) findPreference(Constants.PREF_SCAN_WILL_CHECK_OUT);
+        CheckBoxPreference validate = (CheckBoxPreference) findPreference(Constants.PREF_SCAN_WILL_VALIDATE);
+        CheckBoxPreference checkIn = (CheckBoxPreference) findPreference(Constants.PREF_SCAN_WILL_CHECK_IN);
 
         OnPreferenceChangeListener listener = (preference, newValue) -> {
             String key = preference.getKey();
 
             switch (key) {
-                case "check_in":
+                case Constants.PREF_SCAN_WILL_CHECK_IN:
                     //Reset other items
                     checkOut.setChecked(false);
                     validate.setChecked(false);
                     break;
-                case "check_out":
+                case Constants.PREF_SCAN_WILL_CHECK_OUT:
                     //Reset other items
                     checkIn.setChecked(false);
                     validate.setChecked(false);
                     break;
-                case "validate":
+                case Constants.PREF_SCAN_WILL_VALIDATE:
                     //Reset other items
                     checkOut.setChecked(false);
                     checkIn.setChecked(false);
