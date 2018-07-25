@@ -21,6 +21,7 @@ import org.fossasia.openevent.app.core.event.create.CreateEventActivity;
 import org.fossasia.openevent.app.data.ContextUtils;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventStatistics;
+import org.fossasia.openevent.app.data.order.OrderStatistics;
 import org.fossasia.openevent.app.databinding.EventDetailBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 import org.fossasia.openevent.app.utils.Utils;
@@ -103,6 +104,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
         super.onStart();
         getPresenter().attach(initialEventId, this);
         binding.eventStatistics.switchEventStatistics.setChecked(false);
+        binding.orderStatistics.switchOrderStatistics.setChecked(false);
         binding.setPresenter(getPresenter());
         setupRefreshListener();
         getPresenter().start();
@@ -160,6 +162,12 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     }
 
     @Override
+    public void showOrderStatistics(OrderStatistics orderStatistics) {
+        binding.setOrderStats(orderStatistics);
+        binding.executePendingBindings();
+    }
+
+    @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
@@ -200,6 +208,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     public void openEditEvent() {
         Intent intent = new Intent(context, CreateEventActivity.class);
         intent.putExtra(EVENT_ID, initialEventId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 

@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import org.fossasia.openevent.app.BuildConfig;
@@ -19,11 +18,14 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
+import org.fossasia.openevent.app.core.settings.AcknowledgementDecider;
+
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final String VERSION = "Version";
     private static final String GROSS_SALES = "Gross Sales";
     private static final String NET_SALES = "Net Sales";
+    private final AcknowledgementDecider acknowledgementDecider = new AcknowledgementDecider();
     private PreferenceManager manager;
 
     public static SettingsFragment newInstance() {
@@ -75,8 +77,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
+        findPreference(getString(R.string.acknowledgements_key)).setVisible(acknowledgementDecider.shouldShowAcknowledgement());
+
         findPreference(getString(R.string.acknowledgements_key)).setOnPreferenceClickListener(preference -> {
-            startActivity(new Intent(getActivity(), OssLicensesMenuActivity.class));
+            acknowledgementDecider.openAcknowledgementsSection(getActivity());
             return true;
         });
     }

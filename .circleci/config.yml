@@ -22,7 +22,7 @@ jobs:
           command: ./gradlew lint androidCheck androidPmd
       - run:
           name: Test Coverage
-          command: ./gradlew testDebugUnitTestCoverage
+          command: ./gradlew testPlayStoreDebugUnitTestCoverage
       - store_artifacts:
           path: app/build/reports
           destination: reports

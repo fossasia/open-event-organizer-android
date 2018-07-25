@@ -17,6 +17,8 @@ import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
 import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.event.EventRepository;
 import org.fossasia.openevent.app.data.event.EventStatistics;
+import org.fossasia.openevent.app.data.order.OrderRepository;
+import org.fossasia.openevent.app.data.order.OrderStatistics;
 import org.fossasia.openevent.app.utils.Utils;
 
 import java.util.List;
@@ -37,7 +39,9 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
     private Event event;
     private List<Attendee> attendees;
     private EventStatistics eventStatistics;
+    private OrderStatistics orderStatistics;
     private final EventRepository eventRepository;
+    private final OrderRepository orderRepository;
     private final AttendeeRepository attendeeRepository;
     private final TicketAnalyser ticketAnalyser;
     private final ChartAnalyser chartAnalyser;
@@ -46,14 +50,15 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
 
     @Inject
     public EventDashboardPresenter(EventRepository eventRepository, AttendeeRepository attendeeRepository,
-                                   TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser, ContextUtils utilModel,
-                                   DatabaseChangeListener<Event> eventChangeListener) {
+                                   OrderRepository orderRepository, TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser,
+                                   ContextUtils utilModel, DatabaseChangeListener<Event> eventChangeListener) {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
         this.attendeeRepository = attendeeRepository;
         this.chartAnalyser = chartAnalyser;
         this.utilModel = utilModel;
         this.eventChangeListener = eventChangeListener;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -90,6 +95,7 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
             }, Logger::logError);
 
         loadEventStatistics(forceReload);
+        loadOrderStatistics(forceReload);
     }
 
     private void listenChanges() {
@@ -140,6 +146,18 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
                 .compose(progressiveErroneousRefresh(getView(), forceReload))
                 .doFinally(() -> getView().showStatistics(eventStatistics))
                 .subscribe(statistics -> eventStatistics = statistics, Logger::logError);
+        }
+    }
+
+    private void loadOrderStatistics(boolean forceReload) {
+        if (!forceReload && isRotated() && orderStatistics != null)
+            getView().showOrderStatistics(orderStatistics);
+        else {
+            orderRepository.getOrderStatisticsForEvent(getId(), forceReload)
+                .compose(dispose(getDisposable()))
+                .compose(progressiveErroneousRefresh(getView(), forceReload))
+                .doFinally(() -> getView().showOrderStatistics(orderStatistics))
+                .subscribe(statistics -> orderStatistics = statistics, Logger::logError);
         }
     }
 

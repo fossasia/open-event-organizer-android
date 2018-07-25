@@ -1,5 +1,6 @@
 package org.fossasia.openevent.app.core.auth.signup;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -28,16 +29,15 @@ import org.fossasia.openevent.app.utils.ValidateUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static org.fossasia.openevent.app.core.settings.LegalPreferenceFragment.PRIVACY_POLICY_URL;
 import static org.fossasia.openevent.app.core.settings.LegalPreferenceFragment.TERMS_OF_USE_URL;
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class SignUpFragment extends BaseFragment<SignUpPresenter> implements SignUpView {
+public class SignUpFragment extends BaseFragment implements SignUpView {
 
     @Inject
-    Lazy<SignUpPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
     @Inject
     ContextUtils utilModel;
@@ -45,6 +45,7 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
     private SignUpFragmentBinding binding;
     private Validator validator;
     private SharedViewModel sharedViewModel;
+    private SignUpViewModel signUpViewModel;
 
     public static SignUpFragment newInstance() {
         return new SignUpFragment();
@@ -57,16 +58,19 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
         validator = new Validator(binding);
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         sharedViewModel.getEmail().observe(this, email -> binding.getUser().setEmail(email));
+        signUpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SignUpViewModel.class);
         return binding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        binding.setUser(getPresenter().getUser());
+        binding.setUser(signUpViewModel.getUser());
 
         validate(binding.emailLayout , ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
+        signUpViewModel.getProgress().observe(this, this::showProgress);
+        signUpViewModel.getSuccess().observe(this, this::onSuccess);
+        signUpViewModel.getError().observe(this, this::showError);
 
         binding.btnSignUp.setOnClickListener(view -> {
             if (!validator.validate())
@@ -74,13 +78,13 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
 
             String password = binding.password.getText().toString();
             String confirmPassword = binding.confirmPassword.getText().toString();
-            if (!(getPresenter().arePasswordsEqual(password, confirmPassword))) {
+            if (!(signUpViewModel.arePasswordsEqual(password, confirmPassword))) {
                 return;
             }
 
             String url = binding.url.baseUrl.getText().toString().trim();
-            getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
-            getPresenter().signUp();
+            signUpViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
+            signUpViewModel.signUp();
         });
 
         binding.privacyPolicy.setOnClickListener(view -> openPrivacyPolicy());
@@ -153,11 +157,6 @@ public class SignUpFragment extends BaseFragment<SignUpPresenter> implements Sig
     @Override
     public void showProgress(boolean show) {
         showView(binding.progressBar, show);
-    }
-
-    @Override
-    public Lazy<SignUpPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override
