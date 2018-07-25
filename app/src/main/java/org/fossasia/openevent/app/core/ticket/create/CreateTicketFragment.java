@@ -1,5 +1,7 @@
 package org.fossasia.openevent.app.core.ticket.create;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -17,15 +19,15 @@ import org.fossasia.openevent.app.ui.ViewUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static org.fossasia.openevent.app.ui.ViewUtils.showView;
 
-public class CreateTicketFragment extends BaseFragment<CreateTicketPresenter> implements CreateTicketView {
+public class CreateTicketFragment extends BaseFragment implements CreateTicketView {
 
     @Inject
-    Lazy<CreateTicketPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
+    private CreateTicketViewModel createTicketViewModel;
     private TicketCreateLayoutBinding binding;
     private Validator validator;
 
@@ -38,11 +40,12 @@ public class CreateTicketFragment extends BaseFragment<CreateTicketPresenter> im
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         binding =  DataBindingUtil.inflate(localInflater, R.layout.ticket_create_layout, container, false);
+        createTicketViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateTicketViewModel.class);
         validator = new Validator(binding.form);
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
-                getPresenter().createTicket();
+                createTicketViewModel.createTicket();
         });
 
         return binding.getRoot();
@@ -51,18 +54,16 @@ public class CreateTicketFragment extends BaseFragment<CreateTicketPresenter> im
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        binding.setTicket(getPresenter().getTicket());
+        createTicketViewModel.getProgress().observe(this, this::showProgress);
+        createTicketViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
+        createTicketViewModel.getSuccess().observe(this, this::onSuccess);
+        createTicketViewModel.getError().observe(this, this::showError);
+        binding.setTicket(createTicketViewModel.getTicket());
     }
 
     @Override
     protected int getTitle() {
         return R.string.create_ticket;
-    }
-
-    @Override
-    public Lazy<CreateTicketPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override

@@ -19,6 +19,7 @@ import org.fossasia.openevent.app.core.share.ShareEventViewModel;
 import org.fossasia.openevent.app.core.speaker.details.SpeakerDetailsViewModel;
 import org.fossasia.openevent.app.core.speakerscall.create.CreateSpeakersCallViewModel;
 import org.fossasia.openevent.app.core.sponsor.create.CreateSponsorViewModel;
+import org.fossasia.openevent.app.core.ticket.create.CreateTicketViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -94,6 +95,11 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(CreateTicketViewModel.class)
+    public abstract ViewModel bindCreateTicketViewModel(CreateTicketViewModel ticketViewModel);
+   
+    @Binds
+    @IntoMap 
     @ViewModelKey(SignUpViewModel.class)
     public abstract ViewModel bindSignUpViewModel(SignUpViewModel signUpViewModel);
     
