@@ -332,6 +332,8 @@
     <string name="acknowledgements_key">acknowledgement</string>
     <string name="order_statistics">Order Statistics</string>
     <string name="sales">Sales</string>
+    <string name="attendee">Attendee</string>
+    <string name="ticket_type">Ticket Type</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
