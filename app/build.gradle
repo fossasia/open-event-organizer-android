@@ -219,7 +219,7 @@ dependencies {
     implementation 'com.github.badoualy:stepper-indicator:1.0.7'
 
     //open-source licenses
-    implementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
+    playStoreImplementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 
     //Testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {

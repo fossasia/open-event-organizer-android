@@ -18,6 +18,8 @@ import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
+import org.fossasia.openevent.app.core.settings.AcknowledgementDecider;
+
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private static final String VERSION = "Version";
@@ -65,6 +67,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
+        findPreference(getString(R.string.acknowledgements_key)).setVisible(new AcknowledgementDecider().shouldShowAcknowledgement());
         findPreference(getString(R.string.acknowledgements_key)).setOnPreferenceClickListener(preference -> {
             startActivity(new Intent(getActivity(), OssLicensesMenuActivity.class));
             return true;
