@@ -6,11 +6,11 @@
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.event.Event" />
+            type="com.eventyay.organizer.data.event.Event" />
 
         <variable
             name="copyright"
-            type="org.fossasia.openevent.app.data.copyright.Copyright" />
+            type="com.eventyay.organizer.data.copyright.Copyright" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"

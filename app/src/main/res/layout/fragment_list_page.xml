@@ -3,7 +3,7 @@
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="org.fossasia.openevent.app.core.event.list.pager.ListPageFragment"
+        tools:context="com.eventyay.organizer.core.event.list.pager.ListPageFragment"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 

@@ -9,7 +9,7 @@
 
         <variable
             name="order"
-            type="org.fossasia.openevent.app.data.order.Order" />
+            type="com.eventyay.organizer.data.order.Order" />
     </data>
 
     <LinearLayout

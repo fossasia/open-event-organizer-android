@@ -8,13 +8,13 @@
 
         <variable
             name="user"
-            type="org.fossasia.openevent.app.data.user.User" />
+            type="com.eventyay.organizer.data.user.User" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.fossasia.openevent.app.core.auth.signup.SignUpFragment">
+        tools:context="com.eventyay.organizer.core.auth.signup.SignUpFragment">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"

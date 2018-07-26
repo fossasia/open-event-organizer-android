@@ -7,11 +7,11 @@
 
         <import type="android.view.View" />
 
-        <import type="org.fossasia.openevent.app.ui.binding.BindingAdapters" />
+        <import type="com.eventyay.organizer.ui.binding.BindingAdapters" />
 
         <variable
             name="session"
-            type="org.fossasia.openevent.app.data.session.Session" />
+            type="com.eventyay.organizer.data.session.Session" />
     </data>
 
     <LinearLayout

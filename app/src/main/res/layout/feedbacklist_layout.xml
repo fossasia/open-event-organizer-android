@@ -8,7 +8,7 @@
 
         <variable
             name="feedback"
-            type="org.fossasia.openevent.app.data.feedback.Feedback" />
+            type="com.eventyay.organizer.data.feedback.Feedback" />
     </data>
 
     <LinearLayout
