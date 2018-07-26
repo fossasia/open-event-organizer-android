@@ -15,7 +15,8 @@ import dagger.android.AndroidInjector;
 @Component(modules = {
     AndroidInjectionModule.class,
     ActivityBuildersModule.class,
-    AppModule.class
+    AppModule.class,
+    FlavorModule.class
 })
 public interface AppComponent extends AndroidInjector<OrgaApplication> {
 
