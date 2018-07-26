@@ -4,6 +4,7 @@ import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.copyright.Copyright;
 import org.fossasia.openevent.app.data.db.DatabaseChangeListener;
 import org.fossasia.openevent.app.data.db.DbFlowDatabaseChangeListener;
+import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.data.speaker.Speaker;
@@ -61,5 +62,10 @@ public class ChangeListenerModule {
     @Provides
     DatabaseChangeListener<SpeakersCall> providesSpeakerCallChangeListener() {
         return new DbFlowDatabaseChangeListener<>(SpeakersCall.class);
+    }
+
+    @Provides
+    DatabaseChangeListener<Event> providesEventChangeListener() {
+        return new DbFlowDatabaseChangeListener<>(Event.class);
     }
 }

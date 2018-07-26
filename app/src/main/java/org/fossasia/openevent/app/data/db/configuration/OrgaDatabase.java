@@ -18,6 +18,8 @@ import org.fossasia.openevent.app.data.event.Event;
 import org.fossasia.openevent.app.data.faq.Faq;
 import org.fossasia.openevent.app.data.feedback.Feedback;
 import org.fossasia.openevent.app.data.order.Order;
+import org.fossasia.openevent.app.data.order.OrderStatistics;
+import org.fossasia.openevent.app.data.order.Statistics;
 import org.fossasia.openevent.app.data.session.Session;
 import org.fossasia.openevent.app.data.speaker.Speaker;
 import org.fossasia.openevent.app.data.speakerscall.SpeakersCall;
@@ -43,7 +45,7 @@ public final class OrgaDatabase {
     public static final String NAME = "orga_database";
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS ";
     // To be bumped after each schema change and migration addition
-    public static final int VERSION = 15;
+    public static final int VERSION = 16;
 
 
     private OrgaDatabase() {
@@ -249,6 +251,23 @@ public final class OrgaDatabase {
             Timber.d("Running migration for DB version 14");
 
             Class<?>[] recreated = new Class[] {SpeakersCall.class};
+
+            for (Class<?> recreate: recreated) {
+                ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
+                databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
+                databaseWrapper.execSQL(modelAdapter.getCreationQuery());
+            }
+        }
+    }
+
+    @Migration(version = 16, database = OrgaDatabase.class)
+    public static class MigrationTo16 extends BaseMigration {
+
+        @Override
+        public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
+            Timber.d("Running migration for DB version 16");
+
+            Class<?>[] recreated = new Class[] {OrderStatistics.class, Statistics.class};
 
             for (Class<?> recreate: recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);

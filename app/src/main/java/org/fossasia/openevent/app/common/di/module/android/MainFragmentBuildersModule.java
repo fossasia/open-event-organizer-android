@@ -11,6 +11,7 @@ import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
 import org.fossasia.openevent.app.core.orders.detail.OrderDetailFragment;
 import org.fossasia.openevent.app.core.orders.list.OrdersFragment;
+import org.fossasia.openevent.app.core.settings.restriction.CheckInRestrictions;
 import org.fossasia.openevent.app.core.settings.SettingsFragment;
 import org.fossasia.openevent.app.core.share.ShareEventFragment;
 import org.fossasia.openevent.app.core.speaker.list.SpeakersFragment;
@@ -64,6 +65,9 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract SettingsFragment constributeSettingFragment();
+
+    @ContributesAndroidInjector
+    abstract CheckInRestrictions contributeCheckInRestrictions();
 
     // FAQ
 
