@@ -8,7 +8,7 @@
 
         <variable
             name="ticket"
-            type="org.fossasia.openevent.app.data.ticket.Ticket" />
+            type="com.eventyay.organizer.data.ticket.Ticket" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

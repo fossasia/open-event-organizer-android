@@ -1,4 +1,4 @@
-package org.fossasia.openevent.app;
+package com.eventyay.organizer;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("org.fossasia.openevent.app", appContext.getPackageName());
+        assertEquals("com.eventyay.organizer", appContext.getPackageName());
     }
 }

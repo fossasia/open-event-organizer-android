@@ -7,11 +7,11 @@
 
         <variable
             name="sessionsPresenter"
-            type="org.fossasia.openevent.app.core.session.list.SessionsPresenter" />
+            type="com.eventyay.organizer.core.session.list.SessionsPresenter" />
 
         <variable
             name="session"
-            type="org.fossasia.openevent.app.data.session.Session" />
+            type="com.eventyay.organizer.data.session.Session" />
     </data>
 
     <android.support.v7.widget.CardView

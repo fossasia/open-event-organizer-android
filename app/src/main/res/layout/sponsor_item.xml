@@ -9,11 +9,11 @@
 
         <variable
             name="sponsor"
-            type="org.fossasia.openevent.app.data.sponsor.Sponsor" />
+            type="com.eventyay.organizer.data.sponsor.Sponsor" />
 
         <variable
             name="sponsorsPresenter"
-            type="org.fossasia.openevent.app.core.sponsor.list.SponsorsPresenter"/>
+            type="com.eventyay.organizer.core.sponsor.list.SponsorsPresenter"/>
     </data>
 
     <android.support.v7.widget.CardView
