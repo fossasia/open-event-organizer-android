@@ -3,6 +3,7 @@ package com.eventyay.organizer.common.di.component;
 import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.common.di.module.AppModule;
 import com.eventyay.organizer.common.di.module.android.ActivityBuildersModule;
+import com.eventyay.organizer.common.di.module.android.FlavorModule;
 import com.eventyay.organizer.data.attendee.AttendeeCheckInWork;
 
 import javax.inject.Singleton;
@@ -15,7 +16,8 @@ import dagger.android.AndroidInjector;
 @Component(modules = {
     AndroidInjectionModule.class,
     ActivityBuildersModule.class,
-    AppModule.class
+    AppModule.class,
+    FlavorModule.class
 })
 public interface AppComponent extends AndroidInjector<OrgaApplication> {
 

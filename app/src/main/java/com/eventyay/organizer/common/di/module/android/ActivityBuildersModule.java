@@ -1,6 +1,5 @@
 package com.eventyay.organizer.common.di.module.android;
 
-import com.eventyay.organizer.core.attendee.qrscan.ScanQRActivity;
 import com.eventyay.organizer.core.auth.AuthActivity;
 import com.eventyay.organizer.core.event.about.AboutEventActivity;
 import com.eventyay.organizer.core.event.chart.ChartActivity;
@@ -26,9 +25,6 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector(modules = AuthFragmentBuildersModule.class)
     abstract AuthActivity contributeAuthActivity();
-
-    @ContributesAndroidInjector(modules = BarcodeFragmentBuildersModule.class)
-    abstract ScanQRActivity contributeScanQRActivity();
 
     @ContributesAndroidInjector(modules = AboutFragmentBuildersModule.class)
     abstract AboutEventActivity contributeEventActivity();

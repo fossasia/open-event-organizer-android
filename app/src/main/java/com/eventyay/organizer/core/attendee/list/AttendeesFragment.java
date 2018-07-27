@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.attendee.list;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -21,21 +20,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.databinding.library.baseAdapters.BR;
-import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.adapters.ItemAdapter;
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
+import com.eventyay.organizer.core.attendee.ScanningDecider;
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInFragment;
 import com.eventyay.organizer.core.attendee.list.listeners.AttendeeItemCheckInEvent;
-import com.eventyay.organizer.core.attendee.qrscan.ScanQRActivity;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.databinding.FragmentAttendeesBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.SearchUtils;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import java.util.Arrays;
 import java.util.List;
@@ -68,6 +66,8 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     private FastAdapter<Attendee> fastAdapter;
     private StickyHeaderAdapter<Attendee> stickyHeaderAdapter;
+
+    private final ScanningDecider scanningDecider = new ScanningDecider();
 
     private ItemAdapter<Attendee> fastItemAdapter;
     private FragmentAttendeesBinding binding;
@@ -161,13 +161,10 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_attendees, container, false);
-        binding.fabScanQr.setOnClickListener(v -> {
-            Intent scanQr = new Intent(context, ScanQRActivity.class);
-            scanQr.putExtra(MainActivity.EVENT_KEY, eventId);
-            startActivity(scanQr);
-        });
 
         binding.fabScanQr.getDrawable().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
+        binding.fabScanQr.setOnClickListener(v -> scanningDecider.openScanQRActivity(getActivity(), eventId));
+
         return binding.getRoot();
     }
 
