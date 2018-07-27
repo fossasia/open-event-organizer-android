@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +63,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("http://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
             }
+            return true;
+        });
+
+        findPreference(getString(R.string.legal_key)).setOnPreferenceClickListener(preference -> {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction
+                .replace(R.id.fragment_container, LegalPreferenceFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
             return true;
         });
 
