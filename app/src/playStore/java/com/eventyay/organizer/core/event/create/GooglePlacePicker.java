@@ -13,14 +13,14 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 
 import timber.log.Timber;
 
-public class GooglePlacesDecider {
+public class GooglePlacePicker {
 
     private final GoogleApiAvailability googleApiAvailabilityInstance = GoogleApiAvailability.getInstance();
     private static final int PLACE_PICKER_REQUEST = 1;
     private Place place;
     private boolean showLocation = false;
 
-    public void onSelectingButtonPlacePicker(Activity activity) {
+    public void onSelectingPlace(Activity activity) {
         int errorCode = googleApiAvailabilityInstance.isGooglePlayServicesAvailable(activity);
 
         if (errorCode == ConnectionResult.SUCCESS) {
@@ -42,12 +42,10 @@ public class GooglePlacesDecider {
             //SERVICE_UPDATING, SERVICE_INVALID - can't use place picker - must enter manually
             showLocation = true;
         }
-    }
-
-    ;
+    };
 
     @SuppressLint("RestrictedApi")
-    public void setGooglePlaces(Activity activity, Intent data) {
+    public void loadPlaces(Activity activity, Intent data) {
         place = PlacePicker.getPlace(activity, data);
     }
 

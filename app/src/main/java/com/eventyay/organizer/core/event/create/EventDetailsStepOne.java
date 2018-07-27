@@ -29,7 +29,6 @@ import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 
-
 public class EventDetailsStepOne extends BaseBottomSheetFragment implements EventDetailsStepOneView {
 
     @Inject
@@ -38,7 +37,7 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
     private CreateEventViewModel createEventViewModel;
     private EventDetailsStepOneBinding binding;
     private static final int PLACE_PICKER_REQUEST = 1;
-    private final GooglePlacesDecider googlePlacesDecider = new GooglePlacesDecider();
+    private final GooglePlacePicker googlePlacePicker = new GooglePlacePicker();
 
     public static EventDetailsStepOne newInstance() {
         return new EventDetailsStepOne();
@@ -101,8 +100,8 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
         }
 
         binding.buttonPlacePicker.setOnClickListener(view -> {
-            googlePlacesDecider.onSelectingButtonPlacePicker(getActivity());
-            if (googlePlacesDecider.shouldShowLocationLayout())
+            googlePlacePicker.onSelectingPlace(getActivity());
+            if (googlePlacePicker.shouldShowLocationLayout())
                 showLocationLayouts();
         });
     }
@@ -114,15 +113,15 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
             //once place is picked from map, make location fields visible for confirmation by user
             showLocationLayouts();
             //set event attributes
-            googlePlacesDecider.setGooglePlaces(getActivity(), data);
+            googlePlacePicker.loadPlaces(getActivity(), data);
             Event event = binding.getEvent();
-            event.latitude = googlePlacesDecider.getLatitude();
-            event.longitude = googlePlacesDecider.getLongitude();
+            event.latitude = googlePlacePicker.getLatitude();
+            event.longitude = googlePlacePicker.getLongitude();
 
             //auto-complete location fields for confirmation by user
-            binding.locationName.setText(googlePlacesDecider.getAddress());
+            binding.locationName.setText(googlePlacePicker.getAddress());
             binding.searchableLocationName.setText(
-                createEventViewModel.getSearchableLocationName(googlePlacesDecider.getAddress().toString()));
+                createEventViewModel.getSearchableLocationName(googlePlacePicker.getAddress().toString()));
         }
     }
 

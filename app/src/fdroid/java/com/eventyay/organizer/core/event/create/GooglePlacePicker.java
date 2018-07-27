@@ -4,16 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 
-public class GooglePlacesDecider {
+public class GooglePlacePicker {
 
     private final double DEMO_VALUE = 1;
 
-    public void onSelectingButtonPlacePicker(Activity activity) {
+    public void onSelectingPlace(Activity activity) {
         //do nothing
     }
 
     @SuppressLint("RestrictedApi")
-    public void setGooglePlaces(Activity activity, Intent data) {
+    public void loadPlaces(Activity activity, Intent data) {
         //do nothing
     }
 
