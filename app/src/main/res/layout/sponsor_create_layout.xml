@@ -8,7 +8,7 @@
 
         <variable
             name="sponsor"
-            type="org.fossasia.openevent.app.data.sponsor.Sponsor" />
+            type="com.eventyay.organizer.data.sponsor.Sponsor" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

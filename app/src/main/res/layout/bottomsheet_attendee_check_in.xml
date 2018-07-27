@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="org.fossasia.openevent.app.common.ContextManager" />
-        <import type="org.fossasia.openevent.app.utils.DateUtils" />
-        <import type="org.fossasia.openevent.app.utils.Utils" />
+        <import type="com.eventyay.organizer.common.ContextManager" />
+        <import type="com.eventyay.organizer.utils.DateUtils" />
+        <import type="com.eventyay.organizer.utils.Utils" />
         <import type="android.view.View" />
 
         <variable
             name="presenter"
-            type="org.fossasia.openevent.app.core.attendee.checkin.AttendeeCheckInPresenter" />
+            type="com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInPresenter" />
 
         <variable
             name="checkinAttendee"
-            type="org.fossasia.openevent.app.data.attendee.Attendee" />
+            type="com.eventyay.organizer.data.attendee.Attendee" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

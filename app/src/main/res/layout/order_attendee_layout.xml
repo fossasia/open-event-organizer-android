@@ -9,7 +9,7 @@
 
         <variable
             name="attendee"
-            type="org.fossasia.openevent.app.data.attendee.Attendee" />
+            type="com.eventyay.organizer.data.attendee.Attendee" />
     </data>
 
     <LinearLayout

@@ -81,7 +81,6 @@ android {
 
 repositories {
     maven { url "https://jitpack.io" }
-    maven { url 'http://dl.bintray.com/igenius-code/maven' }
 }
 
 sentry {
@@ -199,8 +198,8 @@ dependencies {
     // Stetho
     debugImplementation "com.facebook.stetho:stetho:${versions.stetho}"
     debugImplementation "com.facebook.stetho:stetho-okhttp3:${versions.stetho}"
-    releaseImplementation "net.igenius:stetho-no-op:${versions.stetho_no_op}"
-    testImplementation "net.igenius:stetho-no-op:${versions.stetho_no_op}"
+    releaseImplementation "com.github.mypplication:stetho-noop:${versions.stetho_no_op}"
+    testImplementation "com.github.mypplication:stetho-noop:${versions.stetho_no_op}"
 
     // Butterknife
     implementation "com.jakewharton:butterknife:${versions.butterknife}"
