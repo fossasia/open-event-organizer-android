@@ -61,7 +61,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Payment Country">
-        <org.fossasia.openevent.app.core.settings.CountryPreference
+        <com.eventyay.organizer.core.settings.CountryPreference
             android:key="key"
             android:summary="@string/default_payment_country"
             android:title="@string/payment_country" />

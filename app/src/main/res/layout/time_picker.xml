@@ -42,14 +42,14 @@
                 android:orientation="horizontal"
                 android:visibility="@{ picker.checked ? View.VISIBLE : View.GONE }">
 
-                <org.fossasia.openevent.app.ui.views.DatePicker
+                <com.eventyay.organizer.ui.views.DatePicker
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/purple_500"
                     app:value="@={ date }" />
 
-                <org.fossasia.openevent.app.ui.views.TimePicker
+                <com.eventyay.organizer.ui.views.TimePicker
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

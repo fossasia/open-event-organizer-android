@@ -7,15 +7,15 @@
 
         <import type="android.view.View" />
 
-        <import type="org.fossasia.openevent.app.common.ContextManager" />
+        <import type="com.eventyay.organizer.common.ContextManager" />
 
         <variable
             name="faqListPresenter"
-            type="org.fossasia.openevent.app.core.faq.list.FaqListPresenter"/>
+            type="com.eventyay.organizer.core.faq.list.FaqListPresenter"/>
 
         <variable
             name="faq"
-            type="org.fossasia.openevent.app.data.faq.Faq" />
+            type="com.eventyay.organizer.data.faq.Faq" />
     </data>
 
     <android.support.v7.widget.CardView

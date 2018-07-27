@@ -7,7 +7,7 @@
 
         <variable
             name="track"
-            type="org.fossasia.openevent.app.data.tracks.Track" />
+            type="com.eventyay.organizer.data.tracks.Track" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

@@ -4,23 +4,23 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data class="EventDetailBinding">
-        <import type="org.fossasia.openevent.app.common.ContextManager" />
+        <import type="com.eventyay.organizer.common.ContextManager" />
 
         <variable
             name="presenter"
-            type="org.fossasia.openevent.app.core.event.dashboard.EventDashboardPresenter" />
+            type="com.eventyay.organizer.core.event.dashboard.EventDashboardPresenter" />
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.event.Event" />
+            type="com.eventyay.organizer.data.event.Event" />
 
         <variable
             name="eventStats"
-            type="org.fossasia.openevent.app.data.event.EventStatistics" />
+            type="com.eventyay.organizer.data.event.EventStatistics" />
 
         <variable
             name="orderStats"
-            type="org.fossasia.openevent.app.data.order.OrderStatistics" />
+            type="com.eventyay.organizer.data.order.OrderStatistics" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
