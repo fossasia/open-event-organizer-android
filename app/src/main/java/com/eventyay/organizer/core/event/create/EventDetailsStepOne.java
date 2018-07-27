@@ -15,13 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
 import com.eventyay.organizer.data.event.Event;
@@ -36,6 +29,7 @@ import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 
+
 public class EventDetailsStepOne extends BaseBottomSheetFragment implements EventDetailsStepOneView {
 
     @Inject
@@ -44,7 +38,7 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
     private CreateEventViewModel createEventViewModel;
     private EventDetailsStepOneBinding binding;
     private static final int PLACE_PICKER_REQUEST = 1;
-    private final GoogleApiAvailability googleApiAvailabilityInstance = GoogleApiAvailability.getInstance();
+    private final GooglePlacesDecider googlePlacesDecider = new GooglePlacesDecider();
 
     public static EventDetailsStepOne newInstance() {
         return new EventDetailsStepOne();
@@ -90,7 +84,7 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
     }
 
     private void setupPlacePicker() {
-        //check if there's an google places API key
+        //check if there's a google places API key
         try {
             ApplicationInfo ai = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
@@ -107,27 +101,9 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
         }
 
         binding.buttonPlacePicker.setOnClickListener(view -> {
-            int errorCode = googleApiAvailabilityInstance.isGooglePlayServicesAvailable(getContext());
-            if (errorCode == ConnectionResult.SUCCESS) {
-                //SUCCESS
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                try {
-                    startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    Timber.d(e, "GooglePlayServicesRepairable");
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    Timber.d("GooglePlayServices NotAvailable => Updating or Unauthentic");
-                }
-            } else if (googleApiAvailabilityInstance.isUserResolvableError(errorCode)) {
-                //SERVICE_MISSING, SERVICE_VERSION_UPDATE_REQUIRED, SERVICE_DISABLED
-                googleApiAvailabilityInstance.getErrorDialog(
-                    getActivity(), errorCode, PLACE_PICKER_REQUEST, (dialog) -> {
-                        showLocationLayouts();
-                    });
-            } else {
-                //SERVICE_UPDATING, SERVICE_INVALID - can't use place picker - must enter manually
+            googlePlacesDecider.onSelectingButtonPlacePicker(getActivity());
+            if (googlePlacesDecider.shouldShowLocationLayout())
                 showLocationLayouts();
-            }
         });
     }
 
@@ -138,15 +114,15 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
             //once place is picked from map, make location fields visible for confirmation by user
             showLocationLayouts();
             //set event attributes
-            Place place = PlacePicker.getPlace(getActivity(), data);
+            googlePlacesDecider.setGooglePlaces(getActivity(), data);
             Event event = binding.getEvent();
-            event.latitude = place.getLatLng().latitude;
-            event.longitude = place.getLatLng().longitude;
-            //auto-complete location fields for confirmation by user
+            event.latitude = googlePlacesDecider.getLatitude();
+            event.longitude = googlePlacesDecider.getLongitude();
 
-            binding.locationName.setText(place.getAddress());
+            //auto-complete location fields for confirmation by user
+            binding.locationName.setText(googlePlacesDecider.getAddress());
             binding.searchableLocationName.setText(
-                createEventViewModel.getSearchableLocationName(place.getAddress().toString()));
+                createEventViewModel.getSearchableLocationName(googlePlacesDecider.getAddress().toString()));
         }
     }
 
