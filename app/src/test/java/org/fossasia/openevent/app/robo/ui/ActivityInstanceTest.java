@@ -4,13 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 
-import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRActivity;
-import org.fossasia.openevent.app.core.auth.AuthActivity;
-import org.fossasia.openevent.app.core.event.about.AboutEventActivity;
-import org.fossasia.openevent.app.core.event.chart.ChartActivity;
-import org.fossasia.openevent.app.core.event.create.CreateEventActivity;
-import org.fossasia.openevent.app.core.main.MainActivity;
-import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailActivity;
+import org.fossasia.openevent.app.core.attendee.ScanningDecider;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -19,7 +13,6 @@ import org.robolectric.ParameterizedRobolectricTestRunner;
 import org.robolectric.Robolectric;
 import org.robolectric.android.controller.ActivityController;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 @Ignore
@@ -47,15 +40,7 @@ public class ActivityInstanceTest<T extends Activity> extends BaseParameterTest 
 
     @ParameterizedRobolectricTestRunner.Parameters(name = "InstantiateActivity = {0}")
     public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{
-            {AuthActivity.class, null, null},
-            {ScanQRActivity.class, MainActivity.EVENT_KEY, 1L},
-            {MainActivity.class, null, null},
-            {ChartActivity.class, null, null},
-            {AboutEventActivity.class, AboutEventActivity.EVENT_ID, 1L},
-            {OrganizerDetailActivity.class, null, null},
-            {CreateEventActivity.class, null, null}
-        });
+        return ScanningDecider.getActivitiesDataArray();
     }
 
     public static Configuration getOtherConfiguration(Activity activity) {

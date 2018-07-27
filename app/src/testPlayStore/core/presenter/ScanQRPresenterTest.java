@@ -1,10 +1,7 @@
 package org.fossasia.openevent.app.core.presenter;
 
-import com.google.android.gms.vision.barcode.Barcode;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRPresenter;
-import org.fossasia.openevent.app.core.attendee.qrscan.ScanQRView;
 import org.fossasia.openevent.app.data.Preferences;
 import org.fossasia.openevent.app.data.attendee.Attendee;
 import org.fossasia.openevent.app.data.attendee.AttendeeRepository;

@@ -18,14 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import org.fossasia.openevent.app.BuildConfig;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.attendee.ScanningDecider;
@@ -81,7 +79,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     private RecyclerView.AdapterDataObserver observer;
 
-    private static final String PLAYSTORE = "playStore";
     private static final String FILTER_SYNC = "FILTER_SYNC";
 
     /**
@@ -165,13 +162,9 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_attendees, container, false);
-        binding.fabScanQr.getDrawable().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
 
-        if (PLAYSTORE.equals(BuildConfig.FLAVOR)) {
-            binding.fabScanQr.setOnClickListener(v -> scanningDecider.openScanQRActivity(getActivity(), eventId));
-        } else {
-            binding.fabScanQr.setOnClickListener(v -> Toast.makeText(context, R.string.scanning_disabled_message, Toast.LENGTH_SHORT).show());
-        }
+        binding.fabScanQr.getDrawable().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
+        binding.fabScanQr.setOnClickListener(v -> scanningDecider.openScanQRActivity(getActivity(), eventId));
 
         return binding.getRoot();
     }
