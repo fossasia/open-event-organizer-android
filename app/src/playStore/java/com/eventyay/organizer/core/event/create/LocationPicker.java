@@ -13,14 +13,12 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 
 import timber.log.Timber;
 
-public class GooglePlacePicker {
+public class LocationPicker {
 
     private final GoogleApiAvailability googleApiAvailabilityInstance = GoogleApiAvailability.getInstance();
     private static final int PLACE_PICKER_REQUEST = 1;
-    private Place place;
-    private boolean showLocation = false;
 
-    public void onSelectingPlace(Activity activity) {
+    public boolean launchPicker(Activity activity) {
         int errorCode = googleApiAvailabilityInstance.isGooglePlayServicesAvailable(activity);
 
         if (errorCode == ConnectionResult.SUCCESS) {
@@ -28,40 +26,24 @@ public class GooglePlacePicker {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             try {
                 activity.startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST);
+                return true;
             } catch (GooglePlayServicesRepairableException e) {
                 Timber.d(e, "GooglePlayServicesRepairable");
             } catch (GooglePlayServicesNotAvailableException e) {
                 Timber.d("GooglePlayServices NotAvailable => Updating or Unauthentic");
             }
-        } else if (googleApiAvailabilityInstance.isUserResolvableError(errorCode)) {
-            //SERVICE_MISSING, SERVICE_VERSION_UPDATE_REQUIRED, SERVICE_DISABLED
-            googleApiAvailabilityInstance.getErrorDialog(activity, errorCode, PLACE_PICKER_REQUEST, (dialog) -> {
-                showLocation = true;
-            });
-        } else {
-            //SERVICE_UPDATING, SERVICE_INVALID - can't use place picker - must enter manually
-            showLocation = true;
         }
+        return false;
     };
 
     @SuppressLint("RestrictedApi")
-    public void loadPlaces(Activity activity, Intent data) {
-        place = PlacePicker.getPlace(activity, data);
+    public Location getPlace(Activity activity, Intent data) {
+        Place place = PlacePicker.getPlace(activity, data);
+        return new Location(place.getLatLng().latitude, place.getLatLng().longitude, place.getAddress());
     }
 
     public boolean shouldShowLocationLayout() {
-        return showLocation;
+        return false;
     }
 
-    public double getLatitude() {
-        return place.getLatLng().latitude;
-    }
-
-    public double getLongitude() {
-        return place.getLatLng().longitude;
-    }
-
-    public CharSequence getAddress() {
-        return place.getAddress();
-    }
 }

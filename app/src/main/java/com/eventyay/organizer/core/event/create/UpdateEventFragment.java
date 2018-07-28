@@ -58,7 +58,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     private ArrayAdapter<CharSequence> timezoneAdapter;
     private long eventId = -1;
     private int countryIndex = -1;
-    private final GooglePlacePicker googlePlacePicker = new GooglePlacePicker();
+    private final LocationPicker locationPicker = new LocationPicker();
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private CreateEventViewModel createEventViewModel;
@@ -288,8 +288,8 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         }
 
         binding.form.buttonPlacePicker.setOnClickListener(view -> {
-            googlePlacePicker.onSelectingPlace(getActivity());
-            if (googlePlacePicker.shouldShowLocationLayout())
+            boolean success = locationPicker.launchPicker(getActivity());
+            if (locationPicker.shouldShowLocationLayout() || !success)
                 showLocationLayouts();
         });
     }
@@ -302,16 +302,16 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             showLocationLayouts();
             //set event attributes
 
-            googlePlacePicker.loadPlaces(getActivity(), data);
+            Location location = locationPicker.getPlace(getActivity(), data);
 
             Event event = binding.getEvent();
-            event.latitude = googlePlacePicker.getLatitude();
-            event.longitude = googlePlacePicker.getLongitude();
+            event.latitude = location.getLatitude();
+            event.longitude = location.getLongitude();
             //auto-complete location fields for confirmation by user
 
-            binding.form.locationName.setText(googlePlacePicker.getAddress());
+            binding.form.locationName.setText(location.getAddress());
             binding.form.searchableLocationName.setText(
-                createEventViewModel.getSearchableLocationName(googlePlacePicker.getAddress().toString())
+                createEventViewModel.getSearchableLocationName(location.getAddress().toString())
             );
         }
     }
