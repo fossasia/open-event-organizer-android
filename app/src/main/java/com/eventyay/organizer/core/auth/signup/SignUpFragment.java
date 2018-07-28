@@ -89,6 +89,25 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
         binding.privacyPolicy.setOnClickListener(view -> openPrivacyPolicy());
         binding.termsOfUse.setOnClickListener(view -> openTermsOfUse());
         binding.loginLink.setOnClickListener(view -> openLoginPage());
+        binding.emailLayout.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (start != 0) {
+                    sharedViewModel.setEmail(s.toString());
+                    getFragmentManager().popBackStack();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //do nothing
+            }
+        });
     }
 
     @Override

@@ -61,7 +61,8 @@
                     android:id="@+id/email_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/spacing_normal">
+                    android:paddingBottom="@dimen/spacing_normal"
+                    android:transitionName="@string/email">
 
                     <android.support.design.widget.TextInputEditText
                         android:layout_width="match_parent"

@@ -1,6 +1,8 @@
 package com.eventyay.organizer.data.auth;
 
 import com.eventyay.organizer.data.auth.model.ChangePassword;
+import com.eventyay.organizer.data.auth.model.EmailRequest;
+import com.eventyay.organizer.data.auth.model.EmailValidationResponse;
 import com.eventyay.organizer.data.auth.model.Login;
 import com.eventyay.organizer.data.auth.model.RequestToken;
 import com.eventyay.organizer.data.auth.model.SubmitToken;
@@ -24,4 +26,6 @@ public interface AuthService {
     Completable submitToken(SubmitToken tokenData);
 
     Completable changePassword(ChangePassword changePassword);
+
+    Observable<EmailValidationResponse> checkEmailRegistered(EmailRequest emailRequest);
 }

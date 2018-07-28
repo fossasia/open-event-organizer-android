@@ -5,13 +5,17 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
+import com.eventyay.organizer.common.mvp.view.Erroneous;
+import com.eventyay.organizer.common.mvp.view.Progressive;
+import com.eventyay.organizer.common.mvp.view.Successful;
 import com.eventyay.organizer.core.auth.SharedViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
 import com.eventyay.organizer.core.auth.signup.SignUpFragment;
@@ -19,16 +23,13 @@ import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.databinding.LoginFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-public class LoginFragment extends BaseFragment implements LoginView {
+public class LoginFragment extends BaseFragment implements Progressive, Successful, Erroneous {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -55,11 +56,10 @@ public class LoginFragment extends BaseFragment implements LoginView {
     public void onStart() {
         super.onStart();
 
-        loginFragmentViewModel.getLoginStatus().observe(this, (loginStatus) -> handleIntent());
         loginFragmentViewModel.getProgress().observe(this, this::showProgress);
         loginFragmentViewModel.getError().observe(this, this::showError);
-        loginFragmentViewModel.getEmailList().observe(this, this::attachEmails);
-        loginFragmentViewModel.getLogin().observe(this, login -> {
+        loginFragmentViewModel.getActionLogIn().observe(this, isLoggedIn -> handleIntent());
+        loginFragmentViewModel.getLogin(sharedViewModel.getEmail().getValue()).observe(this, login -> {
             binding.setLogin(login);
             sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
         });
@@ -75,16 +75,37 @@ public class LoginFragment extends BaseFragment implements LoginView {
             if (!validator.validate())
                 return;
 
-            ViewUtils.hideKeyboard(view);
             String url = binding.url.baseUrl.getText().toString().trim();
             loginFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             loginFragmentViewModel.login();
         });
         binding.signUpLink.setOnClickListener(view -> openSignUpPage());
         binding.forgotPasswordLink.setOnClickListener(view -> clickForgotPassword());
+
+        binding.emailLayout.getEditText().addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (start != 0) {
+                    sharedViewModel.setEmail(s.toString());
+                    getFragmentManager().popBackStack();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //do nothing
+            }
+        });
     }
 
     public void handleIntent() {
+        ViewUtils.hideKeyboard(binding.getRoot());
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -134,12 +155,5 @@ public class LoginFragment extends BaseFragment implements LoginView {
     @Override
     public void showProgress(boolean show) {
         showView(binding.progressBar, show);
-    }
-
-    @Override
-    public void attachEmails(Set<String> emails) {
-        binding.emailDropdown.setAdapter(
-            new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<>(emails))
-        );
     }
 }

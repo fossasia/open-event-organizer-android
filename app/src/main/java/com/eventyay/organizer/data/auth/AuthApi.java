@@ -2,6 +2,8 @@ package com.eventyay.organizer.data.auth;
 
 import com.eventyay.organizer.data.auth.model.ChangePassword;
 import com.eventyay.organizer.data.auth.model.ChangePasswordResponse;
+import com.eventyay.organizer.data.auth.model.EmailRequest;
+import com.eventyay.organizer.data.auth.model.EmailValidationResponse;
 import com.eventyay.organizer.data.auth.model.Login;
 import com.eventyay.organizer.data.auth.model.LoginResponse;
 import com.eventyay.organizer.data.auth.model.RequestToken;
@@ -18,6 +20,9 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 
 public interface AuthApi {
+
+    @POST("users/checkEmail")
+    Observable<EmailValidationResponse> checkEmail(@Body EmailRequest emailRequest);
 
     @POST("users")
     Observable<User> signUp(@Body User user);
