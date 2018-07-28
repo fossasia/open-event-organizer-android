@@ -2,7 +2,9 @@ package com.eventyay.organizer.core.auth.signup;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -28,7 +30,8 @@ import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
 
-import static com.eventyay.organizer.ui.ViewUtils.showView;
+import static com.eventyay.organizer.core.settings.LegalPreferenceFragment.PRIVACY_POLICY_URL;
+import static com.eventyay.organizer.core.settings.LegalPreferenceFragment.TERMS_OF_USE_URL;
 
 public class SignUpFragment extends BaseFragment implements SignUpView {
 
@@ -82,6 +85,9 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
             signUpViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             signUpViewModel.signUp();
         });
+
+        binding.privacyPolicy.setOnClickListener(view -> openPrivacyPolicy());
+        binding.termsOfUse.setOnClickListener(view -> openTermsOfUse());
         binding.loginLink.setOnClickListener(view -> openLoginPage());
     }
 
@@ -116,6 +122,18 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
         });
     }
 
+    private void openPrivacyPolicy() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(PRIVACY_POLICY_URL));
+        startActivity(intent);
+    }
+
+    private void openTermsOfUse() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(TERMS_OF_USE_URL));
+        startActivity(intent);
+    }
+
     private void openLoginPage() {
         sharedViewModel.setEmail(binding.getUser().getEmail());
         getFragmentManager().beginTransaction()
@@ -137,7 +155,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
 
     @Override
     public void showProgress(boolean show) {
-        showView(binding.progressBar, show);
+        ViewUtils.showView(binding.progressBar, show);
     }
 
     @Override

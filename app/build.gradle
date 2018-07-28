@@ -124,7 +124,7 @@ dependencies {
     implementation "com.android.support:design:${versions.support_lib}"
     implementation "com.android.support:palette-v7:${versions.support_lib}"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
-    implementation "com.google.android.gms:play-services-vision:${versions.play_services}"
+    playStoreImplementation "com.google.android.gms:play-services-vision:${versions.play_services}"
     playStoreImplementation "com.google.android.gms:play-services-places:${versions.play_services}"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
@@ -230,7 +230,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-core-utils'
     })
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-inline:2.19.1'
+    testImplementation 'org.mockito:mockito-inline:2.20.1'
     testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"

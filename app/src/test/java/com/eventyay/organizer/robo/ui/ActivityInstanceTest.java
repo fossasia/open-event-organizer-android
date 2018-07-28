@@ -4,13 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 
-import com.eventyay.organizer.core.attendee.qrscan.ScanQRActivity;
 import com.eventyay.organizer.core.auth.AuthActivity;
 import com.eventyay.organizer.core.event.about.AboutEventActivity;
 import com.eventyay.organizer.core.event.chart.ChartActivity;
 import com.eventyay.organizer.core.event.create.CreateEventActivity;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -49,7 +49,6 @@ public class ActivityInstanceTest<T extends Activity> extends BaseParameterTest 
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
             {AuthActivity.class, null, null},
-            {ScanQRActivity.class, MainActivity.EVENT_KEY, 1L},
             {MainActivity.class, null, null},
             {ChartActivity.class, null, null},
             {AboutEventActivity.class, AboutEventActivity.EVENT_ID, 1L},
