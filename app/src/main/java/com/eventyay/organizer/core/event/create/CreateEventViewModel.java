@@ -12,6 +12,8 @@ import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.utils.CurrencyUtils;
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.StringUtils;
+import com.eventyay.organizer.utils.Utils;
+
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
@@ -94,8 +96,8 @@ public class CreateEventViewModel extends ViewModel {
         return eventMutableLiveData;
     }
 
-    private boolean verify() {
-        if (event.getName() == null) {
+    public boolean verify() {
+        if (Utils.isEmpty(event.getName())) {
             onError.setValue("Event Name cannot be empty");
             return false;
         }
@@ -249,4 +251,3 @@ public class CreateEventViewModel extends ViewModel {
     }
 
 }
-

@@ -1,5 +1,7 @@
 package com.eventyay.organizer.core.event.create;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.badoualy.stepperindicator.StepperIndicator;
-
 import com.eventyay.organizer.R;
 
 import javax.inject.Inject;
@@ -25,6 +26,9 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
 
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingInjector;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     @BindView(R.id.pager)
     ViewPager pager;
@@ -87,8 +91,14 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
             }
         });
 
+        CreateEventViewModel createEventViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateEventViewModel.class);
+
         btnNext.setOnClickListener(v -> {
             int currentPosition = pager.getCurrentItem();
+            if (currentPosition == 0 && !createEventViewModel.verify()) {
+                return;
+            }
+
             if (currentPosition < 2 && currentPosition >= 0)
                 pager.setCurrentItem(currentPosition + 1);
         });
