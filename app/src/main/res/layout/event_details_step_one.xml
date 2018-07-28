@@ -168,8 +168,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/searchable_location_name"
-                            android:inputType="text"
-                            android:text="@={ event.searchableLocationName }" />
+                            android:inputType="textPostalAddress|textCapWords"
+                            android:text="@={ event.searchableLocationName }"/>
 
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -199,7 +199,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/location_name"
-                            android:inputType="text"
+                            android:inputType="textPostalAddress|textMultiLine|textCapWords"
                             android:text="@={ event.locationName }" />
 
                     </android.support.design.widget.TextInputLayout>
