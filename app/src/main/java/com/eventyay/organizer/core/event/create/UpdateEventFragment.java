@@ -26,13 +26,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -65,9 +58,9 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     private ArrayAdapter<CharSequence> timezoneAdapter;
     private long eventId = -1;
     private int countryIndex = -1;
+    private final LocationPicker locationPicker = new LocationPicker();
 
     private static final int PLACE_PICKER_REQUEST = 1;
-    private final GoogleApiAvailability googleApiAvailabilityInstance = GoogleApiAvailability.getInstance();
     private CreateEventViewModel createEventViewModel;
 
     public static UpdateEventFragment newInstance() {
@@ -295,27 +288,9 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         }
 
         binding.form.buttonPlacePicker.setOnClickListener(view -> {
-            int errorCode = googleApiAvailabilityInstance.isGooglePlayServicesAvailable(getContext());
-            if (errorCode == ConnectionResult.SUCCESS) {
-                //SUCCESS
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                try {
-                    startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    Timber.d(e, "GooglePlayServicesRepairable");
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    Timber.d("GooglePlayServices NotAvailable => Updating or Unauthentic");
-                }
-            } else if (googleApiAvailabilityInstance.isUserResolvableError(errorCode)) {
-                //SERVICE_MISSING, SERVICE_VERSION_UPDATE_REQUIRED, SERVICE_DISABLED
-                googleApiAvailabilityInstance.getErrorDialog(
-                    getActivity(), errorCode, PLACE_PICKER_REQUEST, (dialog) -> {
-                        showLocationLayouts();
-                    });
-            } else {
-                //SERVICE_UPDATING, SERVICE_INVALID - can't use place picker - must enter manually
+            boolean success = locationPicker.launchPicker(getActivity());
+            if (locationPicker.shouldShowLocationLayout() || !success)
                 showLocationLayouts();
-            }
         });
     }
 
@@ -326,15 +301,17 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             //once place is picked from map, make location fields visible for confirmation by user
             showLocationLayouts();
             //set event attributes
-            Place place = PlacePicker.getPlace(getActivity(), data);
+
+            Location location = locationPicker.getPlace(getActivity(), data);
+
             Event event = binding.getEvent();
-            event.latitude = place.getLatLng().latitude;
-            event.longitude = place.getLatLng().longitude;
+            event.latitude = location.getLatitude();
+            event.longitude = location.getLongitude();
             //auto-complete location fields for confirmation by user
 
-            binding.form.locationName.setText(place.getAddress());
+            binding.form.locationName.setText(location.getAddress());
             binding.form.searchableLocationName.setText(
-                createEventViewModel.getSearchableLocationName(place.getAddress().toString())
+                createEventViewModel.getSearchableLocationName(location.getAddress().toString())
             );
         }
     }

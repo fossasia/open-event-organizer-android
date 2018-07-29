@@ -192,7 +192,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/description"
-                            android:inputType="text"
+                            android:inputType="textMultiLine|textCapSentences"
                             android:text="@={ event.description }" />
 
                     </android.support.design.widget.TextInputLayout>

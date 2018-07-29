@@ -94,8 +94,9 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
 
     public void openChangePasswordFragment() {
         getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right)
+            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
             .replace(R.id.fragment, new ChangePasswordFragment())
+            .addToBackStack(null)
             .commit();
     }
 
