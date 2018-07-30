@@ -34,7 +34,7 @@ public class CheckInHistoryViewModel extends ViewModel {
         this.attendeeRepository = attendeeRepository;
     }
 
-    public Attendee loadAttendee(long id, boolean reload) {
+    public void loadAttendee(long id, boolean reload) {
         compositeDisposable.add(attendeeRepository.getAttendee(id, reload)
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> {
@@ -42,8 +42,6 @@ public class CheckInHistoryViewModel extends ViewModel {
                 progress.setValue(false);
             })
             .subscribe(attendeeLive::setValue, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
-
-        return attendeeLive.getValue();
     }
 
     public void loadCheckInDetails(Attendee attendee) {

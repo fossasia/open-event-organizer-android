@@ -75,7 +75,7 @@ public class CheckInHistoryFragment extends BaseFragment implements CheckInHisto
         setupRecyclerView();
         setupRefreshListener();
 
-        showAttendee(checkInHistoryViewModel.loadAttendee(attendeeId, false));
+        checkInHistoryViewModel.loadAttendee(attendeeId, false);
         checkInHistoryViewModel.getProgress().observe(this, this::showProgress);
         checkInHistoryViewModel.getError().observe(this, this::showError);
         checkInHistoryViewModel.getAttendee().observe(this, this::showAttendee);
@@ -94,7 +94,7 @@ public class CheckInHistoryFragment extends BaseFragment implements CheckInHisto
     }
 
     private void setupRecyclerView() {
-        checkInHistoryAdapter = new CheckInHistoryAdapter(checkInHistoryViewModel);
+        checkInHistoryAdapter = new CheckInHistoryAdapter();
 
         RecyclerView recyclerView = binding.checkInHistoryRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));

@@ -18,12 +18,6 @@ public class CheckInHistoryAdapter extends RecyclerView.Adapter<CheckInHistoryVi
 
     private List<CheckInDetail> checkInHistory;
 
-    private final CheckInHistoryViewModel checkInHistoryViewModel;
-
-    public CheckInHistoryAdapter(CheckInHistoryViewModel checkInHistoryViewModel) {
-        this.checkInHistoryViewModel = checkInHistoryViewModel;
-    }
-
     @NonNull
     @Override
     public CheckInHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
