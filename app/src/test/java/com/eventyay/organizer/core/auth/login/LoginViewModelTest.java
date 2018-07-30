@@ -22,8 +22,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 import io.reactivex.Completable;

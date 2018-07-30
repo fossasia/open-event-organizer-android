@@ -81,15 +81,6 @@
                     android:textColor="@android:color/white" />
 
                 <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/signUpLink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/sign_up_link"
-                    android:textColor="@color/color_accent"
-                    style="?attr/borderlessButtonStyle" />
-
-                <android.support.v7.widget.AppCompatButton
                     android:id="@+id/forgotPasswordLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

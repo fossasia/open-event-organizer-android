@@ -23,6 +23,7 @@ import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.data.auth.model.EmailRequest;
 import com.eventyay.organizer.databinding.StartFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.ValidateUtils;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -81,6 +82,8 @@ public class StartFragment extends BaseFragment implements com.eventyay.organize
             startFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             startFragmentViewModel.checkIsEmailRegistered(startFragmentViewModel.getEmailRequestModel().getValue());
         });
+
+        ValidateUtils.validate(binding.emailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
 
     }
 

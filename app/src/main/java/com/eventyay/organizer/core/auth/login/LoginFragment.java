@@ -18,7 +18,6 @@ import com.eventyay.organizer.common.mvp.view.Progressive;
 import com.eventyay.organizer.common.mvp.view.Successful;
 import com.eventyay.organizer.core.auth.SharedViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
-import com.eventyay.organizer.core.auth.signup.SignUpFragment;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.databinding.LoginFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
@@ -79,7 +78,6 @@ public class LoginFragment extends BaseFragment implements Progressive, Successf
             loginFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             loginFragmentViewModel.login();
         });
-        binding.signUpLink.setOnClickListener(view -> openSignUpPage());
         binding.forgotPasswordLink.setOnClickListener(view -> clickForgotPassword());
 
         binding.emailLayout.getEditText().addTextChangedListener(new TextWatcher() {
@@ -121,15 +119,6 @@ public class LoginFragment extends BaseFragment implements Progressive, Successf
     public void onStop() {
         super.onStop();
         binding.emailDropdown.setAdapter(null);
-    }
-
-    private void openSignUpPage() {
-        sharedViewModel.setEmail(binding.getLogin().getEmail());
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .replace(R.id.fragment_container, new SignUpFragment())
-            .addToBackStack(null)
-            .commit();
     }
 
     private void clickForgotPassword() {

@@ -20,7 +20,6 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.auth.SharedViewModel;
-import com.eventyay.organizer.core.auth.login.LoginFragment;
 import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.databinding.SignUpFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
@@ -88,7 +87,6 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
 
         binding.privacyPolicy.setOnClickListener(view -> openPrivacyPolicy());
         binding.termsOfUse.setOnClickListener(view -> openTermsOfUse());
-        binding.loginLink.setOnClickListener(view -> openLoginPage());
         binding.emailLayout.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -153,14 +151,6 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
         startActivity(intent);
     }
 
-    private void openLoginPage() {
-        sharedViewModel.setEmail(binding.getUser().getEmail());
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .replace(R.id.fragment_container, new LoginFragment())
-            .commit();
-    }
-
     @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
@@ -169,7 +159,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
     @Override
     public void onSuccess(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        openLoginPage();
+        getFragmentManager().popBackStack();
     }
 
     @Override

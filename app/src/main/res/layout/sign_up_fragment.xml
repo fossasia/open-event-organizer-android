@@ -164,15 +164,6 @@
                     android:text="@string/sign_up"
                     android:textColor="@android:color/white" />
 
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/loginLink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/login_link"
-                    android:textColor="@color/color_accent"
-                    style="?attr/borderlessButtonStyle" />
-
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
