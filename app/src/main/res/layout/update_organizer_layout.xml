@@ -8,7 +8,7 @@
 
         <variable
             name="user"
-            type="org.fossasia.openevent.app.data.user.User" />
+            type="com.eventyay.organizer.data.user.User" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

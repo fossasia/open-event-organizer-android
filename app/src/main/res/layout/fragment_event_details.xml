@@ -4,19 +4,23 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data class="EventDetailBinding">
-        <import type="org.fossasia.openevent.app.common.ContextManager" />
+        <import type="com.eventyay.organizer.common.ContextManager" />
 
         <variable
             name="presenter"
-            type="org.fossasia.openevent.app.core.event.dashboard.EventDashboardPresenter" />
+            type="com.eventyay.organizer.core.event.dashboard.EventDashboardPresenter" />
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.event.Event" />
+            type="com.eventyay.organizer.data.event.Event" />
 
         <variable
             name="eventStats"
-            type="org.fossasia.openevent.app.data.event.EventStatistics" />
+            type="com.eventyay.organizer.data.event.EventStatistics" />
+
+        <variable
+            name="orderStats"
+            type="com.eventyay.organizer.data.order.OrderStatistics" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -293,12 +297,27 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/event_statistics_frame"
+                        android:id="@+id/order_statistics_frame"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         bind:layout_constraintEnd_toEndOf="parent"
                         bind:layout_constraintStart_toStartOf="parent"
                         bind:layout_constraintTop_toBottomOf="@id/ticket_analytics_fame">
+
+                        <include
+                            android:id="@+id/order_statistics"
+                            layout="@layout/order_statistics"
+                            bind:orderStatistics="@{orderStats}" />
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/event_statistics_frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        bind:layout_constraintEnd_toEndOf="parent"
+                        bind:layout_constraintStart_toStartOf="parent"
+                        bind:layout_constraintTop_toBottomOf="@+id/order_statistics_frame">
 
                         <include
                             android:id="@+id/event_statistics"

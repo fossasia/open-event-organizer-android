@@ -8,7 +8,7 @@
 
         <variable
             name="copyright"
-            type="org.fossasia.openevent.app.data.copyright.Copyright" />
+            type="com.eventyay.organizer.data.copyright.Copyright" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

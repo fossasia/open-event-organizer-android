@@ -8,7 +8,7 @@
 
         <variable
             name="session"
-            type="org.fossasia.openevent.app.data.session.Session" />
+            type="com.eventyay.organizer.data.session.Session" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

@@ -5,17 +5,17 @@
 
     <data>
 
-        <import type="org.fossasia.openevent.app.common.ContextManager" />
+        <import type="com.eventyay.organizer.common.ContextManager" />
 
-        <import type="org.fossasia.openevent.app.utils.DateUtils" />
+        <import type="com.eventyay.organizer.utils.DateUtils" />
 
-        <import type="org.fossasia.openevent.app.ui.ViewUtils" />
+        <import type="com.eventyay.organizer.ui.ViewUtils" />
 
         <import type="android.view.View" />
 
         <variable
             name="ticket"
-            type="org.fossasia.openevent.app.data.ticket.Ticket" />
+            type="com.eventyay.organizer.data.ticket.Ticket" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

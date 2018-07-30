@@ -8,13 +8,13 @@
 
         <variable
             name="user"
-            type="org.fossasia.openevent.app.data.user.User" />
+            type="com.eventyay.organizer.data.user.User" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.fossasia.openevent.app.core.auth.signup.SignUpFragment">
+        tools:context="com.eventyay.organizer.core.auth.signup.SignUpFragment">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -109,6 +109,50 @@
                     android:id="@+id/url"
                     layout="@layout/auth_url_container"
                     app:action="@{ () -> btnSignUp.performClick() }"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/signup_agreement"
+                        android:textColor="@android:color/black" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_tiny"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/termsOfUse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/terms_of_service"
+                            android:textColor="@color/color_accent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_tiny"
+                            android:layout_marginRight="@dimen/spacing_tiny"
+                            android:textColor="@android:color/black"
+                            android:text="@string/and"/>
+
+                        <TextView
+                            android:id="@+id/privacyPolicy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/privacy_policy"
+                            android:textColor="@color/color_accent" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btnSignUp"

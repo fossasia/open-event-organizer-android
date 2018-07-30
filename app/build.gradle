@@ -65,11 +65,22 @@ android {
             unitTests.returnDefaultValues = true
         }
     }
+
+    flavorDimensions "default"
+
+    productFlavors {
+        fdroid {
+            dimension "default"
+        }
+
+        playStore {
+            dimension "default"
+        }
+    }
 }
 
 repositories {
     maven { url "https://jitpack.io" }
-    maven { url 'http://dl.bintray.com/igenius-code/maven' }
 }
 
 sentry {
@@ -113,8 +124,8 @@ dependencies {
     implementation "com.android.support:design:${versions.support_lib}"
     implementation "com.android.support:palette-v7:${versions.support_lib}"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
-    implementation "com.google.android.gms:play-services-vision:${versions.play_services}"
-    implementation "com.google.android.gms:play-services-places:${versions.play_services}"
+    playStoreImplementation "com.google.android.gms:play-services-vision:${versions.play_services}"
+    playStoreImplementation "com.google.android.gms:play-services-places:${versions.play_services}"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     // Misc
@@ -158,7 +169,7 @@ dependencies {
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxjava}"
-    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3'
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
     // Fast Adapter
     implementation('com.mikepenz:fastadapter:3.0.4@aar') {
@@ -187,8 +198,8 @@ dependencies {
     // Stetho
     debugImplementation "com.facebook.stetho:stetho:${versions.stetho}"
     debugImplementation "com.facebook.stetho:stetho-okhttp3:${versions.stetho}"
-    releaseImplementation "net.igenius:stetho-no-op:${versions.stetho_no_op}"
-    testImplementation "net.igenius:stetho-no-op:${versions.stetho_no_op}"
+    releaseImplementation "com.github.mypplication:stetho-noop:${versions.stetho_no_op}"
+    testImplementation "com.github.mypplication:stetho-noop:${versions.stetho_no_op}"
 
     // Butterknife
     implementation "com.jakewharton:butterknife:${versions.butterknife}"
@@ -207,7 +218,7 @@ dependencies {
     implementation 'com.github.badoualy:stepper-indicator:1.0.7'
 
     //open-source licenses
-    implementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
+    playStoreImplementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 
     //Testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
@@ -219,7 +230,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-core-utils'
     })
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-inline:2.19.1'
+    testImplementation 'org.mockito:mockito-inline:2.20.1'
     testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"

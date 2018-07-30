@@ -7,13 +7,13 @@
 
         <import type="android.view.View" />
 
-        <import type="org.fossasia.openevent.app.common.ContextManager" />
+        <import type="com.eventyay.organizer.common.ContextManager" />
 
-        <import type="org.fossasia.openevent.app.utils.DateUtils" />
+        <import type="com.eventyay.organizer.utils.DateUtils" />
 
         <variable
             name="checkTime"
-            type="org.fossasia.openevent.app.data.attendee.CheckInDetail" />
+            type="com.eventyay.organizer.data.attendee.CheckInDetail" />
     </data>
 
     <LinearLayout

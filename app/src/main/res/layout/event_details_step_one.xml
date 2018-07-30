@@ -7,11 +7,11 @@
 
         <import type="android.view.View" />
 
-        <import type="org.fossasia.openevent.app.ui.binding.BindingAdapters" />
+        <import type="com.eventyay.organizer.ui.binding.BindingAdapters" />
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.event.Event" />
+            type="com.eventyay.organizer.data.event.Event" />
     </data>
 
     <android.support.v4.widget.NestedScrollView
@@ -168,8 +168,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/searchable_location_name"
-                            android:inputType="text"
-                            android:text="@={ event.searchableLocationName }" />
+                            android:inputType="textPostalAddress|textCapWords"
+                            android:text="@={ event.searchableLocationName }"/>
 
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -199,7 +199,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/location_name"
-                            android:inputType="text"
+                            android:inputType="textPostalAddress|textMultiLine|textCapWords"
                             android:text="@={ event.locationName }" />
 
                     </android.support.design.widget.TextInputLayout>
