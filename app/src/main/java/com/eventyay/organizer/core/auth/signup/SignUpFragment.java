@@ -7,9 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.eventyay.organizer.R;
-import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.auth.SharedViewModel;
 import com.eventyay.organizer.data.ContextUtils;
@@ -65,7 +62,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
         super.onStart();
         binding.setUser(signUpViewModel.getUser());
 
-        validate(binding.emailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
+        ValidateUtils.validate(binding.emailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
         signUpViewModel.getProgress().observe(this, this::showProgress);
         signUpViewModel.getSuccess().observe(this, this::onSuccess);
         signUpViewModel.getError().observe(this, this::showError);
@@ -104,37 +101,6 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
             @Override
             public void afterTextChanged(Editable s) {
                 //do nothing
-            }
-        });
-    }
-
-    @Override
-    public void validate(TextInputLayout textInputLayout, Function<String, Boolean> validationReference, String errorResponse) {
-        textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // Nothing here
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (validationReference.apply(charSequence.toString())) {
-                    textInputLayout.setError(null);
-                    textInputLayout.setErrorEnabled(false);
-                } else {
-                    textInputLayout.setErrorEnabled(true);
-                    textInputLayout.setError(errorResponse);
-                }
-                if (TextUtils.isEmpty(charSequence)) {
-                    textInputLayout.setError(null);
-                    textInputLayout.setErrorEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Nothing here
             }
         });
     }
