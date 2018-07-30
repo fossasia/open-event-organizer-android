@@ -1,5 +1,7 @@
 package com.eventyay.organizer.core.organizer.update;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -28,16 +30,17 @@ import com.eventyay.organizer.utils.ValidateUtils;
 import javax.inject.Inject;
 import br.com.ilhasoft.support.validation.Validator;
 
-import dagger.Lazy;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-public class UpdateOrganizerInfoFragment extends BaseFragment<UpdateOrganizerInfoPresenter> implements UpdateOrganizerInfoView {
+public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateOrganizerInfoView {
 
     @Inject
-    Lazy<UpdateOrganizerInfoPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
+
     private UpdateOrganizerLayoutBinding binding;
     private Validator validator;
+    private UpdateOrganizerInfoViewModel updateOrganizerInfoViewModel;
 
     public static UpdateOrganizerInfoFragment newInstance() {
         return new UpdateOrganizerInfoFragment();
@@ -49,6 +52,7 @@ public class UpdateOrganizerInfoFragment extends BaseFragment<UpdateOrganizerInf
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         binding =  DataBindingUtil.inflate(localInflater, R.layout.update_organizer_layout, container, false);
+        updateOrganizerInfoViewModel = ViewModelProviders.of(this, viewModelFactory).get(UpdateOrganizerInfoViewModel.class);
         validator = new Validator(binding.form);
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
@@ -64,7 +68,7 @@ public class UpdateOrganizerInfoFragment extends BaseFragment<UpdateOrganizerInf
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
-                getPresenter().updateOrganizer();
+                updateOrganizerInfoViewModel.updateOrganizer();
         });
 
         return binding.getRoot();
@@ -73,8 +77,12 @@ public class UpdateOrganizerInfoFragment extends BaseFragment<UpdateOrganizerInf
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        getPresenter().loadUser();
+        updateOrganizerInfoViewModel.getProgress().observe(this, this::showProgress);
+        updateOrganizerInfoViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
+        updateOrganizerInfoViewModel.getSuccess().observe(this, this::onSuccess);
+        updateOrganizerInfoViewModel.getError().observe(this, this::showError);
+        updateOrganizerInfoViewModel.getUserLiveData().observe(this, this::setUser);
+        updateOrganizerInfoViewModel.loadUser();
         validate(binding.form.holderAvatarUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.holderTwitterUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.holderFacebookUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -120,20 +128,13 @@ public class UpdateOrganizerInfoFragment extends BaseFragment<UpdateOrganizerInf
         binding.setUser(user);
     }
 
-
     @Override
     protected int getTitle() {
         return R.string.update;
     }
 
-    @Override
     public void dismiss() {
         getFragmentManager().popBackStack();
-    }
-
-    @Override
-    public Lazy<UpdateOrganizerInfoPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override
