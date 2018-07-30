@@ -23,7 +23,7 @@ class RestrictionsViewHolder extends RecyclerView.ViewHolder {
     public void bind(Ticket ticket) {
         binding.setTicket(ticket);
         View.OnClickListener listener = v -> {
-            ticket.isCheckinRestricted = ticket.isCheckinRestricted == null || !ticket.isCheckinRestricted;
+            ticket.isCheckinRestricted = !ticket.isCheckinRestricted;
             binding.ticketCheckbox.setChecked(ticket.isCheckinRestricted);
             updateTicketAction.push(ticket);
             binding.executePendingBindings();

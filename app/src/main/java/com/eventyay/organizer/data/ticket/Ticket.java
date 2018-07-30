@@ -53,7 +53,7 @@ public class Ticket implements Comparable<Ticket> {
     public String salesStartsAt;
     public String salesEndsAt;
     public Integer minOrder;
-    public Boolean isCheckinRestricted;
+    public boolean isCheckinRestricted;
     public Boolean autoCheckinEnabled;
 
     @Relationship("event")
