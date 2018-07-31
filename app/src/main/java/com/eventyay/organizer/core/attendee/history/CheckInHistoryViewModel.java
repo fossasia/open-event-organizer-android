@@ -46,14 +46,13 @@ public class CheckInHistoryViewModel extends ViewModel {
 
     public void loadCheckInDetails(Attendee attendee) {
         if (attendee == null) {
-            return ;
+            return;
         }
-
-        ArrayList<CheckInDetail> checkInDetails = new ArrayList<>(200);
-
         if (Utils.isEmpty(attendee.checkinTimes)) {
-            return ;
+            return;
         }
+
+        List<CheckInDetail> checkInDetails = new ArrayList<>();
 
         if (Utils.isEmpty(attendee.checkoutTimes)) {
             CheckInDetail checkInDetail = new CheckInDetail();
@@ -62,25 +61,31 @@ public class CheckInHistoryViewModel extends ViewModel {
             checkInDetail.setScanAction(SCAN_IN);
             checkInDetails.add(checkInDetail);
         } else {
-            String[] checkInTimes = attendee.getCheckinTimes().split(",");
-            String[] checkOutTimes = attendee.getCheckoutTimes().split(",");
-
-            for (int i=0; i<checkInTimes.length + checkOutTimes.length; i++) {
-                CheckInDetail checkInDetail = new CheckInDetail();
-
-                if (i%2 == 0) {
-                    checkInDetail.setCheckTime(checkInTimes[i/2]);
-                    checkInDetail.setScanAction(SCAN_IN);
-                    checkInDetails.add(checkInDetail);
-                } else {
-                    checkInDetail.setCheckTime(checkOutTimes[(i-1)/2]);
-                    checkInDetail.setScanAction(SCAN_OUT);
-                    checkInDetails.add(checkInDetail);
-                }
-            }
+            checkInDetails = getCheckInDetails(attendee, checkInDetails);
         }
 
         checkInDetailsLiveData.setValue(checkInDetails);
+    }
+
+    public List<CheckInDetail> getCheckInDetails(Attendee attendee, List<CheckInDetail> checkInDetails) {
+        String[] checkInTimes = attendee.getCheckinTimes().split(",");
+        String[] checkOutTimes = attendee.getCheckoutTimes().split(",");
+
+        for (int i = 0; i< checkInTimes.length + checkOutTimes.length; i++) {
+            CheckInDetail checkInDetail = new CheckInDetail();
+
+            if (i % 2 == 0) {
+                checkInDetail.setCheckTime(checkInTimes[i / 2]);
+                checkInDetail.setScanAction(SCAN_IN);
+                checkInDetails.add(checkInDetail);
+            } else {
+                checkInDetail.setCheckTime(checkOutTimes[(i - 1) / 2]);
+                checkInDetail.setScanAction(SCAN_OUT);
+                checkInDetails.add(checkInDetail);
+            }
+        }
+
+        return checkInDetails;
     }
 
     public LiveData<String> getError() {

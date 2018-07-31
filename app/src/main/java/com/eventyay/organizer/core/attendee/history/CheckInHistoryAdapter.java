@@ -45,6 +45,7 @@ public class CheckInHistoryAdapter extends RecyclerView.Adapter<CheckInHistoryVi
         return checkInHistory.size();
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DU Anomaly
     protected void setCheckInHistory(final List<CheckInDetail> newCheckInHistory) {
         if (checkInHistory == null) {
             checkInHistory = newCheckInHistory;

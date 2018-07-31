@@ -1,4 +1,4 @@
-package org.fossasia.openorder.app.core.orders.list;
+package com.eventyay.organizer.core.orders.list;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.lifecycle.Observer;

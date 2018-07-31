@@ -217,6 +217,9 @@ dependencies {
     //stepper
     implementation 'com.github.badoualy:stepper-indicator:1.0.7'
 
+    // TimeLine View
+    implementation "com.github.vipulasri:timelineview:${versions.timelineView}"
+
     //open-source licenses
     playStoreImplementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 
@@ -235,5 +238,4 @@ dependencies {
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-supportv4:${versions.roboelectric}"
-    implementation "com.github.vipulasri:timelineview:${versions.timelineView}"
 }
