@@ -78,7 +78,7 @@ public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
             });
     }
 
-    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DU Anomaly
+    @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.CyclomaticComplexity"})
     private void checkAttendee(Attendee attendee) {
         getView().onScannedAttendee(attendee);
 
@@ -89,6 +89,11 @@ public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
 
         boolean needsToggle = !(toCheckIn && attendee.isCheckedIn ||
             toCheckOut && !attendee.isCheckedIn);
+
+        if (attendee.getTicket().isCheckinRestricted && toCheckIn && needsToggle) {
+            getView().showMessage(R.string.check_in_restricted, false);
+            return;
+        }
 
         attendee.setChecking(true);
 

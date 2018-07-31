@@ -54,6 +54,11 @@ public class AttendeeCheckInPresenter extends AbstractDetailPresenter<Long, Atte
     }
 
     public void toggleCheckIn() {
+        if (attendee.getTicket().getIsCheckinRestricted() && !attendee.isCheckedIn) {
+            getView().showError("Check In is restricted for this ticket type");
+            return;
+        }
+
         attendee.setChecking(true);
         attendee.isCheckedIn = !attendee.isCheckedIn;
 

@@ -345,6 +345,7 @@
     <string name="attendee">Attendee</string>
     <string name="ticket_type">Ticket Type</string>
     <string name="scanning_disabled_message">Scanning is not enabled in this build</string>
+    <string name="check_in_restricted">Check In is restricted for this ticket type</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

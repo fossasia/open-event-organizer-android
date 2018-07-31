@@ -1,4 +1,4 @@
-package com.eventyay.organizer.core.presenter;
+package com.eventyay.organizer.core.attendee.qrscan;
 
 import com.google.android.gms.vision.barcode.Barcode;
 

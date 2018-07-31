@@ -1,5 +1,6 @@
 package com.eventyay.organizer.core.presenter;
 
+import com.eventyay.organizer.data.ticket.Ticket;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
@@ -47,6 +48,7 @@ public class AttendeeCheckInPresenterTest {
     static {
         ATTENDEE.setId(ID);
         ATTENDEE.setEvent(Event.builder().id(ID).build());
+        ATTENDEE.setTicket(Ticket.builder().isCheckinRestricted(false).build());
     }
 
     private AttendeeCheckInPresenter attendeeCheckInPresenter;
@@ -132,6 +134,17 @@ public class AttendeeCheckInPresenterTest {
 
     @Test
     public void shouldHandleTogglingError() {
+        attendeeCheckInPresenter.setAttendee(ATTENDEE);
+        when(attendeeRepository.scheduleToggle(ATTENDEE)).thenReturn(Completable.error(new Throwable()));
+
+        attendeeCheckInPresenter.toggleCheckIn();
+
+        verify(attendeeCheckInView).showError(any());
+    }
+
+    @Test
+    public void shouldHandleCheckinRestriction() {
+        ATTENDEE.setTicket(Ticket.builder().isCheckinRestricted(true).build());
         attendeeCheckInPresenter.setAttendee(ATTENDEE);
         when(attendeeRepository.scheduleToggle(ATTENDEE)).thenReturn(Completable.error(new Throwable()));
 
