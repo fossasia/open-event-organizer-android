@@ -58,11 +58,6 @@ public class CheckInHistoryViewModelTest {
     private static final String CHECKOUT_TIMES = "2018-07-21T20:36:32.822+03:00," +
         "2018-07-23T20:36:32.822+03:00";
 
-    private static final List<CheckInDetail> CHECKIN_DETAILS = Arrays.asList(
-        CheckInDetail.builder().id(12L).build(),
-        CheckInDetail.builder().id(13L).build(),
-        CheckInDetail.builder().id(14L).build()
-    );
     private static final Attendee ATTENDEE = Attendee.builder().id(2L).checkinTimes(CHECKIN_TIMES)
         .checkoutTimes(CHECKOUT_TIMES).build();
 
