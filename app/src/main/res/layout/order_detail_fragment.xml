@@ -165,6 +165,27 @@
         </FrameLayout>
 
         <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchorGravity="top|end"
+            app:layout_anchor="@+id/printAction"
+            android:visibility="@{ order == null ? View.GONE : View.VISIBLE }">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/emailReceipt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_receipt"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginRight="@dimen/spacing_normal"
+                app:fabSize="normal"
+                android:tint="@color/menu_icon_color"
+                app:backgroundTint="@color/materialcolorpicker__white"
+                app:srcCompat="@drawable/ic_receipt" />
+
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

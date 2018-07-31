@@ -2,13 +2,19 @@ package com.eventyay.organizer.data.order;
 
 import android.support.annotation.NonNull;
 
+import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.RateLimiter;
 import com.eventyay.organizer.data.Repository;
+import com.eventyay.organizer.data.order.model.OrderReceiptRequest;
+
 import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class OrderRepositoryImpl implements OrderRepository {
 
@@ -83,4 +89,18 @@ public class OrderRepositoryImpl implements OrderRepository {
             .withNetworkObservable(networkObservable)
             .build();
     }
+
+    @Override
+    public Completable sendReceipt(OrderReceiptRequest orderReceiptRequest) {
+        if (!repository.isConnected())
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+
+        return orderApi
+                .getReceiptMessage(orderReceiptRequest)
+                .flatMapCompletable(
+                    var -> Completable.complete())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 }

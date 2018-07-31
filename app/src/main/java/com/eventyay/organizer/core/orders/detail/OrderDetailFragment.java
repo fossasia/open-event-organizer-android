@@ -104,6 +104,10 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         binding.printAction.setOnClickListener(view -> {
             doPrint();
         });
+
+        binding.emailReceipt.setOnClickListener(view -> {
+            sendReceipt();
+        });
     }
 
     private void doPrint() {
@@ -112,6 +116,10 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
             String jobName = this.getString(R.string.app_name) + " Document";
             printManager.print(jobName, new OrderDetailsPrintAdapter(getActivity(), order), null);
         }
+    }
+
+    private void sendReceipt() {
+        orderDetailViewModel.sendReceipt(orderIdentifier);
     }
 
     @Override
