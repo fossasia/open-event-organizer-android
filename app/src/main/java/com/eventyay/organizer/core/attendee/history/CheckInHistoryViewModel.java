@@ -1,9 +1,9 @@
 package com.eventyay.organizer.core.attendee.history;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.attendee.CheckInDetail;
@@ -20,11 +20,11 @@ import io.reactivex.disposables.CompositeDisposable;
 public class CheckInHistoryViewModel extends ViewModel {
 
     private final AttendeeRepository attendeeRepository;
-    private final MutableLiveData<List<CheckInDetail>> checkInDetailsLiveData = new MutableLiveData<>();
+    private final SingleEventLiveData<List<CheckInDetail>> checkInDetailsLiveData = new SingleEventLiveData<>();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private final MutableLiveData<Attendee> attendeeLive = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private final MutableLiveData<String> error = new MutableLiveData<>();
+    private final SingleEventLiveData<Attendee> attendeeLive = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
 
     private static final String SCAN_IN = "Scan In";
     private static final String SCAN_OUT = "Scan Out";
