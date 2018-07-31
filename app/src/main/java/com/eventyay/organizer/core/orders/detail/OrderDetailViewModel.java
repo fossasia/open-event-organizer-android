@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.VisibleForTesting;
 
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.event.EventRepository;
@@ -32,9 +33,9 @@ public class OrderDetailViewModel extends ViewModel {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final MutableLiveData<Order> orderLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private final MutableLiveData<String> message = new MutableLiveData<>();
-    private final MutableLiveData<String> error = new MutableLiveData<>();
+    private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
     private final MutableLiveData<List<Attendee>> attendeesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<Ticket>> ticketsLiveData = new MutableLiveData<>();
 
@@ -133,6 +134,9 @@ public class OrderDetailViewModel extends ViewModel {
         return error;
     }
 
+    public LiveData<String> getSuccess() {
+        return success;
+    }
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -146,7 +150,7 @@ public class OrderDetailViewModel extends ViewModel {
         compositeDisposable.add(orderRepository.sendReceipt(orderReceipt)
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
-            .subscribe(() -> message.setValue("Email Sent!"),
+            .subscribe(() -> success.setValue("Email Sent!"),
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 

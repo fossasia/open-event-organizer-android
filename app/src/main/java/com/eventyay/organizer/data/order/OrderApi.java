@@ -23,6 +23,6 @@ public interface OrderApi {
     Observable<OrderStatistics> getOrderStatisticsForEvent(@Path("event_id") long id);
 
     @POST("attendees/send-receipt")
-    Observable<OrderReceiptResponse> getReceiptMessage(@Body OrderReceiptRequest orderReceiptRequest);
+    Observable<OrderReceiptResponse> sendReceiptEmail(@Body OrderReceiptRequest orderReceiptRequest);
 
 }

@@ -96,7 +96,7 @@ public class OrderRepositoryImpl implements OrderRepository {
             return Completable.error(new Throwable(Constants.NO_NETWORK));
 
         return orderApi
-                .getReceiptMessage(orderReceiptRequest)
+                .sendReceiptEmail(orderReceiptRequest)
                 .flatMapCompletable(
                     var -> Completable.complete())
                 .subscribeOn(Schedulers.io())
