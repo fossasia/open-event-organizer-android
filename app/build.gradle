@@ -217,6 +217,9 @@ dependencies {
     //stepper
     implementation 'com.github.badoualy:stepper-indicator:1.0.7'
 
+    // TimeLine View
+    implementation "com.github.vipulasri:timelineview:${versions.timelineView}"
+
     //open-source licenses
     playStoreImplementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 

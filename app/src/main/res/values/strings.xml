@@ -340,6 +340,9 @@
     <string name="net_sales">Net Sales</string>
     <string name="acknowledgements">Acknowledgements</string>
     <string name="acknowledgements_key">acknowledgement</string>
+    <string name="check_in_history">Check In History</string>
+    <string name="activity_log">Activity Log</string>
+    <string name="ticket_buyer">Ticket Buyer</string>
     <string name="order_statistics">Order Statistics</string>
     <string name="sales">Sales</string>
     <string name="attendee">Attendee</string>
