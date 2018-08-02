@@ -45,7 +45,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/event_name"
                     android:text="@={ event.name }"
-                    app:validateEmpty="@{true}" />
+                    app:validateEmpty="@{true}"
+                    android:inputType="textMultiLine" />
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
@@ -160,7 +161,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/searchable_location_name"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:text="@={ event.searchableLocationName }" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -191,7 +192,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/location_name"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:text="@={ event.locationName }" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -320,7 +321,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/ticket_url"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:text="@={ event.ticketUrl }" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -375,7 +376,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/organizer_name"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:text="@={ event.organizerName }" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -405,7 +406,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/organizer_description"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:text="@={ event.organizerDescription }" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -912,7 +913,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/description"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:text="@={ event.description }" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -988,7 +989,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/code_of_conduct"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:text="@={ event.codeOfConduct }" />
 
                 </android.support.design.widget.TextInputLayout>
