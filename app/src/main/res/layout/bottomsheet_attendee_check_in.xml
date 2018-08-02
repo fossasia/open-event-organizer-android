@@ -196,7 +196,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:orientation="horizontal">
@@ -221,6 +221,15 @@
                             android:layout_marginTop="@dimen/spacing_extra_small"
                             android:checked="false"
                             android:onCheckedChanged="@{ (switch, checked) -> checked ? attendeeDetailsLayout.setVisibility(View.VISIBLE) : attendeeDetailsLayout.setVisibility(View.GONE)  }" />
+
+                        <TextView
+                            android:id="@+id/activity_log"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/activity_log"
+                            android:gravity="end"
+                            android:textColor="@color/blue_200"
+                            android:textAllCaps="true" />
 
                     </LinearLayout>
 

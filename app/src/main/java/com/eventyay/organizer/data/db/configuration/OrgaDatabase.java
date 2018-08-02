@@ -2,16 +2,6 @@ package com.eventyay.organizer.data.db.configuration;
 
 import android.support.annotation.NonNull;
 
-import com.raizlabs.android.dbflow.annotation.ConflictAction;
-import com.raizlabs.android.dbflow.annotation.Database;
-import com.raizlabs.android.dbflow.annotation.Migration;
-import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.SQLiteType;
-import com.raizlabs.android.dbflow.sql.migration.AlterTableMigration;
-import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
-import com.raizlabs.android.dbflow.structure.ModelAdapter;
-import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
-
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.data.event.Event;
@@ -27,6 +17,15 @@ import com.eventyay.organizer.data.sponsor.Sponsor;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.user.User;
+import com.raizlabs.android.dbflow.annotation.ConflictAction;
+import com.raizlabs.android.dbflow.annotation.Database;
+import com.raizlabs.android.dbflow.annotation.Migration;
+import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.SQLiteType;
+import com.raizlabs.android.dbflow.sql.migration.AlterTableMigration;
+import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
+import com.raizlabs.android.dbflow.structure.ModelAdapter;
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +44,7 @@ public final class OrgaDatabase {
     public static final String NAME = "orga_database";
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS ";
     // To be bumped after each schema change and migration addition
-    public static final int VERSION = 16;
+    public static final int VERSION = 17;
 
 
     private OrgaDatabase() {
@@ -248,7 +247,7 @@ public final class OrgaDatabase {
 
         @Override
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
-            Timber.d("Running migration for DB version 14");
+            Timber.d("Running migration for DB version 15");
 
             Class<?>[] recreated = new Class[] {SpeakersCall.class};
 
@@ -260,7 +259,6 @@ public final class OrgaDatabase {
         }
     }
 
-    @Migration(version = 16, database = OrgaDatabase.class)
     public static class MigrationTo16 extends BaseMigration {
 
         @Override
@@ -274,6 +272,22 @@ public final class OrgaDatabase {
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
             }
+        }
+    }
+
+    @Migration(version = 17, database = OrgaDatabase.class)
+    public static class MigrationTo17 extends AlterTableMigration<Attendee> {
+
+        public MigrationTo17(Class<Attendee> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            super.onPreMigrate();
+
+            String column = "checkoutTimes";
+            addColumn(SQLiteType.TEXT, column);
         }
     }
 }

@@ -14,10 +14,10 @@
             type="com.eventyay.organizer.data.event.Event" />
     </data>
 
-
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/spacing_larger">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,108 +27,52 @@
             android:orientation="vertical"
             android:showDividers="beginning">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:padding="@dimen/spacing_extra_small"
-            android:showDividers="beginning"
-            android:text="@string/ticketing_details"
-            android:textSize="@dimen/text_size_normal"
-            android:textStyle="bold"/>
-
-        <CheckBox
-            android:id="@+id/ticketing_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onCheckedChanged="@{ (switch, checked) -> event.setTicketingEnabled(checked) }"
-            android:padding="@dimen/spacing_extra_small"
-            android:text="@string/use_ticketing_system" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="@{ ticketingDetails.checked ? View.GONE : View.VISIBLE }">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/ticket_url"
-                android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_link" />
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/ticket_url_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/ticket_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/ticket_url"
-                    android:inputType="text"
-                    android:text="@={ event.ticketUrl }" />
-
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
                 android:padding="@dimen/spacing_extra_small"
-                android:text="@string/organizer_details"
+                android:showDividers="beginning"
+                android:text="@string/ticketing_details"
                 android:textSize="@dimen/text_size_normal"
                 android:textStyle="bold"/>
 
             <CheckBox
-                android:id="@+id/organizer_info"
+                android:id="@+id/ticketing_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onCheckedChanged="@{ (switch, checked) -> event.setHasOrganizerInfo(checked) }"
+                android:onCheckedChanged="@{ (switch, checked) -> event.setTicketingEnabled(checked) }"
                 android:padding="@dimen/spacing_extra_small"
-                android:text="@string/add_organizer_information" />
+                android:text="@string/use_ticketing_system" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
+                android:visibility="@{ ticketingDetails.checked ? View.GONE : View.VISIBLE }">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/organizer_name"
+                    android:contentDescription="@string/ticket_url"
                     android:padding="@dimen/spacing_extra_small"
-                    app:srcCompat="@drawable/ic_person"
-                    android:textStyle="bold"/>
+                    app:srcCompat="@drawable/ic_link" />
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/ticket_url_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_extra_small">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/organizer_name"
+                        android:id="@+id/ticket_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/organizer_name"
-                        android:inputType="textMultiLine|textCapSentences"
-                        android:text="@={ event.organizerName }" />
+                        android:hint="@string/ticket_url"
+                        android:inputType="text"
+                        android:text="@={ event.ticketUrl }" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
@@ -136,76 +80,135 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/organizer_description"
-                    android:padding="@dimen/spacing_extra_small"
-                    app:srcCompat="@drawable/ic_info"
-                    android:textStyle="bold"/>
-
-                <android.support.design.widget.TextInputLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/organizer_details"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/organizer_description"
+                <CheckBox
+                    android:id="@+id/organizer_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setHasOrganizerInfo(checked) }"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/add_organizer_information" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/organizer_name"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_person"
+                        android:textStyle="bold"/>
+
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/organizer_description"
-                        android:inputType="textCapSentences|textMultiLine"
-                        android:text="@={ event.organizerDescription }" />
+                        android:padding="@dimen/spacing_extra_small">
 
-                </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/organizer_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/organizer_name"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:text="@={ event.organizerName }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/organizer_description"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_info"
+                        android:textStyle="bold"/>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/organizer_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/organizer_description"
+                            android:inputType="textCapSentences|textMultiLine"
+                            android:text="@={ event.organizerDescription }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/listing_privacy"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
-
-            <RadioGroup
-                android:id="@+id/listing_privacy_group"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_extra_small">
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
 
-                <RadioButton
-                    android:id="@+id/public_privacy"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:onCheckedChanged='@{ (switch, checked) -> (checked == true) ? event.setPrivacy("public") : event.setPrivacy("private") }'
-                    android:text="@string/public_event" />
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/listing_privacy"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
 
-                <RadioButton
-                    android:id="@+id/private_privacy"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/listing_privacy_group"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/private_event" />
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_extra_small">
 
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/public_privacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onCheckedChanged='@{ (switch, checked) -> (checked == true) ? event.setPrivacy("public") : event.setPrivacy("private") }'
+                        android:text="@string/public_event" />
+
+                    <RadioButton
+                        android:id="@+id/private_privacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/private_event" />
+
+                </RadioGroup>
+            </LinearLayout>
+
         </LinearLayout>
-        </LinearLayout>
+
     </android.support.v4.widget.NestedScrollView>
+
 </layout>

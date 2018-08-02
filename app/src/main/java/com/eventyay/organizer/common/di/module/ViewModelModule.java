@@ -4,16 +4,18 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import com.eventyay.organizer.common.di.OrgaViewModelFactory;
-import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
+import com.eventyay.organizer.core.attendee.history.CheckInHistoryViewModel;
 import com.eventyay.organizer.core.auth.login.LoginViewModel;
+import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
 import com.eventyay.organizer.core.auth.signup.SignUpViewModel;
-import com.eventyay.organizer.core.event.list.EventsViewModel;
 import com.eventyay.organizer.core.event.create.CreateEventViewModel;
+import com.eventyay.organizer.core.event.list.EventsViewModel;
 import com.eventyay.organizer.core.faq.create.CreateFaqViewModel;
 import com.eventyay.organizer.core.main.EventViewModel;
-import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.main.OrganizerViewModel;
+import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.orders.list.OrdersViewModel;
+import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
 import com.eventyay.organizer.core.share.ShareEventViewModel;
 import com.eventyay.organizer.core.speaker.details.SpeakerDetailsViewModel;
@@ -107,6 +109,16 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TicketSettingsViewModel.class)
     public abstract ViewModel bindTicketSettingsViewModel(TicketSettingsViewModel ticketSettingsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CheckInHistoryViewModel.class)
+    public abstract ViewModel bindCheckInHistoryViewModel(CheckInHistoryViewModel checkInHistoryViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UpdateOrganizerInfoViewModel.class)
+    public abstract ViewModel bindUpdateOrganizerViewModel(UpdateOrganizerInfoViewModel ticketSettingsViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
