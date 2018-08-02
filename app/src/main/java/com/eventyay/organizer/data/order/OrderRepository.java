@@ -2,6 +2,9 @@ package com.eventyay.organizer.data.order;
 
 import android.support.annotation.NonNull;
 
+import com.eventyay.organizer.data.order.model.OrderReceiptRequest;
+
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public interface OrderRepository {
@@ -12,4 +15,6 @@ public interface OrderRepository {
     Observable<Order> getOrder(String orderIdentifier, boolean reload);
 
     Observable<OrderStatistics> getOrderStatisticsForEvent(long eventId, boolean reload);
+
+    Completable sendReceipt(OrderReceiptRequest orderReceipt);
 }

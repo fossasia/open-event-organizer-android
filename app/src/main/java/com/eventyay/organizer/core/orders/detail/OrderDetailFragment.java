@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,14 +96,19 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
 
         orderDetailViewModel.getOrder(orderIdentifier, eventId, false).observe(this, this::showOrderDetails);
         orderDetailViewModel.getProgress().observe(this, this::showProgress);
+        orderDetailViewModel.getSuccess().observe(this, this::onSuccess);
         orderDetailViewModel.getError().observe(this, this::showError);
         loadData(false);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
             binding.printAction.setVisibility(View.GONE);
 
-        binding.printAction.setOnClickListener(view -> {
+       binding.printAction.setOnClickListener(view -> {
             doPrint();
+        });
+
+        binding.emailReceipt.setOnClickListener(view -> {
+            sendReceipt();
         });
     }
 
@@ -112,6 +118,10 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
             String jobName = this.getString(R.string.app_name) + " Document";
             printManager.print(jobName, new OrderDetailsPrintAdapter(getActivity(), order), null);
         }
+    }
+
+    private void sendReceipt() {
+        orderDetailViewModel.sendReceipt(orderIdentifier);
     }
 
     @Override
@@ -196,5 +206,16 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         if (order == null) {
             showEmptyView(true);
         }
+
+        if (TextUtils.equals("completed", order.status)) {
+            binding.emailReceiptLl.setVisibility(View.VISIBLE);
+        } else {
+            binding.emailReceiptLl.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onSuccess(String message) {
+        ViewUtils.showSnackbar(binding.getRoot(), message);
     }
 }
