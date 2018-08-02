@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.auth.SharedViewModel;
-import com.eventyay.organizer.core.auth.login.LoginFragment;
 import com.eventyay.organizer.databinding.ResetPasswordByTokenFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 
@@ -71,7 +70,7 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
             resetPasswordViewModel.submitRequest(resetPasswordViewModel.getSubmitToken());
         });
 
-        binding.loginLink.setOnClickListener(view -> openLoginPage());
+        binding.loginLink.setOnClickListener(view -> getFragmentManager().popBackStack());
 
         binding.resendTokenLink.setOnClickListener(view -> resendToken());
     }
@@ -86,13 +85,6 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
         return R.string.reset_password;
     }
 
-    private void openLoginPage() {
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .replace(R.id.fragment_container, new LoginFragment())
-            .commit();
-    }
-
     @Override
     public void showError(String error) {
         ViewUtils.hideKeyboard(binding.getRoot());
@@ -102,7 +94,7 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
     @Override
     public void onSuccess(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        openLoginPage();
+        getFragmentManager().popBackStack();
     }
 
     @Override

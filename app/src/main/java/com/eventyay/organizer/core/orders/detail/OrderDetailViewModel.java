@@ -5,11 +5,13 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.VisibleForTesting;
 
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.order.OrderRepository;
+import com.eventyay.organizer.data.order.model.OrderReceiptRequest;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
@@ -31,8 +33,9 @@ public class OrderDetailViewModel extends ViewModel {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final MutableLiveData<Order> orderLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private final MutableLiveData<String> error = new MutableLiveData<>();
+    private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
     private final MutableLiveData<List<Attendee>> attendeesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<Ticket>> ticketsLiveData = new MutableLiveData<>();
 
@@ -131,9 +134,24 @@ public class OrderDetailViewModel extends ViewModel {
         return error;
     }
 
+    public LiveData<String> getSuccess() {
+        return success;
+    }
     @Override
     protected void onCleared() {
         super.onCleared();
         compositeDisposable.dispose();
     }
+
+    //send order receipt via email
+    public void sendReceipt(String orderIdentifier) {
+        OrderReceiptRequest orderReceipt = new OrderReceiptRequest();
+        orderReceipt.setOrderIdentifier(orderIdentifier);
+        compositeDisposable.add(orderRepository.sendReceipt(orderReceipt)
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() -> progress.setValue(false))
+            .subscribe(() -> success.setValue("Email Sent!"),
+                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+    }
+
 }

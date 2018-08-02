@@ -2,6 +2,8 @@ package com.eventyay.organizer.data.auth;
 
 import com.eventyay.organizer.data.auth.model.ChangePassword;
 import com.eventyay.organizer.data.auth.model.CustomObjectWrapper;
+import com.eventyay.organizer.data.auth.model.EmailRequest;
+import com.eventyay.organizer.data.auth.model.EmailValidationResponse;
 import com.eventyay.organizer.data.auth.model.Login;
 import com.eventyay.organizer.data.auth.model.RequestToken;
 import com.eventyay.organizer.data.auth.model.SubmitToken;
@@ -30,6 +32,17 @@ public class AuthServiceImpl implements AuthService {
         this.authHolder = authHolder;
         this.repository = repository;
         this.authApi = authApi;
+    }
+
+    @Override
+    public Observable<EmailValidationResponse> checkEmailRegistered(EmailRequest emailRequest) {
+        if (!repository.isConnected())
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+
+        return authApi
+            .checkEmail(emailRequest)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override

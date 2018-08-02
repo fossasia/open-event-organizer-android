@@ -8,6 +8,7 @@ import com.eventyay.organizer.core.attendee.history.CheckInHistoryViewModel;
 import com.eventyay.organizer.core.auth.login.LoginViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
 import com.eventyay.organizer.core.auth.signup.SignUpViewModel;
+import com.eventyay.organizer.core.auth.start.StartViewModel;
 import com.eventyay.organizer.core.event.create.CreateEventViewModel;
 import com.eventyay.organizer.core.event.list.EventsViewModel;
 import com.eventyay.organizer.core.faq.create.CreateFaqViewModel;
@@ -35,6 +36,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel.class)
     public abstract ViewModel bindLoginViewModel(LoginViewModel loginViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(StartViewModel.class)
+    public abstract ViewModel bindStartViewModel(StartViewModel startViewModel);
 
     @Binds
     @IntoMap

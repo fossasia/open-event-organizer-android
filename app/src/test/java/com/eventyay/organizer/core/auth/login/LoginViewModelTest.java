@@ -3,13 +3,13 @@ package com.eventyay.organizer.core.auth.login;
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.lifecycle.Observer;
 
-import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
-import com.eventyay.organizer.data.encryption.EncryptionService;
 import com.eventyay.organizer.data.auth.model.Login;
+import com.eventyay.organizer.data.encryption.EncryptionService;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,8 +22,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 import io.reactivex.Completable;
@@ -52,10 +50,9 @@ public class LoginViewModelTest {
     private static final String PASSWORD = "test";
     private static final Login LOGIN = new Login(EMAIL, PASSWORD);
     private LoginViewModel loginViewModel;
-    private static final Set<String> SAVED_EMAILS = new HashSet<>(Arrays.asList("email1", "email2", "email3"));
 
     @Mock
-    Observer<Boolean> login;
+    Observer<Void> actionLogin;
     @Mock
     Observer<String> error;
     @Mock
@@ -75,16 +72,16 @@ public class LoginViewModelTest {
         Mockito.when(authModel.login(LOGIN))
             .thenReturn(Completable.complete());
 
-        InOrder inOrder = Mockito.inOrder(authModel, progress, login);
+        InOrder inOrder = Mockito.inOrder(authModel, progress, actionLogin);
 
         loginViewModel.getProgress().observeForever(progress);
-        loginViewModel.getLoginStatus().observeForever(login);
+        loginViewModel.getActionLogIn().observeForever(actionLogin);
 
         loginViewModel.login();
 
         inOrder.verify(authModel).login(LOGIN);
         inOrder.verify(progress).onChanged(true);
-        inOrder.verify(login).onChanged(true);
+        inOrder.verify(actionLogin).onChanged(null);
         inOrder.verify(progress).onChanged(false);
     }
 
@@ -108,48 +105,11 @@ public class LoginViewModelTest {
     }
 
     @Test
-    public void shouldLoginAutomatically() {
-        Mockito.when(authModel.isLoggedIn()).thenReturn(true);
-
-        loginViewModel.getLoginStatus().observeForever(login);
-
-        verify(login).onChanged(true);
-    }
-
-    @Test
     public void shouldNotLoginAutomatically() {
         Mockito.when(authModel.isLoggedIn()).thenReturn(false);
 
-        loginViewModel.getLoginStatus().observeForever(login);
+        loginViewModel.getActionLogIn().observeForever(actionLogin);
 
-        verify(login, Mockito.never()).onChanged(true);
-    }
-
-    @Test
-    public void shouldAttachEmailAutomatically() {
-        Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(SAVED_EMAILS);
-        Mockito.when(authModel.isLoggedIn()).thenReturn(false);
-        Mockito.when(authModel.login(LOGIN))
-            .thenReturn(Completable.complete());
-
-        loginViewModel.getEmailList().observeForever(email);
-        loginViewModel.getLoginStatus().observeForever(login);
-        loginViewModel.login();
-
-        verify(email).onChanged(SAVED_EMAILS);
-    }
-
-    @Test
-    public void shouldNotAttachEmailAutomatically() {
-        Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(null);
-        Mockito.when(authModel.isLoggedIn()).thenReturn(false);
-        Mockito.when(authModel.login(LOGIN))
-            .thenReturn(Completable.complete());
-
-        loginViewModel.getEmailList().observeForever(email);
-        loginViewModel.getLoginStatus().observeForever(login);
-        loginViewModel.login();
-
-        verify(email, Mockito.never()).onChanged(SAVED_EMAILS);
+        verify(actionLogin, Mockito.never()).onChanged(null);
     }
 }

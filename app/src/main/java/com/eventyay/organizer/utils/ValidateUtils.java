@@ -1,5 +1,12 @@
 package com.eventyay.organizer.utils;
 
+import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+
+import com.eventyay.organizer.common.Function;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,4 +30,35 @@ public final class ValidateUtils {
         Matcher matcher = VALID_URL_REGEX .matcher(urlStr);
         return matcher.find();
     }
+
+    public static void validate(TextInputLayout textInputLayout, Function<String, Boolean> validationReference, String errorResponse) {
+        textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Nothing here
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (validationReference.apply(charSequence.toString())) {
+                    textInputLayout.setError(null);
+                    textInputLayout.setErrorEnabled(false);
+                } else {
+                    textInputLayout.setErrorEnabled(true);
+                    textInputLayout.setError(errorResponse);
+                }
+                if (TextUtils.isEmpty(charSequence)) {
+                    textInputLayout.setError(null);
+                    textInputLayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Nothing here
+            }
+        });
+    }
+
 }

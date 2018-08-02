@@ -14,6 +14,9 @@
     <!-- Constant dimensions -->
     <dimen name="const_normal">16dp</dimen>
 
+    <!-- Receipt fab -->
+    <dimen name="spacing_receipt">85dp</dimen>
+
     <dimen name="elevation">1dp</dimen>
 
     <dimen name="text_size_extra_smaller">10sp</dimen>

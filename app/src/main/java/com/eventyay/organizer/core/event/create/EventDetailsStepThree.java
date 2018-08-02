@@ -6,18 +6,13 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.eventyay.organizer.R;
-import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
 import com.eventyay.organizer.databinding.EventDetailsStepThreeBinding;
 import com.eventyay.organizer.utils.ValidateUtils;
@@ -60,44 +55,13 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
         createEventViewModel.getProgress().observe(this, this::showProgress);
         createEventViewModel.getEvent().isTaxEnabled = true;
 
-        validate(binding.logoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.externalEventUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.originalImageUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+        ValidateUtils.validate(binding.logoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+        ValidateUtils.validate(binding.externalEventUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+        ValidateUtils.validate(binding.originalImageUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
 
         getActivity().findViewById(R.id.btn_submit).setOnClickListener(view -> {
             if (validator.validate()) {
                 createEventViewModel.createEvent();
-            }
-        });
-    }
-
-    @Override
-    public void validate(TextInputLayout textInputLayout, Function<String, Boolean> validationReference, String errorResponse) {
-        textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // Nothing here
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (validationReference.apply(charSequence.toString())) {
-                    textInputLayout.setError(null);
-                    textInputLayout.setErrorEnabled(false);
-                } else {
-                    textInputLayout.setErrorEnabled(true);
-                    textInputLayout.setError(errorResponse);
-                }
-                if (TextUtils.isEmpty(charSequence)) {
-                    textInputLayout.setError(null);
-                    textInputLayout.setErrorEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Nothing here
             }
         });
     }
