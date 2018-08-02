@@ -1,5 +1,7 @@
 package com.eventyay.organizer.core.organizer.password;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -17,17 +19,17 @@ import com.eventyay.organizer.ui.ViewUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-public class ChangePasswordFragment extends BaseFragment<ChangePasswordPresenter> implements ChangePasswordView {
+public class ChangePasswordFragment extends BaseFragment implements ChangePasswordView {
 
     @Inject
-    Lazy<ChangePasswordPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
     private ChangePasswordFragmentBinding binding;
     private Validator validator;
+    private ChangePasswordViewModel changePasswordViewModel;
 
     public static ChangePasswordFragment newInstance() {
         return new ChangePasswordFragment();
@@ -38,6 +40,7 @@ public class ChangePasswordFragment extends BaseFragment<ChangePasswordPresenter
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.change_password_fragment, container, false);
         validator = new Validator(binding);
+        changePasswordViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChangePasswordViewModel.class);
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         activity.setSupportActionBar(binding.toolbar);
@@ -54,17 +57,18 @@ public class ChangePasswordFragment extends BaseFragment<ChangePasswordPresenter
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        binding.setOrganizerPassword(getPresenter().getChangePasswordObject());
-        getPresenter().start();
+        binding.setOrganizerPassword(changePasswordViewModel.getChangePasswordObject());
+        changePasswordViewModel.getProgress().observe(this, this::showProgress);
+        changePasswordViewModel.getSuccess().observe(this, this::onSuccess);
+        changePasswordViewModel.getError().observe(this, this::showError);
 
         binding.btnChangePassword.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
             String url = binding.url.baseUrl.getText().toString().trim();
-            getPresenter().setBaseUrl(url, binding.url.overrideUrl.isChecked());
-            getPresenter().changePasswordRequest(binding.oldPassword.getText().toString(),
+            changePasswordViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
+            changePasswordViewModel.changePasswordRequest(binding.oldPassword.getText().toString(),
                 binding.newPassword.getText().toString(),
                 binding.confirmNewPassword.getText().toString());
 
@@ -91,11 +95,6 @@ public class ChangePasswordFragment extends BaseFragment<ChangePasswordPresenter
     @Override
     public void showProgress(boolean show) {
         showView(binding.progressBar, show);
-    }
-
-    @Override
-    public Lazy<ChangePasswordPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
 }
