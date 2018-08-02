@@ -34,12 +34,12 @@ import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-public class StartFragment extends BaseFragment implements com.eventyay.organizer.core.auth.start.StartView {
+public class StartFragment extends BaseFragment implements StartView {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    private com.eventyay.organizer.core.auth.start.StartViewModel startFragmentViewModel;
+    private StartViewModel startFragmentViewModel;
     private StartFragmentBinding binding;
     private Validator validator;
     private SharedViewModel sharedViewModel;
@@ -51,7 +51,7 @@ public class StartFragment extends BaseFragment implements com.eventyay.organize
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.start_fragment, container, false);
-        startFragmentViewModel = ViewModelProviders.of(this, viewModelFactory).get(com.eventyay.organizer.core.auth.start.StartViewModel.class);
+        startFragmentViewModel = ViewModelProviders.of(this, viewModelFactory).get(StartViewModel.class);
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         validator = new Validator(binding);
         return binding.getRoot();
@@ -84,7 +84,6 @@ public class StartFragment extends BaseFragment implements com.eventyay.organize
         });
 
         ValidateUtils.validate(binding.emailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
-
     }
 
     @Override
