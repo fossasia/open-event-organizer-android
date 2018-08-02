@@ -15,6 +15,7 @@ import com.eventyay.organizer.core.main.EventViewModel;
 import com.eventyay.organizer.core.main.OrganizerViewModel;
 import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.orders.list.OrdersViewModel;
+import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
 import com.eventyay.organizer.core.share.ShareEventViewModel;
@@ -119,6 +120,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(UpdateOrganizerInfoViewModel.class)
     public abstract ViewModel bindUpdateOrganizerViewModel(UpdateOrganizerInfoViewModel ticketSettingsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChangePasswordViewModel.class)
+    public abstract ViewModel bindChangePasswordViewModel(ChangePasswordViewModel changePasswordViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
