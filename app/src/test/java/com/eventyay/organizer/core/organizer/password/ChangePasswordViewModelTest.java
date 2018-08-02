@@ -1,14 +1,17 @@
-package com.eventyay.organizer.core.presenter;
+package com.eventyay.organizer.core.organizer.password;
+
+import android.arch.core.executor.testing.InstantTaskExecutorRule;
+import android.arch.lifecycle.Observer;
 
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.auth.model.ChangePassword;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
-import com.eventyay.organizer.core.organizer.password.ChangePasswordPresenter;
-import com.eventyay.organizer.core.organizer.password.ChangePasswordView;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.InOrder;
@@ -19,22 +22,22 @@ import org.mockito.junit.MockitoRule;
 
 import io.reactivex.Completable;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
-
 @RunWith(JUnit4.class)
-public class ChangePasswordPresenterTest {
+public class ChangePasswordViewModelTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Mock private AuthService authModel;
-    @Mock private ChangePasswordView changePasswordView;
+    @Rule
+    public TestRule rule = new InstantTaskExecutorRule();
+
+    @Mock
+    private AuthService authModel;
     private final HostSelectionInterceptor interceptor = new HostSelectionInterceptor();
 
-    private ChangePasswordPresenter changePasswordPresenter;
+    private ChangePasswordViewModel changePasswordViewModel;
 
     private static final String OLD_PASSWORD = "oldTest";
     private static final String OLD_WRONG_PASSWORD = "oldWrongTest";
@@ -44,19 +47,16 @@ public class ChangePasswordPresenterTest {
 
     private static final ChangePassword CHANGE_PASSWORD = new ChangePassword(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
 
+    @Mock
+    Observer<String> error;
+    @Mock
+    Observer<Boolean> progress;
+    @Mock
+    Observer<String> success;
+
     @Before
     public void setUp() {
-        changePasswordPresenter = new ChangePasswordPresenter(authModel, interceptor);
-        changePasswordPresenter.attach(changePasswordView);
-    }
-
-    @Test
-    public void shouldDetachViewOnStop() {
-        assertNotNull(changePasswordPresenter.getView());
-
-        changePasswordPresenter.detach();
-
-        assertTrue(changePasswordPresenter.getDisposable().isDisposed());
+        changePasswordViewModel = new ChangePasswordViewModel(authModel, interceptor);
     }
 
     @Test
@@ -64,32 +64,36 @@ public class ChangePasswordPresenterTest {
         Mockito.when(authModel.changePassword(CHANGE_PASSWORD))
             .thenReturn(Completable.complete());
 
-        InOrder inOrder = Mockito.inOrder(authModel, changePasswordView);
+        InOrder inOrder = Mockito.inOrder(authModel, progress, success);
 
-        changePasswordPresenter.start();
-        changePasswordPresenter.changePasswordRequest(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
+        changePasswordViewModel.getProgress().observeForever(progress);
+        changePasswordViewModel.getSuccess().observeForever(success);
+
+        changePasswordViewModel.changePasswordRequest(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
 
         inOrder.verify(authModel).changePassword(CHANGE_PASSWORD);
-        inOrder.verify(changePasswordView).showProgress(true);
-        inOrder.verify(changePasswordView).onSuccess(any());
-        inOrder.verify(changePasswordView).showProgress(false);
+        inOrder.verify(progress).onChanged(true);
+        inOrder.verify(success).onChanged(any());
+        inOrder.verify(progress).onChanged(false);
     }
 
     @Test
     public void shouldShowChangePasswordError() {
-        String error = "Test Error";
+        String errorString = "Test Error";
         Mockito.when(authModel.changePassword(CHANGE_PASSWORD))
             .thenReturn(Completable.error(Logger.TEST_ERROR));
 
-        InOrder inOrder = Mockito.inOrder(authModel, changePasswordView);
+        InOrder inOrder = Mockito.inOrder(authModel, progress, error);
 
-        changePasswordPresenter.start();
-        changePasswordPresenter.changePasswordRequest(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
+        changePasswordViewModel.getProgress().observeForever(progress);
+        changePasswordViewModel.getError().observeForever(error);
+
+        changePasswordViewModel.changePasswordRequest(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
 
         inOrder.verify(authModel).changePassword(CHANGE_PASSWORD);
-        inOrder.verify(changePasswordView).showProgress(true);
-        inOrder.verify(changePasswordView).showError(error);
-        inOrder.verify(changePasswordView).showProgress(false);
+        inOrder.verify(progress).onChanged(true);
+        inOrder.verify(error).onChanged(errorString);
+        inOrder.verify(progress).onChanged(false);
     }
 
     @Test
@@ -97,10 +101,9 @@ public class ChangePasswordPresenterTest {
         Mockito.when(authModel.changePassword(CHANGE_PASSWORD))
             .thenReturn(Completable.complete());
 
-        changePasswordPresenter.start();
-        changePasswordPresenter.changePasswordRequest(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
+        changePasswordViewModel.changePasswordRequest(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
 
-        verify(changePasswordView, Mockito.never()).showError(any());
+        verify(error, Mockito.never()).onChanged(any());
         verify(authModel).changePassword(CHANGE_PASSWORD);
     }
 
@@ -109,10 +112,11 @@ public class ChangePasswordPresenterTest {
         Mockito.when(authModel.changePassword(CHANGE_PASSWORD))
             .thenReturn(Completable.complete());
 
-        changePasswordPresenter.start();
-        changePasswordPresenter.changePasswordRequest(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_WRONG_PASSWORD);
+        changePasswordViewModel.changePasswordRequest(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_WRONG_PASSWORD);
 
-        verify(changePasswordView).showError(any());
+        changePasswordViewModel.getError().observeForever(error);
+
+        verify(error).onChanged(any());
         verify(authModel, Mockito.never()).changePassword(any());
     }
 
@@ -121,20 +125,22 @@ public class ChangePasswordPresenterTest {
         Mockito.when(authModel.changePassword(CHANGE_PASSWORD))
             .thenReturn(Completable.complete());
 
-        InOrder inOrder = Mockito.inOrder(authModel, changePasswordView);
+        InOrder inOrder = Mockito.inOrder(authModel, progress, success);
 
-        changePasswordPresenter.start();
-        changePasswordPresenter.changePasswordRequest(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
+        changePasswordViewModel.getProgress().observeForever(progress);
+        changePasswordViewModel.getSuccess().observeForever(success);
+
+        changePasswordViewModel.changePasswordRequest(OLD_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
 
         inOrder.verify(authModel).changePassword(CHANGE_PASSWORD);
-        inOrder.verify(changePasswordView).showProgress(true);
-        inOrder.verify(changePasswordView).onSuccess(any());
-        inOrder.verify(changePasswordView).showProgress(false);
+        inOrder.verify(progress).onChanged(true);
+        inOrder.verify(success).onChanged(any());
+        inOrder.verify(progress).onChanged(false);
     }
 
     @Test
     public void shouldShowErrorOnWrongOldPassword() {
-        String error = "Test Error";
+        String errorString = "Test Error";
 
         Mockito.when(authModel.changePassword(new ChangePassword(any(), NEW_PASSWORD, CONFIRM_NEW_PASSWORD)))
             .thenReturn(Completable.error(Logger.TEST_ERROR));
@@ -142,13 +148,14 @@ public class ChangePasswordPresenterTest {
         Mockito.when(authModel.changePassword(CHANGE_PASSWORD))
             .thenReturn(Completable.complete());
 
-        InOrder inOrder = Mockito.inOrder(authModel, changePasswordView);
+        InOrder inOrder = Mockito.inOrder(authModel, error);
 
-        changePasswordPresenter.start();
-        changePasswordPresenter.changePasswordRequest(OLD_WRONG_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
+        changePasswordViewModel.getError().observeForever(error);
+
+        changePasswordViewModel.changePasswordRequest(OLD_WRONG_PASSWORD, NEW_PASSWORD, CONFIRM_NEW_PASSWORD);
 
         inOrder.verify(authModel).changePassword(any());
-        inOrder.verify(changePasswordView).showError(error);
+        inOrder.verify(error).onChanged(errorString);
     }
 }
 
