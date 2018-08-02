@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.eventyay.organizer.R;
-import com.eventyay.organizer.core.auth.login.LoginFragment;
+import com.eventyay.organizer.core.auth.start.StartFragment;
 
 import javax.inject.Inject;
 
@@ -37,7 +37,7 @@ public class AuthActivity extends AppCompatActivity implements HasSupportFragmen
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new LoginFragment())
+                .replace(R.id.fragment_container, new StartFragment())
                 .commit();
         }
     }

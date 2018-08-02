@@ -5,24 +5,21 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.VisibleForTesting;
 
-
 import com.eventyay.organizer.BuildConfig;
-import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
-import com.eventyay.organizer.data.encryption.EncryptionService;
 import com.eventyay.organizer.data.auth.model.Login;
 import com.eventyay.organizer.data.auth.model.RequestToken;
+import com.eventyay.organizer.data.encryption.EncryptionService;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
 import com.eventyay.organizer.utils.ErrorUtils;
-
-import java.util.Set;
 
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 
+import static com.eventyay.organizer.common.Constants.PREF_USER_EMAIL;
 
 public class LoginViewModel extends ViewModel {
 
@@ -33,14 +30,12 @@ public class LoginViewModel extends ViewModel {
     private final Preferences sharedPreferenceModel;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private static final String PREF_USER_PASSWORD = "user_password";
-    private static final String PREF_USER_EMAIL = "user_email";
 
     private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<Login> decryptedLogin = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isLoggedIn;
+    private final SingleEventLiveData<Void> actionLogin = new SingleEventLiveData<>();
     private final SingleEventLiveData<Void> tokenSentAction = new SingleEventLiveData<>();
-    private MutableLiveData<Set<String>> emailList;
 
     @Inject
     public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor,
@@ -65,7 +60,7 @@ public class LoginViewModel extends ViewModel {
             .doFinally(() -> progress.setValue(false))
             .subscribe(() -> {
                     encryptUserCredentials();
-                    isLoggedIn.setValue(true);
+                    actionLogin.call();
                 },
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
@@ -78,16 +73,8 @@ public class LoginViewModel extends ViewModel {
         return progress;
     }
 
-    public LiveData<Boolean> getLoginStatus() {
-        if (isLoggedIn == null)
-            isLoggedIn = new MutableLiveData<>();
-
-        boolean loginValue = loginModel.isLoggedIn();
-
-        if (loginValue) {
-            isLoggedIn.setValue(true);
-        }
-        return isLoggedIn;
+    public LiveData<Void> getActionLogIn() {
+        return actionLogin;
     }
 
     public void setBaseUrl(String url, boolean shouldSetDefaultUrl) {
@@ -95,27 +82,15 @@ public class LoginViewModel extends ViewModel {
         interceptor.setInterceptor(baseUrl);
     }
 
-    public LiveData<Login> getLogin() {
+    public LiveData<Login> getLogin(String email) {
         if (decryptedLogin.getValue() == null) {
-            login.setEmail(encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_EMAIL, null)));
-            login.setPassword(encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_PASSWORD, null)));
+            String savedEmail = encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_EMAIL, null));
+            if (savedEmail != null && savedEmail.equals(email)) {
+                login.setPassword(encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_PASSWORD, null)));
+            }
             decryptedLogin.setValue(login);
-            return decryptedLogin;
         }
         return decryptedLogin;
-    }
-
-    //fetching the email list from the shared preferences
-    public LiveData<Set<String>> getEmailList() {
-        if (emailList == null)
-            emailList = new MutableLiveData<>();
-
-        Set<String> emailSet = sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null);
-
-        if (emailSet != null) {
-            emailList.setValue(emailSet);
-        }
-        return emailList;
     }
 
     @Override
