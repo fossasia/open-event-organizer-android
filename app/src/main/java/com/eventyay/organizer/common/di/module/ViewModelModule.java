@@ -24,6 +24,7 @@ import com.eventyay.organizer.core.speaker.details.SpeakerDetailsViewModel;
 import com.eventyay.organizer.core.speakerscall.create.CreateSpeakersCallViewModel;
 import com.eventyay.organizer.core.sponsor.create.CreateSponsorViewModel;
 import com.eventyay.organizer.core.ticket.create.CreateTicketViewModel;
+import com.eventyay.organizer.core.ticket.detail.TicketDetailViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -131,6 +132,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ChangePasswordViewModel.class)
     public abstract ViewModel bindChangePasswordViewModel(ChangePasswordViewModel changePasswordViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TicketDetailViewModel.class)
+    public abstract ViewModel bindTicketDetailViewModel(TicketDetailViewModel ticketDetailViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
