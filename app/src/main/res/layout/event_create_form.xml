@@ -29,8 +29,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
                 android:contentDescription="@string/create_event"
+                android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_ticket" />
 
             <android.support.design.widget.TextInputLayout
@@ -44,11 +44,72 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/event_name"
+                    android:inputType="textMultiLine"
                     android:text="@={ event.name }"
-                    app:validateEmpty="@{true}"
-                    android:inputType="textMultiLine" />
+                    app:validateEmpty="@{true}" />
 
             </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/spacing_big"
+            android:layout_marginStart="@dimen/spacing_big"
+            android:padding="@dimen/spacing_extra_small">
+
+            <CheckBox
+                android:id="@+id/organizer_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onCheckedChanged="@{ (switch, checked) -> event.setHasOrganizerInfo(checked) }"
+                android:text="@string/add_organizer_information" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/organizer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/organizer_name"
+                    android:inputType="textMultiLine"
+                    android:text="@={ event.organizerName }" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/organizer_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/organizer_description"
+                    android:inputType="textMultiLine"
+                    android:text="@={ event.organizerDescription }" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/description"
+                    android:inputType="textMultiLine"
+                    android:text="@={ event.description }" />
+
+            </android.support.design.widget.TextInputLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -65,25 +126,26 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:padding="@dimen/spacing_extra_small"
                 android:text="@string/date_and_time"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <include
                 layout="@layout/time_picker"
                 bind:date="@={ event.startsAt }"
-                bind:label="@{ @string/starts_at }"/>
+                bind:label="@{ @string/starts_at }" />
 
             <include
                 layout="@layout/time_picker"
                 bind:date="@={ event.endsAt }"
-                bind:label="@{ @string/ends_at }"/>
+                bind:label="@{ @string/ends_at }" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_small"
                 android:padding="@dimen/spacing_extra_small"
-                android:textSize="@dimen/text_size_small"
-                android:text="@string/timezone"/>
+                android:text="@string/timezone"
+                android:textSize="@dimen/text_size_small" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,8 +156,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
                     android:contentDescription="@string/timezone"
+                    android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_clock" />
 
                 <android.support.v7.widget.AppCompatSpinner
@@ -103,7 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/timezones"
-                    android:onItemSelected="@{ (parent, v, pos, id) ->  event.setTimezone(parent.getItemAtPosition(pos).toString())  }"/>
+                    android:onItemSelected="@{ (parent, v, pos, id) ->  event.setTimezone(parent.getItemAtPosition(pos).toString())  }" />
 
             </LinearLayout>
         </LinearLayout>
@@ -125,7 +187,8 @@
                 android:divider="?android:dividerHorizontal"
                 android:showDividers="beginning"
                 android:text="@string/location_details"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/button_place_picker"
@@ -133,8 +196,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_extra_small"
-                android:textColor="@color/purple_500"
-                android:text="@string/pick_from_map"/>
+                android:text="@string/pick_from_map"
+                android:textColor="@color/purple_500" />
 
             <LinearLayout
                 android:id="@+id/layout_searchable_location"
@@ -147,8 +210,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
                     android:contentDescription="@string/searchable_location_name"
+                    android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_location" />
 
                 <android.support.design.widget.TextInputLayout
@@ -178,8 +241,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
                     android:contentDescription="@string/location_name"
+                    android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_location" />
 
                 <android.support.design.widget.TextInputLayout
@@ -198,74 +261,12 @@
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layout_latitude"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:contentDescription="@string/latitude"
-                    app:srcCompat="@drawable/ic_location" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/latitude"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/latitude"
-                        android:inputType="numberDecimal"
-                        android:text="@={ BindingAdapters.doubleToStr(event.latitude) }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_longitude"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:contentDescription="@string/longitude"
-                    app:srcCompat="@drawable/ic_location" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/longitude"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/longitude"
-                        android:inputType="numberDecimal"
-                        android:text="@={ BindingAdapters.doubleToStr(event.longitude) }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
             <CheckBox
                 android:id="@+id/map_shown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
                 android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
+                android:padding="@dimen/spacing_extra_small"
                 android:text="@string/show_map" />
 
         </LinearLayout>
@@ -286,14 +287,15 @@
                 android:padding="@dimen/spacing_extra_small"
                 android:showDividers="beginning"
                 android:text="@string/ticketing_details"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/ticketing_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
                 android:onCheckedChanged="@{ (switch, checked) -> event.setTicketingEnabled(checked) }"
+                android:padding="@dimen/spacing_extra_small"
                 android:text="@string/use_ticketing_system" />
 
             <LinearLayout
@@ -306,8 +308,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
                     android:contentDescription="@string/ticket_url"
+                    android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_link" />
 
                 <android.support.design.widget.TextInputLayout
@@ -337,98 +339,13 @@
             android:showDividers="beginning">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/organizer_details"
-                android:textSize="@dimen/text_size_normal" />
-
-            <CheckBox
-                android:id="@+id/organizer_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
-                android:onCheckedChanged="@{ (switch, checked) -> event.setHasOrganizerInfo(checked) }"
-                android:text="@string/add_organizer_information" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:contentDescription="@string/organizer_name"
-                    app:srcCompat="@drawable/ic_person" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/organizer_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/organizer_name"
-                        android:inputType="textMultiLine"
-                        android:text="@={ event.organizerName }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:contentDescription="@string/organizer_description"
-                    app:srcCompat="@drawable/ic_info" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/organizer_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/organizer_description"
-                        android:inputType="textMultiLine"
-                        android:text="@={ event.organizerDescription }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:padding="@dimen/spacing_extra_small"
                 android:text="@string/listing_privacy"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <RadioGroup
                 android:id="@+id/listing_privacy_group"
@@ -469,7 +386,8 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:padding="@dimen/spacing_extra_small"
                 android:text="@string/speakers_and_sponsors"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/enableSponsor"
@@ -501,7 +419,8 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:padding="@dimen/spacing_extra_small"
                 android:text="@string/payment_details"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -512,19 +431,19 @@
                     android:id="@+id/enable_tax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
                     android:onCheckedChanged="@{ (switch, checked) -> event.setTaxEnabled(checked) }"
+                    android:padding="@dimen/spacing_extra_small"
                     android:text="@string/enable_tax" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:padding="@dimen/spacing_small"
-                    android:textSize="@dimen/text_size_small"
-                    android:text="@string/payment_country"/>
+                    android:text="@string/payment_country"
+                    android:textSize="@dimen/text_size_small" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -535,26 +454,26 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
                         android:contentDescription="@string/payment_country"
+                        android:padding="@dimen/spacing_extra_small"
                         app:srcCompat="@drawable/ic_coin" />
 
                     <android.support.v7.widget.AppCompatSpinner
                         android:id="@+id/payment_country_spinner"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
                     android:layout_marginLeft="@dimen/spacing_large"
                     android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:padding="@dimen/spacing_small"
-                    android:textSize="@dimen/text_size_small"
-                    android:text="@string/payment_currency"/>
+                    android:text="@string/payment_currency"
+                    android:textSize="@dimen/text_size_small" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -565,15 +484,15 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
                         android:contentDescription="@string/payment_currency"
+                        android:padding="@dimen/spacing_extra_small"
                         app:srcCompat="@drawable/ic_coin" />
 
                     <android.support.v7.widget.AppCompatSpinner
                         android:id="@+id/currency_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:onItemSelected="@{ (parent, v, pos, id) ->  event.setPaymentCurrency(parent.getItemAtPosition(pos).toString())  }"/>
+                        android:onItemSelected="@{ (parent, v, pos, id) ->  event.setPaymentCurrency(parent.getItemAtPosition(pos).toString())  }" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -594,7 +513,8 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:padding="@dimen/spacing_extra_small"
                 android:text="@string/payment_methods"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -767,7 +687,8 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:padding="@dimen/spacing_extra_small"
                 android:text="@string/graphics"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -778,8 +699,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
                     android:contentDescription="@string/logo_url"
+                    android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_photo" />
 
                 <android.support.design.widget.TextInputLayout
@@ -808,17 +729,17 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
                     android:contentDescription="@string/original_image_url"
+                    android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_photo" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/original_image_url_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/spacing_extra_small"
                     android:paddingLeft="@dimen/spacing_extra_small"
-                    android:paddingRight="@dimen/spacing_extra_small"
-                    android:paddingBottom="@dimen/spacing_extra_small">
+                    android:paddingRight="@dimen/spacing_extra_small">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/original_image_url"
@@ -847,7 +768,8 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:padding="@dimen/spacing_extra_small"
                 android:text="@string/event_state"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <RadioGroup
                 android:id="@+id/state_group"
@@ -888,7 +810,8 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:padding="@dimen/spacing_extra_small"
                 android:text="@string/others"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -899,37 +822,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:contentDescription="@string/description"
-                    app:srcCompat="@drawable/ic_info" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/description"
-                        android:inputType="textMultiLine"
-                        android:text="@={ event.description }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
                     android:contentDescription="@string/external_event_url"
+                    android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_link" />
 
                 <android.support.design.widget.TextInputLayout
@@ -964,7 +858,8 @@
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:padding="@dimen/spacing_extra_small"
                 android:text="@string/code_of_conduct"
-                android:textSize="@dimen/text_size_normal" />
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -975,8 +870,8 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small"
                     android:contentDescription="@string/code_of_conduct"
+                    android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_gavel" />
 
                 <android.support.design.widget.TextInputLayout

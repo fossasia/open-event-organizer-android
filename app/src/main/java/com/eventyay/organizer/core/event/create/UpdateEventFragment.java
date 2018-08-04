@@ -279,8 +279,6 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             if ("YOUR_API_KEY".equals(placesApiKey)) {
                 Timber.d("Add Google Places API key in AndroidManifest.xml file to use Place Picker.");
                 binding.form.buttonPlacePicker.setVisibility(View.GONE);
-                binding.form.layoutLatitude.setVisibility(View.VISIBLE);
-                binding.form.layoutLongitude.setVisibility(View.VISIBLE);
                 showLocationLayouts();
             }
         } catch (PackageManager.NameNotFoundException e) {
