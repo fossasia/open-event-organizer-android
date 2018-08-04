@@ -31,7 +31,7 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
     ViewModelProvider.Factory viewModelFactory;
 
     @BindView(R.id.pager)
-    ViewPager pager;
+    EventsViewPager pager;
 
     @BindView(R.id.stepper_indicator)
     StepperIndicator indicator;
