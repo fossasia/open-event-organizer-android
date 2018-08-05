@@ -83,8 +83,8 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
             signUpViewModel.signUp();
         });
 
-        binding.privacyPolicy.setOnClickListener(view -> BrowserUtils.launchUrl(PRIVACY_POLICY_URL, getContext()));
-        binding.termsOfUse.setOnClickListener(view -> BrowserUtils.launchUrl(TERMS_OF_USE_URL, getContext()));
+        binding.privacyPolicy.setOnClickListener(view -> BrowserUtils.launchUrl(getContext(), PRIVACY_POLICY_URL));
+        binding.termsOfUse.setOnClickListener(view -> BrowserUtils.launchUrl(getContext(), TERMS_OF_USE_URL));
         binding.emailLayout.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

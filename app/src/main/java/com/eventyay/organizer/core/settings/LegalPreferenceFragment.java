@@ -41,17 +41,17 @@ public class LegalPreferenceFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.legal_preferences, rootKey);
 
         findPreference(getString(R.string.privacy_policy_key)).setOnPreferenceClickListener(preference -> {
-            BrowserUtils.launchUrl(PRIVACY_POLICY_URL, getContext());
+            BrowserUtils.launchUrl(getContext(), PRIVACY_POLICY_URL);
             return true;
         });
 
         findPreference(getString(R.string.terms_of_service_key)).setOnPreferenceClickListener(preference -> {
-            BrowserUtils.launchUrl(TERMS_OF_USE_URL, getContext());
+            BrowserUtils.launchUrl(getContext(), TERMS_OF_USE_URL);
             return true;
         });
 
         findPreference(getString(R.string.cookie_policy_key)).setOnPreferenceClickListener(preference -> {
-            BrowserUtils.launchUrl(COOKIE_POLICY_URL, getContext());
+            BrowserUtils.launchUrl(getContext(), COOKIE_POLICY_URL);
             return true;
         });
     }

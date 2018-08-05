@@ -50,7 +50,7 @@ class DrawerNavigator {
             intent.putExtra(AboutEventActivity.EVENT_ID, fragmentNavigator.getEventId());
             context.startActivity(intent);
         } else if (id == R.id.nav_suggestion) {
-            BrowserUtils.launchUrl(GOOGLE_FORM_LINK, context);
+            BrowserUtils.launchUrl(context, GOOGLE_FORM_LINK);
         } else
             fragmentNavigator.loadFragment(id);
     }
