@@ -1,15 +1,19 @@
-package com.eventyay.organizer.core.presenter;
+package com.eventyay.organizer.core.ticket.detail;
+
+import android.arch.core.executor.testing.InstantTaskExecutorRule;
+import android.arch.lifecycle.Observer;
 
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepositoryImpl;
-import com.eventyay.organizer.core.ticket.detail.TicketDetailPresenter;
-import com.eventyay.organizer.core.ticket.detail.TicketDetailView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -18,18 +22,18 @@ import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class TicketDetailPresenterTest {
+public class TicketDetailViewModelTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock
-    private TicketDetailView ticketDetailView;
-    @Mock
     private TicketRepositoryImpl ticketRepository;
-    private TicketDetailPresenter ticketDetailPresenter;
+    @Rule
+    public TestRule rule = new InstantTaskExecutorRule();
+
+    private TicketDetailViewModel ticketDetailViewModel;
 
     private static final long ID = 5L;
 
@@ -40,11 +44,14 @@ public class TicketDetailPresenterTest {
         TICKET.setEvent(Event.builder().id(ID).build());
     }
 
+    @Mock
+    Observer<String> error;
+    @Mock
+    Observer<Ticket> ticket;
+
     @Before
     public void setUp() {
-        ticketDetailPresenter = new TicketDetailPresenter(ticketRepository);
-        ticketDetailPresenter.attach(ID, ticketDetailView);
-
+        ticketDetailViewModel = new TicketDetailViewModel(ticketRepository);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
@@ -59,18 +66,27 @@ public class TicketDetailPresenterTest {
     @Test
     public void shouldLoadTicketSuccessfully() {
         when(ticketRepository.getTicket(ID, false)).thenReturn(Observable.just(TICKET));
+        InOrder inOrder = Mockito.inOrder(ticketRepository, ticket);
 
-        ticketDetailPresenter.start();
+        ticketDetailViewModel.getTicket().observeForever(ticket);
 
-        verify(ticketDetailView).showResult(TICKET);
+        ticketDetailViewModel.loadTicket(ID);
+
+        inOrder.verify(ticketRepository).getTicket(ID, false);
+        inOrder.verify(ticket).onChanged(TICKET);
     }
 
     @Test
     public void shouldShowErrorOnTicketLoadFailure() {
         when(ticketRepository.getTicket(ID, false)).thenReturn(Observable.error(new Throwable("Error")));
 
-        ticketDetailPresenter.start();
+        InOrder inOrder = Mockito.inOrder(ticketRepository, error);
 
-        verify(ticketDetailView).showError("Error");
+        ticketDetailViewModel.getError().observeForever(error);
+
+        ticketDetailViewModel.loadTicket(ID);
+
+        inOrder.verify(ticketRepository).getTicket(ID, false);
+        inOrder.verify(error).onChanged("Error");
     }
 }
