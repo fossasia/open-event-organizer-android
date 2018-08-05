@@ -20,6 +20,7 @@ import com.eventyay.organizer.core.auth.SharedViewModel;
 import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.databinding.SignUpFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.BrowserUtils;
 import com.eventyay.organizer.utils.ValidateUtils;
 
 import javax.inject.Inject;
@@ -82,8 +83,8 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
             signUpViewModel.signUp();
         });
 
-        binding.privacyPolicy.setOnClickListener(view -> openPrivacyPolicy());
-        binding.termsOfUse.setOnClickListener(view -> openTermsOfUse());
+        binding.privacyPolicy.setOnClickListener(view -> BrowserUtils.launchUrl(PRIVACY_POLICY_URL, getContext()));
+        binding.termsOfUse.setOnClickListener(view -> BrowserUtils.launchUrl(TERMS_OF_USE_URL, getContext()));
         binding.emailLayout.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -103,18 +104,6 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
                 //do nothing
             }
         });
-    }
-
-    private void openPrivacyPolicy() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(PRIVACY_POLICY_URL));
-        startActivity(intent);
-    }
-
-    private void openTermsOfUse() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(TERMS_OF_USE_URL));
-        startActivity(intent);
     }
 
     @Override

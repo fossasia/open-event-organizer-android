@@ -28,3 +28,4 @@ versions.support_lib = '27.1.0'
 versions.play_services='12.0.1'
 versions.work_manager="1.0.0-alpha04"
 versions.timelineView="1.0.6"
+versions.chromeCustomTabs='27.1.0'

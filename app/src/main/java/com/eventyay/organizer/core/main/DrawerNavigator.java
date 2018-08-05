@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.event.about.AboutEventActivity;
 import com.eventyay.organizer.core.event.create.CreateEventActivity;
+import com.eventyay.organizer.utils.BrowserUtils;
 
 import static com.eventyay.organizer.core.event.create.CreateEventActivity.EVENT_ID;
 
@@ -49,9 +50,7 @@ class DrawerNavigator {
             intent.putExtra(AboutEventActivity.EVENT_ID, fragmentNavigator.getEventId());
             context.startActivity(intent);
         } else if (id == R.id.nav_suggestion) {
-            Intent googleFormIntent = new Intent(Intent.ACTION_VIEW);
-            googleFormIntent.setData(Uri.parse(GOOGLE_FORM_LINK));
-            context.startActivity(googleFormIntent);
+            BrowserUtils.launchUrl(GOOGLE_FORM_LINK, context);
         } else
             fragmentNavigator.loadFragment(id);
     }
