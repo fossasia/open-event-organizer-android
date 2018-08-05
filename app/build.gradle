@@ -220,6 +220,9 @@ dependencies {
     // TimeLine View
     implementation "com.github.vipulasri:timelineview:${versions.timelineView}"
 
+    // Chrome Custom Tabs
+    playStoreImplementation "com.android.support:customtabs:${versions.chromeCustomTabs}"
+
     //open-source licenses
     playStoreImplementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 
