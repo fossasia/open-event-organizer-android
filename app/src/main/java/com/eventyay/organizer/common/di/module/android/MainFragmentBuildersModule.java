@@ -1,18 +1,19 @@
 package com.eventyay.organizer.common.di.module.android;
 
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInFragment;
+import com.eventyay.organizer.core.attendee.history.CheckInHistoryFragment;
 import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
 import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
-import com.eventyay.organizer.core.event.list.pager.ListPageFragment;
 import com.eventyay.organizer.core.event.list.EventListFragment;
+import com.eventyay.organizer.core.event.list.pager.ListPageFragment;
 import com.eventyay.organizer.core.event.list.sales.SalesSummaryFragment;
 import com.eventyay.organizer.core.faq.create.CreateFaqFragment;
 import com.eventyay.organizer.core.faq.list.FaqListFragment;
 import com.eventyay.organizer.core.feedback.list.FeedbackListFragment;
 import com.eventyay.organizer.core.orders.detail.OrderDetailFragment;
 import com.eventyay.organizer.core.orders.list.OrdersFragment;
-import com.eventyay.organizer.core.settings.restriction.CheckInRestrictions;
 import com.eventyay.organizer.core.settings.SettingsFragment;
+import com.eventyay.organizer.core.settings.restriction.CheckInRestrictions;
 import com.eventyay.organizer.core.share.ShareEventFragment;
 import com.eventyay.organizer.core.speaker.list.SpeakersFragment;
 import com.eventyay.organizer.core.speakerscall.detail.SpeakersCallFragment;
@@ -50,6 +51,9 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract AttendeesFragment contributeAttendeeFragment();
+
+    @ContributesAndroidInjector
+    abstract CheckInHistoryFragment contributeCheckInHistoryFragment();
 
     // Ticket
     @ContributesAndroidInjector

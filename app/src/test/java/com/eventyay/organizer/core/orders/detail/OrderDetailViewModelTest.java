@@ -10,6 +10,7 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.order.OrderRepository;
+import com.eventyay.organizer.data.order.model.OrderReceiptRequest;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
 import org.junit.After;
@@ -57,6 +58,7 @@ public class OrderDetailViewModelTest {
 
     private static final Order ORDER = new Order();
     private static final Event EVENT = new Event();
+    private static final OrderReceiptRequest ORDER_RECEIPT_REQUEST = new OrderReceiptRequest();
 
     private static final long ORDER_ID = 5L;
     private static final long EVENT_ID = 5L;
@@ -86,10 +88,13 @@ public class OrderDetailViewModelTest {
     Observer<Boolean> progress;
     @Mock
     Observer<Order> order;
+    @Mock
+    Observer<String> success;
 
     @Before
     public void setUp() {
         orderDetailsViewModel = new OrderDetailViewModel(orderRepository, eventRepository, attendeeRepository, ticketRepository);
+        ORDER_RECEIPT_REQUEST.setOrderIdentifier(ORDER_IDENTIFIER);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
@@ -260,4 +265,42 @@ public class OrderDetailViewModelTest {
         inOrder.verify(attendeeRepository).scheduleToggle(ATTENDEES_LIST.get(1));
         inOrder.verify(error).onChanged(any());
     }
+
+    @Test
+    public void shouldSendEmailSuccessfully() {
+        when(orderRepository.sendReceipt(ORDER_RECEIPT_REQUEST)).thenReturn(Completable.complete());
+
+        InOrder inOrder = Mockito.inOrder(orderRepository, progress, success);
+
+        orderDetailsViewModel.getProgress().observeForever(progress);
+        orderDetailsViewModel.getSuccess().observeForever(success);
+
+        orderDetailsViewModel.sendReceipt(ORDER_IDENTIFIER);
+
+        inOrder.verify(orderRepository).sendReceipt(ORDER_RECEIPT_REQUEST);
+        inOrder.verify(progress).onChanged(true);
+        inOrder.verify(success).onChanged("Email Sent!");
+        inOrder.verify(progress).onChanged(false);
+
+    }
+
+    @Test
+    public void shouldShowEmailError() {
+        String errorString = "Test Error";
+        when(orderRepository.sendReceipt(ORDER_RECEIPT_REQUEST))
+            .thenReturn(Completable.error(com.eventyay.organizer.common.rx.Logger.TEST_ERROR));
+
+        InOrder inOrder = Mockito.inOrder(orderRepository, progress, error);
+
+        orderDetailsViewModel.getError().observeForever(error);
+        orderDetailsViewModel.getProgress().observeForever(progress);
+
+        orderDetailsViewModel.sendReceipt(ORDER_IDENTIFIER);
+
+        inOrder.verify(orderRepository).sendReceipt(ORDER_RECEIPT_REQUEST);
+        inOrder.verify(progress).onChanged(true);
+        inOrder.verify(error).onChanged(errorString);
+        inOrder.verify(progress).onChanged(false);
+    }
+
 }

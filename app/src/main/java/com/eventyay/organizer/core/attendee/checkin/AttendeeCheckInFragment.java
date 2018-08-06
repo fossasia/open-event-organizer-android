@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
+import com.eventyay.organizer.core.attendee.history.CheckInHistoryFragment;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.databinding.BottomsheetAttendeeCheckInBinding;
 import com.eventyay.organizer.ui.ViewUtils;
@@ -62,6 +63,18 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<AttendeeChe
         binding.setPresenter(getPresenter());
         binding.switchAttendeeDetailsState.setChecked(false);
         getPresenter().start();
+
+        binding.activityLog.setOnClickListener(view -> openCheckInHistoryFragment());
+    }
+
+    private void openCheckInHistoryFragment() {
+        getFragmentManager().beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            .replace(R.id.fragment_container, CheckInHistoryFragment.newInstance(attendeeId))
+            .addToBackStack(null)
+            .commit();
+
+        dismiss();
     }
 
     @Override

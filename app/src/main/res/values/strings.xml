@@ -27,7 +27,6 @@
     <string name="rating">rating</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_up_link"><u>Sign Up For Open Event</u></string>
-    <string name="login_link"><u>Already have an account? Log In</u></string>
     <string name="scan_the_barcode">Scan the BarCode</string>
     <string name="event_title_here">Event Title Here</string>
     <string name="title_feedbacks">Feedbacks</string>
@@ -124,7 +123,7 @@
     <string name="date_and_time">Date and Time</string>
     <string name="timezone">Timezone</string>
     <string name="location_details">Location Details</string>
-    <string name="show_map">Show Map</string>
+    <string name="show_map">Show map on public page</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="location_name">Location Name</string>
@@ -164,7 +163,7 @@
     <string name="published">Published</string>
     <string name="draft">Draft</string>
     <string name="others">Others</string>
-    <string name="description">Description</string>
+    <string name="description">Briefly describe your event</string>
     <string name="external_event_url">External Event Url</string>
     <string name="code_of_conduct">Code of Conduct</string>
     <string name="enable_tax">Enable Tax</string>
@@ -328,6 +327,7 @@
     <string name="check_in_restrictions_key">check_in_restrictions</string>
     <string name="scan_settings_key">scan_settings</string>
     <string name="payment_preference_key">payment_preferences</string>
+    <string name="get_started">Get Started</string>
     <string name="unpublish_confirmation_message">Unpublishing will put your event back to a draft state.</string>
     <string name="successfull_publish_message">Congrats! Your event is live. Spread the word about your event.</string>
     <string name="unpublish_event">Unpublish Event</string>
@@ -340,12 +340,18 @@
     <string name="net_sales">Net Sales</string>
     <string name="acknowledgements">Acknowledgements</string>
     <string name="acknowledgements_key">acknowledgement</string>
+    <string name="check_in_history">Check In History</string>
+    <string name="activity_log">Activity Log</string>
+    <string name="ticket_buyer">Ticket Buyer</string>
     <string name="order_statistics">Order Statistics</string>
     <string name="sales">Sales</string>
     <string name="attendee">Attendee</string>
     <string name="ticket_type">Ticket Type</string>
     <string name="scanning_disabled_message">Scanning is not enabled in this build</string>
     <string name="check_in_restricted">Check In is restricted for this ticket type</string>
+    <string name="print">Print</string>
+    <string name="receipt">Receipt</string>
+    <string name="get_started_hint">Sign up or log in to create and manage events.</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

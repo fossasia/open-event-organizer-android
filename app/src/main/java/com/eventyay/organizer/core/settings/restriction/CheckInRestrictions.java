@@ -100,7 +100,7 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
         boolean restrictAll = true;
 
         for (Ticket ticket : ticketSettingsViewModel.getTickets().getValue()) {
-            if (ticket.isCheckinRestricted == null || !ticket.isCheckinRestricted) {
+            if (!ticket.isCheckinRestricted) {
                 restrictAll = false;
                 break;
             }

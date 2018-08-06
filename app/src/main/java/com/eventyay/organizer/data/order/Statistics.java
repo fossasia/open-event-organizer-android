@@ -27,7 +27,7 @@ public class Statistics {
     public Long cancelled;
     public Long pending;
     public Long placed;
-    public Long total;
+    public long total;
     public Long expired;
-    public Long completed;
+    public long completed;
 }

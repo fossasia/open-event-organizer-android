@@ -14,7 +14,7 @@
         android:label="${appName}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="allowBackup">
+        tools:replace="allowBackup, android:label">
         <provider
             android:name="com.eventyay.organizer.OrgaProvider"
             android:authorities="${applicationId}.com.eventyay.organizer"

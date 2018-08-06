@@ -4,16 +4,19 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import com.eventyay.organizer.common.di.OrgaViewModelFactory;
-import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
+import com.eventyay.organizer.core.attendee.history.CheckInHistoryViewModel;
 import com.eventyay.organizer.core.auth.login.LoginViewModel;
+import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
 import com.eventyay.organizer.core.auth.signup.SignUpViewModel;
-import com.eventyay.organizer.core.event.list.EventsViewModel;
+import com.eventyay.organizer.core.auth.start.StartViewModel;
 import com.eventyay.organizer.core.event.create.CreateEventViewModel;
+import com.eventyay.organizer.core.event.list.EventsViewModel;
 import com.eventyay.organizer.core.faq.create.CreateFaqViewModel;
 import com.eventyay.organizer.core.main.EventViewModel;
-import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.main.OrganizerViewModel;
+import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.orders.list.OrdersViewModel;
+import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
 import com.eventyay.organizer.core.share.ShareEventViewModel;
@@ -21,6 +24,7 @@ import com.eventyay.organizer.core.speaker.details.SpeakerDetailsViewModel;
 import com.eventyay.organizer.core.speakerscall.create.CreateSpeakersCallViewModel;
 import com.eventyay.organizer.core.sponsor.create.CreateSponsorViewModel;
 import com.eventyay.organizer.core.ticket.create.CreateTicketViewModel;
+import com.eventyay.organizer.core.ticket.detail.TicketDetailViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -33,6 +37,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel.class)
     public abstract ViewModel bindLoginViewModel(LoginViewModel loginViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(StartViewModel.class)
+    public abstract ViewModel bindStartViewModel(StartViewModel startViewModel);
 
     @Binds
     @IntoMap
@@ -111,8 +120,23 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(CheckInHistoryViewModel.class)
+    public abstract ViewModel bindCheckInHistoryViewModel(CheckInHistoryViewModel checkInHistoryViewModel);
+
+    @Binds
+    @IntoMap
     @ViewModelKey(UpdateOrganizerInfoViewModel.class)
     public abstract ViewModel bindUpdateOrganizerViewModel(UpdateOrganizerInfoViewModel ticketSettingsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChangePasswordViewModel.class)
+    public abstract ViewModel bindChangePasswordViewModel(ChangePasswordViewModel changePasswordViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TicketDetailViewModel.class)
+    public abstract ViewModel bindTicketDetailViewModel(TicketDetailViewModel ticketDetailViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
