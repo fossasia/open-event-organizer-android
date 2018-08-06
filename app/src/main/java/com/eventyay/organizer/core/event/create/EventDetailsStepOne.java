@@ -91,8 +91,6 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
             if ("YOUR_API_KEY".equals(placesApiKey)) {
                 Timber.d("Add Google Places API key in AndroidManifest.xml file to use Place Picker.");
                 binding.buttonPlacePicker.setVisibility(View.GONE);
-                binding.layoutLatitude.setVisibility(View.VISIBLE);
-                binding.layoutLongitude.setVisibility(View.VISIBLE);
                 showLocationLayouts();
             }
         } catch (PackageManager.NameNotFoundException e) {

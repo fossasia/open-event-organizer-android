@@ -123,7 +123,7 @@
     <string name="date_and_time">Date and Time</string>
     <string name="timezone">Timezone</string>
     <string name="location_details">Location Details</string>
-    <string name="show_map">Show Map</string>
+    <string name="show_map">Show map on public page</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="location_name">Location Name</string>
@@ -163,7 +163,7 @@
     <string name="published">Published</string>
     <string name="draft">Draft</string>
     <string name="others">Others</string>
-    <string name="description">Description</string>
+    <string name="description">Briefly describe your event</string>
     <string name="external_event_url">External Event Url</string>
     <string name="code_of_conduct">Code of Conduct</string>
     <string name="enable_tax">Enable Tax</string>
