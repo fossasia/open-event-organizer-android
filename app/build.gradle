@@ -4,7 +4,7 @@ apply plugin: 'com.noveogroup.android.check'
 apply from: './jacoco.gradle'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 
-def app_name = System.getenv('app_name') ?: "eventyay organizer"
+def app_name = System.getenv('app_name') ?: "Eventyay Organizer"
 def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
 
 android {
