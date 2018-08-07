@@ -14,138 +14,41 @@
     </data>
 
     <LinearLayout
-        style="@style/ItemPadding"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/spacing_large">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="@dimen/event_image_height"
+            android:fitsSystemWindows="true"
+            android:scaleType="centerCrop"
+            app:imageUrl='@{ event.originalImageUrl }'
+            app:placeholder="@{ @drawable/header }"
+            android:contentDescription="@string/event_poster_image"
+            android:visibility="@{ event.originalImageUrl == null ? View.GONE : View.VISIBLE }"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/event_image_height"
+            android:background="@color/grey_600"
+            android:visibility="@{ event.originalImageUrl == null ? View.VISIBLE : View.GONE }">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/create_event"
-                android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_ticket" />
+                app:srcCompat="@drawable/ic_camera"
+                android:layout_gravity="center"
+                android:contentDescription="Add event image" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:padding="@dimen/spacing_extra_small">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/event_name"
-                    android:inputType="textMultiLine"
-                    android:text="@={ event.name }"
-                    app:validateEmpty="@{true}" />
-
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
+        </FrameLayout>
 
         <LinearLayout
+            style="@style/ItemPadding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="@dimen/spacing_big"
-            android:layout_marginStart="@dimen/spacing_big"
-            android:padding="@dimen/spacing_extra_small">
-
-            <CheckBox
-                android:id="@+id/organizer_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onCheckedChanged="@{ (switch, checked) -> event.setHasOrganizerInfo(checked) }"
-                android:text="@string/add_organizer_information" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/organizer_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/organizer_name"
-                    android:inputType="textMultiLine"
-                    android:text="@={ event.organizerName }" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/organizer_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/organizer_description"
-                    android:inputType="textMultiLine"
-                    android:text="@={ event.organizerDescription }" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/description"
-                    android:inputType="textMultiLine"
-                    android:text="@={ event.description }" />
-
-            </android.support.design.widget.TextInputLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/date_and_time"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
-
-            <include
-                layout="@layout/time_picker"
-                bind:date="@={ event.startsAt }"
-                bind:label="@{ @string/starts_at }" />
-
-            <include
-                layout="@layout/time_picker"
-                bind:date="@={ event.endsAt }"
-                bind:label="@{ @string/ends_at }" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/timezone"
-                android:textSize="@dimen/text_size_small" />
+            android:paddingTop="@dimen/spacing_large">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,293 +59,122 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/timezone"
+                    android:contentDescription="@string/create_event"
                     android:padding="@dimen/spacing_extra_small"
-                    app:srcCompat="@drawable/ic_clock" />
-
-                <android.support.v7.widget.AppCompatSpinner
-                    android:id="@+id/timezone_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/timezones"
-                    android:onItemSelected="@{ (parent, v, pos, id) ->  event.setTimezone(parent.getItemAtPosition(pos).toString())  }" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_extra_small"
-                android:layout_marginStart="@dimen/spacing_extra_small"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:divider="?android:dividerHorizontal"
-                android:showDividers="beginning"
-                android:text="@string/location_details"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/button_place_picker"
-                style="?attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_extra_small"
-                android:text="@string/pick_from_map"
-                android:textColor="@color/purple_500" />
-
-            <LinearLayout
-                android:id="@+id/layout_searchable_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/searchable_location_name"
-                    android:padding="@dimen/spacing_extra_small"
-                    app:srcCompat="@drawable/ic_location" />
+                    app:srcCompat="@drawable/ic_ticket" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
                     android:padding="@dimen/spacing_extra_small">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/searchable_location_name"
+                        android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/searchable_location_name"
+                        android:hint="@string/event_name"
                         android:inputType="textMultiLine"
-                        android:text="@={ event.searchableLocationName }" />
+                        android:text="@={ event.name }"
+                        app:validateEmpty="@{true}" />
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_location_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/location_name"
-                    android:padding="@dimen/spacing_extra_small"
-                    app:srcCompat="@drawable/ic_location" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/location_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/location_name"
-                        android:inputType="textMultiLine"
-                        android:text="@={ event.locationName }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-            <CheckBox
-                android:id="@+id/map_shown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/show_map" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:divider="?android:dividerHorizontal"
-                android:padding="@dimen/spacing_extra_small"
-                android:showDividers="beginning"
-                android:text="@string/ticketing_details"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
-
-            <CheckBox
-                android:id="@+id/ticketing_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onCheckedChanged="@{ (switch, checked) -> event.setTicketingEnabled(checked) }"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/use_ticketing_system" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="@{ ticketingDetails.checked ? View.GONE : View.VISIBLE }">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/ticket_url"
-                    android:padding="@dimen/spacing_extra_small"
-                    app:srcCompat="@drawable/ic_link" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/ticket_url_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/ticket_url"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/ticket_url"
-                        android:inputType="textMultiLine"
-                        android:text="@={ event.ticketUrl }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/listing_privacy"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
-
-            <RadioGroup
-                android:id="@+id/listing_privacy_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/spacing_big"
+                android:layout_marginStart="@dimen/spacing_big"
                 android:padding="@dimen/spacing_extra_small">
 
-                <RadioButton
-                    android:id="@+id/public_privacy"
+                <CheckBox
+                    android:id="@+id/organizer_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:onCheckedChanged='@{ (switch, checked) -> (checked == true) ? event.setPrivacy("public") : event.setPrivacy("private") }'
-                    android:text="@string/public_event" />
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setHasOrganizerInfo(checked) }"
+                    android:text="@string/add_organizer_information" />
 
-                <RadioButton
-                    android:id="@+id/private_privacy"
-                    android:layout_width="wrap_content"
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/private_event" />
+                    android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
 
-            </RadioGroup>
-        </LinearLayout>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/organizer_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/organizer_name"
+                        android:inputType="textMultiLine"
+                        android:text="@={ event.organizerName }" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
+                </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/speakers_and_sponsors"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
 
-            <CheckBox
-                android:id="@+id/enableSponsor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onCheckedChanged="@{ (switch, checked) -> event.setSponsorsEnabled(checked) }"
-                android:text="@string/enable_sponsors" />
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/organizer_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/organizer_description"
+                        android:inputType="textMultiLine"
+                        android:text="@={ event.organizerDescription }" />
 
-            <CheckBox
-                android:id="@+id/enableSession"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onCheckedChanged="@{ (switch, checked) -> event.setSessionsSpeakersEnabled(checked) }"
-                android:text="@string/enable_session_speakers" />
+                </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/description"
+                        android:inputType="textMultiLine"
+                        android:text="@={ event.description }" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/payment_details"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
 
-                <CheckBox
-                    android:id="@+id/enable_tax"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onCheckedChanged="@{ (switch, checked) -> event.setTaxEnabled(checked) }"
+                    android:layout_marginTop="@dimen/spacing_normal"
                     android:padding="@dimen/spacing_extra_small"
-                    android:text="@string/enable_tax" />
+                    android:text="@string/date_and_time"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <include
+                    layout="@layout/time_picker"
+                    bind:date="@={ event.startsAt }"
+                    bind:label="@{ @string/starts_at }" />
+
+                <include
+                    layout="@layout/time_picker"
+                    bind:date="@={ event.endsAt }"
+                    bind:label="@{ @string/ends_at }" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_large"
-                    android:layout_marginStart="@dimen/spacing_large"
                     android:layout_marginTop="@dimen/spacing_small"
-                    android:padding="@dimen/spacing_small"
-                    android:text="@string/payment_country"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/timezone"
                     android:textSize="@dimen/text_size_small" />
 
                 <LinearLayout
@@ -454,441 +186,742 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/payment_country"
+                        android:contentDescription="@string/timezone"
                         android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_coin" />
+                        app:srcCompat="@drawable/ic_clock" />
 
                     <android.support.v7.widget.AppCompatSpinner
-                        android:id="@+id/payment_country_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_large"
-                    android:layout_marginStart="@dimen/spacing_large"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:padding="@dimen/spacing_small"
-                    android:text="@string/payment_currency"
-                    android:textSize="@dimen/text_size_small" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/payment_currency"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_coin" />
-
-                    <android.support.v7.widget.AppCompatSpinner
-                        android:id="@+id/currency_spinner"
+                        android:id="@+id/timezone_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:onItemSelected="@{ (parent, v, pos, id) ->  event.setPaymentCurrency(parent.getItemAtPosition(pos).toString())  }" />
+                        android:entries="@array/timezones"
+                        android:onItemSelected="@{ (parent, v, pos, id) ->  event.setTimezone(parent.getItemAtPosition(pos).toString())  }" />
 
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
-                android:id="@+id/choose_payment_method"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/payment_methods"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_small"
-                android:layout_marginStart="@dimen/spacing_small"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:orientation="vertical">
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginLeft="@dimen/spacing_extra_small"
+                    android:layout_marginStart="@dimen/spacing_extra_small"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:divider="?android:dividerHorizontal"
+                    android:showDividers="beginning"
+                    android:text="@string/location_details"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/payment_by_paypal"
-                        android:textSize="@dimen/text_size_normal" />
+                <Button
+                    android:id="@+id/button_place_picker"
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_extra_small"
+                    android:text="@string/pick_from_map"
+                    android:textColor="@color/purple_500" />
 
-                    <CheckBox
-                        android:id="@+id/paypal_payment"
+                <LinearLayout
+                    android:id="@+id/layout_searchable_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByPaypal(checked) }"
-                        android:text="@string/accept_payment_through_paypal" />
+                        android:contentDescription="@string/searchable_location_name"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_location" />
 
                     <android.support.design.widget.TextInputLayout
-                        android:id="@+id/paypal_email_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small"
-                        android:visibility="@{ paypalPayment.checked ? View.VISIBLE : View.GONE }">
+                        android:padding="@dimen/spacing_extra_small">
 
                         <android.support.design.widget.TextInputEditText
-                            android:id="@+id/paypal_email"
+                            android:id="@+id/searchable_location_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/paypal_email"
-                            android:inputType="text"
-                            android:text="@={ event.paypalEmail }" />
+                            android:hint="@string/searchable_location_name"
+                            android:inputType="textMultiLine"
+                            android:text="@={ event.searchableLocationName }" />
 
                     </android.support.design.widget.TextInputLayout>
-
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layout_location_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/payment_by_stripe"
-                        android:textSize="@dimen/text_size_normal" />
-
-                    <CheckBox
-                        android:id="@+id/stripe_payment"
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByStripe(checked) }"
-                        android:text="@string/accept_payment_through_stripe" />
+                        android:contentDescription="@string/location_name"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_location" />
 
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/location_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/location_name"
+                            android:inputType="textMultiLine"
+                            android:text="@={ event.locationName }" />
+
+                    </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/map_shown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/show_map" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:divider="?android:dividerHorizontal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:showDividers="beginning"
+                    android:text="@string/ticketing_details"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <CheckBox
+                    android:id="@+id/ticketing_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setTicketingEnabled(checked) }"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/use_ticketing_system" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="@{ ticketingDetails.checked ? View.GONE : View.VISIBLE }">
 
-                    <TextView
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/ticket_url"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_link" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/ticket_url_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/offline_payments"
-                        android:textSize="@dimen/text_size_normal" />
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/ticket_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/ticket_url"
+                            android:inputType="textMultiLine"
+                            android:text="@={ event.ticketUrl }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/listing_privacy"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <RadioGroup
+                    android:id="@+id/listing_privacy_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <RadioButton
+                        android:id="@+id/public_privacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onCheckedChanged='@{ (switch, checked) -> (checked == true) ? event.setPrivacy("public") : event.setPrivacy("private") }'
+                        android:text="@string/public_event" />
+
+                    <RadioButton
+                        android:id="@+id/private_privacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/private_event" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/speakers_and_sponsors"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <CheckBox
+                    android:id="@+id/enableSponsor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setSponsorsEnabled(checked) }"
+                    android:text="@string/enable_sponsors" />
+
+                <CheckBox
+                    android:id="@+id/enableSession"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setSessionsSpeakersEnabled(checked) }"
+                    android:text="@string/enable_session_speakers" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/payment_details"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/enable_tax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onCheckedChanged="@{ (switch, checked) -> event.setTaxEnabled(checked) }"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text="@string/enable_tax" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_large"
+                        android:layout_marginStart="@dimen/spacing_large"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:padding="@dimen/spacing_small"
+                        android:text="@string/payment_country"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/payment_country"
+                            android:padding="@dimen/spacing_extra_small"
+                            app:srcCompat="@drawable/ic_coin" />
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/payment_country_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_large"
+                        android:layout_marginStart="@dimen/spacing_large"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:padding="@dimen/spacing_small"
+                        android:text="@string/payment_currency"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/payment_currency"
+                            android:padding="@dimen/spacing_extra_small"
+                            app:srcCompat="@drawable/ic_coin" />
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/currency_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onItemSelected="@{ (parent, v, pos, id) ->  event.setPaymentCurrency(parent.getItemAtPosition(pos).toString())  }" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:id="@+id/choose_payment_method"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/payment_methods"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/payment_by_paypal"
+                            android:textSize="@dimen/text_size_normal" />
+
                         <CheckBox
-                            android:id="@+id/cheque_payment"
+                            android:id="@+id/paypal_payment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByCheque(checked) }"
-                            android:text="@string/accept_payment_by_cheque" />
+                            android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByPaypal(checked) }"
+                            android:text="@string/accept_payment_through_paypal" />
 
                         <android.support.design.widget.TextInputLayout
+                            android:id="@+id/paypal_email_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/spacing_extra_small"
-                            android:visibility="@{ chequePayment.checked ? View.VISIBLE : View.GONE }">
+                            android:visibility="@{ paypalPayment.checked ? View.VISIBLE : View.GONE }">
 
                             <android.support.design.widget.TextInputEditText
-                                android:id="@+id/cheque_details"
+                                android:id="@+id/paypal_email"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/enter_your_cheque_details"
+                                android:hint="@string/paypal_email"
                                 android:inputType="text"
-                                android:text="@={ event.chequeDetails }" />
-
-                        </android.support.design.widget.TextInputLayout>
-
-                        <CheckBox
-                            android:id="@+id/bank_payment"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByBank(checked) }"
-                            android:text="@string/accept_payment_by_bank_transfer" />
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:visibility="@{ bankPayment.checked ? View.VISIBLE : View.GONE }">
-
-                            <android.support.design.widget.TextInputEditText
-                                android:id="@+id/bank_details"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/enter_your_bank_details"
-                                android:inputType="text"
-                                android:text="@={ event.bankDetails }" />
-
-                        </android.support.design.widget.TextInputLayout>
-
-                        <CheckBox
-                            android:id="@+id/onsite_payment"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayOnsite(checked) }"
-                            android:text="@string/accept_payment_at_the_event_onsite" />
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/spacing_extra_small"
-                            android:visibility="@{ onsitePayment.checked ? View.VISIBLE : View.GONE }">
-
-                            <android.support.design.widget.TextInputEditText
-                                android:id="@+id/onsite_details"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/enter_your_onsite_details"
-                                android:inputType="text"
-                                android:text="@={ event.onsiteDetails }" />
+                                android:text="@={ event.paypalEmail }" />
 
                         </android.support.design.widget.TextInputLayout>
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/payment_by_stripe"
+                            android:textSize="@dimen/text_size_normal" />
+
+                        <CheckBox
+                            android:id="@+id/stripe_payment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByStripe(checked) }"
+                            android:text="@string/accept_payment_through_stripe" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/offline_payments"
+                            android:textSize="@dimen/text_size_normal" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <CheckBox
+                                android:id="@+id/cheque_payment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByCheque(checked) }"
+                                android:text="@string/accept_payment_by_cheque" />
+
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/spacing_extra_small"
+                                android:visibility="@{ chequePayment.checked ? View.VISIBLE : View.GONE }">
+
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/cheque_details"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/enter_your_cheque_details"
+                                    android:inputType="text"
+                                    android:text="@={ event.chequeDetails }" />
+
+                            </android.support.design.widget.TextInputLayout>
+
+                            <CheckBox
+                                android:id="@+id/bank_payment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByBank(checked) }"
+                                android:text="@string/accept_payment_by_bank_transfer" />
+
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/spacing_extra_small"
+                                android:visibility="@{ bankPayment.checked ? View.VISIBLE : View.GONE }">
+
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/bank_details"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/enter_your_bank_details"
+                                    android:inputType="text"
+                                    android:text="@={ event.bankDetails }" />
+
+                            </android.support.design.widget.TextInputLayout>
+
+                            <CheckBox
+                                android:id="@+id/onsite_payment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayOnsite(checked) }"
+                                android:text="@string/accept_payment_at_the_event_onsite" />
+
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/spacing_extra_small"
+                                android:visibility="@{ onsitePayment.checked ? View.VISIBLE : View.GONE }">
+
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/onsite_details"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/enter_your_onsite_details"
+                                    android:inputType="text"
+                                    android:text="@={ event.onsiteDetails }" />
+
+                            </android.support.design.widget.TextInputLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/graphics"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/logo_url"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_photo" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/logo_url_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/logo_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/logo_url"
+                            android:inputType="text"
+                            android:text="@={ event.logoUrl }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/original_image_url"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_photo" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/original_image_url_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/spacing_extra_small"
+                        android:paddingLeft="@dimen/spacing_extra_small"
+                        android:paddingRight="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/original_image_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/original_image_url"
+                            android:inputType="text"
+                            android:text="@={ event.originalImageUrl }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/event_state"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <RadioGroup
+                    android:id="@+id/state_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_extra_small">
+
+                    <RadioButton
+                        android:id="@+id/draft_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onCheckedChanged='@{ (switch, checked) -> (checked == true) ? event.setState("draft") : event.setState("published") }'
+                        android:text="@string/draft" />
+
+                    <RadioButton
+                        android:id="@+id/published_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/published" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/others"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/external_event_url"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_link" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/external_event_url_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/external_event_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/external_event_url"
+                            android:inputType="textWebEmailAddress"
+                            android:text="@={ event.externalEventUrl }" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_extra_large"
+                android:divider="?android:dividerHorizontal"
+                android:orientation="vertical"
+                android:showDividers="beginning">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/code_of_conduct"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/code_of_conduct"
+                        android:padding="@dimen/spacing_extra_small"
+                        app:srcCompat="@drawable/ic_gavel" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_extra_small">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/code_of_conduct"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/code_of_conduct"
+                            android:inputType="textMultiLine"
+                            android:text="@={ event.codeOfConduct }" />
+
+                    </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/graphics"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/logo_url"
-                    android:padding="@dimen/spacing_extra_small"
-                    app:srcCompat="@drawable/ic_photo" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/logo_url_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/logo_url"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/logo_url"
-                        android:inputType="text"
-                        android:text="@={ event.logoUrl }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/original_image_url"
-                    android:padding="@dimen/spacing_extra_small"
-                    app:srcCompat="@drawable/ic_photo" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/original_image_url_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/spacing_extra_small"
-                    android:paddingLeft="@dimen/spacing_extra_small"
-                    android:paddingRight="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/original_image_url"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/original_image_url"
-                        android:inputType="text"
-                        android:text="@={ event.originalImageUrl }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/event_state"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
-
-            <RadioGroup
-                android:id="@+id/state_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_extra_small">
-
-                <RadioButton
-                    android:id="@+id/draft_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onCheckedChanged='@{ (switch, checked) -> (checked == true) ? event.setState("draft") : event.setState("published") }'
-                    android:text="@string/draft" />
-
-                <RadioButton
-                    android:id="@+id/published_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/published" />
-
-            </RadioGroup>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/others"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/external_event_url"
-                    android:padding="@dimen/spacing_extra_small"
-                    app:srcCompat="@drawable/ic_link" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/external_event_url_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/external_event_url"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/external_event_url"
-                        android:inputType="textWebEmailAddress"
-                        android:text="@={ event.externalEventUrl }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_extra_large"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="beginning">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_extra_small"
-                android:text="@string/code_of_conduct"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/code_of_conduct"
-                    android:padding="@dimen/spacing_extra_small"
-                    app:srcCompat="@drawable/ic_gavel" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/code_of_conduct"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/code_of_conduct"
-                        android:inputType="textMultiLine"
-                        android:text="@={ event.codeOfConduct }" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
+
 </layout>

@@ -351,6 +351,7 @@
     <string name="print">Print</string>
     <string name="receipt">Receipt</string>
     <string name="get_started_hint">Sign up or log in to create and manage events.</string>
+    <string name="event_poster_image">Event poster image</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
