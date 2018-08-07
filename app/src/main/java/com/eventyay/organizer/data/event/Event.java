@@ -1,5 +1,8 @@
 package com.eventyay.organizer.data.event;
 
+import com.eventyay.organizer.common.model.HeaderProvider;
+import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
+import com.eventyay.organizer.data.ticket.Ticket;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -11,10 +14,6 @@ import com.github.jasminb.jsonapi.annotations.Type;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-
-import com.eventyay.organizer.common.model.HeaderProvider;
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
-import com.eventyay.organizer.data.ticket.Ticket;
 
 import java.util.List;
 
@@ -95,6 +94,10 @@ public class Event implements Comparable<Event>, HeaderProvider {
     public boolean isTicketingEnabled;
     public boolean isTaxEnabled;
     public boolean isMapShown;
+
+    public Long ticketsSold;
+    public Long ticketsAvailable;
+    public Long revenue;
 
     @ColumnIgnore
     @Relationship("tickets")
