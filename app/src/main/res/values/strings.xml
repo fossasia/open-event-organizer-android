@@ -72,6 +72,9 @@
     <string name="logout_confirmation_message">Are you sure you want to log out?</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="save_changes">Do you want to save the changes you have made?</string>
+    <string name="save">SAVE</string>
+    <string name="discard">DISCARD</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
