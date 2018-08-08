@@ -10,6 +10,7 @@ import org.fossasia.openevent.app.core.event.dashboard.EventDashboardFragment;
 import org.fossasia.openevent.app.core.event.list.EventListFragment;
 import org.fossasia.openevent.app.core.faq.list.FaqListFragment;
 import org.fossasia.openevent.app.core.feedback.list.FeedbackListFragment;
+import org.fossasia.openevent.app.core.orders.create.CreateOrderFragment;
 import org.fossasia.openevent.app.core.orders.list.OrdersFragment;
 import org.fossasia.openevent.app.core.settings.EventSettingsFragment;
 import org.fossasia.openevent.app.core.settings.SettingsFragment;
@@ -62,6 +63,9 @@ class FragmentNavigator {
         switch (navItemId) {
             case R.id.nav_dashboard:
                 fragment = EventDashboardFragment.newInstance(eventId);
+                break;
+            case R.id.nav_sell:
+                fragment = CreateOrderFragment.newInstance(eventId);
                 break;
             case R.id.nav_attendees:
                 fragment = AttendeesFragment.newInstance(eventId);

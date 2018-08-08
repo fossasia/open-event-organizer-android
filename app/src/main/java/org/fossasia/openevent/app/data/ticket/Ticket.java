@@ -6,6 +6,7 @@ import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
+import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -59,7 +60,7 @@ public class Ticket implements Comparable<Ticket> {
     public Event event;
 
     @Relationship("order")
-    @ForeignKey(onDelete = ForeignKeyAction.CASCADE, saveForeignKeyModel = true)
+    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Order order;
 
     public Ticket() { }

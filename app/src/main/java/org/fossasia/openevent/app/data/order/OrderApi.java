@@ -3,7 +3,9 @@ package org.fossasia.openevent.app.data.order;
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface OrderApi {
@@ -13,4 +15,7 @@ public interface OrderApi {
 
     @GET("orders/{identifier}?include=event")
     Observable<Order> getOrder(@Path("identifier") String identifier);
+
+    @POST("orders?onsite=true")
+    Observable<Order> postOrder(@Body Order order);
 }

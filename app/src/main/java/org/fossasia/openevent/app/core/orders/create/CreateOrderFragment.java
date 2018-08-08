@@ -16,17 +16,16 @@ import android.view.ViewGroup;
 import org.fossasia.openevent.app.R;
 import org.fossasia.openevent.app.common.mvp.view.BaseFragment;
 import org.fossasia.openevent.app.core.main.MainActivity;
-import org.fossasia.openevent.app.core.orders.create.adapter.EventTicketsAdapter;
-import org.fossasia.openevent.app.core.orders.detail.OrderDetailView;
+import org.fossasia.openevent.app.core.orders.create.adapter.CreateOrderTicketsAdapter;
 import org.fossasia.openevent.app.data.ticket.Ticket;
-import org.fossasia.openevent.app.databinding.OrderDetailFragmentBinding;
+import org.fossasia.openevent.app.databinding.OrderCreateLayoutBinding;
 import org.fossasia.openevent.app.ui.ViewUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class OrderCreateFragment extends BaseFragment implements OrderDetailView {
+public class CreateOrderFragment extends BaseFragment implements CreateOrderView {
 
     private long eventId;
     private Context context;
@@ -34,14 +33,14 @@ public class OrderCreateFragment extends BaseFragment implements OrderDetailView
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    private OrderCreateViewModel orderCreateViewModel;
-    private EventTicketsAdapter eventTicketsAdapter;
+    private CreateOrderViewModel createOrderViewModel;
+    private CreateOrderTicketsAdapter createOrderTicketsAdapter;
 
-    private OrderDetailFragmentBinding binding;
+    private OrderCreateLayoutBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    public static OrderCreateFragment newInstance(long eventId) {
-        OrderCreateFragment fragment = new OrderCreateFragment();
+    public static CreateOrderFragment newInstance(long eventId) {
+        CreateOrderFragment fragment = new CreateOrderFragment();
         Bundle args = new Bundle();
         args.putLong(MainActivity.EVENT_KEY, eventId);
         fragment.setArguments(args);
@@ -64,9 +63,11 @@ public class OrderCreateFragment extends BaseFragment implements OrderDetailView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.order_detail_fragment, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.order_create_layout, container, false);
 
-        orderCreateViewModel = ViewModelProviders.of(this, viewModelFactory).get(OrderCreateViewModel.class);
+        createOrderViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateOrderViewModel.class);
+        binding.clearButton.setOnClickListener(view -> createOrderViewModel.clearSelectedTickets());
+        binding.submit.setOnClickListener(view -> createOrderViewModel.createOnSiteOrder(eventId));
 
         return binding.getRoot();
     }
@@ -77,14 +78,17 @@ public class OrderCreateFragment extends BaseFragment implements OrderDetailView
         setupRefreshListener();
         setupRecyclerView();
 
-        orderCreateViewModel.getProgress().observe(this, this::showProgress);
-        orderCreateViewModel.getError().observe(this, this::showError);
+        createOrderViewModel.getProgress().observe(this, this::showProgress);
+        createOrderViewModel.getError().observe(this, this::showError);
+        createOrderViewModel.getSuccess().observe(this, this::onSuccess);
+        createOrderViewModel.getOrderAmount().observe(this, this::showOrderAmount);
+
         loadData(false);
     }
 
     @Override
     protected int getTitle() {
-        return R.string.order_details;
+        return R.string.create_order;
     }
 
     @Override
@@ -94,11 +98,11 @@ public class OrderCreateFragment extends BaseFragment implements OrderDetailView
     }
 
     private void setupRecyclerView() {
-        eventTicketsAdapter = new EventTicketsAdapter();
+        createOrderTicketsAdapter = new CreateOrderTicketsAdapter(createOrderViewModel);
 
         RecyclerView ticketsRecyclerView = binding.ticketsRecyclerView;
         ticketsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        ticketsRecyclerView.setAdapter(eventTicketsAdapter);
+        ticketsRecyclerView.setAdapter(createOrderTicketsAdapter);
     }
 
     private void setupRefreshListener() {
@@ -107,6 +111,10 @@ public class OrderCreateFragment extends BaseFragment implements OrderDetailView
             refreshLayout.setRefreshing(false);
             loadData(true);
         });
+    }
+
+    public void showOrderAmount(Float amount) {
+        binding.orderAmount.setText(String.valueOf(amount));
     }
 
     @Override
@@ -119,8 +127,13 @@ public class OrderCreateFragment extends BaseFragment implements OrderDetailView
         ViewUtils.showView(binding.progressBar, show);
     }
 
+    @Override
+    public void onSuccess(String message) {
+        ViewUtils.showSnackbar(binding.getRoot(), message);
+    }
+
     public void loadData(boolean reload) {
-        orderCreateViewModel.getTicketsUnderOrder(eventId, reload).observe(this, this::showTickets);
+        createOrderViewModel.getTicketsUnderEvent(eventId, reload).observe(this, this::showTickets);
     }
 
     public void showTickets(List<Ticket> tickets) {
@@ -128,7 +141,7 @@ public class OrderCreateFragment extends BaseFragment implements OrderDetailView
             binding.ticketsInfo.setVisibility(View.GONE);
             return;
         }
-        eventTicketsAdapter.setTickets(tickets);
+        createOrderTicketsAdapter.setTickets(tickets);
     }
 
     public void showEmptyView(boolean show) {

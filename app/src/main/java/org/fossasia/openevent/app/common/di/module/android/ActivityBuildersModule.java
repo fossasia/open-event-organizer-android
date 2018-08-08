@@ -10,6 +10,7 @@ import org.fossasia.openevent.app.core.event.create.EventDetailsStepOne;
 import org.fossasia.openevent.app.core.event.create.EventDetailsStepThree;
 import org.fossasia.openevent.app.core.event.create.EventDetailsStepTwo;
 import org.fossasia.openevent.app.core.main.MainActivity;
+import org.fossasia.openevent.app.core.orders.create.CreateOrderFragment;
 import org.fossasia.openevent.app.core.organizer.detail.OrganizerDetailActivity;
 import org.fossasia.openevent.app.core.speaker.details.SpeakerDetailsActivity;
 import org.fossasia.openevent.app.core.speaker.details.SpeakerDetailsFragment;
@@ -62,5 +63,8 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector
     abstract EventDetailsStepThree contributesEventDetailsLevel3();
+
+    @ContributesAndroidInjector
+    abstract CreateOrderFragment contributeCreateOrderFragment();
 
 }

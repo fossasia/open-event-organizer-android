@@ -8,25 +8,35 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import org.fossasia.openevent.app.R;
-import org.fossasia.openevent.app.core.orders.detail.viewholder.OrderTicketsViewHolder;
+import org.fossasia.openevent.app.core.orders.create.CreateOrderViewModel;
+import org.fossasia.openevent.app.core.orders.create.viewholder.CreateOrderTicketsViewHolder;
 import org.fossasia.openevent.app.data.ticket.Ticket;
 
 import java.util.List;
 
-public class EventTicketsAdapter extends RecyclerView.Adapter<OrderTicketsViewHolder> {
+public class CreateOrderTicketsAdapter extends RecyclerView.Adapter<CreateOrderTicketsViewHolder> {
 
     private List<Ticket> tickets;
+    private CreateOrderViewModel createOrderViewModel;
+
+    public CreateOrderTicketsAdapter(CreateOrderViewModel createOrderViewModel) {
+        this.createOrderViewModel = createOrderViewModel;
+    }
 
     @NonNull
     @Override
-    public OrderTicketsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        return new OrderTicketsViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-            R.layout.order_ticket_layout, viewGroup, false));
+    public CreateOrderTicketsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
+        CreateOrderTicketsViewHolder createOrderTicketsViewHolder = new CreateOrderTicketsViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
+            R.layout.order_create_ticket_layout, viewGroup, false), createOrderViewModel);
+
+        createOrderTicketsViewHolder.setClickAction(createOrderViewModel::ticketClick);
+
+        return createOrderTicketsViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderTicketsViewHolder orderTicketsViewHolder, int position) {
-        orderTicketsViewHolder.bind(tickets.get(position));
+    public void onBindViewHolder(@NonNull CreateOrderTicketsViewHolder createOrderTicketsViewHolder, int position) {
+        createOrderTicketsViewHolder.bind(tickets.get(position));
     }
 
     @Override

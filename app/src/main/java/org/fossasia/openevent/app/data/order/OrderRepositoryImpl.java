@@ -2,13 +2,17 @@ package org.fossasia.openevent.app.data.order;
 
 import android.support.annotation.NonNull;
 
+import org.fossasia.openevent.app.common.Constants;
 import org.fossasia.openevent.app.data.RateLimiter;
 import org.fossasia.openevent.app.data.Repository;
+import org.fossasia.openevent.app.data.session.Session;
 import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class OrderRepositoryImpl implements OrderRepository {
 
@@ -61,5 +65,23 @@ public class OrderRepositoryImpl implements OrderRepository {
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
+    }
+
+    @Override
+    public Observable<Order> createOrder(Order order) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return orderApi
+            .postOrder(order)
+            .doOnNext(created -> {
+                created.setEvent(order.getEvent());
+                repository
+                    .save(Order.class, created)
+                    .subscribe();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 }
