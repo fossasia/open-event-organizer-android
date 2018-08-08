@@ -10,8 +10,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="presenter"
-            type="com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInPresenter" />
+            name="viewModel"
+            type="com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInViewModel" />
 
         <variable
             name="checkinAttendee"
@@ -344,7 +344,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_small"
-                android:onClick="@{() -> presenter.toggleCheckIn() }"
+                android:onClick="@{() -> viewModel.toggleCheckIn() }"
                 app:backgroundTint="@{ checkinAttendee.isCheckedIn ? @color/red_500 : @color/light_green_500 }"
                 app:fabSize="mini"
                 app:srcCompat="@{ checkinAttendee.isCheckedIn ? @drawable/ic_checkout : @drawable/ic_checkin }"
