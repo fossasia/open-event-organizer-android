@@ -39,5 +39,6 @@
     <dimen name="avatar_size">150dp</dimen>
     <dimen name="spacing_submit_button">17dp</dimen>
     <dimen name="submit_button_width">56dp</dimen>
+    <dimen name="event_image_height">200dp</dimen>
 
 </resources>
