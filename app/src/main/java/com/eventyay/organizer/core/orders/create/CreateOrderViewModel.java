@@ -97,8 +97,8 @@ public class CreateOrderViewModel extends ViewModel {
 
         for (Long ticketId : onSiteTicketsMap.keySet()) {
             OnSiteTicket onSiteTicket = new OnSiteTicket();
-            onSiteTicket.setId(ticketId.toString());
-            onSiteTicket.setQuantity(String.valueOf(onSiteTicketsMap.get(ticketId).get()));
+            onSiteTicket.setId(ticketId);
+            onSiteTicket.setQuantity(onSiteTicketsMap.get(ticketId).get());
             onSiteTicketsList.add(onSiteTicket);
         }
 

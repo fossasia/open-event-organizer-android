@@ -31,9 +31,9 @@ public class OnSiteTicket {
     public Long ticketId;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    public String id;
+    public Long id;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    public String quantity;
+    public Long quantity;
 
 }

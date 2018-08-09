@@ -139,6 +139,7 @@ public class CreateOrderFragment extends BaseFragment implements CreateOrderView
     public void showTickets(List<Ticket> tickets) {
         if (tickets == null || tickets.isEmpty()) {
             binding.ticketsInfo.setVisibility(View.GONE);
+            binding.submit.setVisibility(View.GONE);
             return;
         }
         createOrderTicketsAdapter.setTickets(tickets);
