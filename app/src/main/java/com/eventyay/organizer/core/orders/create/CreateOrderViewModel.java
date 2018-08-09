@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableLong;
 
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.order.OrderRepository;
@@ -30,11 +31,11 @@ public class CreateOrderViewModel extends ViewModel {
     private final TicketRepository ticketRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private final MutableLiveData<Float> orderAmount = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private final MutableLiveData<String> success = new MutableLiveData<>();
-    private final MutableLiveData<String> error = new MutableLiveData<>();
-    private final MutableLiveData<List<Ticket>> ticketsLiveData = new MutableLiveData<>();
+    private final SingleEventLiveData<Float> orderAmount = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
+    private final SingleEventLiveData<List<Ticket>> ticketsLiveData = new SingleEventLiveData<>();
     private final List<OnSiteTicket> onSiteTicketsList = new ArrayList<>();
     private final Map<Long, ObservableLong> onSiteTicketsMap =  new ConcurrentHashMap<>();
 
@@ -63,6 +64,12 @@ public class CreateOrderViewModel extends ViewModel {
 
     public void ticketClick(Ticket ticket) {
         Long ticketId = ticket.getId();
+
+        if (onSiteTicketsMap.get(ticketId).get() == ticket.getMaxOrder()) {
+            error.setValue("Cannot exceed maximum order limit");
+            return;
+        }
+
         if (onSiteTicketsMap.containsKey(ticketId)) {
             Long quantity = onSiteTicketsMap.get(ticketId).get();
             onSiteTicketsMap.get(ticketId).set(quantity + 1L);
