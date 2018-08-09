@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.fossasia.openevent.app">
+    package="com.eventyay.organizer">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".OrgaApplication"
+        android:name="com.eventyay.organizer.OrgaApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="${appName}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="allowBackup">
+        tools:replace="allowBackup, android:label">
         <provider
-            android:name=".OrgaProvider"
-            android:authorities="${applicationId}.org.fossasia.openevent.app"
+            android:name="com.eventyay.organizer.OrgaProvider"
+            android:authorities="${applicationId}.com.eventyay.organizer"
             android:exported="false"/>
         <!-- TODO: Current approach for resolving Toolbar issues is just a workaround -->
         <activity
-            android:name=".core.auth.AuthActivity"
+            android:name="com.eventyay.organizer.core.auth.AuthActivity"
             android:theme="@style/AppTheme.Main.Light"
             android:label="${appName}"
             android:windowSoftInputMode="stateHidden|adjustResize">
@@ -32,28 +32,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".core.attendee.qrscan.ScanQRActivity"
+            android:name="com.eventyay.organizer.core.attendee.qrscan.ScanQRActivity"
             android:theme="@style/AppTheme.Main" />
         <activity
-            android:name=".core.main.MainActivity"
+            android:name="com.eventyay.organizer.core.main.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.Main.Light"/>
         <activity
-            android:name=".core.event.chart.ChartActivity"
+            android:name="com.eventyay.organizer.core.event.chart.ChartActivity"
             android:theme="@style/AppTheme.Main.Light"/>
         <activity
-            android:name=".core.event.about.AboutEventActivity"
+            android:name="com.eventyay.organizer.core.event.about.AboutEventActivity"
             android:label="@string/title_activity_about_event"
-            android:theme="@style/AppTheme.Main" />
+            android:theme="@style/AppTheme.Main.Light"/>
         <activity
-            android:name=".core.event.create.CreateEventActivity"
+            android:name="com.eventyay.organizer.core.event.create.CreateEventActivity"
             android:label="@string/create_event"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".core.organizer.detail.OrganizerDetailActivity"
+            android:name="com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity"
             android:label="@string/title_activity_organizer_detail"
             android:theme="@style/AppTheme.Main.Light" />
-        <activity android:name=".core.speaker.details.SpeakerDetailsActivity"
+        <activity android:name="com.eventyay.organizer.core.speaker.details.SpeakerDetailsActivity"
             android:label="@string/speaker_details_activity"
             android:theme="@style/AppTheme.Main"/>
 

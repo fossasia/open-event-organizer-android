@@ -9,11 +9,11 @@
 
         <variable
             name="tracksPresenter"
-            type="org.fossasia.openevent.app.core.track.list.TracksPresenter"/>
+            type="com.eventyay.organizer.core.track.list.TracksPresenter"/>
 
         <variable
             name="track"
-            type="org.fossasia.openevent.app.data.tracks.Track" />
+            type="com.eventyay.organizer.data.tracks.Track" />
     </data>
 
     <android.support.v7.widget.CardView

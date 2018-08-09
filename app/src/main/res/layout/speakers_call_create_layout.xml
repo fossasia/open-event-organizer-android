@@ -8,7 +8,7 @@
 
         <variable
             name="speakersCall"
-            type="org.fossasia.openevent.app.data.speakerscall.SpeakersCall" />
+            type="com.eventyay.organizer.data.speakerscall.SpeakersCall" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

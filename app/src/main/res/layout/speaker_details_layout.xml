@@ -9,7 +9,7 @@
 
         <variable
             name="speaker"
-            type="org.fossasia.openevent.app.data.speaker.Speaker" />
+            type="com.eventyay.organizer.data.speaker.Speaker" />
     </data>
 
     <android.support.v4.widget.NestedScrollView

@@ -3,11 +3,11 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="org.fossasia.openevent.app.ui.binding.BindingAdapters" />
+        <import type="com.eventyay.organizer.ui.binding.BindingAdapters" />
 
         <variable
             name="track"
-            type="org.fossasia.openevent.app.data.tracks.Track" />
+            type="com.eventyay.organizer.data.tracks.Track" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -5,11 +5,11 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="org.fossasia.openevent.app.common.ContextManager" />
+        <import type="com.eventyay.organizer.common.ContextManager" />
 
         <variable
             name="ticket"
-            type="org.fossasia.openevent.app.data.ticket.Ticket" />
+            type="com.eventyay.organizer.data.ticket.Ticket" />
     </data>
 
     <LinearLayout

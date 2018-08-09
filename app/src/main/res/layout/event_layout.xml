@@ -4,12 +4,12 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="org.fossasia.openevent.app.data.event.Event" />
-        <import type="org.fossasia.openevent.app.utils.DateUtils" />
+        <import type="com.eventyay.organizer.data.event.Event" />
+        <import type="com.eventyay.organizer.utils.DateUtils" />
 
         <variable
             name="event"
-            type="org.fossasia.openevent.app.data.event.Event" />
+            type="com.eventyay.organizer.data.event.Event" />
         <variable
             name="selectedEventId"
             type="Long" />

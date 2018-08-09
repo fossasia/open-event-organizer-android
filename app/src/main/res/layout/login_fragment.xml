@@ -6,13 +6,13 @@
     <data>
         <variable
             name="login"
-            type="org.fossasia.openevent.app.data.auth.model.Login" />
+            type="com.eventyay.organizer.data.auth.model.Login" />
      </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="org.fossasia.openevent.app.core.auth.login.LoginFragment">
+        tools:context="com.eventyay.organizer.core.auth.login.LoginFragment">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -29,22 +29,13 @@
                 android:paddingRight="@dimen/spacing_normal"
                 android:paddingStart="@dimen/spacing_normal">
 
-                <TextView
-                    android:textColor="@color/color_accent"
-                    android:textSize="@dimen/text_size_larger"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:layout_marginBottom="@dimen/spacing_small"
-                    android:gravity="center"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/welcome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/email_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingTop="@dimen/spacing_normal">
+                    android:paddingTop="@dimen/spacing_normal"
+                    android:transitionName="@string/email">
 
                     <android.support.v7.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/email_dropdown"
@@ -61,7 +52,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:passwordToggleEnabled="true"
-                    android:paddingBottom="@dimen/spacing_normal">
+                    android:paddingBottom="@dimen/spacing_normal"
+                    android:transitionGroup="true">
 
                     <android.support.design.widget.TextInputEditText
                         android:layout_width="match_parent"
@@ -87,15 +79,6 @@
                     app:backgroundTint="@color/color_accent"
                     android:text="@string/login"
                     android:textColor="@android:color/white" />
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/signUpLink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/sign_up_link"
-                    android:textColor="@color/color_accent"
-                    style="?attr/borderlessButtonStyle" />
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/forgotPasswordLink"
