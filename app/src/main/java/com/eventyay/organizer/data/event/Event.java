@@ -95,6 +95,7 @@ public class Event implements Comparable<Event>, HeaderProvider {
     public boolean isTicketingEnabled;
     public boolean isTaxEnabled;
     public boolean isMapShown;
+    public boolean isEventOnline;
 
     @ColumnIgnore
     @Relationship("tickets")
