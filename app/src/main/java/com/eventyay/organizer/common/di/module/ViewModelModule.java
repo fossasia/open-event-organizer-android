@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import com.eventyay.organizer.common.di.OrgaViewModelFactory;
+import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInViewModel;
 import com.eventyay.organizer.core.attendee.history.CheckInHistoryViewModel;
 import com.eventyay.organizer.core.auth.login.LoginViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
@@ -137,6 +138,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TicketDetailViewModel.class)
     public abstract ViewModel bindTicketDetailViewModel(TicketDetailViewModel ticketDetailViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AttendeeCheckInViewModel.class)
+    public abstract ViewModel bindAttendeeCheckinViewModel(AttendeeCheckInViewModel attendeeCheckInViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);

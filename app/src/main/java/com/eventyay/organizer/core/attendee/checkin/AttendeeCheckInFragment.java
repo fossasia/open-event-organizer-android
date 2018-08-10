@@ -1,5 +1,7 @@
 package com.eventyay.organizer.core.attendee.checkin;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -17,23 +19,22 @@ import com.eventyay.organizer.ui.ViewUtils;
 
 import javax.inject.Inject;
 
-import dagger.Lazy;
 
-public class AttendeeCheckInFragment extends BaseBottomSheetFragment<AttendeeCheckInPresenter> implements AttendeeCheckInView {
+public class AttendeeCheckInFragment extends BaseBottomSheetFragment implements AttendeeCheckInView {
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     private static final String ATTENDEE_ID = "attendee_id";
 
     private BottomsheetAttendeeCheckInBinding binding;
     private Runnable onCancelAction;
     private long attendeeId;
-
-    @Inject
-    Lazy<AttendeeCheckInPresenter> presenterProvider;
+    private AttendeeCheckInViewModel attendeeCheckInViewModel;
 
     public static AttendeeCheckInFragment newInstance(long attendeeId) {
         Bundle args = new Bundle();
         args.putLong(ATTENDEE_ID, attendeeId);
-
         AttendeeCheckInFragment fragment = new AttendeeCheckInFragment();
         fragment.setArguments(args);
         return fragment;
@@ -53,18 +54,18 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<AttendeeChe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.bottomsheet_attendee_check_in, container, false);
+        attendeeCheckInViewModel = ViewModelProviders.of(this, viewModelFactory).get(AttendeeCheckInViewModel.class);
         return binding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(attendeeId, this);
-        binding.setPresenter(getPresenter());
+        binding.setViewModel(attendeeCheckInViewModel);
         binding.switchAttendeeDetailsState.setChecked(false);
-        getPresenter().start();
-
+        attendeeCheckInViewModel.start(attendeeId);
         binding.activityLog.setOnClickListener(view -> openCheckInHistoryFragment());
+        attendeeCheckInViewModel.getAttendee().observe(this, this::showResult);
     }
 
     private void openCheckInHistoryFragment() {
@@ -82,11 +83,6 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment<AttendeeChe
         super.onCancel(dialog);
         if (onCancelAction != null)
             onCancelAction.run();
-    }
-
-    @Override
-    public Lazy<AttendeeCheckInPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     public void setOnCancelListener(Runnable onCancel) {
