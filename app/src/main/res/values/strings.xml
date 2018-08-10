@@ -308,6 +308,9 @@
     <string name="next">Next</string>
     <string name="create">Create</string>
     <string name="update_speakers_call">Update Speakers Call</string>
+    <string name="create_order">Create Order</string>
+    <string name="sell">Sell</string>
+    <string name="clear">Clear</string>
     <string name="sales_data_display">Sales Data Display</string>
     <string name="collect_attendee_info">Collect attendee information</string>
     <string name="attendee_info">Attendee Information</string>

@@ -1,18 +1,24 @@
 package com.eventyay.organizer.data.order;
 
+import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
+import com.eventyay.organizer.data.event.Event;
+import com.eventyay.organizer.data.ticket.OnSiteTicket;
+import com.eventyay.organizer.data.ticket.OnSiteTicketSerializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
+import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
-import com.eventyay.organizer.data.event.Event;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,6 +65,11 @@ public class Order {
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;
+
+    @ColumnIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonSerialize(using= OnSiteTicketSerializer.class)
+    public List<OnSiteTicket> onSiteTickets;
 
     public Order() { }
 }
