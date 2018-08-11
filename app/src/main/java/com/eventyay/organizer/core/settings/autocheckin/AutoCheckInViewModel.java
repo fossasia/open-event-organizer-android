@@ -24,8 +24,8 @@ public class AutoCheckInViewModel extends ViewModel {
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private final MutableLiveData<String> error = new MutableLiveData<>();
+    private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
     private final SingleEventLiveData<Void> ticketUpdatedAction = new SingleEventLiveData<>();
 
     @Inject
@@ -65,7 +65,7 @@ public class AutoCheckInViewModel extends ViewModel {
         );
     }
 
-    public MutableLiveData<List<Ticket>> getTickets() {
+    public LiveData<List<Ticket>> getTickets() {
         return tickets;
     }
 
@@ -77,7 +77,7 @@ public class AutoCheckInViewModel extends ViewModel {
         return progress;
     }
 
-    public SingleEventLiveData<Void> getTicketUpdatedAction() {
+    public LiveData<Void> getTicketUpdatedAction() {
         return ticketUpdatedAction;
     }
 
