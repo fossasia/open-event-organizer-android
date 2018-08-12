@@ -54,7 +54,7 @@ public class Ticket implements Comparable<Ticket> {
     public String salesEndsAt;
     public Integer minOrder;
     public boolean isCheckinRestricted;
-    public Boolean autoCheckinEnabled;
+    public boolean autoCheckinEnabled;
 
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)

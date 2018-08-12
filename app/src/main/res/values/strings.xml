@@ -358,6 +358,9 @@
     <string name="receipt">Receipt</string>
     <string name="get_started_hint">Sign up or log in to create and manage events.</string>
     <string name="event_poster_image">Event poster image</string>
+    <string name="auto_check_in_all">All types</string>
+    <string name="auto_check_in">Auto Check In</string>
+    <string name="auto_check_in_key">auto_check_in_key</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
