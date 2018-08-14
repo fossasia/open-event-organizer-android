@@ -44,7 +44,7 @@ public final class OrgaDatabase {
     public static final String NAME = "orga_database";
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS ";
     // To be bumped after each schema change and migration addition
-    public static final int VERSION = 17;
+    public static final int VERSION = 18;
 
 
     private OrgaDatabase() {
@@ -259,6 +259,7 @@ public final class OrgaDatabase {
         }
     }
 
+    @Migration(version = 16, database = OrgaDatabase.class)
     public static class MigrationTo16 extends BaseMigration {
 
         @Override
@@ -290,4 +291,23 @@ public final class OrgaDatabase {
             addColumn(SQLiteType.TEXT, column);
         }
     }
+
+    @Migration(version = 18, database = OrgaDatabase.class)
+    public static class MigrationTo18 extends AlterTableMigration<Event> {
+
+        public MigrationTo18(Class<Event> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            super.onPreMigrate();
+
+            List<String> addedColumns = Arrays.asList("ticketsSold", "ticketsAvailable", "revenue");
+
+            for (String column : addedColumns)
+                addColumn(SQLiteType.TEXT, column);
+        }
+    }
+
 }
