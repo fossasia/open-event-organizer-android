@@ -8,6 +8,11 @@
             android:title="@string/dashboard" />
 
         <item
+            android:id="@+id/nav_sell"
+            android:icon="@drawable/ic_payment"
+            android:title="@string/sell" />
+
+        <item
             android:id="@+id/nav_attendees"
             android:icon="@drawable/qrcode_scan"
             android:title="@string/check_in" />

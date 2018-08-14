@@ -26,6 +26,7 @@
     <dimen name="text_size_large">20sp</dimen>
     <dimen name="text_size_larger">32sp</dimen>
     <dimen name="text_size_extra_large">40sp</dimen>
+    <dimen name="text_size_extra_larger">52sp</dimen>
 
     <dimen name="image_small">50dp</dimen>
     <dimen name="progressbar_large">80dp</dimen>
@@ -40,5 +41,6 @@
     <dimen name="avatar_size">150dp</dimen>
     <dimen name="spacing_submit_button">17dp</dimen>
     <dimen name="submit_button_width">56dp</dimen>
+    <dimen name="event_image_height">200dp</dimen>
 
 </resources>

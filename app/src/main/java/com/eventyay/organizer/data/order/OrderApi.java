@@ -13,6 +13,9 @@ import retrofit2.http.Path;
 
 public interface OrderApi {
 
+    @POST("orders?onsite=true")
+    Observable<Order> postOrder(@Body Order order);
+
     @GET("events/{id}/orders?include=event&fields[event]=id&page[size]=0")
     Observable<List<Order>> getOrders(@Path("id") long id);
 

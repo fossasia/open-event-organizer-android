@@ -22,6 +22,7 @@ import com.eventyay.organizer.core.sponsor.list.SponsorsFragment;
 import com.eventyay.organizer.core.ticket.create.CreateTicketFragment;
 import com.eventyay.organizer.core.ticket.detail.TicketDetailFragment;
 import com.eventyay.organizer.core.ticket.list.TicketsFragment;
+import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -72,6 +73,9 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract CheckInRestrictions contributeCheckInRestrictions();
+
+    @ContributesAndroidInjector
+    abstract AutoCheckInFragment contributesAutoCheckInFragment();
 
     // FAQ
 

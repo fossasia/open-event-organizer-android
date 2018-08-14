@@ -70,6 +70,24 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
+    public Observable<Order> createOrder(Order order) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return orderApi
+            .postOrder(order)
+            .doOnNext(created -> {
+                created.setEvent(order.getEvent());
+                repository
+                    .save(Order.class, created)
+                    .subscribe();
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
     public Observable<OrderStatistics> getOrderStatisticsForEvent(long eventId, boolean reload) {
         Observable<OrderStatistics> diskObservable = Observable.defer(() ->
             repository
@@ -102,5 +120,4 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
-
 }
