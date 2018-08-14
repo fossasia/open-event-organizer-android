@@ -308,6 +308,9 @@
     <string name="next">Next</string>
     <string name="create">Create</string>
     <string name="update_speakers_call">Update Speakers Call</string>
+    <string name="create_order">Create Order</string>
+    <string name="sell">Sell</string>
+    <string name="clear">Clear</string>
     <string name="sales_data_display">Sales Data Display</string>
     <string name="collect_attendee_info">Collect attendee information</string>
     <string name="attendee_info">Attendee Information</string>
@@ -356,6 +359,9 @@
     <string name="get_started_hint">Sign up or log in to create and manage events.</string>
     <string name="event_poster_image">Event poster image</string>
     <string name="event_online">Online Event</string>
+    <string name="auto_check_in_all">All types</string>
+    <string name="auto_check_in">Auto Check In</string>
+    <string name="auto_check_in_key">auto_check_in_key</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

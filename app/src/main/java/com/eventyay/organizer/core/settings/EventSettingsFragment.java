@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInFragment;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import com.eventyay.organizer.R;
@@ -69,6 +70,14 @@ public class EventSettingsFragment extends PreferenceFragmentCompat {
         findPreference(getString(R.string.check_in_restrictions_key)).setOnPreferenceClickListener(preference -> {
             getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, CheckInRestrictions.newInstance(eventId))
+                .addToBackStack(null)
+                .commit();
+            return true;
+        });
+
+        findPreference(getString(R.string.auto_check_in_key)).setOnPreferenceClickListener(preference -> {
+            getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, AutoCheckInFragment.newInstance(eventId))
                 .addToBackStack(null)
                 .commit();
             return true;
