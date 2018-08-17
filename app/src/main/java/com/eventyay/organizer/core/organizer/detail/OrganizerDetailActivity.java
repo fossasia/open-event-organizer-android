@@ -7,12 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.eventyay.organizer.R;
+import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoFragment;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+
+import static com.eventyay.organizer.core.organizer.detail.OrganizerDetailFragment.INFO_FRAGMENT_TAG;
 
 public class OrganizerDetailActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
@@ -50,5 +53,15 @@ public class OrganizerDetailActivity extends AppCompatActivity implements HasSup
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return dispatchingAndroidInjector;
+    }
+
+    @Override
+    public void onBackPressed() {
+        UpdateOrganizerInfoFragment infoFragment = (UpdateOrganizerInfoFragment) fragmentManager.findFragmentByTag(INFO_FRAGMENT_TAG);
+        if (infoFragment != null) {
+            infoFragment.backPressed();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
