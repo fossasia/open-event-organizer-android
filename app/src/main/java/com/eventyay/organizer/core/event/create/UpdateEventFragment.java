@@ -108,9 +108,9 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         });
 
         binding.form.description.setOnClickListener(view -> {
-            Intent i = new Intent(getContext(), RichEditorActivity.class);
-            i.putExtra(TAG_RICH_TEXT, binding.form.description.getText().toString());
-            startActivityForResult(i, RICH_TEXT_REQUEST);
+            Intent richEditorIntent = new Intent(getContext(), RichEditorActivity.class);
+            richEditorIntent.putExtra(TAG_RICH_TEXT, binding.form.description.getText().toString());
+            startActivityForResult(richEditorIntent, RICH_TEXT_REQUEST);
         });
 
         setupSpinners();

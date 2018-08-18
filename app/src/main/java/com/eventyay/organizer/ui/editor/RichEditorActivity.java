@@ -22,10 +22,10 @@ public class RichEditorActivity extends AppCompatActivity {
 
     public static final String TAG_RICH_TEXT = "rich_text";
 
-    TextEditorLayoutBinding binding;
-    AlertDialog linkDialog;
-    AlertDialog saveAlertDialog;
-    String description;
+    private TextEditorLayoutBinding binding;
+    private AlertDialog linkDialog;
+    private AlertDialog saveAlertDialog;
+    private String description;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,36 +43,26 @@ public class RichEditorActivity extends AppCompatActivity {
 
         binding.editor.setPlaceholder(getString(R.string.enter_text));
 
-        Intent i = getIntent();
-        if (i != null) {
-            description = i.getStringExtra(TAG_RICH_TEXT);
+        Intent intent = getIntent();
+        if (intent != null) {
+            description = intent.getStringExtra(TAG_RICH_TEXT);
             if (!TextUtils.isEmpty(description) && !description.equals(getString(R.string.describe_event))) {
                 binding.editor.setHtml(description);
             }
         }
 
         binding.actionUndo.setOnClickListener(v -> binding.editor.undo());
-
         binding.actionRedo.setOnClickListener(v -> binding.editor.redo());
-
         binding.actionBold.setOnClickListener(v -> binding.editor.setBold());
-
         binding.actionItalic.setOnClickListener(v -> binding.editor.setItalic());
-
         binding.actionStrikethrough.setOnClickListener(v -> binding.editor.setStrikeThrough());
-
         binding.actionInsertBullets.setOnClickListener(v -> binding.editor.setBullets());
-
         binding.actionInsertNumbers.setOnClickListener(v -> binding.editor.setNumbers());
-
         binding.actionInsertLink.setOnClickListener(v -> {
-
             if (linkDialog == null) {
                 createLinkDialog();
             }
-
             linkDialog.show();
-
         });
     }
 
@@ -94,7 +84,6 @@ public class RichEditorActivity extends AppCompatActivity {
             })
             .setNegativeButton(getString(R.string.cancel), (dialog, which) -> {
                 dialog.dismiss();
-                super.onBackPressed();
             })
             .setView(layout)
             .create();
@@ -114,8 +103,9 @@ public class RichEditorActivity extends AppCompatActivity {
                 return true;
             case R.id.action_save:
                 saveChanges(binding.editor.getHtml());
-                break;
+                return true;
             default:
+                //do nothing
         }
         return super.onOptionsItemSelected(item);
     }
@@ -125,7 +115,8 @@ public class RichEditorActivity extends AppCompatActivity {
         if (binding.editor.getHtml().equals(description)) {
             saveChanges(description);
             return;
-        } else if (saveAlertDialog == null) {
+        }
+        if (saveAlertDialog == null) {
             saveAlertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialog))
                 .setMessage(getString(R.string.save_changes))
                 .setPositiveButton(getString(R.string.save), (dialog, which) -> {
