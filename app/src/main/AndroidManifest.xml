@@ -56,6 +56,9 @@
         <activity android:name="com.eventyay.organizer.core.speaker.details.SpeakerDetailsActivity"
             android:label="@string/speaker_details_activity"
             android:theme="@style/AppTheme.Main"/>
+        <activity android:name=".ui.editor.RichEditorActivity"
+            android:label=""
+            android:theme="@style/AppTheme.Main.Light"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

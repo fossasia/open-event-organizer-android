@@ -220,6 +220,9 @@ dependencies {
     // TimeLine View
     implementation "com.github.vipulasri:timelineview:${versions.timelineView}"
 
+    //Rich text editor
+    implementation "jp.wasabeef:richeditor-android:1.2.2"
+
     // Chrome Custom Tabs
     playStoreImplementation "com.android.support:customtabs:${versions.chromeCustomTabs}"
 
