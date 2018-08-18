@@ -94,6 +94,7 @@ public class Event implements Comparable<Event>, HeaderProvider {
     public boolean isTicketingEnabled;
     public boolean isTaxEnabled;
     public boolean isMapShown;
+    public boolean isEventOnline;
 
     public Long ticketsSold;
     public Long ticketsAvailable;

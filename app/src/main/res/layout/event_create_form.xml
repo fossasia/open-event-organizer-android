@@ -208,6 +208,21 @@
                 android:orientation="vertical"
                 android:showDividers="beginning">
 
+                <CheckBox
+                    android:id="@+id/online_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setEventOnline(checked) }"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/event_online" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="@{ onlineEvent.checked ? View.GONE : View.VISIBLE }">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -298,7 +313,7 @@
                     android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/show_map" />
-
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
