@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.databinding.EventCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.ui.editor.RichEditorActivity;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
 
@@ -45,6 +47,7 @@ import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 import static com.eventyay.organizer.ui.ViewUtils.showView;
+import static com.eventyay.organizer.ui.editor.RichEditorActivity.TAG_RICH_TEXT;
 
 public class UpdateEventFragment extends BaseFragment implements CreateEventView {
 
@@ -61,6 +64,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     private final LocationPicker locationPicker = new LocationPicker();
 
     private static final int PLACE_PICKER_REQUEST = 1;
+    private static final int RICH_TEXT_REQUEST = 2;
     private CreateEventViewModel createEventViewModel;
 
     public static UpdateEventFragment newInstance() {
@@ -101,6 +105,12 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             if (validator.validate()) {
                 createEventViewModel.updateEvent();
             }
+        });
+
+        binding.form.description.setOnClickListener(view -> {
+            Intent richEditorIntent = new Intent(getContext(), RichEditorActivity.class);
+            richEditorIntent.putExtra(TAG_RICH_TEXT, binding.form.description.getText().toString());
+            startActivityForResult(richEditorIntent, RICH_TEXT_REQUEST);
         });
 
         setupSpinners();
@@ -156,6 +166,14 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         validate(binding.form.paypalEmailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
 
         createEventViewModel.loadEvents(eventId);
+
+        if (binding.getEvent() != null && !TextUtils.isEmpty(binding.getEvent().getDescription())) {
+            binding.form.description.setText(binding.getEvent().getDescription());
+            binding.form.description.setTextColor(Color.BLACK);
+        } else {
+            binding.form.description.setText(getString(R.string.describe_event));
+            binding.form.description.setTextColor(Color.GRAY);
+        }
     }
 
     @Override
@@ -311,6 +329,13 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             binding.form.searchableLocationName.setText(
                 createEventViewModel.getSearchableLocationName(location.getAddress().toString())
             );
+        } else if (requestCode == RICH_TEXT_REQUEST && resultCode == RESULT_OK) {
+            String description = data.getStringExtra(TAG_RICH_TEXT);
+            if (!TextUtils.isEmpty(description)) {
+                createEventViewModel.getEvent().setDescription(description);
+                binding.form.description.setText(description);
+                binding.form.description.setTextColor(Color.BLACK);
+            }
         }
     }
 
