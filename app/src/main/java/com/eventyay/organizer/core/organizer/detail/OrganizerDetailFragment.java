@@ -34,6 +34,7 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
     ContextUtils utilModel;
     @Inject
     Lazy<OrganizerDetailPresenter> presenterProvider;
+    public static final String INFO_FRAGMENT_TAG = "info";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
                 break;
             case R.id.update_organizer:
                 getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment, UpdateOrganizerInfoFragment.newInstance())
+                    .replace(R.id.fragment, UpdateOrganizerInfoFragment.newInstance(), INFO_FRAGMENT_TAG)
                     .addToBackStack(null)
                     .commit();
                 break;
