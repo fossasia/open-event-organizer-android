@@ -126,19 +126,15 @@
 
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <TextView
+                    android:id="@+id/description"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/description"
-                        android:inputType="textMultiLine"
-                        android:text="@={ event.description }" />
-
-                </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:maxLines="2"
+                    android:ellipsize="end"/>
 
             </LinearLayout>
 
@@ -207,6 +203,21 @@
                 android:divider="?android:dividerHorizontal"
                 android:orientation="vertical"
                 android:showDividers="beginning">
+
+                <CheckBox
+                    android:id="@+id/online_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setEventOnline(checked) }"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/event_online" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="@{ onlineEvent.checked ? View.GONE : View.VISIBLE }">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -298,7 +309,7 @@
                     android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/show_map" />
-
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

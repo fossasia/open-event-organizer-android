@@ -23,8 +23,8 @@ android {
         applicationId "com.eventyay.organizer"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 7
-        versionName "1.0.6alpha"
+        versionCode 8
+        versionName "1.0.7alpha"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
@@ -126,7 +126,7 @@ dependencies {
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
     playStoreImplementation "com.google.android.gms:play-services-vision:${versions.play_services}"
     playStoreImplementation "com.google.android.gms:play-services-places:${versions.play_services}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"
@@ -164,7 +164,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
-    implementation 'com.github.jasminb:jsonapi-converter:0.8.1'
+    implementation 'com.github.jasminb:jsonapi-converter:0.9'
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}"
@@ -189,7 +189,7 @@ dependencies {
 
     // ThreeTen
     implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenbp}"
-    testImplementation 'org.threeten:threetenbp:1.3.6'
+    testImplementation 'org.threeten:threetenbp:1.3.7'
 
     // Leak Canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
@@ -219,6 +219,9 @@ dependencies {
 
     // TimeLine View
     implementation "com.github.vipulasri:timelineview:${versions.timelineView}"
+
+    //Rich text editor
+    implementation "jp.wasabeef:richeditor-android:1.2.2"
 
     // Chrome Custom Tabs
     playStoreImplementation "com.android.support:customtabs:${versions.chromeCustomTabs}"

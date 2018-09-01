@@ -358,9 +358,22 @@
     <string name="receipt">Receipt</string>
     <string name="get_started_hint">Sign up or log in to create and manage events.</string>
     <string name="event_poster_image">Event poster image</string>
+    <string name="event_online">Online Event</string>
     <string name="auto_check_in_all">All types</string>
     <string name="auto_check_in">Auto Check In</string>
     <string name="auto_check_in_key">auto_check_in_key</string>
+    <string name="describe_event">Briefly describe your event</string>
+    <string name="enter_text">Enter text here...</string>
+    <string name="text">Text</string>
+    <string name="insert_url">Insert URL</string>
+    <string name="action_undo">Action Undo</string>
+    <string name="action_redo">Action redo</string>
+    <string name="format_bold">Format bold</string>
+    <string name="format_italic">Format italic</string>
+    <string name="format_strikethrough">Format strikethrough</string>
+    <string name="list_bullets">Action list in bullet points</string>
+    <string name="list_numbered">Action list in numbered points</string>
+    <string name="action_insert_link">Action insert link</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
