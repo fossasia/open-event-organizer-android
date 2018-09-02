@@ -18,7 +18,7 @@ cd apk
 if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
 	/bin/rm -f *
 else
-	/bin/rm -f app-playStore-debug.apk app-playStore-release.apk app-fdroid-debug.apk app-fdroid-release.apk
+	/bin/rm -f eventyay-organizer-dev-*.apk
 fi
 
 \cp -r ../app/build/outputs/apk/playStore/*/**.apk .
@@ -40,6 +40,12 @@ fi
 if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     for file in app*; do
           cp $file eventyay-organizer-master-${file%%}
+    done
+fi
+
+if [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]; then
+    for file in app*; do
+          mv $file eventyay-organizer-dev-${file%%}
     done
 fi
 
@@ -65,4 +71,4 @@ if [ "$TRAVIS_BRANCH" != "$PUBLISH_BRANCH" ]; then
 fi
 
 gem install fastlane
-fastlane supply --apk app-playStore-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
+fastlane supply --apk eventyay-organizer-master-app-playStore-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
