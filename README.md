@@ -19,9 +19,12 @@ The core features of this Android Application are
 - Ticket Management
 - Data sync with the [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server/)
 
-Currently, the application is released in alpha phase at Google Play Store [here](https://play.google.com/store/apps/details?id=org.fossasia.eventyay).
+Currently, the application is released in alpha phase and available here:
+[Google Play](https://play.google.com/store/apps/details?id=com.eventyay.organizer) and [F-Droid](https://f-droid.org/en/packages/com.eventyay.organizer/).
 
-<a href='https://play.google.com/store/apps/details?id=org.fossasia.eventyay&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/></a>
+<a href='https://play.google.com/store/apps/details?id=com.eventyay.organizer'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/></a>
+<a href='https://f-droid.org/en/packages/com.eventyay.attendee/'><img alt='Get it on F-Droid' src='https://f-droid.org/assets/fdroid-logo.svg' height="80"/></a>
+
 
 Have an issue? Create one using these:
 
