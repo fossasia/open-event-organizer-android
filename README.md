@@ -25,13 +25,6 @@ Currently, the application is released in alpha phase and available here:
 <a href='https://play.google.com/store/apps/details?id=com.eventyay.organizer'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/></a>
 <a href='https://f-droid.org/en/packages/com.eventyay.organizer/'><img alt='Get it on F-Droid' src='https://f-droid.org/assets/fdroid-logo.svg' height="80"/></a>
 
-
-Have an issue? Create one using these:
-
-[![Bug](https://img.shields.io/badge/issues-bug-red.svg)](https://github.com/fossasia/open-event-orga-app/issues/new?template=bug.md)
-[![Feature](https://img.shields.io/badge/issues-feature-green.svg)](https://github.com/fossasia/open-event-orga-app/issues/new?template=feature.md)
-[![Chore](https://img.shields.io/badge/issues-chore-blue.svg)](https://github.com/fossasia/open-event-orga-app/issues/new?template=chore.md)
-
 ## Roadmap
 
 Planned features & enhancements are:
