@@ -35,7 +35,7 @@ public class CreateOrderViewModel extends ViewModel {
     private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
-    private final SingleEventLiveData<List<Ticket>> ticketsLiveData = new SingleEventLiveData<>();
+    private final MutableLiveData<List<Ticket>> ticketsLiveData = new MutableLiveData<>();
     private final List<OnSiteTicket> onSiteTicketsList = new ArrayList<>();
     private final Map<Long, ObservableLong> onSiteTicketsMap =  new ConcurrentHashMap<>();
 
