@@ -122,7 +122,7 @@ We realize that MVP is opinionated and there is no strict boundary between the r
 #### Project Structure
 
 Generally, projects are created using package by layer approach where packages are names by layers like `ui`, `activity`, `fragment`, etc but it quickly becomes unscalable in large projects where large number of unrelated classes are crammed in one layer and it becomes difficult to navigate through them.  
-Instead, we follow package by feature, which at the cost of flatness of our project, provides us packages of isolated functioning related classes which are likely to be a complete self sufficient component of the application. Each package all related classes of view, presenter, their implementations like Activities anf Fragments.  
+Instead, we follow package by feature, which at the cost of flatness of our project, provides us packages of isolated functioning related classes which are likely to be a complete self sufficient component of the application. Each package all related classes of view, presenter, their implementations like Activities and Fragments.  
 A notable exception to this is the `common` module and data classes like Models and Repositories as they are used in a cross component way.  
 ***Note:** The interface contract for Presenter and View is present in `contract` package in each module`*
 
