@@ -91,7 +91,7 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
                 .detectAll()
                 .penaltyDeath();
 
-            if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 /**
                  * https://medium.com/@elye.project/walk-through-hell-with-android-strictmode-7e8605168032
                  * "If you really like penaltyDeath(). Perhaps we could turn that permitDiskReads() by default.
