@@ -89,6 +89,12 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
             StrictMode.setThreadPolicy(
                 new StrictMode.ThreadPolicy.Builder()
                     .detectAll()
+                    /**
+                     * https://medium.com/@elye.project/walk-through-hell-with-android-strictmode-7e8605168032
+                     * "If you really like penaltyDeath(). Perhaps we could turn that permitDiskReads() by default.
+                     * Most of the detected violation from other sources that really need suppression are Disk Reading error."
+                     */
+                    .permitDiskReads()
                     .penaltyDeath()
                     .build());
             StrictMode.setVmPolicy(
