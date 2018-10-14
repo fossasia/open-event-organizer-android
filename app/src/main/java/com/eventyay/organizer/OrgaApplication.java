@@ -2,6 +2,7 @@ package com.eventyay.organizer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
@@ -86,11 +87,20 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
                     .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                     .build());
 
-            StrictMode.setThreadPolicy(
-                new StrictMode.ThreadPolicy.Builder()
-                    .detectAll()
-                    .penaltyDeath()
-                    .build());
+            StrictMode.ThreadPolicy.Builder policyBuilder = new StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyDeath();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                /**
+                 * https://medium.com/@elye.project/walk-through-hell-with-android-strictmode-7e8605168032
+                 * "If you really like penaltyDeath(). Perhaps we could turn that permitDiskReads() by default.
+                 * Most of the detected violation from other sources that really need suppression are Disk Reading error."
+                 */
+                policyBuilder
+                    .permitDiskReads();
+            }
+            StrictMode.setThreadPolicy(policyBuilder.build());
             StrictMode.setVmPolicy(
                 new StrictMode.VmPolicy.Builder()
                     .detectAll()
