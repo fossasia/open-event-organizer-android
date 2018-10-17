@@ -108,6 +108,10 @@ public class EventListFragment extends BaseFragment implements EventsView {
     @Override
     public void onStart() {
         super.onStart();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            defaultViewOutlineProvider = getActivity().findViewById(R.id.appBar).getOutlineProvider();
+            getActivity().findViewById(R.id.appBar).setOutlineProvider(null);
+        }
         setupRefreshListener();
     }
 
@@ -119,6 +123,9 @@ public class EventListFragment extends BaseFragment implements EventsView {
     @Override
     public void onStop() {
         super.onStop();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().findViewById(R.id.appBar).setOutlineProvider(defaultViewOutlineProvider);
+        }
         refreshLayout.setOnRefreshListener(null);
     }
 
