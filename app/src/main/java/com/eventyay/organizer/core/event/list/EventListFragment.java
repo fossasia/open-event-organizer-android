@@ -46,6 +46,7 @@ public class EventListFragment extends BaseFragment implements EventsView {
 
     private EventListFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
+    private ViewOutlineProvider defaultViewOutlineProvider;
 
     public static final String[] EVENT_TYPE = {"live", "past", "draft"};
     public static final String POSITION = "position";
