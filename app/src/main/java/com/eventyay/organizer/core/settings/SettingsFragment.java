@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.eventyay.organizer.core.main.MainActivity;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import com.eventyay.organizer.BuildConfig;
@@ -100,5 +101,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         super.onResume();
         ViewUtils.setTitle(this, getString(R.string.device_settings));
         setSalesDataSummary();
+    }
+
+    public void goToMain()
+    {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -19,6 +19,7 @@ import com.eventyay.organizer.BuildConfig;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.auth.AuthActivity;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity;
+import com.eventyay.organizer.core.settings.SettingsFragment;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.databinding.MainActivityBinding;
@@ -111,9 +112,18 @@ public class MainActivity extends AppCompatActivity implements
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else if (fragmentNavigator.isDashboardActive())
             super.onBackPressed();
-        else if (eventId == -1)
-            finish();
-        else {
+        else if (eventId == -1) {
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            if(f instanceof SettingsFragment)
+            {
+                finish();
+                ((SettingsFragment) f).goToMain();
+            }
+            else {
+                finish();
+            }
+        }
+        else{
             fragmentNavigator.back();
             binding.navView.getMenu().findItem(R.id.nav_dashboard).setChecked(true);
             getSupportActionBar().setTitle(R.string.dashboard);
