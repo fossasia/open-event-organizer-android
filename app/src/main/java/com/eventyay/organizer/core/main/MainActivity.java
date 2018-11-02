@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements
             if(f instanceof SettingsFragment)
             {
                 finish();
-                ((SettingsFragment) f).BackToMainActivity();
+                ((SettingsFragment) f).backToMainActivity();
             }
             else {
                 finish();
