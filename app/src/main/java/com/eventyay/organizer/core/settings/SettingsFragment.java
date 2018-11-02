@@ -103,8 +103,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setSalesDataSummary();
     }
 
-    public void goToMain()
-    {
+    public void BackToMainActivity() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
     }
