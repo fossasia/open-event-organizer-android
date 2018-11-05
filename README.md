@@ -60,10 +60,10 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 ## Development
 
-- The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at https://open-event-api.herokuapp.com/ .
+- The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at https://open-event-api-dev.herokuapp.com/ .
 - The following account can be used for testing and development purposes.
 
-Email: orga.developer@gmail.com
+Email: orgadeveloper@gmail.com
 
 Password: fossasia
 
