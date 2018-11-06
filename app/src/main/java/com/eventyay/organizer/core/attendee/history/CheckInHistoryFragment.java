@@ -58,7 +58,6 @@ public class CheckInHistoryFragment extends BaseFragment implements CheckInHisto
         if (getArguments() != null) {
             attendeeId = getArguments().getLong(ATTENDEE_KEY);
         }
-
     }
 
     @Nullable
