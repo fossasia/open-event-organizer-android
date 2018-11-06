@@ -245,6 +245,22 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(fastAdapter);
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                if (dy > 0 || dy < 0 && binding.fabScanQr.isShown())
+                    binding.fabScanQr.hide();
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    binding.fabScanQr.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
         final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
         recyclerView.addItemDecoration(decoration);
         observer = new RecyclerView.AdapterDataObserver() {
