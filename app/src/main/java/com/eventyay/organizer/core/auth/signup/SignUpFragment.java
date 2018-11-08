@@ -81,7 +81,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
 
             @Override
             public void afterTextChanged(Editable s) {
-                    validator.validate();
+                validator.validate();
             }
         });
 
@@ -98,7 +98,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
 
             @Override
             public void afterTextChanged(Editable s) {
-                    validator.validate();
+                validator.validate();
             }
         });
 
