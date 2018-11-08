@@ -68,6 +68,15 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
         signUpViewModel.getSuccess().observe(this, this::onSuccess);
         signUpViewModel.getError().observe(this, this::showError);
 
+        binding.password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    validator.validate();
+                }
+            }
+        });
+        
         binding.btnSignUp.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
