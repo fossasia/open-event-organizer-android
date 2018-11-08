@@ -68,7 +68,7 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
         signUpViewModel.getSuccess().observe(this, this::onSuccess);
         signUpViewModel.getError().observe(this, this::showError);
 
-        binding.password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /*binding.password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -83,6 +83,40 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
                 if (!hasFocus) {
                     validator.validate();
                 }
+            }
+        });*/
+
+        binding.password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+               //do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                    validator.validate();
+            }
+        });
+
+        binding.confirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                    validator.validate();
             }
         });
 
