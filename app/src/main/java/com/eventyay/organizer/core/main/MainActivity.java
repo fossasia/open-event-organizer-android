@@ -115,8 +115,6 @@ public class MainActivity extends AppCompatActivity implements
             finish();
         else {
             fragmentNavigator.back();
-            binding.navView.getMenu().findItem(R.id.nav_dashboard).setChecked(true);
-            getSupportActionBar().setTitle(R.string.dashboard);
         }
     }
 

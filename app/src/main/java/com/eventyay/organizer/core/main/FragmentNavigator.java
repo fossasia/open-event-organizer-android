@@ -1,8 +1,11 @@
 package com.eventyay.organizer.core.main;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MenuItem;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
@@ -21,13 +24,15 @@ import com.eventyay.organizer.core.sponsor.list.SponsorsFragment;
 import com.eventyay.organizer.core.ticket.list.TicketsFragment;
 import com.eventyay.organizer.core.track.list.TracksFragment;
 
-class FragmentNavigator {
+class FragmentNavigator implements NavigationView.OnNavigationItemSelectedListener {
 
     private final FragmentManager fragmentManager;
     private long eventId;
 
     private boolean dashboardActive = true;
     private int lastSelectedNavItemId;
+
+    private int itemId;
 
     FragmentNavigator(FragmentManager fragmentManager, long eventId) {
         this.fragmentManager = fragmentManager;
@@ -48,8 +53,7 @@ class FragmentNavigator {
 
     void back() {
         fragmentManager.popBackStack();
-        lastSelectedNavItemId = R.id.nav_dashboard;
-        dashboardActive = true;
+        lastSelectedNavItemId = itemId;
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity"})
@@ -114,7 +118,18 @@ class FragmentNavigator {
         fragmentManager.popBackStack();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+        dashboardActive = navItemId == R.id.nav_dashboard;
+        if (dashboardActive) {
+            transaction.replace(R.id.fragment_container, fragment);
+        } else {
+            transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
+        }
         transaction.commit();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        itemId = item.getItemId();
+        return true;
     }
 }
