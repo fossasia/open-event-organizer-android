@@ -114,12 +114,7 @@ class FragmentNavigator {
         fragmentManager.popBackStack();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        dashboardActive = navItemId == R.id.nav_dashboard;
-        if (dashboardActive) {
-            transaction.replace(R.id.fragment_container, fragment);
-        } else {
-            transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
-        }
+        transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
         transaction.commit();
     }
 }
