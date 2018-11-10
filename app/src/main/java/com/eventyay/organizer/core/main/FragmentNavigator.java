@@ -54,6 +54,7 @@ class FragmentNavigator implements NavigationView.OnNavigationItemSelectedListen
     void back() {
         fragmentManager.popBackStack();
         lastSelectedNavItemId = itemId;
+        dashboardActive = true;
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity"})
