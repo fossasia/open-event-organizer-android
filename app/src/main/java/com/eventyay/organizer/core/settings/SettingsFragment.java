@@ -75,6 +75,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
+        findPreference(getString(R.string.share_app_key)).setOnPreferenceClickListener(preference -> {
+            Intent sharingIntent = new Intent();
+            sharingIntent.setAction(Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            String shareSub = getString(R.string.msg_check_out);
+            String shareBody = getString(R.string.msg_check_this_out) + getString(R.string.play_store_link);
+            String shareTitle = getString(R.string.msg_share_using);
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, shareTitle));
+            return true;
+        });
+
         findPreference(getString(R.string.acknowledgements_key)).setVisible(acknowledgementDecider.shouldShowAcknowledgement());
 
         findPreference(getString(R.string.acknowledgements_key)).setOnPreferenceClickListener(preference -> {
