@@ -317,7 +317,8 @@
     <string name="eventyay_organizer">Eventyay Organizer</string>
     <string name="rate_us">Rate Us</string>
     <string name="share_app">Share App</string>
-    <string name="msg_check_this_out">Check this out</string>
+    <string name="msg_check_out">"Check out now"</string>
+    <string name="msg_check_this_out">"Use the Eventyay Organizers app to create and manage events. Check this out now "</string>
     <string name="msg_share_using">Share using</string>
     <string name="privacy_policy_key">privacy_policy</string>
     <string name="share_app_key">share_app</string>

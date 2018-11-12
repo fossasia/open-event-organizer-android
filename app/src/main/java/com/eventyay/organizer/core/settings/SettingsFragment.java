@@ -79,8 +79,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             Intent sharingIntent = new Intent();
             sharingIntent.setAction(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            String shareBody = getString(R.string.msg_check_this_out);
-            String shareSub = getString(R.string.play_store_link);
+            String shareSub = getString(R.string.msg_check_out);
+            String shareBody = getString(R.string.msg_check_this_out) + getString(R.string.play_store_link);
             String shareTitle = getString(R.string.msg_share_using);
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
