@@ -105,9 +105,27 @@ public class CreateEventViewModel extends ViewModel {
             ZonedDateTime start = DateUtils.getDate(event.getStartsAt());
             ZonedDateTime end = DateUtils.getDate(event.getEndsAt());
 
-            if (!end.isAfter(start)) {
+            if (!end.isAfter(start) && start.getDayOfYear()==end.getDayOfYear() && start.getYear()==end.getYear()) {
                 onError.setValue("End time should be after start time");
                 return false;
+            }
+            else if(end.isAfter(start)){
+
+                if(end.getYear()-start.getYear()>1) {                                    // max difference between year should be 1 ,like if somebody create event on 31'st december
+                    return false;
+                }
+                else if(end.getYear()==start.getYear()){
+                    if(end.getDayOfYear()-start.getDayOfYear()<=4){                                     // event max limit 4 days
+                        return  true;
+                    }
+                }else if(start.getYear()<end.getYear()){
+                    if(end.getDayOfYear()<=2 && start.getDayOfYear()>=364){              // event max limit 3 days
+                        return true;
+                    }
+                }
+                onError.setValue("Event Exceeds Maximum Duration Limit");
+                return false;
+
             }
             return true;
         } catch (DateTimeParseException pe) {
