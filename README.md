@@ -104,7 +104,7 @@ Please find info about the set up of the App in your development environment [he
 
 ### Project Conventions
 
-There is certain conventions we follow in the project, we recommend that you become familiar with these so that the development process is uniform for everyone:
+There are certain conventions we follow in the project, we recommend that you become familiar with these so that the development process is uniform for everyone:
 
 #### Dependency Injection
 
