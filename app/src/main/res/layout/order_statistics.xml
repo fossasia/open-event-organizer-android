@@ -193,8 +193,17 @@
         <FrameLayout
             android:id="@+id/frame_separator_four"
             android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_shadow"
+            android:layout_marginTop="@dimen/spacing_normal"
+            bind:layout_constraintStart_toStartOf="parent"
+            bind:layout_constraintEnd_toEndOf="parent"
+            bind:layout_constraintTop_toBottomOf="@id/order_sales_layout" />
+
+        <FrameLayout
+            android:id="@+id/frame_separator_five"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_small"
-            android:layout_marginTop="8dp"
             android:background="@color/color_bottom_surface" />
 
     </LinearLayout>
