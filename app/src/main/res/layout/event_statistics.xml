@@ -118,11 +118,10 @@
 
             <FrameLayout
                 android:id="@+id/rl_separator"
-                android:layout_width="0dp"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/spacing_small"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:layout_weight="1"
                 android:background="@color/color_bottom_surface" />
 
             <LinearLayout
