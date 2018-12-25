@@ -64,7 +64,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:layout_weight="99"
+                android:layout_weight="100"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -130,7 +130,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="99"
+                android:layout_weight="100"
                 android:orientation="horizontal">
 
                 <LinearLayout

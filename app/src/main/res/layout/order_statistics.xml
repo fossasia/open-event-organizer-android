@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="100"
+            android:weightSum="200"
             android:visibility="gone">
 
             <LinearLayout
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_weight="49"
+                android:layout_weight="100"
                 android:layout_marginTop="@dimen/spacing_small"
                 android:layout_marginBottom="@dimen/spacing_normal" >
 
@@ -130,7 +130,7 @@
                 android:id="@+id/sales_statistics_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="49"
+                android:layout_weight="100"
                 android:orientation="vertical"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/spacing_small"
