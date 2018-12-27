@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -63,7 +64,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:layout_weight="99"
+                android:layout_weight="100"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -118,11 +119,10 @@
 
             <FrameLayout
                 android:id="@+id/rl_separator"
-                android:layout_width="0dp"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/spacing_small"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:layout_weight="1"
                 android:background="@color/color_bottom_surface" />
 
             <LinearLayout
@@ -130,7 +130,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="99"
+                android:layout_weight="100"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -202,8 +202,17 @@
         <FrameLayout
             android:id="@+id/frame_separator_four"
             android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_shadow"
+            android:layout_marginTop="@dimen/spacing_normal"
+            bind:layout_constraintStart_toStartOf="parent"
+            bind:layout_constraintEnd_toEndOf="parent"
+            bind:layout_constraintTop_toBottomOf="@id/event_sales_layout" />
+
+        <FrameLayout
+            android:id="@+id/frame_separator_five"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_small"
-            android:layout_marginTop="@dimen/spacing_small"
             android:background="@color/color_bottom_surface" />
 
     </LinearLayout>
