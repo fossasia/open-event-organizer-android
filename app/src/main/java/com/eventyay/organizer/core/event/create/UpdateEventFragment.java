@@ -2,6 +2,7 @@ package com.eventyay.organizer.core.event.create;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -100,6 +102,13 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         }
 
         setHasOptionsMenu(true);
+
+        binding.form.eventOriginalImageLayout.setOnClickListener(view -> {
+            binding.mainContentNestedScrollView.fullScroll(View.FOCUS_DOWN);
+            binding.form.originalImageUrl.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(binding.form.originalImageUrl, InputMethodManager.SHOW_IMPLICIT);
+        });
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
