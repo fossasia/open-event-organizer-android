@@ -19,15 +19,11 @@ The core features of this Android Application are
 - Ticket Management
 - Data sync with the [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server/)
 
-Currently, the application is released in alpha phase at Google Play Store [here](https://play.google.com/store/apps/details?id=org.fossasia.eventyay).
+Currently, the application is released in alpha phase and available here:
+[Google Play](https://play.google.com/store/apps/details?id=com.eventyay.organizer) and [F-Droid](https://f-droid.org/en/packages/com.eventyay.organizer/).
 
-<a href='https://play.google.com/store/apps/details?id=org.fossasia.eventyay&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/></a>
-
-Have an issue? Create one using these:
-
-[![Bug](https://img.shields.io/badge/issues-bug-red.svg)](https://github.com/fossasia/open-event-orga-app/issues/new?template=bug.md)
-[![Feature](https://img.shields.io/badge/issues-feature-green.svg)](https://github.com/fossasia/open-event-orga-app/issues/new?template=feature.md)
-[![Chore](https://img.shields.io/badge/issues-chore-blue.svg)](https://github.com/fossasia/open-event-orga-app/issues/new?template=chore.md)
+<a href='https://play.google.com/store/apps/details?id=com.eventyay.organizer'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/></a>
+<a href='https://f-droid.org/en/packages/com.eventyay.organizer/'><img alt='Get it on F-Droid' src='https://f-droid.org/assets/fdroid-logo.svg' height="80"/></a>
 
 ## Roadmap
 
@@ -64,10 +60,10 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 ## Development
 
-- The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at https://open-event-api.herokuapp.com/ .
+- The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at https://open-event-api-dev.herokuapp.com/ .
 - The following account can be used for testing and development purposes.
 
-Email: orga.developer@gmail.com
+Email: orgadeveloper@gmail.com
 
 Password: fossasia
 
@@ -108,7 +104,7 @@ Please find info about the set up of the App in your development environment [he
 
 ### Project Conventions
 
-There is certain conventions we follow in the project, we recommend that you become familiar with these so that the development process is uniform for everyone:
+There are certain conventions we follow in the project, we recommend that you become familiar with these so that the development process is uniform for everyone:
 
 #### Dependency Injection
 
@@ -126,7 +122,7 @@ We realize that MVP is opinionated and there is no strict boundary between the r
 #### Project Structure
 
 Generally, projects are created using package by layer approach where packages are names by layers like `ui`, `activity`, `fragment`, etc but it quickly becomes unscalable in large projects where large number of unrelated classes are crammed in one layer and it becomes difficult to navigate through them.  
-Instead, we follow package by feature, which at the cost of flatness of our project, provides us packages of isolated functioning related classes which are likely to be a complete self sufficient component of the application. Each package all related classes of view, presenter, their implementations like Activities anf Fragments.  
+Instead, we follow package by feature, which at the cost of flatness of our project, provides us packages of isolated functioning related classes which are likely to be a complete self sufficient component of the application. Each package all related classes of view, presenter, their implementations like Activities and Fragments.  
 A notable exception to this is the `common` module and data classes like Models and Repositories as they are used in a cross component way.  
 ***Note:** The interface contract for Presenter and View is present in `contract` package in each module`*
 
@@ -138,6 +134,32 @@ So, please take a look at already written tests(they are fairly self-documenting
 #### Separation of concerns
 
 Lastly, each class should only perform one task, do it well, and be unit tested for it. For example, if a presenter is doing more than it should, i.e., parsing dates or implementing search logic, better move it in its own class. There can be exceptions for this practice, but if the functionality can be generalised and reused, it should most definitely be transferred in its own class and unit tested.
+
+#### Branch Policy
+
+The following branches are present in the project:
+
+ * **development** All development goes on in this branch. If you're making a contribution, you are supposed to make a pull request to _development_. PRs to development branch must pass a build check and a unit-test check on Circle CI.
+ 
+ * **master** This contains shipped code. After significant features/bugfixes are accumulated on development, we make a version update and make a release.
+ 
+ 	>Please Note that :-
+		Each push to master branch automatically publishes the application to Play Store as an Alpha Release. Thus, on each merge into master, the versionCode and versionName MUST be changed accordingly in app/build.gradle
+
+	 - _versionCode_ : **Integer** : To be monotonically incremented with each merge. Failure to do so will lead to publishing error, and thus is a crucial step before any merge
+	 - _versionName_ : **String** : User visible version of the app. To be changed following [semantic versioning](http://semver.org/)
+ 
+ * **apk** This branch consists of multiple apk's which get generated by the Travis CI when the contributors branch is merged with the development branch and when the development is merged with the master branch. After every merge the previous APK's are deleted and new one's are created. The APK's are generated in accordance with the **update-apk.sh** script which is present in scripts folder. 
+ 
+### PR Guidelines
+
+Please help us follow the best practice to make it easy for the reviewer as well as the contributor. We want to focus on the code quality more than on managing pull request ethics.
+
+ * Single commit per pull request
+ * For writing commit messages please read the [COMMITSTYLE](docs/commitStyle.md) carefully. Kindly adhere to the guidelines.
+ * Follow uniform design practices. The design language must be consistent throughout the app.
+ * The pull request will not get merged until and unless the commits are squashed. In case there are multiple commits on the PR, the commit author needs to squash them and not the maintainers cherrypicking and merging squashes.
+ * If the PR is related to any front end change, please attach relevant screenshots in the pull request description.
 
 ## License
 

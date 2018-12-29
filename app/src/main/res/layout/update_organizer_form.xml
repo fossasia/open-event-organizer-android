@@ -165,7 +165,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/thumbnail_image"
                     android:text="@={user.thumbnailImageUrl}"
-                    android:inputType="textWebEmailAddress"/>
+                    android:inputType="textWebEmailAddress|textMultiLine"/>
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
@@ -193,7 +193,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/icon_image_url"
-                    android:inputType="textWebEmailAddress"
+                    android:inputType="textWebEmailAddress|textMultiLine"
                     android:text="@={user.iconImageUrl}" />
 
             </android.support.design.widget.TextInputLayout>
@@ -222,6 +222,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/facebook_url"
+                    android:inputType="textMultiLine"
                     android:text="@={user.facebookUrl}"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -250,6 +251,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/instagram_url"
+                    android:inputType="textMultiLine"
                     android:text="@={user.instagramUrl}"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -278,6 +280,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/avatar_url"
+                    android:inputType="textMultiLine"
                     android:text="@={user.avatarUrl}"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -306,6 +309,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/twitter_url"
+                    android:inputType="textMultiLine"
                     android:text="@={user.twitterUrl}"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -334,6 +338,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/google_plus_url"
+                    android:inputType="textMultiLine"
                     android:text="@={user.googlePlusUrl}"/>
 
             </android.support.design.widget.TextInputLayout>

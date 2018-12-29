@@ -1,21 +1,23 @@
-package com.eventyay.organizer.core.presenter;
+package com.eventyay.organizer.core.attendee.checkin;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
+import android.arch.core.executor.testing.InstantTaskExecutorRule;
+import android.arch.lifecycle.Observer;
 
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.event.Event;
-import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInPresenter;
-import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -26,18 +28,17 @@ import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
-public class AttendeeCheckInPresenterTest {
+public class AttendeeCheckInViewModelTest {
 
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule
+    public TestRule rule = new InstantTaskExecutorRule();
     @Mock private AttendeeRepository attendeeRepository;
-    @Mock private AttendeeCheckInView attendeeCheckInView;
     @Mock private DatabaseChangeListener<Attendee> databaseChangeListener;
     private PublishSubject<DbFlowDatabaseChangeListener.ModelChange<Attendee>> notifier;
 
@@ -49,12 +50,16 @@ public class AttendeeCheckInPresenterTest {
         ATTENDEE.setEvent(Event.builder().id(ID).build());
     }
 
-    private AttendeeCheckInPresenter attendeeCheckInPresenter;
+    private AttendeeCheckInViewModel attendeeCheckInViewModel;
+
+    @Mock
+    Observer<Attendee> attendeeObserver;
+    @Mock
+    Observer<String> error;
 
     @Before
     public void setUp() {
-        attendeeCheckInPresenter = new AttendeeCheckInPresenter(attendeeRepository, databaseChangeListener);
-        attendeeCheckInPresenter.attach(ID, attendeeCheckInView);
+        attendeeCheckInViewModel = new AttendeeCheckInViewModel(attendeeRepository, databaseChangeListener);
         notifier = PublishSubject.create();
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
@@ -82,62 +87,63 @@ public class AttendeeCheckInPresenterTest {
     }
 
     @Test
-    public void shouldDetachViewOnStop() {
-        assertNotNull(attendeeCheckInPresenter.getView());
-
-        attendeeCheckInPresenter.detach();
-
-        assertTrue(attendeeCheckInPresenter.getDisposable().isDisposed());
-    }
-
-    @Test
     public void shouldLoadAttendeeAutomatically() {
         setLoadAttendeeBehaviour();
-        attendeeCheckInPresenter.start();
+        attendeeCheckInViewModel.start(ID);
 
-        verify(attendeeRepository).getAttendee(ID, false);
-        verify(attendeeCheckInView).showResult(ATTENDEE);
+        InOrder inOrder = Mockito.inOrder(attendeeRepository, attendeeObserver);
+
+        inOrder.verify(attendeeRepository).getAttendee(ID, false);
+        attendeeCheckInViewModel.getAttendee().observeForever(attendeeObserver);
+
+        verify(attendeeObserver).onChanged(ATTENDEE);
     }
 
     @Test
     public void shouldStartListeningAutomatically() {
         setLoadAttendeeBehaviour();
-        attendeeCheckInPresenter.start();
+        attendeeCheckInViewModel.start(ID);
 
         verify(databaseChangeListener).startListening();
     }
 
     @Test
     public void shouldStopListeningOnDetach() {
-        attendeeCheckInPresenter.detach();
+        attendeeCheckInViewModel.onCleared();
 
         verify(databaseChangeListener).stopListening();
     }
 
     @Test
     public void shouldHandleAttendeeChange() {
-        attendeeCheckInPresenter.setAttendee(ATTENDEE);
         Attendee toggled = getCheckedInAttendee();
         when(databaseChangeListener.getNotifier()).thenReturn(notifier);
         when(attendeeRepository.getAttendee(ID, false))
             .thenReturn(Observable.empty())
             .thenReturn(Observable.just(toggled));
 
-        attendeeCheckInPresenter.start();
+        attendeeCheckInViewModel.setAttendee(ATTENDEE);
+        when(attendeeRepository.scheduleToggle(ATTENDEE)).thenReturn(Completable.complete());
 
-        notifier.onNext(new DbFlowDatabaseChangeListener.ModelChange<>(ATTENDEE, BaseModel.Action.UPDATE));
+        InOrder inOrder = Mockito.inOrder(attendeeRepository);
 
-        verify(attendeeCheckInView).showResult(toggled);
+        attendeeCheckInViewModel.toggleCheckIn();
+
+        inOrder.verify(attendeeRepository).scheduleToggle(ATTENDEE);
     }
 
     @Test
     public void shouldHandleTogglingError() {
-        attendeeCheckInPresenter.setAttendee(ATTENDEE);
+        attendeeCheckInViewModel.setAttendee(ATTENDEE);
         when(attendeeRepository.scheduleToggle(ATTENDEE)).thenReturn(Completable.error(new Throwable()));
 
-        attendeeCheckInPresenter.toggleCheckIn();
+        InOrder inOrder = Mockito.inOrder(error);
 
-        verify(attendeeCheckInView).showError(any());
+        attendeeCheckInViewModel.getError().observeForever(error);
+
+        attendeeCheckInViewModel.toggleCheckIn();
+
+        inOrder.verify(error).onChanged(any());
     }
 
 }

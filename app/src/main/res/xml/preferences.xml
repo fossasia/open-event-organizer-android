@@ -36,6 +36,11 @@
             android:selectable="true" />
 
         <Preference
+            android:key="@string/share_app_key"
+            android:title="@string/share_app"
+            android:selectable="true" />
+
+        <Preference
             android:key="@string/acknowledgements_key"
             android:selectable="true"
             android:title="@string/acknowledgements" />

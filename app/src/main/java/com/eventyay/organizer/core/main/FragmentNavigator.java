@@ -10,6 +10,7 @@ import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
 import com.eventyay.organizer.core.event.list.EventListFragment;
 import com.eventyay.organizer.core.faq.list.FaqListFragment;
 import com.eventyay.organizer.core.feedback.list.FeedbackListFragment;
+import com.eventyay.organizer.core.orders.create.CreateOrderFragment;
 import com.eventyay.organizer.core.orders.list.OrdersFragment;
 import com.eventyay.organizer.core.settings.EventSettingsFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
@@ -62,6 +63,9 @@ class FragmentNavigator {
         switch (navItemId) {
             case R.id.nav_dashboard:
                 fragment = EventDashboardFragment.newInstance(eventId);
+                break;
+            case R.id.nav_sell:
+                fragment = CreateOrderFragment.newInstance(eventId);
                 break;
             case R.id.nav_attendees:
                 fragment = AttendeesFragment.newInstance(eventId);

@@ -1,12 +1,5 @@
 package com.eventyay.organizer.common.di.module;
 
-import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
-
 import com.eventyay.organizer.OrgaProvider;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.attendee.Attendee;
@@ -26,6 +19,14 @@ import com.eventyay.organizer.data.sponsor.Sponsor;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.user.User;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
+
+import com.eventyay.organizer.data.ticket.OnSiteTicket;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -63,7 +64,7 @@ public class NetworkModule {
     Class[] providesMappedClasses() {
         return new Class[]{Event.class, Attendee.class, Ticket.class, User.class, EventStatistics.class,
             Faq.class, Copyright.class, Feedback.class, Track.class, Session.class, Sponsor.class,
-            Speaker.class, SpeakersCall.class, Order.class, OrderStatistics.class};
+            Speaker.class, SpeakersCall.class, Order.class, OrderStatistics.class, OnSiteTicket.class};
     }
 
     @Provides

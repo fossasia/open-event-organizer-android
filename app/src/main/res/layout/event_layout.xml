@@ -3,13 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <import type="com.eventyay.organizer.data.event.Event" />
+
         <import type="com.eventyay.organizer.utils.DateUtils" />
+
+        <import type="com.eventyay.organizer.utils.Utils" />
 
         <variable
             name="event"
             type="com.eventyay.organizer.data.event.Event" />
+
         <variable
             name="selectedEventId"
             type="Long" />
@@ -38,12 +44,27 @@
             android:paddingStart="@dimen/spacing_small"
             android:paddingTop="@dimen/spacing_small">
 
-            <ImageView
-                android:layout_width="@dimen/image_small"
-                android:layout_height="@dimen/image_small"
-                android:contentDescription="@string/event_thumbnail"
-                app:circleImageUrl="@{ event.thumbnailImageUrl }"
-                app:placeholder="@{ @drawable/ic_photo_shutter }" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start">
+
+                <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                    android:layout_width="@dimen/ticket_progress_smaller_size"
+                    android:layout_height="@dimen/ticket_progress_smaller_size"
+                    app:circular_progress_color='@{"light_blue"}'
+                    app:cpb_background_progressbar_width="5dp"
+                    app:cpb_progressbar_width="10dp"
+                    app:progress_with_animation="@{event.ticketsAvailable == 0 ? 0 : (int) ((event.ticketsSold*100)/event.ticketsAvailable)}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text='@{(event.ticketsAvailable == 0 ? 0 : (int) ((event.ticketsSold*100)/event.ticketsAvailable)) + "%"}'
+                    android:textSize="@dimen/text_size_normal" />
+
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,9 +120,57 @@
                     android:layout_marginLeft="@dimen/spacing_medium"
                     android:layout_marginStart="@dimen/spacing_medium"
                     android:text="@{ DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_DATE_TIME, event.getStartsAt()) }"
+                    android:textAllCaps="true"
                     android:textColor="@color/grey_600"
-                    android:textSize="@dimen/text_size_extra_small"
-                    android:textAllCaps="true"/>
+                    android:textSize="@dimen/text_size_extra_small" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="17">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_medium"
+                            android:layout_marginStart="@dimen/spacing_medium"
+                            android:text="@{event.ticketsSold}"
+                            android:textSize="@dimen/text_size_normal"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text='@{"/" + event.ticketsAvailable}'
+                            android:textSize="@dimen/text_size_small" />
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/currency_frame"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:visibility="@{ Utils.isEmpty(event.paymentCurrency) ? View.GONE : View.VISIBLE  }"
+                        android:layout_weight="7">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|bottom"
+                            android:paddingEnd="@dimen/spacing_small"
+                            android:paddingLeft="@dimen/spacing_small"
+                            android:paddingRight="@dimen/spacing_small"
+                            android:paddingStart="@dimen/spacing_small"
+                            android:text='@{ event.revenue + " " + event.paymentCurrency }' />
+
+                    </FrameLayout>
+                </LinearLayout>
 
             </LinearLayout>
 

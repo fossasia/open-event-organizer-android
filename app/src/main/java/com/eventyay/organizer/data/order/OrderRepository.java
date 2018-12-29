@@ -9,6 +9,8 @@ import io.reactivex.Observable;
 
 public interface OrderRepository {
 
+    Observable<Order> createOrder(Order order);
+
     Observable<Order> getOrders(long id, boolean reload);
 
     @NonNull

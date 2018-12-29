@@ -15,4 +15,6 @@ public interface UpdateOrganizerInfoView extends Progressive, Erroneous, Success
     void validate(TextInputLayout textInputLayout, Function<String, Boolean> function, String str);
 
     void setUser(User user);
+
+    void backPressed();
 }

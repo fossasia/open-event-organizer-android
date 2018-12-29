@@ -119,48 +119,6 @@
                 android:showDividers="beginning">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:textStyle="bold"
-                    android:text="@string/event_state"
-                    android:textSize="@dimen/text_size_normal" />
-
-                <RadioGroup
-                    android:id="@+id/state_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/spacing_extra_small">
-
-                    <RadioButton
-                        android:id="@+id/draft_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onCheckedChanged='@{ (switch, checked) -> (checked == true) ? event.setState("draft") : event.setState("published") }'
-                        android:text="@string/draft" />
-
-                    <RadioButton
-                        android:id="@+id/published_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="@string/published" />
-
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:divider="?android:dividerHorizontal"
-                android:orientation="vertical"
-                android:showDividers="beginning">
-
-                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal"
@@ -168,35 +126,6 @@
                     android:textStyle="bold"
                     android:text="@string/others"
                     android:textSize="@dimen/text_size_normal" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/description"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_info" />
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/description"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/description"
-                            android:inputType="textMultiLine|textCapSentences"
-                            android:text="@={ event.description }" />
-
-                    </android.support.design.widget.TextInputLayout>
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

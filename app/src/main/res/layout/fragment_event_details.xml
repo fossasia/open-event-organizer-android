@@ -36,9 +36,7 @@
             <android.support.v4.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingBottom="@dimen/spacing_normal">
+                android:layout_height="match_parent">
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/container"
@@ -325,15 +323,6 @@
                             bind:eventStatistics="@{eventStats}" />
 
                     </FrameLayout>
-
-                    <FrameLayout
-                        android:id="@+id/frame_separator_six"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/spacing_small"
-                        android:background="@color/color_bottom_surface"
-                        bind:layout_constraintEnd_toEndOf="parent"
-                        bind:layout_constraintStart_toStartOf="parent"
-                        bind:layout_constraintTop_toBottomOf="@id/event_statistics_frame" />
 
                 </android.support.constraint.ConstraintLayout>
 

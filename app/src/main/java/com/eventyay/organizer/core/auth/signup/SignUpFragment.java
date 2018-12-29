@@ -20,6 +20,7 @@ import com.eventyay.organizer.core.auth.SharedViewModel;
 import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.databinding.SignUpFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.BrowserUtils;
 import com.eventyay.organizer.utils.ValidateUtils;
 
 import javax.inject.Inject;
@@ -67,6 +68,40 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
         signUpViewModel.getSuccess().observe(this, this::onSuccess);
         signUpViewModel.getError().observe(this, this::showError);
 
+        binding.password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+               //do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validator.validate();
+            }
+        });
+
+        binding.confirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //do nothing
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validator.validate();
+            }
+        });
+
         binding.btnSignUp.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
@@ -82,8 +117,8 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
             signUpViewModel.signUp();
         });
 
-        binding.privacyPolicy.setOnClickListener(view -> openPrivacyPolicy());
-        binding.termsOfUse.setOnClickListener(view -> openTermsOfUse());
+        binding.privacyPolicy.setOnClickListener(view -> BrowserUtils.launchUrl(getContext(), PRIVACY_POLICY_URL));
+        binding.termsOfUse.setOnClickListener(view -> BrowserUtils.launchUrl(getContext(), TERMS_OF_USE_URL));
         binding.emailLayout.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -103,18 +138,6 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
                 //do nothing
             }
         });
-    }
-
-    private void openPrivacyPolicy() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(PRIVACY_POLICY_URL));
-        startActivity(intent);
-    }
-
-    private void openTermsOfUse() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(TERMS_OF_USE_URL));
-        startActivity(intent);
     }
 
     @Override
