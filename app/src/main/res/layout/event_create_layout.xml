@@ -45,7 +45,6 @@
                 android:background="@color/color_top_surface">
 
                 <android.support.v4.widget.NestedScrollView
-                    android:id="@+id/main_content_nested_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 

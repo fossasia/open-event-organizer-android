@@ -370,7 +370,6 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
                 e.printStackTrace();
             }
         }
-
     }
 
     private String encodeImage(Bitmap bm)
