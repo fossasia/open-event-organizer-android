@@ -20,7 +20,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +41,6 @@ import com.eventyay.organizer.ui.editor.RichEditorActivity;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -119,10 +117,10 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
-                createEventViewModel.updateEvent();
                 if(createEventViewModel.imageUrl!=null) {
-                    binding.form.originalImageUrl.setText(createEventViewModel.imageUrl);
+                    createEventViewModel.getEventLiveData().observe(this, this::setEvent);
                 }
+                createEventViewModel.updateEvent();
             }
         });
 
@@ -357,29 +355,18 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             }
         } else if (requestCode == IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
-            Bitmap bitmap;
             try {
                 InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
-                bitmap = BitmapFactory.decodeStream(imageStream);
-                String encodedImage = encodeImage(bitmap);
+                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                String encodedImage = Utils.encodeImage(bitmap);
                 ImageData imageData = new ImageData("data:image/gif;base64,"+encodedImage);
                 createEventViewModel.uploadImage(imageData);
                 binding.form.eventOriginalImage.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                Timber.e(e, "File not found");
+                Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private String encodeImage(Bitmap bm)
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
-        byte[] b = baos.toByteArray();
-        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
-
-        return encImage;
     }
 
     private void showLocationLayouts() {
@@ -408,6 +395,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         binding.form.ticketingDetails.setChecked(event.isTicketingEnabled);
         binding.form.organizerInfo.setChecked(event.hasOrganizerInfo);
         binding.form.onlineEvent.setChecked(event.isEventOnline);
+        binding.form.originalImageUrl.setText(createEventViewModel.imageUrl);
     }
 
     @Override

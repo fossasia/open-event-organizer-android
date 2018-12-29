@@ -30,7 +30,4 @@ public interface EventApi {
 
     @GET("events/{id}/general-statistics")
     Observable<EventStatistics> getEventStatistics(@Path("id") long id);
-
-    @POST("upload/image")
-    Observable<OriginalImageTemporaryUrl> postOriginalImage(@Body ImageData data);
 }

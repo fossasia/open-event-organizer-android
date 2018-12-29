@@ -1,16 +1,10 @@
 package com.eventyay.organizer.data.event;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ImageData {
     private String data;
-
-    public ImageData(String data) {
-        this.data = data;
-    }
-
-    public String getData() {
-        return data;
-    }
 }
