@@ -9,6 +9,7 @@ import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
+import com.eventyay.organizer.data.event.ImageData;
 import com.eventyay.organizer.utils.CurrencyUtils;
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.StringUtils;
@@ -56,6 +57,8 @@ public class CreateEventViewModel extends ViewModel {
     private final MutableLiveData<Event> eventMutableLiveData = new MutableLiveData<>();
 
     private Event event = new Event();
+
+    public String imageUrl;
 
     @Inject
     public CreateEventViewModel(EventRepository eventRepository, CurrencyUtils currencyUtils, Preferences preferences) {
@@ -250,4 +253,16 @@ public class CreateEventViewModel extends ViewModel {
                 }, Logger::logError));
     }
 
+    //Method for storing user uploaded image in temporary location
+    public void uploadImage(ImageData imageData) {
+        compositeDisposable.add(
+            eventRepository
+                .uploadEventImage(imageData)
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(uploadedImage -> {
+                    onSuccess.setValue("Image Uploaded Successfully");
+                    imageUrl = uploadedImage.getUrl();
+                }, Logger::logError));
+    }
 }

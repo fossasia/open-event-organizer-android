@@ -2,14 +2,16 @@ package com.eventyay.organizer.core.event.create;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -18,13 +20,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -33,12 +35,16 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.event.Event;
+import com.eventyay.organizer.data.event.ImageData;
 import com.eventyay.organizer.databinding.EventCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.ui.editor.RichEditorActivity;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,6 +73,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int RICH_TEXT_REQUEST = 2;
+    private static final int IMAGE_CHOOSER_REQUEST_CODE = 3;
     private CreateEventViewModel createEventViewModel;
 
     public static UpdateEventFragment newInstance() {
@@ -104,15 +111,18 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         setHasOptionsMenu(true);
 
         binding.form.eventOriginalImageLayout.setOnClickListener(view -> {
-            binding.mainContentNestedScrollView.fullScroll(View.FOCUS_DOWN);
-            binding.form.originalImageUrl.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(binding.form.originalImageUrl, InputMethodManager.SHOW_IMPLICIT);
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
         });
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
                 createEventViewModel.updateEvent();
+                if(createEventViewModel.imageUrl!=null) {
+                    binding.form.originalImageUrl.setText(createEventViewModel.imageUrl);
+                }
             }
         });
 
@@ -345,7 +355,32 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
                 binding.form.description.setText(description);
                 binding.form.description.setTextColor(Color.BLACK);
             }
+        } else if (requestCode == IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            Bitmap bitmap;
+            try {
+                InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
+                bitmap = BitmapFactory.decodeStream(imageStream);
+                String encodedImage = encodeImage(bitmap);
+                ImageData imageData = new ImageData("data:image/gif;base64,"+encodedImage);
+                createEventViewModel.uploadImage(imageData);
+                binding.form.eventOriginalImage.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
+
+    }
+
+    private String encodeImage(Bitmap bm)
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+        return encImage;
     }
 
     private void showLocationLayouts() {

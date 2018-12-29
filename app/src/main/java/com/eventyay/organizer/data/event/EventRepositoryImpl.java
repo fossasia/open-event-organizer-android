@@ -129,4 +129,17 @@ public class EventRepositoryImpl implements EventRepository {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @NonNull
+    @Override
+    public Observable<OriginalImageTemporaryUrl> uploadEventImage(ImageData imageData) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return eventApi
+            .postOriginalImage(imageData)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
 }

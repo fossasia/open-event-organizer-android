@@ -36,8 +36,10 @@
             android:visibility="@{ event.originalImageUrl == null ? View.VISIBLE : View.GONE }">
 
             <ImageView
+                android:id="@+id/event_original_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/ic_camera"
                 android:layout_gravity="center"
                 android:contentDescription="Add event image" />

@@ -17,4 +17,6 @@ public interface EventRepository {
     Observable<Event> createEvent(Event event);
 
     Observable<EventStatistics> getEventStatistics(long id);
+
+    Observable<OriginalImageTemporaryUrl> uploadEventImage(ImageData imageData);
 }
