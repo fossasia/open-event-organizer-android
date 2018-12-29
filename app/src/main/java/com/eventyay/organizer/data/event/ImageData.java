@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ImageData {
-    String data;
+    private String data;
 
     public ImageData(String data) {
         this.data = data;

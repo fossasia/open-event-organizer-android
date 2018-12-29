@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class OriginalImageTemporaryUrl {
-    String url;
+    private String url;
 
     public OriginalImageTemporaryUrl() {
     }
