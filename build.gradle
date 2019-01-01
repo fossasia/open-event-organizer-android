@@ -11,6 +11,7 @@ buildscript {
         classpath 'io.sentry:sentry-android-gradle-plugin:1.7.16'
         classpath 'com.noveogroup.android:check:1.2.5'
         classpath "com.google.gms:oss-licenses:0.9.2"
+        classpath 'com.google.gms:google-services:4.2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,6 +21,7 @@ buildscript {
 allprojects {
     repositories {
         google()
+        mavenCentral()
         jcenter()
     }
 }
