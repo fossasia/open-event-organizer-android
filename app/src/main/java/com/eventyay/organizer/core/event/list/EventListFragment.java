@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -55,7 +54,7 @@ public class EventListFragment extends BaseFragment implements EventsView {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.event_list_fragment, container, false);
@@ -94,7 +93,7 @@ public class EventListFragment extends BaseFragment implements EventsView {
         binding.pager.setOnTouchListener((v, event) -> {
             binding.swipeContainer.setEnabled(false);
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                    binding.swipeContainer.setEnabled(true);
+                binding.swipeContainer.setEnabled(true);
             }
             return false;
         });
