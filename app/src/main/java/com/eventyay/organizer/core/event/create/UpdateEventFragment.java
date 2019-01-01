@@ -35,6 +35,7 @@ import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.ImageData;
+import com.eventyay.organizer.data.event.ImageUrl;
 import com.eventyay.organizer.databinding.EventCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.ui.editor.RichEditorActivity;
@@ -117,10 +118,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
-                if(createEventViewModel.getImageUrlLiveData().getValue()!=null) {
-                    binding.form.originalImageUrl.setText(createEventViewModel.imageUrl.getUrl());
-                    createEventViewModel.getEventLiveData().observe(this, this::setEvent);
-                }
+                createEventViewModel.getImageUrlLiveData().observe(this, this::setImageUrl);
                 createEventViewModel.updateEvent();
             }
         });
@@ -406,5 +404,9 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         binding.form.chequePayment.setChecked(event.canPayByCheque);
         binding.form.onsitePayment.setChecked(event.canPayOnsite);
         binding.setEvent(event);
+    }
+
+    public void setImageUrl(ImageUrl imageUrl) {
+        binding.form.originalImageUrl.setText(imageUrl.getUrl());
     }
 }
