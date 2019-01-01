@@ -114,9 +114,9 @@ public class MainActivity extends AppCompatActivity implements
         else if (eventId == -1)
             finish();
         else {
-            fragmentNavigator.back();
-            binding.navView.getMenu().findItem(R.id.nav_dashboard).setChecked(true);
-            getSupportActionBar().setTitle(R.string.dashboard);
+            int lastSelectedNavItemId = fragmentNavigator.back();
+            binding.navView.getMenu().findItem(lastSelectedNavItemId).setChecked(true);
+            getSupportActionBar().setTitle(lastSelectedNavItemId);
         }
     }
 

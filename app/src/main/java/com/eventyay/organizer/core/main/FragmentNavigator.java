@@ -46,10 +46,14 @@ class FragmentNavigator {
         this.eventId = eventId;
     }
 
-    void back() {
+    int back() {
+        int count = fragmentManager.getBackStackEntryCount();
         fragmentManager.popBackStack();
-        lastSelectedNavItemId = R.id.nav_dashboard;
-        dashboardActive = true;
+        if(count == 1) {
+            lastSelectedNavItemId = R.id.nav_dashboard;
+            dashboardActive = true;
+        }
+        return lastSelectedNavItemId;
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity"})
