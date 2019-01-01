@@ -18,7 +18,7 @@ android {
     }
 
     compileSdkVersion versions.compileSdk
-    buildToolsVersion '28.0.3'
+    buildToolsVersion versions.buildTools
     defaultConfig {
         applicationId "com.eventyay.organizer"
         minSdkVersion versions.minSdk
@@ -180,7 +180,7 @@ dependencies {
     implementation 'me.xdrop:fuzzywuzzy:1.1.9'
 
     // Glide
-    implementation ("com.github.florent37:glidepalette:2.1.2") {
+    implementation("com.github.florent37:glidepalette:2.1.2") {
         transitive = false
     }
     implementation "com.github.bumptech.glide:glide:${versions.glide}"
