@@ -29,7 +29,6 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
 
 import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_BANK_TRANSFER;
 import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_CHEQUE;
