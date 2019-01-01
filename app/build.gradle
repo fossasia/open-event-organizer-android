@@ -18,7 +18,7 @@ android {
     }
 
     compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.eventyay.organizer"
         minSdkVersion versions.minSdk
