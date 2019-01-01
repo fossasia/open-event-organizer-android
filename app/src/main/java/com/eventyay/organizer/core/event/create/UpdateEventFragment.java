@@ -117,7 +117,8 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
-                if(createEventViewModel.imageUrl!=null) {
+                if(createEventViewModel.getImageUrlLiveData().getValue()!=null) {
+                    binding.form.originalImageUrl.setText(createEventViewModel.imageUrl.getUrl());
                     createEventViewModel.getEventLiveData().observe(this, this::setEvent);
                 }
                 createEventViewModel.updateEvent();
@@ -395,7 +396,6 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         binding.form.ticketingDetails.setChecked(event.isTicketingEnabled);
         binding.form.organizerInfo.setChecked(event.hasOrganizerInfo);
         binding.form.onlineEvent.setChecked(event.isEventOnline);
-        binding.form.originalImageUrl.setText(createEventViewModel.imageUrl);
     }
 
     @Override
