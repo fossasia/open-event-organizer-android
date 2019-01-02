@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Base64;
-import android.webkit.MimeTypeMap;
 
 import com.eventyay.organizer.data.event.Event;
 
