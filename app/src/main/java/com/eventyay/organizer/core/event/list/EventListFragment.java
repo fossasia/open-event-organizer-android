@@ -131,15 +131,15 @@ public class EventListFragment extends BaseFragment implements EventsView {
     @Override
     public void onStop() {
         super.onStop();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            appBarLayout.setElevation(Utils.dpToPx(4));
+        }
         refreshLayout.setOnRefreshListener(null);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            appBarLayout.setElevation(Utils.dpToPx(4));
-        }
     }
 
     private void setupRefreshListener() {
