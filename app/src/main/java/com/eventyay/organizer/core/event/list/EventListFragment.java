@@ -126,20 +126,23 @@ public class EventListFragment extends BaseFragment implements EventsView {
         startActivity(intent);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        refreshLayout.setOnRefreshListener(null);
+    }
+
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-
+    public void onDestroy() {
+        super.onDestroy();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             appBarLayout.setElevation(dpToPx(4));
         }
-
-        refreshLayout.setOnRefreshListener(null);
     }
 
     private void setupRefreshListener() {
