@@ -118,7 +118,6 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
-                createEventViewModel.getImageUrlLiveData().observe(this, this::setImageUrl);
                 createEventViewModel.updateEvent();
             }
         });
@@ -173,6 +172,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             setEvent(event);
             setPaymentBinding(event);
         });
+        createEventViewModel.getImageUrlLiveData().observe(this, this::setImageUrl);
         createEventViewModel.getCloseState().observe(this, isClose -> close());
 
         validate(binding.form.ticketUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -357,8 +357,8 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             try {
                 InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
                 Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
-                String encodedImage = Utils.encodeImage(bitmap);
-                ImageData imageData = new ImageData("data:image/gif;base64,"+encodedImage);
+                String encodedImage = Utils.encodeImage(bitmap, selectedImageUri, getActivity());
+                ImageData imageData = new ImageData(encodedImage);
                 createEventViewModel.uploadImage(imageData);
                 binding.form.eventOriginalImage.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {

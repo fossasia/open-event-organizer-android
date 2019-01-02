@@ -60,8 +60,6 @@ public class CreateEventViewModel extends ViewModel {
 
     private Event event = new Event();
 
-    public ImageUrl imageUrl;
-
     @Inject
     public CreateEventViewModel(EventRepository eventRepository, CurrencyUtils currencyUtils, Preferences preferences) {
         this.eventRepository = eventRepository;
@@ -102,7 +100,6 @@ public class CreateEventViewModel extends ViewModel {
     }
 
     public LiveData<ImageUrl> getImageUrlLiveData() {
-        imageUrlMutableLiveData.setValue(imageUrl);
         return imageUrlMutableLiveData;
     }
 
@@ -269,7 +266,7 @@ public class CreateEventViewModel extends ViewModel {
                 .doFinally(() -> progress.setValue(false))
                 .subscribe(uploadedImage -> {
                     onSuccess.setValue("Image Uploaded Successfully");
-                    imageUrl = uploadedImage;
+                    imageUrlMutableLiveData.setValue(uploadedImage);
                     getImageUrlLiveData();
                 }, Logger::logError));
     }
