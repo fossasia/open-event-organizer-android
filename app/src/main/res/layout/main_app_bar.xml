@@ -9,7 +9,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            app:elevation="0dp"
+            android:id="@+id/app_bar_main"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 

@@ -4,11 +4,14 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,6 +48,7 @@ public class EventListFragment extends BaseFragment implements EventsView {
 
     private EventListFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
+    private AppBarLayout appBarLayout;
 
     public static final String[] EVENT_TYPE = {"live", "past", "draft"};
     public static final String POSITION = "position";
@@ -58,6 +62,12 @@ public class EventListFragment extends BaseFragment implements EventsView {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.event_list_fragment, container, false);
+
+        appBarLayout = getActivity().findViewById(R.id.app_bar_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            appBarLayout.setElevation(0);
+        }
 
         eventsViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EventsViewModel.class);
         eventsViewModel.getSuccess().observe(this, this::onRefreshComplete);
@@ -116,9 +126,19 @@ public class EventListFragment extends BaseFragment implements EventsView {
         startActivity(intent);
     }
 
+    public int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
     @Override
     public void onStop() {
         super.onStop();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            appBarLayout.setElevation(dpToPx(4));
+        }
+
         refreshLayout.setOnRefreshListener(null);
     }
 
