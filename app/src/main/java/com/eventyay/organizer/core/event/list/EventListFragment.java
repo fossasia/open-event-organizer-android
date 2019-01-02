@@ -27,6 +27,7 @@ import com.eventyay.organizer.core.event.list.pager.ListPageFragment;
 import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.databinding.EventListFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -64,10 +65,6 @@ public class EventListFragment extends BaseFragment implements EventsView {
         binding = DataBindingUtil.inflate(inflater, R.layout.event_list_fragment, container, false);
 
         appBarLayout = getActivity().findViewById(R.id.app_bar_main);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            appBarLayout.setElevation(0);
-        }
 
         eventsViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EventsViewModel.class);
         eventsViewModel.getSuccess().observe(this, this::onRefreshComplete);
@@ -118,6 +115,11 @@ public class EventListFragment extends BaseFragment implements EventsView {
     @Override
     public void onStart() {
         super.onStart();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            appBarLayout.setElevation(0);
+        }
+
         setupRefreshListener();
     }
 
@@ -132,16 +134,11 @@ public class EventListFragment extends BaseFragment implements EventsView {
         refreshLayout.setOnRefreshListener(null);
     }
 
-    public int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            appBarLayout.setElevation(dpToPx(4));
+            appBarLayout.setElevation(Utils.dpToPx(4));
         }
     }
 

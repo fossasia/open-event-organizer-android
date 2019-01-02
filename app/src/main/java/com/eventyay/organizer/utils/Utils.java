@@ -1,11 +1,15 @@
 package com.eventyay.organizer.utils;
 
+import android.util.DisplayMetrics;
+
 import com.eventyay.organizer.data.event.Event;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+
+import static com.raizlabs.android.dbflow.config.FlowManager.getContext;
 
 /**
  * Pure Android free static utility class
@@ -46,6 +50,12 @@ public final class Utils {
 
     public interface PropertyMatcher<T> {
         boolean isEqual(T first, T second);
+    }
+
+    //Utility function to convert dp into pixels
+    public static int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static <E> Single<Integer> indexOf(List<E> items, E item, PropertyMatcher<E> propertyMatcher) {
