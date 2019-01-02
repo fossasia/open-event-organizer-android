@@ -138,7 +138,10 @@ public class CreateEventViewModel extends ViewModel {
             .subscribe(createdEvent -> {
                 onSuccess.setValue("Event Created Successfully");
                 close.setValue(null);
-            }, Logger::logError));
+            }, throwable -> {
+                Logger.logError(throwable);
+                onError.setValue(throwable.getMessage());
+            }));
     }
 
     public LiveData<String> getSuccessMessage() {
