@@ -78,7 +78,7 @@ public final class Utils {
         return data.toString();
     }
 
-    public static String encodeImage(Bitmap bm, Uri selectedImageUri, Context context) {
+    public static String encodeImage(Context context, Bitmap bm, Uri selectedImageUri) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();

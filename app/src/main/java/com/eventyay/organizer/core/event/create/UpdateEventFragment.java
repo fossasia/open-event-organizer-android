@@ -357,7 +357,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             try {
                 InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
                 Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
-                String encodedImage = Utils.encodeImage(bitmap, selectedImageUri, getActivity());
+                String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
                 ImageData imageData = new ImageData(encodedImage);
                 createEventViewModel.uploadImage(imageData);
                 binding.form.eventOriginalImage.setImageBitmap(bitmap);
