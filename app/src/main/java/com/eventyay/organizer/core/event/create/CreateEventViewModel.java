@@ -11,6 +11,7 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.utils.CurrencyUtils;
 import com.eventyay.organizer.utils.DateUtils;
+import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.StringUtils;
 import com.eventyay.organizer.utils.Utils;
 
@@ -140,7 +141,7 @@ public class CreateEventViewModel extends ViewModel {
                 close.setValue(null);
             }, throwable -> {
                 Logger.logError(throwable);
-                onError.setValue(throwable.getMessage());
+                onError.setValue(ErrorUtils.getMessage(throwable).toString());
             }));
     }
 
