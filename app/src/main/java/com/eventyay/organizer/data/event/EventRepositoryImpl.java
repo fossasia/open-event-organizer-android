@@ -22,12 +22,14 @@ public class EventRepositoryImpl implements EventRepository {
     private final Repository repository;
     private final EventApi eventApi;
     private final AuthHolder authHolder;
+    private final ImageUploadApi imageUploadApi;
 
     @Inject
-    public EventRepositoryImpl(Repository repository, EventApi eventApi, AuthHolder authHolder) {
+    public EventRepositoryImpl(Repository repository, EventApi eventApi, AuthHolder authHolder, ImageUploadApi imageUploadApi) {
         this.repository = repository;
         this.eventApi = eventApi;
         this.authHolder = authHolder;
+        this.imageUploadApi = imageUploadApi;
     }
 
     private void saveEvent(Event event) {
@@ -126,6 +128,19 @@ public class EventRepositoryImpl implements EventRepository {
 
         return eventApi
             .getEventStatistics(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Observable<ImageUrl> uploadEventImage(ImageData imageData) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return imageUploadApi
+            .postOriginalImage(imageData)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
