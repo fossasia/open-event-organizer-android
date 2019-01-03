@@ -51,8 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/first_name"
-                    android:text="@={ user.firstName }"
-                    app:validateEmpty="@{true}" />
+                    android:text="@={ user.firstName }" />
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
@@ -79,8 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/last_name"
-                    android:text="@={ user.lastName }"
-                    app:validateEmpty="@{true}" />
+                    android:text="@={ user.lastName }" />
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
@@ -109,6 +107,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
                     android:text="@={user.email}"
+                    app:validateEmpty="@{true}"
                     android:inputType="textWebEmailAddress"/>
 
             </android.support.design.widget.TextInputLayout>
