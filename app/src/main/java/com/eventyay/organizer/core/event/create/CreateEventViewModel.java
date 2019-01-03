@@ -267,7 +267,6 @@ public class CreateEventViewModel extends ViewModel {
                 .subscribe(uploadedImage -> {
                     onSuccess.setValue("Image Uploaded Successfully");
                     imageUrlMutableLiveData.setValue(uploadedImage);
-                    getImageUrlLiveData();
                 }, Logger::logError));
     }
 }
