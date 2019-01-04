@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -31,12 +34,16 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.event.Event;
+import com.eventyay.organizer.data.event.ImageData;
+import com.eventyay.organizer.data.event.ImageUrl;
 import com.eventyay.organizer.databinding.EventCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.ui.editor.RichEditorActivity;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -65,6 +72,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int RICH_TEXT_REQUEST = 2;
+    private static final int IMAGE_CHOOSER_REQUEST_CODE = 3;
     private CreateEventViewModel createEventViewModel;
 
     public static UpdateEventFragment newInstance() {
@@ -100,6 +108,13 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         }
 
         setHasOptionsMenu(true);
+
+        binding.form.eventOriginalImageLayout.setOnClickListener(view -> {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
+        });
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
@@ -157,6 +172,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             setEvent(event);
             setPaymentBinding(event);
         });
+        createEventViewModel.getImageUrlLiveData().observe(this, this::setImageUrl);
         createEventViewModel.getCloseState().observe(this, isClose -> close());
 
         validate(binding.form.ticketUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -336,6 +352,19 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
                 binding.form.description.setText(description);
                 binding.form.description.setTextColor(Color.BLACK);
             }
+        } else if (requestCode == IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            try {
+                InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
+                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
+                ImageData imageData = new ImageData(encodedImage);
+                createEventViewModel.uploadImage(imageData);
+                binding.form.eventOriginalImage.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                Timber.e(e, "File not found");
+                Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -375,5 +404,9 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         binding.form.chequePayment.setChecked(event.canPayByCheque);
         binding.form.onsitePayment.setChecked(event.canPayOnsite);
         binding.setEvent(event);
+    }
+
+    public void setImageUrl(ImageUrl imageUrl) {
+        binding.form.originalImageUrl.setText(imageUrl.getUrl());
     }
 }
