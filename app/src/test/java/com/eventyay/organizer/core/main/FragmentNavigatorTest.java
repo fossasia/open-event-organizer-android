@@ -110,6 +110,7 @@ public class FragmentNavigatorTest {
 
     @Test
     public void testBack() {
+
         when(fragmentManager.beginTransaction()).thenReturn(fragmentTransaction);
         when(fragmentTransaction.replace(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
 
@@ -123,7 +124,9 @@ public class FragmentNavigatorTest {
 
         fragmentNavigator.back();
 
-        assertTrue(fragmentNavigator.isDashboardActive());
+        if (fragmentManager.getBackStackEntryCount() == 1)
+            assertTrue(fragmentNavigator.isDashboardActive());
+        else assertFalse(fragmentNavigator.isDashboardActive());
 
         inOrder.verify(fragmentManager).popBackStack();
     }
