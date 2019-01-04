@@ -30,6 +30,7 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_BANK_TRANSFER;
 import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_CHEQUE;
@@ -147,8 +148,8 @@ public class CreateEventViewModel extends ViewModel {
                 onSuccess.setValue("Event Created Successfully");
                 close.setValue(null);
             }, throwable -> {
-                Logger.logError(throwable);
-                onError.setValue(ErrorUtils.getMessage(throwable).toString());
+                onError.setValue(ErrorUtils.getErrorDetails(throwable).toString());
+                Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
             }));
     }
 
