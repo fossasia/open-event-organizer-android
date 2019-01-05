@@ -42,6 +42,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     private long initialEventId;
     private EventDetailBinding binding;
     private AlertDialog unpublishDialog;
+    private AlertDialog shareEventDialog;
 
     @Inject
     Context context;
@@ -218,8 +219,20 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     }
 
     public void showEventShareDialog() {
-        ViewUtils.showDialog(this, getString(R.string.share_event),
-            getString(R.string.successfull_publish_message), getString(R.string.share), this::shareEvent);
+       if (shareEventDialog == null) {
+            shareEventDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialog))
+                .setTitle(R.string.share_event)
+                .setMessage(getString(R.string.successfull_publish_message))
+                .setPositiveButton(R.string.share, (dialog, which) -> {
+                    shareEvent();
+                })
+                .setNegativeButton(R.string.not_now, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create();
+        }
+
+        shareEventDialog.show();
     }
 
     public void switchEventState() {
