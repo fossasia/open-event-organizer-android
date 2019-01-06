@@ -4,6 +4,7 @@ import com.eventyay.organizer.data.attendee.AttendeeApi;
 import com.eventyay.organizer.data.auth.AuthApi;
 import com.eventyay.organizer.data.copyright.CopyrightApi;
 import com.eventyay.organizer.data.event.EventApi;
+import com.eventyay.organizer.data.event.ImageUploadApi;
 import com.eventyay.organizer.data.faq.FaqApi;
 import com.eventyay.organizer.data.feedback.FeedbackApi;
 import com.eventyay.organizer.data.order.OrderApi;
@@ -106,5 +107,11 @@ public class ApiModule {
     @Singleton
     OrderApi providesOrderApi(Retrofit retrofit) {
         return retrofit.create(OrderApi.class);
+    }
+
+    @Provides
+    @Singleton
+    ImageUploadApi providesImageUploadApi(Retrofit retrofit) {
+        return retrofit.create(ImageUploadApi.class);
     }
 }

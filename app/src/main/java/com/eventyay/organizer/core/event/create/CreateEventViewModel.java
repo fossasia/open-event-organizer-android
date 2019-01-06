@@ -9,8 +9,11 @@ import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
+import com.eventyay.organizer.data.event.ImageData;
+import com.eventyay.organizer.data.event.ImageUrl;
 import com.eventyay.organizer.utils.CurrencyUtils;
 import com.eventyay.organizer.utils.DateUtils;
+import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.StringUtils;
 import com.eventyay.organizer.utils.Utils;
 
@@ -27,6 +30,7 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_BANK_TRANSFER;
 import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_CHEQUE;
@@ -54,6 +58,7 @@ public class CreateEventViewModel extends ViewModel {
     private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private final MutableLiveData<Void> close = new MutableLiveData<>();
     private final MutableLiveData<Event> eventMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ImageUrl> imageUrlMutableLiveData = new MutableLiveData<>();
 
     private Event event = new Event();
 
@@ -94,6 +99,10 @@ public class CreateEventViewModel extends ViewModel {
     public LiveData<Event> getEventLiveData() {
         eventMutableLiveData.setValue(event);
         return eventMutableLiveData;
+    }
+
+    public LiveData<ImageUrl> getImageUrlLiveData() {
+        return imageUrlMutableLiveData;
     }
 
     public boolean verify() {
@@ -138,7 +147,10 @@ public class CreateEventViewModel extends ViewModel {
             .subscribe(createdEvent -> {
                 onSuccess.setValue("Event Created Successfully");
                 close.setValue(null);
-            }, Logger::logError));
+            }, throwable -> {
+                onError.setValue(ErrorUtils.getErrorDetails(throwable).toString());
+                Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
+            }));
     }
 
     public LiveData<String> getSuccessMessage() {
@@ -250,4 +262,16 @@ public class CreateEventViewModel extends ViewModel {
                 }, Logger::logError));
     }
 
+    //Method for storing user uploaded image in temporary location
+    public void uploadImage(ImageData imageData) {
+        compositeDisposable.add(
+            eventRepository
+                .uploadEventImage(imageData)
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(uploadedImage -> {
+                    onSuccess.setValue("Image Uploaded Successfully");
+                    imageUrlMutableLiveData.setValue(uploadedImage);
+                }, Logger::logError));
+    }
 }
