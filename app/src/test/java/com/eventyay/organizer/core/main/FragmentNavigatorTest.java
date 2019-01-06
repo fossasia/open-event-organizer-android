@@ -121,6 +121,8 @@ public class FragmentNavigatorTest {
 
         inOrder.verify(fragmentManager).popBackStack();
 
+        when(fragmentManager.getBackStackEntryCount()).thenReturn(1);
+
         fragmentNavigator.back();
 
         assertTrue(fragmentNavigator.isDashboardActive());
