@@ -115,7 +115,7 @@ public class CreateOrderFragment extends BaseFragment implements CreateOrderView
 
     public void showOrderAmount(Float amount) {
         binding.orderAmount.setText(String.valueOf(amount));
-        if(amount == 0.0) {
+        if (amount == 0.0) {
             binding.clearButton.setVisibility(View.GONE);
         } else {
             binding.clearButton.setVisibility(View.VISIBLE);
