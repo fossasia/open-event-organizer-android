@@ -99,7 +99,6 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/confirmPassword"
                         android:hint="@string/confirm_password"
-                        android:text="@={ user.password }"
                         android:inputType="textPassword"
                         android:imeOptions="actionGo"
                         app:validateMinLength="@{6}"
