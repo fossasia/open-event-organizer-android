@@ -10,6 +10,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -40,6 +41,8 @@ public class CreateTicketFragment extends BaseFragment implements CreateTicketVi
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         binding =  DataBindingUtil.inflate(localInflater, R.layout.ticket_create_layout, container, false);
+        binding.form.name.requestFocus();
+        ViewUtils.showKeyboard(getContext());
         createTicketViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateTicketViewModel.class);
         validator = new Validator(binding.form);
 
