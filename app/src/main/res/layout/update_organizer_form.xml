@@ -108,6 +108,7 @@
                     android:hint="@string/email"
                     android:text="@={user.email}"
                     app:validateEmpty="@{true}"
+                    app:validateType='@{"email"}'
                     android:inputType="textWebEmailAddress"/>
 
             </android.support.design.widget.TextInputLayout>
