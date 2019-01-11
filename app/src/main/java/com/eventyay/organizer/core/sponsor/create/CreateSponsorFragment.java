@@ -64,6 +64,11 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
         }
 
         binding.submit.setOnClickListener(view -> {
+
+            binding.form.name.setText(binding.form.name.getText().toString().trim());
+            binding.form.quantity.setText(binding.form.quantity.getText().toString().trim());
+            binding.form.price.setText(binding.form.price.getText().toString().trim());
+
             if (validator.validate())
                 if (isUpdateSponsor)
                     createSponsorViewModel.updateSponsor();
@@ -79,6 +84,7 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
     @Override
     public void onStart() {
         super.onStart();
+
         createSponsorViewModel.getProgress().observe(this, this::showProgress);
         createSponsorViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
         createSponsorViewModel.getSuccess().observe(this, this::onSuccess);
@@ -132,7 +138,7 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
                     textInputLayout.setErrorEnabled(true);
                     textInputLayout.setError(errorResponse);
                 }
-                if (TextUtils.isEmpty(charSequence)) {
+                if (TextUtils.isEmpty(charSequence.toString().trim())) {
                     textInputLayout.setError(null);
                     textInputLayout.setErrorEnabled(false);
                 }
