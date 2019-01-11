@@ -40,6 +40,8 @@ public class CreateTicketFragment extends BaseFragment implements CreateTicketVi
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         binding =  DataBindingUtil.inflate(localInflater, R.layout.ticket_create_layout, container, false);
+        binding.form.name.requestFocus();
+        ViewUtils.showKeyboard(getContext());
         createTicketViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateTicketViewModel.class);
         validator = new Validator(binding.form);
 

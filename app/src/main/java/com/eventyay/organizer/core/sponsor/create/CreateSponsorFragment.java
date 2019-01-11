@@ -54,6 +54,8 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding =  DataBindingUtil.inflate(inflater, R.layout.sponsor_create_layout, container, false);
+        binding.form.name.requestFocus();
+        ViewUtils.showKeyboard(getContext());
         createSponsorViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateSponsorViewModel.class);
         validator = new Validator(binding.form);
 
