@@ -24,6 +24,7 @@ import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.databinding.MainActivityBinding;
 import com.eventyay.organizer.databinding.MainNavHeaderBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.squareup.haha.perflib.Main;
 
 import java.util.Arrays;
 import java.util.List;
@@ -113,6 +114,10 @@ public class MainActivity extends AppCompatActivity implements
             super.onBackPressed();
         else if (eventId == -1)
             finish();
+        else if (fragmentNavigator.isDeviceSettingsActive()){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
         else {
             int lastSelectedNavItemId = fragmentNavigator.back();
             binding.navView.getMenu().findItem(lastSelectedNavItemId).setChecked(true);

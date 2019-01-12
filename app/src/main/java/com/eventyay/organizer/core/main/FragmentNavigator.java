@@ -3,6 +3,7 @@ package com.eventyay.organizer.core.main;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
@@ -27,6 +28,7 @@ class FragmentNavigator {
     private long eventId;
 
     private boolean dashboardActive = true;
+    private boolean deviceSettingsActive = false;
     private int lastSelectedNavItemId;
 
     FragmentNavigator(FragmentManager fragmentManager, long eventId) {
@@ -36,6 +38,10 @@ class FragmentNavigator {
 
     public boolean isDashboardActive() {
         return dashboardActive;
+    }
+
+    public boolean isDeviceSettingsActive(){
+        return deviceSettingsActive;
     }
 
     public long getEventId() {
@@ -119,6 +125,8 @@ class FragmentNavigator {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         dashboardActive = navItemId == R.id.nav_dashboard;
+        deviceSettingsActive = navItemId == R.id.nav_settings;
+        Log.d("DASHBOARD",navItemId+"");
         if (dashboardActive) {
             transaction.replace(R.id.fragment_container, fragment);
         } else {
