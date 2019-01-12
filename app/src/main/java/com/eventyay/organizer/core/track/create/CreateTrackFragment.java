@@ -40,7 +40,6 @@ public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> impl
         validator = new Validator(binding.form);
 
         binding.submit.setOnClickListener(view -> {
-
             binding.form.trackName.setText(binding.form.trackName.getText().toString().trim());
             binding.form.trackDescription.setText(binding.form.trackDescription.getText().toString().trim());
             binding.form.trackColor.setText(binding.form.trackColor.getText().toString().trim());
