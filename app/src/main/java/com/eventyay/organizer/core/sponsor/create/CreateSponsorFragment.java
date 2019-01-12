@@ -83,7 +83,6 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
     @Override
     public void onStart() {
         super.onStart();
-
         createSponsorViewModel.getProgress().observe(this, this::showProgress);
         createSponsorViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
         createSponsorViewModel.getSuccess().observe(this, this::onSuccess);
