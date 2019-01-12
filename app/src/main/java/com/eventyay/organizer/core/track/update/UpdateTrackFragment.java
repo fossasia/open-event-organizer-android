@@ -52,6 +52,10 @@ public class UpdateTrackFragment extends BaseBottomSheetFragment<UpdateTrackPres
         trackId = bundle.getLong(TRACK_ID);
 
         binding.submit.setOnClickListener(view -> {
+            binding.form.trackName.setText(binding.form.trackName.getText().toString().trim());
+            binding.form.trackDescription.setText(binding.form.trackDescription.getText().toString().trim());
+            binding.form.trackColor.setText(binding.form.trackColor.getText().toString().trim());
+
             if (validator.validate())
                 getPresenter().updateTrack();
         });

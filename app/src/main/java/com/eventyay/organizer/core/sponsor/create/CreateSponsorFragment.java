@@ -66,6 +66,10 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
         }
 
         binding.submit.setOnClickListener(view -> {
+            binding.form.name.setText(binding.form.name.getText().toString().trim());
+            binding.form.quantity.setText(binding.form.quantity.getText().toString().trim());
+            binding.form.price.setText(binding.form.price.getText().toString().trim());
+
             if (validator.validate())
                 if (isUpdateSponsor)
                     createSponsorViewModel.updateSponsor();
