@@ -64,7 +64,6 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
         }
 
         binding.submit.setOnClickListener(view -> {
-
             binding.form.name.setText(binding.form.name.getText().toString().trim());
             binding.form.quantity.setText(binding.form.quantity.getText().toString().trim());
             binding.form.price.setText(binding.form.price.getText().toString().trim());
@@ -138,7 +137,7 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
                     textInputLayout.setErrorEnabled(true);
                     textInputLayout.setError(errorResponse);
                 }
-                if (TextUtils.isEmpty(charSequence.toString().trim())) {
+                if (TextUtils.isEmpty(charSequence)) {
                     textInputLayout.setError(null);
                     textInputLayout.setErrorEnabled(false);
                 }
