@@ -66,11 +66,6 @@ public class CreateTrackPresenter extends AbstractBasePresenter<CreateTrackView>
         return String.format("#%06X", 0xFFFFFF & colorRGB);
     }
 
-    public void trimFields() {
-        track.setName(track.name.trim());
-        track.setColor(track.color.trim());
-    }
-
     public int getRed() {
         return colorRed;
     }
