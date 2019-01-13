@@ -9,6 +9,15 @@
         android:background="@color/color_top_surface">
 
         <FrameLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/empty_layout" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -26,15 +35,6 @@
 
             </android.support.v4.widget.SwipeRefreshLayout>
 
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-
-            <include layout="@layout/empty_layout" />
         </FrameLayout>
 
         <FrameLayout
