@@ -18,6 +18,15 @@
 
         <FrameLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/empty_view"
+            android:visibility="gone">
+
+            <include layout="@layout/empty_layout" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <android.support.v4.widget.SwipeRefreshLayout
@@ -48,14 +57,6 @@
             app:layout_anchorGravity="bottom|right"
             app:srcCompat="@drawable/qrcode_scan"
             android:visibility="invisible"/>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/empty_view"
-            android:visibility="gone">
-            <include layout="@layout/empty_layout" />
-        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/progressBar"
