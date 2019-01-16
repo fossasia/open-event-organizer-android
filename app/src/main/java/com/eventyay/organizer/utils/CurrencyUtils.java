@@ -74,14 +74,13 @@ public final class CurrencyUtils {
             try {
                 String country = locale.getDisplayCountry();
                 Currency currency = null;
-                if( !Utils.isEmpty(country)&&!locale.toString().matches(".*\\d+.*"))
+                if (!Utils.isEmpty(country) && !locale.toString().matches(".*\\d+.*")) {
                     currency = Currency.getInstance(locale);
+                }
                 if (currency != null && country != null) {
                     countryCurrencyMap.put(country, currency.toString());
-
                 }
             } catch (IllegalArgumentException e) {
-
                 Timber.d(e);
             }
         }
