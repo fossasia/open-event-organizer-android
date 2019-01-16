@@ -80,7 +80,9 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
         super.onStart();
         setupRecyclerView();
         setupRefreshListener();
+        
         getPresenter().attach(eventId, this);
+        getPresenter().loadTickets(true);
         getPresenter().start();
     }
 
