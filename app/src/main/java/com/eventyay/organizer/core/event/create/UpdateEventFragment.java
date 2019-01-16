@@ -109,7 +109,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         setHasOptionsMenu(true);
 
-        binding.form.eventOriginalImageLayout.setOnClickListener(view -> {
+        binding.form.eventOriginalImage.setOnClickListener(view -> {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);

@@ -175,7 +175,7 @@ dependencies {
     implementation('com.mikepenz:fastadapter:3.0.4@aar') {
         transitive = true
     }
-    implementation 'com.mikepenz:fastadapter-commons:3.0.3@aar'
+    implementation 'com.mikepenz:fastadapter-commons:3.3.1@aar'
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     implementation 'me.xdrop:fuzzywuzzy:1.1.9'
 
@@ -212,7 +212,7 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
     //colorpicker
-    implementation 'com.pes.materialcolorpicker:library:1.2.4'
+    implementation 'com.pes.materialcolorpicker:library:1.2.5'
 
     //stepper
     implementation 'com.github.badoualy:stepper-indicator:1.0.7'
