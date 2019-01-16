@@ -6,13 +6,18 @@ import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableLong;
 
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
+import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.event.Event;
+import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.order.OrderRepository;
 import com.eventyay.organizer.data.ticket.OnSiteTicket;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
+import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.ErrorUtils;
+
+import org.threeten.bp.ZonedDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,7 @@ public class CreateOrderViewModel extends ViewModel {
 
     private final OrderRepository orderRepository;
     private final TicketRepository ticketRepository;
+    private final EventRepository eventRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final SingleEventLiveData<Float> orderAmount = new SingleEventLiveData<>();
@@ -36,13 +42,17 @@ public class CreateOrderViewModel extends ViewModel {
     private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
     private final MutableLiveData<List<Ticket>> ticketsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Event> eventMutableLiveData = new MutableLiveData<>();
     private final List<OnSiteTicket> onSiteTicketsList = new ArrayList<>();
     private final Map<Long, ObservableLong> onSiteTicketsMap =  new ConcurrentHashMap<>();
 
+    private Event event = new Event();
+
     @Inject
-    public CreateOrderViewModel(OrderRepository orderRepository, TicketRepository ticketRepository) {
+    public CreateOrderViewModel(OrderRepository orderRepository, TicketRepository ticketRepository, EventRepository eventRepository) {
         this.orderRepository = orderRepository;
         this.ticketRepository = ticketRepository;
+        this.eventRepository = eventRepository;
         progress.setValue(false);
         orderAmount.setValue(0F);
     }
@@ -86,6 +96,22 @@ public class CreateOrderViewModel extends ViewModel {
         }
     }
 
+    public LiveData<Event> getEventLiveData() {
+        eventMutableLiveData.setValue(event);
+        return eventMutableLiveData;
+    }
+
+    public void loadEvent(long eventId) {
+        compositeDisposable.add(eventRepository
+            .getEvent(eventId, false)
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() -> {
+                progress.setValue(false);
+                getEventLiveData();
+            })
+            .subscribe(loadedEvent -> this.event = loadedEvent, Logger::logError));
+    }
+
     public ObservableLong getOnSiteTicketQuantity(Long ticketId) {
         if (onSiteTicketsMap.containsKey(ticketId)) {
             return onSiteTicketsMap.get(ticketId);
@@ -95,10 +121,22 @@ public class CreateOrderViewModel extends ViewModel {
         }
     }
 
-    public void createOnSiteOrder(long eventId) {
+    public boolean verify() {
+        ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime endDate = DateUtils.getDate(event.getEndsAt());
+
+        if (endDate.isBefore(now)) {
+            error.setValue("Event has ended");
+            return false;
+        }
+        return true;
+    }
+
+    public void createOnSiteOrder() {
+        if (!verify())
+            return;
+
         Order order = new Order();
-        Event event = new Event();
-        event.setId(eventId);
         order.setEvent(event);
         order.setAmount(orderAmount.getValue());
 

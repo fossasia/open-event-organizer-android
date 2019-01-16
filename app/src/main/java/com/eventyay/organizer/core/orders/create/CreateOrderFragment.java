@@ -67,7 +67,7 @@ public class CreateOrderFragment extends BaseFragment implements CreateOrderView
 
         createOrderViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateOrderViewModel.class);
         binding.clearButton.setOnClickListener(view -> createOrderViewModel.clearSelectedTickets());
-        binding.submit.setOnClickListener(view -> createOrderViewModel.createOnSiteOrder(eventId));
+        binding.submit.setOnClickListener(view -> createOrderViewModel.createOnSiteOrder());
 
         return binding.getRoot();
     }
@@ -82,6 +82,8 @@ public class CreateOrderFragment extends BaseFragment implements CreateOrderView
         createOrderViewModel.getError().observe(this, this::showError);
         createOrderViewModel.getSuccess().observe(this, this::onSuccess);
         createOrderViewModel.getOrderAmount().observe(this, this::showOrderAmount);
+
+        createOrderViewModel.loadEvent(eventId);
 
         loadData(false);
     }
