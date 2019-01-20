@@ -77,7 +77,7 @@ public final class CurrencyUtils {
                 if (!country.equals("") && !locale.toString().matches(".*\\d+.*")) {
                     currency = Currency.getInstance(locale);
                 }
-                if (currency != null && country != null) {
+                if (currency != null && !Utils.isEmpty(country)) {
                     countryCurrencyMap.put(country, currency.toString());
                 }
             } catch (IllegalArgumentException e) {
