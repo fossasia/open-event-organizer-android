@@ -104,13 +104,11 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
 
         if (resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
-            ImageData imageData;
-            Bitmap bitmap;
             try {
                 InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
-                bitmap = BitmapFactory.decodeStream(imageStream);
+                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
                 String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
-                imageData = new ImageData(encodedImage);
+                ImageData imageData = new ImageData(encodedImage);
 
                 if (requestCode == LOGO_IMAGE_CHOOSER_REQUEST_CODE) {
                     createEventViewModel.uploadLogo(imageData);
