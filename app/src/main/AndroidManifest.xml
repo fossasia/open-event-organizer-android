@@ -22,7 +22,7 @@
         <!-- TODO: Current approach for resolving Toolbar issues is just a workaround -->
         <activity
             android:name="com.eventyay.organizer.core.auth.AuthActivity"
-            android:theme="@style/AppTheme.Main.Light"
+            android:theme="@style/SplashTheme"
             android:label="${appName}"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
