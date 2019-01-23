@@ -70,8 +70,8 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
         createEventViewModel.getProgress().observe(this, this::showProgress);
         createEventViewModel.getEvent().isTaxEnabled = true;
 
-        createEventViewModel.getImageUrlLiveData().observe(this, this::setLogoImageUrl);
-        createEventViewModel.getLogoUrlLiveData().observe(this, this::setOriginalImageUrl);
+        createEventViewModel.getLogoUrlLiveData().observe(this, this::setLogoImageUrl);
+        createEventViewModel.getImageUrlLiveData().observe(this, this::setOriginalImageUrl);
 
         ValidateUtils.validate(binding.logoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         ValidateUtils.validate(binding.externalEventUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -109,22 +109,20 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
                 Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
                 String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
                 ImageData imageData = new ImageData(encodedImage);
-                createEventViewModel.uploadImage(imageData);
+                createEventViewModel.uploadLogo(imageData);
                 binding.logoImage.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 Timber.e(e, "File not found");
                 Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
             }
-        }
-
-        if (requestCode == ORIGINAL_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
+        } else if (requestCode == ORIGINAL_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
             try {
                 InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
                 Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
                 String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
                 ImageData imageData = new ImageData(encodedImage);
-                createEventViewModel.uploadLogo(imageData);
+                createEventViewModel.uploadImage(imageData);
                 binding.originalImage.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 Timber.e(e, "File not found");
