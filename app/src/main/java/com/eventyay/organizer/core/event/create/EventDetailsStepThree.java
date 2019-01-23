@@ -102,28 +102,23 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == LOGO_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
+            ImageData imageData;
+            Bitmap bitmap;
             try {
                 InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
-                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                bitmap = BitmapFactory.decodeStream(imageStream);
                 String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
-                ImageData imageData = new ImageData(encodedImage);
-                createEventViewModel.uploadLogo(imageData);
-                binding.logoImage.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                Timber.e(e, "File not found");
-                Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == ORIGINAL_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
-            Uri selectedImageUri = data.getData();
-            try {
-                InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
-                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
-                String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
-                ImageData imageData = new ImageData(encodedImage);
-                createEventViewModel.uploadImage(imageData);
-                binding.originalImage.setImageBitmap(bitmap);
+                imageData = new ImageData(encodedImage);
+
+                if (requestCode == LOGO_IMAGE_CHOOSER_REQUEST_CODE) {
+                    createEventViewModel.uploadLogo(imageData);
+                    binding.logoImage.setImageBitmap(bitmap);
+                } else if (requestCode == ORIGINAL_IMAGE_CHOOSER_REQUEST_CODE) {
+                    createEventViewModel.uploadImage(imageData);
+                    binding.originalImage.setImageBitmap(bitmap);
+                }
             } catch (FileNotFoundException e) {
                 Timber.e(e, "File not found");
                 Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
