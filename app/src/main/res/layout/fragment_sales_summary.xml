@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/spacing_normal"
-        android:elevation="4dp">
+        android:elevation="@dimen/spacing_extra_small">
 
         <LinearLayout
             android:layout_width="match_parent"

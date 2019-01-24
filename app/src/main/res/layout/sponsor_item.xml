@@ -45,7 +45,7 @@
                     app:imageUrl='@{ sponsor.getLogoUrl }'/>
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/spacing_zero"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_small"
                     android:text='@{ sponsor.getName() }'
