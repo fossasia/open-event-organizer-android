@@ -14,7 +14,6 @@
     </data>
 
     <LinearLayout
-        android:id="@+id/event_original_image_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -30,6 +29,7 @@
             android:visibility="@{ event.originalImageUrl == null ? View.GONE : View.VISIBLE }"/>
 
         <FrameLayout
+            android:id="@+id/event_original_image_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/event_image_height"
             android:background="@color/grey_600"
