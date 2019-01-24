@@ -94,6 +94,7 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
             getPresenter().loadSpeakersCall(true);
