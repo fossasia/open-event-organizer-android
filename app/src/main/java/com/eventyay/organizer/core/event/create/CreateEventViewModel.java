@@ -59,6 +59,7 @@ public class CreateEventViewModel extends ViewModel {
     private final MutableLiveData<Void> close = new MutableLiveData<>();
     private final MutableLiveData<Event> eventMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<ImageUrl> imageUrlMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ImageUrl> logoUrlMutableLiveData = new MutableLiveData<>();
 
     private Event event = new Event();
 
@@ -103,6 +104,10 @@ public class CreateEventViewModel extends ViewModel {
 
     public LiveData<ImageUrl> getImageUrlLiveData() {
         return imageUrlMutableLiveData;
+    }
+
+    public LiveData<ImageUrl> getLogoUrlLiveData() {
+        return logoUrlMutableLiveData;
     }
 
     public boolean verify() {
@@ -272,6 +277,19 @@ public class CreateEventViewModel extends ViewModel {
                 .subscribe(uploadedImage -> {
                     onSuccess.setValue("Image Uploaded Successfully");
                     imageUrlMutableLiveData.setValue(uploadedImage);
+                }, Logger::logError));
+    }
+
+    //Method for storing user uploaded logo in temporary location
+    public void uploadLogo(ImageData imageData) {
+        compositeDisposable.add(
+            eventRepository
+                .uploadEventImage(imageData)
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(uploadedImage -> {
+                    onSuccess.setValue("Logo Uploaded Successfully");
+                    logoUrlMutableLiveData.setValue(uploadedImage);
                 }, Logger::logError));
     }
 }

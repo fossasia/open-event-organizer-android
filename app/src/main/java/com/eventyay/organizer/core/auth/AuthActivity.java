@@ -27,6 +27,7 @@ public class AuthActivity extends AppCompatActivity implements HasSupportFragmen
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_Main_Light);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.auth_activity);
