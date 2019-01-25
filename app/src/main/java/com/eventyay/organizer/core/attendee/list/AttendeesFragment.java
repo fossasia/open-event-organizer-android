@@ -254,7 +254,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if ((newState == RecyclerView.SCROLL_STATE_IDLE) && recyclerView.getAdapter().getItemCount() != 0) {
                     binding.fabScanQr.show();
                 }
                 super.onScrollStateChanged(recyclerView, newState);
