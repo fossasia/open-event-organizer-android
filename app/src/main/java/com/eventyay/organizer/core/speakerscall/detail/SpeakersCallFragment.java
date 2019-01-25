@@ -82,6 +82,12 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ViewUtils.showView(binding.emptyView, false);
+    }
+
+    @Override
     protected int getTitle() {
         return R.string.speakers_call;
     }
@@ -97,6 +103,7 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
+            ViewUtils.showView(binding.emptyView, false);
             getPresenter().loadSpeakersCall(true);
         });
     }
