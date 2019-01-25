@@ -81,7 +81,6 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
         setupRecyclerView();
         setupRefreshListener();
         getPresenter().attach(eventId, this);
-        getPresenter().loadTickets(true);
         getPresenter().start();
     }
 

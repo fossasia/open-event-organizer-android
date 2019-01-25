@@ -37,7 +37,7 @@ public class TicketsPresenter extends AbstractDetailPresenter<Long, TicketsView>
 
     @Override
     public void start() {
-        loadTickets(false);
+        loadTickets(true);
         listenChanges();
     }
 
