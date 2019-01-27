@@ -19,7 +19,7 @@ import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErron
 public class OrganizerDetailPresenter extends AbstractBasePresenter<OrganizerDetailView> {
 
     private final UserRepositoryImpl userRepository;
-    private final AuthService resendVerificationMailModel;
+    private final AuthService authService;
     private final ResendVerificationMail resendVerificationMail = new ResendVerificationMail();
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -27,9 +27,9 @@ public class OrganizerDetailPresenter extends AbstractBasePresenter<OrganizerDet
     private User user;
 
     @Inject
-    public OrganizerDetailPresenter(UserRepositoryImpl userRepository, AuthService resendVerificationMailModel) {
+    public OrganizerDetailPresenter(UserRepositoryImpl userRepository, AuthService authService) {
         this.userRepository = userRepository;
-        this.resendVerificationMailModel = resendVerificationMailModel;
+        this.authService = authService;
     }
 
     @Override
@@ -43,15 +43,14 @@ public class OrganizerDetailPresenter extends AbstractBasePresenter<OrganizerDet
             .compose(progressiveErroneousRefresh(getView(), forceReload))
             .subscribe(loadedUser -> {
                 this.user = loadedUser;
-                resendVerificationMail
-                    .setEmail(user.email);
+                resendVerificationMail.setEmail(user.email);
                 getView().showResult(user);
             }, Logger::logError);
     }
 
     public void resendVerificationMail() {
         compositeDisposable.add(
-            resendVerificationMailModel.resendVerificationMail(resendVerificationMail)
+            authService.resendVerificationMail(resendVerificationMail)
                 .doOnSubscribe(disposable -> getView().showProgress(true))
                 .doFinally(() -> getView().showProgress(false))
                 .subscribe(resendMailResponse -> getView().showSnackbar("Verification Mail Resent"),

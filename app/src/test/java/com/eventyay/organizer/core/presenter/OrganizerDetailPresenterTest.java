@@ -1,6 +1,7 @@
 package com.eventyay.organizer.core.presenter;
 
 import com.eventyay.organizer.common.rx.Logger;
+import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailPresenter;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailView;
@@ -35,13 +36,15 @@ public class OrganizerDetailPresenterTest {
     private OrganizerDetailView organizerDetailView;
     @Mock
     private UserRepositoryImpl userRepository;
+    @Mock
+    private AuthService authService;
     private OrganizerDetailPresenter organizerDetailPresenter;
 
     private static final User USER = new User();
 
     @Before
     public void setUp() {
-        organizerDetailPresenter = new OrganizerDetailPresenter(userRepository);
+        organizerDetailPresenter = new OrganizerDetailPresenter(userRepository, authService);
         organizerDetailPresenter.attach(organizerDetailView);
 
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
