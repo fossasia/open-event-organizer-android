@@ -44,6 +44,9 @@ public class CreateFaqFragment extends BaseFragment implements CreateFaqView {
         validator = new Validator(binding.form);
 
         binding.submit.setOnClickListener(view -> {
+            binding.form.faqQuestion.setText(binding.form.faqQuestion.getText().toString().trim());
+            binding.form.faqAnswer.setText(binding.form.faqAnswer.getText().toString().trim());
+
             if (validator.validate())
                 createFaqViewModel.createFaq();
 
