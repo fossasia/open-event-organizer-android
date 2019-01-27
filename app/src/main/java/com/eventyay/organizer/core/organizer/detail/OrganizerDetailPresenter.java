@@ -3,8 +3,6 @@ package com.eventyay.organizer.core.organizer.detail;
 import com.eventyay.organizer.common.mvp.presenter.AbstractBasePresenter;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.auth.AuthService;
-import com.eventyay.organizer.data.auth.model.ChangePassword;
-import com.eventyay.organizer.data.auth.model.EmailRequest;
 import com.eventyay.organizer.data.auth.model.ResendVerificationMail;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserRepositoryImpl;
