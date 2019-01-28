@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
 import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
@@ -43,7 +44,7 @@ public class OrganizerDetailPresenter extends AbstractBasePresenter<OrganizerDet
             .compose(progressiveErroneousRefresh(getView(), forceReload))
             .subscribe(loadedUser -> {
                 this.user = loadedUser;
-                resendVerificationMail.setEmail(user.email);
+                resendVerificationMail.setEmail(user.getEmail());
                 getView().showResult(user);
             }, Logger::logError);
     }
@@ -54,7 +55,10 @@ public class OrganizerDetailPresenter extends AbstractBasePresenter<OrganizerDet
                 .doOnSubscribe(disposable -> getView().showProgress(true))
                 .doFinally(() -> getView().showProgress(false))
                 .subscribe(resendMailResponse -> getView().showSnackbar("Verification Mail Resent"),
-                    throwable -> getView().showError(ErrorUtils.getMessage(throwable).toString())));
+                    throwable -> {
+                        getView().showError(ErrorUtils.getErrorDetails(throwable).toString());
+                        Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
+                    }));
     }
 
     private Observable<User> getOrganizerSource(boolean forceReload) {
