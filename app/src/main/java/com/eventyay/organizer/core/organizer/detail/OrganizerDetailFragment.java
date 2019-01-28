@@ -2,6 +2,7 @@ package com.eventyay.organizer.core.organizer.detail;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +51,11 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
         }
 
         setHasOptionsMenu(true);
+
+        binding.detail.resendVerificationMail.setOnClickListener(view -> {
+            getPresenter().resendVerificationMail();
+        });
+
         return binding.getRoot();
     }
 
@@ -134,6 +140,11 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
     @Override
     public void showProgress(boolean show) {
         ViewUtils.showView(binding.progressBar, show);
+    }
+
+    @Override
+    public void showSnackbar(String message) {
+        Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
