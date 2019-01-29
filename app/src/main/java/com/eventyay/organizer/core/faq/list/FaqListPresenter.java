@@ -106,7 +106,6 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
                 if (entry.getValue().get()) {
                     deleteFaq(entry.getKey());
                 }
-                loadFaqs(true);
                 getView().showMessage("FAQs Deleted Successfully");
             }, Logger::logError);
     }
@@ -119,6 +118,7 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     public void resetToDefaultState() {
         isContextualModeActive = false;
         unSelectFaqList();
+        loadFaqs(false);
         getView().exitContextualMenuMode();
     }
 
