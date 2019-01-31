@@ -42,8 +42,6 @@ import static com.eventyay.organizer.common.Constants.PREF_PAYMENT_ACCEPT_ONSITE
 import static com.eventyay.organizer.common.Constants.PREF_PAYMENT_ONSITE_DETAILS;
 import static com.eventyay.organizer.common.Constants.PREF_PAYPAL_EMAIL;
 import static com.eventyay.organizer.common.Constants.PREF_USE_PAYMENT_PREFS;
-import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
-
 
 public class CreateEventViewModel extends ViewModel {
 
@@ -148,7 +146,6 @@ public class CreateEventViewModel extends ViewModel {
 
         compositeDisposable.add(eventRepository
             .createEvent(event)
-            .compose(dispose(compositeDisposable))
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe(createdEvent -> {
