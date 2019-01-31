@@ -37,6 +37,8 @@ public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> impl
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding =  DataBindingUtil.inflate(inflater, R.layout.track_create_layout, container, false);
+        binding.form.trackName.requestFocus();
+        ViewUtils.showKeyboard(getContext());
         validator = new Validator(binding.form);
 
         binding.submit.setOnClickListener(view -> {
