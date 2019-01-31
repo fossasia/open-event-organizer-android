@@ -180,6 +180,7 @@ public class CreateEventViewModel extends ViewModel {
      * Returns the most accurate and searchable address substring, which a user can search for.
      * Also makes sure that the substring doesn't contain any numbers by matching it to the regex,
      * as those are more likely to be house numbers or block numbers.
+     *
      * @param address full address string of a location
      * @return searchable address substring
      */
@@ -192,6 +193,7 @@ public class CreateEventViewModel extends ViewModel {
 
     /**
      * auto-selects paymentCurrency when paymentCountry is selected.
+     *
      * @param paymentCountry chosen payment country
      */
     public int onPaymentCountrySelected(String paymentCountry) {
@@ -261,13 +263,16 @@ public class CreateEventViewModel extends ViewModel {
         compositeDisposable.add(
             eventRepository
                 .updateEvent(event)
-                .compose(dispose(compositeDisposable))
                 .doOnSubscribe(disposable -> progress.setValue(true))
                 .doFinally(() -> progress.setValue(false))
                 .subscribe(updatedEvent -> {
-                    onSuccess.setValue("Event Updated Successfully");
-                    close.setValue(null);
-                }, throwable -> onError.setValue(ErrorUtils.getMessage(throwable).toString())));
+                        onSuccess.setValue("Event Updated Successfully");
+                        close.setValue(null);
+                    }, throwable -> {
+                        onError.setValue(ErrorUtils.getMessage(throwable).toString());
+                        Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
+                    }
+                ));
     }
 
     //Method for storing user uploaded image in temporary location
