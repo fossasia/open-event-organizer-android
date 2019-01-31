@@ -69,16 +69,17 @@ public class CreateSponsorViewModel extends ViewModel {
 
         nullifyEmptyFields(sponsor);
 
-        compositeDisposable.add(
-            sponsorRepository
-                .createSponsor(sponsor)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(createdSponsor -> {
-                    success.setValue("Sponsor Created");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
-    }
+
+            compositeDisposable.add(
+                sponsorRepository
+                    .createSponsor(sponsor)
+                    .doOnSubscribe(disposable -> progress.setValue(true))
+                    .doFinally(() -> progress.setValue(false))
+                    .subscribe(createdSponsor -> {
+                        success.setValue("Sponsor Created");
+                        dismiss.call();
+                    }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        }
 
     public void loadSponsor(long sponsorId) {
         compositeDisposable.add(
