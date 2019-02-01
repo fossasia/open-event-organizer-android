@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.eventyay.organizer.common.Constants;
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
@@ -43,7 +44,6 @@ import static com.eventyay.organizer.common.Constants.PREF_PAYMENT_ONSITE_DETAIL
 import static com.eventyay.organizer.common.Constants.PREF_PAYPAL_EMAIL;
 import static com.eventyay.organizer.common.Constants.PREF_USE_PAYMENT_PREFS;
 
-
 public class CreateEventViewModel extends ViewModel {
 
     private final EventRepository eventRepository;
@@ -53,10 +53,10 @@ public class CreateEventViewModel extends ViewModel {
     private final List<String> currencyCodesList;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private final MutableLiveData<String> onSuccess = new MutableLiveData<>();
-    private final MutableLiveData<String> onError = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private final MutableLiveData<Void> close = new MutableLiveData<>();
+    private final SingleEventLiveData<String> onSuccess = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> onError = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Void> close = new SingleEventLiveData<>();
     private final MutableLiveData<Event> eventMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<ImageUrl> imageUrlMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<ImageUrl> logoUrlMutableLiveData = new MutableLiveData<>();
@@ -178,6 +178,7 @@ public class CreateEventViewModel extends ViewModel {
      * Returns the most accurate and searchable address substring, which a user can search for.
      * Also makes sure that the substring doesn't contain any numbers by matching it to the regex,
      * as those are more likely to be house numbers or block numbers.
+     *
      * @param address full address string of a location
      * @return searchable address substring
      */
@@ -190,6 +191,7 @@ public class CreateEventViewModel extends ViewModel {
 
     /**
      * auto-selects paymentCurrency when paymentCountry is selected.
+     *
      * @param paymentCountry chosen payment country
      */
     public int onPaymentCountrySelected(String paymentCountry) {
@@ -262,9 +264,13 @@ public class CreateEventViewModel extends ViewModel {
                 .doOnSubscribe(disposable -> progress.setValue(true))
                 .doFinally(() -> progress.setValue(false))
                 .subscribe(updatedEvent -> {
-                    onSuccess.setValue("Event Updated Successfully");
-                    close.setValue(null);
-                }, Logger::logError));
+                        onSuccess.setValue("Event Updated Successfully");
+                        close.setValue(null);
+                    }, throwable -> {
+                        onError.setValue(ErrorUtils.getMessage(throwable).toString());
+                        Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
+                    }
+                ));
     }
 
     //Method for storing user uploaded image in temporary location
