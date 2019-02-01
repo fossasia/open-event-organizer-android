@@ -44,7 +44,6 @@
                 android:hint="@string/other_url"
                 android:inputType="textUri"
                 android:imeOptions="actionGo"
-                app:validateType='@{"url"}'
                 app:go="@{() -> action.run() }"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>

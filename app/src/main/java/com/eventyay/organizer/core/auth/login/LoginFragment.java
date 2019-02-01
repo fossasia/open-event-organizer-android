@@ -21,12 +21,15 @@ import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.databinding.LoginFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.ValidateUtils;
 
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
+import static com.eventyay.organizer.utils.ValidateUtils.validate;
+import static com.eventyay.organizer.utils.ValidateUtils.validateUrl;
 
 public class LoginFragment extends BaseFragment implements Progressive, Successful, Erroneous {
 
@@ -70,11 +73,20 @@ public class LoginFragment extends BaseFragment implements Progressive, Successf
                 .commit();
         });
 
+        validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
             String url = binding.url.baseUrl.getText().toString().trim();
+
+            if(!binding.url.overrideUrl.isChecked()) {
+                if(!validateUrl(url)) {
+                    return;
+                }
+            }
+
             loginFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             loginFragmentViewModel.login();
         });

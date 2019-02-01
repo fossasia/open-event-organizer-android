@@ -15,12 +15,15 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.databinding.ChangePasswordFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.ValidateUtils;
 
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
+import static com.eventyay.organizer.utils.ValidateUtils.validate;
+import static com.eventyay.organizer.utils.ValidateUtils.validateUrl;
 
 public class ChangePasswordFragment extends BaseFragment implements ChangePasswordView {
 
@@ -62,11 +65,20 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         changePasswordViewModel.getSuccess().observe(this, this::onSuccess);
         changePasswordViewModel.getError().observe(this, this::showError);
 
+        validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+
         binding.btnChangePassword.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
             String url = binding.url.baseUrl.getText().toString().trim();
+
+            if(!binding.url.overrideUrl.isChecked()) {
+                if(!validateUrl(url)) {
+                    return;
+                }
+            }
+
             changePasswordViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             changePasswordViewModel.changePasswordRequest(binding.oldPassword.getText().toString(),
                 binding.newPassword.getText().toString(),

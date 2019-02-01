@@ -33,6 +33,8 @@ import javax.inject.Inject;
 import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
+import static com.eventyay.organizer.utils.ValidateUtils.validate;
+import static com.eventyay.organizer.utils.ValidateUtils.validateUrl;
 
 public class StartFragment extends BaseFragment implements StartView {
 
@@ -73,17 +75,26 @@ public class StartFragment extends BaseFragment implements StartView {
             startFragmentViewModel.getEmailRequestModel().setValue(emailRequest);
         });
 
+        validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+
         binding.btnStart.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
-            ViewUtils.hideKeyboard(view);
             String url = binding.url.baseUrl.getText().toString().trim();
+
+            if(!binding.url.overrideUrl.isChecked()) {
+                if(!validateUrl(url)) {
+                    return;
+                }
+            }
+
+            ViewUtils.hideKeyboard(view);
             startFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             startFragmentViewModel.checkIsEmailRegistered(startFragmentViewModel.getEmailRequestModel().getValue());
         });
 
-        ValidateUtils.validate(binding.emailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
+        validate(binding.emailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
     }
 
     @Override
