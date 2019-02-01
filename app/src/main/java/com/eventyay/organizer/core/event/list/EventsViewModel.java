@@ -56,14 +56,15 @@ public class EventsViewModel extends ViewModel {
     }
 
     public void sortBy(int criteria) {
-        if (events.getValue() != null) {
-            if (criteria == SORTBYNAME)
-                Collections.sort(events.getValue(), (e1, e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
-            else {
-                Collections.sort(events.getValue(), DateService::compareEventDates);
-            }
-            filter();
+        if (events.getValue() == null) {
+            return;
         }
+        if (criteria == SORTBYNAME)
+            Collections.sort(events.getValue(), (e1, e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
+        else {
+            Collections.sort(events.getValue(), DateService::compareEventDates);
+        }
+        filter();
     }
 
     public void loadUserEvents(boolean forceReload) {
