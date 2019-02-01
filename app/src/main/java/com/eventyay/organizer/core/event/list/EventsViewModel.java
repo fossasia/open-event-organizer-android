@@ -44,20 +44,26 @@ public class EventsViewModel extends ViewModel {
 
     public LiveData<List<Event>> getEvents(int position) {
         switch (position) {
-            case 0: return liveEvents;
-            case 1: return pastEvents;
-            case 2: return draftEvents;
-            default: return events;
+            case 0:
+                return liveEvents;
+            case 1:
+                return pastEvents;
+            case 2:
+                return draftEvents;
+            default:
+                return events;
         }
     }
 
     public void sortBy(int criteria) {
-        if (criteria == SORTBYNAME)
-            Collections.sort(events.getValue(), (e1, e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
-        else {
-            Collections.sort(events.getValue(), DateService::compareEventDates);
+        if (events.getValue() != null) {
+            if (criteria == SORTBYNAME)
+                Collections.sort(events.getValue(), (e1, e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
+            else {
+                Collections.sort(events.getValue(), DateService::compareEventDates);
+            }
+            filter();
         }
-        filter();
     }
 
     public void loadUserEvents(boolean forceReload) {
