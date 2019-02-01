@@ -81,10 +81,8 @@ public class LoginFragment extends BaseFragment implements Progressive, Successf
 
             String url = binding.url.baseUrl.getText().toString().trim();
 
-            if(!binding.url.overrideUrl.isChecked()) {
-                if(!validateUrl(url)) {
+            if(!binding.url.overrideUrl.isChecked() && !validateUrl(url)) {
                     return;
-                }
             }
 
             loginFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());

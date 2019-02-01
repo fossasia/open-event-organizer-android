@@ -73,10 +73,8 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
 
             String url = binding.url.baseUrl.getText().toString().trim();
 
-            if(!binding.url.overrideUrl.isChecked()) {
-                if(!validateUrl(url)) {
-                    return;
-                }
+            if(!binding.url.overrideUrl.isChecked() && !validateUrl(url)) {
+                return;
             }
 
             changePasswordViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
