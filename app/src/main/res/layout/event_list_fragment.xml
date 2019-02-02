@@ -26,7 +26,7 @@
                 android:background="@android:color/white"
                 app:tabMode="fixed"
                 app:tabGravity="fill"
-                android:elevation="4dp">
+                android:elevation="@dimen/spacing_extra_small">
 
                 <android.support.design.widget.TabItem
                     android:layout_width="wrap_content"
