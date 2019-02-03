@@ -142,9 +142,6 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
             if (priority == Log.DEBUG || priority == Log.VERBOSE)
                 return;
 
-            // Report to crashing SDK in future
-            Timber.log(priority, tag, message, throwable);
-
             if (priority == Log.INFO) {
                 Log.d("Sentry", "Sending sentry breadcrumb");
                 Sentry.getContext().recordBreadcrumb(new BreadcrumbBuilder().setMessage(message).build());
