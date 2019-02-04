@@ -1,5 +1,7 @@
 package com.eventyay.organizer.core.session.create;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,15 +27,15 @@ import com.eventyay.organizer.utils.ValidateUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> implements CreateSessionView {
+public class CreateSessionFragment extends BaseFragment implements CreateSessionView {
 
     @Inject
-    Lazy<CreateSessionPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
+    private CreateSessionViewModel createSessionViewModel;
     private SessionCreateLayoutBinding binding;
     private Validator validator;
     public static final String TRACK_KEY = "track";
@@ -84,15 +86,17 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.session_create_layout, container, false);
+        createSessionViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateSessionViewModel.class);
         validator = new Validator(binding.form);
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate()) {
                 if (isSessionUpdating) {
-                    getPresenter().updateSession(trackId, eventId);
+                    createSessionViewModel.updateSession(trackId, eventId);
                 } else {
-                    getPresenter().createSession(trackId, eventId);
+                    createSessionViewModel.createSession(trackId, eventId);
                 }
+                ViewUtils.hideKeyboard(binding.getRoot());
             }
         });
 
@@ -110,11 +114,15 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        binding.setSession(getPresenter().getSession());
+        createSessionViewModel.getProgress().observe(this, this::showProgress);
+        createSessionViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
+        createSessionViewModel.getSuccess().observe(this, this::onSuccess);
+        createSessionViewModel.getError().observe(this, this::showError);
+        createSessionViewModel.getSessionLiveData().observe(this, this::setSession);
+        binding.setSession(createSessionViewModel.getSession());
 
         if (isSessionUpdating) {
-            getPresenter().loadSession(sessionId);
+            createSessionViewModel.loadSession(sessionId);
         }
 
         validate(binding.form.slidesUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -157,9 +165,6 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
     @Override
     public void setSession(Session session) {
         binding.setSession(session);
-        String state = getPresenter().getSession().getState();
-        int statePosition = sessionStateAdapter.getPosition(state);
-        binding.form.spinner.setSelection(statePosition);
     }
 
     @Override
@@ -169,11 +174,6 @@ public class CreateSessionFragment extends BaseFragment<CreateSessionPresenter> 
         } else {
             return R.string.create_session;
         }
-    }
-
-    @Override
-    public Lazy<CreateSessionPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override
