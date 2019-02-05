@@ -3,8 +3,6 @@ package com.eventyay.organizer.core.attendee.list;
 import android.annotation.SuppressLint;
 import android.support.annotation.VisibleForTesting;
 
-import com.eventyay.organizer.ui.ViewUtils;
-import com.eventyay.organizer.utils.ErrorUtils;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
