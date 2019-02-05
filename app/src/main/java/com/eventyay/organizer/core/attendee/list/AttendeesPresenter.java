@@ -1,7 +1,10 @@
 package com.eventyay.organizer.core.attendee.list;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.VisibleForTesting;
 
+import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.ErrorUtils;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
@@ -106,6 +109,17 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
     public void setAttendeeList(List<Attendee> attendeeList) {
         this.attendeeList.clear();
         this.attendeeList.addAll(attendeeList);
+    }
+
+    @SuppressLint("CheckResult")
+    public void toggleCheckInState(int swipedPosition) {
+        Attendee attendee = attendeeList.get(swipedPosition);
+        attendee.setChecking(true);
+        attendee.isCheckedIn = !attendee.isCheckedIn;
+        attendeeRepository.scheduleToggle(attendee)
+                .subscribe(() -> {
+                    // Nothing to do
+                }, Logger::logError);
     }
 
 }

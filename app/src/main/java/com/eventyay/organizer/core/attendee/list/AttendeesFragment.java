@@ -1,17 +1,25 @@
 package com.eventyay.organizer.core.attendee.list;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,12 +32,14 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.attendee.ScanningDecider;
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInFragment;
+import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInViewModel;
 import com.eventyay.organizer.core.attendee.list.listeners.AttendeeItemCheckInEvent;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.databinding.FragmentAttendeesBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.SearchUtils;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
@@ -61,6 +71,9 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     @Inject
     Lazy<AttendeesPresenter> presenterProvider;
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
     private static final int SORTBYTICKET = 1;
     private static final int SORTBYNAME = 0;
 
@@ -73,6 +86,8 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     private FragmentAttendeesBinding binding;
     private SwipeRefreshLayout refreshLayout;
     private SearchView searchView;
+
+    private AttendeeCheckInViewModel attendeeCheckInViewModel;
 
     private RecyclerView.AdapterDataObserver observer;
 
@@ -159,6 +174,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_attendees, container, false);
+        attendeeCheckInViewModel = ViewModelProviders.of(this, viewModelFactory).get(AttendeeCheckInViewModel.class);
 
         binding.fabScanQr.getDrawable().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
         binding.fabScanQr.setOnClickListener(v -> scanningDecider.openScanQRActivity(getActivity(), eventId));
@@ -260,6 +276,36 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int swipedPosition = viewHolder.getAdapterPosition();
+                getPresenter().toggleCheckInState(swipedPosition);
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                if (viewHolder.getAdapterPosition() == -1) {
+                    return;
+                }
+
+                float newDx = dX;
+                if (newDx >= 150f) {
+                    newDx = 150f;
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, newDx, dY, actionState, isCurrentlyActive);            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
         recyclerView.addItemDecoration(decoration);
