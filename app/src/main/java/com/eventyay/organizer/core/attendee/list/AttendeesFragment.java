@@ -1,6 +1,5 @@
 package com.eventyay.organizer.core.attendee.list;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Canvas;
@@ -63,9 +62,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     @Inject
     Lazy<AttendeesPresenter> presenterProvider;
-
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
 
     private static final int SORTBYTICKET = 1;
     private static final int SORTBYNAME = 0;
