@@ -19,6 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
@@ -30,6 +31,7 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
 
     private final AttendeeRepository attendeeRepository;
     private final DatabaseChangeListener<Attendee> attendeeListener;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final List<Attendee> attendeeList = new ArrayList<>();
 
@@ -114,9 +116,10 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
         Attendee attendee = attendeeList.get(swipedPosition);
         attendee.setChecking(true);
         attendee.isCheckedIn = !attendee.isCheckedIn;
-        attendeeRepository.scheduleToggle(attendee)
+        compositeDisposable.add(
+            attendeeRepository.scheduleToggle(attendee)
                 .subscribe(() -> {
                     // Nothing to do
-                }, Logger::logError);
+                }, Logger::logError));
     }
 }
