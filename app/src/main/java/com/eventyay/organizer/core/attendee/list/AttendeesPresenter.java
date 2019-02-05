@@ -119,5 +119,4 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
                     // Nothing to do
                 }, Logger::logError);
     }
-
 }
