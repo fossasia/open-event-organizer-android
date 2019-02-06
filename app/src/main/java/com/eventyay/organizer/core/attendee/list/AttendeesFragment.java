@@ -3,7 +3,6 @@ package com.eventyay.organizer.core.attendee.list;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -45,8 +44,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.Lazy;
-
-import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_SWIPE;
 
 /**
  * A simple {@link Fragment} subclass.
