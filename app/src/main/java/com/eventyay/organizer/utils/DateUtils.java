@@ -48,10 +48,10 @@ public final class DateUtils {
 
     @NonNull
     private static ZoneId getZoneId() {
-        if (showLocal || ContextManager.getSelectedEvent() == null)
+//        if (showLocal || ContextManager.getSelectedEvent() == null)
             return ZoneId.systemDefault();
-        else
-            return ZoneId.of(ContextManager.getSelectedEvent().getTimezone());
+//        else
+//            return ZoneId.of(ContextManager.getSelectedEvent().getTimezone());
     }
 
     // Public methods
