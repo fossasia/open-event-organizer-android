@@ -1,11 +1,14 @@
 package com.eventyay.organizer.core.organizer.update;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.VisibleForTesting;
 
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
+import com.eventyay.organizer.data.event.ImageData;
+import com.eventyay.organizer.data.event.ImageUrl;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
@@ -21,6 +24,8 @@ public class UpdateOrganizerInfoViewModel extends ViewModel {
     private User user = new User();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> onSuccess = new SingleEventLiveData<>();
+    private final MutableLiveData<ImageUrl> imageUrlMutableLiveData = new MutableLiveData<>();
     private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
     private final SingleEventLiveData<Void> dismiss = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
@@ -74,6 +79,22 @@ public class UpdateOrganizerInfoViewModel extends ViewModel {
 
     public LiveData<String> getError() {
         return error;
+    }
+
+    public LiveData<ImageUrl> getImageUrlLiveData() {
+        return imageUrlMutableLiveData;
+    }
+
+    public void uploadImage(ImageData imageData) {
+        compositeDisposable.add(
+            userRepository
+                .uploadImage(imageData)
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(uploadedImage -> {
+                    onSuccess.setValue("Image Uploaded Successfully");
+                    imageUrlMutableLiveData.setValue(uploadedImage);
+                }, Logger::logError));
     }
 
     public void updateOrganizer() {

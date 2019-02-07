@@ -18,16 +18,72 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/const_normal">
 
-        <TextView
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/spacing_large"
-            android:layout_marginEnd="@dimen/spacing_large"
-            android:layout_marginRight="@dimen/spacing_large"
-            android:padding="@dimen/spacing_extra_small"
-            android:text="@string/edit_profile" />
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/editProfileTxt"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:layout_marginEnd="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                android:padding="@dimen/spacing_extra_small"
+                android:text="@string/edit_profile" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/ProfileImageCard"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:elevation="5dp"
+                android:focusable="true"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="40dp">
+
+                <ImageView
+                    android:id="@+id/ProfileImage"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/spacing_medium"
+                    android:contentDescription="@string/profile_picture"
+                    app:placeholder="@{ @drawable/ic_account_circle }"
+                    app:circleImageUrl="@{ user.avatarUrl }" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/change_profile"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignBottom="@+id/ProfileImageCard"
+                android:layout_alignEnd="@+id/ProfileImageCard"
+                android:layout_alignRight="@+id/ProfileImageCard"
+                android:layout_gravity="center"
+                android:background="@color/color_accent"
+                android:clickable="true"
+                android:elevation="12dp"
+                android:focusable="true"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="15dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/change_image" />
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

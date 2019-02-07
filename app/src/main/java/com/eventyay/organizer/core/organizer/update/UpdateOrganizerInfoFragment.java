@@ -3,7 +3,13 @@ package com.eventyay.organizer.core.organizer.update;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,15 +29,22 @@ import android.widget.Toast;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
+import com.eventyay.organizer.data.event.ImageData;
+import com.eventyay.organizer.data.event.ImageUrl;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.databinding.UpdateOrganizerLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import javax.inject.Inject;
 import br.com.ilhasoft.support.validation.Validator;
+import timber.log.Timber;
 
 
+import static android.app.Activity.RESULT_OK;
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
 public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateOrganizerInfoView {
@@ -43,6 +56,8 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
     private Validator validator;
     private UpdateOrganizerInfoViewModel updateOrganizerInfoViewModel;
     private AlertDialog saveAlertDialog;
+    private Uri filePath;
+    private final int PICK_IMAGE_REQUEST = 234;
 
     public static UpdateOrganizerInfoFragment newInstance() {
         return new UpdateOrganizerInfoFragment();
@@ -53,7 +68,7 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        binding =  DataBindingUtil.inflate(localInflater, R.layout.update_organizer_layout, container, false);
+        binding = DataBindingUtil.inflate(localInflater, R.layout.update_organizer_layout, container, false);
         updateOrganizerInfoViewModel = ViewModelProviders.of(this, viewModelFactory).get(UpdateOrganizerInfoViewModel.class);
         validator = new Validator(binding.form);
 
@@ -67,6 +82,10 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
         }
 
         setHasOptionsMenu(true);
+
+        binding.form.changeProfile.setOnClickListener(view -> {
+            selectImage();
+        });
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
@@ -85,6 +104,7 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
         updateOrganizerInfoViewModel.getError().observe(this, this::showError);
         updateOrganizerInfoViewModel.getUserLiveData().observe(this, this::setUser);
         updateOrganizerInfoViewModel.loadUser();
+        updateOrganizerInfoViewModel.getImageUrlLiveData().observe(this, this::setImageUrl);
         validate(binding.form.holderAvatarUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.holderTwitterUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.holderFacebookUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -125,9 +145,41 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
         });
     }
 
+    private void selectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+            && data != null && data.getData() != null) {
+            filePath = data.getData();
+            try {
+                InputStream imageStream = getActivity().getContentResolver().openInputStream(filePath);
+                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                String encodedImage = Utils.encodeImage(getActivity(), bitmap, filePath);
+                ImageData imageData = new ImageData(encodedImage);
+                updateOrganizerInfoViewModel.uploadImage(imageData);
+                Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+                binding.form.ProfileImage.setBackground(drawable);
+            } catch (FileNotFoundException e) {
+                Timber.e(e, "File not found");
+                Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     public void setUser(User user) {
         binding.setUser(user);
+    }
+
+    private void setImageUrl(ImageUrl imageUrl) {
+        binding.form.avatarUrl.setText(imageUrl.getUrl());
     }
 
     @Override
