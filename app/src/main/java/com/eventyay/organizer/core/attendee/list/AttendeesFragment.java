@@ -2,9 +2,7 @@ package com.eventyay.organizer.core.attendee.list;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.graphics.Canvas;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
@@ -264,49 +262,9 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             }
         });
 
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        SwipeController swipeController = new SwipeController(getPresenter(), fastAdapter, context);
 
-            ColorDrawable background;
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int swipedPosition = viewHolder.getAdapterPosition();
-                getPresenter().toggleCheckInState(swipedPosition);
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-                if (viewHolder.getAdapterPosition() == -1) {
-                    return;
-                }
-
-                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && isCurrentlyActive) {
-                    if (getPresenter().getAttendees().get(viewHolder.getAdapterPosition()).isCheckedIn)
-                        background = new ColorDrawable(getResources().getColor(R.color.red_500));
-                    else
-                        background = new ColorDrawable(getResources().getColor(R.color.light_green_500));
-                }
-
-                float newDx = dX;
-                if (newDx >= 200f) {
-                    newDx = 200f;
-                }
-
-                background.setBounds(0, viewHolder.itemView.getTop(),
-                    viewHolder.itemView.getLeft() + (int) newDx, viewHolder.itemView.getBottom());
-                background.draw(c);
-
-                super.onChildDraw(c, recyclerView, viewHolder, newDx, dY, actionState, isCurrentlyActive);
-            }
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
