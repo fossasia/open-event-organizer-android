@@ -167,11 +167,11 @@ public class CreateSessionViewModelTest {
         session.setStartsAt(isoDateNow);
         session.setEndsAt(isoDateThen);
 
-        createSessionViewModel.createSession(TRACK_ID, EVENT_ID);
-
         InOrder inOrder = Mockito.inOrder(progress, error);
         createSessionViewModel.getProgress().observeForever(progress);
         createSessionViewModel.getError().observeForever(error);
+
+        createSessionViewModel.createSession(TRACK_ID, EVENT_ID);
 
         inOrder.verify(progress).onChanged(true);
         inOrder.verify(error).onChanged(ERROR);
