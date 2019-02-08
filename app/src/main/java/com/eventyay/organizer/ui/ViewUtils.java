@@ -109,7 +109,7 @@ public final class ViewUtils {
             AlertDialog alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(activity, R.style.AlertDialog))
                 .setTitle(title)
                 .setMessage(message)
-                .setNeutralButton(buttonTitle, (dialog, which) -> runnable.run())
+                .setPositiveButton(buttonTitle, (dialog, which) -> runnable.run())
                 .create();
 
             alertDialog.show();

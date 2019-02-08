@@ -24,7 +24,7 @@
                 android:padding="@dimen/spacing_normal">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/spacing_zero"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text='@string/auto_check_in_all'

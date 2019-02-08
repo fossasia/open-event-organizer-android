@@ -186,7 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:visibility="gone"
-            android:elevation="1dp"
+            android:elevation="@dimen/spacing_tiniest"
             android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/spacing_normal">
