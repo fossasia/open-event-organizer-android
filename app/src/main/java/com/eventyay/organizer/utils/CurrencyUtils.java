@@ -72,9 +72,12 @@ public final class CurrencyUtils {
         countryCurrencyMap = new TreeMap<>();
         for (Locale locale : Locale.getAvailableLocales()) {
             try {
-                Currency currency = Currency.getInstance(locale);
                 String country = locale.getDisplayCountry();
-                if (currency != null && country != null && !country.equals("")) {
+                Currency currency = null;
+                if (!Utils.isEmpty(country) && !locale.toString().matches(".*\\d+.*")) {
+                    currency = Currency.getInstance(locale);
+                }
+                if (currency != null && !Utils.isEmpty(country)) {
                     countryCurrencyMap.put(country, currency.toString());
                 }
             } catch (IllegalArgumentException e) {
