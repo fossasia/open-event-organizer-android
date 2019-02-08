@@ -78,6 +78,7 @@ public class CreateSessionViewModelTest {
     @Test
     public void shouldRejectWrongDates() {
         Session session = createSessionViewModel.getSession();
+        ContextManager.setSelectedEvent(event);
 
         String isoDate = DateUtils.formatDateToIso(LocalDateTime.now());
         session.setStartsAt(isoDate);
@@ -91,6 +92,7 @@ public class CreateSessionViewModelTest {
     @Test
     public void shouldAcceptCorrectDates() {
         Session session = createSessionViewModel.getSession();
+        ContextManager.setSelectedEvent(event);
 
         when(sessionRepository.createSession(session)).thenReturn(Observable.empty());
 
@@ -130,6 +132,7 @@ public class CreateSessionViewModelTest {
     public void shouldShowSuccessOnCreated() {
         String successString = "Session Created";
         Session session = createSessionViewModel.getSession();
+        ContextManager.setSelectedEvent(event);
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
         String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);
@@ -139,7 +142,6 @@ public class CreateSessionViewModelTest {
         when(sessionRepository.createSession(createSessionViewModel.getSession())).thenReturn(Observable.just(SESSION));
 
         createSessionViewModel.createSession(TRACK_ID, EVENT_ID);
-        ContextManager.setSelectedEvent(event);
 
         InOrder inOrder = Mockito.inOrder(progress, dismiss, success);
 
