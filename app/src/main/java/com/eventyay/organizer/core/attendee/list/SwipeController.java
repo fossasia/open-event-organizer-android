@@ -16,17 +16,15 @@ import com.mikepenz.fastadapter.FastAdapter;
 
 public class SwipeController extends ItemTouchHelper.SimpleCallback {
 
-    private final FastAdapter<Attendee> attendeeFastAdapter;
     private final AttendeesPresenter attendeesPresenter;
     private final Paint paintGreen = new Paint();
     private final Paint paintRed = new Paint();
     private final Bitmap checkinIcon;
     private final Bitmap checkoutIcon;
 
-    public SwipeController(AttendeesPresenter attendeesPresenter, FastAdapter<Attendee> attendeeFastAdapter, Context context) {
+    public SwipeController(AttendeesPresenter attendeesPresenter, Context context) {
         super(0, ItemTouchHelper.RIGHT);
         this.attendeesPresenter = attendeesPresenter;
-        this.attendeeFastAdapter = attendeeFastAdapter;
 
         checkinIcon = Utils.drawableToBitmap(context.getResources().getDrawable(R.drawable.ic_checkin));
         checkoutIcon = Utils.drawableToBitmap(context.getResources().getDrawable(R.drawable.ic_checkout));
