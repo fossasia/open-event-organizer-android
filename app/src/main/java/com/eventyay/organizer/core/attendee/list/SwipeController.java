@@ -2,6 +2,7 @@ package com.eventyay.organizer.core.attendee.list;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -10,24 +11,21 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.eventyay.organizer.R;
-import com.eventyay.organizer.data.attendee.Attendee;
-import com.eventyay.organizer.utils.Utils;
-import com.mikepenz.fastadapter.FastAdapter;
 
 public class SwipeController extends ItemTouchHelper.SimpleCallback {
 
     private final AttendeesPresenter attendeesPresenter;
     private final Paint paintGreen = new Paint();
     private final Paint paintRed = new Paint();
-    private final Bitmap checkinIcon;
-    private final Bitmap checkoutIcon;
+    private final Bitmap closeIcon;
+    private final Bitmap doneIcon;
 
     public SwipeController(AttendeesPresenter attendeesPresenter, Context context) {
         super(0, ItemTouchHelper.RIGHT);
         this.attendeesPresenter = attendeesPresenter;
 
-        checkinIcon = Utils.drawableToBitmap(context.getResources().getDrawable(R.drawable.ic_checkin));
-        checkoutIcon = Utils.drawableToBitmap(context.getResources().getDrawable(R.drawable.ic_checkout));
+        closeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.close);
+        doneIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.done);
 
         paintGreen.setColor(context.getResources().getColor(R.color.light_green_500));
         paintRed.setColor(context.getResources().getColor(R.color.red_500));
@@ -48,11 +46,6 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
-        float newDx = dX;
-        if (newDx >= 200f) {
-            newDx = 200f;
-        }
-
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && isCurrentlyActive) {
             View itemView = viewHolder.itemView;
             float height = (float) itemView.getBottom() - (float) itemView.getTop();
@@ -63,18 +56,18 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
             RectF iconDest;
 
             if (!attendeesPresenter.getAttendees().get(viewHolder.getAdapterPosition()).isCheckedIn) {
-                background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), newDx,
+                background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,
                     (float) itemView.getBottom());
                 paint = paintGreen;
-                icon = checkinIcon;
+                icon = doneIcon;
                 iconDest = new RectF((float) itemView.getLeft() + width,
                     (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width,
                     (float) itemView.getBottom() - width);
             } else {
-                background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), newDx,
+                background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,
                     (float) itemView.getBottom());
                 paint = paintRed;
-                icon = checkoutIcon;
+                icon = closeIcon;
                 iconDest = new RectF((float) itemView.getLeft() + width,
                     (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width,
                     (float) itemView.getBottom() - width);
@@ -83,6 +76,6 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
             canvas.drawRect(background, paint);
             canvas.drawBitmap(icon, null, iconDest, paint);
         }
-        super.onChildDraw(canvas, recyclerView, viewHolder, newDx, dY, actionState, isCurrentlyActive);
+        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
 }
