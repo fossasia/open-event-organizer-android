@@ -827,6 +827,7 @@
                         android:id="@+id/draft_state"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:checked='@{ event.getState.equals("draft") ? true : false }'
                         android:onCheckedChanged='@{ (switch, checked) -> (checked == true) ? event.setState("draft") : event.setState("published") }'
                         android:text="@string/draft" />
 
@@ -834,7 +835,6 @@
                         android:id="@+id/published_state"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:text="@string/published" />
 
                 </RadioGroup>

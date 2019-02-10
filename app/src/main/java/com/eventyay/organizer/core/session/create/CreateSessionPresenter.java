@@ -88,6 +88,7 @@ public class CreateSessionPresenter extends AbstractBasePresenter<CreateSessionV
         event.setId(eventId);
         session.setTrack(track);
         session.setEvent(event);
+        nullifyEmptyFields(session);
 
         sessionRepository
             .updateSession(session)
