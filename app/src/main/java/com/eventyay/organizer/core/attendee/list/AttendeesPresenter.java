@@ -1,5 +1,6 @@
 package com.eventyay.organizer.core.attendee.list;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.VisibleForTesting;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -18,6 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
@@ -29,6 +31,7 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
 
     private final AttendeeRepository attendeeRepository;
     private final DatabaseChangeListener<Attendee> attendeeListener;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final List<Attendee> attendeeList = new ArrayList<>();
 
@@ -108,4 +111,15 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
         this.attendeeList.addAll(attendeeList);
     }
 
+    @SuppressLint("CheckResult")
+    public void toggleCheckInState(int swipedPosition) {
+        Attendee attendee = attendeeList.get(swipedPosition);
+        attendee.setChecking(true);
+        attendee.isCheckedIn = !attendee.isCheckedIn;
+        compositeDisposable.add(
+            attendeeRepository.scheduleToggle(attendee)
+                .subscribe(() -> {
+                    // Nothing to do
+                }, Logger::logError));
+    }
 }
