@@ -21,7 +21,7 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     private final Bitmap doneIcon;
 
     public SwipeController(AttendeesPresenter attendeesPresenter, Context context) {
-        super(0, ItemTouchHelper.RIGHT);
+        super(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
         this.attendeesPresenter = attendeesPresenter;
 
         closeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.close);
@@ -45,7 +45,6 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                             float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && isCurrentlyActive) {
             View itemView = viewHolder.itemView;
             float height = (float) itemView.getBottom() - (float) itemView.getTop();
@@ -56,21 +55,41 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
             RectF iconDest;
 
             if (!attendeesPresenter.getAttendees().get(viewHolder.getAdapterPosition()).isCheckedIn) {
-                background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,
-                    (float) itemView.getBottom());
-                paint = paintGreen;
-                icon = doneIcon;
-                iconDest = new RectF((float) itemView.getLeft() + width,
-                    (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width,
-                    (float) itemView.getBottom() - width);
+                if (dX > 0) {
+                    background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,
+                        (float) itemView.getBottom());
+                    paint = paintGreen;
+                    icon = doneIcon;
+                    iconDest = new RectF((float) itemView.getLeft() + width,
+                        (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width,
+                        (float) itemView.getBottom() - width);
+                } else {
+                    background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),
+                        (float) itemView.getRight(), (float) itemView.getBottom());
+                    paint = paintGreen;
+                    icon = doneIcon;
+                    iconDest = new RectF((float) itemView.getRight() - 2 * width,
+                        (float) itemView.getTop() + width, (float) itemView.getRight() - width,
+                        (float) itemView.getBottom() - width);
+                }
             } else {
-                background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,
-                    (float) itemView.getBottom());
-                paint = paintRed;
-                icon = closeIcon;
-                iconDest = new RectF((float) itemView.getLeft() + width,
-                    (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width,
-                    (float) itemView.getBottom() - width);
+                if (dX > 0) {
+                    background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,
+                        (float) itemView.getBottom());
+                    paint = paintRed;
+                    icon = closeIcon;
+                    iconDest = new RectF((float) itemView.getLeft() + width,
+                        (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width,
+                        (float) itemView.getBottom() - width);
+                } else {
+                    background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),
+                        (float) itemView.getRight(), (float) itemView.getBottom());
+                    paint = paintRed;
+                    icon = closeIcon;
+                    iconDest = new RectF((float) itemView.getRight() - 2 * width,
+                        (float) itemView.getTop() + width, (float) itemView.getRight() - width,
+                        (float) itemView.getBottom() - width);
+                }
             }
 
             canvas.drawRect(background, paint);
