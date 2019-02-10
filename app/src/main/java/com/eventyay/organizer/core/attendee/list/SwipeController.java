@@ -37,6 +37,18 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     }
 
     @Override
+    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        int dragFlags = 0;
+        makeMovementFlags(dragFlags, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+
+        if (attendeesPresenter.getAttendees().get(viewHolder.getAdapterPosition()).isCheckedIn) {
+            return makeMovementFlags(dragFlags, ItemTouchHelper.LEFT);
+        } else {
+            return makeMovementFlags(dragFlags, ItemTouchHelper.RIGHT);
+        }
+    }
+
+    @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         int swipedPosition = viewHolder.getAdapterPosition();
         attendeesPresenter.toggleCheckInState(swipedPosition);
