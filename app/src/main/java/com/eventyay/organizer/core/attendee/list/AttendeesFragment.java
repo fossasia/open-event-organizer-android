@@ -12,6 +12,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -260,6 +261,11 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
+
+        SwipeController swipeController = new SwipeController(getPresenter(), context);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
         recyclerView.addItemDecoration(decoration);
