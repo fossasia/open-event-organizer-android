@@ -1,4 +1,4 @@
-package com.eventyay.organizer.data.event;
+package com.eventyay.organizer.data.image;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;

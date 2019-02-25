@@ -1,6 +1,10 @@
 package com.eventyay.organizer.core.organizer.detail;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,19 +16,30 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordFragment;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoFragment;
 import com.eventyay.organizer.data.ContextUtils;
+import com.eventyay.organizer.data.image.ImageData;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.databinding.OrganizerDetailFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.Utils;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import timber.log.Timber;
+
+import static android.app.Activity.RESULT_OK;
 
 public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresenter> implements OrganizerDetailView {
 
@@ -36,6 +51,8 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
     @Inject
     Lazy<OrganizerDetailPresenter> presenterProvider;
     public static final String INFO_FRAGMENT_TAG = "info";
+
+    private static final int IMAGE_CHOOSER_REQUEST_CODE = 3;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +68,13 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
         }
 
         setHasOptionsMenu(true);
+
+        binding.detail.profilePicture.setOnClickListener(view -> {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
+        });
 
         binding.detail.resendVerificationMail.setOnClickListener(view -> {
             getPresenter().resendVerificationMail();
@@ -97,6 +121,27 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            try {
+                InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
+                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
+                ImageData imageData = new ImageData(encodedImage);
+                getPresenter().uploadImage(imageData);
+                Glide.with(getContext()).load(bitmap)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(binding.detail.profilePicture);
+            } catch (FileNotFoundException e) {
+                Timber.e(e, "File not found");
+                Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void openChangePasswordFragment() {

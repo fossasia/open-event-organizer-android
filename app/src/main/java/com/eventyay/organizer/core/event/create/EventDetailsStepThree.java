@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
-import com.eventyay.organizer.data.event.ImageData;
-import com.eventyay.organizer.data.event.ImageUrl;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.databinding.EventDetailsStepThreeBinding;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
