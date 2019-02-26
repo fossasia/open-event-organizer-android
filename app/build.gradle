@@ -223,6 +223,8 @@ dependencies {
     //Rich text editor
     implementation "jp.wasabeef:richeditor-android:1.2.2"
 
+    implementation "com.github.duanhong169:colorpicker:${versions.colorpicker}"
+
     // Chrome Custom Tabs
     playStoreImplementation "com.android.support:customtabs:${versions.chromeCustomTabs}"
 

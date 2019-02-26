@@ -1,13 +1,12 @@
 package com.eventyay.organizer.core.track.create;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -18,6 +17,7 @@ import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
 import dagger.Lazy;
+import top.defaults.colorpicker.ColorPickerPopup;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
@@ -28,7 +28,6 @@ public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> impl
 
     private TrackCreateLayoutBinding binding;
     private Validator validator;
-    private ColorPicker colorPickerDialog;
 
     public static CreateTrackFragment newInstance() {
         return new CreateTrackFragment();
@@ -65,19 +64,25 @@ public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> impl
     }
 
     private void setColorPicker() {
-        if (colorPickerDialog == null)
-            colorPickerDialog = new ColorPicker(getActivity(), getPresenter().getRed(), getPresenter().getGreen(), getPresenter().getBlue());
-
         binding.form.colorPicker.setBackgroundColor(getPresenter().getColorRGB());
 
         binding.form.colorPicker.setOnClickListener(view -> {
-            colorPickerDialog.show();
-        });
-
-        colorPickerDialog.setCallback(color -> {
-            binding.form.trackColor.setText(String.format("#%06X", 0xFFFFFF & color));
-            binding.form.colorPicker.setBackgroundColor(color);
-            colorPickerDialog.dismiss();
+            new ColorPickerPopup.Builder(getContext())
+                .initialColor(getPresenter().getColorRGB()) // Set initial color
+                .enableBrightness(true) // Enable brightness slider or not
+                .enableAlpha(false) // Enable alpha slider or not
+                .okTitle("Choose")
+                .cancelTitle("Cancel")
+                .showIndicator(true)
+                .showValue(true)
+                .build()
+                .show(getView(), new ColorPickerPopup.ColorPickerObserver() {
+                    @Override
+                    public void onColorPicked(int color) {
+                        binding.form.trackColor.setText(String.format("#%06X", 0xFFFFFF & color));
+                        binding.form.colorPicker.setBackgroundColor(color);
+                    }
+                });
         });
     }
 
