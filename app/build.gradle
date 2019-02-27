@@ -108,6 +108,18 @@ configurations.all { config ->
     }
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "${versions.support_lib}"
+            }
+        }
+    }
+}
+
+
 check {
     abortOnError false
     findbugs { skip true }
@@ -118,7 +130,6 @@ dependencies {
 
     // Support Lib
     implementation 'com.android.support:multidex:1.0.3'
-    //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:${versions.support_lib}"
     implementation "com.android.support:cardview-v7:${versions.support_lib}"
     implementation "com.android.support:recyclerview-v7:${versions.support_lib}"
