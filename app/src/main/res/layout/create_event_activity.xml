@@ -43,7 +43,6 @@
                 android:background="@color/color_accent"
                 android:text="@string/previous"
                 android:textAllCaps="true"
-                android:visibility="gone"
                 android:layout_gravity="bottom|start"
                 android:textColor="@android:color/white" />
 
@@ -55,6 +54,8 @@
                 android:text="@string/next"
                 android:textAllCaps="true"
                 android:layout_weight="0.5"
+                android:visibility="gone"
+
                 android:layout_gravity="bottom"
                 android:textColor="@android:color/white" />
 
@@ -66,7 +67,6 @@
                 android:text="@string/create"
                 android:textAllCaps="true"
                 android:layout_weight="0.5"
-                android:visibility="gone"
                 android:layout_gravity="bottom"
                 android:textColor="@android:color/white" />
 

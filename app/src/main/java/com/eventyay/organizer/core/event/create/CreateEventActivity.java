@@ -2,6 +2,7 @@ package com.eventyay.organizer.core.event.create;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Button;
 
 import com.badoualy.stepperindicator.StepperIndicator;
 import com.eventyay.organizer.R;
+import com.eventyay.organizer.core.event.dashboard.EventDashboardPresenter;
 
 import javax.inject.Inject;
 
@@ -113,6 +115,9 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
             int currentPosition = pager.getCurrentItem();
             if (currentPosition > 0 && currentPosition <= 2)
                 pager.setCurrentItem(currentPosition - 1);
+        });
+        btnSubmit.setOnClickListener(v -> {
+            startActivity(new Intent(CreateEventActivity.this, EventDashboardPresenter.class));
         });
     }
 
