@@ -24,11 +24,13 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/profile_picture"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/spacing_medium"
                 android:contentDescription="@string/profile_picture"
+                android:scaleType="centerCrop"
                 app:circleImageUrl="@{ user.avatarUrl }"
                 app:placeholder="@{ @drawable/ic_account_circle }" />
 

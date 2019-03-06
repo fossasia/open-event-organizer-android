@@ -4,6 +4,7 @@ import com.eventyay.organizer.common.mvp.presenter.AbstractBasePresenter;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.auth.model.ResendVerificationMail;
+import com.eventyay.organizer.data.image.ImageData;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserRepositoryImpl;
 import com.eventyay.organizer.utils.ErrorUtils;
@@ -59,6 +60,32 @@ public class OrganizerDetailPresenter extends AbstractBasePresenter<OrganizerDet
                         getView().showError(ErrorUtils.getErrorDetails(throwable).toString());
                         Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
                     }));
+    }
+
+    //Method for storing user uploaded image in temporary location
+    public void uploadImage(ImageData imageData) {
+        compositeDisposable.add(
+            userRepository
+                .uploadOrganizerImage(imageData)
+                .doOnSubscribe(disposable -> getView().showProgress(true))
+                .doFinally(() -> getView().showProgress(false))
+                .subscribe(uploadedImage -> {
+                    getView().showSnackbar("Image Uploaded Successfully");
+                    Timber.e(uploadedImage.getUrl());
+                    user.setAvatarUrl(uploadedImage.getUrl());
+                    updateOrganizer();
+                }, Logger::logError));
+    }
+
+    public void updateOrganizer() {
+        compositeDisposable.add(
+            userRepository.updateUser(user)
+                .doOnSubscribe(disposable -> getView().showProgress(true))
+                .doFinally(() -> getView().showProgress(false))
+                .subscribe(updatedUser -> {
+                    getView().showSnackbar("User Updated");
+                    loadOrganizer(false);
+                }, throwable -> getView().showError(ErrorUtils.getMessage(throwable).toString())));
     }
 
     private Observable<User> getOrganizerSource(boolean forceReload) {
