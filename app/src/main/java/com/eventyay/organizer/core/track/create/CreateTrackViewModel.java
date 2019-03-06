@@ -6,7 +6,6 @@ import android.graphics.Color;
 
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
-import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.tracks.TrackRepository;
