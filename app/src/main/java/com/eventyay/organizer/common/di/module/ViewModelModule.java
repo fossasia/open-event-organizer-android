@@ -28,11 +28,7 @@ import com.eventyay.organizer.core.speakerscall.create.CreateSpeakersCallViewMod
 import com.eventyay.organizer.core.sponsor.create.CreateSponsorViewModel;
 import com.eventyay.organizer.core.ticket.create.CreateTicketViewModel;
 import com.eventyay.organizer.core.ticket.detail.TicketDetailViewModel;
-<<<<<<< Updated upstream
-=======
-import com.eventyay.organizer.core.track.create.CreateTrackViewModel;
 import com.eventyay.organizer.core.track.update.UpdateTrackViewModel;
->>>>>>> Stashed changes
 
 import dagger.Binds;
 import dagger.Module;
