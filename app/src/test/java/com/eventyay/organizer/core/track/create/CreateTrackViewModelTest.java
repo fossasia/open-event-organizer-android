@@ -4,7 +4,6 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.lifecycle.Observer;
 
 import com.eventyay.organizer.common.ContextManager;
-import com.eventyay.organizer.core.track.create.CreateTrackViewModel;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.tracks.TrackRepository;
