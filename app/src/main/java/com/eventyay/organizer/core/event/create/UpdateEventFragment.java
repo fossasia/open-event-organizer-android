@@ -190,7 +190,9 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_menu_done:
-                createEventViewModel.updateEvent();
+                if (validator.validate()) {
+                    createEventViewModel.updateEvent();
+                }
                 break;
             default:
         }
