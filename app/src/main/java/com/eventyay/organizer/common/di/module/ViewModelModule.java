@@ -28,6 +28,7 @@ import com.eventyay.organizer.core.speakerscall.create.CreateSpeakersCallViewMod
 import com.eventyay.organizer.core.sponsor.create.CreateSponsorViewModel;
 import com.eventyay.organizer.core.ticket.create.CreateTicketViewModel;
 import com.eventyay.organizer.core.ticket.detail.TicketDetailViewModel;
+import com.eventyay.organizer.core.track.create.CreateTrackViewModel;
 import com.eventyay.organizer.core.track.update.UpdateTrackViewModel;
 
 import dagger.Binds;
@@ -111,6 +112,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateSponsorViewModel.class)
     public abstract ViewModel bindCreateSponsorViewModel(CreateSponsorViewModel sponsorViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateTrackViewModel.class)
+    public abstract ViewModel bindCreateTrackViewModel(CreateTrackViewModel createTrackViewModel);
 
     @Binds
     @IntoMap
