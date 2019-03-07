@@ -1,4 +1,4 @@
-package com.eventyay.organizer.data.event;
+package com.eventyay.organizer.data.image;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.Repository;
 import com.eventyay.organizer.data.auth.AuthHolder;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUploadApi;
+import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.data.ticket.Ticket;
 
 import java.util.List;
