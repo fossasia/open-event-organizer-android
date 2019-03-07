@@ -12,6 +12,7 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.badoualy.stepperindicator.StepperIndicator;
 import com.eventyay.organizer.R;
@@ -102,6 +103,7 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
         btnNext.setOnClickListener(v -> {
             int currentPosition = pager.getCurrentItem();
             if (currentPosition == 0 && !createEventViewModel.verify()) {
+                Toast.makeText(this, createEventViewModel.getErrorMessage().getValue() , Toast.LENGTH_SHORT).show();
                 return;
             }
 
