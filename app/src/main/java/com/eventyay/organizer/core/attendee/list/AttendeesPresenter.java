@@ -68,7 +68,7 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
             .compose(progressiveErroneousRefresh(getView(), forceReload))
             .toSortedList()
             .compose(emptiable(getView(), attendeeList))
-            .doFinally(() -> getView().showScanButton(!attendeeList.isEmpty()))
+            .doFinally(() -> getView().showScanButton(true))
             .subscribe(Logger::logSuccess, Logger::logError);
     }
 
