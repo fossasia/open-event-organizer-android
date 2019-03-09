@@ -64,6 +64,7 @@
                         android:text='@{ "Joined: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, user.createdAt) }' />
 
                     <TextView
+                        android:id="@+id/organizer_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableStart="@{ @drawable/ic_email }"
@@ -134,6 +135,7 @@
                         android:textColor="?android:textColorSecondary" />
 
                     <TextView
+                        android:id="@+id/organizer_contact"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableStart="@{ @drawable/ic_contact }"
@@ -145,6 +147,7 @@
                         android:visibility="@{user.contact == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
+                        android:id="@+id/organizer_facebook"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableStart="@{ @drawable/ic_facebook }"
@@ -156,6 +159,7 @@
                         android:visibility="@{user.facebookUrl == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
+                        android:id="@+id/organizer_twitter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableStart="@{ @drawable/ic_twitter }"
@@ -167,6 +171,7 @@
                         android:visibility="@{user.twitterUrl == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
+                        android:id="@+id/organizer_google_plus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableStart="@{ @drawable/ic_google_plus }"
@@ -178,6 +183,7 @@
                         android:visibility="@{user.googlePlusUrl == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
+                        android:id="@+id/organizer_instagram"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableStart="@{ @drawable/ic_instagram }"
