@@ -7,7 +7,7 @@ import com.eventyay.organizer.common.mvp.view.Refreshable;
 import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.data.event.Event;
 
-public interface AboutEventVew extends Progressive, Erroneous, Refreshable, ItemResult<Event> {
+public interface AboutEventView extends Progressive, Erroneous, Refreshable, ItemResult<Event> {
 
     void setEventId(long id);
 

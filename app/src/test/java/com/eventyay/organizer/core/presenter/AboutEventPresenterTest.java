@@ -1,7 +1,7 @@
 package com.eventyay.organizer.core.presenter;
 
 import com.eventyay.organizer.core.event.about.AboutEventPresenter;
-import com.eventyay.organizer.core.event.about.AboutEventVew;
+import com.eventyay.organizer.core.event.about.AboutEventView;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.data.event.Event;
@@ -35,7 +35,7 @@ import static org.mockito.Mockito.when;
 public class AboutEventPresenterTest {
 
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Mock private AboutEventVew aboutEventVew;
+    @Mock private AboutEventView aboutEventVew;
     @Mock private EventRepository eventRepository;
     @Mock private CopyrightRepository copyrightRepository;
     @Mock private DatabaseChangeListener<Copyright> copyrightChangeListener;

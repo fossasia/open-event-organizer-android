@@ -24,7 +24,7 @@ import dagger.Lazy;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-public class UpdateCopyrightFragment extends BaseFragment<UpdateCopyrightPresenter> implements IUpdateCopyrightView {
+public class UpdateCopyrightFragment extends BaseFragment<UpdateCopyrightPresenter> implements UpdateCopyrightView {
 
     private static final String EVENT_ID = "id";
 
