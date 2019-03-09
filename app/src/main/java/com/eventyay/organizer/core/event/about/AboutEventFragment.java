@@ -34,7 +34,7 @@ import dagger.Lazy;
 import io.reactivex.disposables.CompositeDisposable;
 
 @SuppressWarnings("PMD.TooManyMethods")
-public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implements AboutEventVew {
+public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implements AboutEventView {
 
     private AboutEventFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;

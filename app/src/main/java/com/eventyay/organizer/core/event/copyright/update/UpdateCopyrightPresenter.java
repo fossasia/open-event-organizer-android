@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
 import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneous;
 
-public class UpdateCopyrightPresenter extends AbstractBasePresenter<IUpdateCopyrightView> {
+public class UpdateCopyrightPresenter extends AbstractBasePresenter<UpdateCopyrightView> {
 
     private final CopyrightRepository copyrightRepository;
     private Copyright copyright;
