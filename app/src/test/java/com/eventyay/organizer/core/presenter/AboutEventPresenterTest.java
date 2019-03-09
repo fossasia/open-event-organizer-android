@@ -35,7 +35,7 @@ import static org.mockito.Mockito.when;
 public class AboutEventPresenterTest {
 
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Mock private AboutEventView aboutEventVew;
+    @Mock private AboutEventView aboutEventView;
     @Mock private EventRepository eventRepository;
     @Mock private CopyrightRepository copyrightRepository;
     @Mock private DatabaseChangeListener<Copyright> copyrightChangeListener;
@@ -51,7 +51,7 @@ public class AboutEventPresenterTest {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
         aboutEventPresenter = new AboutEventPresenter(eventRepository, copyrightRepository, copyrightChangeListener);
-        aboutEventPresenter.attach(ID, aboutEventVew);
+        aboutEventPresenter.attach(ID, aboutEventView);
     }
 
     @After
@@ -82,28 +82,28 @@ public class AboutEventPresenterTest {
     public void shouldLoadEventSuccessfully() {
         when(eventRepository.getEvent(ID, false)).thenReturn(Observable.just(EVENT));
 
-        InOrder inOrder = Mockito.inOrder(eventRepository, aboutEventVew);
+        InOrder inOrder = Mockito.inOrder(eventRepository, aboutEventView);
 
         aboutEventPresenter.loadEvent(false);
 
         inOrder.verify(eventRepository).getEvent(ID, false);
-        inOrder.verify(aboutEventVew).showProgress(true);
-        inOrder.verify(aboutEventVew).showResult(EVENT);
-        inOrder.verify(aboutEventVew).showProgress(false);
+        inOrder.verify(aboutEventView).showProgress(true);
+        inOrder.verify(aboutEventView).showResult(EVENT);
+        inOrder.verify(aboutEventView).showProgress(false);
     }
 
     @Test
     public void shouldLoadCopyrightSuccessfully() {
         when(copyrightRepository.getCopyright(ID, false)).thenReturn(Observable.just(COPYRIGHT));
 
-        InOrder inOrder = Mockito.inOrder(copyrightRepository, aboutEventVew);
+        InOrder inOrder = Mockito.inOrder(copyrightRepository, aboutEventView);
 
         aboutEventPresenter.loadCopyright(false);
 
         inOrder.verify(copyrightRepository).getCopyright(ID, false);
-        inOrder.verify(aboutEventVew).showProgress(true);
-        inOrder.verify(aboutEventVew).showCopyright(COPYRIGHT);
-        inOrder.verify(aboutEventVew).showProgress(false);
+        inOrder.verify(aboutEventView).showProgress(true);
+        inOrder.verify(aboutEventView).showCopyright(COPYRIGHT);
+        inOrder.verify(aboutEventView).showProgress(false);
     }
 
     @Test
@@ -112,7 +112,7 @@ public class AboutEventPresenterTest {
 
         aboutEventPresenter.loadCopyright(false);
 
-        verify(aboutEventVew).changeCopyrightMenuItem(false);
+        verify(aboutEventView).changeCopyrightMenuItem(false);
     }
 
     @Test
@@ -121,37 +121,37 @@ public class AboutEventPresenterTest {
 
         aboutEventPresenter.loadEvent(false);
 
-        verify(aboutEventVew).showError("Error");
+        verify(aboutEventView).showError("Error");
     }
 
     @Test
     public void shouldRefreshEventSuccessfully() {
         when(eventRepository.getEvent(ID, true)).thenReturn(Observable.just(EVENT));
 
-        InOrder inOrder = Mockito.inOrder(eventRepository, aboutEventVew);
+        InOrder inOrder = Mockito.inOrder(eventRepository, aboutEventView);
 
         aboutEventPresenter.loadEvent(true);
 
         inOrder.verify(eventRepository).getEvent(ID, true);
-        inOrder.verify(aboutEventVew).showProgress(true);
-        inOrder.verify(aboutEventVew).showResult(EVENT);
-        inOrder.verify(aboutEventVew).onRefreshComplete(true);
-        inOrder.verify(aboutEventVew).showProgress(false);
+        inOrder.verify(aboutEventView).showProgress(true);
+        inOrder.verify(aboutEventView).showResult(EVENT);
+        inOrder.verify(aboutEventView).onRefreshComplete(true);
+        inOrder.verify(aboutEventView).showProgress(false);
     }
 
     @Test
     public void shouldRefreshCopyrightSuccessfully() {
         when(copyrightRepository.getCopyright(ID, true)).thenReturn(Observable.just(COPYRIGHT));
 
-        InOrder inOrder = Mockito.inOrder(copyrightRepository, aboutEventVew);
+        InOrder inOrder = Mockito.inOrder(copyrightRepository, aboutEventView);
 
         aboutEventPresenter.loadCopyright(true);
 
         inOrder.verify(copyrightRepository).getCopyright(ID, true);
-        inOrder.verify(aboutEventVew).showProgress(true);
-        inOrder.verify(aboutEventVew).onRefreshComplete(true);
-        inOrder.verify(aboutEventVew).showCopyright(COPYRIGHT);
-        inOrder.verify(aboutEventVew).showProgress(false);
+        inOrder.verify(aboutEventView).showProgress(true);
+        inOrder.verify(aboutEventView).onRefreshComplete(true);
+        inOrder.verify(aboutEventView).showCopyright(COPYRIGHT);
+        inOrder.verify(aboutEventView).showProgress(false);
     }
 
     @Test
@@ -177,13 +177,13 @@ public class AboutEventPresenterTest {
         when(copyrightRepository.deleteCopyright(ID)).thenReturn(Completable.complete());
         when(copyrightRepository.getCopyright(ID, true)).thenReturn(Observable.just(COPYRIGHT));
 
-        InOrder inOrder = Mockito.inOrder(copyrightRepository, aboutEventVew);
+        InOrder inOrder = Mockito.inOrder(copyrightRepository, aboutEventView);
 
         aboutEventPresenter.deleteCopyright(ID);
 
         inOrder.verify(copyrightRepository).deleteCopyright(ID);
-        inOrder.verify(aboutEventVew).showProgress(true);
-        inOrder.verify(aboutEventVew).showCopyrightDeleted("Copyright Deleted");
-        inOrder.verify(aboutEventVew, times(2)).showProgress(false); // delete copyright operation and load copyright operation
+        inOrder.verify(aboutEventView).showProgress(true);
+        inOrder.verify(aboutEventView).showCopyrightDeleted("Copyright Deleted");
+        inOrder.verify(aboutEventView, times(2)).showProgress(false); // delete copyright operation and load copyright operation
     }
 }
