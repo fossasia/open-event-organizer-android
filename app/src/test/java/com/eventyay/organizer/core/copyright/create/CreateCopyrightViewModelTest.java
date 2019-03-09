@@ -76,7 +76,6 @@ public class CreateCopyrightViewModelTest {
 
     @Test
     public void shouldShowErrorOnInvalidYear() {
-
         Copyright copyright = createCopyrightViewModel.getCopyright();
         copyright.setYear("25");
 
@@ -91,7 +90,6 @@ public class CreateCopyrightViewModelTest {
 
     @Test
     public void shouldAcceptCorrectYear() {
-
         ContextManager.setSelectedEvent(getEvent());
 
         Copyright copyright = createCopyrightViewModel.getCopyright();
@@ -112,7 +110,6 @@ public class CreateCopyrightViewModelTest {
 
     @Test
     public void shouldShowErrorOnFailure() {
-
         ContextManager.setSelectedEvent(getEvent());
 
         Copyright copyright = createCopyrightViewModel.getCopyright();
@@ -137,7 +134,6 @@ public class CreateCopyrightViewModelTest {
 
     @Test
     public void shouldShowSuccessOnCreated() {
-
         String successString = "Copyright Created";
 
         ContextManager.setSelectedEvent(getEvent());
