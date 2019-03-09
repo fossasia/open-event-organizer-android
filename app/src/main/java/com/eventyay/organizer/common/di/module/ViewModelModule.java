@@ -10,6 +10,7 @@ import com.eventyay.organizer.core.auth.login.LoginViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
 import com.eventyay.organizer.core.auth.signup.SignUpViewModel;
 import com.eventyay.organizer.core.auth.start.StartViewModel;
+import com.eventyay.organizer.core.event.copyright.CreateCopyrightViewModel;
 import com.eventyay.organizer.core.event.create.CreateEventViewModel;
 import com.eventyay.organizer.core.event.list.EventsViewModel;
 import com.eventyay.organizer.core.faq.create.CreateFaqViewModel;
@@ -103,6 +104,11 @@ public abstract class ViewModelModule {
     @ViewModelKey(CreateEventViewModel.class)
     public abstract ViewModel bindCreateEventViewModel(CreateEventViewModel eventViewModel);
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateCopyrightViewModel.class)
+    public abstract ViewModel bindCreateCopyrightViewModel(CreateCopyrightViewModel createCopyrightViewModel);
+    
     @Binds
     @IntoMap
     @ViewModelKey(CreateFaqViewModel.class)
