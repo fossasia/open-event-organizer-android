@@ -8,9 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -57,16 +56,11 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
         updateOrganizerInfoViewModel = ViewModelProviders.of(this, viewModelFactory).get(UpdateOrganizerInfoViewModel.class);
         validator = new Validator(binding.form);
 
-        AppCompatActivity activity = ((AppCompatActivity) getActivity());
-        activity.setSupportActionBar(binding.toolbar);
-
-        ActionBar actionBar = activity.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        setHasOptionsMenu(true);
+        Toolbar toolbar = binding.toolbar;
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_nav_back));
+        toolbar.setNavigationOnClickListener(view -> {
+            backPressed();
+        });
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
@@ -156,6 +150,10 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
 
     @Override
     public void backPressed() {
+        showSaveAlertDialog();
+    }
+
+    private void showSaveAlertDialog() {
         if (saveAlertDialog == null) {
             saveAlertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialog))
                 .setMessage(getString(R.string.save_changes))
