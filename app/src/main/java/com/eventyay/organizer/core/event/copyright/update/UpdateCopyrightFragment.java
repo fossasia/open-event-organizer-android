@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
-import com.eventyay.organizer.core.event.copyright.CreateCopyrightViewModel;
 import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.databinding.CopyrightCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
@@ -23,7 +22,6 @@ import com.eventyay.organizer.ui.ViewUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
