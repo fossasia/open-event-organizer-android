@@ -109,7 +109,7 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateCopyrightViewModel.class)
     public abstract ViewModel bindCreateCopyrightViewModel(CreateCopyrightViewModel createCopyrightViewModel);
-
+    
     @Binds
     @IntoMap
     @ViewModelKey(UpdateCopyrightViewModel.class)
