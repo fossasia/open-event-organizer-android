@@ -88,7 +88,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     }
 
     private Observable<Sponsor> getSponsorSource(boolean forceReload) {
-        if (!forceReload && !sponsors.isEmpty() && isRotated())
+        if (forceReload && !sponsors.isEmpty() && isRotated())
             return Observable.fromIterable(sponsors);
         else
             return sponsorRepository.getSponsors(getId(), forceReload);
