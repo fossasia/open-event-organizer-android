@@ -18,7 +18,7 @@ import io.reactivex.disposables.CompositeDisposable;
 public class UpdateCopyrightViewModel extends ViewModel {
 
     private final CopyrightRepository copyrightRepository;
-    private Copyright copyright;
+    private Copyright copyright = new Copyright();
     private static final int YEAR_LENGTH = 4;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
