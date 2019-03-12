@@ -108,6 +108,17 @@ configurations.all { config ->
     }
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "${versions.support_lib}"
+            }
+        }
+    }
+}
+
 check {
     abortOnError false
     findbugs { skip true }
