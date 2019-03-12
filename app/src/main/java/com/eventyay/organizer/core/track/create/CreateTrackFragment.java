@@ -1,13 +1,15 @@
 package com.eventyay.organizer.core.track.create;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import com.eventyay.organizer.data.tracks.Track;
+import top.defaults.colorpicker.ColorPickerPopup;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.databinding.TrackCreateLayoutBinding;
@@ -16,18 +18,17 @@ import com.eventyay.organizer.ui.ViewUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
-import top.defaults.colorpicker.ColorPickerPopup;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> implements CreateTrackView {
+public class CreateTrackFragment extends BaseFragment implements CreateTrackView {
 
     @Inject
-    Lazy<CreateTrackPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
     private TrackCreateLayoutBinding binding;
     private Validator validator;
+    private CreateTrackViewModel createTrackViewModel;
 
     public static CreateTrackFragment newInstance() {
         return new CreateTrackFragment();
@@ -38,6 +39,7 @@ public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> impl
         binding =  DataBindingUtil.inflate(inflater, R.layout.track_create_layout, container, false);
         binding.form.trackName.requestFocus();
         ViewUtils.showKeyboard(getContext());
+        createTrackViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateTrackViewModel.class);
         validator = new Validator(binding.form);
 
         binding.submit.setOnClickListener(view -> {
@@ -46,7 +48,7 @@ public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> impl
             binding.form.trackColor.setText(binding.form.trackColor.getText().toString().trim());
 
             if (validator.validate())
-                getPresenter().createTrack();
+                createTrackViewModel.createTrack();
 
             ViewUtils.hideKeyboard(binding.getRoot());
         });
@@ -57,18 +59,21 @@ public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> impl
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        getPresenter().start();
+        createTrackViewModel.getProgress().observe(this, this::showProgress);
+        createTrackViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
+        createTrackViewModel.getSuccess().observe(this, this::onSuccess);
+        createTrackViewModel.getError().observe(this, this::showError);
+        createTrackViewModel.getTrackLiveData().observe(this, this::setTrack);
+        binding.setTrack(createTrackViewModel.getTrack());
         setColorPicker();
-        binding.setTrack(getPresenter().getTrack());
     }
 
     private void setColorPicker() {
-        binding.form.colorPicker.setBackgroundColor(getPresenter().getColorRGB());
+        binding.form.colorPicker.setBackgroundColor(createTrackViewModel.getColorRGB());
 
         binding.form.colorPicker.setOnClickListener(view -> {
             new ColorPickerPopup.Builder(getContext())
-                .initialColor(getPresenter().getColorRGB()) // Set initial color
+                .initialColor(createTrackViewModel.getColorRGB()) // Set initial color
                 .enableBrightness(true) // Enable brightness slider or not
                 .enableAlpha(false) // Enable alpha slider or not
                 .okTitle("Choose")
@@ -107,8 +112,8 @@ public class CreateTrackFragment extends BaseFragment<CreateTrackPresenter> impl
     }
 
     @Override
-    protected Lazy<CreateTrackPresenter> getPresenterProvider() {
-        return presenterProvider;
+    public void setTrack(Track track) {
+        binding.setTrack(track);
     }
 
     @Override

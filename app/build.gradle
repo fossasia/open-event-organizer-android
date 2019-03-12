@@ -223,8 +223,8 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 
-    //colorpicker
-    implementation 'com.pes.materialcolorpicker:library:1.2.5'
+    //Color Picker
+    implementation "com.github.duanhong169:colorpicker:${versions.colorpicker}"
 
     //stepper
     implementation 'com.github.badoualy:stepper-indicator:1.0.7'
