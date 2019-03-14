@@ -90,7 +90,6 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
         barcodeDetector = createBarcodeDetector();
 
         requestCameraPermission();
-
         setCameraSource();
 
         super.onCreate(savedInstanceState);
