@@ -88,12 +88,10 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
 
         barcodeEmitter = PublishSubject.create();
         barcodeDetector = createBarcodeDetector();
-        cameraSource = new CameraSource
-            .Builder(this, barcodeDetector)
-            .setRequestedPreviewSize(640, 480)
-            .setRequestedFps(15.0f)
-            .setAutoFocusEnabled(true)
-            .build();
+
+        requestCameraPermission();
+
+        setCameraSource();
 
         super.onCreate(savedInstanceState);
     }
@@ -144,8 +142,21 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
         // If request is cancelled, the result arrays are empty.
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             getPresenter().cameraPermissionGranted(true);
+            //setCameraSource();
         } else {
             getPresenter().cameraPermissionGranted(false);
+        }
+    }
+
+    private void setCameraSource() {
+
+        if (hasCameraPermission()) {
+            cameraSource = new CameraSource
+                .Builder(this, barcodeDetector)
+                .setRequestedPreviewSize(640, 480)
+                .setRequestedFps(15.0f)
+                .setAutoFocusEnabled(true)
+                .build();
         }
     }
 
@@ -199,6 +210,8 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
 
     @Override
     public void startScan() {
+        setCameraSource();
+
         compositeDisposable.add(Completable.fromAction(() -> {
             try {
                 startCameraSource();
