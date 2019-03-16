@@ -1,8 +1,8 @@
 package com.eventyay.organizer.data;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
 
 import io.reactivex.Completable;
 

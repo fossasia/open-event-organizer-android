@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.attendee.qrscan;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.google.android.gms.vision.barcode.Barcode;
 

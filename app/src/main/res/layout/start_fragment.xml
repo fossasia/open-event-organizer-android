@@ -9,12 +9,12 @@
             type="com.eventyay.organizer.data.auth.model.EmailRequest"/>
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.eventyay.organizer.core.auth.login.LoginFragment">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -47,7 +47,7 @@
                     android:layout_marginBottom="@dimen/spacing_small"
                     android:text="@string/get_started_hint"/>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/email_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                     android:paddingTop="@dimen/spacing_normal"
                     android:transitionName="@string/email">
 
-                    <android.support.v7.widget.AppCompatAutoCompleteTextView
+                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/email_dropdown"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -66,14 +66,14 @@
                         app:validateType='@{"email"}'
                         app:go="@{() -> btnStart.performClick() }"
                         />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <include
                     android:id="@+id/url"
                     layout="@layout/auth_url_container"
                     app:action="@{ () -> btnStart.performClick() }"/>
 
-                <android.support.v7.widget.AppCompatButton
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnStart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
 
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <FrameLayout
             android:id="@+id/progressBar"
@@ -97,6 +97,6 @@
 
         </FrameLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

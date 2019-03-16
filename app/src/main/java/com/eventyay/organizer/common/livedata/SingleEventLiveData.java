@@ -1,10 +1,10 @@
 package com.eventyay.organizer.common.livedata;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-import android.support.annotation.MainThread;
-import android.support.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.annotation.MainThread;
+import androidx.annotation.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -17,7 +17,7 @@ public class SingleEventLiveData<T> extends MutableLiveData<T> {
     private final AtomicBoolean pending = new AtomicBoolean(false);
 
     @MainThread
-    public void observe(LifecycleOwner owner, final Observer<T> observer) {
+    public void observeSingle(LifecycleOwner owner, final Observer<T> observer) {
 
         if (hasActiveObservers()) {
             throw new IllegalStateException("Only one observer at a time may subscribe to a SingleEventLiveData");

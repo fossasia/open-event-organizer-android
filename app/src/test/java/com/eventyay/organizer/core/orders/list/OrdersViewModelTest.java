@@ -1,9 +1,8 @@
 package com.eventyay.organizer.core.orders.list;
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.lifecycle.Observer;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.Observer;
 
-import com.eventyay.organizer.core.orders.list.OrdersViewModel;
 import com.eventyay.organizer.core.presenter.TestUtil;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.order.OrderRepository;

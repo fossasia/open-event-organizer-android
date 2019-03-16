@@ -1,7 +1,7 @@
 package com.eventyay.organizer.common.mvp.view;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.eventyay.organizer.common.mvp.presenter.BasePresenter;
 

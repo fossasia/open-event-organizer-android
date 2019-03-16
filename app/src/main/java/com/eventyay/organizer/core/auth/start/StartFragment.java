@@ -1,14 +1,14 @@
 package com.eventyay.organizer.core.auth.start;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.transition.ChangeBounds;
-import android.support.transition.Fade;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
+import androidx.transition.ChangeBounds;
+import androidx.transition.Fade;
+import androidx.fragment.app.Fragment;
+import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

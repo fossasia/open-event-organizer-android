@@ -1,6 +1,6 @@
 package com.eventyay.organizer.common.rx;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.List;
 

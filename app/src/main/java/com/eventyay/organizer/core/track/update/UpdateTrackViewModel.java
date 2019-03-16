@@ -1,7 +1,7 @@
 package com.eventyay.organizer.core.track.update;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 import android.graphics.Color;
 
 import com.eventyay.organizer.common.ContextManager;

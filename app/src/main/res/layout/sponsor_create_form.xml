@@ -30,12 +30,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_sponsors" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                     android:text="@={ sponsor.name }"
                     app:validateEmpty="@{true}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -58,12 +58,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_receipt" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                     android:text="@={ sponsor.description }"
                     android:inputType="text"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -86,13 +86,13 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_link" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sponsor_sponsorUrl_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                     android:text="@={ sponsor.url }"
                     android:inputType="text" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -115,20 +115,20 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_link" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sponsor_sponsorLogoUrl_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/sponsor_logo_url"
                     android:text="@={ sponsor.logoUrl }"
                     android:inputType="text"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
     <LinearLayout
@@ -143,7 +143,7 @@
             android:padding="@dimen/spacing_extra_small"
             app:srcCompat="@drawable/ic_sort" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -154,7 +154,7 @@
                 android:text="@={ BindingAdapters.integerToStr(sponsor.level) }"
                 android:inputType="number"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
@@ -170,7 +170,7 @@
             android:padding="@dimen/spacing_extra_small"
             app:srcCompat="@drawable/ic_type" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -180,7 +180,7 @@
                 android:inputType="text"
                 android:hint="@string/sponsor_type"
                 android:text="@={ sponsor.type }" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
