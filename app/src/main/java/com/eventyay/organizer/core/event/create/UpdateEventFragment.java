@@ -116,12 +116,6 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
         });
 
-        binding.submit.setOnClickListener(view -> {
-            if (validator.validate()) {
-                createEventViewModel.updateEvent();
-            }
-        });
-
         binding.form.description.setOnClickListener(view -> {
             Intent richEditorIntent = new Intent(getContext(), RichEditorActivity.class);
             richEditorIntent.putExtra(TAG_RICH_TEXT, binding.form.description.getText().toString());
@@ -195,8 +189,10 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_share_event:
-                shareEvent();
+            case R.id.action_menu_done:
+                if (validator.validate()) {
+                    createEventViewModel.updateEvent();
+                }
                 break;
             default:
         }
@@ -206,23 +202,15 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        MenuItem menuItem = menu.findItem(R.id.action_share_event);
-        Drawable shareIcon = menu.findItem(R.id.action_share_event).getIcon();
+        MenuItem menuItem = menu.findItem(R.id.action_menu_done);
+        Drawable shareIcon = menu.findItem(R.id.action_menu_done).getIcon();
         shareIcon.setColorFilter(getResources().getColor(android.R.color.black), PorterDuff.Mode.SRC_ATOP);
         menuItem.setVisible(true);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_share, menu);
+        inflater.inflate(R.menu.menu_done, menu);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    public void shareEvent() {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(createEventViewModel.getEvent()));
-        shareIntent.setType("text/plain");
-        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
 
     @Override
