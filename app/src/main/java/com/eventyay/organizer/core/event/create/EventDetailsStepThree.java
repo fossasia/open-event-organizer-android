@@ -55,7 +55,7 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.event_details_step_three, container, false);
-        createEventViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateEventViewModel.class);
+        createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
         validator = new Validator(binding);
         return binding.getRoot();
     }

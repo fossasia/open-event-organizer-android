@@ -91,7 +91,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.event_create_layout, container, false);
         validator = new Validator(binding.form);
-        createEventViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateEventViewModel.class);
+        createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
 
         if (getArguments() != null) {
             Bundle bundle = getArguments();
