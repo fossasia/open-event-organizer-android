@@ -152,7 +152,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/sponsor_level"
                 android:text="@={ BindingAdapters.integerToStr(sponsor.level) }"
-                android:inputType="number"/>
+                android:inputType="number"
+                validateEmpty="@{true}" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -179,7 +180,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:hint="@string/sponsor_type"
-                android:text="@={ sponsor.type }" />
+                android:text="@={ sponsor.type }"
+                validateEmpty="@{true}" />
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
