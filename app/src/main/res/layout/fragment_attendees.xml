@@ -56,7 +56,7 @@
             app:layout_anchor="@id/rvAttendeeList"
             app:layout_anchorGravity="bottom|right"
             app:srcCompat="@drawable/qrcode_scan"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/progressBar"
