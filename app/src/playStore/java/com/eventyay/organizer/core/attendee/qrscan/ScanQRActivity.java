@@ -88,12 +88,9 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
 
         barcodeEmitter = PublishSubject.create();
         barcodeDetector = createBarcodeDetector();
-        cameraSource = new CameraSource
-            .Builder(this, barcodeDetector)
-            .setRequestedPreviewSize(640, 480)
-            .setRequestedFps(15.0f)
-            .setAutoFocusEnabled(true)
-            .build();
+
+        requestCameraPermission();
+        setCameraSource();
 
         super.onCreate(savedInstanceState);
     }
@@ -149,6 +146,18 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
         }
     }
 
+    private void setCameraSource() {
+
+        if (hasCameraPermission()) {
+            cameraSource = new CameraSource
+                .Builder(this, barcodeDetector)
+                .setRequestedPreviewSize(640, 480)
+                .setRequestedFps(15.0f)
+                .setAutoFocusEnabled(true)
+                .build();
+        }
+    }
+
     // Lifecycle methods end
 
     @Override
@@ -199,6 +208,8 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
 
     @Override
     public void startScan() {
+        setCameraSource();
+
         compositeDisposable.add(Completable.fromAction(() -> {
             try {
                 startCameraSource();
