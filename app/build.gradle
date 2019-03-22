@@ -122,6 +122,7 @@ dependencies {
     implementation "com.android.support:cardview-v7:${versions.support_lib}"
     implementation "com.android.support:recyclerview-v7:${versions.support_lib}"
     implementation "com.android.support:design:${versions.support_lib}"
+    implementation "com.android.support:customtabs:${versions.support_lib}"
     implementation "com.android.support:palette-v7:${versions.support_lib}"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
     playStoreImplementation "com.google.android.gms:play-services-vision:${versions.play_services}"
