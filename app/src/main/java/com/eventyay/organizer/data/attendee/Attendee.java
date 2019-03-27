@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
@@ -23,6 +25,7 @@ import com.eventyay.organizer.data.ticket.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Delegate;
 
 @Data
@@ -30,6 +33,8 @@ import lombok.experimental.Delegate;
 @Type("attendee")
 @AllArgsConstructor
 @Entity
+@JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
+@EqualsAndHashCode(callSuper = false, exclude = { "attendeeDelegate", "checking" })
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider {
 

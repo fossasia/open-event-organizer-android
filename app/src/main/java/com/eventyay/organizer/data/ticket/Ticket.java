@@ -28,6 +28,8 @@ import lombok.experimental.Delegate;
 @Type("ticket")
 @AllArgsConstructor
 @Entity
+@JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
+@EqualsAndHashCode(callSuper = false, exclude = { "attendeeDelegate", "checking" })
 @SuppressWarnings("PMD.TooManyFields")
 public class Ticket implements Comparable<Ticket> {
 
