@@ -13,9 +13,6 @@ import android.view.ViewGroup;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
-import com.eventyay.organizer.common.mvp.view.Erroneous;
-import com.eventyay.organizer.common.mvp.view.Progressive;
-import com.eventyay.organizer.common.mvp.view.Successful;
 import com.eventyay.organizer.core.auth.SharedViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
 import com.eventyay.organizer.core.main.MainActivity;
@@ -28,7 +25,7 @@ import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-public class LoginFragment extends BaseFragment implements Progressive, Successful, Erroneous {
+public class LoginFragment extends BaseFragment implements LoginView {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -62,13 +59,7 @@ public class LoginFragment extends BaseFragment implements Progressive, Successf
             binding.setLogin(login);
             sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
         });
-        loginFragmentViewModel.getTokenSentAction().observe(this, aVoid -> {
-            getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                .replace(R.id.fragment_container, new ResetPasswordFragment())
-                .addToBackStack(null)
-                .commit();
-        });
+        loginFragmentViewModel.getActionOpenResetPassword().observe(this, this::openResetPasswordFragment);
 
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
@@ -144,5 +135,14 @@ public class LoginFragment extends BaseFragment implements Progressive, Successf
     @Override
     public void showProgress(boolean show) {
         showView(binding.progressBar, show);
+    }
+
+    @Override
+    public void openResetPasswordFragment(boolean resetPassword) {
+        getFragmentManager().beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            .replace(R.id.fragment_container, new ResetPasswordFragment())
+            .addToBackStack(null)
+            .commit();
     }
 }
