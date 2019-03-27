@@ -1,5 +1,6 @@
 package com.eventyay.organizer.data.db.configuration;
 
+import android.arch.persistence.room.Database;
 import android.support.annotation.NonNull;
 
 import com.eventyay.organizer.data.attendee.Attendee;
@@ -17,8 +18,8 @@ import com.eventyay.organizer.data.sponsor.Sponsor;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.user.User;
+
 import com.raizlabs.android.dbflow.annotation.ConflictAction;
-import com.raizlabs.android.dbflow.annotation.Database;
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.SQLiteType;
@@ -32,13 +33,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-@Database(
-    name = OrgaDatabase.NAME,
-    version = OrgaDatabase.VERSION,
-    insertConflict = ConflictAction.REPLACE,
-    updateConflict = ConflictAction.REPLACE,
-    foreignKeyConstraintsEnforced = true
-)
+@Database( version = OrgaDatabase.VERSION )
 public final class OrgaDatabase {
 
     public static final String NAME = "orga_database";

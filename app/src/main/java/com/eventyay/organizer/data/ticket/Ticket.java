@@ -1,15 +1,16 @@
 package com.eventyay.organizer.data.ticket;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
 
 import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 import com.eventyay.organizer.data.event.Event;
@@ -22,14 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Delegate;
 
-@Data
-@Builder
-@Type("ticket")
-@AllArgsConstructor
-@ToString(exclude = "event")
-@JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
-@Table(database = OrgaDatabase.class, allFields = true)
-@EqualsAndHashCode(exclude = { "ticketDelegate" })
+@Entity
 @SuppressWarnings("PMD.TooManyFields")
 public class Ticket implements Comparable<Ticket> {
 
@@ -57,12 +51,17 @@ public class Ticket implements Comparable<Ticket> {
     public boolean autoCheckinEnabled;
 
     @Relationship("event")
-    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
+    @ForeignKey(entity = Event.class, parentColumns = "id", childColumns = "event", onDelete = ForeignKey.CASCADE)
     public Event event;
 
     @Relationship("order")
-    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
+    @ForeignKey(entity = Order.class, parentColumns = "id", childColumns = "order", onDelete = ForeignKey.CASCADE)
     public Order order;
 
     public Ticket() { }
+
+    @Override
+    public int compareTo(@NonNull Ticket ticket) {
+        return 0;
+    }
 }

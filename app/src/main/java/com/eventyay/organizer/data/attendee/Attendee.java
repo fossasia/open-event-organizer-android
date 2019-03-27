@@ -1,39 +1,27 @@
 package com.eventyay.organizer.data.attendee;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+import android.view.View;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
-import com.github.jasminb.jsonapi.annotations.Type;
 import com.mikepenz.fastadapter.items.AbstractItem;
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
 
 import com.eventyay.organizer.common.model.HeaderProvider;
 import com.eventyay.organizer.core.attendee.list.viewholders.AttendeeViewHolder;
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.ticket.Ticket;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Delegate;
 
-@Data
-@Builder
-@Type("attendee")
-@AllArgsConstructor
-@JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
-@EqualsAndHashCode(callSuper = false, exclude = { "attendeeDelegate", "checking" })
-@Table(database = OrgaDatabase.class)
+@Entity
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider {
 
@@ -43,88 +31,118 @@ public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> impleme
     @Id(LongIdHandler.class)
     @PrimaryKey
     public long id;
-    @Column
+    @ColumnInfo
     public String city;
-    @Column
+    @ColumnInfo
     public String firstname;
-    @Column
+    @ColumnInfo
     public String lastname;
-    @Column
+    @ColumnInfo
     public boolean isCheckedIn;
-    @Column
+    @ColumnInfo
     public String state;
-    @Column
+    @ColumnInfo
     public String address;
-    @Column
+    @ColumnInfo
     public String pdfUrl;
-    @Column
+    @ColumnInfo
     public String country;
-    @Column
+    @ColumnInfo
     public String email;
 
     @Relationship("ticket")
-    @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
+    @ForeignKey(entity = Ticket.class, parentColumns = "id", childColumns = "ticket", onDelete = ForeignKey.CASCADE)
     public Ticket ticket;
 
     @Relationship("order")
-    @ForeignKey(onDelete = ForeignKeyAction.CASCADE, saveForeignKeyModel = true)
+    @ForeignKey(entity = Order.class, parentColumns = "id", childColumns = "order", onDelete = ForeignKey.CASCADE)
     public Order order;
 
     // To associate attendees and event
     @Relationship("event")
-    @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
+    @ForeignKey(entity = Event.class, parentColumns = "id", childColumns = "event", onDelete = ForeignKey.CASCADE)
     public Event event;
 
     // Migration 7 additions
 
-    @Column
+    @ColumnInfo
     public String blog;
-    @Column
+    @ColumnInfo
     public String homeAddress;
-    @Column
+    @ColumnInfo
     public String workAddress;
-    @Column
+    @ColumnInfo
     public String jobTitle;
-    @Column
+    @ColumnInfo
     public String taxBusinessInfo;
-    @Column
+    @ColumnInfo
     public String phone;
-    @Column
+    @ColumnInfo
     public String gender;
-    @Column
+    @ColumnInfo
     public String company;
-    @Column
+    @ColumnInfo
     public String workPhone;
-    @Column
+    @ColumnInfo
     public String birthDate;
-    @Column
+    @ColumnInfo
     public String twitter;
-    @Column
+    @ColumnInfo
     public String facebook;
-    @Column
+    @ColumnInfo
     public String github;
-    @Column
+    @ColumnInfo
     public String website;
-    @Column
+    @ColumnInfo
     public String shippingAddress;
-    @Column
+    @ColumnInfo
     public String billingAddress;
 
     // Migration 8 additions
 
-    @Column
+    @ColumnInfo
     public String checkinTimes;
 
     // Migration 16 additions
 
-    @Column
+    @ColumnInfo
     public String checkoutTimes;
 
     // Non model entities
 
     @JsonIgnore
-    @Column
+    @ColumnInfo
     public boolean checking;
 
     public Attendee() { }
+
+    @Override
+    public AttendeeViewHolder getViewHolder(View v) {
+        return null;
+    }
+
+    @Override
+    public String getHeader() {
+        return null;
+    }
+
+    @Override
+    public long getHeaderId() {
+        return 0;
+    }
+
+    @Override
+    public int getType() {
+        return 0;
+    }
+
+    @Override
+    public int getLayoutRes() {
+        return 0;
+    }
+
+    @Override
+    public int compareTo(@NonNull Attendee attendee) {
+        return 0;
+    }
 }
