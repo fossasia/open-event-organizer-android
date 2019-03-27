@@ -79,7 +79,7 @@ public final class OrgaDatabase {
         @Override
         public void onPreMigrate() {
             super.onPreMigrate();
-            addColumn(SQLiteType.INTEGER, "checking");
+            addColumn(SQLiteType.INTEGER, "checking");a
         }
     }
 
