@@ -1,7 +1,11 @@
 package com.eventyay.organizer.data.event;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.eventyay.organizer.common.model.HeaderProvider;
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,9 +15,6 @@ import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
-import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ import lombok.experimental.Delegate;
 @Type("event")
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
-@Table(database = OrgaDatabase.class, allFields = true)
+@Entity
 @EqualsAndHashCode(exclude = { "eventDelegate", "analytics" })
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Event implements Comparable<Event>, HeaderProvider {
@@ -100,11 +101,25 @@ public class Event implements Comparable<Event>, HeaderProvider {
     public Long ticketsAvailable;
     public Long revenue;
 
-    @ColumnIgnore
+    @Ignore
     @Relationship("tickets")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public List<Ticket> tickets;
 
     public Event() { }
 
+    @Override
+    public String getHeader() {
+        return null;
+    }
+
+    @Override
+    public long getHeaderId() {
+        return 0;
+    }
+
+    @Override
+    public int compareTo(@NonNull Event event) {
+        return 0;
+    }
 }

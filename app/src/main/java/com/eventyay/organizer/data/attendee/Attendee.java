@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
+import com.github.jasminb.jsonapi.annotations.Type;
 import com.mikepenz.fastadapter.items.AbstractItem;
 
 import com.eventyay.organizer.common.model.HeaderProvider;
@@ -19,8 +20,15 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.ticket.Ticket;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.experimental.Delegate;
 
+@Data
+@Builder
+@Type("attendee")
+@AllArgsConstructor
 @Entity
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
 public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider {

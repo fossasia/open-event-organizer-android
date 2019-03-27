@@ -23,6 +23,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Delegate;
 
+@Data
+@Builder
+@Type("ticket")
+@AllArgsConstructor
 @Entity
 @SuppressWarnings("PMD.TooManyFields")
 public class Ticket implements Comparable<Ticket> {
