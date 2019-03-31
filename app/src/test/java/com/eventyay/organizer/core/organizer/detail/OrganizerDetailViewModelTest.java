@@ -6,7 +6,7 @@ import android.arch.lifecycle.Observer;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.user.User;
-import com.eventyay.organizer.data.user.UserRepositoryImpl;
+import com.eventyay.organizer.data.user.UserRepository;
 
 import org.junit.After;
 import org.junit.Before;
@@ -39,7 +39,7 @@ public class OrganizerDetailViewModelTest {
     public TestRule rule = new InstantTaskExecutorRule();
 
     @Mock
-    private UserRepositoryImpl userRepository;
+    private UserRepository userRepository;
     @Mock
     private AuthService authService;
 
