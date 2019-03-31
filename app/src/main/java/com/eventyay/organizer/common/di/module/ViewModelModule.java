@@ -20,6 +20,7 @@ import com.eventyay.organizer.core.main.OrganizerViewModel;
 import com.eventyay.organizer.core.orders.create.CreateOrderViewModel;
 import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.orders.list.OrdersViewModel;
+import com.eventyay.organizer.core.organizer.detail.OrganizerDetailViewModel;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
@@ -154,6 +155,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CheckInHistoryViewModel.class)
     public abstract ViewModel bindCheckInHistoryViewModel(CheckInHistoryViewModel checkInHistoryViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OrganizerDetailViewModel.class)
+    public abstract ViewModel bindOrganizerDetailViewModel(OrganizerDetailViewModel organizerDetailViewModel);
 
     @Binds
     @IntoMap
