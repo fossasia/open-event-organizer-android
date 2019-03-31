@@ -8,7 +8,7 @@ import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.auth.model.ResendVerificationMail;
 import com.eventyay.organizer.data.image.ImageData;
 import com.eventyay.organizer.data.user.User;
-import com.eventyay.organizer.data.user.UserRepositoryImpl;
+import com.eventyay.organizer.data.user.UserRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
 
 import javax.inject.Inject;
@@ -19,7 +19,7 @@ import timber.log.Timber;
 
 public class OrganizerDetailViewModel extends ViewModel {
 
-    private final UserRepositoryImpl userRepository;
+    private final UserRepository userRepository;
     private final AuthService authService;
     private final ResendVerificationMail resendVerificationMail = new ResendVerificationMail();
 
@@ -33,7 +33,7 @@ public class OrganizerDetailViewModel extends ViewModel {
     private final SingleEventLiveData<User> userLiveData = new SingleEventLiveData<>();
 
     @Inject
-    public OrganizerDetailViewModel(UserRepositoryImpl userRepository, AuthService authService) {
+    public OrganizerDetailViewModel(UserRepository userRepository, AuthService authService) {
         this.userRepository = userRepository;
         this.authService = authService;
     }
