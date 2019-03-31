@@ -1,7 +1,6 @@
 package com.eventyay.organizer.utils;
 
 import com.eventyay.organizer.data.error.Error;
-
 import org.json.JSONObject;
 
 import okhttp3.ResponseBody;
