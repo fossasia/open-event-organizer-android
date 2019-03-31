@@ -1,6 +1,7 @@
 package com.eventyay.organizer.utils;
 
 import com.eventyay.organizer.data.error.Error;
+
 import org.json.JSONObject;
 
 import okhttp3.ResponseBody;
@@ -54,28 +55,30 @@ public final class ErrorUtils {
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public static Error getErrorDetails(Throwable throwable) {
         Error error = new Error();
-        ResponseBody responseBody = ((HttpException) throwable).response().errorBody();
-
-        try {
-            JSONObject jsonObject = new JSONObject(responseBody.string());
-            JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
-            JSONObject errorSource = new JSONObject(jsonArray.get(SOURCE).toString());
+        if (throwable instanceof HttpException) {
+            ResponseBody responseBody = ((HttpException) throwable).response().errorBody();
 
             try {
-                String pointedField = getPointedField(errorSource.getString(POINTER));
-                if (pointedField == null) {
+                JSONObject jsonObject = new JSONObject(responseBody.string());
+                JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
+                JSONObject errorSource = new JSONObject(jsonArray.get(SOURCE).toString());
+
+                try {
+                    String pointedField = getPointedField(errorSource.getString(POINTER));
+                    if (pointedField == null) {
+                        error.setDetail(jsonArray.get(DETAIL).toString());
+                    } else {
+                        error.setPointer(pointedField);
+                        error.setDetail(jsonArray.get(DETAIL).toString().replace(".", ""));
+                    }
+
+                } catch (Exception e) {
                     error.setDetail(jsonArray.get(DETAIL).toString());
-                } else {
-                    error.setPointer(pointedField);
-                    error.setDetail(jsonArray.get(DETAIL).toString().replace(".", ""));
                 }
 
             } catch (Exception e) {
-                error.setDetail(jsonArray.get(DETAIL).toString());
+                Timber.e(e);
             }
-
-        } catch (Exception e) {
-            Timber.e(e);
         }
         return error;
     }
@@ -83,31 +86,33 @@ public final class ErrorUtils {
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public static Error getErrorTitleAndDetails(Throwable throwable) {
         Error error = new Error();
-        ResponseBody responseBody = ((HttpException) throwable).response().errorBody();
-
-        try {
-            JSONObject jsonObject = new JSONObject(responseBody.string());
-            JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
-            JSONObject errorSource = new JSONObject(jsonArray.get(SOURCE).toString());
+        if (throwable instanceof HttpException) {
+            ResponseBody responseBody = ((HttpException) throwable).response().errorBody();
 
             try {
-                String pointedField = getPointedField(errorSource.getString(POINTER));
+                JSONObject jsonObject = new JSONObject(responseBody.string());
+                JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
+                JSONObject errorSource = new JSONObject(jsonArray.get(SOURCE).toString());
 
-                if (pointedField == null) {
+                try {
+                    String pointedField = getPointedField(errorSource.getString(POINTER));
+
+                    if (pointedField == null) {
+                        error.setDetail(jsonArray.get(DETAIL).toString());
+                    } else {
+                        error.setPointer(pointedField);
+                        error.setDetail(jsonArray.get(DETAIL).toString().replace(".", ""));
+                    }
+                    error.setTitle(jsonArray.get(TITLE).toString());
+
+                } catch (Exception e) {
+                    error.setTitle(jsonArray.get(TITLE).toString());
                     error.setDetail(jsonArray.get(DETAIL).toString());
-                } else {
-                    error.setPointer(pointedField);
-                    error.setDetail(jsonArray.get(DETAIL).toString().replace(".", ""));
                 }
-                error.setTitle(jsonArray.get(TITLE).toString());
 
             } catch (Exception e) {
-                error.setTitle(jsonArray.get(TITLE).toString());
-                error.setDetail(jsonArray.get(DETAIL).toString());
+                Timber.e(e);
             }
-
-        } catch (Exception e) {
-            Timber.e(e);
         }
         return error;
     }
