@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
-import com.eventyay.organizer.data.event.ImageData;
-import com.eventyay.organizer.data.event.ImageUrl;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.databinding.EventDetailsStepThreeBinding;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
@@ -55,7 +55,7 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.event_details_step_three, container, false);
-        createEventViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateEventViewModel.class);
+        createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
         validator = new Validator(binding);
         return binding.getRoot();
     }

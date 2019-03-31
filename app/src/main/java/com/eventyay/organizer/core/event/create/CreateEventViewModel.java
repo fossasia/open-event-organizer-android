@@ -5,13 +5,12 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.eventyay.organizer.common.Constants;
-import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
-import com.eventyay.organizer.data.event.ImageData;
-import com.eventyay.organizer.data.event.ImageUrl;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.utils.CurrencyUtils;
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.ErrorUtils;
@@ -53,10 +52,10 @@ public class CreateEventViewModel extends ViewModel {
     private final List<String> currencyCodesList;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private final SingleEventLiveData<String> onSuccess = new SingleEventLiveData<>();
-    private final SingleEventLiveData<String> onError = new SingleEventLiveData<>();
-    private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
-    private final SingleEventLiveData<Void> close = new SingleEventLiveData<>();
+    private final MutableLiveData<String> onSuccess = new MutableLiveData<>();
+    private final MutableLiveData<String> onError = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
+    private final MutableLiveData<Void> close = new MutableLiveData<>();
     private final MutableLiveData<Event> eventMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<ImageUrl> imageUrlMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<ImageUrl> logoUrlMutableLiveData = new MutableLiveData<>();
@@ -121,6 +120,11 @@ public class CreateEventViewModel extends ViewModel {
 
             if (!end.isAfter(start)) {
                 onError.setValue("End time should be after start time");
+                return false;
+            }
+
+            if (start.isBefore(ZonedDateTime.now())) {
+                onError.setValue("Start time should be after the current time");
                 return false;
             }
             return true;

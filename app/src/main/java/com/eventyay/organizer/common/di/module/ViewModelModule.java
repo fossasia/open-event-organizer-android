@@ -10,6 +10,8 @@ import com.eventyay.organizer.core.auth.login.LoginViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
 import com.eventyay.organizer.core.auth.signup.SignUpViewModel;
 import com.eventyay.organizer.core.auth.start.StartViewModel;
+import com.eventyay.organizer.core.event.copyright.CreateCopyrightViewModel;
+import com.eventyay.organizer.core.event.copyright.update.UpdateCopyrightViewModel;
 import com.eventyay.organizer.core.event.create.CreateEventViewModel;
 import com.eventyay.organizer.core.event.list.EventsViewModel;
 import com.eventyay.organizer.core.faq.create.CreateFaqViewModel;
@@ -28,6 +30,8 @@ import com.eventyay.organizer.core.speakerscall.create.CreateSpeakersCallViewMod
 import com.eventyay.organizer.core.sponsor.create.CreateSponsorViewModel;
 import com.eventyay.organizer.core.ticket.create.CreateTicketViewModel;
 import com.eventyay.organizer.core.ticket.detail.TicketDetailViewModel;
+import com.eventyay.organizer.core.track.create.CreateTrackViewModel;
+import com.eventyay.organizer.core.track.update.UpdateTrackViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -103,6 +107,16 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(CreateCopyrightViewModel.class)
+    public abstract ViewModel bindCreateCopyrightViewModel(CreateCopyrightViewModel createCopyrightViewModel);
+    
+    @Binds
+    @IntoMap
+    @ViewModelKey(UpdateCopyrightViewModel.class)
+    public abstract ViewModel bindUpdateCopyrightViewModel(UpdateCopyrightViewModel updateCopyrightViewModel);
+
+    @Binds
+    @IntoMap
     @ViewModelKey(CreateFaqViewModel.class)
     public abstract ViewModel bindCreateFaqViewModel(CreateFaqViewModel faqViewModel);
 
@@ -110,6 +124,16 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateSponsorViewModel.class)
     public abstract ViewModel bindCreateSponsorViewModel(CreateSponsorViewModel sponsorViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateTrackViewModel.class)
+    public abstract ViewModel bindCreateTrackViewModel(CreateTrackViewModel createTrackViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UpdateTrackViewModel.class)
+    public abstract ViewModel bindUpdateTrackViewModel(UpdateTrackViewModel updateTrackViewModel);
 
     @Binds
     @IntoMap

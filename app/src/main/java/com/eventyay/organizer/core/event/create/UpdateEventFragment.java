@@ -34,8 +34,8 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.event.Event;
-import com.eventyay.organizer.data.event.ImageData;
-import com.eventyay.organizer.data.event.ImageUrl;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.databinding.EventCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.ui.editor.RichEditorActivity;
@@ -91,7 +91,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.event_create_layout, container, false);
         validator = new Validator(binding.form);
-        createEventViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateEventViewModel.class);
+        createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
 
         if (getArguments() != null) {
             Bundle bundle = getArguments();
@@ -114,12 +114,6 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
-        });
-
-        binding.submit.setOnClickListener(view -> {
-            if (validator.validate()) {
-                createEventViewModel.updateEvent();
-            }
         });
 
         binding.form.description.setOnClickListener(view -> {
@@ -195,8 +189,10 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_share_event:
-                shareEvent();
+            case R.id.action_menu_done:
+                if (validator.validate()) {
+                    createEventViewModel.updateEvent();
+                }
                 break;
             default:
         }
@@ -206,23 +202,15 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        MenuItem menuItem = menu.findItem(R.id.action_share_event);
-        Drawable shareIcon = menu.findItem(R.id.action_share_event).getIcon();
+        MenuItem menuItem = menu.findItem(R.id.action_menu_done);
+        Drawable shareIcon = menu.findItem(R.id.action_menu_done).getIcon();
         shareIcon.setColorFilter(getResources().getColor(android.R.color.black), PorterDuff.Mode.SRC_ATOP);
         menuItem.setVisible(true);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_share, menu);
+        inflater.inflate(R.menu.menu_done, menu);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    public void shareEvent() {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(createEventViewModel.getEvent()));
-        shareIntent.setType("text/plain");
-        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.eventyay.organizer.core.event.copyright;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -27,16 +29,17 @@ import com.eventyay.organizer.utils.ValidateUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-public class CreateCopyrightFragment extends BaseFragment<CreateCopyrightPresenter> implements CreateCopyrightView {
+public class CreateCopyrightFragment extends BaseFragment implements CreateCopyrightView {
 
     @Inject
-    Lazy<CreateCopyrightPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
+
     private CopyrightCreateLayoutBinding binding;
     private Validator validator;
+    private CreateCopyrightViewModel createCopyrightViewModel;
 
     public static CreateCopyrightFragment newInstance() {
         return new CreateCopyrightFragment();
@@ -48,6 +51,7 @@ public class CreateCopyrightFragment extends BaseFragment<CreateCopyrightPresent
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         binding =  DataBindingUtil.inflate(localInflater, R.layout.copyright_create_layout, container, false);
+        createCopyrightViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateCopyrightViewModel.class);
         validator = new Validator(binding.form);
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
@@ -63,7 +67,7 @@ public class CreateCopyrightFragment extends BaseFragment<CreateCopyrightPresent
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
-                getPresenter().createCopyright();
+                createCopyrightViewModel.createCopyright();
         });
 
         return binding.getRoot();
@@ -72,8 +76,12 @@ public class CreateCopyrightFragment extends BaseFragment<CreateCopyrightPresent
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        binding.setCopyright(getPresenter().getCopyright());
+
+        createCopyrightViewModel.getProgress().observe(this, this::showProgress);
+        createCopyrightViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
+        createCopyrightViewModel.getSuccess().observe(this, this::onSuccess);
+        createCopyrightViewModel.getError().observe(this, this::showError);
+        binding.setCopyright(createCopyrightViewModel.getCopyright());
 
         validate(binding.form.copyrightHolderUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         validate(binding.form.copyrightLicenceUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -119,11 +127,6 @@ public class CreateCopyrightFragment extends BaseFragment<CreateCopyrightPresent
     @Override
     public void dismiss() {
         getFragmentManager().popBackStack();
-    }
-
-    @Override
-    public Lazy<CreateCopyrightPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override
