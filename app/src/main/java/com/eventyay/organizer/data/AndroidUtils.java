@@ -1,10 +1,10 @@
 package com.eventyay.organizer.data;
 
 import android.content.Context;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 
 import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.data.db.configuration.OrgaDatabase;

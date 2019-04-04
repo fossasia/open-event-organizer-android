@@ -1,7 +1,7 @@
 package com.eventyay.organizer.common.mvp.presenter;
 
-import android.support.annotation.CallSuper;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.CallSuper;
+import androidx.annotation.VisibleForTesting;
 
 import io.reactivex.disposables.CompositeDisposable;
 

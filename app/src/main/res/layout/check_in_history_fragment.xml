@@ -10,7 +10,7 @@
             type="com.eventyay.organizer.data.attendee.Attendee" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_top_surface">
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v4.widget.SwipeRefreshLayout
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeContainer"
                 android:layout_width="match_parent"
                 android:paddingLeft="@dimen/spacing_normal"
@@ -48,7 +48,7 @@
                         android:textSize="@dimen/text_size_large"
                         android:textColor="#000000" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/checkInHistoryRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -57,7 +57,7 @@
 
                 </LinearLayout>
 
-            </android.support.v4.widget.SwipeRefreshLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </FrameLayout>
 
@@ -78,5 +78,5 @@
 
             <include layout="@layout/progressbar_layout" />
         </FrameLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

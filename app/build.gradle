@@ -25,7 +25,7 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode 8
         versionName "1.0.7alpha"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
             appName: app_name,
@@ -118,19 +118,20 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Support Lib
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation "com.android.support:appcompat-v7:${versions.support_lib}"
-    implementation "com.android.support:cardview-v7:${versions.support_lib}"
-    implementation "com.android.support:recyclerview-v7:${versions.support_lib}"
-    implementation "com.android.support:design:${versions.support_lib}"
-    implementation "com.android.support:customtabs:${versions.support_lib}"
-    implementation "com.android.support:palette-v7:${versions.support_lib}"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation "androidx.appcompat:appcompat:1.1.0-alpha03"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0-alpha03"
+    implementation "com.google.android.material:material:1.1.0-alpha05"
+    implementation "androidx.browser:browser:1.0.0"
+    implementation "androidx.palette:palette:1.0.0"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
-    implementation "com.android.support:support-media-compat:${versions.support_lib}" // GradleIncompatible Workaround
-    implementation "com.android.support:support-v4:${versions.support_lib}" // GradleIncompatible Workaround
+    //implementation "androidx.media:media:1.1.0-alpha04" // GradleIncompatible Workaround
+    //implementation "androidx.legacy:legacy-support-v4:1.0.0" // GradleIncompatible Workaround
+    annotationProcessor 'androidx.annotation:annotation:1.1.0-alpha02' // Required for Glide
     playStoreImplementation "com.google.android.gms:play-services-vision:${versions.play_services}"
     playStoreImplementation "com.google.android.gms:play-services-places:${versions.play_services}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"
@@ -141,10 +142,10 @@ dependencies {
     compileOnly 'com.google.code.findbugs:findbugs-annotations:3.0.1'
 
     // Lifecycle
-    implementation "android.arch.lifecycle:runtime:$versions.lifecycle"
-    implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
-    implementation "android.arch.lifecycle:common-java8:$versions.lifecycle"
-    annotationProcessor "android.arch.lifecycle:compiler:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-runtime:2.1.0-alpha03"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha03"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha03"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.1.0-alpha03"
 
     //WorkManager
     implementation "android.arch.work:work-runtime:${versions.work_manager}"
@@ -228,16 +229,16 @@ dependencies {
     implementation "jp.wasabeef:richeditor-android:1.2.2"
 
     // Chrome Custom Tabs
-    playStoreImplementation "com.android.support:customtabs:${versions.chromeCustomTabs}"
+    playStoreImplementation "androidx.browser:browser:1.0.0"
 
     //open-source licenses
     playStoreImplementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 
     //Testing
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation("android.arch.core:core-testing:$versions.lifecycle", {
+    testImplementation("androidx.arch.core:core-testing:2.0.0-beta01", {
         exclude group: 'com.android.support', module: 'support-compat'
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-core-utils'
@@ -247,5 +248,5 @@ dependencies {
     testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"
-    testImplementation "org.robolectric:shadows-supportv4:${versions.roboelectric}"
+    // testImplementation "org.robolectric:shadows-supportv4:${versions.roboelectric}"
 }

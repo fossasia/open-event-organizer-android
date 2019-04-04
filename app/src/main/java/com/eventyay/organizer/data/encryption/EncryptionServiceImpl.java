@@ -3,7 +3,7 @@ package com.eventyay.organizer.data.encryption;
 import android.content.Context;
 import android.os.Build;
 import android.security.KeyPairGeneratorSpec;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.util.Base64;
 
 import java.io.ByteArrayInputStream;

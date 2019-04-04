@@ -14,7 +14,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
 import android.print.pdf.PrintedPdfDocument;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.utils.DateUtils;
