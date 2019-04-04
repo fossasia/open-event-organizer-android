@@ -1,8 +1,5 @@
 package com.eventyay.organizer.core.event.copyright.update;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.copyright.Copyright;
@@ -13,6 +10,8 @@ import com.eventyay.organizer.utils.StringUtils;
 
 import javax.inject.Inject;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class UpdateCopyrightViewModel extends ViewModel {
