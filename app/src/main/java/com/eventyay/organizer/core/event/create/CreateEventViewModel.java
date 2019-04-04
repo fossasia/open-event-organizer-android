@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.eventyay.organizer.common.Constants;
-import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
@@ -121,6 +120,11 @@ public class CreateEventViewModel extends ViewModel {
 
             if (!end.isAfter(start)) {
                 onError.setValue("End time should be after start time");
+                return false;
+            }
+
+            if (start.isBefore(ZonedDateTime.now())) {
+                onError.setValue("Start time should be after the current time");
                 return false;
             }
             return true;
