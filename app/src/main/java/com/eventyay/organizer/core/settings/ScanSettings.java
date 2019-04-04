@@ -1,10 +1,10 @@
 package com.eventyay.organizer.core.settings;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.preference.CheckBoxPreference;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import androidx.annotation.Nullable;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.PreferenceManager;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

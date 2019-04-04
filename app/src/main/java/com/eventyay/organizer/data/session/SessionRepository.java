@@ -1,6 +1,6 @@
 package com.eventyay.organizer.data.session;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;

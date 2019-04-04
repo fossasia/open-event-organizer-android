@@ -1,6 +1,6 @@
 package com.eventyay.organizer.common;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface Function<T, R> {
     @NonNull

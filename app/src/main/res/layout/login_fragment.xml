@@ -9,12 +9,12 @@
             type="com.eventyay.organizer.data.auth.model.Login" />
      </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.eventyay.organizer.core.auth.login.LoginFragment">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -29,7 +29,7 @@
                 android:paddingRight="@dimen/spacing_normal"
                 android:paddingStart="@dimen/spacing_normal">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/email_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                     android:paddingTop="@dimen/spacing_normal"
                     android:transitionName="@string/email">
 
-                    <android.support.v7.widget.AppCompatAutoCompleteTextView
+                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/email_dropdown"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -46,16 +46,16 @@
                         android:inputType="textEmailAddress"
                         android:imeOptions="actionNext"
                         app:validateType='@{"email"}' />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:passwordToggleEnabled="true"
                     android:paddingBottom="@dimen/spacing_normal"
                     android:transitionGroup="true">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
@@ -64,14 +64,14 @@
                         android:imeOptions="actionGo"
                         app:validateMinLength="@{6}"
                         app:go="@{() -> btnLogin.performClick() }" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <include
                     android:id="@+id/url"
                     layout="@layout/auth_url_container"
                     app:action="@{ () -> btnLogin.performClick() }"/>
 
-                <android.support.v7.widget.AppCompatButton
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                     android:text="@string/login"
                     android:textColor="@android:color/white" />
 
-                <android.support.v7.widget.AppCompatButton
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/forgotPasswordLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
 
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <FrameLayout
             android:id="@+id/progressBar"
@@ -101,6 +101,6 @@
 
             <include layout="@layout/progressbar_layout" />
         </FrameLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
