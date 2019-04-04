@@ -14,7 +14,7 @@
             type="com.eventyay.organizer.data.session.Session" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:backgroundTint="@{ sessionsPresenter.isSessionSelected(session.getId()) ? @color/blue_200 : 0 }"
@@ -24,5 +24,5 @@
             layout="@layout/session_layout_core"
             bind:session="@{ session }"/>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

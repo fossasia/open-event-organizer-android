@@ -1,6 +1,6 @@
 package com.eventyay.organizer.common.mvp.view;
 
-import android.support.design.widget.BottomSheetDialogFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.common.di.Injectable;

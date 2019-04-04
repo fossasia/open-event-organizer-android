@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.event.dashboard.analyser;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.attendee.Attendee;

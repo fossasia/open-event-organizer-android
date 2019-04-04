@@ -1,6 +1,6 @@
 package com.eventyay.organizer.common.mvp.view;
 
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 
 import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.common.di.Injectable;

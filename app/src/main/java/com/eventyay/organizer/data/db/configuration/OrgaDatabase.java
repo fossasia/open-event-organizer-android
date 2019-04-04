@@ -1,6 +1,6 @@
 package com.eventyay.organizer.data.db.configuration;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.copyright.Copyright;

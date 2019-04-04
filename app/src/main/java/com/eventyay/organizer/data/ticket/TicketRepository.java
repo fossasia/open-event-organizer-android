@@ -1,6 +1,6 @@
 package com.eventyay.organizer.data.ticket;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import io.reactivex.Completable;
 import io.reactivex.Maybe;

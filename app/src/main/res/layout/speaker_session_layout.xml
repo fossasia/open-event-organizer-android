@@ -8,7 +8,7 @@
             type="com.eventyay.organizer.data.session.Session" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_small">
@@ -17,5 +17,5 @@
             layout="@layout/session_layout_core"
             bind:session="@{ session }"/>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

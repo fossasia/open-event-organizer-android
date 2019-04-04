@@ -30,12 +30,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_speaker" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                     android:text="@={ speakersCall.announcement }"
                     app:validateEmpty="@{true}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <include
@@ -68,19 +68,19 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_info" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/hash"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hash"
                     android:text="@={ speakersCall.hash }" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout> <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,19 +93,19 @@
             android:padding="@dimen/spacing_extra_small"
             app:srcCompat="@drawable/ic_password" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/spacing_extra_small">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/privacy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/privacy"
                 android:text="@={ speakersCall.privacy }" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     </LinearLayout>

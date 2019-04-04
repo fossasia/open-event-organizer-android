@@ -16,7 +16,7 @@
             type="com.eventyay.organizer.data.tracks.Track" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/track_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,6 +50,6 @@
                 tools:text="Track Description"/>
 
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </layout>

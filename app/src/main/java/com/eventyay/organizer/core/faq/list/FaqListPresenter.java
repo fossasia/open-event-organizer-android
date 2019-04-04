@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.faq.list;
 
-import android.databinding.ObservableBoolean;
+import androidx.databinding.ObservableBoolean;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 

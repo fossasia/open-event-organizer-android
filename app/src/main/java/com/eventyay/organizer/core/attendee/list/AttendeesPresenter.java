@@ -1,7 +1,7 @@
 package com.eventyay.organizer.core.attendee.list;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 

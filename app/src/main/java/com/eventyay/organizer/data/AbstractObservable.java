@@ -1,6 +1,6 @@
 package com.eventyay.organizer.data;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.network.ConnectionStatus;
