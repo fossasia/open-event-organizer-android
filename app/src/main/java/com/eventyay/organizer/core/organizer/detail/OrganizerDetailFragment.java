@@ -1,5 +1,7 @@
 package com.eventyay.organizer.core.organizer.detail;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -44,15 +46,19 @@ import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 
-public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresenter> implements OrganizerDetailView {
+public class OrganizerDetailFragment extends BaseFragment implements OrganizerDetailView {
 
     private OrganizerDetailFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
     @Inject
     ContextUtils utilModel;
+
     @Inject
-    Lazy<OrganizerDetailPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
+
+    private OrganizerDetailViewModel organizerDetailViewModel;
+
     public static final String INFO_FRAGMENT_TAG = "info";
 
     private static final int IMAGE_CHOOSER_REQUEST_CODE = 3;
@@ -60,6 +66,7 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.organizer_detail_fragment, container, false);
+        organizerDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(OrganizerDetailViewModel.class);
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         activity.setSupportActionBar(binding.toolbar);
@@ -130,7 +137,7 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
         });
 
         binding.detail.resendVerificationMail.setOnClickListener(view -> {
-            getPresenter().resendVerificationMail();
+            organizerDetailViewModel.resendVerificationMail();
         });
 
         return binding.getRoot();
@@ -140,8 +147,12 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
     public void onStart() {
         super.onStart();
         setupRefreshListener();
-        getPresenter().attach(this);
-        getPresenter().start();
+        organizerDetailViewModel.loadOrganizer(false);
+        organizerDetailViewModel.getProgress().observe(this, this::showProgress);
+        organizerDetailViewModel.getSuccess().observe(this, this::onSuccess);
+        organizerDetailViewModel.getError().observe(this, this::showError);
+        organizerDetailViewModel.getUserLiveData().observe(this, this::setUser);
+        binding.setUser(organizerDetailViewModel.getUser());
     }
 
     @Override
@@ -186,7 +197,7 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
                 Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
                 String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
                 ImageData imageData = new ImageData(encodedImage);
-                getPresenter().uploadImage(imageData);
+                organizerDetailViewModel.uploadImage(imageData);
                 Glide.with(getContext()).load(bitmap)
                     .apply(RequestOptions.circleCropTransform())
                     .into(binding.detail.profilePicture);
@@ -211,7 +222,7 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
 
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            getPresenter().loadOrganizer(true);
+            organizerDetailViewModel.loadOrganizer(true);
         });
     }
 
@@ -272,18 +283,18 @@ public class OrganizerDetailFragment extends BaseFragment<OrganizerDetailPresent
     }
 
     @Override
-    public Lazy<OrganizerDetailPresenter> getPresenterProvider() {
-        return presenterProvider;
-    }
-
-    @Override
     protected int getTitle() {
         return R.string.title_activity_organizer_detail;
     }
 
     @Override
-    public void showResult(User item) {
-        binding.setUser(item);
+    public void setUser(User user) {
+        binding.setUser(user);
+    }
+
+    @Override
+    public void onSuccess(String message) {
+        ViewUtils.showSnackbar(binding.mainContent, message);
     }
 
     @Override

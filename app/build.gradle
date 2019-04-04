@@ -111,6 +111,7 @@ configurations.all { config ->
 check {
     abortOnError false
     findbugs { skip true }
+    checkstyle { skip true }
 }
 
 dependencies {
@@ -122,8 +123,11 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0-beta01"
     implementation "androidx.recyclerview:recyclerview:1.0.0-beta01"
     implementation "com.google.android.material:material:1.0.0-beta01"
+    implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.palette:palette:1.0.0-beta01"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
+    implementation "com.android.support:support-media-compat:${versions.support_lib}" // GradleIncompatible Workaround
+    implementation "com.android.support:support-v4:${versions.support_lib}" // GradleIncompatible Workaround
     playStoreImplementation "com.google.android.gms:play-services-vision:${versions.play_services}"
     playStoreImplementation "com.google.android.gms:play-services-places:${versions.play_services}"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'

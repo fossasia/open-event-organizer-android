@@ -54,13 +54,6 @@
                         bind:event="@{event}" />
                 </androidx.core.widget.NestedScrollView>
 
-                <Button
-                    style="@style/SubmitButton"
-                    android:id="@+id/submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/submit_button_width"
-                    android:text="@string/done"/>
-
                 <FrameLayout
                     android:layout_width="@dimen/progressbar_large"
                     android:layout_height="@dimen/progressbar_large"

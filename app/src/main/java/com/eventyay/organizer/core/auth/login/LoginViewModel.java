@@ -35,7 +35,7 @@ public class LoginViewModel extends ViewModel {
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<Login> decryptedLogin = new MutableLiveData<>();
     private final SingleEventLiveData<Void> actionLogin = new SingleEventLiveData<>();
-    private final SingleEventLiveData<Void> tokenSentAction = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Boolean> actionOpenResetPassword = new SingleEventLiveData<>();
 
     @Inject
     public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor,
@@ -77,6 +77,10 @@ public class LoginViewModel extends ViewModel {
         return actionLogin;
     }
 
+    public LiveData<Boolean> getActionOpenResetPassword() {
+        return actionOpenResetPassword;
+    }
+
     public void setBaseUrl(String url, boolean shouldSetDefaultUrl) {
         String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
         interceptor.setInterceptor(baseUrl);
@@ -111,11 +115,7 @@ public class LoginViewModel extends ViewModel {
         compositeDisposable.add(loginModel.requestToken(requestToken)
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
-            .subscribe(tokenSentAction::call,
+            .subscribe(() -> actionOpenResetPassword.setValue(true),
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
-    }
-
-    public LiveData<Void> getTokenSentAction() {
-        return tokenSentAction;
     }
 }
