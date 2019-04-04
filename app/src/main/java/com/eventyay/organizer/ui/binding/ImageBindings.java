@@ -8,11 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.github.florent37.glidepalette.GlidePalette;
-
-import com.eventyay.organizer.ui.GlideApp;
-import com.eventyay.organizer.ui.GlideRequest;
 
 import io.reactivex.functions.Consumer;
 import timber.log.Timber;
@@ -26,13 +25,13 @@ public final class ImageBindings {
         // Never Called
     }
 
-    private static void setGlideImage(ImageView imageView, String url, Drawable drawable, Consumer<GlideRequest<Drawable>> consumer) {
+    private static void setGlideImage(ImageView imageView, String url, Drawable drawable, Consumer<RequestBuilder<Drawable>> consumer) {
         if (TextUtils.isEmpty(url)) {
             if (drawable != null)
                 imageView.setImageDrawable(drawable);
             return;
         }
-        GlideRequest<Drawable> request = GlideApp
+        RequestBuilder<Drawable> request = Glide
             .with(imageView.getContext())
             .load(Uri.parse(url));
 
