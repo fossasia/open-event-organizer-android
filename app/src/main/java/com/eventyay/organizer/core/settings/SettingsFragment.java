@@ -4,9 +4,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.preference.PreferenceManager;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +72,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 .replace(R.id.fragment_container, LegalPreferenceFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
+            return true;
+        });
+
+        findPreference(getString(R.string.share_app_key)).setOnPreferenceClickListener(preference -> {
+            Intent sharingIntent = new Intent();
+            sharingIntent.setAction(Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            String shareSub = getString(R.string.msg_check_out);
+            String shareBody = getString(R.string.msg_check_this_out) + getString(R.string.play_store_link);
+            String shareTitle = getString(R.string.msg_share_using);
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, shareTitle));
             return true;
         });
 

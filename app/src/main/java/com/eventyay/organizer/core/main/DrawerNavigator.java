@@ -2,14 +2,15 @@ package com.eventyay.organizer.core.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.VisibleForTesting;
-import android.support.v7.app.AlertDialog;
+
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import android.view.MenuItem;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.event.about.AboutEventActivity;
 import com.eventyay.organizer.core.event.create.CreateEventActivity;
+import com.eventyay.organizer.utils.BrowserUtils;
 
 import static com.eventyay.organizer.core.event.create.CreateEventActivity.EVENT_ID;
 
@@ -49,9 +50,7 @@ class DrawerNavigator {
             intent.putExtra(AboutEventActivity.EVENT_ID, fragmentNavigator.getEventId());
             context.startActivity(intent);
         } else if (id == R.id.nav_suggestion) {
-            Intent googleFormIntent = new Intent(Intent.ACTION_VIEW);
-            googleFormIntent.setData(Uri.parse(GOOGLE_FORM_LINK));
-            context.startActivity(googleFormIntent);
+            BrowserUtils.launchUrl(context, GOOGLE_FORM_LINK);
         } else
             fragmentNavigator.loadFragment(id);
     }

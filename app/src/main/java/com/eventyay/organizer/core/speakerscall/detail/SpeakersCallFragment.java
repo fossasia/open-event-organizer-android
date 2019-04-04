@@ -1,9 +1,9 @@
 package com.eventyay.organizer.core.speakerscall.detail;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -82,6 +82,12 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ViewUtils.showView(binding.emptyView, false);
+    }
+
+    @Override
     protected int getTitle() {
         return R.string.speakers_call;
     }
@@ -94,8 +100,10 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
+            ViewUtils.showView(binding.emptyView, false);
             getPresenter().loadSpeakersCall(true);
         });
     }

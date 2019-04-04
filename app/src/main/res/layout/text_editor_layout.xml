@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="track"
+            type="com.eventyay.organizer.data.tracks.Track" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <jp.wasabeef.richeditor.RichEditor
+            android:id="@+id/editor"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="@dimen/spacing_normal"
+            android:layout_margin="@dimen/spacing_normal"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:layout_gravity="bottom">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/action_undo"
+                    android:layout_width="@dimen/editor_image_button"
+                    android:layout_height="@dimen/editor_image_button"
+                    android:contentDescription="@string/action_undo"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_undo"
+                    />
+
+                <ImageButton
+                    android:id="@+id/action_redo"
+                    android:layout_width="@dimen/editor_image_button"
+                    android:layout_height="@dimen/editor_image_button"
+                    android:contentDescription="@string/action_redo"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_redo"
+                    />
+
+                <ImageButton
+                    android:id="@+id/action_bold"
+                    android:layout_width="@dimen/editor_image_button"
+                    android:layout_height="@dimen/editor_image_button"
+                    android:contentDescription="@string/format_bold"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_format_bold"
+                    />
+
+                <ImageButton
+                    android:id="@+id/action_italic"
+                    android:layout_width="@dimen/editor_image_button"
+                    android:layout_height="@dimen/editor_image_button"
+                    android:contentDescription="@string/format_italic"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_format_italic"
+                    />
+
+                <ImageButton
+                    android:id="@+id/action_strikethrough"
+                    android:layout_width="@dimen/editor_image_button"
+                    android:layout_height="@dimen/editor_image_button"
+                    android:contentDescription="@string/format_strikethrough"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_strikethrough"
+                    />
+
+                <ImageButton
+                    android:id="@+id/action_insert_bullets"
+                    android:layout_width="@dimen/editor_image_button"
+                    android:layout_height="@dimen/editor_image_button"
+                    android:contentDescription="@string/list_bullets"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_format_list_bulleted"
+                    />
+
+                <ImageButton
+                    android:id="@+id/action_insert_numbers"
+                    android:layout_width="@dimen/editor_image_button"
+                    android:layout_height="@dimen/editor_image_button"
+                    android:contentDescription="@string/list_numbered"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_format_list_numbered"
+                    />
+
+                <ImageButton
+                    android:id="@+id/action_insert_link"
+                    android:layout_width="@dimen/editor_image_button"
+                    android:layout_height="@dimen/editor_image_button"
+                    android:contentDescription="@string/action_insert_link"
+                    android:background="?android:attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_insert_link"
+                    />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+</layout>

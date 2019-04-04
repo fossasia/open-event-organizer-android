@@ -1,6 +1,6 @@
 package com.eventyay.organizer.ui;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.databinding.HeaderLayoutBinding;
 

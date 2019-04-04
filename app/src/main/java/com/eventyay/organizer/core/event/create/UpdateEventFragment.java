@@ -1,18 +1,22 @@
 package com.eventyay.organizer.core.event.create;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -30,11 +34,16 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.event.Event;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.databinding.EventCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.ui.editor.RichEditorActivity;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,6 +54,7 @@ import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 import static com.eventyay.organizer.ui.ViewUtils.showView;
+import static com.eventyay.organizer.ui.editor.RichEditorActivity.TAG_RICH_TEXT;
 
 public class UpdateEventFragment extends BaseFragment implements CreateEventView {
 
@@ -61,6 +71,8 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     private final LocationPicker locationPicker = new LocationPicker();
 
     private static final int PLACE_PICKER_REQUEST = 1;
+    private static final int RICH_TEXT_REQUEST = 2;
+    private static final int IMAGE_CHOOSER_REQUEST_CODE = 3;
     private CreateEventViewModel createEventViewModel;
 
     public static UpdateEventFragment newInstance() {
@@ -97,10 +109,17 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         setHasOptionsMenu(true);
 
-        binding.submit.setOnClickListener(view -> {
-            if (validator.validate()) {
-                createEventViewModel.updateEvent();
-            }
+        binding.form.eventOriginalImageLayout.setOnClickListener(view -> {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
+        });
+
+        binding.form.description.setOnClickListener(view -> {
+            Intent richEditorIntent = new Intent(getContext(), RichEditorActivity.class);
+            richEditorIntent.putExtra(TAG_RICH_TEXT, binding.form.description.getText().toString());
+            startActivityForResult(richEditorIntent, RICH_TEXT_REQUEST);
         });
 
         setupSpinners();
@@ -147,6 +166,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             setEvent(event);
             setPaymentBinding(event);
         });
+        createEventViewModel.getImageUrlLiveData().observe(this, this::setImageUrl);
         createEventViewModel.getCloseState().observe(this, isClose -> close());
 
         validate(binding.form.ticketUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
@@ -156,13 +176,23 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         validate(binding.form.paypalEmailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
 
         createEventViewModel.loadEvents(eventId);
+
+        if (binding.getEvent() != null && !TextUtils.isEmpty(binding.getEvent().getDescription())) {
+            binding.form.description.setText(binding.getEvent().getDescription());
+            binding.form.description.setTextColor(Color.BLACK);
+        } else {
+            binding.form.description.setText(getString(R.string.describe_event));
+            binding.form.description.setTextColor(Color.GRAY);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_share_event:
-                shareEvent();
+            case R.id.action_menu_done:
+                if (validator.validate()) {
+                    createEventViewModel.updateEvent();
+                }
                 break;
             default:
         }
@@ -172,23 +202,15 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        MenuItem menuItem = menu.findItem(R.id.action_share_event);
-        Drawable shareIcon = menu.findItem(R.id.action_share_event).getIcon();
+        MenuItem menuItem = menu.findItem(R.id.action_menu_done);
+        Drawable shareIcon = menu.findItem(R.id.action_menu_done).getIcon();
         shareIcon.setColorFilter(getResources().getColor(android.R.color.black), PorterDuff.Mode.SRC_ATOP);
         menuItem.setVisible(true);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_share, menu);
+        inflater.inflate(R.menu.menu_done, menu);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    public void shareEvent() {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(createEventViewModel.getEvent()));
-        shareIntent.setType("text/plain");
-        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
 
     @Override
@@ -279,8 +301,6 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             if ("YOUR_API_KEY".equals(placesApiKey)) {
                 Timber.d("Add Google Places API key in AndroidManifest.xml file to use Place Picker.");
                 binding.form.buttonPlacePicker.setVisibility(View.GONE);
-                binding.form.layoutLatitude.setVisibility(View.VISIBLE);
-                binding.form.layoutLongitude.setVisibility(View.VISIBLE);
                 showLocationLayouts();
             }
         } catch (PackageManager.NameNotFoundException e) {
@@ -313,6 +333,26 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             binding.form.searchableLocationName.setText(
                 createEventViewModel.getSearchableLocationName(location.getAddress().toString())
             );
+        } else if (requestCode == RICH_TEXT_REQUEST && resultCode == RESULT_OK) {
+            String description = data.getStringExtra(TAG_RICH_TEXT);
+            if (!TextUtils.isEmpty(description)) {
+                createEventViewModel.getEvent().setDescription(description);
+                binding.form.description.setText(description);
+                binding.form.description.setTextColor(Color.BLACK);
+            }
+        } else if (requestCode == IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            try {
+                InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
+                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
+                ImageData imageData = new ImageData(encodedImage);
+                createEventViewModel.uploadImage(imageData);
+                binding.form.eventOriginalImage.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                Timber.e(e, "File not found");
+                Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -341,6 +381,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         binding.form.enableTax.setChecked(event.isTaxEnabled);
         binding.form.ticketingDetails.setChecked(event.isTicketingEnabled);
         binding.form.organizerInfo.setChecked(event.hasOrganizerInfo);
+        binding.form.onlineEvent.setChecked(event.isEventOnline);
     }
 
     @Override
@@ -351,5 +392,9 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         binding.form.chequePayment.setChecked(event.canPayByCheque);
         binding.form.onsitePayment.setChecked(event.canPayOnsite);
         binding.setEvent(event);
+    }
+
+    public void setImageUrl(ImageUrl imageUrl) {
+        binding.form.originalImageUrl.setText(imageUrl.getUrl());
     }
 }

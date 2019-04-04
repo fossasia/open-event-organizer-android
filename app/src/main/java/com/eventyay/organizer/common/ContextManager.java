@@ -1,6 +1,6 @@
 package com.eventyay.organizer.common;
 
-import android.databinding.ObservableField;
+import androidx.databinding.ObservableField;
 
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.user.User;

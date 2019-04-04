@@ -1,10 +1,8 @@
 package com.eventyay.organizer.core.settings;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.preference.PreferenceManager;
+import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +11,7 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.ui.ViewUtils;
 
+import com.eventyay.organizer.utils.BrowserUtils;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 public class LegalPreferenceFragment extends PreferenceFragmentCompat {
@@ -40,23 +39,17 @@ public class LegalPreferenceFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.legal_preferences, rootKey);
 
         findPreference(getString(R.string.privacy_policy_key)).setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(PRIVACY_POLICY_URL));
-            startActivity(intent);
+            BrowserUtils.launchUrl(getContext(), PRIVACY_POLICY_URL);
             return true;
         });
 
         findPreference(getString(R.string.terms_of_service_key)).setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(TERMS_OF_USE_URL));
-            startActivity(intent);
+            BrowserUtils.launchUrl(getContext(), TERMS_OF_USE_URL);
             return true;
         });
 
         findPreference(getString(R.string.cookie_policy_key)).setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(COOKIE_POLICY_URL));
-            startActivity(intent);
+            BrowserUtils.launchUrl(getContext(), COOKIE_POLICY_URL);
             return true;
         });
     }

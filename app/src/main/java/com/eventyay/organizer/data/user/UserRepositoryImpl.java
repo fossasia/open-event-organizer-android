@@ -1,10 +1,13 @@
 package com.eventyay.organizer.data.user;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.Repository;
 import com.eventyay.organizer.data.auth.AuthHolder;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUploadApi;
+import com.eventyay.organizer.data.image.ImageUrl;
 
 import javax.inject.Inject;
 
@@ -17,12 +20,14 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserApi userApi;
     private final Repository repository;
     private final AuthHolder authHolder;
+    private final ImageUploadApi imageUploadApi;
 
     @Inject
-    public UserRepositoryImpl(UserApi userApi, Repository repository, AuthHolder authHolder) {
+    public UserRepositoryImpl(UserApi userApi, Repository repository, AuthHolder authHolder, ImageUploadApi imageUploadApi) {
         this.userApi = userApi;
         this.repository = repository;
         this.authHolder = authHolder;
+        this.imageUploadApi = imageUploadApi;
     }
 
     @Override
@@ -56,6 +61,19 @@ public class UserRepositoryImpl implements UserRepository {
             .doOnNext(updatedUser -> repository
                 .update(User.class, updatedUser)
                 .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Observable<ImageUrl> uploadOrganizerImage(ImageData imageData) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return imageUploadApi
+            .postOriginalImage(imageData)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }

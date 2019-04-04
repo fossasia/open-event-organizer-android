@@ -1,6 +1,6 @@
 package com.eventyay.organizer.data.order;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.data.order.model.OrderReceiptRequest;
 
@@ -8,6 +8,8 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public interface OrderRepository {
+
+    Observable<Order> createOrder(Order order);
 
     Observable<Order> getOrders(long id, boolean reload);
 

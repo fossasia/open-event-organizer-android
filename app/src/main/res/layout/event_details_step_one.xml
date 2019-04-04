@@ -14,7 +14,7 @@
             type="com.eventyay.organizer.data.event.Event" />
     </data>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -38,13 +38,13 @@
                     android:padding="@dimen/spacing_extra_small"
                     app:srcCompat="@drawable/ic_ticket" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_small"
                     android:padding="@dimen/spacing_extra_small">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -52,7 +52,68 @@
                         android:text="@={ event.name }"
                         app:validateEmpty="@{true}" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/spacing_big"
+                android:layout_marginStart="@dimen/spacing_big"
+                android:padding="@dimen/spacing_extra_small">
+
+                <CheckBox
+                    android:id="@+id/organizer_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setHasOrganizerInfo(checked) }"
+                    android:text="@string/add_organizer_information" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/organizer_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/organizer_name"
+                        android:inputType="textMultiLine"
+                        android:text="@={ event.organizerName }" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{ organizerInfo.checked ? View.VISIBLE : View.GONE }">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/organizer_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/organizer_description"
+                        android:inputType="textMultiLine"
+                        android:text="@={ event.organizerDescription }" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/description"
+                        android:inputType="textMultiLine"
+                        android:text="@={ event.description }" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -104,7 +165,7 @@
                         android:padding="@dimen/spacing_extra_small"
                         app:srcCompat="@drawable/ic_clock" />
 
-                    <android.support.v7.widget.AppCompatSpinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/timezone_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -121,6 +182,21 @@
                 android:divider="?android:dividerHorizontal"
                 android:orientation="vertical"
                 android:showDividers="beginning">
+
+                <CheckBox
+                    android:id="@+id/online_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setEventOnline(checked) }"
+                    android:padding="@dimen/spacing_extra_small"
+                    android:text="@string/event_online" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="@{ onlineEvent.checked ? View.GONE : View.VISIBLE }">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -158,12 +234,12 @@
                         android:padding="@dimen/spacing_extra_small"
                         app:srcCompat="@drawable/ic_location" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/spacing_extra_small">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/searchable_location_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -171,7 +247,7 @@
                             android:inputType="textPostalAddress|textCapWords"
                             android:text="@={ event.searchableLocationName }"/>
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -189,12 +265,12 @@
                         android:padding="@dimen/spacing_extra_small"
                         app:srcCompat="@drawable/ic_location" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/spacing_extra_small">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/location_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -202,69 +278,7 @@
                             android:inputType="textPostalAddress|textMultiLine|textCapWords"
                             android:text="@={ event.locationName }" />
 
-                    </android.support.design.widget.TextInputLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_latitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/latitude"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_location" />
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/latitude"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/latitude"
-                            android:inputType="numberDecimal"
-                            android:text="@={ BindingAdapters.doubleToStr(event.latitude) }" />
-
-                    </android.support.design.widget.TextInputLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_longitude"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/longitude"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_location" />
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/longitude"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/longitude"
-                            android:inputType="numberDecimal"
-                            android:text="@={ BindingAdapters.doubleToStr(event.longitude) }" />
-
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <CheckBox
@@ -274,12 +288,13 @@
                     android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/show_map" />
-
+                </LinearLayout>
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="30dp" />
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

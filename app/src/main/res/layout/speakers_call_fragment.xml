@@ -14,16 +14,25 @@
             type="com.eventyay.organizer.data.speakerscall.SpeakersCall" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_top_surface">
 
         <FrameLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/empty_layout" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v4.widget.SwipeRefreshLayout
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -60,7 +69,7 @@
                         android:foreground="?selectableItemBackground"
                         android:orientation="vertical">
 
-                        <android.support.v7.widget.CardView
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/spacing_normal"
@@ -93,7 +102,7 @@
                                     android:textSize="@dimen/text_size_normal" />
                             </LinearLayout>
 
-                        </android.support.v7.widget.CardView>
+                        </androidx.cardview.widget.CardView>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -167,7 +176,7 @@
                     </LinearLayout>
 
                 </FrameLayout>
-            </android.support.v4.widget.SwipeRefreshLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </FrameLayout>
 
@@ -177,12 +186,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:visibility="gone"
-            android:elevation="1dp"
+            android:elevation="@dimen/spacing_tiniest"
             android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/spacing_normal">
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/createSpeakersCallFab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -190,15 +199,6 @@
                 app:fabSize="normal"
                 app:srcCompat="@drawable/ic_add"
                 app:tint="@android:color/white" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-
-            <include layout="@layout/empty_layout" />
         </FrameLayout>
 
         <FrameLayout
@@ -210,5 +210,5 @@
             <include layout="@layout/progressbar_layout" />
         </FrameLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

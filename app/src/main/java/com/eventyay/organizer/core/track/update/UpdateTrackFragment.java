@@ -1,9 +1,11 @@
 package com.eventyay.organizer.core.track.update;
 
-import android.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +21,20 @@ import com.eventyay.organizer.ui.ViewUtils;
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
-import dagger.Lazy;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-public class UpdateTrackFragment extends BaseBottomSheetFragment<UpdateTrackPresenter> implements UpdateTrackView {
+public class UpdateTrackFragment extends BaseBottomSheetFragment implements UpdateTrackView {
 
     private static final String TRACK_ID = "id";
     private ColorPicker colorPickerDialog;
 
     @Inject
-    Lazy<UpdateTrackPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
+
     private Validator validator;
     private TrackCreateLayoutBinding binding;
+    private UpdateTrackViewModel updateTrackViewModel;
     private long trackId;
 
     public static UpdateTrackFragment newInstance(long id) {
@@ -46,14 +49,19 @@ public class UpdateTrackFragment extends BaseBottomSheetFragment<UpdateTrackPres
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding =  DataBindingUtil.inflate(inflater, R.layout.track_create_layout, container, false);
+        updateTrackViewModel = ViewModelProviders.of(this, viewModelFactory).get(UpdateTrackViewModel.class);
         validator = new Validator(binding.form);
 
         Bundle bundle = getArguments();
         trackId = bundle.getLong(TRACK_ID);
 
         binding.submit.setOnClickListener(view -> {
+            binding.form.trackName.setText(binding.form.trackName.getText().toString().trim());
+            binding.form.trackDescription.setText(binding.form.trackDescription.getText().toString().trim());
+            binding.form.trackColor.setText(binding.form.trackColor.getText().toString().trim());
+
             if (validator.validate())
-                getPresenter().updateTrack();
+                updateTrackViewModel.updateTrack();
         });
 
         return binding.getRoot();
@@ -62,15 +70,20 @@ public class UpdateTrackFragment extends BaseBottomSheetFragment<UpdateTrackPres
     @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(this);
-        getPresenter().loadTrack(trackId);
+        updateTrackViewModel.getProgress().observe(this, this::showProgress);
+        updateTrackViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
+        updateTrackViewModel.getSuccess().observe(this, this::onSuccess);
+        updateTrackViewModel.getError().observe(this, this::showError);
+        updateTrackViewModel.getTrackLiveData().observe(this, this::setTrack);
+        updateTrackViewModel.loadTrack(trackId);
+        binding.setTrack(updateTrackViewModel.getTrack());
     }
 
     private void setColorPicker() {
         if (colorPickerDialog == null)
-            colorPickerDialog = new ColorPicker(getActivity(), getPresenter().getRed(), getPresenter().getGreen(), getPresenter().getBlue());
+            colorPickerDialog = new ColorPicker(getActivity(), updateTrackViewModel.getRed(), updateTrackViewModel.getGreen(), updateTrackViewModel.getBlue());
 
-        binding.form.colorPicker.setBackgroundColor(getPresenter().getColorRGB());
+        binding.form.colorPicker.setBackgroundColor(updateTrackViewModel.getColorRGB());
 
         binding.form.colorPicker.setOnClickListener(view -> {
             colorPickerDialog.show();
@@ -87,11 +100,6 @@ public class UpdateTrackFragment extends BaseBottomSheetFragment<UpdateTrackPres
     public void setTrack(Track track) {
         binding.setTrack(track);
         setColorPicker();
-    }
-
-    @Override
-    public Lazy<UpdateTrackPresenter> getPresenterProvider() {
-        return presenterProvider;
     }
 
     @Override

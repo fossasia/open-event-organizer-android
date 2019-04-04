@@ -1,15 +1,15 @@
 package com.eventyay.organizer.core.organizer.update;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -41,6 +41,7 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
     private UpdateOrganizerLayoutBinding binding;
     private Validator validator;
     private UpdateOrganizerInfoViewModel updateOrganizerInfoViewModel;
+    private AlertDialog saveAlertDialog;
 
     public static UpdateOrganizerInfoFragment newInstance() {
         return new UpdateOrganizerInfoFragment();
@@ -55,16 +56,11 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
         updateOrganizerInfoViewModel = ViewModelProviders.of(this, viewModelFactory).get(UpdateOrganizerInfoViewModel.class);
         validator = new Validator(binding.form);
 
-        AppCompatActivity activity = ((AppCompatActivity) getActivity());
-        activity.setSupportActionBar(binding.toolbar);
-
-        ActionBar actionBar = activity.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        setHasOptionsMenu(true);
+        Toolbar toolbar = binding.toolbar;
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_nav_back));
+        toolbar.setNavigationOnClickListener(view -> {
+            backPressed();
+        });
 
         binding.submit.setOnClickListener(view -> {
             if (validator.validate())
@@ -151,4 +147,28 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
     public void onSuccess(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void backPressed() {
+        showSaveAlertDialog();
+    }
+
+    private void showSaveAlertDialog() {
+        if (saveAlertDialog == null) {
+            saveAlertDialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.AlertDialog))
+                .setMessage(getString(R.string.save_changes))
+                .setPositiveButton(getString(R.string.save), (dialog, which) -> {
+                    updateOrganizerInfoViewModel.updateOrganizer();
+                    dialog.dismiss();
+                    dismiss();
+                })
+                .setNegativeButton(getString(R.string.discard), (dialog, which) -> {
+                    dialog.dismiss();
+                    dismiss();
+                })
+                .create();
+        }
+        saveAlertDialog.show();
+    }
+
 }

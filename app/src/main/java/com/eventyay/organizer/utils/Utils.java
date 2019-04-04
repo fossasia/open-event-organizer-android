@@ -1,7 +1,17 @@
 package com.eventyay.organizer.utils;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.util.Base64;
+
 import com.eventyay.organizer.data.event.Event;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -71,4 +81,28 @@ public final class Utils {
         return data.toString();
     }
 
+    public static String encodeImage(Context context, Bitmap bm, Uri selectedImageUri) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+        ContentResolver contentResolver = context.getContentResolver();
+        String type = contentResolver.getType(selectedImageUri);
+
+        return "data:" + type + ";base64," + encImage;
+    }
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
 }

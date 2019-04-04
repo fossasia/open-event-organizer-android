@@ -1,10 +1,13 @@
 package com.eventyay.organizer.data.event;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.Repository;
 import com.eventyay.organizer.data.auth.AuthHolder;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUploadApi;
+import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.data.ticket.Ticket;
 
 import java.util.List;
@@ -22,12 +25,14 @@ public class EventRepositoryImpl implements EventRepository {
     private final Repository repository;
     private final EventApi eventApi;
     private final AuthHolder authHolder;
+    private final ImageUploadApi imageUploadApi;
 
     @Inject
-    public EventRepositoryImpl(Repository repository, EventApi eventApi, AuthHolder authHolder) {
+    public EventRepositoryImpl(Repository repository, EventApi eventApi, AuthHolder authHolder, ImageUploadApi imageUploadApi) {
         this.repository = repository;
         this.eventApi = eventApi;
         this.authHolder = authHolder;
+        this.imageUploadApi = imageUploadApi;
     }
 
     private void saveEvent(Event event) {
@@ -126,6 +131,19 @@ public class EventRepositoryImpl implements EventRepository {
 
         return eventApi
             .getEventStatistics(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @NonNull
+    @Override
+    public Observable<ImageUrl> uploadEventImage(ImageData imageData) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return imageUploadApi
+            .postOriginalImage(imageData)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }

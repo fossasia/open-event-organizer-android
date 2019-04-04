@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="ticket"
+            type="com.eventyay.organizer.data.ticket.Ticket" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:background="@color/grey_400"
+            android:layout_height="@dimen/spacing_tiniest"
+            android:layout_width="match_parent" />
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_normal">
+
+            <TextView
+                android:id="@+id/ticket_name"
+                android:layout_width="@dimen/spacing_zero"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text='@{ ticket.name }'
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_normal"/>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/ticket_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked='@{ ticket.autoCheckinEnabled }'/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

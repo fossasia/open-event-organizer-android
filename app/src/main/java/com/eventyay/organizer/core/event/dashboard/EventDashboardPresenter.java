@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.event.dashboard;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -112,7 +112,7 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
         if (Event.STATE_PUBLISHED.equals(event.state)) {
             getView().switchEventState();
             getView().showEventUnpublishDialog();
-        } else if (Utils.isEmpty(event.getLocationName())) {
+        } else if (Utils.isEmpty(event.getLocationName()) && !event.isEventOnline) {
             getView().switchEventState();
             getView().showEventLocationDialog();
         } else {

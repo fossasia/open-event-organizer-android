@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.event.about;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -25,7 +25,7 @@ import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErron
 import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousResultRefresh;
 import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveRefresh;
 
-public class AboutEventPresenter extends AbstractDetailPresenter<Long, AboutEventVew> {
+public class AboutEventPresenter extends AbstractDetailPresenter<Long, AboutEventView> {
 
     private final EventRepository eventRepository;
     private final CopyrightRepository copyrightRepository;

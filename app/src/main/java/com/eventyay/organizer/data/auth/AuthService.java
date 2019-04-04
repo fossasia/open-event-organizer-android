@@ -5,6 +5,8 @@ import com.eventyay.organizer.data.auth.model.EmailRequest;
 import com.eventyay.organizer.data.auth.model.EmailValidationResponse;
 import com.eventyay.organizer.data.auth.model.Login;
 import com.eventyay.organizer.data.auth.model.RequestToken;
+import com.eventyay.organizer.data.auth.model.ResendVerificationMail;
+import com.eventyay.organizer.data.auth.model.ResendVerificationMailResponse;
 import com.eventyay.organizer.data.auth.model.SubmitToken;
 import com.eventyay.organizer.data.user.User;
 
@@ -28,4 +30,6 @@ public interface AuthService {
     Completable changePassword(ChangePassword changePassword);
 
     Observable<EmailValidationResponse> checkEmailRegistered(EmailRequest emailRequest);
+
+    Observable<ResendVerificationMailResponse> resendVerificationMail(ResendVerificationMail resendVerificationMail);
 }

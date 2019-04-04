@@ -1,6 +1,6 @@
 package com.eventyay.organizer.data.ticket;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.utils.CompareUtils;
 

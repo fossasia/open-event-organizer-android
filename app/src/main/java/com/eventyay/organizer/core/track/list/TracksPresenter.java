@@ -1,7 +1,7 @@
 package com.eventyay.organizer.core.track.list;
 
 
-import android.databinding.ObservableBoolean;
+import androidx.databinding.ObservableBoolean;
 import android.graphics.Color;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;

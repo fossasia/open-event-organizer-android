@@ -1,12 +1,14 @@
 package com.eventyay.organizer.core.event.create;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +33,7 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
     ViewModelProvider.Factory viewModelFactory;
 
     @BindView(R.id.pager)
-    ViewPager pager;
+    EventsViewPager pager;
 
     @BindView(R.id.stepper_indicator)
     StepperIndicator indicator;
@@ -47,6 +49,9 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
 
     public static final String EVENT_ID = "event_id";
     private static final int PAGE_COUNT = 3;
+    private AlertDialog saveAlertDialog;
+    private CreateEventViewModel createEventViewModel;
+    private long id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
 
         indicator.setViewPager(pager, pager.getAdapter().getCount());
 
-        long id = getIntent().getLongExtra(EVENT_ID, -1);
+        id = getIntent().getLongExtra(EVENT_ID, -1);
 
         if (savedInstanceState == null && id != -1) {
             indicator.addOnStepClickListener(step -> pager.setCurrentItem(step, true));
@@ -91,7 +96,8 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
             }
         });
 
-        CreateEventViewModel createEventViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateEventViewModel.class);
+        createEventViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateEventViewModel.class);
+        createEventViewModel.getCloseState().observe(this, isClose -> close());
 
         btnNext.setOnClickListener(v -> {
             int currentPosition = pager.getCurrentItem();
@@ -128,6 +134,29 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
 
     public int getItem() {
         return pager.getCurrentItem();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (saveAlertDialog == null && id != -1) {
+            saveAlertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialog))
+                .setMessage(getString(R.string.save_changes))
+                .setPositiveButton(getString(R.string.save), (dialog, which) -> {
+                    createEventViewModel.updateEvent();
+                })
+                .setNegativeButton(getString(R.string.discard), (dialog, which) -> {
+                    dialog.dismiss();
+                    super.onBackPressed();
+                })
+                .create();
+            saveAlertDialog.show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void close() {
+        finish();
     }
 
 }

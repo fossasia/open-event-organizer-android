@@ -1,14 +1,14 @@
 package com.eventyay.organizer.core.event.about;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +34,7 @@ import dagger.Lazy;
 import io.reactivex.disposables.CompositeDisposable;
 
 @SuppressWarnings("PMD.TooManyMethods")
-public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implements AboutEventVew {
+public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implements AboutEventView {
 
     private AboutEventFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;

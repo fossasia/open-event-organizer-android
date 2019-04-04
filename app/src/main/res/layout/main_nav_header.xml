@@ -45,8 +45,8 @@
 
                 <ImageView
                     android:id="@+id/profile"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/image_medium"
+                    android:layout_height="@dimen/image_medium"
                     app:circleImageUrl="@{ user.avatarUrl }"
                     app:placeholder="@{ @drawable/ic_account_circle }"
                     android:contentDescription="@string/profile_picture"

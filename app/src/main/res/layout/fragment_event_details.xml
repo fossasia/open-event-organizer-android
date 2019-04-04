@@ -23,29 +23,27 @@
             type="com.eventyay.organizer.data.order.OrderStatistics" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_top_surface">
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v4.widget.NestedScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingBottom="@dimen/spacing_normal">
+                android:layout_height="match_parent">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <android.support.v7.widget.SwitchCompat
+                    <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchEventState"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -74,7 +72,7 @@
                     <FrameLayout
                         android:id="@+id/frame_separator_one"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/spacing_tiniest"
                         android:background="@color/color_shadow"
                         android:layout_marginTop="@dimen/spacing_normal"
                         bind:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +109,7 @@
                     <FrameLayout
                         android:id="@+id/frame_separator_two"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/spacing_tiniest"
                         android:background="@color/color_shadow"
                         android:layout_marginTop="@dimen/spacing_normal"
                         bind:layout_constraintStart_toStartOf="parent"
@@ -191,8 +189,8 @@
 
                     <RelativeLayout
                         android:id="@+id/rl_separator"
-                        android:layout_width="1dp"
-                        android:layout_height="0dp"
+                        android:layout_width="@dimen/spacing_tiniest"
+                        android:layout_height="@dimen/spacing_zero"
                         android:background="@color/color_bottom_surface"
                         android:layout_marginTop="@dimen/spacing_normal"
                         android:layout_marginBottom="@dimen/spacing_normal"
@@ -265,7 +263,7 @@
                     <FrameLayout
                         android:id="@+id/frame_separator_four"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/spacing_tiniest"
                         android:background="@color/color_shadow"
                         android:layout_marginTop="@dimen/spacing_normal"
                         bind:layout_constraintStart_toStartOf="parent"
@@ -326,20 +324,11 @@
 
                     </FrameLayout>
 
-                    <FrameLayout
-                        android:id="@+id/frame_separator_six"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/spacing_small"
-                        android:background="@color/color_bottom_surface"
-                        bind:layout_constraintEnd_toEndOf="parent"
-                        bind:layout_constraintStart_toStartOf="parent"
-                        bind:layout_constraintTop_toBottomOf="@id/event_statistics_frame" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </android.support.constraint.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
 
-            </android.support.v4.widget.NestedScrollView>
-
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <FrameLayout
             android:id="@+id/progressBar"
@@ -350,5 +339,5 @@
 
             <include layout="@layout/progressbar_layout" />
         </FrameLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

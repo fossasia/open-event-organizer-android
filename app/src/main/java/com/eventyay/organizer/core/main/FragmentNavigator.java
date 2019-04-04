@@ -1,8 +1,8 @@
 package com.eventyay.organizer.core.main;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
@@ -10,6 +10,7 @@ import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
 import com.eventyay.organizer.core.event.list.EventListFragment;
 import com.eventyay.organizer.core.faq.list.FaqListFragment;
 import com.eventyay.organizer.core.feedback.list.FeedbackListFragment;
+import com.eventyay.organizer.core.orders.create.CreateOrderFragment;
 import com.eventyay.organizer.core.orders.list.OrdersFragment;
 import com.eventyay.organizer.core.settings.EventSettingsFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
@@ -45,10 +46,14 @@ class FragmentNavigator {
         this.eventId = eventId;
     }
 
-    void back() {
+    int back() {
+        int count = fragmentManager.getBackStackEntryCount();
         fragmentManager.popBackStack();
-        lastSelectedNavItemId = R.id.nav_dashboard;
-        dashboardActive = true;
+        if(count == 1) {
+            lastSelectedNavItemId = R.id.nav_dashboard;
+            dashboardActive = true;
+        }
+        return lastSelectedNavItemId;
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity"})
@@ -62,6 +67,9 @@ class FragmentNavigator {
         switch (navItemId) {
             case R.id.nav_dashboard:
                 fragment = EventDashboardFragment.newInstance(eventId);
+                break;
+            case R.id.nav_sell:
+                fragment = CreateOrderFragment.newInstance(eventId);
                 break;
             case R.id.nav_attendees:
                 fragment = AttendeesFragment.newInstance(eventId);
