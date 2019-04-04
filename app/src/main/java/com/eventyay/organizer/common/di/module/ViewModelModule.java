@@ -11,6 +11,7 @@ import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
 import com.eventyay.organizer.core.auth.signup.SignUpViewModel;
 import com.eventyay.organizer.core.auth.start.StartViewModel;
 import com.eventyay.organizer.core.event.copyright.CreateCopyrightViewModel;
+import com.eventyay.organizer.core.event.copyright.update.UpdateCopyrightViewModel;
 import com.eventyay.organizer.core.event.create.CreateEventViewModel;
 import com.eventyay.organizer.core.event.list.EventsViewModel;
 import com.eventyay.organizer.core.faq.create.CreateFaqViewModel;
@@ -19,6 +20,7 @@ import com.eventyay.organizer.core.main.OrganizerViewModel;
 import com.eventyay.organizer.core.orders.create.CreateOrderViewModel;
 import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.orders.list.OrdersViewModel;
+import com.eventyay.organizer.core.organizer.detail.OrganizerDetailViewModel;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
@@ -111,6 +113,11 @@ public abstract class ViewModelModule {
     
     @Binds
     @IntoMap
+    @ViewModelKey(UpdateCopyrightViewModel.class)
+    public abstract ViewModel bindUpdateCopyrightViewModel(UpdateCopyrightViewModel updateCopyrightViewModel);
+
+    @Binds
+    @IntoMap
     @ViewModelKey(CreateFaqViewModel.class)
     public abstract ViewModel bindCreateFaqViewModel(CreateFaqViewModel faqViewModel);
 
@@ -148,6 +155,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CheckInHistoryViewModel.class)
     public abstract ViewModel bindCheckInHistoryViewModel(CheckInHistoryViewModel checkInHistoryViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OrganizerDetailViewModel.class)
+    public abstract ViewModel bindOrganizerDetailViewModel(OrganizerDetailViewModel organizerDetailViewModel);
 
     @Binds
     @IntoMap
