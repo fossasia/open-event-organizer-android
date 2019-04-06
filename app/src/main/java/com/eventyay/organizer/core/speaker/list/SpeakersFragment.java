@@ -61,6 +61,10 @@ public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.speakers_fragment, container, false);
 
+        if (!getPresenter().getSpeakers().isEmpty()) {
+            getPresenter().loadSpeakers(false);
+        }
+
         return binding.getRoot();
     }
 

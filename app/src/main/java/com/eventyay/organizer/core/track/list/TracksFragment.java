@@ -81,6 +81,10 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
             openCreateTrackFragment();
         });
 
+        if (!getPresenter().getTracks().isEmpty()) {
+            getPresenter().loadTracks(false);
+        }
+
         return binding.getRoot();
     }
 

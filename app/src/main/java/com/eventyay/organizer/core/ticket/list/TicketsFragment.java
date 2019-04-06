@@ -72,6 +72,11 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
         binding.createTicketFab.setOnClickListener(view -> {
             openCreateTicketFragment();
        });
+
+        if (!getPresenter().getTickets().isEmpty()) {
+            getPresenter().loadTickets(false);
+        }
+
         return binding.getRoot();
     }
 

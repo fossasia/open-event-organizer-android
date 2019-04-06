@@ -81,6 +81,10 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
             openCreateFaqFragment();
         });
 
+        if (!getPresenter().getFaqs().isEmpty()) {
+            getPresenter().loadFaqs(false);
+        }
+
         return binding.getRoot();
     }
 

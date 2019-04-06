@@ -82,6 +82,10 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.sessions_fragment, container, false);
 
+        if (!getPresenter().getSessions().isEmpty()) {
+            getPresenter().loadSessions(false);
+        }
+
         return binding.getRoot();
     }
 

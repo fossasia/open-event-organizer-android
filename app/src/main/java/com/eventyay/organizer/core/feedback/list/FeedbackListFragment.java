@@ -63,6 +63,10 @@ public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> im
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.feedback_fragment, container, false);
 
+        if (!getPresenter().getFeedbacks().isEmpty()) {
+            getPresenter().loadFeedbacks(false);
+        }
+
         return binding.getRoot();
     }
 

@@ -80,6 +80,10 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
             openCreateSponsorFragment();
         });
 
+        if (!getPresenter().getSponsors().isEmpty()) {
+            getPresenter().loadSponsors(false);
+        }
+
         return binding.getRoot();
     }
 
