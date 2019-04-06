@@ -2,7 +2,7 @@ package com.eventyay.organizer.utils;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsIntent;
 
 public final class BrowserUtils {
 

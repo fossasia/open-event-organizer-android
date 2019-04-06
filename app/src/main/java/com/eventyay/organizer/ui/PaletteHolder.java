@@ -1,7 +1,7 @@
 package com.eventyay.organizer.ui;
 
 import android.graphics.drawable.Drawable;
-import android.support.v4.util.SparseArrayCompat;
+import androidx.collection.SparseArrayCompat;
 import android.view.ViewGroup;
 import android.widget.TextView;
 

@@ -1,6 +1,6 @@
 package com.eventyay.organizer.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.common.ContextManager;
 import org.threeten.bp.LocalDateTime;

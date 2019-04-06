@@ -1,7 +1,7 @@
 package com.eventyay.organizer.core.auth.start;
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.lifecycle.Observer;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.Observer;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.Preferences;

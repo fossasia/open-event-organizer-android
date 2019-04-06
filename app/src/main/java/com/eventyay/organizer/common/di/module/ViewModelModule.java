@@ -1,7 +1,7 @@
 package com.eventyay.organizer.common.di.module;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.eventyay.organizer.common.di.OrgaViewModelFactory;
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInViewModel;
