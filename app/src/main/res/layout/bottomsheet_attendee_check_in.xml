@@ -81,6 +81,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/attendee_id"
+                        android:textAllCaps="true"
+                        tools:text="Attendee ID" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_extra_small"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text="@{ checkinAttendee.id }"
+                        android:textColor="@android:color/black"
+                        tools:text="Attendee ID" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:padding="@dimen/spacing_extra_small"
                         android:text="@string/order_identifier"
                         android:textAllCaps="true"
