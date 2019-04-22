@@ -168,7 +168,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
     implementation 'com.github.jasminb:jsonapi-converter:0.9'
 
     // RxJava
@@ -235,7 +235,7 @@ dependencies {
     playStoreImplementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 
     //Testing
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0-alpha03', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0-alpha04', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation("androidx.arch.core:core-testing:2.1.0-alpha01", {
@@ -244,7 +244,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-core-utils'
     })
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-inline:2.26.0'
+    testImplementation 'org.mockito:mockito-inline:2.27.0'
     testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"
