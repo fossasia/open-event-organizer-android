@@ -624,6 +624,27 @@
                             android:onCheckedChanged="@{ (switch, checked) -> event.setCanPayByStripe(checked) }"
                             android:text="@string/accept_payment_through_stripe" />
 
+                        <ImageButton
+                            android:id="@+id/connect_with_stripe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_small"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:padding="0dp"
+                            android:src="@drawable/stripe_button"
+                            android:text="Connect with Stripe"
+                            android:visibility="@{stripePayment.checked? View.VISIBLE:View.GONE}" />
+
+                        <TextView
+                            android:id="@+id/text_revoke_auth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_small"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:text="@string/revoke_auth"
+                            android:textSize="@dimen/text_size_small"
+                            android:visibility="gone" />
+
                     </LinearLayout>
 
                     <LinearLayout

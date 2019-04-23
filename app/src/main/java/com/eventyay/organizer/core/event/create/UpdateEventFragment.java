@@ -14,6 +14,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+
+import com.eventyay.organizer.core.stripeauth.StripeLoginActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,6 +76,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     private static final int RICH_TEXT_REQUEST = 2;
     private static final int IMAGE_CHOOSER_REQUEST_CODE = 3;
     private CreateEventViewModel createEventViewModel;
+    private StripeLoginActivity stripeLoginActivity = new StripeLoginActivity();
 
     public static UpdateEventFragment newInstance() {
         return new UpdateEventFragment();
@@ -122,6 +125,11 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             startActivityForResult(richEditorIntent, RICH_TEXT_REQUEST);
         });
 
+        binding.form.connectWithStripe.setOnClickListener(view -> {
+            Intent intent = new Intent(getContext(), stripeLoginActivity.getClass());
+            startActivity(intent);
+        });
+
         setupSpinners();
         attachCountryList(createEventViewModel.getCountryList());
         attachCurrencyCodesList(createEventViewModel.getCurrencyCodesList());
@@ -129,6 +137,16 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         setupPlacePicker();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (stripeLoginActivity.getStripeConnected()) {
+            binding.form.textRevokeAuth.setVisibility(View.VISIBLE);
+            binding.form.stripePayment.setVisibility(View.GONE);
+            binding.form.connectWithStripe.setVisibility((View.GONE));
+        }
     }
 
     private void setupSpinners() {

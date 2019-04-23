@@ -59,6 +59,20 @@
         <activity android:name=".ui.editor.RichEditorActivity"
             android:label=""
             android:theme="@style/AppTheme.Main.Light"/>
+        <activity
+            android:name=".core.stripeauth.StripeLoginActivity"
+            android:theme="@style/AppTheme.Main.Light">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data
+                    android:scheme="https"
+                    android:host="eventyay.com"
+                    android:pathPrefix="/orders/stripe/callback/"/>
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
