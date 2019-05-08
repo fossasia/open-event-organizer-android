@@ -35,9 +35,8 @@ import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.SearchUtils;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -67,7 +66,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     private static final int SORTBYNAME = 0;
 
     private FastAdapter<Attendee> fastAdapter;
-    private StickyHeaderAdapter<Attendee> stickyHeaderAdapter;
 
     private final ScanningDecider scanningDecider = new ScanningDecider();
 
@@ -151,7 +149,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             fastItemAdapter.withComparator((Attendee a1, Attendee a2) -> a1.getFirstname().compareTo(a2.getFirstname()), true);
         }
         fastItemAdapter.setNewList(getPresenter().getAttendees());
-        stickyHeaderAdapter.setSortByName(sortBy == SORTBYTICKET);
         binding.setVariable(BR.attendees, getPresenter().getAttendees());
         binding.executePendingBindings();
     }
@@ -188,7 +185,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
-        //stickyHeaderAdapter.unregisterAdapterDataObserver(adapterDataObserver);
         if (searchView != null)
             searchView.setOnQueryTextListener(null);
     }
@@ -235,9 +231,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             }
         );
 
-        stickyHeaderAdapter = new StickyHeaderAdapter<>();
-        stickyHeaderAdapter.setSortByName(false);
-        fastAdapter = FastAdapter.with(Arrays.asList(fastItemAdapter, stickyHeaderAdapter));
+        fastAdapter = FastAdapter.with(Collections.singletonList(fastItemAdapter));
         fastAdapter.setHasStableIds(true);
         fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
 
@@ -268,13 +262,10 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
-        recyclerView.addItemDecoration(decoration);
         observer = new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
                 super.onChanged();
-                decoration.invalidateHeaders();
             }
         };
         fastAdapter.registerAdapterDataObserver(observer);

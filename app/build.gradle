@@ -143,7 +143,7 @@ dependencies {
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime:2.2.0-alpha01"
-    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha01"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01"
 
@@ -238,7 +238,7 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0-beta01', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation("androidx.arch.core:core-testing:2.1.0-alpha02", {
+    testImplementation("androidx.arch.core:core-testing:2.1.0-beta01", {
         exclude group: 'com.android.support', module: 'support-compat'
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-core-utils'
