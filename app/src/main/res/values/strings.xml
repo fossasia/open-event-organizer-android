@@ -382,6 +382,7 @@
     <string name="action_insert_link">Action insert link</string>
     <string name="play_store_link">https://play.google.com/store/apps/details?id=com.eventyay.organizer</string>
     <string name="resend_verification_mail">Resend verification mail</string>
+    <string name="attendee_id">Attendee ID</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

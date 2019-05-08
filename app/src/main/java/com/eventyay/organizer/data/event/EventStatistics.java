@@ -22,7 +22,7 @@ public class EventStatistics {
     public String id;
 
     public Long sessions;
-    public Long speakers;
+    public SpeakerStatistics speakers;
     public Long sessionsPending;
     public Long sponsors;
     public Long sessionsSubmitted;

@@ -180,7 +180,7 @@
                         android:layout_marginBottom="@dimen/spacing_normal"
                         android:layout_marginLeft="@dimen/spacing_large"
                         android:layout_marginStart="@dimen/spacing_large"
-                        android:text="@{ BindingAdapters.longToStr(eventStatistics.speakers) }"
+                        android:text="@{ BindingAdapters.longToStr(eventStatistics.speakers.accepted) }"
                         android:textSize="@dimen/text_size_normal" />
 
                     <TextView
