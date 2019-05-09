@@ -43,7 +43,7 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
 
     @Override
     public void start() {
-        loadAttendees(false);
+        loadAttendeesPagewise(1, false);
         listenToModelChanges();
     }
 
@@ -72,11 +72,33 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
             .subscribe(Logger::logSuccess, Logger::logError);
     }
 
+    public void loadAttendeesPagewise(long pageNumber, boolean forceReload) {
+        if (getView() == null)
+            return;
+
+        getView().showScanButton(false);
+
+        getAttendeeSourcePagewise(pageNumber, forceReload)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneousRefresh(getView(), forceReload))
+            .toSortedList()
+            .compose(emptiable(getView(), attendeeList))
+            .doFinally(() -> getView().showScanButton(!attendeeList.isEmpty()))
+            .subscribe(Logger::logSuccess, Logger::logError);
+    }
+
     private Observable<Attendee> getAttendeeSource(boolean forceReload) {
         if (!forceReload && !attendeeList.isEmpty() && isRotated())
             return Observable.fromIterable(attendeeList);
         else
             return attendeeRepository.getAttendees(getId(), forceReload);
+    }
+
+    private Observable<Attendee> getAttendeeSourcePagewise(long pageNumber, boolean forceReload) {
+        if (!forceReload && !attendeeList.isEmpty() && isRotated())
+            return Observable.fromIterable(attendeeList);
+        else
+            return attendeeRepository.getAttendeesPagewise(getId(), pageNumber, forceReload);
     }
 
     private void updateLocal(Attendee attendee) {

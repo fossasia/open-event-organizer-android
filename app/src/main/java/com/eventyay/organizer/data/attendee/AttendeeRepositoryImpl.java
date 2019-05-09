@@ -73,6 +73,28 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
             .build();
     }
 
+    @NonNull
+    @Override
+    public Observable<Attendee> getAttendeesPagewise(long eventId, long pageNumber, boolean reload) {
+        Observable<Attendee> diskObservable = Observable.defer(() ->
+            repository.getItems(Attendee.class, Attendee_Table.event_id.eq(eventId))
+        );
+
+        Observable<Attendee> networkObservable = Observable.defer(() ->
+            attendeeApi.getAttendeesPagewise(eventId, pageNumber)
+                .doOnNext(attendees -> repository
+                    .syncSave(Attendee.class, attendees, Attendee::getId, Attendee_Table.id)
+                    .subscribe())
+                .flatMapIterable(attendees -> attendees));
+
+        return repository.observableOf(Attendee.class)
+            .reload(reload)
+            .withRateLimiterConfig("Attendees", rateLimiter)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
     @Override
     public Observable<Attendee> getAttendeesUnderOrder(String orderIdentifier, long orderId, boolean reload) {
         Observable<Attendee> diskObservable = Observable.defer(() ->
