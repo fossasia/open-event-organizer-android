@@ -14,7 +14,7 @@ public interface AttendeeApi {
     @GET("events/{id}/attendees?include=order,ticket,event&fields[event]=id&fields[ticket]=id&page[size]=0")
     Observable<List<Attendee>> getAttendees(@Path("id") long id);
 
-    @GET("events/{id}/attendees?include=order,ticket,event&fields[event]=id&fields[ticket]=id&page[size]=10")
+    @GET("events/{id}/attendees?include=order,ticket,event&fields[event]=id&fields[ticket]=id&page[size]=25")
     Observable<List<Attendee>> getAttendeesPagewise(@Path("id") long id, @Query("page[number]") long pagenumber);
 
     @GET("orders/{id}/attendees?include=order,ticket,event&fields[event]=id&fields[ticket]=id&page[size]=0")
