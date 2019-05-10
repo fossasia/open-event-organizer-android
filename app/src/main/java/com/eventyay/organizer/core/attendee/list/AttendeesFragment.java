@@ -79,7 +79,9 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     private SwipeRefreshLayout refreshLayout;
     private SearchView searchView;
 
-    int currentPage = 1;
+    private static final long FIRSTPAGE = 1;
+
+    private long currentPage = 1;
     private List<Attendee> attendeeList = new ArrayList<>();
 
     private RecyclerView.AdapterDataObserver observer;
@@ -290,7 +292,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            getPresenter().loadAttendeesPagewise(1, true);
+            getPresenter().loadAttendeesPagewise(FIRSTPAGE, true);
         });
     }
 
