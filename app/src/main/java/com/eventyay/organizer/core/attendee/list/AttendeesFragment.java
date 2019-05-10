@@ -81,6 +81,8 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     private static final long FIRSTPAGE = 1;
 
+    private boolean pageIsEmpty = false;
+
     private long currentPage = 1;
     private List<Attendee> attendeeList = new ArrayList<>();
 
@@ -258,8 +260,8 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
                     binding.fabScanQr.hide();
 
                 if (!recyclerView.canScrollVertically(1)) {
-                    currentPage++;
-                    getPresenter().loadAttendeesPagewise(currentPage, true);
+                        currentPage++;
+                        getPresenter().loadAttendeesPagewise(currentPage, true);
                 }
             }
 
@@ -292,8 +294,14 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
+            attendeeList.clear();
             getPresenter().loadAttendeesPagewise(FIRSTPAGE, true);
+            fastItemAdapter.setNewList(attendeeList);
         });
+    }
+
+    private void markPageAsEmpty() {
+        pageIsEmpty = true;
     }
 
     // View Implementation
@@ -330,6 +338,11 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     @Override
     public void showEmptyView(boolean show) {
+        markPageAsEmpty();
+
+        if(currentPage>1)
+            return;
+
         ViewUtils.showView(binding.emptyView, show);
     }
 
