@@ -257,10 +257,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
                 if (!recyclerView.canScrollVertically(1)) {
                     currentPage++;
-
                     getPresenter().loadAttendeesPagewise(currentPage, true);
-                    attendeeList.addAll(getPresenter().getAttendees());
-                    fastItemAdapter.add(attendeeList);
                 }
             }
 
@@ -323,7 +320,8 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     @Override
     public void showResults(List<Attendee> attendees) {
-        fastItemAdapter.setNewList(attendees);
+        attendeeList.addAll(getPresenter().getAttendees());
+        fastItemAdapter.setNewList(attendeeList);
         binding.setVariable(BR.attendees, attendees);
         binding.executePendingBindings();
     }
