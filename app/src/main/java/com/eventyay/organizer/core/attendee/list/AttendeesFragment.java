@@ -81,8 +81,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     private static final long FIRSTPAGE = 1;
 
-    private boolean pageIsEmpty = false;
-
     private long currentPage = 1;
     private List<Attendee> attendeeList = new ArrayList<>();
 
@@ -300,10 +298,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
         });
     }
 
-    private void markPageAsEmpty() {
-        pageIsEmpty = true;
-    }
-
     // View Implementation
 
     @Override
@@ -338,8 +332,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     @Override
     public void showEmptyView(boolean show) {
-        markPageAsEmpty();
-
         if(currentPage>1)
             return;
 
