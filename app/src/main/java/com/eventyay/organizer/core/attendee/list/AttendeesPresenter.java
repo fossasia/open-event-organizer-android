@@ -35,7 +35,7 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
 
     private final List<Attendee> attendeeList = new ArrayList<>();
 
-    private static final long FIRSTPAGE = 1;
+    private static final long FIRST_PAGE = 1;
 
     @Inject
     public AttendeesPresenter(AttendeeRepository attendeeRepository, DatabaseChangeListener<Attendee> attendeeListener) {
@@ -45,7 +45,7 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
 
     @Override
     public void start() {
-        loadAttendeesPageWise(FIRSTPAGE, false);
+        loadAttendeesPageWise(FIRST_PAGE, false);
         listenToModelChanges();
     }
 
