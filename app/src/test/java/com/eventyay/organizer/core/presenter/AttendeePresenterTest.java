@@ -87,18 +87,18 @@ public class AttendeePresenterTest {
 
     @Test
     public void shouldLoadAttendeesAutomatically() {
-        when(attendeeRepository.getAttendeesPagewise(ID, PAGE, false))
+        when(attendeeRepository.getAttendeesPageWise(ID, PAGE, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
         when(changeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         attendeesPresenter.start();
 
-        verify(attendeeRepository).getAttendeesPagewise(ID, PAGE, false);
+        verify(attendeeRepository).getAttendeesPageWise(ID, PAGE, false);
     }
 
     @Test
     public void shouldDetachViewOnStop() {
-        when(attendeeRepository.getAttendeesPagewise(ID, PAGE, false))
+        when(attendeeRepository.getAttendeesPageWise(ID, PAGE, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
         when(changeListener.getNotifier()).thenReturn(PublishSubject.create());
 
@@ -307,7 +307,7 @@ public class AttendeePresenterTest {
     public void shouldToggleAttendeesSuccessfully() {
         PublishSubject<DbFlowDatabaseChangeListener.ModelChange<Attendee>> publishSubject = PublishSubject.create();
 
-        when(attendeeRepository.getAttendeesPagewise(ID, PAGE, false)).thenReturn(Observable.fromIterable(ATTENDEES));
+        when(attendeeRepository.getAttendeesPageWise(ID, PAGE, false)).thenReturn(Observable.fromIterable(ATTENDEES));
         when(attendeeRepository.getAttendee(ATTENDEES.get(2).getId(), false)).thenReturn(Observable.just(ATTENDEES.get(2)));
         when(changeListener.getNotifier()).thenReturn(publishSubject);
 

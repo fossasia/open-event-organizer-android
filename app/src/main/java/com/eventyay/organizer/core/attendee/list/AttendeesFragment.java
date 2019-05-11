@@ -79,7 +79,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     private SwipeRefreshLayout refreshLayout;
     private SearchView searchView;
 
-    private static final long FIRSTPAGE = 1;
+    private static final long FIRST_PAGE = 1;
 
     private long currentPage = 1;
     private List<Attendee> attendeeList = new ArrayList<>();
@@ -259,7 +259,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
                 if (!recyclerView.canScrollVertically(1)) {
                         currentPage++;
-                        getPresenter().loadAttendeesPagewise(currentPage, true);
+                        getPresenter().loadAttendeesPageWise(currentPage, true);
                 }
             }
 
@@ -293,7 +293,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
             attendeeList.clear();
-            getPresenter().loadAttendeesPagewise(FIRSTPAGE, true);
+            getPresenter().loadAttendeesPageWise(FIRST_PAGE, true);
             fastItemAdapter.setNewList(attendeeList);
         });
     }
@@ -332,7 +332,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     @Override
     public void showEmptyView(boolean show) {
-        if(currentPage>1)
+        if (currentPage > 1)
             return;
 
         ViewUtils.showView(binding.emptyView, show);

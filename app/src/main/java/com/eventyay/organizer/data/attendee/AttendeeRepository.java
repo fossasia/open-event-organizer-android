@@ -14,7 +14,7 @@ public interface AttendeeRepository {
     Observable<Attendee> getAttendees(long eventId, boolean reload);
 
     @NonNull
-    Observable<Attendee> getAttendeesPagewise(long eventId, long pageNumber, boolean reload);
+    Observable<Attendee> getAttendeesPageWise(long eventId, long pageNumber, boolean reload);
 
     @NonNull
     Observable<Attendee> getAttendeesUnderOrder(String orderIdentifier, long orderId, boolean reload);

@@ -75,13 +75,13 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
 
     @NonNull
     @Override
-    public Observable<Attendee> getAttendeesPagewise(long eventId, long pageNumber, boolean reload) {
+    public Observable<Attendee> getAttendeesPageWise(long eventId, long pageNumber, boolean reload) {
         Observable<Attendee> diskObservable = Observable.defer(() ->
             repository.getItems(Attendee.class, Attendee_Table.event_id.eq(eventId))
         );
 
         Observable<Attendee> networkObservable = Observable.defer(() ->
-            attendeeApi.getAttendeesPagewise(eventId, pageNumber)
+            attendeeApi.getAttendeesPageWise(eventId, pageNumber)
                 .doOnNext(attendees -> repository
                     .syncSave(Attendee.class, attendees, Attendee::getId, Attendee_Table.id)
                     .subscribe())
