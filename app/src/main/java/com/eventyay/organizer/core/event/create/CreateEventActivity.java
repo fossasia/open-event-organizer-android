@@ -150,6 +150,7 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
                 })
                 .create();
             saveAlertDialog.show();
+            saveAlertDialog = null;
         } else {
             super.onBackPressed();
         }
