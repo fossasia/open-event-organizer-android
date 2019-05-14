@@ -129,7 +129,7 @@ public class SalesSummaryViewModelTest {
         when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.error(new Throwable("Error")));
 
-        InOrder inOrder = Mockito.inOrder(event, eventRepository, progress, error);
+        InOrder inOrder = Mockito.inOrder(eventRepository, progress, error);
 
         salesSummaryViewModel.getProgress().observeForever(progress);
         salesSummaryViewModel.getError().observeForever(error);
