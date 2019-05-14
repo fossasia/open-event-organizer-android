@@ -42,7 +42,6 @@ public class SalesSummaryFragment extends BaseDialogFragment implements SalesSum
     public void onStart() {
         super.onStart();
         salesSummaryViewModel.getProgress().observe(this, this::showProgress);
-        salesSummaryViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
         salesSummaryViewModel.getEventLiveData().observe(this, this::showResult);
         salesSummaryViewModel.getError().observe(this, this::showError);
         salesSummaryViewModel.loadDetails(eventId, false);

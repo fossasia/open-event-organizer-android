@@ -30,7 +30,6 @@ public class SalesSummaryViewModel extends ViewModel {
     private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
-    private final SingleEventLiveData<Void> dismiss = new SingleEventLiveData<>();
     private final SingleEventLiveData<Event> eventLiveData = new SingleEventLiveData<>();
 
     @Inject
@@ -48,10 +47,6 @@ public class SalesSummaryViewModel extends ViewModel {
 
     public LiveData<String> getSuccess() {
         return success;
-    }
-
-    public LiveData<Void> getDismiss() {
-        return dismiss;
     }
 
     public LiveData<String> getError() {
@@ -99,5 +94,4 @@ public class SalesSummaryViewModel extends ViewModel {
         else
             return attendeeRepository.getAttendees(eventId, forceReload);
     }
-
 }
