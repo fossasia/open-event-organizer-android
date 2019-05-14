@@ -1,7 +1,9 @@
 package com.eventyay.organizer.core.event.list.sales;
 
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;

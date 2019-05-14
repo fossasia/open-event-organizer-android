@@ -60,24 +60,24 @@ public class SalesSummaryViewModel extends ViewModel {
     public void loadDetails(long eventId, boolean forceReload) {
 
         compositeDisposable.add(
-        getEventSource(eventId, forceReload)
-            .flatMap(loadedEvent -> {
-                this.event = loadedEvent;
-                ticketAnalyser.analyseTotalTickets(event);
-                return getAttendeeSource(eventId, forceReload);
-            })
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> {
-                success.setValue("Loaded Successfully");
-                progress.setValue(false);
-                eventLiveData.setValue(event);
-            })
-            .toList()
-            .subscribe(attendees -> {
-                success.setValue("Loaded Successfully");
-                this.attendees = attendees;
-                ticketAnalyser.analyseSoldTickets(event, attendees);
-            }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+            getEventSource(eventId, forceReload)
+                .flatMap(loadedEvent -> {
+                    this.event = loadedEvent;
+                    ticketAnalyser.analyseTotalTickets(event);
+                    return getAttendeeSource(eventId, forceReload);
+                })
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> {
+                    success.setValue("Loaded Successfully");
+                    progress.setValue(false);
+                    eventLiveData.setValue(event);
+                })
+                .toList()
+                .subscribe(attendees -> {
+                    success.setValue("Loaded Successfully");
+                    this.attendees = attendees;
+                    ticketAnalyser.analyseSoldTickets(event, attendees);
+                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
 
     }
 
