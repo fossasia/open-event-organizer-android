@@ -3,6 +3,9 @@ package com.eventyay.organizer.core.event.list.sales;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,36 +18,34 @@ import com.eventyay.organizer.ui.ViewUtils;
 
 import javax.inject.Inject;
 
-import dagger.Lazy;
-
 import static com.eventyay.organizer.core.event.dashboard.EventDashboardFragment.EVENT_ID;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SalesSummaryFragment extends BaseDialogFragment<SalesSummaryPresenter> implements SalesSummaryView {
+public class SalesSummaryFragment extends BaseDialogFragment implements SalesSummaryView {
 
     private long eventId;
 
     @Inject
-    Lazy<SalesSummaryPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
 
     FragmentSalesSummaryBinding binding;
+
+    private SalesSummaryViewModel salesSummaryViewModel;
 
     public SalesSummaryFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public Lazy<SalesSummaryPresenter> getPresenterProvider() {
-        return presenterProvider;
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
-        getPresenter().attach(eventId, this);
-        getPresenter().start();
+        salesSummaryViewModel.getProgress().observe(this, this::showProgress);
+        salesSummaryViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
+        salesSummaryViewModel.getEventLiveData().observe(this, this::showResult);
+        salesSummaryViewModel.getError().observe(this, this::showError);
+        salesSummaryViewModel.loadDetails(eventId, false);
     }
 
     public static SalesSummaryFragment newInstance(long eventId) {
@@ -70,6 +71,8 @@ public class SalesSummaryFragment extends BaseDialogFragment<SalesSummaryPresent
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sales_summary, container, false);
+        salesSummaryViewModel = ViewModelProviders.of(this, viewModelFactory).get(SalesSummaryViewModel.class);
+
         return binding.getRoot();
     }
 
