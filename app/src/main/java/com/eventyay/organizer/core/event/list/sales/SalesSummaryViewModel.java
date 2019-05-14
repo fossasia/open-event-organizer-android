@@ -68,7 +68,6 @@ public class SalesSummaryViewModel extends ViewModel {
                 })
                 .doOnSubscribe(disposable -> progress.setValue(true))
                 .doFinally(() -> {
-                    success.setValue("Loaded Successfully");
                     progress.setValue(false);
                     eventLiveData.setValue(event);
                 })
