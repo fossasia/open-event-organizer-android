@@ -272,7 +272,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             }
         });
 
-        SwipeController swipeController = new SwipeController(getPresenter(), context);
+        SwipeController swipeController = new SwipeController(getPresenter(), attendeeList, context);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
         itemTouchHelper.attachToRecyclerView(recyclerView);
