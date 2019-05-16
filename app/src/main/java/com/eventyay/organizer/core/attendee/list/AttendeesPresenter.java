@@ -112,7 +112,7 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
     }
 
     @SuppressLint("CheckResult")
-    public void toggleCheckInState(int swipedPosition) {
+    public void toggleCheckInState(List<Attendee> attendeeList, int swipedPosition) {
         Attendee attendee = attendeeList.get(swipedPosition);
         attendee.setChecking(true);
         attendee.isCheckedIn = !attendee.isCheckedIn;
