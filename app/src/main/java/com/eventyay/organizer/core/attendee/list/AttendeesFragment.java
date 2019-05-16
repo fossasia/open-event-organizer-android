@@ -1,12 +1,15 @@
 package com.eventyay.organizer.core.attendee.list;
 
 import android.content.Context;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import com.eventyay.organizer.BR;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.ItemTouchHelper;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +40,7 @@ import com.eventyay.organizer.utils.SearchUtils;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -73,6 +78,11 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     private FragmentAttendeesBinding binding;
     private SwipeRefreshLayout refreshLayout;
     private SearchView searchView;
+
+    private static final long FIRST_PAGE = 1;
+
+    private long currentPage = 1;
+    private List<Attendee> attendeeList = new ArrayList<>();
 
     private RecyclerView.AdapterDataObserver observer;
 
@@ -246,6 +256,11 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0 || dy < 0 && binding.fabScanQr.isShown())
                     binding.fabScanQr.hide();
+
+                if (!recyclerView.canScrollVertically(1)) {
+                        currentPage++;
+                        getPresenter().loadAttendeesPageWise(currentPage, true);
+                }
             }
 
             @Override
@@ -277,7 +292,9 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            getPresenter().loadAttendees(true);
+            attendeeList.clear();
+            getPresenter().loadAttendeesPageWise(FIRST_PAGE, true);
+            fastItemAdapter.setNewList(attendeeList);
         });
     }
 
@@ -307,13 +324,17 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     @Override
     public void showResults(List<Attendee> attendees) {
-        fastItemAdapter.setNewList(attendees);
+        attendeeList.addAll(getPresenter().getAttendees());
+        fastItemAdapter.setNewList(attendeeList);
         binding.setVariable(BR.attendees, attendees);
         binding.executePendingBindings();
     }
 
     @Override
     public void showEmptyView(boolean show) {
+        if (currentPage > 1)
+            return;
+
         ViewUtils.showView(binding.emptyView, show);
     }
 
@@ -329,3 +350,4 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     }
 
 }
+
