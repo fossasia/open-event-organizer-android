@@ -121,6 +121,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
                 if (entry.getValue().get()) {
                     deleteSponsor(entry.getKey());
                 }
+                loadSponsors(false);
             }, Logger::logError);
     }
 
