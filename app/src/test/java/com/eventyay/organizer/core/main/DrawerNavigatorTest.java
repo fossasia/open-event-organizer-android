@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.main;
 
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.view.MenuItem;
 
 import com.eventyay.organizer.R;

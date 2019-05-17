@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.orders.list.viewholder;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.common.Pipe;
 import com.eventyay.organizer.data.order.Order;

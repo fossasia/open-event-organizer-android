@@ -48,6 +48,7 @@ public class AttendeePresenterTest {
     @Mock private DatabaseChangeListener<Attendee> changeListener;
 
     private static final long ID = 42;
+    private static final long PAGE = 1;
     private AttendeesPresenter attendeesPresenter;
 
     private static final List<Attendee> ATTENDEES = Arrays.asList(
@@ -86,18 +87,18 @@ public class AttendeePresenterTest {
 
     @Test
     public void shouldLoadAttendeesAutomatically() {
-        when(attendeeRepository.getAttendees(ID, false))
+        when(attendeeRepository.getAttendeesPageWise(ID, PAGE, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
         when(changeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         attendeesPresenter.start();
 
-        verify(attendeeRepository).getAttendees(ID, false);
+        verify(attendeeRepository).getAttendeesPageWise(ID, PAGE, false);
     }
 
     @Test
     public void shouldDetachViewOnStop() {
-        when(attendeeRepository.getAttendees(ID, false))
+        when(attendeeRepository.getAttendeesPageWise(ID, PAGE, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
         when(changeListener.getNotifier()).thenReturn(PublishSubject.create());
 
@@ -306,7 +307,7 @@ public class AttendeePresenterTest {
     public void shouldToggleAttendeesSuccessfully() {
         PublishSubject<DbFlowDatabaseChangeListener.ModelChange<Attendee>> publishSubject = PublishSubject.create();
 
-        when(attendeeRepository.getAttendees(ID, false)).thenReturn(Observable.fromIterable(ATTENDEES));
+        when(attendeeRepository.getAttendeesPageWise(ID, PAGE, false)).thenReturn(Observable.fromIterable(ATTENDEES));
         when(attendeeRepository.getAttendee(ATTENDEES.get(2).getId(), false)).thenReturn(Observable.just(ATTENDEES.get(2)));
         when(changeListener.getNotifier()).thenReturn(publishSubject);
 

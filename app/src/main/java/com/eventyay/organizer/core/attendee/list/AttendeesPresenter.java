@@ -1,7 +1,7 @@
 package com.eventyay.organizer.core.attendee.list;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -35,6 +35,8 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
 
     private final List<Attendee> attendeeList = new ArrayList<>();
 
+    private static final long FIRST_PAGE = 1;
+
     @Inject
     public AttendeesPresenter(AttendeeRepository attendeeRepository, DatabaseChangeListener<Attendee> attendeeListener) {
         this.attendeeRepository = attendeeRepository;
@@ -43,7 +45,7 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
 
     @Override
     public void start() {
-        loadAttendees(false);
+        loadAttendeesPageWise(FIRST_PAGE, false);
         listenToModelChanges();
     }
 
@@ -72,11 +74,33 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
             .subscribe(Logger::logSuccess, Logger::logError);
     }
 
+    public void loadAttendeesPageWise(long pageNumber, boolean forceReload) {
+        if (getView() == null)
+            return;
+
+        getView().showScanButton(false);
+
+        getAttendeeSourcePageWise(pageNumber, forceReload)
+            .compose(dispose(getDisposable()))
+            .compose(progressiveErroneousRefresh(getView(), forceReload))
+            .toSortedList()
+            .compose(emptiable(getView(), attendeeList))
+            .doFinally(() -> getView().showScanButton(!attendeeList.isEmpty()))
+            .subscribe(Logger::logSuccess, Logger::logError);
+    }
+
     private Observable<Attendee> getAttendeeSource(boolean forceReload) {
         if (!forceReload && !attendeeList.isEmpty() && isRotated())
             return Observable.fromIterable(attendeeList);
         else
             return attendeeRepository.getAttendees(getId(), forceReload);
+    }
+
+    private Observable<Attendee> getAttendeeSourcePageWise(long pageNumber, boolean forceReload) {
+        if (!forceReload && !attendeeList.isEmpty() && isRotated())
+            return Observable.fromIterable(attendeeList);
+        else
+            return attendeeRepository.getAttendeesPageWise(getId(), pageNumber, forceReload);
     }
 
     private void updateLocal(Attendee attendee) {
@@ -112,7 +136,7 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
     }
 
     @SuppressLint("CheckResult")
-    public void toggleCheckInState(int swipedPosition) {
+    public void toggleCheckInState(List<Attendee> attendeeList, int swipedPosition) {
         Attendee attendee = attendeeList.get(swipedPosition);
         attendee.setChecking(true);
         attendee.isCheckedIn = !attendee.isCheckedIn;
@@ -123,3 +147,4 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
                 }, Logger::logError));
     }
 }
+

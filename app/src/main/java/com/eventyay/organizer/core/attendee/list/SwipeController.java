@@ -6,23 +6,28 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.View;
 
 import com.eventyay.organizer.R;
+import com.eventyay.organizer.data.attendee.Attendee;
+
+import java.util.List;
 
 public class SwipeController extends ItemTouchHelper.SimpleCallback {
 
     private final AttendeesPresenter attendeesPresenter;
+    private List<Attendee> attendeeList;
     private final Paint paintGreen = new Paint();
     private final Paint paintRed = new Paint();
     private final Bitmap closeIcon;
     private final Bitmap doneIcon;
 
-    public SwipeController(AttendeesPresenter attendeesPresenter, Context context) {
+    public SwipeController(AttendeesPresenter attendeesPresenter, List<Attendee> attendeeList, Context context) {
         super(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
         this.attendeesPresenter = attendeesPresenter;
+        this.attendeeList = attendeeList;
 
         closeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.close);
         doneIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.done);
@@ -41,7 +46,7 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
         int dragFlags = 0;
         makeMovementFlags(dragFlags, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
 
-        if (attendeesPresenter.getAttendees().get(viewHolder.getAdapterPosition()).isCheckedIn) {
+        if (attendeeList.get(viewHolder.getAdapterPosition()).isCheckedIn) {
             return makeMovementFlags(dragFlags, ItemTouchHelper.LEFT);
         } else {
             return makeMovementFlags(dragFlags, ItemTouchHelper.RIGHT);
@@ -51,7 +56,7 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         int swipedPosition = viewHolder.getAdapterPosition();
-        attendeesPresenter.toggleCheckInState(swipedPosition);
+        attendeesPresenter.toggleCheckInState(attendeeList, swipedPosition);
     }
 
     @Override
@@ -66,7 +71,7 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
             Bitmap icon;
             RectF iconDest;
 
-            if (!attendeesPresenter.getAttendees().get(viewHolder.getAdapterPosition()).isCheckedIn) {
+            if (!attendeeList.get(viewHolder.getAdapterPosition()).isCheckedIn) {
                 if (dX > 0) {
                     background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,
                         (float) itemView.getBottom());

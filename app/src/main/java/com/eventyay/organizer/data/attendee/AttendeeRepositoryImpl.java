@@ -1,6 +1,6 @@
 package com.eventyay.organizer.data.attendee;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.raizlabs.android.dbflow.sql.language.Method;
 
@@ -60,6 +60,28 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
 
         Observable<Attendee> networkObservable = Observable.defer(() ->
             attendeeApi.getAttendees(eventId)
+                .doOnNext(attendees -> repository
+                    .syncSave(Attendee.class, attendees, Attendee::getId, Attendee_Table.id)
+                    .subscribe())
+                .flatMapIterable(attendees -> attendees));
+
+        return repository.observableOf(Attendee.class)
+            .reload(reload)
+            .withRateLimiterConfig("Attendees", rateLimiter)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+
+    @NonNull
+    @Override
+    public Observable<Attendee> getAttendeesPageWise(long eventId, long pageNumber, boolean reload) {
+        Observable<Attendee> diskObservable = Observable.defer(() ->
+            repository.getItems(Attendee.class, Attendee_Table.event_id.eq(eventId))
+        );
+
+        Observable<Attendee> networkObservable = Observable.defer(() ->
+            attendeeApi.getAttendeesPageWise(eventId, pageNumber)
                 .doOnNext(attendees -> repository
                     .syncSave(Attendee.class, attendees, Attendee::getId, Attendee_Table.id)
                     .subscribe())

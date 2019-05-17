@@ -1,9 +1,9 @@
 package com.eventyay.organizer.core.event.about;
 
 import android.content.res.Resources;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.view.ViewCompat;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import androidx.core.view.ViewCompat;
 
 import javax.inject.Inject;
 

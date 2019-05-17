@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.preference.CheckBoxPreference
+    <androidx.preference.CheckBoxPreference
         android:key="collect_attendee_info"
         android:title="@string/attendee_info"
         android:summary="@string/collect_attendee_info"
         android:defaultValue="false"/>
 
-    <android.support.v7.preference.CheckBoxPreference
+    <androidx.preference.CheckBoxPreference
         android:key="local_date"
         android:title="Show dates in local timezone"
         android:summaryOff="Dates are shown in Event Timezone now"
         android:summaryOn="Dates are shown in Local Timezone now"
         android:defaultValue="false"/>
 
-    <android.support.v7.preference.EditTextPreference
+    <androidx.preference.EditTextPreference
         android:key="device_name"
         android:title="Device Name"
         android:summary="@string/device_name_summary"/>
@@ -52,4 +52,4 @@
             android:key="@string/app_version_key" />
     </PreferenceCategory>
 
-</android.support.v7.preference.PreferenceScreen>
+</androidx.preference.PreferenceScreen>

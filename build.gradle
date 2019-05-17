@@ -10,7 +10,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.4.0'
         classpath 'io.sentry:sentry-android-gradle-plugin:1.7.22'
         classpath 'com.noveogroup.android:check:1.2.5'
         classpath "com.google.gms:oss-licenses:0.9.2"

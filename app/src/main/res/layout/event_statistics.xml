@@ -37,7 +37,7 @@
                 android:text="@string/event_statistics"
                 android:textSize="@dimen/text_size_normal" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_event_statistics"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
                         android:layout_marginBottom="@dimen/spacing_normal"
                         android:layout_marginLeft="@dimen/spacing_large"
                         android:layout_marginStart="@dimen/spacing_large"
-                        android:text="@{ BindingAdapters.longToStr(eventStatistics.speakers) }"
+                        android:text="@{ BindingAdapters.longToStr(eventStatistics.speakers.accepted) }"
                         android:textSize="@dimen/text_size_normal" />
 
                     <TextView

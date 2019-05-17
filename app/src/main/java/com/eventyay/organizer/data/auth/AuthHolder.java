@@ -1,7 +1,7 @@
 package com.eventyay.organizer.data.auth;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.common.Constants;

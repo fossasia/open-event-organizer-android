@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.orders.detail.viewholder;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.databinding.OrderTicketLayoutBinding;

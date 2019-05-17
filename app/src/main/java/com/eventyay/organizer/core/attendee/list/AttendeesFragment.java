@@ -1,18 +1,24 @@
 package com.eventyay.organizer.core.attendee.list;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+
+import androidx.databinding.DataBindingUtil;
+
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+
+import com.eventyay.organizer.BR;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.ItemTouchHelper;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +26,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.databinding.library.baseAdapters.BR;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.attendee.ScanningDecider;
@@ -34,9 +39,9 @@ import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.SearchUtils;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -66,7 +71,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     private static final int SORTBYNAME = 0;
 
     private FastAdapter<Attendee> fastAdapter;
-    private StickyHeaderAdapter<Attendee> stickyHeaderAdapter;
 
     private final ScanningDecider scanningDecider = new ScanningDecider();
 
@@ -74,6 +78,11 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     private FragmentAttendeesBinding binding;
     private SwipeRefreshLayout refreshLayout;
     private SearchView searchView;
+
+    private static final long FIRST_PAGE = 1;
+
+    private long currentPage = 1;
+    private List<Attendee> attendeeList = new ArrayList<>();
 
     private RecyclerView.AdapterDataObserver observer;
 
@@ -150,7 +159,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             fastItemAdapter.withComparator((Attendee a1, Attendee a2) -> a1.getFirstname().compareTo(a2.getFirstname()), true);
         }
         fastItemAdapter.setNewList(getPresenter().getAttendees());
-        stickyHeaderAdapter.setSortByName(sortBy == SORTBYTICKET);
         binding.setVariable(BR.attendees, getPresenter().getAttendees());
         binding.executePendingBindings();
     }
@@ -187,7 +195,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
-        //stickyHeaderAdapter.unregisterAdapterDataObserver(adapterDataObserver);
         if (searchView != null)
             searchView.setOnQueryTextListener(null);
     }
@@ -234,9 +241,7 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             }
         );
 
-        stickyHeaderAdapter = new StickyHeaderAdapter<>();
-        stickyHeaderAdapter.setSortByName(false);
-        fastAdapter = FastAdapter.with(Arrays.asList(fastItemAdapter, stickyHeaderAdapter));
+        fastAdapter = FastAdapter.with(Collections.singletonList(fastItemAdapter));
         fastAdapter.setHasStableIds(true);
         fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
 
@@ -251,6 +256,11 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0 || dy < 0 && binding.fabScanQr.isShown())
                     binding.fabScanQr.hide();
+
+                if (!recyclerView.canScrollVertically(1)) {
+                        currentPage++;
+                        getPresenter().loadAttendeesPageWise(currentPage, true);
+                }
             }
 
             @Override
@@ -262,18 +272,15 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             }
         });
 
-        SwipeController swipeController = new SwipeController(getPresenter(), context);
+        SwipeController swipeController = new SwipeController(getPresenter(), attendeeList, context);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        final StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(stickyHeaderAdapter);
-        recyclerView.addItemDecoration(decoration);
         observer = new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
                 super.onChanged();
-                decoration.invalidateHeaders();
             }
         };
         fastAdapter.registerAdapterDataObserver(observer);
@@ -285,7 +292,9 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            getPresenter().loadAttendees(true);
+            attendeeList.clear();
+            getPresenter().loadAttendeesPageWise(FIRST_PAGE, true);
+            fastItemAdapter.setNewList(attendeeList);
         });
     }
 
@@ -315,13 +324,17 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     @Override
     public void showResults(List<Attendee> attendees) {
-        fastItemAdapter.setNewList(attendees);
+        attendeeList.addAll(getPresenter().getAttendees());
+        fastItemAdapter.setNewList(attendeeList);
         binding.setVariable(BR.attendees, attendees);
         binding.executePendingBindings();
     }
 
     @Override
     public void showEmptyView(boolean show) {
+        if (currentPage > 1)
+            return;
+
         ViewUtils.showView(binding.emptyView, show);
     }
 
@@ -337,3 +350,4 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     }
 
 }
+

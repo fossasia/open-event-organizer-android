@@ -1,6 +1,7 @@
 package com.eventyay.organizer.data.attendee;
 
-import android.support.annotation.NonNull;
+import android.content.Context;
+import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.common.di.component.DaggerAppComponent;
 
@@ -16,6 +17,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 import timber.log.Timber;
 
 public class AttendeeCheckInWork extends Worker {
@@ -24,6 +26,10 @@ public class AttendeeCheckInWork extends Worker {
     AttendeeRepositoryImpl attendeeRepository;
 
     public static final String TAG = "attendee_check_in";
+
+    public AttendeeCheckInWork(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
 
     @NonNull
     @Override
@@ -43,11 +49,11 @@ public class AttendeeCheckInWork extends Worker {
                 Timber.e("Attendee Check In Work Failed for attendee status -> %ss\n" +
                     "With error: %s\n" +
                     "The work is rescheduled", attendee, exception.getMessage());
-                return Worker.Result.RETRY;
+                return Worker.Result.retry();
             }
         }
 
-        return Worker.Result.SUCCESS;
+        return Worker.Result.success();
     }
 
     public static void scheduleWork() {

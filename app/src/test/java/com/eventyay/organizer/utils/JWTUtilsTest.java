@@ -1,6 +1,6 @@
 package com.eventyay.organizer.utils;
 
-import android.support.v4.util.SparseArrayCompat;
+import androidx.collection.SparseArrayCompat;
 
 import org.json.JSONException;
 import org.junit.Test;

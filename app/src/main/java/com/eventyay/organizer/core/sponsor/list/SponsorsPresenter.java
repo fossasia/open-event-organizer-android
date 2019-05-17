@@ -1,7 +1,7 @@
 package com.eventyay.organizer.core.sponsor.list;
 
-import android.databinding.ObservableBoolean;
-import android.support.annotation.VisibleForTesting;
+import androidx.databinding.ObservableBoolean;
+import androidx.annotation.VisibleForTesting;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
