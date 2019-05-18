@@ -1,16 +1,16 @@
 package com.eventyay.organizer.core.event.create;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
-import com.eventyay.organizer.data.event.ImageData;
-import com.eventyay.organizer.data.event.ImageUrl;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.utils.CurrencyUtils;
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.ErrorUtils;
@@ -43,7 +43,6 @@ import static com.eventyay.organizer.common.Constants.PREF_PAYMENT_ONSITE_DETAIL
 import static com.eventyay.organizer.common.Constants.PREF_PAYPAL_EMAIL;
 import static com.eventyay.organizer.common.Constants.PREF_USE_PAYMENT_PREFS;
 
-
 public class CreateEventViewModel extends ViewModel {
 
     private final EventRepository eventRepository;
@@ -59,6 +58,7 @@ public class CreateEventViewModel extends ViewModel {
     private final MutableLiveData<Void> close = new MutableLiveData<>();
     private final MutableLiveData<Event> eventMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<ImageUrl> imageUrlMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ImageUrl> logoUrlMutableLiveData = new MutableLiveData<>();
 
     private Event event = new Event();
 
@@ -105,6 +105,10 @@ public class CreateEventViewModel extends ViewModel {
         return imageUrlMutableLiveData;
     }
 
+    public LiveData<ImageUrl> getLogoUrlLiveData() {
+        return logoUrlMutableLiveData;
+    }
+
     public boolean verify() {
         if (Utils.isEmpty(event.getName())) {
             onError.setValue("Event Name cannot be empty");
@@ -116,6 +120,11 @@ public class CreateEventViewModel extends ViewModel {
 
             if (!end.isAfter(start)) {
                 onError.setValue("End time should be after start time");
+                return false;
+            }
+
+            if (start.isBefore(ZonedDateTime.now())) {
+                onError.setValue("Start time should be after the current time");
                 return false;
             }
             return true;
@@ -173,6 +182,7 @@ public class CreateEventViewModel extends ViewModel {
      * Returns the most accurate and searchable address substring, which a user can search for.
      * Also makes sure that the substring doesn't contain any numbers by matching it to the regex,
      * as those are more likely to be house numbers or block numbers.
+     *
      * @param address full address string of a location
      * @return searchable address substring
      */
@@ -185,6 +195,7 @@ public class CreateEventViewModel extends ViewModel {
 
     /**
      * auto-selects paymentCurrency when paymentCountry is selected.
+     *
      * @param paymentCountry chosen payment country
      */
     public int onPaymentCountrySelected(String paymentCountry) {
@@ -257,9 +268,13 @@ public class CreateEventViewModel extends ViewModel {
                 .doOnSubscribe(disposable -> progress.setValue(true))
                 .doFinally(() -> progress.setValue(false))
                 .subscribe(updatedEvent -> {
-                    onSuccess.setValue("Event Updated Successfully");
-                    close.setValue(null);
-                }, Logger::logError));
+                        onSuccess.setValue("Event Updated Successfully");
+                        close.setValue(null);
+                    }, throwable -> {
+                        onError.setValue(ErrorUtils.getMessage(throwable).toString());
+                        Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
+                    }
+                ));
     }
 
     //Method for storing user uploaded image in temporary location
@@ -272,6 +287,19 @@ public class CreateEventViewModel extends ViewModel {
                 .subscribe(uploadedImage -> {
                     onSuccess.setValue("Image Uploaded Successfully");
                     imageUrlMutableLiveData.setValue(uploadedImage);
+                }, Logger::logError));
+    }
+
+    //Method for storing user uploaded logo in temporary location
+    public void uploadLogo(ImageData imageData) {
+        compositeDisposable.add(
+            eventRepository
+                .uploadEventImage(imageData)
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(uploadedImage -> {
+                    onSuccess.setValue("Logo Uploaded Successfully");
+                    logoUrlMutableLiveData.setValue(uploadedImage);
                 }, Logger::logError));
     }
 }

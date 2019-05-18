@@ -5,7 +5,7 @@ import com.eventyay.organizer.common.mvp.view.Progressive;
 import com.eventyay.organizer.common.mvp.view.Successful;
 import com.eventyay.organizer.data.copyright.Copyright;
 
-public interface IUpdateCopyrightView extends Progressive, Erroneous, Successful {
+public interface UpdateCopyrightView extends Progressive, Erroneous, Successful {
 
     void dismiss();
 

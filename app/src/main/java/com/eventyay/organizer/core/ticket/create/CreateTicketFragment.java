@@ -1,11 +1,11 @@
 package com.eventyay.organizer.core.ticket.create;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +40,8 @@ public class CreateTicketFragment extends BaseFragment implements CreateTicketVi
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         binding =  DataBindingUtil.inflate(localInflater, R.layout.ticket_create_layout, container, false);
+        binding.form.name.requestFocus();
+        ViewUtils.showKeyboard(getContext());
         createTicketViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateTicketViewModel.class);
         validator = new Validator(binding.form);
 

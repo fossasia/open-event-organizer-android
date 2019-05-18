@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.settings.autocheckin;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.eventyay.organizer.common.Pipe;

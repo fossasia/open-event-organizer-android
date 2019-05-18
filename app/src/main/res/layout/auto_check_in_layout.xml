@@ -25,14 +25,14 @@
 
             <TextView
                 android:id="@+id/ticket_name"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/spacing_zero"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text='@{ ticket.name }'
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_normal"/>
 
-            <android.support.v7.widget.AppCompatCheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/ticket_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

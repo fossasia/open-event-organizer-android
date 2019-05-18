@@ -1,10 +1,10 @@
 package com.eventyay.organizer.core.auth;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.auth.start.StartFragment;
@@ -27,6 +27,7 @@ public class AuthActivity extends AppCompatActivity implements HasSupportFragmen
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_Main_Light);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.auth_activity);

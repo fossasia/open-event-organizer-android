@@ -9,7 +9,7 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventApi;
 import com.eventyay.organizer.data.event.EventRepositoryImpl;
 import com.eventyay.organizer.data.event.Event_Table;
-import com.eventyay.organizer.data.event.ImageUploadApi;
+import com.eventyay.organizer.data.image.ImageUploadApi;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserApi;
 import com.eventyay.organizer.data.user.UserRepositoryImpl;
@@ -69,7 +69,7 @@ public class EventRepositoryTest {
         when(repository.observableOf(Event.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
         when(repository.observableOf(User.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
         eventRepository = new EventRepositoryImpl(repository, eventApi, authHolder, imageUploadApi);
-        userRepository = new UserRepositoryImpl(userApi, repository, authHolder);
+        userRepository = new UserRepositoryImpl(userApi, repository, authHolder, imageUploadApi);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }

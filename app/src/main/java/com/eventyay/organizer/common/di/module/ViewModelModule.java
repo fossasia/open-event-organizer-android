@@ -1,7 +1,7 @@
 package com.eventyay.organizer.common.di.module;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.eventyay.organizer.common.di.OrgaViewModelFactory;
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInViewModel;
@@ -10,14 +10,18 @@ import com.eventyay.organizer.core.auth.login.LoginViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
 import com.eventyay.organizer.core.auth.signup.SignUpViewModel;
 import com.eventyay.organizer.core.auth.start.StartViewModel;
+import com.eventyay.organizer.core.event.copyright.CreateCopyrightViewModel;
+import com.eventyay.organizer.core.event.copyright.update.UpdateCopyrightViewModel;
 import com.eventyay.organizer.core.event.create.CreateEventViewModel;
 import com.eventyay.organizer.core.event.list.EventsViewModel;
+import com.eventyay.organizer.core.event.list.sales.SalesSummaryViewModel;
 import com.eventyay.organizer.core.faq.create.CreateFaqViewModel;
 import com.eventyay.organizer.core.main.EventViewModel;
 import com.eventyay.organizer.core.main.OrganizerViewModel;
 import com.eventyay.organizer.core.orders.create.CreateOrderViewModel;
 import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.orders.list.OrdersViewModel;
+import com.eventyay.organizer.core.organizer.detail.OrganizerDetailViewModel;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
@@ -28,6 +32,8 @@ import com.eventyay.organizer.core.speakerscall.create.CreateSpeakersCallViewMod
 import com.eventyay.organizer.core.sponsor.create.CreateSponsorViewModel;
 import com.eventyay.organizer.core.ticket.create.CreateTicketViewModel;
 import com.eventyay.organizer.core.ticket.detail.TicketDetailViewModel;
+import com.eventyay.organizer.core.track.create.CreateTrackViewModel;
+import com.eventyay.organizer.core.track.update.UpdateTrackViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -103,6 +109,16 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(CreateCopyrightViewModel.class)
+    public abstract ViewModel bindCreateCopyrightViewModel(CreateCopyrightViewModel createCopyrightViewModel);
+    
+    @Binds
+    @IntoMap
+    @ViewModelKey(UpdateCopyrightViewModel.class)
+    public abstract ViewModel bindUpdateCopyrightViewModel(UpdateCopyrightViewModel updateCopyrightViewModel);
+
+    @Binds
+    @IntoMap
     @ViewModelKey(CreateFaqViewModel.class)
     public abstract ViewModel bindCreateFaqViewModel(CreateFaqViewModel faqViewModel);
 
@@ -110,6 +126,16 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateSponsorViewModel.class)
     public abstract ViewModel bindCreateSponsorViewModel(CreateSponsorViewModel sponsorViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateTrackViewModel.class)
+    public abstract ViewModel bindCreateTrackViewModel(CreateTrackViewModel createTrackViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UpdateTrackViewModel.class)
+    public abstract ViewModel bindUpdateTrackViewModel(UpdateTrackViewModel updateTrackViewModel);
 
     @Binds
     @IntoMap
@@ -130,6 +156,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CheckInHistoryViewModel.class)
     public abstract ViewModel bindCheckInHistoryViewModel(CheckInHistoryViewModel checkInHistoryViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OrganizerDetailViewModel.class)
+    public abstract ViewModel bindOrganizerDetailViewModel(OrganizerDetailViewModel organizerDetailViewModel);
 
     @Binds
     @IntoMap
@@ -155,6 +186,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AutoCheckInViewModel.class)
     public abstract ViewModel bindAutoCheckInViewModel(AutoCheckInViewModel autoCheckInViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SalesSummaryViewModel.class)
+    public abstract ViewModel bindSalesSummaryViewModel(SalesSummaryViewModel salesSummaryViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);

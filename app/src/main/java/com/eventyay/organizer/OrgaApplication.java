@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.multidex.MultiDexApplication;
+import androidx.annotation.NonNull;
+import androidx.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
@@ -14,8 +14,6 @@ import com.raizlabs.android.dbflow.config.DatabaseConfig;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.runtime.DirectModelNotifier;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 import com.eventyay.organizer.common.di.AppInjector;
 import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
@@ -36,20 +34,8 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
 
     private static final AtomicBoolean CREATED = new AtomicBoolean();
 
-    private RefWatcher refWatcher;
-
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
-
-    /**
-     * Reference watcher to be used in detecting leaks in Fragments
-     *
-     * @param context Context needed to access Application
-     * @return ReferenceWatcher used to catch leaks in fragments
-     */
-    public static RefWatcher getRefWatcher(Context context) {
-        return ((OrgaApplication) context.getApplicationContext()).refWatcher;
-    }
 
     public static void initializeDatabase(Context context) {
         FlowManager.init(new FlowConfig.Builder(context)
@@ -68,7 +54,6 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
     public void onCreate() {
         super.onCreate();
 
-        refWatcher = setupLeakCanary();
         if (CREATED.getAndSet(true))
             return;
 
@@ -117,15 +102,6 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
         }
     }
 
-    protected RefWatcher setupLeakCanary() {
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return RefWatcher.DISABLED;
-        }
-        return LeakCanary.install(this);
-    }
-
     protected boolean isTestBuild() {
         return false;
     }
@@ -141,9 +117,6 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
         protected void log(int priority, String tag, @NonNull String message, Throwable throwable) {
             if (priority == Log.DEBUG || priority == Log.VERBOSE)
                 return;
-
-            // Report to crashing SDK in future
-            Timber.log(priority, tag, message, throwable);
 
             if (priority == Log.INFO) {
                 Log.d("Sentry", "Sending sentry breadcrumb");

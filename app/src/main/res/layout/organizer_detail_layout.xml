@@ -2,7 +2,9 @@
 <layout>
 
     <data>
+
         <import type="android.view.View" />
+
         <import type="com.eventyay.organizer.utils.DateUtils" />
 
         <variable
@@ -10,7 +12,7 @@
             type="com.eventyay.organizer.data.user.User" />
     </data>
 
-    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,18 +24,20 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/profile_picture"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"
                 android:layout_gravity="center"
-                app:circleImageUrl="@{ user.avatarUrl }"
                 android:layout_margin="@dimen/spacing_medium"
-                app:placeholder="@{ @drawable/ic_account_circle }"
-                android:contentDescription="@string/profile_picture" />
+                android:contentDescription="@string/profile_picture"
+                android:scaleType="centerCrop"
+                app:circleImageUrl="@{ user.avatarUrl }"
+                app:placeholder="@{ @drawable/ic_account_circle }" />
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium" >
+                android:layout_margin="@dimen/spacing_medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -43,62 +47,78 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="#dedede"
                         android:padding="@dimen/spacing_small"
                         android:text="@string/details"
-                        android:background="#dedede"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="?android:textColorSecondary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@{ @drawable/ic_clock }"
+                        android:drawableLeft="@{ @drawable/ic_clock }"
+                        android:drawablePadding="@dimen/spacing_small"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_clock }"
-                        android:drawableStart="@{ @drawable/ic_clock }"
                         android:text='@{ "Joined: " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, user.createdAt) }' />
 
                     <TextView
+                        android:id="@+id/organizer_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@{ @drawable/ic_email }"
+                        android:drawableLeft="@{ @drawable/ic_email }"
+                        android:drawablePadding="@dimen/spacing_small"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_email }"
-                        android:drawableStart="@{ @drawable/ic_email }"
                         android:text='@{ user.email }' />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_server_sync }"
-                        android:drawableStart="@{ @drawable/ic_server_sync }"
-                        android:text='@{ user.isVerified ? @string/verified : @string/not_verified }' />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@{ @drawable/ic_server_sync }"
+                            android:drawableLeft="@{ @drawable/ic_server_sync }"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/spacing_small"
+                            android:text='@{ user.isVerified ? @string/verified : @string/not_verified }' />
+
+                        <TextView
+                            android:id="@+id/resend_verification_mail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/resend_verification_mail"
+                            android:textColor="@color/color_accent"
+                            android:padding="@dimen/spacing_small"
+                            android:visibility="@{user.isVerified ? View.GONE : View.VISIBLE}" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@{ @drawable/ic_info }"
+                        android:drawableLeft="@{ @drawable/ic_info }"
+                        android:drawablePadding="@dimen/spacing_small"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_info }"
-                        android:drawableStart="@{ @drawable/ic_info }"
                         android:text='@{ user.details }'
                         android:visibility="@{user.details == null ? View.GONE : View.VISIBLE}" />
 
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
-                android:visibility="@{user.facebookUrl != null || user.contact != null || user.twitterUrl != null || user.googlePlusUrl != null || user.instagramUrl != null ? View.VISIBLE : View.GONE}" >
+                android:visibility="@{user.facebookUrl != null || user.contact != null || user.twitterUrl != null || user.googlePlusUrl != null || user.instagramUrl != null ? View.VISIBLE : View.GONE}">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -108,72 +128,77 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="#dedede"
                         android:padding="@dimen/spacing_small"
                         android:text="@string/contact"
-                        android:background="#dedede"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="?android:textColorSecondary" />
 
                     <TextView
+                        android:id="@+id/organizer_contact"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@{ @drawable/ic_contact }"
+                        android:drawableLeft="@{ @drawable/ic_contact }"
+                        android:drawablePadding="@dimen/spacing_small"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_contact }"
-                        android:drawableStart="@{ @drawable/ic_contact }"
                         android:text='@{ user.contact }'
                         android:visibility="@{user.contact == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
+                        android:id="@+id/organizer_facebook"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@{ @drawable/ic_facebook }"
+                        android:drawableLeft="@{ @drawable/ic_facebook }"
+                        android:drawablePadding="@dimen/spacing_small"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_facebook }"
-                        android:drawableStart="@{ @drawable/ic_facebook }"
                         android:text='@{ user.facebookUrl }'
                         android:visibility="@{user.facebookUrl == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
+                        android:id="@+id/organizer_twitter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@{ @drawable/ic_twitter }"
+                        android:drawableLeft="@{ @drawable/ic_twitter }"
+                        android:drawablePadding="@dimen/spacing_small"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_twitter }"
-                        android:drawableStart="@{ @drawable/ic_twitter }"
                         android:text='@{ user.twitterUrl }'
                         android:visibility="@{user.twitterUrl == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
+                        android:id="@+id/organizer_google_plus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@{ @drawable/ic_google_plus }"
+                        android:drawableLeft="@{ @drawable/ic_google_plus }"
+                        android:drawablePadding="@dimen/spacing_small"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_google_plus }"
-                        android:drawableStart="@{ @drawable/ic_google_plus }"
                         android:text='@{ user.googlePlusUrl }'
                         android:visibility="@{user.googlePlusUrl == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
+                        android:id="@+id/organizer_instagram"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:drawableStart="@{ @drawable/ic_instagram }"
+                        android:drawableLeft="@{ @drawable/ic_instagram }"
+                        android:drawablePadding="@dimen/spacing_small"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:drawableLeft="@{ @drawable/ic_instagram }"
-                        android:drawableStart="@{ @drawable/ic_instagram }"
                         android:text='@{ user.instagramUrl }'
-                        android:visibility="@{user.instagramUrl == null ? View.GONE : View.VISIBLE}"/>
+                        android:visibility="@{user.instagramUrl == null ? View.GONE : View.VISIBLE}" />
 
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

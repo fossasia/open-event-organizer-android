@@ -38,7 +38,7 @@
                 android:text="@string/order_statistics"
                 android:textSize="@dimen/text_size_normal" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_order_statistics"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

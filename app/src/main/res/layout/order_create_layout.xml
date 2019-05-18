@@ -9,7 +9,7 @@
 
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_top_surface">
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v4.widget.SwipeRefreshLayout
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -32,7 +32,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="200dp"
+                            android:layout_height="@dimen/spacing_200"
                             android:background="@color/color_accent"
                             android:orientation="vertical"
                             android:weightSum="10">
@@ -82,7 +82,7 @@
 
                         </LinearLayout>
 
-                        <android.support.v4.widget.NestedScrollView
+                        <androidx.core.widget.NestedScrollView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -98,7 +98,7 @@
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
 
-                                    <android.support.v7.widget.RecyclerView
+                                    <androidx.recyclerview.widget.RecyclerView
                                         android:id="@+id/ticketsRecyclerView"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
@@ -109,10 +109,10 @@
 
                             </LinearLayout>
 
-                        </android.support.v4.widget.NestedScrollView>
+                        </androidx.core.widget.NestedScrollView>
 
                     </LinearLayout>
-            </android.support.v4.widget.SwipeRefreshLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </FrameLayout>
 
@@ -141,5 +141,5 @@
             <include layout="@layout/progressbar_layout" />
         </FrameLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

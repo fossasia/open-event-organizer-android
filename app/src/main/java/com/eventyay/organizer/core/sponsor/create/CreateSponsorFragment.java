@@ -1,11 +1,11 @@
 package com.eventyay.organizer.core.sponsor.create;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
+import androidx.annotation.Nullable;
+import com.google.android.material.textfield.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -54,6 +54,8 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding =  DataBindingUtil.inflate(inflater, R.layout.sponsor_create_layout, container, false);
+        binding.form.name.requestFocus();
+        ViewUtils.showKeyboard(getContext());
         createSponsorViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateSponsorViewModel.class);
         validator = new Validator(binding.form);
 
@@ -64,6 +66,10 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
         }
 
         binding.submit.setOnClickListener(view -> {
+            binding.form.name.setText(binding.form.name.getText().toString().trim());
+            binding.form.quantity.setText(binding.form.quantity.getText().toString().trim());
+            binding.form.price.setText(binding.form.price.getText().toString().trim());
+
             if (validator.validate())
                 if (isUpdateSponsor)
                     createSponsorViewModel.updateSponsor();

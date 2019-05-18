@@ -1,9 +1,9 @@
 package com.eventyay.organizer.core.auth.login;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,22 +13,22 @@ import android.view.ViewGroup;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
-import com.eventyay.organizer.common.mvp.view.Erroneous;
-import com.eventyay.organizer.common.mvp.view.Progressive;
-import com.eventyay.organizer.common.mvp.view.Successful;
 import com.eventyay.organizer.core.auth.SharedViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.databinding.LoginFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.ValidateUtils;
 
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
+import static com.eventyay.organizer.utils.ValidateUtils.validate;
+import static com.eventyay.organizer.utils.ValidateUtils.validateUrl;
 
-public class LoginFragment extends BaseFragment implements Progressive, Successful, Erroneous {
+public class LoginFragment extends BaseFragment implements LoginView {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -62,19 +62,20 @@ public class LoginFragment extends BaseFragment implements Progressive, Successf
             binding.setLogin(login);
             sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
         });
-        loginFragmentViewModel.getTokenSentAction().observe(this, aVoid -> {
-            getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                .replace(R.id.fragment_container, new ResetPasswordFragment())
-                .addToBackStack(null)
-                .commit();
-        });
+        loginFragmentViewModel.getActionOpenResetPassword().observe(this, this::openResetPasswordFragment);
+
+        validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
 
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
             String url = binding.url.baseUrl.getText().toString().trim();
+
+            if(!binding.url.overrideUrl.isChecked() && !validateUrl(url)) {
+                return;
+            }
+
             loginFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             loginFragmentViewModel.login();
         });
@@ -144,5 +145,14 @@ public class LoginFragment extends BaseFragment implements Progressive, Successf
     @Override
     public void showProgress(boolean show) {
         showView(binding.progressBar, show);
+    }
+
+    @Override
+    public void openResetPasswordFragment(boolean resetPassword) {
+        getFragmentManager().beginTransaction()
+            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            .replace(R.id.fragment_container, new ResetPasswordFragment())
+            .addToBackStack(null)
+            .commit();
     }
 }

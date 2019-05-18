@@ -1,6 +1,6 @@
 package com.eventyay.organizer.common.mvp.view;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import com.eventyay.organizer.common.mvp.presenter.BasePresenter;
 

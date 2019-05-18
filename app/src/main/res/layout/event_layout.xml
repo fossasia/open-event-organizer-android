@@ -78,7 +78,7 @@
 
                     <TextView
                         android:id="@+id/event_name_textview"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/spacing_zero"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="14"
@@ -94,7 +94,7 @@
 
                     <FrameLayout
                         android:id="@+id/draft_frame"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/spacing_zero"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
                         android:visibility='@{ Event.STATE_DRAFT.equalsIgnoreCase(event.state) ? View.VISIBLE : View.GONE }'>

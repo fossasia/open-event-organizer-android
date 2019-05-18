@@ -1,8 +1,8 @@
 package com.eventyay.organizer.core.auth.reset;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +14,15 @@ import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.auth.SharedViewModel;
 import com.eventyay.organizer.databinding.ResetPasswordByTokenFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.ValidateUtils;
 
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
+import static com.eventyay.organizer.utils.ValidateUtils.validate;
+import static com.eventyay.organizer.utils.ValidateUtils.validateUrl;
 
 public class ResetPasswordFragment extends BaseFragment implements ResetPasswordView {
 
@@ -54,9 +57,17 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
         resetPasswordViewModel.getSuccess().observe(this, this::onSuccess);
         resetPasswordViewModel.getMessage().observe(this, this::showMessage);
 
+        validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+
         binding.btnResetPassword.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
+
+            String url = binding.url.baseUrl.getText().toString().trim();
+
+            if(!binding.url.overrideUrl.isChecked() && !validateUrl(url)) {
+                return;
+            }
 
             if (!binding.newPassword.getText().toString()
                 .equals(binding.confirmPassword.getText().toString())) {
@@ -65,7 +76,6 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
                 return;
             }
 
-            String url = binding.url.baseUrl.getText().toString().trim();
             resetPasswordViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             resetPasswordViewModel.submitRequest(resetPasswordViewModel.getSubmitToken());
         });

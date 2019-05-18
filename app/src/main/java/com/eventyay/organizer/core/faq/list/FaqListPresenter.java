@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.faq.list;
 
-import android.databinding.ObservableBoolean;
+import androidx.databinding.ObservableBoolean;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -102,13 +102,12 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
         Observable.fromIterable(selectedMap.entrySet())
             .compose(dispose(getDisposable()))
             .compose(progressiveErroneous(getView()))
-            .doFinally(() -> {
-                getView().showMessage("Faq's Deleted Successfully");
-            })
             .subscribe(entry -> {
                 if (entry.getValue().get()) {
                     deleteFaq(entry.getKey());
                 }
+                loadFaqs(false);
+                getView().showMessage("FAQs Deleted Successfully");
             }, Logger::logError);
     }
 

@@ -1,9 +1,9 @@
 package com.eventyay.organizer.core.speakerscall.create;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.support.annotation.VisibleForTesting;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.annotation.VisibleForTesting;
 
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;

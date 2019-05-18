@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -13,22 +13,14 @@
             type="com.eventyay.organizer.data.event.Event" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true" >
-
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:padding="@dimen/spacing_medium"
-            android:divider="?android:dividerHorizontal"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,131 +28,175 @@
                 android:layout_marginBottom="@dimen/spacing_normal"
                 android:divider="?android:dividerHorizontal"
                 android:orientation="vertical"
-                android:showDividers="beginning">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:textStyle="bold"
-                    android:text="@string/graphics"
-                    android:textSize="@dimen/text_size_normal" />
+                android:padding="@dimen/spacing_medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:divider="?android:dividerHorizontal"
+                    android:orientation="vertical"
+                    android:showDividers="beginning">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/logo_url"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_photo" />
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/logo_url_layout"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small">
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text="@string/graphics"
+                        android:textSize="@dimen/text_size_normal"
+                        android:textStyle="bold" />
 
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/logo_url"
+                    <FrameLayout
+                        android:id="@+id/logo_image_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/event_image_height"
+                        android:background="@color/grey_600"
+                        android:layout_margin="10dp">
+
+                        <ImageView
+                            android:id="@+id/logo_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_camera"
+                            android:layout_gravity="center"
+                            android:contentDescription="Add logo image" />
+
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/logo_url"
+                            android:padding="@dimen/spacing_extra_small"
+                            app:srcCompat="@drawable/ic_photo" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/logo_url_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/logo_url"
-                            android:inputType="text"
-                            android:text="@={ event.logoUrl }" />
+                            android:padding="@dimen/spacing_extra_small">
 
-                    </android.support.design.widget.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/logo_url"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/logo_url"
+                                android:inputType="text"
+                                android:text="@={ event.logoUrl }" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/original_image_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/event_image_height"
+                        android:background="@color/grey_600"
+                        android:layout_margin="10dp">
+
+                    <ImageView
+                        android:id="@+id/original_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/ic_camera"
+                        android:layout_gravity="center"
+                        android:contentDescription="Add original image" />
+
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/original_image_url"
+                            android:padding="@dimen/spacing_extra_small"
+                            app:srcCompat="@drawable/ic_photo" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/original_image_url_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/spacing_extra_small"
+                            android:paddingRight="@dimen/spacing_extra_small"
+                            android:paddingBottom="@dimen/spacing_extra_small">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/original_image_url"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/original_image_url"
+                                android:inputType="text"
+                                android:text="@={ event.originalImageUrl }" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:divider="?android:dividerHorizontal"
+                    android:orientation="vertical"
+                    android:showDividers="beginning">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/original_image_url"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_photo" />
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/original_image_url_layout"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/spacing_extra_small"
-                        android:paddingLeft="@dimen/spacing_extra_small"
-                        android:paddingRight="@dimen/spacing_extra_small">
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text="@string/others"
+                        android:textSize="@dimen/text_size_normal"
+                        android:textStyle="bold" />
 
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/original_image_url"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_large"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/external_event_url"
+                            android:padding="@dimen/spacing_extra_small"
+                            app:srcCompat="@drawable/ic_link" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/external_event_url_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/original_image_url"
-                            android:inputType="text"
-                            android:text="@={ event.originalImageUrl }" />
+                            android:padding="@dimen/spacing_extra_small">
 
-                    </android.support.design.widget.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/external_event_url"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/external_event_url"
+                                android:inputType="textWebEmailAddress"
+                                android:text="@={ event.externalEventUrl }" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:divider="?android:dividerHorizontal"
-                android:orientation="vertical"
-                android:showDividers="beginning">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:textStyle="bold"
-                    android:text="@string/others"
-                    android:textSize="@dimen/text_size_normal" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/spacing_large"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/external_event_url"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_link" />
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/external_event_url_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/external_event_url"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/external_event_url"
-                            android:inputType="textWebEmailAddress"
-                            android:text="@={ event.externalEventUrl }" />
-
-                    </android.support.design.widget.TextInputLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <FrameLayout
             android:id="@+id/progressBar"
@@ -170,5 +206,5 @@
 
             <include layout="@layout/progressbar_layout" />
         </FrameLayout>
-</android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
