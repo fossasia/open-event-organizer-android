@@ -1,11 +1,11 @@
 package com.eventyay.organizer.core.event.create;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,10 +13,10 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -34,8 +34,8 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.event.Event;
-import com.eventyay.organizer.data.event.ImageData;
-import com.eventyay.organizer.data.event.ImageUrl;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.databinding.EventCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.ui.editor.RichEditorActivity;
@@ -116,12 +116,6 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
         });
 
-        binding.submit.setOnClickListener(view -> {
-            if (validator.validate()) {
-                createEventViewModel.updateEvent();
-            }
-        });
-
         binding.form.description.setOnClickListener(view -> {
             Intent richEditorIntent = new Intent(getContext(), RichEditorActivity.class);
             richEditorIntent.putExtra(TAG_RICH_TEXT, binding.form.description.getText().toString());
@@ -195,8 +189,10 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_share_event:
-                shareEvent();
+            case R.id.action_menu_done:
+                if (validator.validate()) {
+                    createEventViewModel.updateEvent();
+                }
                 break;
             default:
         }
@@ -206,23 +202,15 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        MenuItem menuItem = menu.findItem(R.id.action_share_event);
-        Drawable shareIcon = menu.findItem(R.id.action_share_event).getIcon();
+        MenuItem menuItem = menu.findItem(R.id.action_menu_done);
+        Drawable shareIcon = menu.findItem(R.id.action_menu_done).getIcon();
         shareIcon.setColorFilter(getResources().getColor(android.R.color.black), PorterDuff.Mode.SRC_ATOP);
         menuItem.setVisible(true);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_share, menu);
+        inflater.inflate(R.menu.menu_done, menu);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    public void shareEvent() {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(createEventViewModel.getEvent()));
-        shareIntent.setType("text/plain");
-        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
 
     @Override

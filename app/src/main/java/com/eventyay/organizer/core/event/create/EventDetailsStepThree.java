@@ -1,16 +1,16 @@
 package com.eventyay.organizer.core.event.create;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
-import com.eventyay.organizer.data.event.ImageData;
-import com.eventyay.organizer.data.event.ImageUrl;
+import com.eventyay.organizer.data.image.ImageData;
+import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.databinding.EventDetailsStepThreeBinding;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;

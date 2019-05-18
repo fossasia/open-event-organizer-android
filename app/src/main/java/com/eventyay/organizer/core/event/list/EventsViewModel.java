@@ -1,8 +1,8 @@
 package com.eventyay.organizer.core.event.list;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
@@ -44,14 +44,21 @@ public class EventsViewModel extends ViewModel {
 
     public LiveData<List<Event>> getEvents(int position) {
         switch (position) {
-            case 0: return liveEvents;
-            case 1: return pastEvents;
-            case 2: return draftEvents;
-            default: return events;
+            case 0:
+                return liveEvents;
+            case 1:
+                return pastEvents;
+            case 2:
+                return draftEvents;
+            default:
+                return events;
         }
     }
 
     public void sortBy(int criteria) {
+        if (events.getValue() == null) {
+            return;
+        }
         if (criteria == SORTBYNAME)
             Collections.sort(events.getValue(), (e1, e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
         else {

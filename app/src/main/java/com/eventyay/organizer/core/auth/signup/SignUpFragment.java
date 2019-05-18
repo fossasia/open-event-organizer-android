@@ -1,12 +1,11 @@
 package com.eventyay.organizer.core.auth.signup;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.net.Uri;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -29,6 +28,8 @@ import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.core.settings.LegalPreferenceFragment.PRIVACY_POLICY_URL;
 import static com.eventyay.organizer.core.settings.LegalPreferenceFragment.TERMS_OF_USE_URL;
+import static com.eventyay.organizer.utils.ValidateUtils.validate;
+import static com.eventyay.organizer.utils.ValidateUtils.validateUrl;
 
 public class SignUpFragment extends BaseFragment implements SignUpView {
 
@@ -63,7 +64,8 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
         super.onStart();
         binding.setUser(signUpViewModel.getUser());
 
-        ValidateUtils.validate(binding.emailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
+        validate(binding.emailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
+        validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
         signUpViewModel.getProgress().observe(this, this::showProgress);
         signUpViewModel.getSuccess().observe(this, this::onSuccess);
         signUpViewModel.getError().observe(this, this::showError);
@@ -106,13 +108,18 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
             if (!validator.validate())
                 return;
 
+            String url = binding.url.baseUrl.getText().toString().trim();
+
+            if(!binding.url.overrideUrl.isChecked() && !validateUrl(url)) {
+                return;
+            }
+
             String password = binding.password.getText().toString();
             String confirmPassword = binding.confirmPassword.getText().toString();
             if (!(signUpViewModel.arePasswordsEqual(password, confirmPassword))) {
                 return;
             }
 
-            String url = binding.url.baseUrl.getText().toString().trim();
             signUpViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
             signUpViewModel.signUp();
         });

@@ -1,8 +1,8 @@
 package com.eventyay.organizer.core.speakerscall.create;
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.data.speakerscall.SpeakersCallRepository;

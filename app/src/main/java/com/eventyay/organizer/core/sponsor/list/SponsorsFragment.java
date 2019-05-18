@@ -1,15 +1,15 @@
 package com.eventyay.organizer.core.sponsor.list;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -84,6 +84,8 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     }
 
     public void openCreateSponsorFragment() {
+        getPresenter().isNewSponsorCreated = true;
+
         getFragmentManager().beginTransaction()
             .replace(R.id.fragment_container, CreateSponsorFragment.newInstance())
             .addToBackStack(null)

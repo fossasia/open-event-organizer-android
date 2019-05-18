@@ -1,6 +1,6 @@
 package com.eventyay.organizer.core.feedback.list.viewholder;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 
 import com.eventyay.organizer.data.feedback.Feedback;

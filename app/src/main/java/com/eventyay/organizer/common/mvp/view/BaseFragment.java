@@ -1,9 +1,8 @@
 package com.eventyay.organizer.common.mvp.view;
 
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
 
-import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.common.di.Injectable;
 import com.eventyay.organizer.common.mvp.presenter.BasePresenter;
 import com.eventyay.organizer.ui.ViewUtils;
@@ -42,11 +41,4 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         if (presenter != null)
             presenter.detach();
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        OrgaApplication.getRefWatcher(getActivity()).watch(this);
-    }
-
 }

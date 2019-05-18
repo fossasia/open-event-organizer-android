@@ -2,8 +2,8 @@ package com.eventyay.organizer.core.event.dashboard.analyser;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;

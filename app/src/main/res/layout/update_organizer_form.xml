@@ -41,19 +41,19 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_person" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/organizer_firstname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/first_name"
                     android:text="@={ user.firstName }" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -68,19 +68,19 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_person" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/organizer_lastname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/last_name"
                     android:text="@={ user.lastName }" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
 
@@ -96,12 +96,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_email" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/organizer_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                     app:validateType='@{"email"}'
                     android:inputType="textWebEmailAddress"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -126,12 +126,12 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_contact" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/contact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -139,7 +139,7 @@
                     android:text="@={user.contact}"
                     android:inputType="number" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -154,13 +154,13 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_link" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/holder_thumbnail_image_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/thumbnail_image_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
                     android:text="@={user.thumbnailImageUrl}"
                     android:inputType="textWebEmailAddress|textMultiLine"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -183,13 +183,13 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_link" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/holder_icon_image_url"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/icon_image_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                     android:inputType="textWebEmailAddress|textMultiLine"
                     android:text="@={user.iconImageUrl}" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -212,13 +212,13 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_facebook" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/holder_facebook_url"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/facebook_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
                     android:inputType="textMultiLine"
                     android:text="@={user.facebookUrl}"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -241,13 +241,13 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_instagram" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/holder_instragram_url"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/instragram_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -255,7 +255,7 @@
                     android:inputType="textMultiLine"
                     android:text="@={user.instagramUrl}"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -270,13 +270,13 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_link" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/holder_avatar_url"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/avatar_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -284,7 +284,7 @@
                     android:inputType="textMultiLine"
                     android:text="@={user.avatarUrl}"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -299,13 +299,13 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_twitter" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/holder_twitter_url"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/twitter_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -313,14 +313,15 @@
                     android:inputType="textMultiLine"
                     android:text="@={user.twitterUrl}"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/spacing_extra_large">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -328,13 +329,13 @@
                 android:padding="@dimen/spacing_extra_small"
                 app:srcCompat="@drawable/ic_google_plus" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/holder_google_plus_url"
                 android:padding="@dimen/spacing_extra_small">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/google_plus_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -342,7 +343,7 @@
                     android:inputType="textMultiLine"
                     android:text="@={user.googlePlusUrl}"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
     </LinearLayout>

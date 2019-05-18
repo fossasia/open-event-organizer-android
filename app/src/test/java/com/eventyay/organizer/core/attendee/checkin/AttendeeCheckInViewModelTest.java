@@ -1,7 +1,7 @@
 package com.eventyay.organizer.core.attendee.checkin;
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.lifecycle.Observer;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.Observer;
 
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;

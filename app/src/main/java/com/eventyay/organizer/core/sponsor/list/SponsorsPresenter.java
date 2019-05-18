@@ -1,7 +1,7 @@
 package com.eventyay.organizer.core.sponsor.list;
 
-import android.databinding.ObservableBoolean;
-import android.support.annotation.VisibleForTesting;
+import androidx.databinding.ObservableBoolean;
+import androidx.annotation.VisibleForTesting;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -37,6 +37,8 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     private boolean isContextualModeActive;
 
     private static final int EDITABLE_AT_ONCE = 1;
+
+    public boolean isNewSponsorCreated = false;
 
     @Inject
     public SponsorsPresenter(SponsorRepository sponsorRepository, DatabaseChangeListener<Sponsor> sponsorChangeListener) {
@@ -88,7 +90,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     }
 
     private Observable<Sponsor> getSponsorSource(boolean forceReload) {
-        if (!forceReload && !sponsors.isEmpty() && isRotated())
+        if (!forceReload && !sponsors.isEmpty() && isRotated() && !isNewSponsorCreated)
             return Observable.fromIterable(sponsors);
         else
             return sponsorRepository.getSponsors(getId(), forceReload);
@@ -121,6 +123,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
                 if (entry.getValue().get()) {
                     deleteSponsor(entry.getKey());
                 }
+                loadSponsors(false);
             }, Logger::logError);
     }
 
