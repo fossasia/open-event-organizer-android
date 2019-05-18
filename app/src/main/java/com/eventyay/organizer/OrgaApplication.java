@@ -14,8 +14,6 @@ import com.raizlabs.android.dbflow.config.DatabaseConfig;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.runtime.DirectModelNotifier;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 import com.eventyay.organizer.common.di.AppInjector;
 import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
@@ -36,20 +34,8 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
 
     private static final AtomicBoolean CREATED = new AtomicBoolean();
 
-    private RefWatcher refWatcher;
-
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
-
-    /**
-     * Reference watcher to be used in detecting leaks in Fragments
-     *
-     * @param context Context needed to access Application
-     * @return ReferenceWatcher used to catch leaks in fragments
-     */
-    public static RefWatcher getRefWatcher(Context context) {
-        return ((OrgaApplication) context.getApplicationContext()).refWatcher;
-    }
 
     public static void initializeDatabase(Context context) {
         FlowManager.init(new FlowConfig.Builder(context)
@@ -68,7 +54,6 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
     public void onCreate() {
         super.onCreate();
 
-        refWatcher = setupLeakCanary();
         if (CREATED.getAndSet(true))
             return;
 
@@ -115,15 +100,6 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
 
             Timber.plant(new ReleaseLogTree());
         }
-    }
-
-    protected RefWatcher setupLeakCanary() {
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return RefWatcher.DISABLED;
-        }
-        return LeakCanary.install(this);
     }
 
     protected boolean isTestBuild() {

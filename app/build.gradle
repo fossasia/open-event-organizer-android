@@ -104,13 +104,6 @@ configurations.all { config ->
     resolutionStrategy {
         force 'com.android.support:multidex:1.0.3'
     }
-    if (config.name.contains('UnitTest')) {
-        config.resolutionStrategy.eachDependency { details ->
-            if (details.requested.group == 'com.squareup.leakcanary' && details.requested.name == 'leakcanary-android') {
-                details.useTarget(group: details.requested.group, name: 'leakcanary-android-no-op', version: details.requested.version)
-            }
-        }
-    }
 }
 
 check {
@@ -203,7 +196,6 @@ dependencies {
 
     // Leak Canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leak_canary}"
 
     // Stetho
     debugImplementation "com.facebook.stetho:stetho:${versions.stetho}"
