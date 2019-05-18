@@ -17,6 +17,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:foreground="?selectableItemBackground"
+        android:layout_margin="@dimen/spacing_extra_small"
         style="@style/ItemPadding">
 
         <LinearLayout

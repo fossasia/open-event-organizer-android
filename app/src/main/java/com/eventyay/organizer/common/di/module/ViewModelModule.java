@@ -14,6 +14,7 @@ import com.eventyay.organizer.core.event.copyright.CreateCopyrightViewModel;
 import com.eventyay.organizer.core.event.copyright.update.UpdateCopyrightViewModel;
 import com.eventyay.organizer.core.event.create.CreateEventViewModel;
 import com.eventyay.organizer.core.event.list.EventsViewModel;
+import com.eventyay.organizer.core.event.list.sales.SalesSummaryViewModel;
 import com.eventyay.organizer.core.faq.create.CreateFaqViewModel;
 import com.eventyay.organizer.core.main.EventViewModel;
 import com.eventyay.organizer.core.main.OrganizerViewModel;
@@ -185,6 +186,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AutoCheckInViewModel.class)
     public abstract ViewModel bindAutoCheckInViewModel(AutoCheckInViewModel autoCheckInViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SalesSummaryViewModel.class)
+    public abstract ViewModel bindSalesSummaryViewModel(SalesSummaryViewModel salesSummaryViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);

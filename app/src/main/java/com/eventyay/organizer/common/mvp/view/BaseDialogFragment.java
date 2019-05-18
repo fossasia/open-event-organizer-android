@@ -2,19 +2,12 @@ package com.eventyay.organizer.common.mvp.view;
 
 import androidx.fragment.app.DialogFragment;
 
-import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.common.di.Injectable;
 import com.eventyay.organizer.common.mvp.presenter.BasePresenter;
 
 import dagger.Lazy;
 
 public class BaseDialogFragment<P extends BasePresenter> extends DialogFragment implements Injectable {
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        OrgaApplication.getRefWatcher(getActivity()).watch(this);
-    }
 
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     protected Lazy<P> getPresenterProvider() {
