@@ -38,6 +38,8 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
 
     private static final int EDITABLE_AT_ONCE = 1;
 
+    public boolean isNewSponsorCreated = false;
+
     @Inject
     public SponsorsPresenter(SponsorRepository sponsorRepository, DatabaseChangeListener<Sponsor> sponsorChangeListener) {
         this.sponsorRepository = sponsorRepository;
@@ -88,7 +90,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     }
 
     private Observable<Sponsor> getSponsorSource(boolean forceReload) {
-        if (!forceReload && !sponsors.isEmpty() && isRotated())
+        if (!forceReload && !sponsors.isEmpty() && isRotated() && !isNewSponsorCreated)
             return Observable.fromIterable(sponsors);
         else
             return sponsorRepository.getSponsors(getId(), forceReload);
