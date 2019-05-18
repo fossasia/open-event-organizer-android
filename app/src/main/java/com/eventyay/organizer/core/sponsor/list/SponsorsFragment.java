@@ -84,6 +84,8 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
     }
 
     public void openCreateSponsorFragment() {
+        getPresenter().isNewSponsorCreated = true;
+
         getFragmentManager().beginTransaction()
             .replace(R.id.fragment_container, CreateSponsorFragment.newInstance())
             .addToBackStack(null)
