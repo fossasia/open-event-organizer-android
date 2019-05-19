@@ -13,6 +13,7 @@ import com.eventyay.organizer.utils.ErrorUtils;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 public class CreateFaqViewModel extends ViewModel {
 
@@ -60,9 +61,12 @@ public class CreateFaqViewModel extends ViewModel {
                 .createFaq(faq)
                 .doOnSubscribe(disposable -> progress.setValue(true))
                 .doFinally(() -> progress.setValue(false))
-                .subscribe(createdFaq -> {
+                .subscribe(()-> {
                     success.setValue("Faq Created");
                     dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                }, throwable -> {
+                    error.setValue(ErrorUtils.getMessage(throwable).toString());
+                    Timber.e(throwable);
+                }));
     }
 }

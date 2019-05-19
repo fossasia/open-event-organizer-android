@@ -5,6 +5,7 @@ import dagger.Module;
 @Module(includes = {
     AndroidModule.class,
     RepoModule.class,
+    DatabaseModule.class,
     ModelModule.class,
     NetworkModule.class,
     ViewModelModule.class

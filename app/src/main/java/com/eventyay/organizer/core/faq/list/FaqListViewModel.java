@@ -7,12 +7,9 @@ import androidx.lifecycle.ViewModel;
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
-import com.eventyay.organizer.data.db.DatabaseChangeListener;
-import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.faq.Faq;
 import com.eventyay.organizer.data.faq.FaqRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
-import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +20,12 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class FaqListViewModel extends ViewModel {
 
-    private final List<Faq> faqs = new ArrayList<>();
+    private List<Faq> faqs = new ArrayList<>();
     private Faq previousFaq = new Faq();
     private final FaqRepository faqRepository;
-    private final DatabaseChangeListener<Faq> faqChangeListener;
     private final Map<Faq, ObservableBoolean> selectedMap = new ConcurrentHashMap<>();
     private boolean isContextualModeActive;
 
@@ -45,9 +40,8 @@ public class FaqListViewModel extends ViewModel {
     private long eventId;
 
     @Inject
-    public FaqListViewModel(FaqRepository faqRepository, DatabaseChangeListener<Faq> faqChangeListener) {
+    public FaqListViewModel(FaqRepository faqRepository) {
         this.faqRepository = faqRepository;
-        this.faqChangeListener = faqChangeListener;
 
         eventId = ContextManager.getSelectedEvent().getId();
     }
@@ -80,42 +74,24 @@ public class FaqListViewModel extends ViewModel {
         return selectedMap;
     }
 
-    public DatabaseChangeListener<Faq> getFaqChangeListener() {
-        return faqChangeListener;
-    }
-
     public void loadFaqs(boolean forceReload) {
-
-        listenChanges();
 
         compositeDisposable.add(
             getFaqSource(forceReload)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .toList()
                 .subscribe(loadedFaqs -> {
                     faqs.clear();
                     faqs.addAll(loadedFaqs);
                     success.setValue("FAQs Loaded Successfully");
-                    faqsLiveData.setValue(loadedFaqs);
+                    faqsLiveData.setValue(faqs);
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
-    private Observable<Faq> getFaqSource(boolean forceReload) {
+    private Observable<List<Faq>> getFaqSource(boolean forceReload) {
         if (!forceReload && !faqs.isEmpty())
-            return Observable.fromIterable(faqs);
+            return Observable.just(faqs);
         else {
             return faqRepository.getFaqs(eventId, forceReload);
         }
-    }
-
-    private void listenChanges() {
-        faqChangeListener.startListening();
-        faqChangeListener.getNotifier()
-            .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.DELETE))
-            .subscribeOn(Schedulers.io())
-            .subscribe(faqModelChange -> loadFaqs(false), Logger::logError);
     }
 
     public List<Faq> getFaqs() {

@@ -3,9 +3,9 @@ package com.eventyay.organizer.data.faq;
 import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.common.Constants;
-import com.eventyay.organizer.data.RateLimiter;
 import com.eventyay.organizer.data.Repository;
-import org.threeten.bp.Duration;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -18,47 +18,47 @@ public class FaqRepositoryImpl implements FaqRepository {
 
     private final FaqApi faqApi;
     private final Repository repository;
-    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
+    private FaqDao faqDao;
 
     @Inject
-    public FaqRepositoryImpl(FaqApi faqApi, Repository repository) {
+    public FaqRepositoryImpl(FaqApi faqApi, Repository repository, FaqDao faqDao) {
         this.faqApi = faqApi;
         this.repository = repository;
+        this.faqDao = faqDao;
     }
 
     @Override
-    public Observable<Faq> getFaqs(long eventId, boolean reload) {
-        Observable<Faq> diskObservable = Observable.defer(() ->
-            repository.getItems(Faq.class, Faq_Table.event_id.eq(eventId))
-        );
-
-        Observable<Faq> networkObservable = Observable.defer(() ->
-            faqApi.getFaqs(eventId)
-                .doOnNext(faqs -> repository.syncSave(Faq.class, faqs, Faq::getId, Faq_Table.id).subscribe())
-                .flatMapIterable(faqs -> faqs));
-
-        return repository.observableOf(Faq.class)
-            .reload(reload)
-            .withRateLimiterConfig("Faqs", rateLimiter)
-            .withDiskObservable(diskObservable)
-            .withNetworkObservable(networkObservable)
-            .build();
-    }
-
-    @NonNull
-    @Override
-    public Observable<Faq> createFaq(Faq faq) {
+    public Observable<List<Faq>> getFaqs(long eventId, boolean reload) {
         if (!repository.isConnected()) {
             return Observable.error(new Throwable(Constants.NO_NETWORK));
         }
 
+        if (!reload) {
+            return faqDao.getAllFaqs(eventId)
+                .switchIfEmpty(faqApi.getFaqs(eventId)
+                    .doOnNext(faqList -> faqDao.insertFaqList(faqList).subscribe()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        } else {
+            return faqApi.getFaqs(eventId)
+                .doOnNext(faqList -> faqDao.insertFaqList(faqList).subscribe())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        }
+    }
+
+    @NonNull
+    @Override
+    public Completable createFaq(Faq faq) {
+        if (!repository.isConnected()) {
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
         return faqApi
             .postFaq(faq)
-            .doOnNext(created -> {
-                created.setEvent(faq.getEvent());
-                repository
-                    .save(Faq.class, created)
-                    .subscribe();
+            .flatMapCompletable(createdFaq -> {
+                createdFaq.setEvent(faq.getEvent());
+                return faqDao.insertFaq(createdFaq);
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
@@ -72,9 +72,7 @@ public class FaqRepositoryImpl implements FaqRepository {
         }
 
         return faqApi.deleteFaq(id)
-            .doOnComplete(() -> repository
-                .delete(Faq.class, Faq_Table.id.eq(id))
-                .subscribe())
+            .doOnComplete(() -> faqDao.deleteFaq(id).subscribe())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }

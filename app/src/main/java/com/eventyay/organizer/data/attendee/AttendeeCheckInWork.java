@@ -35,7 +35,7 @@ public class AttendeeCheckInWork extends Worker {
     @Override
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public Worker.Result doWork() {
-        DaggerAppComponent.create().inject(this);
+        DaggerAppComponent.builder().build().inject(this);
 
         Timber.d("Running attendee checkin work");
 

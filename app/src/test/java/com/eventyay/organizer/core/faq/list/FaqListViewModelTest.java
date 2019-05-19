@@ -50,8 +50,6 @@ public class FaqListViewModelTest {
     private FaqListView faqListView;
     @Mock
     private FaqRepository faqRepository;
-    @Mock
-    private DatabaseChangeListener<Faq> faqChangeListener;
 
     private FaqListViewModel faqListViewModel;
 
@@ -80,7 +78,7 @@ public class FaqListViewModelTest {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
         ContextManager.setSelectedEvent(event);
-        faqListViewModel = new FaqListViewModel(faqRepository, faqChangeListener);
+        faqListViewModel = new FaqListViewModel(faqRepository);
         ContextManager.setSelectedEvent(null);
     }
 
@@ -93,8 +91,7 @@ public class FaqListViewModelTest {
     @Test
     public void shouldLoadFaqsSuccessfully() {
         when(faqRepository.getFaqs(anyLong(), anyBoolean()))
-            .thenReturn(Observable.fromIterable(FAQS));
-        when(faqChangeListener.getNotifier()).thenReturn(PublishSubject.create());
+            .thenReturn(Observable.just(FAQS));
 
         InOrder inOrder = Mockito.inOrder(progress, success);
 
@@ -103,16 +100,13 @@ public class FaqListViewModelTest {
 
         faqListViewModel.loadFaqs(false);
 
-        inOrder.verify(progress).onChanged(true);
         inOrder.verify(success).onChanged(anyString());
-        inOrder.verify(progress).onChanged(false);
     }
 
     @Test
     public void shouldShowErrorOnFailure() {
         when(faqRepository.getFaqs(anyLong(), anyBoolean()))
             .thenReturn(Observable.error(Logger.TEST_ERROR));
-        when(faqChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         InOrder inOrder = Mockito.inOrder(progress, error);
 
@@ -121,9 +115,7 @@ public class FaqListViewModelTest {
 
         faqListViewModel.loadFaqs(false);
 
-        inOrder.verify(progress).onChanged(true);
         inOrder.verify(error).onChanged(anyString());
-        inOrder.verify(progress).onChanged(false);
     }
 
     @Test

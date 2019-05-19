@@ -159,7 +159,6 @@ public class FaqListFragment extends BaseFragment implements FaqListView {
     public void onStop() {
         super.onStop();
         faqListViewModel.getSelectedMap().clear();
-        faqListViewModel.getFaqChangeListener().stopListening();
         refreshLayout.setOnRefreshListener(null);
     }
 
