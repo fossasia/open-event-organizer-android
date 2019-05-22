@@ -14,10 +14,13 @@ import java.util.List;
 
 public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackViewHolder> {
 
-    private final List<Feedback> feedbacks;
+    private List<Feedback> feedbacks;
+    private final FeedbackListViewModel feedbackListViewModel;
 
-    public FeedbackListAdapter(FeedbackListPresenter feedbackListPresenter) {
-        this.feedbacks = feedbackListPresenter.getFeedbacks();
+    public FeedbackListAdapter(FeedbackListViewModel feedbackListViewModel) {
+        this.feedbackListViewModel = feedbackListViewModel;
+
+        feedbacks = feedbackListViewModel.getFeedbacks();
     }
 
     @NonNull
