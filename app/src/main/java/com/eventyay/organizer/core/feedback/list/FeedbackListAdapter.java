@@ -14,7 +14,7 @@ import java.util.List;
 
 public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackViewHolder> {
 
-    private List<Feedback> feedbacks;
+    public List<Feedback> feedbacks;
     private final FeedbackListViewModel feedbackListViewModel;
 
     public FeedbackListAdapter(FeedbackListViewModel feedbackListViewModel) {
