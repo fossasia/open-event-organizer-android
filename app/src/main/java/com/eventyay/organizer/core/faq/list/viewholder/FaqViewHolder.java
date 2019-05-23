@@ -6,22 +6,22 @@ import android.view.View;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Pipe;
-import com.eventyay.organizer.core.faq.list.FaqListPresenter;
+import com.eventyay.organizer.core.faq.list.FaqListViewModel;
 import com.eventyay.organizer.data.faq.Faq;
 import com.eventyay.organizer.databinding.FaqLayoutBinding;
 
 public class FaqViewHolder extends RecyclerView.ViewHolder {
 
     private final FaqLayoutBinding binding;
-    private final FaqListPresenter faqListPresenter;
+    private final FaqListViewModel faqListViewModel;
     private Faq faq;
     private Pipe<Faq> longClickAction;
     private Pipe<Faq> clickAction;
 
-    public FaqViewHolder(FaqLayoutBinding binding, FaqListPresenter faqListPresenter) {
+    public FaqViewHolder(FaqLayoutBinding binding, FaqListViewModel faqListViewModel) {
         super(binding.getRoot());
         this.binding = binding;
-        this.faqListPresenter = faqListPresenter;
+        this.faqListViewModel = faqListViewModel;
         binding.answerLayout.setVisibility(View.GONE);
 
         binding.getRoot().setOnLongClickListener(view -> {
@@ -47,7 +47,7 @@ public class FaqViewHolder extends RecyclerView.ViewHolder {
     public void bind(Faq faq) {
         this.faq = faq;
         binding.setFaq(faq);
-        binding.setFaqListPresenter(faqListPresenter);
+        binding.setFaqListViewModel(faqListViewModel);
         binding.executePendingBindings();
         binding.questionLayout.setOnClickListener(v -> {
             if (binding.answerLayout.getVisibility() == View.GONE) {

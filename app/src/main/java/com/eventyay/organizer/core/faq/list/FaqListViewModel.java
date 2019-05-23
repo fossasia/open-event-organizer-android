@@ -1,15 +1,17 @@
 package com.eventyay.organizer.core.faq.list;
 
 import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
-import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
+import com.eventyay.organizer.common.ContextManager;
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.faq.Faq;
 import com.eventyay.organizer.data.faq.FaqRepository;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,64 +21,100 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
-import static com.eventyay.organizer.common.rx.ViewTransformers.disposeCompletable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.emptiable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneous;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousCompletable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
-
-public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView> {
+public class FaqListViewModel extends ViewModel {
 
     private final List<Faq> faqs = new ArrayList<>();
     private Faq previousFaq = new Faq();
     private final FaqRepository faqRepository;
-    private final DatabaseChangeListener<Faq> faqChangeListener;
+    public final DatabaseChangeListener<Faq> faqChangeListener;
     private final Map<Faq, ObservableBoolean> selectedMap = new ConcurrentHashMap<>();
     private boolean isContextualModeActive;
 
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Void> dismiss = new SingleEventLiveData<>();
+    private final SingleEventLiveData<List<Faq>> faqsLiveData = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Void> exitContextualMenuMode = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Void> enterContextualMenuMode = new SingleEventLiveData<>();
+
+    private long eventId;
+
     @Inject
-    public FaqListPresenter(FaqRepository faqRepository, DatabaseChangeListener<Faq> faqChangeListener) {
+    public FaqListViewModel(FaqRepository faqRepository, DatabaseChangeListener<Faq> faqChangeListener) {
         this.faqRepository = faqRepository;
         this.faqChangeListener = faqChangeListener;
-    }
 
-    @Override
-    public void start() {
-        loadFaqs(false);
+        eventId = ContextManager.getSelectedEvent().getId();
         listenChanges();
     }
 
-    @Override
-    public void detach() {
-        super.detach();
-        selectedMap.clear();
-        faqChangeListener.stopListening();
+    public LiveData<Boolean> getProgress() {
+        return progress;
+    }
+
+    public LiveData<String> getSuccess() {
+        return success;
+    }
+
+    public LiveData<Void> getDismiss() {
+        return dismiss;
+    }
+
+    public LiveData<String> getError() {
+        return error;
+    }
+
+    public LiveData<List<Faq>> getFaqsLiveData() {
+        return faqsLiveData;
+    }
+
+    public LiveData<Void> getExitContextualMenuModeLiveData() {
+        return exitContextualMenuMode;
+    }
+
+    public LiveData<Void> getEnterContextualMenuModeLiveData() {
+        return enterContextualMenuMode;
+    }
+
+    public Map<Faq, ObservableBoolean> getSelectedMap() {
+        return selectedMap;
+    }
+
+    public DatabaseChangeListener<Faq> getFaqChangeListener() {
+        return faqChangeListener;
     }
 
     public void loadFaqs(boolean forceReload) {
-        getFaqSource(forceReload)
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneousRefresh(getView(), forceReload))
-            .toList()
-            .compose(emptiable(getView(), faqs))
-            .subscribe(Logger::logSuccess, Logger::logError);
+
+        compositeDisposable.add(
+            getFaqSource(forceReload)
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .toList()
+                .subscribe(loadedFaqs -> {
+                    faqs.clear();
+                    faqs.addAll(loadedFaqs);
+                    success.setValue("FAQs Loaded Successfully");
+                    faqsLiveData.setValue(loadedFaqs);
+                }, Logger::logError));
     }
 
     private Observable<Faq> getFaqSource(boolean forceReload) {
-        if (!forceReload && !faqs.isEmpty() && isRotated())
+        if (!forceReload && !faqs.isEmpty())
             return Observable.fromIterable(faqs);
         else {
-            return faqRepository.getFaqs(getId(), forceReload);
+            return faqRepository.getFaqs(eventId, forceReload);
         }
     }
 
     private void listenChanges() {
         faqChangeListener.startListening();
         faqChangeListener.getNotifier()
-            .compose(dispose(getDisposable()))
             .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
             .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.DELETE))
             .subscribeOn(Schedulers.io())
@@ -90,8 +128,8 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     public void deleteFaq(Faq faq) {
         faqRepository
             .deleteFaq(faq.getId())
-            .compose(disposeCompletable(getDisposable()))
-            .compose(progressiveErroneousCompletable(getView()))
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() -> progress.setValue(false))
             .subscribe(() -> {
                 selectedMap.remove(faq);
                 Logger.logSuccess(faq);
@@ -100,14 +138,14 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
 
     public void deleteSelectedFaq() {
         Observable.fromIterable(selectedMap.entrySet())
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneous(getView()))
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() -> progress.setValue(false))
             .subscribe(entry -> {
                 if (entry.getValue().get()) {
                     deleteFaq(entry.getKey());
                 }
                 loadFaqs(false);
-                getView().showMessage("FAQs Deleted Successfully");
+                success.setValue("FAQs Deleted Successfully");
             }, Logger::logError);
     }
 
@@ -119,14 +157,14 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     public void resetToDefaultState() {
         isContextualModeActive = false;
         unSelectFaqList();
-        getView().exitContextualMenuMode();
+        exitContextualMenuMode.call();
     }
 
     public void onSingleSelect(Faq currentFaq) {
         if (isContextualModeActive) {
             if (countSelected() == 1 && getFaqSelected(currentFaq).get()) {
                 selectedMap.get(currentFaq).set(false);
-                getView().exitContextualMenuMode();
+                exitContextualMenuMode.call();
             } else if (getFaqSelected(currentFaq).get()) {
                 selectedMap.get(currentFaq).set(false);
             } else {
@@ -138,7 +176,7 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
 
     public void onLongSelect(Faq currentFaq) {
         if (!isContextualModeActive) {
-            getView().enterContextualMenuMode();
+            enterContextualMenuMode.call();
         }
         if (!previousFaq.equals(currentFaq)) {
             unselectFaq(previousFaq);
@@ -160,7 +198,7 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
     }
 
     public void unSelectFaqList() {
-        for (Faq faq  : selectedMap.keySet()) {
+        for (Faq faq : selectedMap.keySet()) {
             unselectFaq(faq);
         }
     }
@@ -175,4 +213,3 @@ public class FaqListPresenter extends AbstractDetailPresenter<Long, FaqListView>
         return count;
     }
 }
-
