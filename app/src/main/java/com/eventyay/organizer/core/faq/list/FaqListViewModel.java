@@ -30,7 +30,7 @@ public class FaqListViewModel extends ViewModel {
     private final List<Faq> faqs = new ArrayList<>();
     private Faq previousFaq = new Faq();
     private final FaqRepository faqRepository;
-    public final DatabaseChangeListener<Faq> faqChangeListener;
+    private final DatabaseChangeListener<Faq> faqChangeListener;
     private final Map<Faq, ObservableBoolean> selectedMap = new ConcurrentHashMap<>();
     private boolean isContextualModeActive;
 
