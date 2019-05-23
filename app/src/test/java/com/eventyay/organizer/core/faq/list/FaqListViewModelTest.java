@@ -64,9 +64,7 @@ public class FaqListViewModelTest {
     Observer<String> success;
     @Mock
     Observer<String> error;
-
-    private static final long ID = 10L;
-
+    
     private static final List<Faq> FAQS = Arrays.asList(
         Faq.builder().id(2L).question("q").answer("a").build(),
         Faq.builder().id(3L).question("qu").answer("an").build(),
