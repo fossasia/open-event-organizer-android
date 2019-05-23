@@ -11,6 +11,7 @@ import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.faq.Faq;
 import com.eventyay.organizer.data.faq.FaqRepository;
+import com.eventyay.organizer.utils.ErrorUtils;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.ArrayList;
@@ -50,7 +51,6 @@ public class FaqListViewModel extends ViewModel {
         this.faqChangeListener = faqChangeListener;
 
         eventId = ContextManager.getSelectedEvent().getId();
-        listenChanges();
     }
 
     public LiveData<Boolean> getProgress() {
@@ -91,6 +91,8 @@ public class FaqListViewModel extends ViewModel {
 
     public void loadFaqs(boolean forceReload) {
 
+        listenChanges();
+
         compositeDisposable.add(
             getFaqSource(forceReload)
                 .doOnSubscribe(disposable -> progress.setValue(true))
@@ -101,7 +103,7 @@ public class FaqListViewModel extends ViewModel {
                     faqs.addAll(loadedFaqs);
                     success.setValue("FAQs Loaded Successfully");
                     faqsLiveData.setValue(loadedFaqs);
-                }, Logger::logError));
+                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
     private Observable<Faq> getFaqSource(boolean forceReload) {
