@@ -5,6 +5,8 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -25,19 +27,19 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.Lazy;
-
-public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> implements FeedbackListView {
+public class FeedbackListFragment extends BaseFragment implements FeedbackListView {
 
     private Context context;
     private long eventId;
 
     @Inject
-    Lazy<FeedbackListPresenter> feedbacksPresenter;
+    ViewModelProvider.Factory viewModelFactory;
 
     private FeedbackListAdapter feedbacksAdapter;
     private FeedbackFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
+
+    private FeedbackListViewModel feedbackListViewModel;
 
     private boolean initialized;
 
@@ -62,6 +64,7 @@ public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> im
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.feedback_fragment, container, false);
+        feedbackListViewModel = ViewModelProviders.of(this, viewModelFactory).get(FeedbackListViewModel.class);
 
         return binding.getRoot();
     }
@@ -71,8 +74,11 @@ public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> im
         super.onStart();
         setupRecyclerView();
         setupRefreshListener();
-        getPresenter().attach(eventId, this);
-        getPresenter().start();
+        feedbackListViewModel.getProgress().observe(this, this::showProgress);
+        feedbackListViewModel.getSuccess().observe(this, this::showMessage);
+        feedbackListViewModel.getError().observe(this, this::showError);
+        feedbackListViewModel.getFeedbacksLiveData().observe(this, this::showResults);
+        feedbackListViewModel.loadFeedbacks(false);
 
         initialized = true;
     }
@@ -92,7 +98,7 @@ public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> im
         if (initialized)
             return;
 
-        feedbacksAdapter = new FeedbackListAdapter(getPresenter());
+        feedbacksAdapter = new FeedbackListAdapter(feedbackListViewModel);
 
         RecyclerView recyclerView = binding.feedbacksRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -107,14 +113,8 @@ public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> im
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            getPresenter().loadFeedbacks(true);
+            feedbackListViewModel.loadFeedbacks(true);
         });
-    }
-
-
-    @Override
-    public Lazy<FeedbackListPresenter> getPresenterProvider() {
-        return feedbacksPresenter;
     }
 
     @Override
@@ -134,8 +134,17 @@ public class FeedbackListFragment extends BaseFragment<FeedbackListPresenter> im
             ViewUtils.showSnackbar(binding.feedbacksRecyclerView, R.string.refresh_complete);
     }
 
+    private void showMessage(String message) {
+        ViewUtils.showSnackbar(binding.getRoot(), message);
+    }
+
     @Override
     public void showResults(List<Feedback> items) {
+        if(items.isEmpty()) {
+            showEmptyView(true);
+            return;
+        }
+        feedbacksAdapter.feedbacks.addAll(items);
         feedbacksAdapter.notifyDataSetChanged();
     }
 
