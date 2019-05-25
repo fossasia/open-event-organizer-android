@@ -15,11 +15,11 @@ import java.util.List;
 public class FaqListAdapter extends RecyclerView.Adapter<FaqViewHolder> {
 
     private final List<Faq> faqs;
-    private final FaqListPresenter faqListPresenter;
+    private final FaqListViewModel faqListViewModel;
 
-    public FaqListAdapter(FaqListPresenter faqListPresenter) {
-        this.faqListPresenter = faqListPresenter;
-        this.faqs = faqListPresenter.getFaqs();
+    public FaqListAdapter(FaqListViewModel faqListViewModel) {
+        this.faqListViewModel = faqListViewModel;
+        this.faqs = faqListViewModel.getFaqs();
     }
 
     @NonNull
@@ -27,10 +27,10 @@ public class FaqListAdapter extends RecyclerView.Adapter<FaqViewHolder> {
     public FaqViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         FaqViewHolder faqViewHolder = new FaqViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.faq_layout, viewGroup, false), faqListPresenter);
+                R.layout.faq_layout, viewGroup, false), faqListViewModel);
 
-        faqViewHolder.setLongClickAction(faqListPresenter::onLongSelect);
-        faqViewHolder.setClickAction(faqListPresenter::onSingleSelect);
+        faqViewHolder.setLongClickAction(faqListViewModel::onLongSelect);
+        faqViewHolder.setClickAction(faqListViewModel::onSingleSelect);
 
         return faqViewHolder;
     }
