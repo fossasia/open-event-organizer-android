@@ -17,6 +17,7 @@ import com.eventyay.organizer.core.event.create.CreateEventViewModel;
 import com.eventyay.organizer.core.event.list.EventsViewModel;
 import com.eventyay.organizer.core.event.list.sales.SalesSummaryViewModel;
 import com.eventyay.organizer.core.faq.create.CreateFaqViewModel;
+import com.eventyay.organizer.core.feedback.list.FeedbackListViewModel;
 import com.eventyay.organizer.core.main.EventViewModel;
 import com.eventyay.organizer.core.main.OrganizerViewModel;
 import com.eventyay.organizer.core.orders.create.CreateOrderViewModel;
@@ -118,7 +119,7 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateCopyrightViewModel.class)
     public abstract ViewModel bindCreateCopyrightViewModel(CreateCopyrightViewModel createCopyrightViewModel);
-    
+
     @Binds
     @IntoMap
     @ViewModelKey(UpdateCopyrightViewModel.class)
@@ -198,6 +199,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SalesSummaryViewModel.class)
     public abstract ViewModel bindSalesSummaryViewModel(SalesSummaryViewModel salesSummaryViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FeedbackListViewModel.class)
+    public abstract ViewModel bindFeedbackListViewModel(FeedbackListViewModel feedbackListViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
