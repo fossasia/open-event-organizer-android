@@ -5,6 +5,8 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -31,10 +33,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.Lazy;
-
 @SuppressWarnings("PMD.TooManyMethods")
-public class FaqListFragment extends BaseFragment<FaqListPresenter> implements FaqListView {
+public class FaqListFragment extends BaseFragment implements FaqListView {
 
     private Context context;
     private long eventId;
@@ -44,13 +44,15 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
     ContextUtils utilModel;
 
     @Inject
-    Lazy<FaqListPresenter> faqsPresenter;
+    ViewModelProvider.Factory viewModelFactory;
 
     private FaqListAdapter faqsAdapter;
     private FaqsFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
     private ActionMode actionMode;
     private int statusBarColor;
+
+    private FaqListViewModel faqListViewModel;
 
     public static FaqListFragment newInstance(long eventId) {
         FaqListFragment fragment = new FaqListFragment();
@@ -75,9 +77,10 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.faqs_fragment, container, false);
+        faqListViewModel = ViewModelProviders.of(this, viewModelFactory).get(FaqListViewModel.class);
 
         binding.createFaqFab.setOnClickListener(view -> {
-            getPresenter().resetToDefaultState();
+            faqListViewModel.resetToDefaultState();
             openCreateFaqFragment();
         });
 
@@ -89,8 +92,13 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
         super.onStart();
         setupRecyclerView();
         setupRefreshListener();
-        getPresenter().attach(eventId, this);
-        getPresenter().start();
+        faqListViewModel.getProgress().observe(this, this::showProgress);
+        faqListViewModel.getSuccess().observe(this, this::showMessage);
+        faqListViewModel.getError().observe(this, this::showError);
+        faqListViewModel.getFaqsLiveData().observe(this, this::showResults);
+        faqListViewModel.getExitContextualMenuModeLiveData().observe(this, (exitContextualMenuMode) -> exitContextualMenuMode());
+        faqListViewModel.getEnterContextualMenuModeLiveData().observe(this, (enterContextualMenuMode) -> enterContextualMenuMode());
+        faqListViewModel.loadFaqs(false);
     }
 
     public void openCreateFaqFragment() {
@@ -134,7 +142,7 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             actionMode.finish();
-            getPresenter().resetToDefaultState();
+            faqListViewModel.resetToDefaultState();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //return to "old" color of status bar
                 getActivity().getWindow().setStatusBarColor(statusBarColor);
@@ -150,11 +158,13 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
     @Override
     public void onStop() {
         super.onStop();
+        faqListViewModel.getSelectedMap().clear();
+        faqListViewModel.getFaqChangeListener().stopListening();
         refreshLayout.setOnRefreshListener(null);
     }
 
     private void setupRecyclerView() {
-        faqsAdapter = new FaqListAdapter(getPresenter());
+        faqsAdapter = new FaqListAdapter(faqListViewModel);
 
         RecyclerView recyclerView = binding.faqsRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -167,7 +177,7 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            getPresenter().loadFaqs(true);
+            faqListViewModel.loadFaqs(true);
         });
     }
 
@@ -178,8 +188,9 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
                 .setMessage(String.format(getString(R.string.delete_confirmation_message),
                     getString(R.string.question)))
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    getPresenter().deleteSelectedFaq();
-                    getPresenter().resetToDefaultState();
+                    faqListViewModel.deleteSelectedFaq();
+                    faqListViewModel.resetToDefaultState();
+                    exitContextualMenuMode();
                 })
                 .setNegativeButton(R.string.cancel, (dialog, which) -> {
                     dialog.dismiss();
@@ -201,11 +212,6 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
     }
 
     @Override
-    public Lazy<FaqListPresenter> getPresenterProvider() {
-        return faqsPresenter;
-    }
-
-    @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
@@ -217,7 +223,8 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
 
     @Override
     public void onRefreshComplete(boolean success) {
-        getPresenter().resetToDefaultState();
+        faqListViewModel.resetToDefaultState();
+        exitContextualMenuMode();
         if (success)
             ViewUtils.showSnackbar(binding.faqsRecyclerView, R.string.refresh_complete);
     }
@@ -229,6 +236,10 @@ public class FaqListFragment extends BaseFragment<FaqListPresenter> implements F
 
     @Override
     public void showResults(List<Faq> items) {
+        if(items.isEmpty()) {
+            showEmptyView(true);
+            return;
+        }
         faqsAdapter.notifyDataSetChanged();
     }
 

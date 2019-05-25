@@ -10,8 +10,8 @@
         <import type="com.eventyay.organizer.common.ContextManager" />
 
         <variable
-            name="faqListPresenter"
-            type="com.eventyay.organizer.core.faq.list.FaqListPresenter"/>
+            name="faqListViewModel"
+            type="com.eventyay.organizer.core.faq.list.FaqListViewModel"/>
 
         <variable
             name="faq"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        app:backgroundTint="@{ faqListPresenter.getFaqSelected(faq) ? @color/blue_200 : 0 }"
+        app:backgroundTint="@{ faqListViewModel.getFaqSelected(faq) ? @color/blue_200 : 0 }"
         android:background="@android:color/white"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center_vertical">
