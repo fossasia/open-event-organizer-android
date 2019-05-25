@@ -7,6 +7,4 @@ import com.eventyay.organizer.common.mvp.view.Progressive;
 
 public interface ChartView extends Progressive, Erroneous {
 
-    //LineChart getChartView();
-
 }
