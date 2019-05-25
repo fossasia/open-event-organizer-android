@@ -8,7 +8,8 @@
 [![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app/development.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
 [![Appetize Preview](https://img.shields.io/badge/Preview-appetize.io-673AB7.svg)](https://appetize.io/app/w8v8z7pc9aewargb2uuyf108f0)
 [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg)](https://gitter.im/fossasia/open-event-orga-app)
-> Event management app for organizers using Open Event Platform
+
+Event management app for organizers using Open Event Platform
 
 <img height="256px" src="https://user-images.githubusercontent.com/3874064/29111547-5814a318-7d08-11e7-8c86-0a10a640825e.png" />
 
