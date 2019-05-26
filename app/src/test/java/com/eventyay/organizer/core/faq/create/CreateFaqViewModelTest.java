@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -71,7 +72,7 @@ public class CreateFaqViewModelTest {
     public void shouldShowSuccessOnCreated() {
         String successString = "Faq Created";
         Faq faq = createFaqViewModel.getFaq();
-        when(faqRepository.createFaq(faq)).thenReturn(Observable.just(faq));
+        when(faqRepository.createFaq(faq)).thenReturn(Completable.complete());
         ContextManager.setSelectedEvent(event);
 
         InOrder inOrder = Mockito.inOrder(progress, dismiss, success);
@@ -93,7 +94,7 @@ public class CreateFaqViewModelTest {
     @Test
     public void shouldShowErrorOnFailure() {
         Faq faq = createFaqViewModel.getFaq();
-        when(faqRepository.createFaq(faq)).thenReturn(Observable.error(new Throwable("Error")));
+        when(faqRepository.createFaq(faq)).thenReturn(Completable.error(new Throwable("Error")));
         ContextManager.setSelectedEvent(event);
 
         InOrder inOrder = Mockito.inOrder(progress, error);

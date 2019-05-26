@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.common.di.component.DaggerAppComponent;
+import com.eventyay.organizer.common.di.module.DatabaseModule;
 
 import dagger.android.AndroidInjection;
 import dagger.android.support.AndroidSupportInjection;
@@ -22,7 +23,9 @@ public final class AppInjector {
 
     public static void init(OrgaApplication orgaApplication) {
         DaggerAppComponent
-            .create()
+            .builder()
+            .databaseModule(new DatabaseModule(orgaApplication))
+            .build()
             .inject(orgaApplication);
         orgaApplication
             .registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {

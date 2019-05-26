@@ -154,6 +154,11 @@ dependencies {
     implementation "com.github.raizlabs.dbflow:dbflow-rx2:${versions.dbflow}"
     annotationProcessor "com.github.raizlabs.dbflow:dbflow-processor:${versions.dbflow}"
 
+    // Room
+    implementation "androidx.room:room-runtime:${versions.room}"
+    implementation "androidx.room:room-rxjava2:${versions.room}"
+    annotationProcessor "androidx.room:room-compiler:${versions.room}"
+
     // Dagger
     implementation "com.google.dagger:dagger:${versions.dagger}"
     implementation "com.google.dagger:dagger-android:${versions.dagger}"

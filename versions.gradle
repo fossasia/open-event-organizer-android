@@ -7,6 +7,7 @@ versions.targetSdk = 28
 
 //Libraries
 versions.dbflow = '4.1.2'
+versions.room = '2.1.0-alpha07'
 versions.glide = '4.8.0'
 versions.retrofit = '2.3.0'
 versions.okhttp = '3.10.0'

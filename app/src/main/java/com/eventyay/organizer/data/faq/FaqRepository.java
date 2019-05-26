@@ -1,13 +1,15 @@
 package com.eventyay.organizer.data.faq;
 
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public interface FaqRepository {
 
-    Observable<Faq> getFaqs(long id, boolean reload);
+    Observable<List<Faq>> getFaqs(long id, boolean reload);
 
-    Observable<Faq> createFaq(Faq faq);
+    Completable createFaq(Faq faq);
 
     Completable deleteFaq(long id);
 }
