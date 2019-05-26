@@ -43,19 +43,19 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 <table>
   <tr>
-    <td><img src="docs/_static/login.png"></td>
-    <td><img src="docs/_static/dashboard_one.png"></td>
-    <td><img src="docs/_static/dashboard_two.png"></td>
+    <td><img src="docs/images/login.png"></td>
+    <td><img src="docs/images/dashboard_one.png"></td>
+    <td><img src="docs/images/dashboard_two.png"></td>
   </tr>
     <tr>
-    <td><img src="docs/_static/attendees.png"></td>
-    <td><img src="docs/_static/checkin.png"></td>
-    <td><img src="docs/_static/order_checkin.png"></td>
+    <td><img src="docs/images/attendees.png"></td>
+    <td><img src="docs/images/checkin.png"></td>
+    <td><img src="docs/images/order_checkin.png"></td>
   </tr>
   <tr>
-    <td><img src="docs/_static/create_ticket.png"></td>
-    <td><img src="docs/_static/navigation.png"></td>
-    <td><img src="docs/_static/organizer.png"></td>
+    <td><img src="docs/images/create_ticket.png"></td>
+    <td><img src="docs/images/navigation.png"></td>
+    <td><img src="docs/images/organizer.png"></td>
   </tr>
 </table>
 
