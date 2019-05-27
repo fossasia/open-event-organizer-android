@@ -51,8 +51,8 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
 
     @Override
     public void detach() {
-        attendeeListener.stopListening();
         super.detach();
+        attendeeListener.stopListening();
     }
 
     public List<Attendee> getAttendees() {
@@ -104,9 +104,9 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
     }
 
     private void updateLocal(Attendee attendee) {
-        Utils.indexOf(attendeeList, attendee, (first, second) -> first.getId() == second.getId())
+        Utils.indexOf(getView().getAttendeeList(), attendee, (first, second) -> first.getId() == second.getId())
             .subscribeOn(Schedulers.computation())
-            .subscribe(index -> attendeeList.set(index, attendee), Logger::logError);
+            .subscribe(index -> getView().getAttendeeList().set(index, attendee), Logger::logError);
     }
 
     private void listenToModelChanges() {

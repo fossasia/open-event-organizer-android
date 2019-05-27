@@ -294,8 +294,14 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
             refreshLayout.setRefreshing(false);
             attendeeList.clear();
             getPresenter().loadAttendeesPageWise(FIRST_PAGE, true);
-            fastItemAdapter.setNewList(attendeeList);
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        attendeeList.clear();
+        getPresenter().loadAttendeesPageWise(FIRST_PAGE, false);
     }
 
     // View Implementation
@@ -324,9 +330,9 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
 
     @Override
     public void showResults(List<Attendee> attendees) {
-        attendeeList.addAll(getPresenter().getAttendees());
+        attendeeList.addAll(attendees);
         fastItemAdapter.setNewList(attendeeList);
-        binding.setVariable(BR.attendees, attendees);
+        binding.setVariable(BR.attendees, attendeeList);
         binding.executePendingBindings();
     }
 
@@ -347,6 +353,11 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
     @Override
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
+    }
+
+    @Override
+    public List<Attendee> getAttendeeList() {
+        return attendeeList;
     }
 
 }

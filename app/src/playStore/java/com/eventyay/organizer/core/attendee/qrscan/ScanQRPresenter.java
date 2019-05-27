@@ -91,6 +91,11 @@ public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
             toCheckOut && !attendee.isCheckedIn);
 
         attendee.setChecking(true);
+        attendee.isCheckedIn = !attendee.isCheckedIn;
+        attendeeRepository.scheduleToggle(attendee)
+            .subscribe(() -> {
+                // Nothing to do
+            }, Logger::logError);
 
         if (toCheckIn) {
             getView().showMessage(
