@@ -39,7 +39,7 @@ fi
 
 if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     for file in app*; do
-          cp $file eventyay-organizer-master-${file%%}
+          mv $file eventyay-organizer-master-${file%%}
     done
 fi
 
