@@ -51,8 +51,8 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
 
     @Override
     public void detach() {
-        attendeeListener.stopListening();
         super.detach();
+        attendeeListener.stopListening();
     }
 
     public List<Attendee> getAttendees() {
@@ -90,23 +90,23 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
     }
 
     private Observable<Attendee> getAttendeeSource(boolean forceReload) {
-        if (!forceReload && !attendeeList.isEmpty() && isRotated())
-            return Observable.fromIterable(attendeeList);
+        if (!forceReload && !getView().getAttendeeList().isEmpty() && isRotated())
+            return Observable.fromIterable(getView().getAttendeeList());
         else
             return attendeeRepository.getAttendees(getId(), forceReload);
     }
 
     private Observable<Attendee> getAttendeeSourcePageWise(long pageNumber, boolean forceReload) {
-        if (!forceReload && !attendeeList.isEmpty() && isRotated())
-            return Observable.fromIterable(attendeeList);
+        if (!forceReload && !getView().getAttendeeList().isEmpty() && isRotated())
+            return Observable.fromIterable(getView().getAttendeeList());
         else
             return attendeeRepository.getAttendeesPageWise(getId(), pageNumber, forceReload);
     }
 
     private void updateLocal(Attendee attendee) {
-        Utils.indexOf(attendeeList, attendee, (first, second) -> first.getId() == second.getId())
+        Utils.indexOf(getView().getAttendeeList(), attendee, (first, second) -> first.getId() == second.getId())
             .subscribeOn(Schedulers.computation())
-            .subscribe(index -> attendeeList.set(index, attendee), Logger::logError);
+            .subscribe(index -> getView().getAttendeeList().set(index, attendee), Logger::logError);
     }
 
     private void listenToModelChanges() {

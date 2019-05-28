@@ -16,6 +16,7 @@ import timber.log.Timber;
 public abstract class AbstractDateTimePicker extends androidx.appcompat.widget.AppCompatButton {
     private final ObservableString value = new ObservableString();
     private OnDateTimeChangedListener onDateChangedListener;
+    private LocalDateTime current;
 
     public AbstractDateTimePicker(Context context) {
         super(context);
@@ -33,7 +34,7 @@ public abstract class AbstractDateTimePicker extends androidx.appcompat.widget.A
     }
 
     private void init() {
-        LocalDateTime current = LocalDateTime.now();
+        current = LocalDateTime.now();
         String isoDate = DateUtils.formatDateToIso(current);
         setValue(isoDate);
     }
@@ -45,16 +46,9 @@ public abstract class AbstractDateTimePicker extends androidx.appcompat.widget.A
 
         this.setText(DateUtils.formatDateWithDefault(format, date));
 
-        this.setOnClickListener(view -> {
-            ZonedDateTime zonedDateTime;
-            try {
-                zonedDateTime = DateUtils.getDate(date);
-            } catch (DateTimeParseException pe) {
-                Timber.e(pe);
-                zonedDateTime  = ZonedDateTime.now();
-            }
-            dialogProvider.apply(zonedDateTime).show();
-        });
+        this.setOnClickListener(view ->
+            dialogProvider.apply(DateUtils.getDate(DateUtils.formatDateToIso(current))).show()
+        );
     }
 
     public void setOnDateChangedListener(OnDateTimeChangedListener onDateChangedListener) {
@@ -62,6 +56,7 @@ public abstract class AbstractDateTimePicker extends androidx.appcompat.widget.A
     }
 
     public void setPickedDate(LocalDateTime pickedDate, String format) {
+        current = pickedDate;
         String isoDate = DateUtils.formatDateToIso(pickedDate);
         this.value.set(isoDate);
         String formattedDate = DateUtils.formatDateWithDefault(format, isoDate);
