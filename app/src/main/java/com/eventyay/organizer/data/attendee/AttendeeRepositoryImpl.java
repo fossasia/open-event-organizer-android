@@ -83,7 +83,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
         Observable<Attendee> networkObservable = Observable.defer(() ->
             attendeeApi.getAttendeesPageWise(eventId, pageNumber)
                 .doOnNext(attendees -> repository
-                    .syncSave(Attendee.class, attendees, Attendee::getId, Attendee_Table.id)
+                    .saveList(Attendee.class, attendees)
                     .subscribe())
                 .flatMapIterable(attendees -> attendees));
 

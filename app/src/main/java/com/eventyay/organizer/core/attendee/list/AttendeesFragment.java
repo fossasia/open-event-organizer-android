@@ -158,8 +158,8 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
         } else {
             fastItemAdapter.withComparator((Attendee a1, Attendee a2) -> a1.getFirstname().compareTo(a2.getFirstname()), true);
         }
-        fastItemAdapter.setNewList(getPresenter().getAttendees());
-        binding.setVariable(BR.attendees, getPresenter().getAttendees());
+        fastItemAdapter.setNewList(attendeeList);
+        binding.setVariable(BR.attendees, attendeeList);
         binding.executePendingBindings();
     }
 
@@ -182,7 +182,6 @@ public class AttendeesFragment extends BaseFragment<AttendeesPresenter> implemen
         setupRefreshListener();
         setupRecyclerView();
         getPresenter().attach(eventId, this);
-        binding.setAttendees(getPresenter().getAttendees());
         getPresenter().start();
     }
 

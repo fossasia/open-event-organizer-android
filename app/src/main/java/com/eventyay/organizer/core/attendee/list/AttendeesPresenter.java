@@ -90,15 +90,15 @@ public class AttendeesPresenter extends AbstractDetailPresenter<Long, AttendeesV
     }
 
     private Observable<Attendee> getAttendeeSource(boolean forceReload) {
-        if (!forceReload && !attendeeList.isEmpty() && isRotated())
-            return Observable.fromIterable(attendeeList);
+        if (!forceReload && !getView().getAttendeeList().isEmpty() && isRotated())
+            return Observable.fromIterable(getView().getAttendeeList());
         else
             return attendeeRepository.getAttendees(getId(), forceReload);
     }
 
     private Observable<Attendee> getAttendeeSourcePageWise(long pageNumber, boolean forceReload) {
-        if (!forceReload && !attendeeList.isEmpty() && isRotated())
-            return Observable.fromIterable(attendeeList);
+        if (!forceReload && !getView().getAttendeeList().isEmpty() && isRotated())
+            return Observable.fromIterable(getView().getAttendeeList());
         else
             return attendeeRepository.getAttendeesPageWise(getId(), pageNumber, forceReload);
     }
