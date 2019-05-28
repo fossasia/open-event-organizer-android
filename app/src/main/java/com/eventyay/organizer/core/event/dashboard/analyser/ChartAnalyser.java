@@ -13,7 +13,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.EntryXComparator;
 
 import com.eventyay.organizer.R;
@@ -236,7 +236,7 @@ public class ChartAnalyser {
         lineSet.setLineWidth(2);
         lineSet.setColor(getColor(color));
         lineSet.setCircleColor(getColor(color));
-        lineSet.setCircleColorHole(getColor(fill));
+        lineSet.setCircleHoleColor(getColor(fill));
         lineSet.setCircleRadius(8);
         lineSet.setCircleHoleRadius(3);
     }
@@ -287,7 +287,7 @@ public class ChartAnalyser {
         lineChart.animateY(1000);
     }
 
-    public class MyAxisValueFormatter implements IAxisValueFormatter {
+    public class MyAxisValueFormatter extends ValueFormatter {
 
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
