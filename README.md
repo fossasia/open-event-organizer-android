@@ -1,4 +1,4 @@
-![Open Event Organizer](https://storage.googleapis.com/eventyay.com/assets/branding/organizer_app_branding.png)
+![Open Event Organizer](docs/images/organizer_app_branding.png)
 
 
 ## Open Event Organizer App
@@ -11,7 +11,7 @@
 
 Event management app for organizers using Open Event Platform
 
-<img height="256px" src="https://user-images.githubusercontent.com/3874064/29111547-5814a318-7d08-11e7-8c86-0a10a640825e.png" />
+<img height="256px" src="docs/images/organizer_app_logo.png" />
 
 The core features of this Android Application are
 - Scan a QR code
