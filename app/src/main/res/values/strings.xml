@@ -386,6 +386,7 @@
     <string name="manage_roles">Manage Roles</string>
     <string name="send_invite">Send Invite</string>
     <string name="add_role">Add Role</string>
+    <string name="select_role">Select Role</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

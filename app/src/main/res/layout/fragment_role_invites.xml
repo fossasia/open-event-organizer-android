@@ -50,11 +50,18 @@
                         app:go="@{() -> btnSubmit.performClick() }" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_small"
+                    android:paddingBottom="@dimen/spacing_small"
+                    android:text="@string/select_role" />
+
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/select_role"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_big"
                     android:onItemSelected="@{ (parent, v, pos, id) ->  roleInvite.setRoleName(parent.getItemAtPosition(pos).toString())  }">
                 </androidx.appcompat.widget.AppCompatSpinner>
 
