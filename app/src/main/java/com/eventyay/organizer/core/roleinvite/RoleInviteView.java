@@ -1,4 +1,4 @@
-package com.eventyay.organizer.core.roleinvites;
+package com.eventyay.organizer.core.roleinvite;
 
 public interface RoleInviteView {
 
@@ -9,6 +9,4 @@ public interface RoleInviteView {
     void showProgress(boolean show);
 
     int getTitle();
-
-    void dismiss();
 }

@@ -1,4 +1,4 @@
-package com.eventyay.organizer.core.roleinvites;
+package com.eventyay.organizer.core.roleinvite;
 
 import android.os.Bundle;
 
@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.main.MainActivity;
-import com.eventyay.organizer.databinding.FragmentRoleInvitesBinding;
+import com.eventyay.organizer.databinding.FragmentRoleInviteBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 
 import javax.inject.Inject;
@@ -28,7 +28,7 @@ public class RoleInviteFragment extends BaseFragment implements RoleInviteView {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    private FragmentRoleInvitesBinding binding;
+    private FragmentRoleInviteBinding binding;
     private ArrayAdapter<CharSequence> rolesAdapter;
 
     private RoleInviteViewModel roleInviteViewModel;
@@ -55,7 +55,7 @@ public class RoleInviteFragment extends BaseFragment implements RoleInviteView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_role_invites, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_role_invite, container, false);
         roleInviteViewModel = ViewModelProviders.of(this, viewModelFactory).get(RoleInviteViewModel.class);
 
         binding.btnSubmit.setOnClickListener(v -> {
@@ -74,7 +74,6 @@ public class RoleInviteFragment extends BaseFragment implements RoleInviteView {
     public void onStart() {
         super.onStart();
         roleInviteViewModel.getProgress().observe(this, this::showProgress);
-        roleInviteViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
         roleInviteViewModel.getSuccess().observe(this, this::onSuccess);
         roleInviteViewModel.getError().observe(this, this::showError);
         binding.setRoleInvite(roleInviteViewModel.getRoleInvite());
@@ -105,10 +104,5 @@ public class RoleInviteFragment extends BaseFragment implements RoleInviteView {
     @Override
     public int getTitle() {
         return R.string.add_role;
-    }
-
-    @Override
-    public void dismiss() {
-        getFragmentManager().popBackStack();
     }
 }
