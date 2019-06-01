@@ -14,6 +14,8 @@ import com.eventyay.organizer.data.feedback.FeedbackRepository;
 import com.eventyay.organizer.data.feedback.FeedbackRepositoryImpl;
 import com.eventyay.organizer.data.order.OrderRepository;
 import com.eventyay.organizer.data.order.OrderRepositoryImpl;
+import com.eventyay.organizer.data.role.RoleRepository;
+import com.eventyay.organizer.data.role.RoleRepositoryImpl;
 import com.eventyay.organizer.data.session.SessionRepository;
 import com.eventyay.organizer.data.session.SessionRepositoryImpl;
 import com.eventyay.organizer.data.speaker.SpeakerRepository;
@@ -92,5 +94,9 @@ public abstract class RepoModule {
     @Binds
     @Singleton
     abstract OrderRepository bindsOrderRepository(OrderRepositoryImpl orderRepository);
+
+    @Binds
+    @Singleton
+    abstract RoleRepository bindsRoleRepository(RoleRepositoryImpl roleRepository);
 
 }
