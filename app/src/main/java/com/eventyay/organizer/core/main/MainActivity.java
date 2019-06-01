@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements
         R.id.nav_sponsor,
         R.id.nav_speaker,
         R.id.nav_speakers_call,
-        R.id.nav_about_event);
+        R.id.nav_about_event,
+        R.id.nav_roles);
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
