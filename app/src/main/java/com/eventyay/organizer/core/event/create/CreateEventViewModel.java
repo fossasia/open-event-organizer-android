@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.eventyay.organizer.OrgaProvider;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
@@ -14,6 +15,7 @@ import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.utils.CurrencyUtils;
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.ErrorUtils;
+import com.eventyay.organizer.utils.LocationUtils;
 import com.eventyay.organizer.utils.StringUtils;
 import com.eventyay.organizer.utils.Utils;
 
@@ -141,6 +143,8 @@ public class CreateEventViewModel extends ViewModel {
         event.setOriginalImageUrl(StringUtils.emptyToNull(event.getOriginalImageUrl()));
         event.setExternalEventUrl(StringUtils.emptyToNull(event.getExternalEventUrl()));
         event.setPaypalEmail(StringUtils.emptyToNull(event.getPaypalEmail()));
+        event.setLocationName(StringUtils.emptyToNull(event.getLocationName()));
+        event.setSearchableLocationName(StringUtils.emptyToNull(event.getSearchableLocationName()));
     }
 
     public void createEvent() {
@@ -148,6 +152,15 @@ public class CreateEventViewModel extends ViewModel {
             return;
 
         nullifyEmptyFields(event);
+
+        if (event.getLocationName() != null) {
+
+            double latitude = LocationUtils.getLatitude(OrgaProvider.context, event.getLocationName());
+            double longitude = LocationUtils.getLongitude(OrgaProvider.context, event.getLocationName());
+
+            event.setLatitude(latitude);
+            event.setLongitude(longitude);
+        }
 
         compositeDisposable.add(eventRepository
             .createEvent(event)
