@@ -10,8 +10,11 @@ import com.eventyay.organizer.data.event.EventStatistics;
 import com.eventyay.organizer.data.faq.Faq;
 import com.eventyay.organizer.data.feedback.Feedback;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
+import com.eventyay.organizer.data.notification.Notification;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.order.OrderStatistics;
+import com.eventyay.organizer.data.role.Role;
+import com.eventyay.organizer.data.role.RoleInvite;
 import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
@@ -64,7 +67,8 @@ public class NetworkModule {
     Class[] providesMappedClasses() {
         return new Class[]{Event.class, Attendee.class, Ticket.class, User.class, EventStatistics.class,
             Faq.class, Copyright.class, Feedback.class, Track.class, Session.class, Sponsor.class,
-            Speaker.class, SpeakersCall.class, Order.class, OrderStatistics.class, OnSiteTicket.class};
+            Speaker.class, SpeakersCall.class, Order.class, OrderStatistics.class, OnSiteTicket.class,
+            RoleInvite.class, Role.class, Notification.class};
     }
 
     @Provides

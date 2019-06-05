@@ -10,6 +10,7 @@ import com.eventyay.organizer.core.event.list.sales.SalesSummaryFragment;
 import com.eventyay.organizer.core.faq.create.CreateFaqFragment;
 import com.eventyay.organizer.core.faq.list.FaqListFragment;
 import com.eventyay.organizer.core.feedback.list.FeedbackListFragment;
+import com.eventyay.organizer.core.notification.list.NotificationsFragment;
 import com.eventyay.organizer.core.orders.detail.OrderDetailFragment;
 import com.eventyay.organizer.core.orders.list.OrdersFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
@@ -119,5 +120,10 @@ public abstract class MainFragmentBuildersModule {
     // Share
     @ContributesAndroidInjector
     abstract ShareEventFragment contributeShareEventFragment();
+
+    // Notification
+
+    @ContributesAndroidInjector
+    abstract NotificationsFragment contributeNotificationsFragment();
 }
 
