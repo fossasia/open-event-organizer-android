@@ -120,7 +120,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0-alpha05"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0-alpha05"
-    implementation "com.google.android.material:material:1.1.0-alpha06"
+    implementation "com.google.android.material:material:1.1.0-alpha07"
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.palette:palette:1.0.0"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
@@ -232,7 +232,7 @@ dependencies {
     playStoreImplementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 
     //Testing
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0-beta01', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation("androidx.arch.core:core-testing:2.1.0-beta01", {
@@ -241,7 +241,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-core-utils'
     })
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-inline:2.27.0'
+    testImplementation 'org.mockito:mockito-inline:2.28.2'
     testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"
