@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -15,37 +16,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/defaultUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:orientation="vertical">
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:paddingLeft="@dimen/spacing_tiny"
+            android:text="@string/default_base_url"
+            android:textSize="@dimen/text_size_small" />
 
-            <CheckBox
-                android:id="@+id/overrideUrl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/default_base_url"
-                android:textColor="@{ overrideUrl.checked ? @android:color/black : @color/grey_400 }"
-                android:textSize="@dimen/text_size_small" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/toggleUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:paddingLeft="@dimen/spacing_tiny"
+            android:text="@string/use_another_url"
+            android:textColor="@color/color_accent"
+            android:textSize="@dimen/text_size_small" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/base_url_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/spacing_normal"
-            android:visibility="@{ overrideUrl.checked ? View.GONE : View.VISIBLE }">
+            android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/baseUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/other_url"
-                android:inputType="textUri"
                 android:imeOptions="actionGo"
-                app:go="@{() -> action.run() }"/>
+                android:inputType="textUri"
+                app:go="@{() -> action.run() }" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 </layout>
