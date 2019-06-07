@@ -51,9 +51,9 @@ public class EventsViewModelTest {
     private static final String DATE = DateUtils.formatDateToIso(LocalDateTime.now());
 
     private static final List<Event> EVENT_LIST = Arrays.asList(
-        Event.builder().id(12L).startsAt(DATE).endsAt(DATE).build(),
-        Event.builder().id(13L).startsAt(DATE).endsAt(DATE).build(),
-        Event.builder().id(14L).startsAt(DATE).endsAt(DATE).build()
+        Event.builder().id(12L).startsAt(DATE).endsAt(DATE).state("draft").build(),
+        Event.builder().id(13L).startsAt(DATE).endsAt(DATE).state("draft").build(),
+        Event.builder().id(14L).startsAt(DATE).endsAt(DATE).state("published").build()
     );
 
     @Before
