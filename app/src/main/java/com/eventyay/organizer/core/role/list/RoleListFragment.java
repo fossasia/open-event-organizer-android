@@ -102,7 +102,6 @@ public class RoleListFragment extends BaseFragment implements RoleListView {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(rolesAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
     }
 
 
