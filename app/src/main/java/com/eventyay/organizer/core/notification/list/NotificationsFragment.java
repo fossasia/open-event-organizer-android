@@ -95,7 +95,6 @@ public class NotificationsFragment extends BaseFragment implements Notifications
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(notificationsAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
     }
 
 
