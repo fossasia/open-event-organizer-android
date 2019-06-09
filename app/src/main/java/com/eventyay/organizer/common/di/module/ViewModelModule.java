@@ -20,6 +20,7 @@ import com.eventyay.organizer.core.faq.list.FaqListViewModel;
 import com.eventyay.organizer.core.feedback.list.FeedbackListViewModel;
 import com.eventyay.organizer.core.main.EventViewModel;
 import com.eventyay.organizer.core.main.OrganizerViewModel;
+import com.eventyay.organizer.core.notification.list.NotificationsViewModel;
 import com.eventyay.organizer.core.orders.create.CreateOrderViewModel;
 import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.orders.list.OrdersViewModel;
@@ -215,6 +216,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RoleListViewModel.class)
     public abstract ViewModel bindRoleListViewModel(RoleListViewModel roleListViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NotificationsViewModel.class)
+    public abstract ViewModel bindNotificationsViewModel(NotificationsViewModel notificationsViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
