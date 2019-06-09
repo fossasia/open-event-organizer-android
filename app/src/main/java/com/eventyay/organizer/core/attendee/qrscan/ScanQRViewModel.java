@@ -1,12 +1,13 @@
 package com.eventyay.organizer.core.attendee.qrscan;
 
-import androidx.annotation.VisibleForTesting;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.vision.barcode.Barcode;
+import com.eventyay.organizer.common.ContextManager;
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
-import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.attendee.Attendee;
@@ -19,13 +20,12 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subjects.PublishSubject;
 
-import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
-import static com.eventyay.organizer.common.rx.ViewTransformers.disposeCompletable;
 import static com.eventyay.organizer.common.rx.ViewTransformers.schedule;
 
-public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
+public class ScanQRViewModel extends ViewModel {
 
     private static final String CLEAR_DISTINCT = "clear";
 
@@ -39,16 +39,25 @@ public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
     private final PublishSubject<Boolean> detect = PublishSubject.create();
     private final PublishSubject<String> data = PublishSubject.create();
 
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Void> dismiss = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Integer> message = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Boolean> tint = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Boolean> showBarcodePanelLiveData = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Attendee> onScannedAttendeeLiveData = new SingleEventLiveData<>();
+
     private boolean paused;
 
     @Inject
-    public ScanQRPresenter(AttendeeRepository attendeeRepository, Preferences preferences) {
+    public ScanQRViewModel(AttendeeRepository attendeeRepository, Preferences preferences) {
         this.attendeeRepository = attendeeRepository;
 
         detect.distinctUntilChanged()
             .debounce(150, TimeUnit.MILLISECONDS)
             .compose(schedule())
-            .subscribe(receiving -> getView().showBarcodePanel(!receiving));
+            .subscribe(receiving -> showBarcodePanelLiveData.setValue(!receiving));
 
         data.distinctUntilChanged()
             .filter(barcode -> !paused)
@@ -61,17 +70,57 @@ public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
         toValidate = preferences.getBoolean(Constants.PREF_SCAN_WILL_VALIDATE, false);
     }
 
+    public LiveData<Boolean> getProgress() {
+        return progress;
+    }
+
+    public LiveData<Void> getDismiss() {
+        return dismiss;
+    }
+
+    public LiveData<String> getError() {
+        return error;
+    }
+
+    public LiveData<Integer> getMessage() {
+        return message;
+    }
+
+    public LiveData<Boolean> getTint() {
+        return tint;
+    }
+
+    public LiveData<Boolean> getShowBarcodePanelLiveData() {
+        return showBarcodePanelLiveData;
+    }
+
+    public LiveData<Attendee> getOnScannedAttendeeLiveData() {
+        return onScannedAttendeeLiveData;
+    }
+
+    public PublishSubject<Boolean> getDetect() {
+        return detect;
+    }
+
+    public PublishSubject<String> getData() {
+        return data;
+    }
+
+    public List<Attendee> getAttendees() {
+        return attendees;
+    }
+
     private void processBarcode(String barcode) {
 
         Observable.fromIterable(attendees)
-            .compose(dispose(getDisposable()))
             .filter(attendee -> attendee.getOrder() != null)
             .filter(attendee -> (attendee.getOrder().getIdentifier() + "-" + attendee.getId()).equals(barcode))
             .compose(schedule())
             .toList()
             .subscribe(attendees -> {
                 if (attendees.size() == 0) {
-                    getView().showMessage(R.string.invalid_ticket, false);
+                    message.setValue(R.string.invalid_ticket);
+                    tint.setValue(false);
                 } else {
                     checkAttendee(attendees.get(0));
                 }
@@ -80,10 +129,11 @@ public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DU Anomaly
     private void checkAttendee(Attendee attendee) {
-        getView().onScannedAttendee(attendee);
+        onScannedAttendeeLiveData.setValue(attendee);
 
         if (toValidate) {
-            getView().showMessage(R.string.ticket_is_valid, true);
+            message.setValue(R.string.ticket_is_valid);
+            tint.setValue(true);
             return;
         }
 
@@ -93,38 +143,28 @@ public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
         attendee.setChecking(true);
 
         if (toCheckIn) {
-            getView().showMessage(
-                attendee.isCheckedIn ? R.string.already_checked_in : R.string.now_checked_in,
-                true
-            );
+            message.setValue(
+                attendee.isCheckedIn ? R.string.already_checked_in : R.string.now_checked_in);
+            tint.setValue(true);
             attendee.isCheckedIn = true;
         } else if (toCheckOut) {
-            getView().showMessage(
-                attendee.isCheckedIn ? R.string.now_checked_out : R.string.already_checked_out,
-                true
-            );
+            message.setValue(
+                attendee.isCheckedIn ? R.string.now_checked_out : R.string.already_checked_out);
+            tint.setValue(true);
             attendee.isCheckedIn = false;
         }
 
         if (needsToggle)
-            attendeeRepository.scheduleToggle(attendee)
-                .compose(disposeCompletable(getDisposable()))
-                .subscribe(() -> {
-                    // Nothing to do
-                }, Logger::logError);
+            compositeDisposable.add(
+                attendeeRepository.scheduleToggle(attendee)
+                    .subscribe(() -> {
+                        // Nothing to do
+                    }, Logger::logError));
     }
 
     public void setAttendees(List<Attendee> attendeeList) {
         attendees.clear();
         attendees.addAll(attendeeList);
-    }
-
-    @Override
-    public void start() {
-        loadAttendees();
-
-        getView().showProgress(true);
-        onCameraLoaded();
     }
 
     public void pauseScan() {
@@ -136,9 +176,13 @@ public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
         data.onNext(CLEAR_DISTINCT);
     }
 
-    private void loadAttendees() {
-        attendeeRepository.getAttendees(getId(), false)
-            .compose(dispose(getDisposable()))
+    public void loadAttendees() {
+
+        long eventId = ContextManager.getSelectedEvent().getId();
+
+        attendeeRepository.getAttendees(eventId, false)
+            .doOnSubscribe(disposable -> progress.setValue(true))
+            .doFinally(() -> progress.setValue(false))
             .toList()
             .subscribe(attendeeList -> {
                 attendees.clear();
@@ -146,42 +190,7 @@ public class ScanQRPresenter extends AbstractDetailPresenter<Long, ScanQRView> {
             }, Logger::logError);
     }
 
-    public void cameraPermissionGranted(boolean granted) {
-        if (granted) {
-            getView().startScan();
-        } else {
-            getView().showProgress(false);
-            getView().showPermissionError("User denied permission");
-        }
-    }
-
-    public void onBarcodeDetected(Barcode barcode) {
-        detect.onNext(barcode == null);
-
-        if (barcode == null || attendees.isEmpty())
-            return;
-
-        data.onNext(barcode.displayValue);
-    }
-
     public void onScanStarted() {
-        getView().showProgress(false);
-    }
-
-    public void onCameraLoaded() {
-        if (getView().hasCameraPermission()) {
-            getView().startScan();
-        } else {
-            getView().requestCameraPermission();
-        }
-    }
-
-    public void onCameraDestroyed() {
-        getView().stopScan();
-    }
-
-    @VisibleForTesting
-    public ScanQRView getView() {
-        return super.getView();
+        progress.setValue(false);
     }
 }
