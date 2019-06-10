@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.eventyay.organizer.utils.DateUtils" />
+
+        <variable
+            name="notification"
+            type="com.eventyay.organizer.data.notification.Notification" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/notification_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_small"
+        android:padding="@dimen/spacing_normal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal">
+
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_extra_small"
+                android:text='@{ notification.getTitle() }'
+                tools:text="Title" />
+
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_extra_small"
+                android:text='@{ notification.getMessage() }'
+                tools:text="Message" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginRight="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_extra_small"
+                android:text='@{ notification.receivedAt != null ? DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_DATE_TIME, notification.receivedAt) : "" }'
+                tools:text="Time" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>
