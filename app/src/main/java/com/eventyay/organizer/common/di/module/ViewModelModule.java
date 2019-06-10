@@ -20,12 +20,14 @@ import com.eventyay.organizer.core.faq.list.FaqListViewModel;
 import com.eventyay.organizer.core.feedback.list.FeedbackListViewModel;
 import com.eventyay.organizer.core.main.EventViewModel;
 import com.eventyay.organizer.core.main.OrganizerViewModel;
+import com.eventyay.organizer.core.notification.list.NotificationsViewModel;
 import com.eventyay.organizer.core.orders.create.CreateOrderViewModel;
 import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.orders.list.OrdersViewModel;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailViewModel;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
+import com.eventyay.organizer.core.roleinvite.RoleInviteViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
 import com.eventyay.organizer.core.share.ShareEventViewModel;
@@ -203,6 +205,16 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FeedbackListViewModel.class)
     public abstract ViewModel bindFeedbackListViewModel(FeedbackListViewModel feedbackListViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RoleInviteViewModel.class)
+    public abstract ViewModel bindRoleInvitesViewModel(RoleInviteViewModel roleInviteViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NotificationsViewModel.class)
+    public abstract ViewModel bindNotificationsViewModel(NotificationsViewModel notificationsViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);

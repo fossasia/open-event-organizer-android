@@ -86,8 +86,6 @@ public class FaqListViewModel extends ViewModel {
 
     public void loadFaqs(boolean forceReload) {
 
-        listenChanges();
-
         compositeDisposable.add(
             getFaqSource(forceReload)
                 .doOnSubscribe(disposable -> progress.setValue(true))
@@ -109,7 +107,7 @@ public class FaqListViewModel extends ViewModel {
         }
     }
 
-    private void listenChanges() {
+    public void listenChanges() {
         faqChangeListener.startListening();
         faqChangeListener.getNotifier()
             .map(DbFlowDatabaseChangeListener.ModelChange::getAction)

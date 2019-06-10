@@ -99,6 +99,7 @@ public class FaqListFragment extends BaseFragment implements FaqListView {
         faqListViewModel.getExitContextualMenuModeLiveData().observe(this, (exitContextualMenuMode) -> exitContextualMenuMode());
         faqListViewModel.getEnterContextualMenuModeLiveData().observe(this, (enterContextualMenuMode) -> enterContextualMenuMode());
         faqListViewModel.loadFaqs(false);
+        faqListViewModel.listenChanges();
     }
 
     public void openCreateFaqFragment() {
