@@ -21,6 +21,7 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.event.create.CreateEventActivity;
 import com.eventyay.organizer.core.event.list.pager.ListPageFragment;
+import com.eventyay.organizer.core.notification.list.NotificationsFragment;
 import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.databinding.EventListFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
@@ -116,6 +117,14 @@ public class EventListFragment extends BaseFragment implements EventsView {
         startActivity(intent);
     }
 
+    public void openNotificationsFragment() {
+
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, NotificationsFragment.newInstance())
+            .addToBackStack(null)
+            .commit();
+    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -145,6 +154,9 @@ public class EventListFragment extends BaseFragment implements EventsView {
                 return true;
             case R.id.sortByEventDate:
                 eventsViewModel.sortBy(SORTBYDATE);
+                return true;
+            case R.id.notifications:
+                openNotificationsFragment();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -1,4 +1,4 @@
-![Open Event Organizer](https://storage.googleapis.com/eventyay.com/assets/branding/organizer_app_branding.png)
+![Open Event Organizer](docs/images/organizer_app_branding.png)
 
 
 ## Open Event Organizer App
@@ -8,9 +8,11 @@
 [![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app/development.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
 [![Appetize Preview](https://img.shields.io/badge/Preview-appetize.io-673AB7.svg)](https://appetize.io/app/w8v8z7pc9aewargb2uuyf108f0)
 [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg)](https://gitter.im/fossasia/open-event-orga-app)
-> Event management app for organizers using Open Event Platform
+[![Twitter Follow](https://img.shields.io/twitter/follow/eventyay.svg?style=social&label=Follow&maxAge=2592000?style=flat-square)](https://twitter.com/eventyay)
 
-<img height="256px" src="https://user-images.githubusercontent.com/3874064/29111547-5814a318-7d08-11e7-8c86-0a10a640825e.png" />
+Event management app for organizers using Open Event Platform
+
+<img height="256px" src="docs/images/organizer_app_logo.png" />
 
 The core features of this Android Application are
 - Scan a QR code
@@ -42,19 +44,19 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 <table>
   <tr>
-    <td><img src="docs/_static/login.png"></td>
-    <td><img src="docs/_static/dashboard_one.png"></td>
-    <td><img src="docs/_static/dashboard_two.png"></td>
+    <td><img src="docs/images/login.png"></td>
+    <td><img src="docs/images/dashboard_one.png"></td>
+    <td><img src="docs/images/dashboard_two.png"></td>
   </tr>
     <tr>
-    <td><img src="docs/_static/attendees.png"></td>
-    <td><img src="docs/_static/checkin.png"></td>
-    <td><img src="docs/_static/order_checkin.png"></td>
+    <td><img src="docs/images/attendees.png"></td>
+    <td><img src="docs/images/checkin.png"></td>
+    <td><img src="docs/images/order_checkin.png"></td>
   </tr>
   <tr>
-    <td><img src="docs/_static/create_ticket.png"></td>
-    <td><img src="docs/_static/navigation.png"></td>
-    <td><img src="docs/_static/organizer.png"></td>
+    <td><img src="docs/images/create_ticket.png"></td>
+    <td><img src="docs/images/navigation.png"></td>
+    <td><img src="docs/images/organizer.png"></td>
   </tr>
 </table>
 
@@ -62,11 +64,6 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 - The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at https://open-event-api-dev.herokuapp.com/ .
 - The following account can be used for testing and development purposes.
-
-Email: orgadeveloper@gmail.com
-
-Password: fossasia
-
 
 ## Publishing
 
