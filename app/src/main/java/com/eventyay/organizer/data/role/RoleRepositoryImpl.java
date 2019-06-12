@@ -1,0 +1,61 @@
+package com.eventyay.organizer.data.role;
+
+import com.eventyay.organizer.common.Constants;
+import com.eventyay.organizer.data.RateLimiter;
+import com.eventyay.organizer.data.Repository;
+
+import org.threeten.bp.Duration;
+
+import javax.inject.Inject;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
+
+public class RoleRepositoryImpl implements RoleRepository {
+
+    private final RoleApi roleApi;
+    private final Repository repository;
+    private final RateLimiter<String> rateLimiter = new RateLimiter<>(Duration.ofMinutes(10));
+
+    @Inject
+    public RoleRepositoryImpl(RoleApi roleApi, Repository repository) {
+        this.roleApi = roleApi;
+        this.repository = repository;
+    }
+
+    @Override
+    public Observable<RoleInvite> sendRoleInvite(RoleInvite roleInvite) {
+        if (!repository.isConnected()) {
+            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return roleApi
+            .postRoleInvite(roleInvite)
+            .doOnNext(inviteSent -> Timber.d(String.valueOf(inviteSent)))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<RoleInvite> getRoles(long eventId, boolean reload) {
+        Observable<RoleInvite> diskObservable = Observable.defer(() ->
+            repository.getItems(RoleInvite.class, RoleInvite_Table.event_id.eq(eventId))
+        );
+
+        Observable<RoleInvite> networkObservable = Observable.defer(() ->
+            roleApi.getRoles(eventId)
+                .doOnNext(roles -> repository
+                    .syncSave(RoleInvite.class, roles, RoleInvite::getId, RoleInvite_Table.id)
+                    .subscribe())
+                .flatMapIterable(roles -> roles));
+
+        return repository.observableOf(RoleInvite.class)
+            .reload(reload)
+            .withRateLimiterConfig("Role", rateLimiter)
+            .withDiskObservable(diskObservable)
+            .withNetworkObservable(networkObservable)
+            .build();
+    }
+}

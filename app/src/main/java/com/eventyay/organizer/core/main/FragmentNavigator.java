@@ -12,7 +12,7 @@ import com.eventyay.organizer.core.faq.list.FaqListFragment;
 import com.eventyay.organizer.core.feedback.list.FeedbackListFragment;
 import com.eventyay.organizer.core.orders.create.CreateOrderFragment;
 import com.eventyay.organizer.core.orders.list.OrdersFragment;
-import com.eventyay.organizer.core.roleinvite.RoleInviteFragment;
+import com.eventyay.organizer.core.role.list.RoleListFragment;
 import com.eventyay.organizer.core.settings.EventSettingsFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
 import com.eventyay.organizer.core.share.ShareEventFragment;
@@ -97,7 +97,7 @@ class FragmentNavigator {
                 fragment = FeedbackListFragment.newInstance(eventId);
                 break;
             case R.id.nav_roles:
-                fragment = RoleInviteFragment.newInstance(eventId);
+                fragment = RoleListFragment.newInstance(eventId);
                 break;
             case R.id.nav_track:
                 fragment = TracksFragment.newInstance(eventId);
