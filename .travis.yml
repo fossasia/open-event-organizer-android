@@ -11,7 +11,7 @@ android:
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 before_install:
-  - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-28"
+  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platforms;android-28"
 cache:
     directories:
       - "${TRAVIS_BUILD_DIR}/gradle/caches/"
