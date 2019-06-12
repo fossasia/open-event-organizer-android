@@ -10,14 +10,14 @@ android:
     - platform-tools
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+before_install:
+  - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-28"
 cache:
     directories:
       - "${TRAVIS_BUILD_DIR}/gradle/caches/"
       - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
       - "$HOME/.gradle/caches/"
-      - "$HOME/.gradle/wrapper/"
-install:
-  - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-28"
+      - "$HOME/.gradle/wrapper/" 
 script:
   - ./gradlew build
   - ./gradlew testPlayStoreDebugUnitTestCoverage
