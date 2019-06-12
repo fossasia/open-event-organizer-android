@@ -1,14 +1,19 @@
 package com.eventyay.organizer.core.event.chart;
 
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.github.mikephil.charting.charts.LineChart;
 
 import com.eventyay.organizer.R;
-import com.eventyay.organizer.common.mvp.view.BaseInjectActivity;
 import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
 import com.eventyay.organizer.ui.ViewUtils;
 
@@ -16,9 +21,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Lazy;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 
-public class ChartActivity extends BaseInjectActivity<ChartPresenter> implements ChartView {
+public class ChartActivity extends AppCompatActivity implements ChartView, HasActivityInjector {
+
     @BindView(R.id.chart)
     LineChart chart;
 
@@ -29,13 +38,20 @@ public class ChartActivity extends BaseInjectActivity<ChartPresenter> implements
     View progressView;
 
     @Inject
-    Lazy<ChartPresenter> presenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+
+    private ChartViewModel chartViewModel;
 
     private Long eventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+        chartViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChartViewModel.class);
 
         setContentView(R.layout.activity_chart);
 
@@ -51,8 +67,10 @@ public class ChartActivity extends BaseInjectActivity<ChartPresenter> implements
     @Override
     protected void onStart() {
         super.onStart();
-        getPresenter().attach(eventId, this);
-        getPresenter().start();
+        chartViewModel.getProgress().observe(this, this::showProgress);
+        chartViewModel.getError().observe(this, this::showError);
+        chartViewModel.setChartView(chart);
+        chartViewModel.loadChart();
     }
 
     @Override
@@ -64,8 +82,8 @@ public class ChartActivity extends BaseInjectActivity<ChartPresenter> implements
     }
 
     @Override
-    public Lazy<ChartPresenter> getPresenterProvider() {
-        return presenterProvider;
+    public AndroidInjector<Activity> activityInjector() {
+        return dispatchingAndroidInjector;
     }
 
     @Override
@@ -76,10 +94,5 @@ public class ChartActivity extends BaseInjectActivity<ChartPresenter> implements
     @Override
     public void showProgress(boolean show) {
         ViewUtils.showView(progressView, show);
-    }
-
-    @Override
-    public LineChart getChartView() {
-        return chart;
     }
 }

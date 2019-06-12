@@ -1,4 +1,4 @@
-package com.eventyay.organizer.core.roleinvite;
+package com.eventyay.organizer.core.role.invite;
 
 public interface RoleInviteView {
 
