@@ -8,6 +8,7 @@
 [![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app/development.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
 [![Appetize Preview](https://img.shields.io/badge/Preview-appetize.io-673AB7.svg)](https://appetize.io/app/w8v8z7pc9aewargb2uuyf108f0)
 [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg)](https://gitter.im/fossasia/open-event-orga-app)
+[![Twitter Follow](https://img.shields.io/twitter/follow/susiai_.svg?style=social&label=Follow&maxAge=2592000?style=flat-square)](https://twitter.com/eventyay)
 
 Event management app for organizers using Open Event Platform
 
@@ -63,11 +64,6 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 - The [Open Event Organizer Server](https://github.com/fossasia/open-event-orga-server) acts as the backend for this application. The API docs for the same can be accessed at https://open-event-api-dev.herokuapp.com/ .
 - The following account can be used for testing and development purposes.
-
-Email: orgadeveloper@gmail.com
-
-Password: fossasia
-
 
 ## Publishing
 
