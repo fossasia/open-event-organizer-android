@@ -68,12 +68,12 @@
                 android:textSize="@dimen/text_size_normal" />
 
             <include
-                layout="@layout/time_picker"
+                layout="@layout/starts_at_time_picker"
                 bind:date="@={ session.startsAt }"
                 bind:label="@{ @string/starts_at }" />
 
             <include
-                layout="@layout/time_picker"
+                layout="@layout/ends_at_time_picker"
                 bind:date="@={ session.endsAt }"
                 bind:label="@{ @string/ends_at }" />
 

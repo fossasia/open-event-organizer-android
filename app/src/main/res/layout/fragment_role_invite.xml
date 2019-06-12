@@ -8,13 +8,13 @@
 
         <variable
             name="roleInvite"
-            type="com.eventyay.organizer.data.roles.RoleInvite" />
+            type="com.eventyay.organizer.data.role.RoleInvite" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.eventyay.organizer.core.roleinvite.RoleInviteFragment">
+        tools:context="com.eventyay.organizer.core.role.invite.RoleInviteFragment">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
