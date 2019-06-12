@@ -12,6 +12,7 @@ import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
 import com.eventyay.organizer.core.auth.signup.SignUpViewModel;
 import com.eventyay.organizer.core.auth.start.StartViewModel;
 import com.eventyay.organizer.core.event.about.AboutEventViewModel;
+import com.eventyay.organizer.core.event.chart.ChartViewModel;
 import com.eventyay.organizer.core.event.copyright.CreateCopyrightViewModel;
 import com.eventyay.organizer.core.event.copyright.update.UpdateCopyrightViewModel;
 import com.eventyay.organizer.core.event.create.CreateEventViewModel;
@@ -29,7 +30,8 @@ import com.eventyay.organizer.core.orders.list.OrdersViewModel;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailViewModel;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
-import com.eventyay.organizer.core.roleinvite.RoleInviteViewModel;
+import com.eventyay.organizer.core.role.list.RoleListViewModel;
+import com.eventyay.organizer.core.role.invite.RoleInviteViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
 import com.eventyay.organizer.core.share.ShareEventViewModel;
@@ -67,6 +69,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AboutEventViewModel.class)
     public abstract ViewModel bindAboutEventViewModel(AboutEventViewModel aboutEventViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChartViewModel.class)
+    public abstract ViewModel bindChartViewModel(ChartViewModel chartViewModel);
 
     @Binds
     @IntoMap
@@ -217,6 +224,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RoleInviteViewModel.class)
     public abstract ViewModel bindRoleInvitesViewModel(RoleInviteViewModel roleInviteViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RoleListViewModel.class)
+    public abstract ViewModel bindRoleListViewModel(RoleListViewModel roleListViewModel);
 
     @Binds
     @IntoMap

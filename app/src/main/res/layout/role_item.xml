@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="role"
+            type="com.eventyay.organizer.data.role.RoleInvite" />
+
+        <variable
+            name="roleListViewModel"
+            type="com.eventyay.organizer.core.role.list.RoleListViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/role_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_small"
+        android:padding="@dimen/spacing_normal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal">
+
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_small"
+                android:text='@{ role.getEmail() }'
+                tools:text="Email" />
+
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_small"
+                android:text='@{ role.getRoleName() }'
+                tools:text="Role" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginRight="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_small"
+                android:text='@{ "Status: " + role.getStatus() }'
+                tools:text="Status" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>
