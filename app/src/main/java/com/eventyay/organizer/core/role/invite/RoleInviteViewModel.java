@@ -1,4 +1,4 @@
-package com.eventyay.organizer.core.roleinvite;
+package com.eventyay.organizer.core.role.invite;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel;
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
-import com.eventyay.organizer.data.roles.Role;
-import com.eventyay.organizer.data.roles.RoleInvite;
-import com.eventyay.organizer.data.roles.RoleRepository;
+import com.eventyay.organizer.data.role.Role;
+import com.eventyay.organizer.data.role.RoleInvite;
+import com.eventyay.organizer.data.role.RoleRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
 
 import javax.inject.Inject;

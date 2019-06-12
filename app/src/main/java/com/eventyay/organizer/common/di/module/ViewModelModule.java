@@ -29,7 +29,8 @@ import com.eventyay.organizer.core.orders.list.OrdersViewModel;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailViewModel;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
-import com.eventyay.organizer.core.roleinvite.RoleInviteViewModel;
+import com.eventyay.organizer.core.role.list.RoleListViewModel;
+import com.eventyay.organizer.core.role.invite.RoleInviteViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
 import com.eventyay.organizer.core.share.ShareEventViewModel;
@@ -218,6 +219,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RoleInviteViewModel.class)
     public abstract ViewModel bindRoleInvitesViewModel(RoleInviteViewModel roleInviteViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RoleListViewModel.class)
+    public abstract ViewModel bindRoleListViewModel(RoleListViewModel roleListViewModel);
 
     @Binds
     @IntoMap
