@@ -6,6 +6,8 @@ import com.eventyay.organizer.common.mvp.view.Progressive;
 import com.eventyay.organizer.common.mvp.view.Refreshable;
 import com.eventyay.organizer.data.attendee.Attendee;
 
+import java.util.List;
+
 public interface AttendeesView extends Progressive, Refreshable, Erroneous, Emptiable<Attendee> {
 
     void showScanButton(boolean show);
@@ -13,5 +15,7 @@ public interface AttendeesView extends Progressive, Refreshable, Erroneous, Empt
     void updateAttendee(Attendee attendee);
 
     void showToggleDialog(long attendeeId);
+
+    List<Attendee> getAttendeeList();
 
 }
