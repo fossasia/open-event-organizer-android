@@ -9,6 +9,10 @@
         <variable
             name="user"
             type="com.eventyay.organizer.data.user.User" />
+
+        <variable
+            name="buildConfig"
+            type="com.eventyay.organizer.BuildConfig" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -108,7 +112,8 @@
                 <include
                     android:id="@+id/url"
                     layout="@layout/auth_url_container"
-                    app:action="@{ () -> btnSignUp.performClick() }"/>
+                    android:visibility="@{ buildConfig.DEBUG ? View.VISIBLE : View.GONE }"
+                    app:action="@{ () -> btnSignUp.performClick() }" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

@@ -4,9 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="login"
             type="com.eventyay.organizer.data.auth.model.Login" />
+
+        <variable
+            name="buildConfig"
+            type="com.eventyay.organizer.BuildConfig" />
      </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -69,7 +75,8 @@
                 <include
                     android:id="@+id/url"
                     layout="@layout/auth_url_container"
-                    app:action="@{ () -> btnLogin.performClick() }"/>
+                    android:visibility="@{ buildConfig.DEBUG ? View.VISIBLE : View.GONE }"
+                    app:action="@{ () -> btnLogin.performClick() }" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnLogin"
