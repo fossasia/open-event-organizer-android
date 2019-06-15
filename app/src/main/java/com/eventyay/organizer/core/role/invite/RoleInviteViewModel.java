@@ -25,6 +25,7 @@ public class RoleInviteViewModel extends ViewModel {
     private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Void> dismiss = new SingleEventLiveData<>();
 
     @Inject
     public RoleInviteViewModel(RoleRepository roleRepository) {
@@ -47,6 +48,10 @@ public class RoleInviteViewModel extends ViewModel {
         return error;
     }
 
+    public LiveData<Void> getDismiss() {
+        return dismiss;
+    }
+
     public void createRoleInvite(long roleId) {
 
         long eventId = ContextManager.getSelectedEvent().getId();
@@ -63,6 +68,7 @@ public class RoleInviteViewModel extends ViewModel {
                 .doFinally(() -> progress.setValue(false))
                 .subscribe(sentRoleInvite -> {
                     success.setValue("Role Invite Sent");
+                    dismiss.call();
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 }

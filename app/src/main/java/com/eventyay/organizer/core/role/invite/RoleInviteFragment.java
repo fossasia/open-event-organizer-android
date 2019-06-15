@@ -66,6 +66,7 @@ public class RoleInviteFragment extends BaseFragment implements RoleInviteView {
         roleInviteViewModel.getProgress().observe(this, this::showProgress);
         roleInviteViewModel.getSuccess().observe(this, this::onSuccess);
         roleInviteViewModel.getError().observe(this, this::showError);
+        roleInviteViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
         binding.setRoleInvite(roleInviteViewModel.getRoleInvite());
         setUpSpinner();
     }
@@ -95,5 +96,9 @@ public class RoleInviteFragment extends BaseFragment implements RoleInviteView {
     @Override
     public void showProgress(boolean show) {
         showView(binding.progressBar, show);
+    }
+
+    public void dismiss() {
+        getFragmentManager().popBackStack();
     }
 }
