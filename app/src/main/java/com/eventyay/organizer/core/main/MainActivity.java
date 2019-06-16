@@ -40,14 +40,14 @@ public class MainActivity extends AppCompatActivity implements
     public static final String EVENT_KEY = "event";
     private long eventId = -1;
     private final List<Integer> drawerItems = Arrays.asList(
-        R.id.nav_feedback,
+        /*R.id.nav_feedback,
         R.id.nav_faq,
         R.id.nav_track,
         R.id.nav_sponsor,
         R.id.nav_speaker,
-        R.id.nav_speakers_call,
-        R.id.nav_about_event,
-        R.id.nav_roles);
+        R.id.nav_speakers_call,*/
+        R.id.nav_about_event
+        /*R.id.nav_roles*/);
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
