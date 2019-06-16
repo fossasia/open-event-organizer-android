@@ -140,10 +140,7 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
 
     @Override
     public void showResults(List<Feedback> items) {
-        if(items.isEmpty()) {
-            showEmptyView(true);
-            return;
-        }
+        showEmptyView(items.isEmpty());
         feedbacksAdapter.feedbacks.addAll(items);
         feedbacksAdapter.notifyDataSetChanged();
     }
