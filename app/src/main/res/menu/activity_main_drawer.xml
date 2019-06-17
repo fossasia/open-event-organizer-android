@@ -7,10 +7,10 @@
             android:icon="@drawable/ic_dashboard"
             android:title="@string/dashboard" />
 
-        <item
+        <!--<item
             android:id="@+id/nav_sell"
             android:icon="@drawable/ic_payment"
-            android:title="@string/sell" />
+            android:title="@string/sell" />-->
 
         <item
             android:id="@+id/nav_attendees"
@@ -38,7 +38,7 @@
             android:icon="@drawable/ic_share"
             android:title="@string/share" />
 
-        <item
+        <!--<item
             android:id="@+id/nav_feedback"
             android:icon="@drawable/ic_feedback"
             android:title="@string/feedback"/>
@@ -70,7 +70,7 @@
         <item
             android:id="@+id/nav_speakers_call"
             android:icon="@drawable/ic_speaker"
-            android:title="@string/speakers_call"/>
+            android:title="@string/speakers_call"/>-->
 
         <item
             android:id="@+id/nav_about_event"
