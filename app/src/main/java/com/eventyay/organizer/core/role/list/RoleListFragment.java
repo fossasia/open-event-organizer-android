@@ -149,10 +149,7 @@ public class RoleListFragment extends BaseFragment implements RoleListView {
 
     @Override
     public void showResults(List<RoleInvite> items) {
-        if(items.isEmpty()) {
-            showEmptyView(true);
-            return;
-        }
+        showEmptyView(items.isEmpty());
         rolesAdapter.notifyDataSetChanged();
     }
 
