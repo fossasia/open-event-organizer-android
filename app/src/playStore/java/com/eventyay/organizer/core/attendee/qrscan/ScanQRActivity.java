@@ -2,13 +2,16 @@ package com.eventyay.organizer.core.attendee.qrscan;
 
 import android.Manifest;
 import android.Manifest.permission;
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +23,6 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import com.eventyay.organizer.OrgaProvider;
 import com.eventyay.organizer.R;
-import com.eventyay.organizer.common.mvp.view.BaseActivity;
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInFragment;
 import com.eventyay.organizer.core.attendee.qrscan.widget.CameraSourcePreview;
 import com.eventyay.organizer.core.attendee.qrscan.widget.GraphicOverlay;
@@ -34,10 +36,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Lazy;
+import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
+import dagger.android.HasActivityInjector;
+import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.Completable;
 import io.reactivex.Notification;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -49,7 +52,7 @@ import timber.log.Timber;
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
 @SuppressWarnings("PMD.TooManyMethods")
-public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements ScanQRView, HasSupportFragmentInjector {
+public class ScanQRActivity extends DaggerAppCompatActivity implements ScanQRView, HasActivityInjector {
 
     public static final int PERM_REQ_CODE = 123;
 
@@ -66,20 +69,28 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
     ProgressBar progressBar;
 
     @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+    ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
     private CameraSource cameraSource;
     private BarcodeDetector barcodeDetector;
 
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private ScanQRViewModel scanQRViewModel;
 
-    @Inject
-    Lazy<ScanQRPresenter> presenterProvider;
+    private BarcodeDetected barcodeDetected = new BarcodeDetected();
+
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     PublishSubject<Notification<Barcode>> barcodeEmitter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+        super.onCreate(savedInstanceState);
+        scanQRViewModel = ViewModelProviders.of(this, viewModelFactory).get(ScanQRViewModel.class);
+
         setContentView(R.layout.activity_scan_qr);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -91,8 +102,6 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
 
         requestCameraPermission();
         setCameraSource();
-
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -105,8 +114,15 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
             finish();
             return;
         }
-        getPresenter().attach(eventId, this);
-        getPresenter().start();
+
+        scanQRViewModel.getProgress().observe(this, this::showProgress);
+        scanQRViewModel.getError().observe(this, this::showPermissionError);
+        scanQRViewModel.getMessage().observe(this, this::showMessage);
+        scanQRViewModel.getTint().observe(this, this::setTint);
+        scanQRViewModel.getShowBarcodePanelLiveData().observe(this, this::showBarcodePanel);
+        scanQRViewModel.getOnScannedAttendeeLiveData().observe(this, this::onScannedAttendee);
+        scanQRViewModel.loadAttendees();
+        onCameraLoaded();
     }
 
     @Override
@@ -127,7 +143,6 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
     protected void onDestroy() {
         super.onDestroy();
 
-        if (getPresenter() != null) getPresenter().detach();
         if (preview != null) preview.release();
         if (barcodeDetector != null) barcodeDetector.release();
         compositeDisposable.dispose();
@@ -140,9 +155,9 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
 
         // If request is cancelled, the result arrays are empty.
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            getPresenter().cameraPermissionGranted(true);
+            cameraPermissionGranted(true);
         } else {
-            getPresenter().cameraPermissionGranted(false);
+            cameraPermissionGranted(false);
         }
     }
 
@@ -159,11 +174,6 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
     }
 
     // Lifecycle methods end
-
-    @Override
-    public Lazy<ScanQRPresenter> getPresenterProvider() {
-        return presenterProvider;
-    }
 
     // View Implementation Start
 
@@ -184,7 +194,7 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
 
     @Override
     public void onScannedAttendee(Attendee attendee) {
-        getPresenter().pauseScan();
+        scanQRViewModel.pauseScan();
         showToggleDialog(attendee.getId());
     }
 
@@ -194,8 +204,12 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
     }
 
     @Override
-    public void showMessage(int stringRes, boolean matched) {
+    public void showMessage(int stringRes) {
         barcodePanel.setText(getString(stringRes));
+    }
+
+    @Override
+    public void setTint(boolean matched) {
         ViewUtils.setTint(barcodePanel,
             ContextCompat.getColor(this, matched ? R.color.green_a400 : R.color.red_500)
         );
@@ -204,6 +218,27 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
     @Override
     public void showProgress(boolean show) {
         showView(progressBar, show);
+    }
+
+    public void onCameraLoaded() {
+        if (hasCameraPermission()) {
+            startScan();
+        } else {
+            requestCameraPermission();
+        }
+    }
+
+    public void cameraPermissionGranted(boolean granted) {
+        if (granted) {
+            startScan();
+        } else {
+            showProgress(false);
+            showPermissionError("User denied permission");
+        }
+    }
+
+    public void onCameraDestroyed() {
+        stopScan();
     }
 
     @Override
@@ -216,9 +251,11 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
 
                 compositeDisposable.add(barcodeEmitter.subscribe(barcodeNotification -> {
                     if (barcodeNotification.isOnError()) {
-                        getPresenter().onBarcodeDetected(null);
+                        barcodeDetected.onBarcodeDetected(null, scanQRViewModel.getDetect(),
+                            scanQRViewModel.getData(), scanQRViewModel.getAttendees());
                     } else {
-                        getPresenter().onBarcodeDetected(barcodeNotification.getValue());
+                        barcodeDetected.onBarcodeDetected(barcodeNotification.getValue(), scanQRViewModel.getDetect(),
+                            scanQRViewModel.getData(), scanQRViewModel.getAttendees());
                     }
                 }));
             } catch (SecurityException se) {
@@ -227,7 +264,7 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
             }
         }).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(() -> getPresenter().onScanStarted()));
+            .subscribe(() -> scanQRViewModel.onScanStarted()));
     }
 
     @Override
@@ -256,12 +293,12 @@ public class ScanQRActivity extends BaseActivity<ScanQRPresenter> implements Sca
         bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
         bottomSheetDialogFragment.setOnCancelListener(() -> {
             ViewUtils.setTint(barcodePanel, ContextCompat.getColor(this, R.color.light_blue_a400));
-            getPresenter().resumeScan();
+            scanQRViewModel.resumeScan();
         });
     }
 
     @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
+    public AndroidInjector<Activity> activityInjector() {
         return dispatchingAndroidInjector;
     }
 

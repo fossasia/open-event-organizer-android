@@ -1,17 +1,16 @@
-package com.eventyay.organizer.core.feedback.list;
+package com.eventyay.organizer.core.role.list;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,32 +18,35 @@ import android.view.ViewGroup;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.main.MainActivity;
-import com.eventyay.organizer.data.feedback.Feedback;
-import com.eventyay.organizer.databinding.FeedbackFragmentBinding;
+import com.eventyay.organizer.core.role.invite.RoleInviteFragment;
+import com.eventyay.organizer.data.ContextUtils;
+import com.eventyay.organizer.data.role.RoleInvite;
+import com.eventyay.organizer.databinding.RolesFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class FeedbackListFragment extends BaseFragment implements FeedbackListView {
+public class RoleListFragment extends BaseFragment implements RoleListView {
 
     private Context context;
     private long eventId;
 
     @Inject
+    ContextUtils utilModel;
+
+    @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    private FeedbackListAdapter feedbacksAdapter;
-    private FeedbackFragmentBinding binding;
+    private RoleListAdapter rolesAdapter;
+    private RolesFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    private FeedbackListViewModel feedbackListViewModel;
+    private RoleListViewModel roleListViewModel;
 
-    private boolean initialized;
-
-    public static FeedbackListFragment newInstance(long eventId) {
-        FeedbackListFragment fragment = new FeedbackListFragment();
+    public static RoleListFragment newInstance(long eventId) {
+        RoleListFragment fragment = new RoleListFragment();
         Bundle args = new Bundle();
         args.putLong(MainActivity.EVENT_KEY, eventId);
         fragment.setArguments(args);
@@ -52,19 +54,22 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         context = getContext();
+
         if (getArguments() != null)
             eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.feedback_fragment, container, false);
-        feedbackListViewModel = ViewModelProviders.of(this, viewModelFactory).get(FeedbackListViewModel.class);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.roles_fragment, container, false);
+        roleListViewModel = ViewModelProviders.of(this, viewModelFactory).get(RoleListViewModel.class);
+
+        binding.createRoleFab.setOnClickListener(v -> openRoleInviteFragment());
 
         return binding.getRoot();
     }
@@ -74,37 +79,28 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
         super.onStart();
         setupRecyclerView();
         setupRefreshListener();
-        feedbackListViewModel.getProgress().observe(this, this::showProgress);
-        feedbackListViewModel.getSuccess().observe(this, this::showMessage);
-        feedbackListViewModel.getError().observe(this, this::showError);
-        feedbackListViewModel.getFeedbacksLiveData().observe(this, this::showResults);
-        feedbackListViewModel.loadFeedbacks(false);
-
-        initialized = true;
-    }
-
-    @Override
-    protected int getTitle() {
-        return R.string.title_feedbacks;
+        roleListViewModel.getProgress().observe(this, this::showProgress);
+        roleListViewModel.getSuccess().observe(this, this::showMessage);
+        roleListViewModel.getError().observe(this, this::showError);
+        roleListViewModel.getRolesLiveData().observe(this, this::showResults);
+        roleListViewModel.loadRoles(false);
+        roleListViewModel.listenChanges();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
+        roleListViewModel.getRoleListChangeListener().stopListening();
     }
 
     private void setupRecyclerView() {
-        if (initialized)
-            return;
+        rolesAdapter = new RoleListAdapter(roleListViewModel);
 
-        feedbacksAdapter = new FeedbackListAdapter(feedbackListViewModel);
-
-        RecyclerView recyclerView = binding.feedbacksRecyclerView;
+        RecyclerView recyclerView = binding.rolesRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(feedbacksAdapter);
+        recyclerView.setAdapter(rolesAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
     }
 
 
@@ -113,8 +109,21 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            feedbackListViewModel.loadFeedbacks(true);
+            roleListViewModel.loadRoles(true);
         });
+    }
+
+    public void openRoleInviteFragment() {
+
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, RoleInviteFragment.newInstance(eventId))
+            .addToBackStack(null)
+            .commit();
+    }
+
+    @Override
+    protected int getTitle() {
+        return R.string.roles;
     }
 
     @Override
@@ -131,7 +140,7 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
     public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
         if (success)
-            ViewUtils.showSnackbar(binding.feedbacksRecyclerView, R.string.refresh_complete);
+            ViewUtils.showSnackbar(binding.rolesRecyclerView, R.string.refresh_complete);
     }
 
     private void showMessage(String message) {
@@ -139,15 +148,13 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
     }
 
     @Override
-    public void showResults(List<Feedback> items) {
+    public void showResults(List<RoleInvite> items) {
         showEmptyView(items.isEmpty());
-        feedbacksAdapter.feedbacks.addAll(items);
-        feedbacksAdapter.notifyDataSetChanged();
+        rolesAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showEmptyView(boolean show) {
         ViewUtils.showView(binding.emptyView, show);
     }
-
 }

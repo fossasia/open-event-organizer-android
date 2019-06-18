@@ -1,4 +1,4 @@
-package com.eventyay.organizer.core.roleinvite;
+package com.eventyay.organizer.core.role.invite;
 
 import android.os.Bundle;
 
@@ -29,11 +29,9 @@ public class RoleInviteFragment extends BaseFragment implements RoleInviteView {
     ViewModelProvider.Factory viewModelFactory;
 
     private FragmentRoleInviteBinding binding;
-    private ArrayAdapter<CharSequence> rolesAdapter;
 
     private RoleInviteViewModel roleInviteViewModel;
 
-    private long eventId;
     private long roleId;
 
     public static RoleInviteFragment newInstance(long eventId) {
@@ -42,14 +40,6 @@ public class RoleInviteFragment extends BaseFragment implements RoleInviteView {
         args.putLong(MainActivity.EVENT_KEY, eventId);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
-        }
     }
 
     @Override
@@ -76,14 +66,21 @@ public class RoleInviteFragment extends BaseFragment implements RoleInviteView {
         roleInviteViewModel.getProgress().observe(this, this::showProgress);
         roleInviteViewModel.getSuccess().observe(this, this::onSuccess);
         roleInviteViewModel.getError().observe(this, this::showError);
+        roleInviteViewModel.getDismiss().observe(this, (dismiss) -> dismiss());
         binding.setRoleInvite(roleInviteViewModel.getRoleInvite());
         setUpSpinner();
     }
 
     private void setUpSpinner() {
-        rolesAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.roles, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> rolesAdapter = ArrayAdapter
+            .createFromResource(getActivity(), R.array.roles, android.R.layout.simple_spinner_item);
         rolesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.selectRole.setAdapter(rolesAdapter);
+    }
+
+    @Override
+    public int getTitle() {
+        return R.string.add_role;
     }
 
     @Override
@@ -101,8 +98,7 @@ public class RoleInviteFragment extends BaseFragment implements RoleInviteView {
         showView(binding.progressBar, show);
     }
 
-    @Override
-    public int getTitle() {
-        return R.string.add_role;
+    public void dismiss() {
+        getFragmentManager().popBackStack();
     }
 }

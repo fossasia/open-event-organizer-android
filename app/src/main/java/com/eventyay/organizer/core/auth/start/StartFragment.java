@@ -77,18 +77,31 @@ public class StartFragment extends BaseFragment implements StartView {
 
         validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
 
+        binding.url.toggleUrl.setOnClickListener(view -> {
+
+            if (binding.url.baseUrlLayout.getVisibility() == View.VISIBLE) {
+                binding.url.toggleUrl.setText(getString(R.string.use_another_url));
+                binding.url.baseUrlLayout.setVisibility(View.GONE);
+            } else {
+                binding.url.toggleUrl.setText(getString(R.string.use_default_url));
+                binding.url.baseUrlLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
         binding.btnStart.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
             String url = binding.url.baseUrl.getText().toString().trim();
 
-            if(!binding.url.overrideUrl.isChecked() && !validateUrl(url)) {
+            boolean isBaseUrlLayoutVisible = binding.url.baseUrlLayout.getVisibility() == View.VISIBLE;
+
+            if(isBaseUrlLayoutVisible && !validateUrl(url)) {
                 return;
             }
 
             ViewUtils.hideKeyboard(view);
-            startFragmentViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
+            startFragmentViewModel.setBaseUrl(url, !isBaseUrlLayoutVisible);
             startFragmentViewModel.checkIsEmailRegistered(startFragmentViewModel.getEmailRequestModel().getValue());
         });
 

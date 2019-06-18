@@ -12,7 +12,7 @@ import com.eventyay.organizer.core.faq.list.FaqListFragment;
 import com.eventyay.organizer.core.feedback.list.FeedbackListFragment;
 import com.eventyay.organizer.core.orders.create.CreateOrderFragment;
 import com.eventyay.organizer.core.orders.list.OrdersFragment;
-import com.eventyay.organizer.core.roleinvite.RoleInviteFragment;
+import com.eventyay.organizer.core.role.list.RoleListFragment;
 import com.eventyay.organizer.core.settings.EventSettingsFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
 import com.eventyay.organizer.core.share.ShareEventFragment;
@@ -69,9 +69,9 @@ class FragmentNavigator {
             case R.id.nav_dashboard:
                 fragment = EventDashboardFragment.newInstance(eventId);
                 break;
-            case R.id.nav_sell:
+            /*case R.id.nav_sell:
                 fragment = CreateOrderFragment.newInstance(eventId);
-                break;
+                break;*/
             case R.id.nav_attendees:
                 fragment = AttendeesFragment.newInstance(eventId);
                 break;
@@ -90,14 +90,14 @@ class FragmentNavigator {
             case R.id.nav_settings:
                 fragment = SettingsFragment.newInstance();
                 break;
-            case R.id.nav_faq:
+            /*case R.id.nav_faq:
                 fragment = FaqListFragment.newInstance(eventId);
                 break;
             case R.id.nav_feedback:
                 fragment = FeedbackListFragment.newInstance(eventId);
                 break;
             case R.id.nav_roles:
-                fragment = RoleInviteFragment.newInstance(eventId);
+                fragment = RoleListFragment.newInstance(eventId);
                 break;
             case R.id.nav_track:
                 fragment = TracksFragment.newInstance(eventId);
@@ -110,7 +110,7 @@ class FragmentNavigator {
                 break;
             case R.id.nav_speakers_call:
                 fragment = SpeakersCallFragment.newInstance(eventId);
-                break;
+                break;*/
             case R.id.nav_share:
                 fragment = ShareEventFragment.newInstance(eventId);
                 break;

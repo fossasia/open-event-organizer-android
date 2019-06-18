@@ -5,6 +5,9 @@ import androidx.databinding.DataBindingUtil;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -30,11 +33,10 @@ import java.util.Arrays;
 
 import javax.inject.Inject;
 
-import dagger.Lazy;
 import io.reactivex.disposables.CompositeDisposable;
 
 @SuppressWarnings("PMD.TooManyMethods")
-public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implements AboutEventView {
+public class AboutEventFragment extends BaseFragment implements AboutEventView {
 
     private AboutEventFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
@@ -45,8 +47,10 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     private Drawable shareIcon;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    private AboutEventViewModel aboutEventViewModel;
+
     @Inject
-    Lazy<AboutEventPresenter> aboutEventPresenterProvider;
+    ViewModelProvider.Factory viewModelFactory;
     @Inject
     ContextUtils utilModel;
     @Inject
@@ -65,6 +69,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         binding = DataBindingUtil.inflate(inflater, R.layout.about_event_fragment, container, false);
+        aboutEventViewModel = ViewModelProviders.of(this, viewModelFactory).get(AboutEventViewModel.class);
 
         Bundle bundle = getArguments();
         eventId = bundle.getLong(EVENT_ID);
@@ -89,8 +94,14 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
         super.onStart();
         observeColorChanges();
         setupRefreshListener();
-        getPresenter().attach(eventId, this);
-        getPresenter().start();
+        aboutEventViewModel.getProgress().observe(this, this::showProgress);
+        aboutEventViewModel.getSuccess().observe(this, this::showResult);
+        aboutEventViewModel.getError().observe(this, this::showError);
+        aboutEventViewModel.getShowCopyright().observe(this, this::showCopyright);
+        aboutEventViewModel.getChangeCopyrightMenuItem().observe(this, this::changeCopyrightMenuItem);
+        aboutEventViewModel.getShowCopyrightDeleted().observe(this, this::showCopyrightDeleted);
+        aboutEventViewModel.loadEvent(false);
+        aboutEventViewModel.loadCopyright(false);
     }
 
     @Override
@@ -129,7 +140,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     public void shareEvent() {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getPresenter().getShareableInformation());
+        shareIntent.putExtra(Intent.EXTRA_TEXT, aboutEventViewModel.getShareableInformation());
         shareIntent.setType("text/plain");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
     }
@@ -151,8 +162,8 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            getPresenter().loadEvent(true);
-            getPresenter().loadCopyright(true);
+            aboutEventViewModel.loadEvent(true);
+            aboutEventViewModel.loadCopyright(true);
         });
     }
 
@@ -178,7 +189,7 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
                     .setMessage(String.format(getString(R.string.delete_confirmation_message),
                         getString(R.string.copyright)))
                     .setPositiveButton(R.string.ok, (dialog, which) -> {
-                        getPresenter().deleteCopyright(getPresenter().getCopyright().getId());
+                        aboutEventViewModel.deleteCopyright(aboutEventViewModel.getCopyright().getId());
                     })
                     .setNegativeButton(R.string.cancel, (dialog, which) -> {
                         dialog.dismiss();
@@ -204,11 +215,6 @@ public class AboutEventFragment extends BaseFragment<AboutEventPresenter> implem
     @Override
     public void setEventId(long id) {
         this.eventId = id;
-    }
-
-    @Override
-    public Lazy<AboutEventPresenter> getPresenterProvider() {
-        return aboutEventPresenterProvider;
     }
 
     @Override

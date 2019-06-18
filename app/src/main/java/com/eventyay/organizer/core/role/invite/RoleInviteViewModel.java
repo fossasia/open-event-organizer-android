@@ -1,4 +1,4 @@
-package com.eventyay.organizer.core.roleinvite;
+package com.eventyay.organizer.core.role.invite;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel;
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
-import com.eventyay.organizer.data.roles.Role;
-import com.eventyay.organizer.data.roles.RoleInvite;
-import com.eventyay.organizer.data.roles.RoleRepository;
+import com.eventyay.organizer.data.role.Role;
+import com.eventyay.organizer.data.role.RoleInvite;
+import com.eventyay.organizer.data.role.RoleRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
 
 import javax.inject.Inject;
@@ -25,6 +25,7 @@ public class RoleInviteViewModel extends ViewModel {
     private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Void> dismiss = new SingleEventLiveData<>();
 
     @Inject
     public RoleInviteViewModel(RoleRepository roleRepository) {
@@ -47,6 +48,10 @@ public class RoleInviteViewModel extends ViewModel {
         return error;
     }
 
+    public LiveData<Void> getDismiss() {
+        return dismiss;
+    }
+
     public void createRoleInvite(long roleId) {
 
         long eventId = ContextManager.getSelectedEvent().getId();
@@ -63,6 +68,7 @@ public class RoleInviteViewModel extends ViewModel {
                 .doFinally(() -> progress.setValue(false))
                 .subscribe(sentRoleInvite -> {
                     success.setValue("Role Invite Sent");
+                    dismiss.call();
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 }
