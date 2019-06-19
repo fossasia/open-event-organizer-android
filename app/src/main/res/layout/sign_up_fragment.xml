@@ -77,15 +77,16 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/passwordLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:passwordToggleEnabled="true"
                     android:paddingBottom="@dimen/spacing_normal">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/password"
                         android:hint="@string/password"
                         android:text="@={ user.password }"
                         android:inputType="textPassword"
@@ -93,15 +94,16 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/confirmPasswordLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:passwordToggleEnabled="true"
                     android:paddingBottom="@dimen/spacing_normal">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/confirmPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/confirmPassword"
                         android:hint="@string/confirm_password"
                         android:inputType="textPassword"
                         android:imeOptions="actionGo"
