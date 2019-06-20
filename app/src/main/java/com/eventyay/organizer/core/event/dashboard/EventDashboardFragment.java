@@ -104,8 +104,6 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     public void onStart() {
         super.onStart();
         getPresenter().attach(initialEventId, this);
-        binding.eventStatistics.switchEventStatistics.setChecked(false);
-        binding.orderStatistics.switchOrderStatistics.setChecked(false);
         binding.setPresenter(getPresenter());
         setupRefreshListener();
         getPresenter().start();
