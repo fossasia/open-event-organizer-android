@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.eventyay.organizer.common.di.OrgaViewModelFactory;
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInViewModel;
 import com.eventyay.organizer.core.attendee.history.CheckInHistoryViewModel;
+import com.eventyay.organizer.core.attendee.list.AttendeesViewModel;
 import com.eventyay.organizer.core.attendee.qrscan.ScanQRViewModel;
 import com.eventyay.organizer.core.auth.login.LoginViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
@@ -239,6 +240,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ScanQRViewModel.class)
     public abstract ViewModel bindScanQRViewModel(ScanQRViewModel scanQRViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AttendeesViewModel.class)
+    public abstract ViewModel bindAttendeesViewModel(AttendeesViewModel attendeesViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
