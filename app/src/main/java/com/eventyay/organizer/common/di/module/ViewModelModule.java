@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.eventyay.organizer.common.di.OrgaViewModelFactory;
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInViewModel;
 import com.eventyay.organizer.core.attendee.history.CheckInHistoryViewModel;
+import com.eventyay.organizer.core.attendee.list.AttendeesViewModel;
 import com.eventyay.organizer.core.attendee.qrscan.ScanQRViewModel;
 import com.eventyay.organizer.core.auth.login.LoginViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
 import com.eventyay.organizer.core.auth.signup.SignUpViewModel;
 import com.eventyay.organizer.core.auth.start.StartViewModel;
+import com.eventyay.organizer.core.event.about.AboutEventViewModel;
+import com.eventyay.organizer.core.event.chart.ChartViewModel;
 import com.eventyay.organizer.core.event.copyright.CreateCopyrightViewModel;
 import com.eventyay.organizer.core.event.copyright.update.UpdateCopyrightViewModel;
 import com.eventyay.organizer.core.event.create.CreateEventViewModel;
@@ -28,7 +31,8 @@ import com.eventyay.organizer.core.orders.list.OrdersViewModel;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailViewModel;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
-import com.eventyay.organizer.core.roleinvite.RoleInviteViewModel;
+import com.eventyay.organizer.core.role.list.RoleListViewModel;
+import com.eventyay.organizer.core.role.invite.RoleInviteViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
 import com.eventyay.organizer.core.share.ShareEventViewModel;
@@ -61,6 +65,16 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ResetPasswordViewModel.class)
     public abstract ViewModel bindResetPasswordViewModel(ResetPasswordViewModel resetPasswordViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AboutEventViewModel.class)
+    public abstract ViewModel bindAboutEventViewModel(AboutEventViewModel aboutEventViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChartViewModel.class)
+    public abstract ViewModel bindChartViewModel(ChartViewModel chartViewModel);
 
     @Binds
     @IntoMap
@@ -214,6 +228,11 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(RoleListViewModel.class)
+    public abstract ViewModel bindRoleListViewModel(RoleListViewModel roleListViewModel);
+
+    @Binds
+    @IntoMap
     @ViewModelKey(NotificationsViewModel.class)
     public abstract ViewModel bindNotificationsViewModel(NotificationsViewModel notificationsViewModel);
 
@@ -221,6 +240,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ScanQRViewModel.class)
     public abstract ViewModel bindScanQRViewModel(ScanQRViewModel scanQRViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AttendeesViewModel.class)
+    public abstract ViewModel bindAttendeesViewModel(AttendeesViewModel attendeesViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);

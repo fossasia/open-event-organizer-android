@@ -237,10 +237,7 @@ public class FaqListFragment extends BaseFragment implements FaqListView {
 
     @Override
     public void showResults(List<Faq> items) {
-        if(items.isEmpty()) {
-            showEmptyView(true);
-            return;
-        }
+        showEmptyView(items.isEmpty());
         faqsAdapter.notifyDataSetChanged();
     }
 

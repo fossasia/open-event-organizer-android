@@ -2,6 +2,7 @@ package com.eventyay.organizer.core.ticket.create;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
@@ -9,6 +10,7 @@ import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.ErrorUtils;
+
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
@@ -34,12 +36,9 @@ public class CreateTicketViewModel extends ViewModel {
         String startDate = DateUtils.formatDateToIso(current);
         ticket.setSalesStartsAt(startDate);
 
-        LocalDateTime salesEndTime = current.plusDays(10);
-        LocalDateTime eventEndTime = DateUtils.getIsoOffsetTimeFromTimestamp(ContextManager.getSelectedEvent().getEndsAt());
-        //if less than 10 days are available in the event.
-        if (salesEndTime.isAfter(eventEndTime) && !eventEndTime.isBefore(current)) {
-            salesEndTime = eventEndTime;
-        }
+        LocalDateTime salesEndTime = DateUtils.getIsoOffsetTimeFromTimestamp(
+            ContextManager.getSelectedEvent().getStartsAt());
+
         String endDate = DateUtils.formatDateToIso(salesEndTime);
         ticket.setSalesEndsAt(endDate);
         ticket.setType("free");

@@ -70,7 +70,8 @@ public class TicketCreateViewModelTest {
 
     private void setupMockEvent() {
         when(event.getTimezone()).thenReturn("UTC");
-        when(event.getEndsAt()).thenReturn("2018-12-14T23:59:59.123456+00:00");
+        when(event.getStartsAt()).thenReturn("2019-06-18T23:59:59.123456+00:00");
+        when(event.getEndsAt()).thenReturn("2019-06-20T23:59:59.123456+00:00");
     }
 
     @After
