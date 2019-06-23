@@ -17,7 +17,8 @@ cache:
       - "$HOME/.gradle/caches/"
       - "$HOME/.gradle/wrapper/"
 script:
-  - ./gradlew build
+  - ./gradlew assemblePlayStoreRelease
+  - ./gradlew assembleFdroidRelease
   - ./gradlew testPlayStoreDebugUnitTestCoverage
 after_success:
     - bash <(curl -s https://codecov.io/bash)
