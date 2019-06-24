@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="200"
-            android:visibility="gone">
+            android:visibility="@{ switchOrderStatistics.checked ? View.VISIBLE : View.GONE }">
 
             <LinearLayout
                 android:id="@+id/order_statistics_layout"
