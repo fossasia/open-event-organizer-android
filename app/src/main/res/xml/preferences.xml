@@ -50,6 +50,11 @@
         <Preference
             android:selectable="false"
             android:key="@string/app_version_key" />
+
+        <Preference
+            android:key="@string/developer_mode_key"
+            android:title="@string/developer_mode"
+            android:selectable="true" />
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>
