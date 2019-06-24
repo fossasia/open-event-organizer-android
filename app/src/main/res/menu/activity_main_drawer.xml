@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <group android:id="@+id/eventsMenu" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/ic_events"
+            android:title="@string/nav_events" />
+    </group>
+
     <group android:id="@+id/subMenu" android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dashboard"
@@ -85,13 +92,6 @@
             android:title="@string/event_settings"
             android:checkable="true"/>
 
-    </group>
-
-    <group android:id="@+id/eventsMenu" android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_events"
-            android:icon="@drawable/ic_events"
-            android:title="@string/nav_events" />
     </group>
 
     <group android:id="@+id/mainMenu">
