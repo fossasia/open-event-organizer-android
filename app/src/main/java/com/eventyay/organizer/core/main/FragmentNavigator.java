@@ -69,9 +69,9 @@ class FragmentNavigator {
             case R.id.nav_dashboard:
                 fragment = EventDashboardFragment.newInstance(eventId);
                 break;
-            /*case R.id.nav_sell:
+            case R.id.nav_sell:
                 fragment = CreateOrderFragment.newInstance(eventId);
-                break;*/
+                break;
             case R.id.nav_attendees:
                 fragment = AttendeesFragment.newInstance(eventId);
                 break;
@@ -90,7 +90,7 @@ class FragmentNavigator {
             case R.id.nav_settings:
                 fragment = SettingsFragment.newInstance();
                 break;
-            /*case R.id.nav_faq:
+            case R.id.nav_faq:
                 fragment = FaqListFragment.newInstance(eventId);
                 break;
             case R.id.nav_feedback:
@@ -110,7 +110,7 @@ class FragmentNavigator {
                 break;
             case R.id.nav_speakers_call:
                 fragment = SpeakersCallFragment.newInstance(eventId);
-                break;*/
+                break;
             case R.id.nav_share:
                 fragment = ShareEventFragment.newInstance(eventId);
                 break;

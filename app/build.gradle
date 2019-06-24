@@ -40,13 +40,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://api.eventyay.com/v1/"'
-            buildConfigField 'Boolean', 'HIDE_DRAWER_ITEMS', 'true'
             resValue "string", "default_base_url", '"https://api.eventyay.com/v1/"'
         }
         debug {
             testCoverageEnabled = true
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://open-event-api-dev.herokuapp.com/v1/"'
-            buildConfigField 'Boolean', 'HIDE_DRAWER_ITEMS', 'false'
             resValue "string", "default_base_url", '"https://open-event-api-dev.herokuapp.com/v1/"'
         }
     }
