@@ -24,14 +24,14 @@ public class EventDelegateImpl implements EventDelegate {
     @JsonIgnore
     public String getHeader() {
         if (event.getState() != null)
-            return DateUtils.formatDateWithDefault(DateUtils.FORMAT_MONTH, event.getStartsAt());
+            return DateUtils.formatDateWithDefault(DateUtils.FORMAT_MONTH_YEAR, event.getStartsAt());
         return "";
     }
 
     @Override
     @JsonIgnore
     public long getHeaderId() {
-        return getHeader().hashCode();
+        return Math.abs(getHeader().hashCode());
     }
 
 }
