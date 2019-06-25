@@ -79,7 +79,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="check_in_status">Check In Status</string>
-    <string name="dashboard">Dashboard</string>
+    <string name="event_dashboard">Event Dashboard</string>
     <string name="attendees">Attendees</string>
     <string name="events">Events</string>
     <string name="nav_events">My Events</string>
