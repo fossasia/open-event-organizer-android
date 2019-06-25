@@ -111,7 +111,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
 
     @Override
     protected int getTitle() {
-        return R.string.dashboard;
+        return R.string.event_dashboard;
     }
 
     @Override
