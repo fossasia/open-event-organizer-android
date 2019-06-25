@@ -390,6 +390,16 @@
     <string name="notifications">Notifications</string>
     <string name="use_another_url">Use another URL</string>
     <string name="use_default_url">Use default URL</string>
+    <string name="developer_mode">Developer Mode</string>
+    <string name="developer_mode_key">developer_mode</string>
+    <string name="activate_developer_mode">Activate Developer Mode</string>
+    <string name="developer_mode_activation_message">You are activating Developer Mode. This mode will give you access to unreleased app features. These features are unstable and could potentially result in unwanted changes in your event or data loss. Use with care! Do you really want to activate developer mode?</string>
+    <string name="deactivate_developer_mode">Deactivate Developer Mode</string>
+    <string name="developer_mode_deactivation_message">You are deactivating Developer Mode. This will hide the unreleased app features. Do you want to continue?</string>
+    <string name="yes_take_chances">Yes, I am taking my chances</string>
+    <string name="no_stay_safe">No, I want to stay safe</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
