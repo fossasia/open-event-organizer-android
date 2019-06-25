@@ -400,6 +400,7 @@
     <string name="no_stay_safe">No, I want to stay safe</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="my_account">My Account</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
