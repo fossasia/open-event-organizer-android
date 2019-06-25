@@ -119,7 +119,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/spacing_medium"
                     android:layout_marginStart="@dimen/spacing_medium"
-                    android:text="@{ DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_DATE_TIME, event.getStartsAt()) }"
+                    android:text='@{ DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_DATE_TIME, event.getStartsAt()) + " - " + DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_DATE_TIME, event.getEndsAt()) }'
                     android:textAllCaps="true"
                     android:textColor="@color/grey_600"
                     android:textSize="@dimen/text_size_extra_small" />

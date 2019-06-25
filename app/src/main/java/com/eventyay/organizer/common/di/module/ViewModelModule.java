@@ -33,6 +33,7 @@ import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
 import com.eventyay.organizer.core.role.list.RoleListViewModel;
 import com.eventyay.organizer.core.role.invite.RoleInviteViewModel;
+import com.eventyay.organizer.core.session.create.CreateSessionViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
 import com.eventyay.organizer.core.share.ShareEventViewModel;
@@ -245,6 +246,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AttendeesViewModel.class)
     public abstract ViewModel bindAttendeesViewModel(AttendeesViewModel attendeesViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateSessionViewModel.class)
+    public abstract ViewModel bindCreateSessionViewModel(CreateSessionViewModel createSessionViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
