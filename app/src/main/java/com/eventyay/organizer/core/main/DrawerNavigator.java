@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.event.about.AboutEventActivity;
 import com.eventyay.organizer.core.event.create.CreateEventActivity;
+import com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity;
 import com.eventyay.organizer.utils.BrowserUtils;
 
 import static com.eventyay.organizer.core.event.create.CreateEventActivity.EVENT_ID;
@@ -41,6 +42,9 @@ class DrawerNavigator {
 
         if (id == R.id.nav_logout) {
             showLogoutDialog();
+        } else if (id == R.id.nav_account) {
+            Intent intent = new Intent(context, OrganizerDetailActivity.class);
+            context.startActivity(intent);
         } else if (id == R.id.nav_edit_event) {
             Intent intent = new Intent(context, CreateEventActivity.class);
             intent.putExtra(EVENT_ID, fragmentNavigator.getEventId());
