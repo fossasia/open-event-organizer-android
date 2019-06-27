@@ -79,6 +79,8 @@ public class ScanQRActivity extends DaggerAppCompatActivity implements ScanQRVie
         ButterKnife.bind(this);
 
         onCameraLoaded();
+
+        startScanningAgain.setOnClickListener(v -> startScan());
     }
 
     @Override

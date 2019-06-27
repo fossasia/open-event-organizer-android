@@ -16,7 +16,6 @@ import com.eventyay.organizer.core.attendee.history.CheckInHistoryFragment;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.databinding.BottomsheetAttendeeCheckInBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import javax.inject.Inject;
 
