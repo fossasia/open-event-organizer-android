@@ -12,10 +12,12 @@ import com.eventyay.organizer.data.faq.FaqRepository;
 import com.eventyay.organizer.data.faq.FaqRepositoryImpl;
 import com.eventyay.organizer.data.feedback.FeedbackRepository;
 import com.eventyay.organizer.data.feedback.FeedbackRepositoryImpl;
+import com.eventyay.organizer.data.notification.NotificationRepository;
+import com.eventyay.organizer.data.notification.NotificationRepositoryImpl;
 import com.eventyay.organizer.data.order.OrderRepository;
 import com.eventyay.organizer.data.order.OrderRepositoryImpl;
-import com.eventyay.organizer.data.roles.RoleRepository;
-import com.eventyay.organizer.data.roles.RoleRepositoryImpl;
+import com.eventyay.organizer.data.role.RoleRepository;
+import com.eventyay.organizer.data.role.RoleRepositoryImpl;
 import com.eventyay.organizer.data.session.SessionRepository;
 import com.eventyay.organizer.data.session.SessionRepositoryImpl;
 import com.eventyay.organizer.data.speaker.SpeakerRepository;
@@ -99,4 +101,7 @@ public abstract class RepoModule {
     @Singleton
     abstract RoleRepository bindsRoleRepository(RoleRepositoryImpl roleRepository);
 
+    @Binds
+    @Singleton
+    abstract NotificationRepository bindsNotificationRepository(NotificationRepositoryImpl notificationRepository);
 }

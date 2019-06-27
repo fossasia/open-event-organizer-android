@@ -59,13 +59,26 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
 
         validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
 
+        binding.url.toggleUrl.setOnClickListener(view -> {
+
+            if (binding.url.baseUrlLayout.getVisibility() == View.VISIBLE) {
+                binding.url.toggleUrl.setText(getString(R.string.use_another_url));
+                binding.url.baseUrlLayout.setVisibility(View.GONE);
+            } else {
+                binding.url.toggleUrl.setText(getString(R.string.use_default_url));
+                binding.url.baseUrlLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
         binding.btnResetPassword.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
             String url = binding.url.baseUrl.getText().toString().trim();
 
-            if(!binding.url.overrideUrl.isChecked() && !validateUrl(url)) {
+            boolean isBaseUrlLayoutVisible = binding.url.baseUrlLayout.getVisibility() == View.VISIBLE;
+
+            if(isBaseUrlLayoutVisible && !validateUrl(url)) {
                 return;
             }
 
@@ -76,7 +89,8 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
                 return;
             }
 
-            resetPasswordViewModel.setBaseUrl(url, binding.url.overrideUrl.isChecked());
+            ViewUtils.hideKeyboard(view);
+            resetPasswordViewModel.setBaseUrl(url, !isBaseUrlLayoutVisible);
             resetPasswordViewModel.submitRequest(resetPasswordViewModel.getSubmitToken());
         });
 

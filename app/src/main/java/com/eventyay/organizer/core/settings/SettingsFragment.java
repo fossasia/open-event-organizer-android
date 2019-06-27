@@ -1,16 +1,21 @@
 package com.eventyay.organizer.core.settings;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.eventyay.organizer.core.main.MainActivity;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import com.eventyay.organizer.BuildConfig;
@@ -23,6 +28,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private static final String VERSION = "Version";
     private static final String GROSS_SALES = "Gross Sales";
     private static final String NET_SALES = "Net Sales";
+    public static boolean isDeveloperModeEnabled;
     private final AcknowledgementDecider acknowledgementDecider = new AcknowledgementDecider();
     private PreferenceManager manager;
 
@@ -94,6 +100,51 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             acknowledgementDecider.openAcknowledgementsSection(getActivity());
             return true;
         });
+
+        findPreference("developer_mode").setOnPreferenceClickListener(preference -> {
+            isDeveloperModeEnabled = manager.getSharedPreferences().getBoolean(
+                getString(R.string.developer_mode_key), false);
+
+            if (!isDeveloperModeEnabled) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(R.string.activate_developer_mode);
+                builder.setMessage(R.string.developer_mode_activation_message);
+                builder.setPositiveButton(R.string.yes_take_chances,
+                    (dialog, which) -> {
+                        toggleDeveloperMode();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    });
+                builder.setNegativeButton(R.string.no_stay_safe,
+                    (dialog, which) -> builder.show().dismiss());
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                    .setTextColor(getResources().getColor(R.color.red_500));
+                dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                    .setTextColor(getResources().getColor(R.color.green_500));
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(R.string.deactivate_developer_mode);
+                builder.setMessage(R.string.developer_mode_deactivation_message);
+                builder.setPositiveButton(R.string.yes,
+                    (dialog, which) -> {
+                        toggleDeveloperMode();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    });
+                builder.setNegativeButton(R.string.no,
+                    (dialog, which) -> builder.show().dismiss());
+
+                builder.show();
+            }
+
+            return true;
+        });
     }
 
     public void setSalesDataSummary() {
@@ -106,6 +157,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
 
         findPreference(getString(R.string.sales_data_display_key)).setSummary(salesData);
+    }
+
+    public void toggleDeveloperMode() {
+        isDeveloperModeEnabled = !isDeveloperModeEnabled;
+        manager.getSharedPreferences().edit().putBoolean(
+            getString(R.string.developer_mode_key), isDeveloperModeEnabled).apply();
     }
 
     @Override

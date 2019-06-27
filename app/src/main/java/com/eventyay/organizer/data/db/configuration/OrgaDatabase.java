@@ -7,9 +7,12 @@ import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.faq.Faq;
 import com.eventyay.organizer.data.feedback.Feedback;
+import com.eventyay.organizer.data.notification.Notification;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.order.OrderStatistics;
 import com.eventyay.organizer.data.order.Statistics;
+import com.eventyay.organizer.data.role.Role;
+import com.eventyay.organizer.data.role.RoleInvite;
 import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
@@ -43,9 +46,7 @@ public final class OrgaDatabase {
 
     public static final String NAME = "orga_database";
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS ";
-    // To be bumped after each schema change and migration addition
-    public static final int VERSION = 18;
-
+    public static final int VERSION = 20;
 
     private OrgaDatabase() {
         // Never Called
@@ -310,4 +311,37 @@ public final class OrgaDatabase {
         }
     }
 
+    @Migration(version = 19, database = OrgaDatabase.class)
+    public static class MigrationTo19 extends BaseMigration {
+
+        @Override
+        public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
+            Timber.d("Running migration for DB version 19");
+
+            Class<?>[] recreated = new Class[] {Role.class, RoleInvite.class};
+
+            for (Class<?> recreate: recreated) {
+                ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
+                databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
+                databaseWrapper.execSQL(modelAdapter.getCreationQuery());
+            }
+        }
+    }
+
+    @Migration(version = 20, database = OrgaDatabase.class)
+    public static class MigrationTo20 extends BaseMigration {
+
+        @Override
+        public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
+            Timber.d("Running migration for DB version 20");
+
+            Class<?>[] recreated = new Class[] {Notification.class};
+
+            for (Class<?> recreate: recreated) {
+                ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
+                databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
+                databaseWrapper.execSQL(modelAdapter.getCreationQuery());
+            }
+        }
+    }
 }

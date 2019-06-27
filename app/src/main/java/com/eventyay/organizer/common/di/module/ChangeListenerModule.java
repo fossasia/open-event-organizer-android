@@ -6,6 +6,8 @@ import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.faq.Faq;
+import com.eventyay.organizer.data.role.RoleInvite;
+import com.eventyay.organizer.data.notification.Notification;
 import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
@@ -67,5 +69,15 @@ public class ChangeListenerModule {
     @Provides
     DatabaseChangeListener<Event> providesEventChangeListener() {
         return new DbFlowDatabaseChangeListener<>(Event.class);
+    }
+
+    @Provides
+    DatabaseChangeListener<RoleInvite> providesRoleListChangeListener() {
+        return new DbFlowDatabaseChangeListener<>(RoleInvite.class);
+    }
+
+    @Provides
+    DatabaseChangeListener<Notification> providesNotificationsChangeListener() {
+        return new DbFlowDatabaseChangeListener<>(Notification.class);
     }
 }

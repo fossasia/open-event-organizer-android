@@ -2,7 +2,7 @@ ext.versions = [:]
 
 versions.compileSdk = 28
 versions.buildTools = '28.0.3'
-versions.minSdk = 16
+versions.minSdk = 21
 versions.targetSdk = 28
 
 //Libraries
@@ -26,6 +26,8 @@ versions.leak_canary = '2.0-alpha-1'
 versions.lifecycle = '1.1.1'
 versions.support_lib = '28.0.0'
 versions.play_services='12.0.1'
+versions.play_services_vision='18.0.0'
+versions.places='1.1.0'
 versions.work_manager="1.0.1-rc01"
 versions.timelineView="1.0.6"
 versions.chromeCustomTabs='27.1.0'

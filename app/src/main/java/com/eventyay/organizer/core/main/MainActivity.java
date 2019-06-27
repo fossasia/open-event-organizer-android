@@ -4,8 +4,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import androidx.databinding.DataBindingUtil;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.eventyay.organizer.common.Constants;
 import com.google.android.material.navigation.NavigationView;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.GravityCompat;
@@ -15,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.eventyay.organizer.BuildConfig;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.auth.AuthActivity;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity;
@@ -39,14 +42,25 @@ public class MainActivity extends AppCompatActivity implements
 
     public static final String EVENT_KEY = "event";
     private long eventId = -1;
+
     private final List<Integer> drawerItems = Arrays.asList(
+        R.id.nav_dashboard,
+        R.id.nav_attendees,
+        R.id.nav_share,
+        R.id.nav_about_event,
+        R.id.nav_event_settings);
+
+    private final List<Integer> drawerExtraItems = Arrays.asList(
+        R.id.nav_sell,
+        R.id.nav_orders,
+        R.id.nav_tickets,
+        R.id.nav_edit_event,
         R.id.nav_feedback,
         R.id.nav_faq,
         R.id.nav_track,
         R.id.nav_sponsor,
         R.id.nav_speaker,
         R.id.nav_speakers_call,
-        R.id.nav_about_event,
         R.id.nav_roles);
 
     @Inject
@@ -62,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements
     private MainNavHeaderBinding headerBinding;
     private OrganizerViewModel organizerViewModel;
     private EventViewModel eventViewModel;
+
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements
         drawerNavigator = new DrawerNavigator(this, fragmentNavigator, organizerViewModel);
 
         headerBinding.profile.setOnClickListener(view -> startActivity(new Intent(this, OrganizerDetailActivity.class)));
+
+        sharedPreferences = getSharedPreferences(Constants.FOSS_PREFS, MODE_PRIVATE);
     }
 
     @Override
@@ -141,11 +159,17 @@ public class MainActivity extends AppCompatActivity implements
     public void setEventId(long eventId) {
         this.eventId = eventId;
         fragmentNavigator.setEventId(eventId);
-        binding.navView.getMenu().setGroupVisible(R.id.subMenu, true);
 
-        if (BuildConfig.HIDE_DRAWER_ITEMS) {
-            for (Integer itemId : drawerItems) {
-                binding.navView.getMenu().findItem(itemId).setVisible(false);
+        for (Integer itemId : drawerItems) {
+            binding.navView.getMenu().findItem(itemId).setVisible(true);
+        }
+
+        boolean isDeveloperModeEnabled = sharedPreferences.getBoolean(
+            getString(R.string.developer_mode_key), false);
+
+        if (isDeveloperModeEnabled) {
+            for (Integer itemId : drawerExtraItems) {
+                binding.navView.getMenu().findItem(itemId).setVisible(true);
             }
         }
     }
