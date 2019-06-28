@@ -32,4 +32,6 @@ public interface EventDashboardView extends Progressive, Erroneous, Successful, 
     void showEventLocationDialog();
 
     void showEventShareDialog();
+
+    void showDeveloperModeFeatures();
 }
