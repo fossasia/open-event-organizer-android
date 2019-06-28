@@ -110,7 +110,7 @@ public class ScanQRViewModel extends ViewModel {
         return attendees;
     }
 
-    private void processBarcode(String barcode) {
+    public void processBarcode(String barcode) {
 
         Observable.fromIterable(attendees)
             .filter(attendee -> attendee.getOrder() != null)
@@ -141,6 +141,7 @@ public class ScanQRViewModel extends ViewModel {
             toCheckOut && !attendee.isCheckedIn);
 
         attendee.setChecking(true);
+        showBarcodePanelLiveData.setValue(true);
 
         if (toCheckIn) {
             message.setValue(

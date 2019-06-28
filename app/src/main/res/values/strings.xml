@@ -401,6 +401,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="my_account">My Account</string>
+    <string name="start_scanning_again">Start scanning again</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

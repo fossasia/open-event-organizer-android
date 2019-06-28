@@ -229,6 +229,9 @@ dependencies {
     //open-source licenses
     playStoreImplementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
 
+    // QR Code Scanner
+    fdroidImplementation 'com.github.blikoon:QRCodeScanner:0.1.2'
+
     //Testing
     androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
