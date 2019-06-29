@@ -33,3 +33,6 @@ UserInterfaceState.xcuserstate
 
 /app/build
 *apk
+.project
+local.properties
+.tool-versions
