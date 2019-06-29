@@ -7,6 +7,7 @@ import com.eventyay.organizer.core.event.dashboard.EventDashboardView;
 import com.eventyay.organizer.core.event.dashboard.analyser.ChartAnalyser;
 import com.eventyay.organizer.core.event.dashboard.analyser.TicketAnalyser;
 import com.eventyay.organizer.data.ContextUtils;
+import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
@@ -69,6 +70,8 @@ public class EventDashboardPresenterTest {
     private ContextUtils utilModel;
     @Mock
     private DatabaseChangeListener<Event> databaseChangeListener;
+    @Mock
+    private Preferences sharedPreferenceModel;
 
     private static final long ID = 42L;
     private EventDashboardPresenter eventDashboardPresenter;
@@ -104,7 +107,8 @@ public class EventDashboardPresenterTest {
     @Before
     public void setUp() {
         eventDashboardPresenter = new EventDashboardPresenter(eventRepository, attendeeRepository,
-            orderRepository, ticketAnalyser, chartAnalyser, utilModel, databaseChangeListener);
+            orderRepository, ticketAnalyser, chartAnalyser, utilModel, databaseChangeListener,
+            sharedPreferenceModel);
 
         eventDashboardPresenter.attach(EVENT.getId(), eventDetailView);
 

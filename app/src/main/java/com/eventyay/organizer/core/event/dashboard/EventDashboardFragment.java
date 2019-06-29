@@ -3,21 +3,24 @@ package com.eventyay.organizer.core.event.dashboard;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.mikephil.charting.charts.LineChart;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
+import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
 import com.eventyay.organizer.core.event.chart.ChartActivity;
 import com.eventyay.organizer.core.event.create.CreateEventActivity;
+import com.eventyay.organizer.core.orders.list.OrdersFragment;
+import com.eventyay.organizer.core.settings.EventSettingsFragment;
+import com.eventyay.organizer.core.ticket.list.TicketsFragment;
 import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventStatistics;
@@ -25,6 +28,7 @@ import com.eventyay.organizer.data.order.OrderStatistics;
 import com.eventyay.organizer.databinding.EventDetailBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.Utils;
+import com.github.mikephil.charting.charts.LineChart;
 
 import javax.inject.Inject;
 
@@ -38,21 +42,16 @@ import dagger.Lazy;
 public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter> implements EventDashboardView {
 
     public static final String EVENT_ID = "event_id";
-
+    @Inject
+    Context context;
+    @Inject
+    ContextUtils utilModel;
+    @Inject
+    Lazy<EventDashboardPresenter> presenterProvider;
     private long initialEventId;
     private EventDetailBinding binding;
     private AlertDialog unpublishDialog;
     private AlertDialog shareEventDialog;
-
-    @Inject
-    Context context;
-
-    @Inject
-    ContextUtils utilModel;
-
-    @Inject
-    Lazy<EventDashboardPresenter> presenterProvider;
-
     private ConstraintLayout container;
     private SwipeRefreshLayout refreshLayout;
 
@@ -97,6 +96,31 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
                 openChart.putExtra(EVENT_ID, initialEventId);
                 startActivity(openChart);
             });
+
+        binding.checkIn.setOnClickListener(v -> {
+            Fragment fragment = AttendeesFragment.newInstance(initialEventId);
+            loadFragment(fragment);
+        });
+
+        binding.orders.setOnClickListener(v -> {
+            Fragment fragment = OrdersFragment.newInstance(initialEventId);
+            loadFragment(fragment);
+        });
+
+        binding.tickets.setOnClickListener(v -> {
+            Fragment fragment = TicketsFragment.newInstance(initialEventId);
+            loadFragment(fragment);
+        });
+
+        binding.editEvent.setOnClickListener(v -> {
+            openEditEvent();
+        });
+
+        binding.eventSettings.setOnClickListener(v -> {
+            Fragment fragment = EventSettingsFragment.newInstance(initialEventId);
+            loadFragment(fragment);
+        });
+
         return binding.getRoot();
     }
 
@@ -196,12 +220,26 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
         ViewUtils.showView(binding.ticketAnalytics.chartBoxCheckIn, show);
     }
 
+    @Override
+    public void showDeveloperModeFeatures() {
+        binding.orders.setVisibility(View.VISIBLE);
+        binding.tickets.setVisibility(View.VISIBLE);
+        binding.editEvent.setVisibility(View.VISIBLE);
+    }
+
     public void shareEvent() {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(getPresenter().getEvent()));
         shareIntent.setType("text/plain");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+    }
+
+    private void loadFragment(Fragment fragment) {
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit();
     }
 
     public void openEditEvent() {
@@ -217,7 +255,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     }
 
     public void showEventShareDialog() {
-       if (shareEventDialog == null) {
+        if (shareEventDialog == null) {
             shareEventDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialog))
                 .setTitle(R.string.share_event)
                 .setMessage(getString(R.string.successfull_publish_message))
