@@ -9,6 +9,8 @@ apply plugin: "com.github.b3er.local.properties"
 def app_name = System.getenv('app_name') ?: "Eventyay Organizer"
 def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
 
+def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
+
 android {
     lintOptions {
         warning 'InvalidPackage'
@@ -36,14 +38,14 @@ android {
     }
 
     signingConfigs {
-        if (travisBuild) {
+        if (TRAVIS_BUILD) {
             release {
-                storeFile rootProject.file('scripts/key.jks')
+                storeFile KEYSTORE_FILE
                 storePassword System.getenv("STORE_PASS")
                 keyAlias System.getenv("ALIAS")
                 keyPassword System.getenv("KEY_PASS")
             }
-        } else if (project.hasProperty('SIGNING_KEY_FILE')) {
+        } else if (LOCAL_KEY_PRESENT) {
             release {
                 storeFile rootProject.file(SIGNING_KEY_FILE)
                 storePassword STORE_PASS
@@ -62,7 +64,7 @@ android {
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://api.eventyay.com/v1/"'
             resValue "string", "default_base_url", '"https://api.eventyay.com/v1/"'
 
-            if (project.hasProperty('SIGNING_KEY_FILE') || travisBuild)
+            if (LOCAL_KEY_PRESENT || TRAVIS_BUILD)
                 signingConfig signingConfigs.release
         }
         debug {

@@ -9,7 +9,5 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/open-
     exit 0
 fi
 
-export TRAVIS_SIGNING_ENABLED=true
-
 openssl aes-256-cbc -K $encrypted_4afa27b18f52_key -iv $encrypted_4afa27b18f52_iv -in ./scripts/secrets.tar.enc -out ./scripts/secrets.tar -d
 tar xvf ./scripts/secrets.tar -C scripts/

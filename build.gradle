@@ -29,7 +29,8 @@ allprojects {
     }
 
     ext {
-        travisBuild = System.getenv("TRAVIS") == "true" && System.getenv("TRAVIS_SIGNING_ENABLED") == "true"
+        KEYSTORE_FILE = rootProject.file('scripts/key.jks')
+        TRAVIS_BUILD = System.getenv("TRAVIS") == "true" && KEYSTORE_FILE.exists()
     }
 }
 

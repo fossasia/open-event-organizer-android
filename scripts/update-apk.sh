@@ -63,4 +63,4 @@ ls -alh
 exit 0
 
 gem install fastlane
-fastlane supply --apk eventyay-organizer-master-app-playStore-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
+fastlane supply --aab eventyay-organizer-master-app.aab --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
