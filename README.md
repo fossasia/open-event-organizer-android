@@ -1,11 +1,11 @@
 ![Open Event Organizer](docs/images/organizer_app_branding.png)
 
 
-## Open Event Organizer App
+## Open Event Organizer Android App
 
-[![Build Status](https://img.shields.io/travis/fossasia/open-event-orga-app/development.svg)](https://travis-ci.org/fossasia/open-event-orga-app)
-[![Codacy Grade](https://img.shields.io/codacy/grade/d6ae120356c94c0d94d6449ec540f520.svg)](https://www.codacy.com/app/mb/open-event-orga-app)
-[![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-orga-app/development.svg)](https://codecov.io/gh/fossasia/open-event-orga-app)
+[![Build Status](https://img.shields.io/travis/fossasia/open-event-organizer-android/development.svg)](https://travis-ci.org/fossasia/open-event-organizer-android)
+[![Codacy Grade](https://img.shields.io/codacy/grade/d6ae120356c94c0d94d6449ec540f520.svg)](https://www.codacy.com/app/mb/open-event-organizer-android)
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-organizer-android/development.svg)](https://codecov.io/gh/fossasia/open-event-organizer-android)
 [![Appetize Preview](https://img.shields.io/badge/Preview-appetize.io-673AB7.svg)](https://appetize.io/app/w8v8z7pc9aewargb2uuyf108f0)
 [![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg)](https://gitter.im/fossasia/open-event-orga-app)
 [![Twitter Follow](https://img.shields.io/twitter/follow/eventyay.svg?style=social&label=Follow&maxAge=2592000?style=flat-square)](https://twitter.com/eventyay)

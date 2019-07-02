@@ -1,0 +1,10 @@
+Eventyay Organizer App provides event management features like:
+
+- Event manager log in and sign up
+- Manual attendee check in
+- Attendee check in through QR code scan
+- Basic event analytics
+- Basic ticket management
+- Event Detail
+- Orders Detail
+- Organizer Detail

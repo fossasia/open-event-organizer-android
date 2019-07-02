@@ -1,0 +1,15 @@
+🚀 Features and Enhancements
+
+- feat: Implement list of roles
+
+🐛 Bug Fixes
+
+- fix: Prevent empty view layout from showing when items are present
+- fix: Retain 'Use picker' checkbox state on screen rotation
+
+🧰 Maintenance
+
+- chore: Simplify the app
+- chore: Dismiss RoleInviteFragment after invitation is sent
+- chore: Add 'Use another URL' button for base URL
+- chore: Remove option to change base URL in release build
