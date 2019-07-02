@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 git config --global user.name "Travis CI"
@@ -23,8 +23,8 @@ else
 	/bin/rm -f eventyay-organizer-dev-*.apk
 fi
 
-cp -r ../app/build/outputs/*/**.apk .
-cp -r ../app/build/outputs/*/**.aab .
+find ../app/build/outputs -type f -name '*.apk' -exec cp -v {} . \;
+find ../app/build/outputs -type f -name '*.aab' -exec cp -v {} . \;
 
 if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     for file in app*; do
