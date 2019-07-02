@@ -138,7 +138,10 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
 
     @Override
     public void onBackPressed() {
-        if (saveAlertDialog == null && id != -1) {
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (saveAlertDialog == null && id != -1 && count == 0) {
             saveAlertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialog))
                 .setMessage(getString(R.string.save_changes))
                 .setPositiveButton(getString(R.string.save), (dialog, which) -> {
