@@ -1,5 +1,6 @@
 package com.eventyay.organizer.data.attendee;
 
+import com.eventyay.organizer.core.attendee.list.viewholders.AttendeeViewHolder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -7,6 +8,7 @@ import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
+import com.mikepenz.fastadapter.IItem;
 import com.mikepenz.fastadapter.items.AbstractItem;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
@@ -15,7 +17,6 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 import com.eventyay.organizer.common.model.HeaderProvider;
-import com.eventyay.organizer.core.attendee.list.viewholders.AttendeeViewHolder;
 import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.order.Order;
@@ -35,7 +36,7 @@ import lombok.experimental.Delegate;
 @EqualsAndHashCode(callSuper = false, exclude = { "attendeeDelegate", "checking" })
 @Table(database = OrgaDatabase.class)
 @SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
-public class Attendee extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider {
+public class Attendee extends AbstractItem<AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider, IItem<AttendeeViewHolder> {
 
     @Delegate(types = AttendeeDelegate.class)
     private final AttendeeDelegateImpl attendeeDelegate = new AttendeeDelegateImpl(this);
