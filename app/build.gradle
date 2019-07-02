@@ -4,6 +4,7 @@ apply plugin: 'com.noveogroup.android.check'
 apply from: './jacoco.gradle'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: "net.ltgt.errorprone"
+apply plugin: "com.github.b3er.local.properties"
 
 def app_name = System.getenv('app_name') ?: "Eventyay Organizer"
 def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
@@ -33,6 +34,25 @@ android {
             GOOGLE_PLACES_API_KEY: GOOGLE_PLACES_API_KEY
         ]
     }
+
+    signingConfigs {
+        if (travisBuild) {
+            release {
+                storeFile rootProject.file('scripts/key.jks')
+                storePassword System.getenv("STORE_PASS")
+                keyAlias System.getenv("ALIAS")
+                keyPassword System.getenv("KEY_PASS")
+            }
+        } else if (project.hasProperty('SIGNING_KEY_FILE')) {
+            release {
+                storeFile rootProject.file(SIGNING_KEY_FILE)
+                storePassword STORE_PASS
+                keyAlias ALIAS
+                keyPassword KEY_PASS
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -41,6 +61,9 @@ android {
 
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://api.eventyay.com/v1/"'
             resValue "string", "default_base_url", '"https://api.eventyay.com/v1/"'
+
+            if (project.hasProperty('SIGNING_KEY_FILE') || travisBuild)
+                signingConfig signingConfigs.release
         }
         debug {
             testCoverageEnabled = true
@@ -48,6 +71,7 @@ android {
             resValue "string", "default_base_url", '"https://open-event-api-dev.herokuapp.com/v1/"'
         }
     }
+
     dataBinding {
         enabled true
     }
