@@ -51,14 +51,6 @@ public class EventSettingsFragment extends PreferenceFragmentCompat {
 
         setPreferencesFromResource(R.xml.event_preferences, rootKey);
 
-        findPreference(getString(R.string.payment_preference_key)).setOnPreferenceClickListener(preference -> {
-            getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, PaymentPrefsFragment.newInstance())
-                .addToBackStack(null)
-                .commit();
-            return true;
-        });
-
         findPreference(getString(R.string.scan_settings_key)).setOnPreferenceClickListener(preference -> {
             getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, ScanSettings.newInstance())
