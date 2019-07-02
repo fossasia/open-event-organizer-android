@@ -23,10 +23,6 @@ fi
 
 \cp -r ../app/build/outputs/apk/playStore/*/**.apk .
 \cp -r ../app/build/outputs/apk/fdroid/*/**.apk .
-\cp -r ../app/build/outputs/apk/playStore/debug/output.json playStore-debug-output.json
-\cp -r ../app/build/outputs/apk/playStore/release/output.json playStore-release-output.json
-\cp -r ../app/build/outputs/apk/fdroid/debug/output.json fdroid-debug-output.json
-\cp -r ../app/build/outputs/apk/fdroid/release/output.json fdroid-release-output.json
 
 # Signing Apps
 
@@ -39,13 +35,13 @@ fi
 
 if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     for file in app*; do
-          cp $file eventyay-organizer-master-${file%%}
+          cp $file eventyay-organizer-master-${file:4}
     done
 fi
 
 if [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]; then
     for file in app*; do
-          mv $file eventyay-organizer-dev-${file%%}
+          mv $file eventyay-organizer-dev-${file:4}
     done
 fi
 
@@ -71,4 +67,4 @@ if [ "$TRAVIS_BRANCH" != "$PUBLISH_BRANCH" ]; then
 fi
 
 gem install fastlane
-fastlane supply --apk eventyay-organizer-master-app-playStore-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
+fastlane supply --aab eventyay-organizer-master.aab --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
