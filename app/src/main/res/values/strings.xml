@@ -278,7 +278,7 @@
     <string name="cheque_details">Cheque Details</string>
     <string name="onsite_details">OnSite Details</string>
     <string name="default_payment_country">Select the default Payment Country</string>
-    <string name="payment_preference">Payment Preferences</string>
+    <string name="payment_preferences">Payment Preferences</string>
     <string name="order_details">Order Details</string>
     <string name="order_identifier">Order Identifier</string>
     <string name="swipe_left_to_check_out">Swipe left to check out</string>

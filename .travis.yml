@@ -16,10 +16,11 @@ cache:
       - "${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/"
       - "$HOME/.gradle/caches/"
       - "$HOME/.gradle/wrapper/"
+before_script:
+    - bash scripts/prep-key.sh
 script:
   - ./gradlew build
   - ./gradlew testPlayStoreDebugUnitTestCoverage
 after_success:
     - bash <(curl -s https://codecov.io/bash)
-    - bash scripts/prep-key.sh
     - bash scripts/update-apk.sh

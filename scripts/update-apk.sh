@@ -7,10 +7,12 @@ git config --global user.email "noreply+travis@fossasia.org"
 export DEPLOY_BRANCH=${DEPLOY_BRANCH:-development}
 export PUBLISH_BRANCH=${PUBLISH_BRANCH:-master}
 
-if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/open-event-orga-app" ] || ! [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" -o "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
+if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/open-event-organizer-android" ] || ! [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" -o "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     echo "We upload apk only for changes in development or master, and not PRs. So, let's skip this shall we ? :)"
     exit 0
 fi
+
+./gradlew bundlePlayStoreRelease
 
 git clone --quiet --branch=apk https://niranjan94:$GITHUB_API_KEY@github.com/fossasia/open-event-orga-app apk > /dev/null
 cd apk
@@ -21,17 +23,8 @@ else
 	/bin/rm -f eventyay-organizer-dev-*.apk
 fi
 
-\cp -r ../app/build/outputs/apk/playStore/*/**.apk .
-\cp -r ../app/build/outputs/apk/fdroid/*/**.apk .
-
-# Signing Apps
-
-if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
-    echo "Push to master branch detected, signing the app..."
-    cp app-playStore-release-unsigned.apk app-playStore-release-unaligned.apk
-	jarsigner -verbose -tsa http://timestamp.comodoca.com/rfc3161 -sigalg SHA1withRSA -digestalg SHA1 -keystore ../scripts/key.jks -storepass $STORE_PASS -keypass $KEY_PASS app-playStore-release-unaligned.apk $ALIAS
-	${ANDROID_HOME}/build-tools/27.0.3/zipalign -v -p 4 app-playStore-release-unaligned.apk app-playStore-release.apk
-fi
+find ../app/build/outputs -type f -name '*.apk' -exec cp -v {} . \;
+find ../app/build/outputs -type f -name '*.aab' -exec cp -v {} . \;
 
 if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     for file in app*; do
