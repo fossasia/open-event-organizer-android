@@ -23,8 +23,8 @@ else
 	/bin/rm -f eventyay-organizer-dev-*.apk
 fi
 
-\cp -r ../app/build/outputs/*/**.apk .
-\cp -r ../app/build/outputs/*/**.aab .
+cp -r ../app/build/outputs/*/**.apk .
+cp -r ../app/build/outputs/*/**.aab .
 
 if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
     for file in app*; do

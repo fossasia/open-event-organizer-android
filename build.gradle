@@ -29,7 +29,7 @@ allprojects {
     }
 
     ext {
-        travisBuild = System.getenv("TRAVIS") == "true"
+        travisBuild = System.getenv("TRAVIS") == "true" && System.getenv("TRAVIS_SIGNING_ENABLED") == "true"
     }
 }
 
