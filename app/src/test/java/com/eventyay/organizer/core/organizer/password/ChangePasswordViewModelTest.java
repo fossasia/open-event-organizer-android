@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
 
 import com.eventyay.organizer.common.rx.Logger;
+import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.auth.model.ChangePassword;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
@@ -37,6 +38,9 @@ public class ChangePasswordViewModelTest {
     private AuthService authModel;
     private final HostSelectionInterceptor interceptor = new HostSelectionInterceptor();
 
+    @Mock
+    private Preferences sharedPreferenceModel;
+
     private ChangePasswordViewModel changePasswordViewModel;
 
     private static final String OLD_PASSWORD = "oldTest";
@@ -56,7 +60,7 @@ public class ChangePasswordViewModelTest {
 
     @Before
     public void setUp() {
-        changePasswordViewModel = new ChangePasswordViewModel(authModel, interceptor);
+        changePasswordViewModel = new ChangePasswordViewModel(authModel, interceptor, sharedPreferenceModel);
     }
 
     @Test

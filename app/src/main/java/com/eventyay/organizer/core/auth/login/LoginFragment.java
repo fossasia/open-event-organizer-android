@@ -18,15 +18,12 @@ import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.databinding.LoginFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-import com.eventyay.organizer.utils.ValidateUtils;
 
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
-import static com.eventyay.organizer.utils.ValidateUtils.validate;
-import static com.eventyay.organizer.utils.ValidateUtils.validateUrl;
 
 public class LoginFragment extends BaseFragment implements LoginView {
 
@@ -63,34 +60,15 @@ public class LoginFragment extends BaseFragment implements LoginView {
             sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
         });
         loginFragmentViewModel.getActionOpenResetPassword().observe(this, this::openResetPasswordFragment);
+        loginFragmentViewModel.getBaseUrl().observe(this, this::setBaseUrl);
 
-        validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-
-        binding.url.toggleUrl.setOnClickListener(view -> {
-
-            if (binding.url.baseUrlLayout.getVisibility() == View.VISIBLE) {
-                binding.url.toggleUrl.setText(getString(R.string.use_another_url));
-                binding.url.baseUrlLayout.setVisibility(View.GONE);
-            } else {
-                binding.url.toggleUrl.setText(getString(R.string.use_default_url));
-                binding.url.baseUrlLayout.setVisibility(View.VISIBLE);
-            }
-        });
+        loginFragmentViewModel.setBaseUrl();
 
         binding.btnLogin.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
 
-            String url = binding.url.baseUrl.getText().toString().trim();
-
-            boolean isBaseUrlLayoutVisible = binding.url.baseUrlLayout.getVisibility() == View.VISIBLE;
-
-            if(isBaseUrlLayoutVisible && !validateUrl(url)) {
-                return;
-            }
-
             ViewUtils.hideKeyboard(view);
-            loginFragmentViewModel.setBaseUrl(url, !isBaseUrlLayoutVisible);
             loginFragmentViewModel.login();
         });
         binding.forgotPasswordLink.setOnClickListener(view -> clickForgotPassword());
@@ -123,6 +101,10 @@ public class LoginFragment extends BaseFragment implements LoginView {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    private void setBaseUrl(String baseUrl) {
+        binding.url.defaultUrl.setText(baseUrl);
     }
 
     @Override
