@@ -1,18 +1,30 @@
 package com.eventyay.organizer.core.settings;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
-import com.eventyay.organizer.ui.ViewUtils;
 
 public class PaymentPrefsFragment extends PreferenceFragmentCompat {
 
     public static PaymentPrefsFragment newInstance() {
         return new PaymentPrefsFragment();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        view.setBackgroundColor(Color.WHITE);
+
+        return view;
     }
 
     @Override
@@ -22,13 +34,6 @@ public class PaymentPrefsFragment extends PreferenceFragmentCompat {
 
         setPreferencesFromResource(R.xml.payment_preferences, rootKey);
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ViewUtils.setTitle(this, getString(R.string.payment_preference));
-    }
-
 
     @Override
     public void onDisplayPreferenceDialog(Preference preference) {

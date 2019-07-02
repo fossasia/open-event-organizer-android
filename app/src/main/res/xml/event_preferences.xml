@@ -6,10 +6,6 @@
         android:title="@string/scan_settings"/>
 
     <Preference
-        android:key="@string/payment_preference_key"
-        android:title="@string/payment_preference"/>
-
-    <Preference
         android:key="@string/check_in_restrictions_key"
         android:title="@string/check_in_restrictions"/>
 
