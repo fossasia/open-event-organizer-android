@@ -10,6 +10,7 @@ public final class Constants {
     //Saved email for autocomplete
     public static final String SHARED_PREFS_SAVED_EMAIL = "saved_email";
     public static final String SHARED_PREFS_LOCAL_DATE = "local_date";
+    public static final String SHARED_PREFS_BASE_URL = "base_url";
     public static final String PREF_USE_PAYMENT_PREFS = "use_payment_prefs";
     public static final String PREF_ACCEPT_PAYPAL = "accept_paypal";
     public static final String PREF_PAYPAL_EMAIL = "paypal_email";

@@ -14,15 +14,12 @@ import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.auth.SharedViewModel;
 import com.eventyay.organizer.databinding.ResetPasswordByTokenFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-import com.eventyay.organizer.utils.ValidateUtils;
 
 import javax.inject.Inject;
 
 import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
-import static com.eventyay.organizer.utils.ValidateUtils.validate;
-import static com.eventyay.organizer.utils.ValidateUtils.validateUrl;
 
 public class ResetPasswordFragment extends BaseFragment implements ResetPasswordView {
 
@@ -56,31 +53,13 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
         resetPasswordViewModel.getError().observe(this, this::showError);
         resetPasswordViewModel.getSuccess().observe(this, this::onSuccess);
         resetPasswordViewModel.getMessage().observe(this, this::showMessage);
+        resetPasswordViewModel.getBaseUrl().observe(this, this::setBaseUrl);
 
-        validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-
-        binding.url.toggleUrl.setOnClickListener(view -> {
-
-            if (binding.url.baseUrlLayout.getVisibility() == View.VISIBLE) {
-                binding.url.toggleUrl.setText(getString(R.string.use_another_url));
-                binding.url.baseUrlLayout.setVisibility(View.GONE);
-            } else {
-                binding.url.toggleUrl.setText(getString(R.string.use_default_url));
-                binding.url.baseUrlLayout.setVisibility(View.VISIBLE);
-            }
-        });
+        resetPasswordViewModel.setBaseUrl();
 
         binding.btnResetPassword.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
-
-            String url = binding.url.baseUrl.getText().toString().trim();
-
-            boolean isBaseUrlLayoutVisible = binding.url.baseUrlLayout.getVisibility() == View.VISIBLE;
-
-            if(isBaseUrlLayoutVisible && !validateUrl(url)) {
-                return;
-            }
 
             if (!binding.newPassword.getText().toString()
                 .equals(binding.confirmPassword.getText().toString())) {
@@ -90,7 +69,6 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
             }
 
             ViewUtils.hideKeyboard(view);
-            resetPasswordViewModel.setBaseUrl(url, !isBaseUrlLayoutVisible);
             resetPasswordViewModel.submitRequest(resetPasswordViewModel.getSubmitToken());
         });
 
@@ -102,6 +80,10 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
     private void resendToken() {
         SharedViewModel sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         resetPasswordViewModel.requestToken(sharedViewModel.getEmail().getValue());
+    }
+
+    private void setBaseUrl(String baseUrl) {
+        binding.url.defaultUrl.setText(baseUrl);
     }
 
     @Override

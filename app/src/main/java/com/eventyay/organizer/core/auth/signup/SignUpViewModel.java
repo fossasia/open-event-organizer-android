@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.eventyay.organizer.BuildConfig;
+import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
+import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
@@ -21,16 +23,20 @@ public class SignUpViewModel extends ViewModel {
 
     private final AuthService authModel;
     private final HostSelectionInterceptor interceptor;
+    private final Preferences sharedPreferenceModel;
     private final User user = new User();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> baseUrlLiveData = new SingleEventLiveData<>();
 
     @Inject
-    public SignUpViewModel(AuthService authModel, HostSelectionInterceptor interceptor) {
+    public SignUpViewModel(AuthService authModel, HostSelectionInterceptor interceptor,
+                           Preferences sharedPreferenceModel) {
         this.authModel = authModel;
         this.interceptor = interceptor;
+        this.sharedPreferenceModel = sharedPreferenceModel;
     }
 
     public User getUser() {
@@ -49,6 +55,10 @@ public class SignUpViewModel extends ViewModel {
         return error;
     }
 
+    public LiveData<String> getBaseUrl() {
+        return baseUrlLiveData;
+    }
+
     public void signUp() {
         compositeDisposable.add(
             authModel.signUp(user)
@@ -61,8 +71,10 @@ public class SignUpViewModel extends ViewModel {
                     throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
-    public void setBaseUrl(String url, boolean shouldSetDefaultUrl) {
-        String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
+    public void setBaseUrl() {
+        String baseUrl = sharedPreferenceModel.getString(Constants.SHARED_PREFS_BASE_URL,
+            BuildConfig.DEFAULT_BASE_URL);
+        baseUrlLiveData.setValue(baseUrl);
         interceptor.setInterceptor(baseUrl);
     }
 

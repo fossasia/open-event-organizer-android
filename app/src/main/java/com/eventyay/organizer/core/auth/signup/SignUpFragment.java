@@ -29,7 +29,6 @@ import br.com.ilhasoft.support.validation.Validator;
 import static com.eventyay.organizer.core.settings.LegalPreferenceFragment.PRIVACY_POLICY_URL;
 import static com.eventyay.organizer.core.settings.LegalPreferenceFragment.TERMS_OF_USE_URL;
 import static com.eventyay.organizer.utils.ValidateUtils.validate;
-import static com.eventyay.organizer.utils.ValidateUtils.validateUrl;
 
 public class SignUpFragment extends BaseFragment implements SignUpView {
 
@@ -69,6 +68,9 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
         signUpViewModel.getProgress().observe(this, this::showProgress);
         signUpViewModel.getSuccess().observe(this, this::onSuccess);
         signUpViewModel.getError().observe(this, this::showError);
+        signUpViewModel.getBaseUrl().observe(this, this::setBaseUrl);
+
+        signUpViewModel.setBaseUrl();
 
         binding.password.addTextChangedListener(new TextWatcher() {
             @Override
@@ -104,28 +106,9 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
             }
         });
 
-        binding.url.toggleUrl.setOnClickListener(view -> {
-
-            if (binding.url.baseUrlLayout.getVisibility() == View.VISIBLE) {
-                binding.url.toggleUrl.setText(getString(R.string.use_another_url));
-                binding.url.baseUrlLayout.setVisibility(View.GONE);
-            } else {
-                binding.url.toggleUrl.setText(getString(R.string.use_default_url));
-                binding.url.baseUrlLayout.setVisibility(View.VISIBLE);
-            }
-        });
-
         binding.btnSignUp.setOnClickListener(view -> {
             if (!validator.validate())
                 return;
-
-            String url = binding.url.baseUrl.getText().toString().trim();
-
-            boolean isBaseUrlLayoutVisible = binding.url.baseUrlLayout.getVisibility() == View.VISIBLE;
-
-            if(isBaseUrlLayoutVisible && !validateUrl(url)) {
-                return;
-            }
 
             String password = binding.password.getText().toString();
             String confirmPassword = binding.confirmPassword.getText().toString();
@@ -134,7 +117,6 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
             }
 
             ViewUtils.hideKeyboard(view);
-            signUpViewModel.setBaseUrl(url, !isBaseUrlLayoutVisible);
             signUpViewModel.signUp();
         });
 
@@ -159,6 +141,10 @@ public class SignUpFragment extends BaseFragment implements SignUpView {
                 //do nothing
             }
         });
+    }
+
+    private void setBaseUrl(String baseUrl) {
+        binding.url.defaultUrl.setText(baseUrl);
     }
 
     @Override
