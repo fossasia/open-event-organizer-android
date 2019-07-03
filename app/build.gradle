@@ -4,9 +4,12 @@ apply plugin: 'com.noveogroup.android.check'
 apply from: './jacoco.gradle'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: "net.ltgt.errorprone"
+apply plugin: "com.github.b3er.local.properties"
 
 def app_name = System.getenv('app_name') ?: "Eventyay Organizer"
 def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
+
+def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
 
 android {
     lintOptions {
@@ -33,6 +36,25 @@ android {
             GOOGLE_PLACES_API_KEY: GOOGLE_PLACES_API_KEY
         ]
     }
+
+    signingConfigs {
+        if (TRAVIS_BUILD) {
+            release {
+                storeFile KEYSTORE_FILE
+                storePassword System.getenv("STORE_PASS")
+                keyAlias System.getenv("ALIAS")
+                keyPassword System.getenv("KEY_PASS")
+            }
+        } else if (LOCAL_KEY_PRESENT) {
+            release {
+                storeFile rootProject.file(SIGNING_KEY_FILE)
+                storePassword STORE_PASS
+                keyAlias ALIAS
+                keyPassword KEY_PASS
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -41,6 +63,9 @@ android {
 
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://api.eventyay.com/v1/"'
             resValue "string", "default_base_url", '"https://api.eventyay.com/v1/"'
+
+            if (LOCAL_KEY_PRESENT || TRAVIS_BUILD)
+                signingConfig signingConfigs.release
         }
         debug {
             testCoverageEnabled = true
@@ -48,6 +73,7 @@ android {
             resValue "string", "default_base_url", '"https://open-event-api-dev.herokuapp.com/v1/"'
         }
     }
+
     dataBinding {
         enabled true
     }
@@ -117,7 +143,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.appcompat:appcompat:1.1.0-beta01"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.1.0-alpha06"
+    implementation "androidx.recyclerview:recyclerview:1.1.0-beta01"
     implementation "com.google.android.material:material:1.1.0-alpha07"
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.palette:palette:1.0.0"
@@ -138,7 +164,7 @@ dependencies {
     compileOnly 'com.google.code.findbugs:findbugs-annotations:3.0.1'
 
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0-alpha01"
+    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha01"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01"

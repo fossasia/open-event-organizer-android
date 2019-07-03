@@ -14,6 +14,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+
+import com.eventyay.organizer.core.settings.PaymentPrefsFragment;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -120,6 +122,13 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             Intent richEditorIntent = new Intent(getContext(), RichEditorActivity.class);
             richEditorIntent.putExtra(TAG_RICH_TEXT, binding.form.description.getText().toString());
             startActivityForResult(richEditorIntent, RICH_TEXT_REQUEST);
+        });
+
+        binding.form.paymentPrefs.setOnClickListener(view -> {
+            getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, PaymentPrefsFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
         });
 
         setupSpinners();
