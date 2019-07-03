@@ -143,7 +143,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.appcompat:appcompat:1.1.0-beta01"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.1.0-alpha06"
+    implementation "androidx.recyclerview:recyclerview:1.1.0-beta01"
     implementation "com.google.android.material:material:1.1.0-alpha07"
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.palette:palette:1.0.0"
@@ -164,10 +164,10 @@ dependencies {
     compileOnly 'com.google.code.findbugs:findbugs-annotations:3.0.1'
 
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0-alpha01"
+    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha01"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha02"
 
     //WorkManager
     implementation "android.arch.work:work-runtime:${versions.work_manager}"
