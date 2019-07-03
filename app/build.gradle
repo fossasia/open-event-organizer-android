@@ -167,7 +167,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime:2.2.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha02"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha02"
 
     //WorkManager
     implementation "android.arch.work:work-runtime:${versions.work_manager}"
