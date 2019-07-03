@@ -389,7 +389,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         binding.form.enableSession.setChecked(event.isSessionsSpeakersEnabled);
         binding.form.enableTax.setChecked(event.isTaxEnabled);
         binding.form.ticketingDetails.setChecked(event.isTicketingEnabled);
-        binding.form.organizerInfo.setChecked(event.hasOrganizerInfo);
+        binding.form.organizerInfo.setChecked(event.hasOwnerInfo);
         binding.form.onlineEvent.setChecked(event.isEventOnline);
     }
 
