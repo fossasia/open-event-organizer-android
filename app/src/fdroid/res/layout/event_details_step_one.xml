@@ -67,7 +67,7 @@
                     android:id="@+id/organizer_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onCheckedChanged="@{ (switch, checked) -> event.setHasOrganizerInfo(checked) }"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setHasOwnerInfo(checked) }"
                     android:text="@string/add_organizer_information" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/organizer_name"
                         android:inputType="textMultiLine"
-                        android:text="@={ event.organizerName }" />
+                        android:text="@={ event.ownerName }" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/organizer_description"
                         android:inputType="textMultiLine"
-                        android:text="@={ event.organizerDescription }" />
+                        android:text="@={ event.ownerDescription }" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
