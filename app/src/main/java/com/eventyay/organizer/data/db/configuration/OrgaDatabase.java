@@ -46,7 +46,7 @@ public final class OrgaDatabase {
 
     public static final String NAME = "orga_database";
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS ";
-    public static final int VERSION = 20;
+    public static final int VERSION = 21;
 
     private OrgaDatabase() {
         // Never Called
@@ -336,6 +336,23 @@ public final class OrgaDatabase {
             Timber.d("Running migration for DB version 20");
 
             Class<?>[] recreated = new Class[] {Notification.class};
+
+            for (Class<?> recreate: recreated) {
+                ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
+                databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
+                databaseWrapper.execSQL(modelAdapter.getCreationQuery());
+            }
+        }
+    }
+
+    @Migration(version = 21, database = OrgaDatabase.class)
+    public static class MigrationTo21 extends BaseMigration {
+
+        @Override
+        public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
+            Timber.d("Running migration for DB version 21");
+
+            Class<?>[] recreated = new Class[] {Event.class};
 
             for (Class<?> recreate: recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);

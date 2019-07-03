@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
-                android:visibility='@{ event.hasOrganizerInfo ? View.VISIBLE : View.GONE }'>
+                android:visibility='@{ event.hasOwnerInfo ? View.VISIBLE : View.GONE }'>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                         android:drawableStart="@{ @drawable/ic_person}"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:text='@{ event.organizerName }' />
+                        android:text='@{ event.ownerName }' />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
                         android:drawableStart="@{ @drawable/ic_info }"
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
-                        android:text='@{ event.organizerDescription }' />
+                        android:text='@{ event.ownerDescription }' />
 
                 </LinearLayout>
 

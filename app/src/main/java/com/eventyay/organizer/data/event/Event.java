@@ -52,10 +52,10 @@ public class Event implements Comparable<Event>, HeaderProvider {
     public String thumbnailImageUrl;
     public String schedulePublishedOn;
     public String paymentCurrency;
-    public String organizerDescription;
+    public String ownerDescription;
     public String originalImageUrl;
     public String onsiteDetails;
-    public String organizerName;
+    public String ownerName;
     public String largeImageUrl;
     public String timezone;
     public String deletedAt;
@@ -89,7 +89,7 @@ public class Event implements Comparable<Event>, HeaderProvider {
     public boolean canPayByPaypal;
     public boolean canPayOnsite;
     public boolean isSponsorsEnabled;
-    public boolean hasOrganizerInfo;
+    public boolean hasOwnerInfo;
     public boolean isSessionsSpeakersEnabled;
     public boolean isTicketingEnabled;
     public boolean isTaxEnabled;
