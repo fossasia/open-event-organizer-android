@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
 
 import com.eventyay.organizer.common.rx.Logger;
+import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
@@ -38,6 +39,9 @@ public class SignUpViewModelTest {
 
     private final HostSelectionInterceptor interceptor = new HostSelectionInterceptor();
 
+    @Mock
+    private Preferences sharedPreferenceModel;
+
     private static final String EMAIL = "test@test.in";
     private static final String PASSWORD = "password";
     private static final User USER = User.builder().email(EMAIL).password(PASSWORD).build();
@@ -57,7 +61,7 @@ public class SignUpViewModelTest {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
 
-        signUpViewModel = new SignUpViewModel(authModel, interceptor);
+        signUpViewModel = new SignUpViewModel(authModel, interceptor, sharedPreferenceModel);
         signUpViewModel.getUser().setEmail(EMAIL);
         signUpViewModel.getUser().setPassword(PASSWORD);
     }
