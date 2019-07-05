@@ -13,7 +13,7 @@ import com.eventyay.organizer.utils.CompareUtils;
 
 import java.util.List;
 
-public class AttendeeDelegateImpl extends AbstractItem<Attendee, AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider {
+public class AttendeeDelegateImpl extends AbstractItem<AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider {
 
     private final Attendee attendee;
 
