@@ -67,7 +67,7 @@
                     android:id="@+id/organizer_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onCheckedChanged="@{ (switch, checked) -> event.setHasOrganizerInfo(checked) }"
+                    android:onCheckedChanged="@{ (switch, checked) -> event.setHasOwnerInfo(checked) }"
                     android:text="@string/add_organizer_information" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/organizer_name"
                         android:inputType="textMultiLine"
-                        android:text="@={ event.organizerName }" />
+                        android:text="@={ event.ownerName }" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/organizer_description"
                         android:inputType="textMultiLine"
-                        android:text="@={ event.organizerDescription }" />
+                        android:text="@={ event.ownerDescription }" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -198,96 +198,96 @@
                     android:orientation="vertical"
                     android:visibility="@{ onlineEvent.checked ? View.GONE : View.VISIBLE }">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_extra_small"
-                    android:layout_marginStart="@dimen/spacing_extra_small"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:divider="?android:dividerHorizontal"
-                    android:showDividers="beginning"
-                    android:text="@string/location_details"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
-
-                <Button
-                    android:id="@+id/button_place_picker"
-                    style="?attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_extra_small"
-                    android:text="@string/pick_from_map"
-                    android:textColor="@color/purple_500" />
-
-                <LinearLayout
-                    android:id="@+id/layout_searchable_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/searchable_location_name"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_location" />
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small">
+                        android:layout_marginLeft="@dimen/spacing_extra_small"
+                        android:layout_marginStart="@dimen/spacing_extra_small"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:divider="?android:dividerHorizontal"
+                        android:showDividers="beginning"
+                        android:text="@string/location_details"
+                        android:textSize="@dimen/text_size_normal"
+                        android:textStyle="bold"/>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/searchable_location_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/searchable_location_name"
-                            android:inputType="textPostalAddress|textCapWords"
-                            android:text="@={ event.searchableLocationName }"/>
-
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_location_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <ImageView
+                    <Button
+                        android:id="@+id/button_place_picker"
+                        style="?attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/location_name"
-                        android:padding="@dimen/spacing_extra_small"
-                        app:srcCompat="@drawable/ic_location" />
+                        android:layout_marginTop="@dimen/spacing_extra_small"
+                        android:text="@string/pick_from_map"
+                        android:textColor="@color/purple_500" />
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <LinearLayout
+                        android:id="@+id/layout_searchable_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/spacing_extra_small">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/location_name"
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/searchable_location_name"
+                            android:padding="@dimen/spacing_extra_small"
+                            app:srcCompat="@drawable/ic_location" />
+
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/location_name"
-                            android:inputType="textPostalAddress|textMultiLine|textCapWords"
-                            android:text="@={ event.locationName }" />
+                            android:padding="@dimen/spacing_extra_small">
 
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/searchable_location_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/searchable_location_name"
+                                android:inputType="textPostalAddress|textCapWords"
+                                android:text="@={ event.searchableLocationName }"/>
 
-                <CheckBox
-                    android:id="@+id/map_shown"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:text="@string/show_map" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_location_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/location_name"
+                            android:padding="@dimen/spacing_extra_small"
+                            app:srcCompat="@drawable/ic_location" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/spacing_extra_small">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/location_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/location_name"
+                                android:inputType="textPostalAddress|textMultiLine|textCapWords"
+                                android:text="@={ event.locationName }" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/map_shown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text="@string/show_map" />
                 </LinearLayout>
             </LinearLayout>
 

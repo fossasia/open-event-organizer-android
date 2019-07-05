@@ -17,16 +17,16 @@ import java.util.List;
 
 public class SwipeController extends ItemTouchHelper.SimpleCallback {
 
-    private final AttendeesPresenter attendeesPresenter;
+    private final AttendeesViewModel attendeesViewModel;
     private List<Attendee> attendeeList;
     private final Paint paintGreen = new Paint();
     private final Paint paintRed = new Paint();
     private final Bitmap closeIcon;
     private final Bitmap doneIcon;
 
-    public SwipeController(AttendeesPresenter attendeesPresenter, List<Attendee> attendeeList, Context context) {
+    public SwipeController(AttendeesViewModel attendeesViewModel, List<Attendee> attendeeList, Context context) {
         super(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
-        this.attendeesPresenter = attendeesPresenter;
+        this.attendeesViewModel = attendeesViewModel;
         this.attendeeList = attendeeList;
 
         closeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.close);
@@ -56,7 +56,7 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         int swipedPosition = viewHolder.getAdapterPosition();
-        attendeesPresenter.toggleCheckInState(attendeeList, swipedPosition);
+        attendeesViewModel.toggleCheckInState(attendeeList, swipedPosition);
     }
 
     @Override

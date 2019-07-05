@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.eventyay.organizer.BuildConfig;
+import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
+import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.auth.model.ChangePassword;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
@@ -19,18 +21,21 @@ public class ChangePasswordViewModel extends ViewModel {
 
     private final AuthService changePasswordModel;
     private final HostSelectionInterceptor interceptor;
+    private final Preferences sharedPreferenceModel;
     private final ChangePassword organizerPasswordObject = new ChangePassword();
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
     private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
     private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
-
+    private final SingleEventLiveData<String> baseUrlLiveData = new SingleEventLiveData<>();
 
     @Inject
-    public ChangePasswordViewModel(AuthService changePasswordModel, HostSelectionInterceptor interceptor) {
+    public ChangePasswordViewModel(AuthService changePasswordModel, HostSelectionInterceptor interceptor,
+                                   Preferences sharedPreferenceModel) {
         this.changePasswordModel = changePasswordModel;
         this.interceptor = interceptor;
+        this.sharedPreferenceModel = sharedPreferenceModel;
     }
 
     public ChangePassword getChangePasswordObject() {
@@ -55,8 +60,10 @@ public class ChangePasswordViewModel extends ViewModel {
                     throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
-    public void setBaseUrl(String url, boolean shouldSetDefaultUrl) {
-        String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
+    public void setBaseUrl() {
+        String baseUrl = sharedPreferenceModel.getString(Constants.SHARED_PREFS_BASE_URL,
+            BuildConfig.DEFAULT_BASE_URL);
+        baseUrlLiveData.setValue(baseUrl);
         interceptor.setInterceptor(baseUrl);
     }
 
@@ -72,4 +79,7 @@ public class ChangePasswordViewModel extends ViewModel {
         return error;
     }
 
+    public LiveData<String> getBaseUrl() {
+        return baseUrlLiveData;
+    }
 }

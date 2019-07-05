@@ -20,43 +20,22 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/order_statistics_toggle_layout"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_order_statistics_toggle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:layout_marginEnd="@dimen/spacing_small"
-                android:layout_marginRight="@dimen/spacing_small"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:text="@string/order_statistics"
-                android:textSize="@dimen/text_size_normal" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_order_statistics"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_marginRight="@dimen/spacing_normal"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:checked="false"
-                android:onCheckedChanged='@{ (switch, checked) -> checked ? orderSalesLayout.setVisibility(View.VISIBLE) : orderSalesLayout.setVisibility(View.GONE) }' />
-
-        </LinearLayout>
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:text="@string/order_statistics"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_size_small" />
 
         <LinearLayout
             android:id="@+id/order_sales_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="200"
-            android:visibility="gone">
+            android:weightSum="200">
 
             <LinearLayout
                 android:id="@+id/order_statistics_layout"
@@ -65,8 +44,8 @@
                 android:orientation="vertical"
                 android:layout_gravity="center"
                 android:layout_weight="100"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_normal" >
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"

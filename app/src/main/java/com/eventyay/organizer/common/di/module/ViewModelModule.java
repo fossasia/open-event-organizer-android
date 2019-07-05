@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.eventyay.organizer.common.di.OrgaViewModelFactory;
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInViewModel;
 import com.eventyay.organizer.core.attendee.history.CheckInHistoryViewModel;
+import com.eventyay.organizer.core.attendee.list.AttendeesViewModel;
 import com.eventyay.organizer.core.attendee.qrscan.ScanQRViewModel;
 import com.eventyay.organizer.core.auth.login.LoginViewModel;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordViewModel;
@@ -32,6 +33,7 @@ import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
 import com.eventyay.organizer.core.role.list.RoleListViewModel;
 import com.eventyay.organizer.core.role.invite.RoleInviteViewModel;
+import com.eventyay.organizer.core.session.create.CreateSessionViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
 import com.eventyay.organizer.core.share.ShareEventViewModel;
@@ -239,6 +241,16 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ScanQRViewModel.class)
     public abstract ViewModel bindScanQRViewModel(ScanQRViewModel scanQRViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AttendeesViewModel.class)
+    public abstract ViewModel bindAttendeesViewModel(AttendeesViewModel attendeesViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateSessionViewModel.class)
+    public abstract ViewModel bindCreateSessionViewModel(CreateSessionViewModel createSessionViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);

@@ -104,25 +104,26 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
     }
 
     private void setupRecyclerView() {
-        ticketsAdapter = new TicketsAdapter(getPresenter());
+        if (ticketsAdapter == null) {
+            ticketsAdapter = new TicketsAdapter(getPresenter());
 
-        RecyclerView recyclerView = binding.ticketsRecyclerView;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(ticketsAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(ticketsAdapter);
-        recyclerView.addItemDecoration(decoration);
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+            RecyclerView recyclerView = binding.ticketsRecyclerView;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(ticketsAdapter);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(ticketsAdapter);
+            recyclerView.addItemDecoration(decoration);
+            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
 
-        adapterDataObserver = new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                decoration.invalidateHeaders();
-            }
-        };
+            adapterDataObserver = new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onChanged() {
+                    decoration.invalidateHeaders();
+                }
+            };
 
-        ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createTicketFab);
-
+            ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createTicketFab);
+        }
         ticketsAdapter.registerAdapterDataObserver(adapterDataObserver);
     }
 

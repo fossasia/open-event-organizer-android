@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <group android:id="@+id/eventsMenu" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/ic_events"
+            android:title="@string/nav_events" />
+
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_account"
+            android:title="@string/my_account"
+            android:checkable="false" />
+    </group>
+
     <group android:id="@+id/subMenu" android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_dashboard"
-            android:title="@string/dashboard" />
+            android:title="@string/event_dashboard" />
 
-        <!--<item
+        <item
             android:id="@+id/nav_sell"
             android:icon="@drawable/ic_payment"
-            android:title="@string/sell" />-->
+            android:title="@string/sell"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_attendees"
@@ -20,78 +34,80 @@
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_order"
-            android:title="@string/orders" />
+            android:title="@string/orders"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_edit_event"
             android:icon="@drawable/ic_edit"
             android:title="@string/edit_event"
-            android:checkable="false"/>
+            android:checkable="false"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_tickets"
             android:icon="@drawable/ic_ticket"
-            android:title="@string/tickets" />
+            android:title="@string/tickets"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_share"
             android:title="@string/share" />
 
-        <!--<item
+        <item
             android:id="@+id/nav_feedback"
             android:icon="@drawable/ic_feedback"
-            android:title="@string/feedback"/>
+            android:title="@string/feedback"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_faq"
             android:icon="@drawable/ic_faq"
-            android:title="@string/faq"/>
+            android:title="@string/faq"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_roles"
-            android:title="@string/roles"/>
+            android:title="@string/roles"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_track"
             android:icon="@drawable/ic_event_note"
-            android:title="@string/tracks"/>
+            android:title="@string/tracks"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_sponsor"
             android:icon="@drawable/ic_sponsors"
-            android:title="@string/sponsors"/>
+            android:title="@string/sponsors"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_speaker"
             android:icon="@drawable/ic_people"
-            android:title="@string/speakers"/>
+            android:title="@string/speakers"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_speakers_call"
             android:icon="@drawable/ic_speaker"
-            android:title="@string/speakers_call"/>-->
+            android:title="@string/speakers_call"
+            android:visible="false" />
 
         <item
             android:id="@+id/nav_about_event"
             android:icon="@drawable/ic_info"
             android:title="@string/about"
-            android:checkable="false"
-            android:visible="false"/>
+            android:checkable="false" />
 
         <item
             android:id="@+id/nav_event_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/event_settings"
-            android:checkable="true"/>
+            android:checkable="true" />
 
-    </group>
-
-    <group android:id="@+id/eventsMenu" android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_events"
-            android:icon="@drawable/ic_events"
-            android:title="@string/nav_events" />
     </group>
 
     <group android:id="@+id/mainMenu">

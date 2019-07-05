@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_scan_qr"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.eventyay.organizer.core.attendee.qrscan.ScanQRActivity">
+
+    <TextView
+        android:id="@+id/barcodePanel"
+        style="@style/TextCapsule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:text="Barcode Value"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:src="@drawable/qrcode_scan" />
+
+        <Button
+            android:id="@+id/startScanningAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue_500"
+            android:padding="@dimen/spacing_medium"
+            android:text="@string/start_scanning_again" />
+
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

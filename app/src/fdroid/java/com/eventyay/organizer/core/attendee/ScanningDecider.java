@@ -1,13 +1,16 @@
 package com.eventyay.organizer.core.attendee;
 
 import android.content.Context;
-import android.widget.Toast;
+import android.content.Intent;
 
-import com.eventyay.organizer.R;
+import com.eventyay.organizer.core.main.MainActivity;
 
 public class ScanningDecider {
 
     public void openScanQRActivity(Context context, long eventId) {
-        Toast.makeText(context, R.string.scanning_disabled_message, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(context, com.eventyay.organizer.core.attendee.qrscan.ScanQRActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(MainActivity.EVENT_KEY, eventId);
+        context.startActivity(intent);
     }
 }

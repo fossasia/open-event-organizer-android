@@ -79,7 +79,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="check_in_status">Check In Status</string>
-    <string name="dashboard">Dashboard</string>
+    <string name="event_dashboard">Event Dashboard</string>
     <string name="attendees">Attendees</string>
     <string name="events">Events</string>
     <string name="nav_events">My Events</string>
@@ -278,7 +278,7 @@
     <string name="cheque_details">Cheque Details</string>
     <string name="onsite_details">OnSite Details</string>
     <string name="default_payment_country">Select the default Payment Country</string>
-    <string name="payment_preference">Payment Preferences</string>
+    <string name="payment_preferences">Payment Preferences</string>
     <string name="order_details">Order Details</string>
     <string name="order_identifier">Order Identifier</string>
     <string name="swipe_left_to_check_out">Swipe left to check out</string>
@@ -390,6 +390,18 @@
     <string name="notifications">Notifications</string>
     <string name="use_another_url">Use another URL</string>
     <string name="use_default_url">Use default URL</string>
+    <string name="developer_mode">Developer Mode</string>
+    <string name="developer_mode_key">developer_mode</string>
+    <string name="activate_developer_mode">Activate Developer Mode</string>
+    <string name="developer_mode_activation_message">You are activating Developer Mode. This mode will give you access to unreleased app features. These features are unstable and could potentially result in unwanted changes in your event or data loss. Use with care! Do you really want to activate developer mode?</string>
+    <string name="deactivate_developer_mode">Deactivate Developer Mode</string>
+    <string name="developer_mode_deactivation_message">You are deactivating Developer Mode. This will hide the unreleased app features. Do you want to continue?</string>
+    <string name="yes_take_chances">Yes, I am taking my chances</string>
+    <string name="no_stay_safe">No, I want to stay safe</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="my_account">My Account</string>
+    <string name="start_scanning_again">Start scanning again</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

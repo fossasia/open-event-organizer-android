@@ -2,14 +2,13 @@ package com.eventyay.organizer.core.event.dashboard;
 
 import androidx.annotation.VisibleForTesting;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.core.event.dashboard.analyser.ChartAnalyser;
 import com.eventyay.organizer.core.event.dashboard.analyser.TicketAnalyser;
 import com.eventyay.organizer.data.ContextUtils;
+import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
@@ -20,6 +19,7 @@ import com.eventyay.organizer.data.event.EventStatistics;
 import com.eventyay.organizer.data.order.OrderRepository;
 import com.eventyay.organizer.data.order.OrderStatistics;
 import com.eventyay.organizer.utils.Utils;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.List;
 
@@ -36,10 +36,7 @@ import static com.eventyay.organizer.common.rx.ViewTransformers.result;
 
 public class EventDashboardPresenter extends AbstractDetailPresenter<Long, EventDashboardView> {
 
-    private Event event;
-    private List<Attendee> attendees;
-    private EventStatistics eventStatistics;
-    private OrderStatistics orderStatistics;
+    private static final String DEVELOPER_MODE_KEY = "developer_mode";
     private final EventRepository eventRepository;
     private final OrderRepository orderRepository;
     private final AttendeeRepository attendeeRepository;
@@ -47,11 +44,17 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
     private final ChartAnalyser chartAnalyser;
     private final ContextUtils utilModel;
     private final DatabaseChangeListener<Event> eventChangeListener;
+    private final Preferences sharedPreferenceModel;
+    private Event event;
+    private List<Attendee> attendees;
+    private EventStatistics eventStatistics;
+    private OrderStatistics orderStatistics;
 
     @Inject
     public EventDashboardPresenter(EventRepository eventRepository, AttendeeRepository attendeeRepository,
                                    OrderRepository orderRepository, TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser,
-                                   ContextUtils utilModel, DatabaseChangeListener<Event> eventChangeListener) {
+                                   ContextUtils utilModel, DatabaseChangeListener<Event> eventChangeListener,
+                                   Preferences sharedPreferenceModel) {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
         this.attendeeRepository = attendeeRepository;
@@ -59,6 +62,7 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
         this.utilModel = utilModel;
         this.eventChangeListener = eventChangeListener;
         this.orderRepository = orderRepository;
+        this.sharedPreferenceModel = sharedPreferenceModel;
     }
 
     @Override
@@ -70,6 +74,12 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
     public void loadDetails(boolean forceReload) {
         if (getView() == null)
             return;
+
+        boolean isDeveloperModeEnabled = sharedPreferenceModel.getBoolean(
+            DEVELOPER_MODE_KEY, false);
+
+        if (isDeveloperModeEnabled)
+            getView().showDeveloperModeFeatures();
 
         loadSalesChart();
         loadCheckInTimesChart();
@@ -127,14 +137,14 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
             .compose(progressiveErroneous(getView()))
             .doFinally(() -> getView().showResult(event))
             .subscribe(updatedEvent -> {
-                event.state = updatedEvent.state;
-                if (Event.STATE_PUBLISHED.equals(event.state)) {
-                    getView().showEventShareDialog();
-                } else {
-                    getView().onSuccess(utilModel.getResourceString(R.string.draft_success));
-                }
-            },
-            throwable -> event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT);
+                    event.state = updatedEvent.state;
+                    if (Event.STATE_PUBLISHED.equals(event.state)) {
+                        getView().showEventShareDialog();
+                    } else {
+                        getView().onSuccess(utilModel.getResourceString(R.string.draft_success));
+                    }
+                },
+                throwable -> event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT);
     }
 
     private void loadEventStatistics(boolean forceReload) {
@@ -205,12 +215,12 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
         return event;
     }
 
-    public EventStatistics getEventStatistics() {
-        return eventStatistics;
-    }
-
     @VisibleForTesting
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public EventStatistics getEventStatistics() {
+        return eventStatistics;
     }
 }

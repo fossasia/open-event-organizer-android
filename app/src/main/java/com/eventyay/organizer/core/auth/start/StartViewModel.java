@@ -98,6 +98,7 @@ public class StartViewModel extends ViewModel {
     public void setBaseUrl(String url, boolean shouldSetDefaultUrl) {
         String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
         interceptor.setInterceptor(baseUrl);
+        sharedPreferenceModel.saveString(Constants.SHARED_PREFS_BASE_URL, baseUrl);
     }
 
     @Override
