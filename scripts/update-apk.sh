@@ -20,23 +20,31 @@ cd apk
 if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
 	/bin/rm -f *
 else
-	/bin/rm -f eventyay-organizer-dev-*.apk
+	/bin/rm -f eventyay-organizer-dev-*
 fi
 
 find ../app/build/outputs -type f -name '*.apk' -exec cp -v {} . \;
 find ../app/build/outputs -type f -name '*.aab' -exec cp -v {} . \;
 
-if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
-    for file in app*; do
-          cp $file eventyay-organizer-master-${file:4}
-    done
-fi
+for file in app*; do
 
-if [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]; then
-    for file in app*; do
-          mv $file eventyay-organizer-dev-${file:4}
-    done
-fi
+    if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
+        if [ ${file} =~ ".aab" ]; then
+            mv $file eventyay-organizer-master-${file}
+        else
+            mv $file eventyay-organizer-master-${file:4}
+        fi
+
+    elif [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]; then
+        if [ ${file} =~ ".aab" ]; then
+                mv $file eventyay-organizer-dev-${file}
+        else
+                mv $file eventyay-organizer-dev-${file:4}
+        fi
+
+    fi
+
+done
 
 # Create a new branch that will contains only latest apk
 git checkout --orphan temporary
