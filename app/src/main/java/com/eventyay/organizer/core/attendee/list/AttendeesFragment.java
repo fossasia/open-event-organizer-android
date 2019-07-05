@@ -41,6 +41,7 @@ import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.SearchUtils;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter.utils.ComparableItemListImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -156,11 +157,11 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
     private void sortAttendees(int sortBy) {
         if (sortBy == SORTBYTICKET) {
-            fastItemAdapter.withComparator((Attendee a1, Attendee a2) -> a1.getTicket().getType().compareTo(a2.getTicket().getType()));
+            ((ComparableItemListImpl<Attendee>) fastItemAdapter.getItemList()).withComparator((Attendee a1, Attendee a2) -> a1.getTicket().getType().compareTo(a2.getTicket().getType()), true);
         } else {
-            fastItemAdapter.withComparator((Attendee a1, Attendee a2) -> a1.getFirstname().compareTo(a2.getFirstname()), true);
+            ((ComparableItemListImpl<Attendee>) fastItemAdapter.getItemList()).withComparator((Attendee a1, Attendee a2) -> a1.getFirstname().compareTo(a2.getFirstname()), true);
         }
-        fastItemAdapter.setNewList(attendeeList);
+        fastItemAdapter.setNewList(attendeeList, true);
         binding.setVariable(BR.attendees, attendeeList);
         binding.executePendingBindings();
     }
@@ -227,7 +228,7 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
     private void setupRecyclerView() {
         fastItemAdapter = new ItemAdapter<>();
-        fastItemAdapter.getItemFilter().withFilterPredicate(
+        fastItemAdapter.getItemFilter().setFilterPredicate(
             (attendee, query) -> {
                 if (query == null)
                     return true;
@@ -245,7 +246,7 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
         fastAdapter = FastAdapter.with(Collections.singletonList(fastItemAdapter));
         fastAdapter.setHasStableIds(true);
-        fastAdapter.withEventHook(new AttendeeItemCheckInEvent(this));
+        fastAdapter.addEventHook(new AttendeeItemCheckInEvent(this));
 
         RecyclerView recyclerView = binding.rvAttendeeList;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -333,7 +334,7 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
     @Override
     public void showResults(List<Attendee> attendees) {
         attendeeList.addAll(attendees);
-        fastItemAdapter.setNewList(attendeeList);
+        fastItemAdapter.setNewList(attendeeList, true);
         binding.setVariable(BR.attendees, attendeeList);
         binding.executePendingBindings();
     }
