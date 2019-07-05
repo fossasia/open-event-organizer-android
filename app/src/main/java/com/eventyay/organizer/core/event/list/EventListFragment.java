@@ -112,6 +112,12 @@ public class EventListFragment extends BaseFragment implements EventsView {
         setupRefreshListener();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        eventsViewModel.loadUserEvents(false);
+    }
+
     public void openCreateEventFragment() {
         Intent intent = new Intent(getActivity(), CreateEventActivity.class);
         startActivity(intent);

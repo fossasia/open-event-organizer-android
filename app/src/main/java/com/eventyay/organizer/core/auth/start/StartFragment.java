@@ -75,6 +75,8 @@ public class StartFragment extends BaseFragment implements StartView {
             startFragmentViewModel.getEmailRequestModel().setValue(emailRequest);
         });
 
+        binding.url.toggleUrl.setVisibility(View.VISIBLE);
+
         validate(binding.url.baseUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
 
         binding.url.toggleUrl.setOnClickListener(view -> {

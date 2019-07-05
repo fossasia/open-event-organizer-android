@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.annotation.VisibleForTesting;
 
 import com.eventyay.organizer.BuildConfig;
+import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
@@ -36,6 +37,7 @@ public class LoginViewModel extends ViewModel {
     private final MutableLiveData<Login> decryptedLogin = new MutableLiveData<>();
     private final SingleEventLiveData<Void> actionLogin = new SingleEventLiveData<>();
     private final SingleEventLiveData<Boolean> actionOpenResetPassword = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> baseUrlLiveData = new SingleEventLiveData<>();
 
     @Inject
     public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor,
@@ -44,6 +46,26 @@ public class LoginViewModel extends ViewModel {
         this.interceptor = interceptor;
         this.sharedPreferenceModel = sharedPreferenceModel;
         this.encryptionService = encryptionService;
+    }
+
+    public LiveData<String> getError() {
+        return error;
+    }
+
+    public LiveData<Boolean> getProgress() {
+        return progress;
+    }
+
+    public LiveData<Void> getActionLogIn() {
+        return actionLogin;
+    }
+
+    public LiveData<Boolean> getActionOpenResetPassword() {
+        return actionOpenResetPassword;
+    }
+
+    public LiveData<String> getBaseUrl() {
+        return baseUrlLiveData;
     }
 
     private void encryptUserCredentials() {
@@ -65,24 +87,10 @@ public class LoginViewModel extends ViewModel {
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
-    public LiveData<String> getError() {
-        return error;
-    }
-
-    public LiveData<Boolean> getProgress() {
-        return progress;
-    }
-
-    public LiveData<Void> getActionLogIn() {
-        return actionLogin;
-    }
-
-    public LiveData<Boolean> getActionOpenResetPassword() {
-        return actionOpenResetPassword;
-    }
-
-    public void setBaseUrl(String url, boolean shouldSetDefaultUrl) {
-        String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
+    public void setBaseUrl() {
+        String baseUrl = sharedPreferenceModel.getString(Constants.SHARED_PREFS_BASE_URL,
+            BuildConfig.DEFAULT_BASE_URL);
+        baseUrlLiveData.setValue(baseUrl);
         interceptor.setInterceptor(baseUrl);
     }
 

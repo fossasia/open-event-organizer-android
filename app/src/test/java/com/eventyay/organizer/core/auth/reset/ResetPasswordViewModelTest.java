@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
 
 import com.eventyay.organizer.common.rx.Logger;
+import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
 import org.junit.Before;
@@ -29,6 +30,9 @@ public class ResetPasswordViewModelTest {
     private final HostSelectionInterceptor interceptor = new HostSelectionInterceptor();
 
     @Mock
+    private Preferences sharedPreferenceModel;
+
+    @Mock
     private Observer<String> error;
     @Mock
     private Observer<String> success;
@@ -46,7 +50,7 @@ public class ResetPasswordViewModelTest {
 
     @Before
     public void setUp() {
-        resetPasswordViewModel = new ResetPasswordViewModel(tokenSubmitModel, interceptor);
+        resetPasswordViewModel = new ResetPasswordViewModel(tokenSubmitModel, interceptor, sharedPreferenceModel);
         resetPasswordViewModel.getSubmitToken().setPassword(PASSWORD);
         resetPasswordViewModel.getSubmitToken().setToken(TOKEN);
         resetPasswordViewModel.getSubmitToken().setConfirmPassword(CONFIRM_PASSWORD);

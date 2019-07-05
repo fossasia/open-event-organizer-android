@@ -1,10 +1,12 @@
 package com.eventyay.organizer.core.auth.reset;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.eventyay.organizer.BuildConfig;
+import com.eventyay.organizer.common.Constants;
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
+import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.auth.model.RequestToken;
 import com.eventyay.organizer.data.auth.model.SubmitToken;
@@ -19,21 +21,25 @@ public class ResetPasswordViewModel extends ViewModel {
 
     private final AuthService tokenSubmitModel;
     private final HostSelectionInterceptor interceptor;
+    private final Preferences sharedPreferenceModel;
     private final SubmitToken submitToken = new SubmitToken();
     private final RequestToken requestToken = new RequestToken();
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
-    private final MutableLiveData<String> error = new MutableLiveData<>();
-    private final MutableLiveData<String> success = new MutableLiveData<>();
-    private final MutableLiveData<String> message = new MutableLiveData<>();
+    private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> success = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> message = new SingleEventLiveData<>();
+    private final SingleEventLiveData<String> baseUrlLiveData = new SingleEventLiveData<>();
 
     @Inject
     public ResetPasswordViewModel(AuthService tokenSubmitModel,
-                                  HostSelectionInterceptor interceptor) {
+                                  HostSelectionInterceptor interceptor,
+                                  Preferences sharedPreferenceModel) {
         this.tokenSubmitModel = tokenSubmitModel;
         this.interceptor = interceptor;
+        this.sharedPreferenceModel = sharedPreferenceModel;
     }
 
     public SubmitToken getSubmitToken() {
@@ -52,8 +58,10 @@ public class ResetPasswordViewModel extends ViewModel {
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
-    public void setBaseUrl(String url, boolean shouldSetDefaultUrl) {
-        String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
+    public void setBaseUrl() {
+        String baseUrl = sharedPreferenceModel.getString(Constants.SHARED_PREFS_BASE_URL,
+            BuildConfig.DEFAULT_BASE_URL);
+        baseUrlLiveData.setValue(baseUrl);
         interceptor.setInterceptor(baseUrl);
     }
 
@@ -83,4 +91,7 @@ public class ResetPasswordViewModel extends ViewModel {
         return message;
     }
 
+    public LiveData<String> getBaseUrl() {
+        return baseUrlLiveData;
+    }
 }
