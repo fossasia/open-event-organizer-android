@@ -29,14 +29,14 @@ find ../app/build/outputs -type f -name '*.aab' -exec cp -v {} . \;
 for file in app*; do
 
     if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
-        if [ ${file} =~ ".aab" ]; then
+        if [[ ${file} =~ ".aab" ]]; then
             mv $file eventyay-organizer-master-${file}
         else
             mv $file eventyay-organizer-master-${file:4}
         fi
 
     elif [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]; then
-        if [ ${file} =~ ".aab" ]; then
+        if [[ ${file} =~ ".aab" ]]; then
                 mv $file eventyay-organizer-dev-${file}
         else
                 mv $file eventyay-organizer-dev-${file:4}
