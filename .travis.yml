@@ -19,8 +19,9 @@ cache:
 before_script:
     - bash scripts/prep-key.sh
 script:
-  - ./gradlew build
-  - ./gradlew testPlayStoreDebugUnitTestCoverage
+  - ./gradlew assemblePlayStoreRelease
+  - ./gradlew assembleFdroidRelease
+  - ./gradlew testPlayStoreReleaseUnitTestCoverage
 after_success:
     - bash <(curl -s https://codecov.io/bash)
     - bash scripts/update-apk.sh
