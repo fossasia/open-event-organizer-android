@@ -29,6 +29,8 @@ public class TicketsPresenter extends AbstractDetailPresenter<Long, TicketsView>
     private final TicketRepository ticketRepository;
     private final DatabaseChangeListener<Ticket> ticketChangeListener;
 
+    public boolean isNewTicketCreated = false;
+
     @Inject
     public TicketsPresenter(TicketRepository ticketRepository, DatabaseChangeListener<Ticket> ticketChangeListener) {
         this.ticketRepository = ticketRepository;
@@ -67,7 +69,7 @@ public class TicketsPresenter extends AbstractDetailPresenter<Long, TicketsView>
     }
 
     private Observable<Ticket> getTicketSource(boolean forceReload) {
-        if (!forceReload && !tickets.isEmpty() && isRotated())
+        if (!forceReload && !tickets.isEmpty() && isRotated() && !isNewTicketCreated)
             return Observable.fromIterable(tickets);
         else
             return ticketRepository.getTickets(getId(), forceReload);

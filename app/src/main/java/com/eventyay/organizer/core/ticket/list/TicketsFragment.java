@@ -97,6 +97,8 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
     }
 
     public void openCreateTicketFragment() {
+        getPresenter().isNewTicketCreated = true;
+
         getFragmentManager().beginTransaction()
             .replace(R.id.fragment_container, CreateTicketFragment.newInstance())
             .addToBackStack(null)
