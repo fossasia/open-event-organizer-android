@@ -29,14 +29,14 @@ find ../app/build/outputs -type f -name '*.aab' -exec cp -v {} . \;
 for file in app*; do
 
     if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
-        if [ ${file} =~ ".aab" ]; then
+        if [[ ${file} =~ ".aab" ]]; then
             mv $file eventyay-organizer-master-${file}
         else
             mv $file eventyay-organizer-master-${file:4}
         fi
 
     elif [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]; then
-        if [ ${file} =~ ".aab" ]; then
+        if [[ ${file} =~ ".aab" ]]; then
                 mv $file eventyay-organizer-dev-${file}
         else
                 mv $file eventyay-organizer-dev-${file:4}
@@ -68,4 +68,4 @@ if [ "$TRAVIS_BRANCH" != "$PUBLISH_BRANCH" ]; then
 fi
 
 gem install fastlane
-fastlane supply --aab eventyay-organizer-master.aab --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
+fastlane supply --aab eventyay-organizer-master-app.aab --skip_upload_apk true --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
