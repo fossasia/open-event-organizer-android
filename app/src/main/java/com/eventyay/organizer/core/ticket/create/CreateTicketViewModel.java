@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
+import com.eventyay.organizer.core.ticket.list.TicketsPresenter;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
@@ -100,6 +101,7 @@ public class CreateTicketViewModel extends ViewModel {
                 .doFinally(() -> progress.setValue(false))
                 .subscribe(createdTicket -> {
                     success.setValue("Ticket Created");
+                    TicketsPresenter.isNewTicketCreated = true;
                     dismiss.call();
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }

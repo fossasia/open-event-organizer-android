@@ -29,7 +29,7 @@ public class TicketsPresenter extends AbstractDetailPresenter<Long, TicketsView>
     private final TicketRepository ticketRepository;
     private final DatabaseChangeListener<Ticket> ticketChangeListener;
 
-    public boolean isNewTicketCreated = false;
+    public static boolean isNewTicketCreated = false;
 
     @Inject
     public TicketsPresenter(TicketRepository ticketRepository, DatabaseChangeListener<Ticket> ticketChangeListener) {
