@@ -44,19 +44,19 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 <table>
   <tr>
-    <td><img src="docs/images/login.png"></td>
-    <td><img src="docs/images/dashboard_one.png"></td>
-    <td><img src="docs/images/dashboard_two.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/login.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/dashboard_one.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/dashboard_two.png"></td>
   </tr>
     <tr>
     <td><img src="docs/images/attendees.png"></td>
-    <td><img src="docs/images/checkin.png"></td>
-    <td><img src="docs/images/order_checkin.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/checkin.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/order_checkin.png"></td>
   </tr>
   <tr>
-    <td><img src="docs/images/create_ticket.png"></td>
-    <td><img src="docs/images/navigation.png"></td>
-    <td><img src="docs/images/organizer.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/create_ticket.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/navigation.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/organizer.png"></td>
   </tr>
 </table>
 
