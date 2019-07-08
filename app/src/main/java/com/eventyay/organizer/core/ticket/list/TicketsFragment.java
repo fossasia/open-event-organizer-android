@@ -1,20 +1,18 @@
 package com.eventyay.organizer.core.ticket.list;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -25,6 +23,8 @@ import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.databinding.TicketsFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import java.util.List;
 
@@ -34,15 +34,12 @@ import dagger.Lazy;
 
 public class TicketsFragment extends BaseFragment<TicketsPresenter> implements TicketsView {
 
-    private Context context;
-    private long eventId;
-
     @Inject
     ContextUtils utilModel;
-
     @Inject
     Lazy<TicketsPresenter> ticketsPresenter;
-
+    private Context context;
+    private long eventId;
     private TicketsAdapter ticketsAdapter;
     private RecyclerView.AdapterDataObserver adapterDataObserver;
     private TicketsFragmentBinding binding;
@@ -69,9 +66,13 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.tickets_fragment, container, false);
+
+        ticketsAdapter = null;
+
         binding.createTicketFab.setOnClickListener(view -> {
             openCreateTicketFragment();
-       });
+        });
+
         return binding.getRoot();
     }
 
