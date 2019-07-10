@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.auth.model.ResendVerificationMail;
+import com.eventyay.organizer.data.auth.model.SubmitEmailVerificationToken;
 import com.eventyay.organizer.data.image.ImageData;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserRepository;
@@ -22,6 +23,7 @@ public class OrganizerDetailViewModel extends ViewModel {
     private final UserRepository userRepository;
     private final AuthService authService;
     private final ResendVerificationMail resendVerificationMail = new ResendVerificationMail();
+    private final SubmitEmailVerificationToken submitEmailVerificationToken = new SubmitEmailVerificationToken();
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -58,6 +60,10 @@ public class OrganizerDetailViewModel extends ViewModel {
         return userLiveData;
     }
 
+    public void setToken(String token) {
+        submitEmailVerificationToken.setToken(token);
+    }
+
     public void loadOrganizer(boolean forceReload) {
         compositeDisposable.add(
             getOrganizerSource(forceReload)
@@ -77,6 +83,18 @@ public class OrganizerDetailViewModel extends ViewModel {
                 .doOnSubscribe(disposable -> progress.setValue(true))
                 .doFinally(() -> progress.setValue(false))
                 .subscribe(resendMailResponse -> success.setValue("Verification Mail Resent"),
+                    throwable -> {
+                        error.setValue(ErrorUtils.getErrorDetails(throwable).toString());
+                        Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
+                    }));
+    }
+
+    public void verifyMail() {
+        compositeDisposable.add(
+            authService.verifyMail(submitEmailVerificationToken)
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(() -> success.setValue("Mail Verified"),
                     throwable -> {
                         error.setValue(ErrorUtils.getErrorDetails(throwable).toString());
                         Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
