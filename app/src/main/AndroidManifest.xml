@@ -31,6 +31,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="@string/FRONTEND_HOST"
+                    android:pathPrefix="/reset-password" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.eventyay.organizer.core.attendee.qrscan.ScanQRActivity"
@@ -53,7 +64,20 @@
         <activity
             android:name="com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity"
             android:label="@string/title_activity_organizer_detail"
-            android:theme="@style/AppTheme.Main.Light" />
+            android:theme="@style/AppTheme.Main.Light">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="@string/FRONTEND_HOST"
+                    android:pathPrefix="/verify" />
+            </intent-filter>
+        </activity>
+
         <activity android:name="com.eventyay.organizer.core.speaker.details.SpeakerDetailsActivity"
             android:label="@string/speaker_details_activity"
             android:theme="@style/AppTheme.Main"/>

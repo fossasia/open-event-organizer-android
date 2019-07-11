@@ -63,6 +63,7 @@ android {
 
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://api.eventyay.com/v1/"'
             resValue "string", "default_base_url", '"https://api.eventyay.com/v1/"'
+            resValue "string",  "FRONTEND_HOST", "eventyay.com"
 
             if (LOCAL_KEY_PRESENT || TRAVIS_BUILD)
                 signingConfig signingConfigs.release
@@ -71,6 +72,7 @@ android {
             testCoverageEnabled = true
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://open-event-api-dev.herokuapp.com/v1/"'
             resValue "string", "default_base_url", '"https://open-event-api-dev.herokuapp.com/v1/"'
+            resValue "string",  "FRONTEND_HOST", "open-event-fe.netlify.com"
         }
     }
 
@@ -144,7 +146,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0-rc01"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0-beta01"
-    implementation "com.google.android.material:material:1.1.0-alpha07"
+    implementation "com.google.android.material:material:1.1.0-alpha08"
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.palette:palette:1.0.0"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
@@ -265,7 +267,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-core-utils'
     })
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-inline:2.28.2'
+    testImplementation 'org.mockito:mockito-inline:3.0.0'
     testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"

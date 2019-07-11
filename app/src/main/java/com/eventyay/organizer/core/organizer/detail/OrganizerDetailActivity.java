@@ -1,5 +1,7 @@
 package com.eventyay.organizer.core.organizer.detail;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -8,6 +10,7 @@ import android.view.MenuItem;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoFragment;
+import com.eventyay.organizer.utils.LinkHandler;
 
 import javax.inject.Inject;
 
@@ -33,6 +36,30 @@ public class OrganizerDetailActivity extends AppCompatActivity implements HasSup
             fragmentManager.beginTransaction()
                 .replace(R.id.fragment, new OrganizerDetailFragment())
                 .commit();
+        }
+
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        String appLinkAction = intent.getAction();
+        Uri appLinkData = intent.getData();
+
+        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
+            LinkHandler.Destination destination = LinkHandler.getDestinationAndToken(appLinkData.toString()).getDestination();
+            String token = LinkHandler.getDestinationAndToken(appLinkData.toString()).getToken();
+
+            if (destination.equals(LinkHandler.Destination.VERIFY_EMAIL)) {
+                getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment, OrganizerDetailFragment.newInstance(token))
+                    .commit();
+            }
         }
     }
 
