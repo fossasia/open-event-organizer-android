@@ -402,6 +402,9 @@
     <string name="no">No</string>
     <string name="my_account">My Account</string>
     <string name="start_scanning_again">Start scanning again</string>
+    <string name="play_sounds">Play sounds</string>
+    <string name="play_sounds_key">play_sounds</string>
+    <string name="play_sound_on_check_in_out">Play sound on check-in and check-out</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

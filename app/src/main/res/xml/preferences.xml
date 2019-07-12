@@ -2,22 +2,22 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.preference.CheckBoxPreference
-        android:key="collect_attendee_info"
-        android:title="@string/attendee_info"
-        android:summary="@string/collect_attendee_info"
-        android:defaultValue="false"/>
+        android:key="@string/play_sounds_key"
+        android:title="@string/play_sounds"
+        android:summary="@string/play_sound_on_check_in_out"
+        android:defaultValue="false" />
 
     <androidx.preference.CheckBoxPreference
         android:key="local_date"
         android:title="Show dates in local timezone"
         android:summaryOff="Dates are shown in Event Timezone now"
         android:summaryOn="Dates are shown in Local Timezone now"
-        android:defaultValue="false"/>
+        android:defaultValue="false" />
 
     <androidx.preference.EditTextPreference
         android:key="device_name"
         android:title="Device Name"
-        android:summary="@string/device_name_summary"/>
+        android:summary="@string/device_name_summary" />
 
     <Preference
         android:key="@string/sales_data_display_key"

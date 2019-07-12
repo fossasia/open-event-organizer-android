@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 
 import android.view.LayoutInflater;
@@ -49,6 +51,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         manager.setSharedPreferencesName(Constants.FOSS_PREFS);
 
         setPreferencesFromResource(R.xml.preferences, rootKey);
+
+        CheckBoxPreference playSound = (CheckBoxPreference) findPreference(Constants.PREF_PLAY_SOUNDS);
+
+        Preference.OnPreferenceChangeListener listener = (preference, newValue) -> {
+            playSound.setChecked(!playSound.isChecked());
+            return (Boolean) newValue;
+        };
+
+        playSound.setOnPreferenceChangeListener(listener);
 
         findPreference(getString(R.string.sales_data_display_key)).setOnPreferenceClickListener(preference -> {
             getFragmentManager().beginTransaction()
