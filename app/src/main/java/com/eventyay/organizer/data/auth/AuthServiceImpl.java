@@ -8,6 +8,7 @@ import com.eventyay.organizer.data.auth.model.Login;
 import com.eventyay.organizer.data.auth.model.RequestToken;
 import com.eventyay.organizer.data.auth.model.ResendVerificationMail;
 import com.eventyay.organizer.data.auth.model.ResendVerificationMailResponse;
+import com.eventyay.organizer.data.auth.model.SubmitEmailVerificationToken;
 import com.eventyay.organizer.data.auth.model.SubmitToken;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.common.Constants;
@@ -151,6 +152,19 @@ public class AuthServiceImpl implements AuthService {
 
         return authApi
             .resendMail(resendVerificationMail)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Completable verifyMail(SubmitEmailVerificationToken token) {
+        if (!repository.isConnected())
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+
+        return authApi
+            .verifyMail(CustomObjectWrapper.withLabel("data", token))
+            .flatMapCompletable(
+                var -> Completable.complete())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }

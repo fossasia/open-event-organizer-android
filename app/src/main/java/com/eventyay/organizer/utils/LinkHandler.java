@@ -1,5 +1,10 @@
 package com.eventyay.organizer.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+import timber.log.Timber;
+
 public class LinkHandler {
 
     public Destination destination;
@@ -11,6 +16,12 @@ public class LinkHandler {
     }
 
     public static LinkHandler getDestinationAndToken(String url) {
+        try {
+            url = URLDecoder.decode(url, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Timber.e(e);
+        }
+
         if (url.contains("reset-password")) {
             String token = url.substring(url.indexOf('=') + 1);
             return new LinkHandler(Destination.RESET_PASSWORD, token);
