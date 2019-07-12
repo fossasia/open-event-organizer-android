@@ -6,10 +6,12 @@ import com.eventyay.organizer.data.auth.model.EmailRequest;
 import com.eventyay.organizer.data.auth.model.EmailValidationResponse;
 import com.eventyay.organizer.data.auth.model.Login;
 import com.eventyay.organizer.data.auth.model.LoginResponse;
+import com.eventyay.organizer.data.auth.model.EmailVerificationResponse;
 import com.eventyay.organizer.data.auth.model.RequestToken;
 import com.eventyay.organizer.data.auth.model.RequestTokenResponse;
 import com.eventyay.organizer.data.auth.model.ResendVerificationMail;
 import com.eventyay.organizer.data.auth.model.ResendVerificationMailResponse;
+import com.eventyay.organizer.data.auth.model.SubmitEmailVerificationToken;
 import com.eventyay.organizer.data.auth.model.SubmitToken;
 import com.eventyay.organizer.data.auth.model.SubmitTokenResponse;
 import com.eventyay.organizer.data.user.User;
@@ -43,4 +45,7 @@ public interface AuthApi {
 
     @POST("auth/resend-verification-email")
     Observable<ResendVerificationMailResponse> resendMail(@Body ResendVerificationMail resendVerificationMail);
+
+    @POST("auth/verify-email")
+    Observable<EmailVerificationResponse> verifyMail(@Body Map<String, SubmitEmailVerificationToken> submitMailVerificationToken);
 }
