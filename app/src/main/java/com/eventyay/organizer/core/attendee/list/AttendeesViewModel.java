@@ -137,7 +137,6 @@ public class AttendeesViewModel extends ViewModel {
             .map(DbFlowDatabaseChangeListener.ModelChange::getModel)
             .flatMap(filterAttendee -> attendeeRepository.getAttendee(filterAttendee.getId(), false))
             .subscribe(attendee -> {
-                loadAttendeesPageWise(FIRST_PAGE, false);
                 updateAttendeeLiveData.setValue(attendee);
                 updateLocal(attendee);
             }, Logger::logError);
