@@ -8,9 +8,12 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
+
+import android.media.MediaPlayer;
 import android.view.View;
 
 import com.eventyay.organizer.R;
+import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.attendee.Attendee;
 
 import java.util.List;
@@ -19,21 +22,26 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
 
     private final AttendeesViewModel attendeesViewModel;
     private List<Attendee> attendeeList;
+    private final Context context;
     private final Paint paintGreen = new Paint();
     private final Paint paintRed = new Paint();
     private final Bitmap closeIcon;
     private final Bitmap doneIcon;
+    private final boolean playSound;
 
     public SwipeController(AttendeesViewModel attendeesViewModel, List<Attendee> attendeeList, Context context) {
         super(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
         this.attendeesViewModel = attendeesViewModel;
         this.attendeeList = attendeeList;
+        this.context = context;
 
         closeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.close);
         doneIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.done);
 
         paintGreen.setColor(context.getResources().getColor(R.color.light_green_500));
         paintRed.setColor(context.getResources().getColor(R.color.red_500));
+
+        playSound = attendeesViewModel.getPreferences().getBoolean(Constants.PREF_PLAY_SOUNDS, false);
     }
 
     @Override
@@ -57,6 +65,11 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         int swipedPosition = viewHolder.getAdapterPosition();
         attendeesViewModel.toggleCheckInState(attendeeList, swipedPosition);
+
+        if (playSound) {
+            MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.check_in_sound);
+            mediaPlayer.start();
+        }
     }
 
     @Override
