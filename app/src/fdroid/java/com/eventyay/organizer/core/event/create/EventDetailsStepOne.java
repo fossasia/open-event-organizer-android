@@ -1,24 +1,30 @@
 package com.eventyay.organizer.core.event.create;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import androidx.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.databinding.EventDetailsStepOneBinding;
+import com.eventyay.organizer.ui.ViewUtils;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,8 +33,6 @@ import javax.inject.Inject;
 
 import timber.log.Timber;
 
-import static android.app.Activity.RESULT_OK;
-
 public class EventDetailsStepOne extends BaseBottomSheetFragment implements EventDetailsStepOneView {
 
     @Inject
@@ -36,8 +40,6 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
 
     private CreateEventViewModel createEventViewModel;
     private EventDetailsStepOneBinding binding;
-    private static final int PLACE_PICKER_REQUEST = 1;
-    private final LocationPicker locationPicker = new LocationPicker();
 
     public static EventDetailsStepOne newInstance() {
         return new EventDetailsStepOne();
@@ -58,7 +60,7 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
         int timezoneIndex = createEventViewModel.setTimeZoneList(getTimeZoneList());
         setupSpinner();
         setDefaultTimeZone(timezoneIndex);
-        setupPlacePicker();
+        setupPlacesAutocomplete();
     }
 
     private void setupSpinner() {
@@ -82,50 +84,52 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
         });
     }
 
-    private void setupPlacePicker() {
-        //check if there's a google places API key
+    private void setupPlacesAutocomplete() {
+
+        ApplicationInfo applicationInfo = null;
         try {
-            ApplicationInfo ai = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
-            Bundle bundle = ai.metaData;
-            String placesApiKey = bundle.getString("com.google.android.geo.API_KEY");
-            if ("YOUR_API_KEY".equals(placesApiKey)) {
-                Timber.d("Add Google Places API key in AndroidManifest.xml file to use Place Picker.");
-                binding.buttonPlacePicker.setVisibility(View.GONE);
-                showLocationLayouts();
-            }
+            applicationInfo = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
-            Timber.e(e, "Package name not found");
+            Timber.e(e);
         }
+        Bundle bundle = applicationInfo.metaData;
 
-        binding.buttonPlacePicker.setOnClickListener(view -> {
-            boolean success = locationPicker.launchPicker(getActivity());
-            if (locationPicker.shouldShowLocationLayout() || !success)
-                showLocationLayouts();
+        String mapboxAccessToken = bundle.getString(getString(R.string.mapbox_access_token));
+
+        binding.selectLocationButton.setOnClickListener(view -> {
+
+            if (mapboxAccessToken.equals("YOUR_ACCESS_TOKEN")) {
+                ViewUtils.showSnackbar(binding.getRoot(), R.string.access_token_required);
+                return;
+            }
+
+            PlaceAutocompleteFragment autocompleteFragment = PlaceAutocompleteFragment.newInstance(
+                mapboxAccessToken, PlaceOptions.builder().backgroundColor(Color.WHITE).build());
+
+            getFragmentManager().beginTransaction()
+                .replace(R.id.fragment, autocompleteFragment)
+                .addToBackStack(null)
+                .commit();
+
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(CarmenFeature carmenFeature) {
+                    Event event = binding.getEvent();
+                    event.setLatitude(carmenFeature.center().latitude());
+                    event.setLongitude(carmenFeature.center().longitude());
+                    event.setLocationName(carmenFeature.placeName());
+                    event.setSearchableLocationName(carmenFeature.text());
+                    binding.layoutLocationName.setVisibility(View.VISIBLE);
+                    binding.locationName.setText(event.getLocationName());
+                    getFragmentManager().popBackStack();
+                }
+
+                @Override
+                public void onCancel() {
+                    getFragmentManager().popBackStack();
+                }
+            });
         });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
-            //once place is picked from map, make location fields visible for confirmation by user
-            showLocationLayouts();
-            //set event attributes
-            Location location = locationPicker.getPlace(getActivity(), data);
-            Event event = binding.getEvent();
-            event.latitude = location.getLatitude();
-            event.longitude = location.getLongitude();
-
-            //auto-complete location fields for confirmation by user
-            binding.locationName.setText(location.getAddress());
-            binding.searchableLocationName.setText(
-                createEventViewModel.getSearchableLocationName(location.getAddress().toString()));
-        }
-    }
-
-    private void showLocationLayouts() {
-        binding.layoutSearchableLocation.setVisibility(View.VISIBLE);
-        binding.layoutLocationName.setVisibility(View.VISIBLE);
     }
 
     @Override

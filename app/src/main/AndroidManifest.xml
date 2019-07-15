@@ -19,12 +19,12 @@
         <provider
             android:name="com.eventyay.organizer.OrgaProvider"
             android:authorities="${applicationId}.com.eventyay.organizer"
-            android:exported="false"/>
+            android:exported="false" />
         <!-- TODO: Current approach for resolving Toolbar issues is just a workaround -->
         <activity
             android:name="com.eventyay.organizer.core.auth.AuthActivity"
-            android:theme="@style/SplashTheme"
             android:label="${appName}"
+            android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,9 +38,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="@string/FRONTEND_HOST"
-                    android:pathPrefix="/reset-password" />
+                    android:pathPrefix="/reset-password"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
@@ -49,14 +49,14 @@
         <activity
             android:name="com.eventyay.organizer.core.main.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.Main.Light"/>
+            android:theme="@style/AppTheme.Main.Light" />
         <activity
             android:name="com.eventyay.organizer.core.event.chart.ChartActivity"
-            android:theme="@style/AppTheme.Main.Light"/>
+            android:theme="@style/AppTheme.Main.Light" />
         <activity
             android:name="com.eventyay.organizer.core.event.about.AboutEventActivity"
             android:label="@string/title_activity_about_event"
-            android:theme="@style/AppTheme.Main.Light"/>
+            android:theme="@style/AppTheme.Main.Light" />
         <activity
             android:name="com.eventyay.organizer.core.event.create.CreateEventActivity"
             android:label="@string/create_event"
@@ -72,22 +72,28 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="@string/FRONTEND_HOST"
-                    android:pathPrefix="/verify" />
+                    android:pathPrefix="/verify"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
-        <activity android:name="com.eventyay.organizer.core.speaker.details.SpeakerDetailsActivity"
+        <activity
+            android:name="com.eventyay.organizer.core.speaker.details.SpeakerDetailsActivity"
             android:label="@string/speaker_details_activity"
-            android:theme="@style/AppTheme.Main"/>
-        <activity android:name=".ui.editor.RichEditorActivity"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".ui.editor.RichEditorActivity"
             android:label=""
-            android:theme="@style/AppTheme.Main.Light"/>
+            android:theme="@style/AppTheme.Main.Light" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${GOOGLE_PLACES_API_KEY}"/>
+            android:value="${GOOGLE_PLACES_API_KEY}" />
+
+        <meta-data
+            android:name="@string/mapbox_access_token"
+            android:value="${MAPBOX_ACCESS_TOKEN}" />
     </application>
 
 </manifest>
