@@ -30,6 +30,8 @@ public class RoleListAdapter extends RecyclerView.Adapter<RoleViewHolder> {
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.role_item, viewGroup, false), roleListViewModel);
 
+        roleViewHolder.setLongClickAction(roleListViewModel::onLongSelect);
+
         return roleViewHolder;
     }
 
