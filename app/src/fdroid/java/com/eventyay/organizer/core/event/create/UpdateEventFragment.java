@@ -43,6 +43,10 @@ import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.ui.editor.RichEditorActivity;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -70,11 +74,9 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     private ArrayAdapter<CharSequence> timezoneAdapter;
     private long eventId = -1;
     private int countryIndex = -1;
-    private final LocationPicker locationPicker = new LocationPicker();
 
-    private static final int PLACE_PICKER_REQUEST = 1;
-    private static final int RICH_TEXT_REQUEST = 2;
-    private static final int IMAGE_CHOOSER_REQUEST_CODE = 3;
+    private static final int RICH_TEXT_REQUEST = 1;
+    private static final int IMAGE_CHOOSER_REQUEST_CODE = 2;
     private CreateEventViewModel createEventViewModel;
 
     public static UpdateEventFragment newInstance() {
@@ -135,7 +137,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         attachCountryList(createEventViewModel.getCountryList());
         attachCurrencyCodesList(createEventViewModel.getCurrencyCodesList());
 
-        setupPlacePicker();
+        setupPlacesAutocomplete();
 
         return binding.getRoot();
     }
@@ -301,48 +303,58 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         return Arrays.asList(getResources().getStringArray(R.array.timezones));
     }
 
-    private void setupPlacePicker() {
-        //check if there's an google places API key
-        try {
-            ApplicationInfo ai = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
-            Bundle bundle = ai.metaData;
-            String placesApiKey = bundle.getString("com.google.android.geo.API_KEY");
-            if ("YOUR_API_KEY".equals(placesApiKey)) {
-                Timber.d("Add Google Places API key in AndroidManifest.xml file to use Place Picker.");
-                binding.form.buttonPlacePicker.setVisibility(View.GONE);
-                showLocationLayouts();
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Timber.e(e, "Package name not found");
-        }
+    private void setupPlacesAutocomplete() {
 
-        binding.form.buttonPlacePicker.setOnClickListener(view -> {
-            boolean success = locationPicker.launchPicker(getActivity());
-            if (locationPicker.shouldShowLocationLayout() || !success)
-                showLocationLayouts();
+        ApplicationInfo applicationInfo = null;
+        try {
+            applicationInfo = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            Timber.e(e);
+        }
+        Bundle bundle = applicationInfo.metaData;
+
+        String mapboxAccessToken = bundle.getString(getString(R.string.mapbox_access_token));
+
+        binding.form.selectLocationButton.setOnClickListener(view -> {
+
+            if (mapboxAccessToken.equals("YOUR_ACCESS_TOKEN")) {
+                ViewUtils.showSnackbar(binding.getRoot(), R.string.access_token_required);
+                return;
+            }
+
+            PlaceAutocompleteFragment autocompleteFragment = PlaceAutocompleteFragment.newInstance(
+                mapboxAccessToken, PlaceOptions.builder().backgroundColor(Color.WHITE).build());
+
+            getFragmentManager().beginTransaction()
+                .replace(R.id.fragment, autocompleteFragment)
+                .addToBackStack(null)
+                .commit();
+
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(CarmenFeature carmenFeature) {
+                    Event event = binding.getEvent();
+                    event.setLatitude(carmenFeature.center().latitude());
+                    event.setLongitude(carmenFeature.center().longitude());
+                    event.setLocationName(carmenFeature.placeName());
+                    event.setSearchableLocationName(carmenFeature.text());
+                    binding.form.layoutLocationName.setVisibility(View.VISIBLE);
+                    binding.form.locationName.setText(event.getLocationName());
+                    getFragmentManager().popBackStack();
+                }
+
+                @Override
+                public void onCancel() {
+                    getFragmentManager().popBackStack();
+                }
+            });
         });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
-            //once place is picked from map, make location fields visible for confirmation by user
-            showLocationLayouts();
-            //set event attributes
-
-            Location location = locationPicker.getPlace(getActivity(), data);
-
-            Event event = binding.getEvent();
-            event.latitude = location.getLatitude();
-            event.longitude = location.getLongitude();
-            //auto-complete location fields for confirmation by user
-
-            binding.form.locationName.setText(location.getAddress());
-            binding.form.searchableLocationName.setText(
-                createEventViewModel.getSearchableLocationName(location.getAddress().toString())
-            );
-        } else if (requestCode == RICH_TEXT_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == RICH_TEXT_REQUEST && resultCode == RESULT_OK) {
             String description = data.getStringExtra(TAG_RICH_TEXT);
             if (!TextUtils.isEmpty(description)) {
                 createEventViewModel.getEvent().setDescription(description);
@@ -363,11 +375,6 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
                 Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void showLocationLayouts() {
-        binding.form.layoutSearchableLocation.setVisibility(View.VISIBLE);
-        binding.form.layoutLocationName.setVisibility(View.VISIBLE);
     }
 
     @Override
