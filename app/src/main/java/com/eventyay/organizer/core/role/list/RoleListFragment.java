@@ -1,8 +1,10 @@
 package com.eventyay.organizer.core.role.list;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -11,7 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -42,6 +48,9 @@ public class RoleListFragment extends BaseFragment implements RoleListView {
     private RoleListAdapter rolesAdapter;
     private RolesFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
+    private ActionMode actionMode;
+    private int statusBarColor;
+    private AlertDialog deleteDialog;
 
     private RoleListViewModel roleListViewModel;
 
@@ -69,7 +78,10 @@ public class RoleListFragment extends BaseFragment implements RoleListView {
         binding = DataBindingUtil.inflate(inflater, R.layout.roles_fragment, container, false);
         roleListViewModel = ViewModelProviders.of(this, viewModelFactory).get(RoleListViewModel.class);
 
-        binding.createRoleFab.setOnClickListener(v -> openRoleInviteFragment());
+        binding.createRoleFab.setOnClickListener(v -> {
+            roleListViewModel.resetToDefaultState();
+            openRoleInviteFragment();
+        });
 
         return binding.getRoot();
     }
@@ -83,6 +95,8 @@ public class RoleListFragment extends BaseFragment implements RoleListView {
         roleListViewModel.getSuccess().observe(this, this::showMessage);
         roleListViewModel.getError().observe(this, this::showError);
         roleListViewModel.getRolesLiveData().observe(this, this::showResults);
+        roleListViewModel.getExitContextualMenuModeLiveData().observe(this, (exitContextualMenuMode) -> exitContextualMenuMode());
+        roleListViewModel.getEnterContextualMenuModeLiveData().observe(this, (enterContextualMenuMode) -> enterContextualMenuMode());
         roleListViewModel.loadRoles(false);
         roleListViewModel.listenChanges();
     }
@@ -119,6 +133,78 @@ public class RoleListFragment extends BaseFragment implements RoleListView {
             .replace(R.id.fragment_container, RoleInviteFragment.newInstance(eventId))
             .addToBackStack(null)
             .commit();
+    }
+
+    public ActionMode.Callback actionCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_roles, menu);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // Hold current color of status bar
+                statusBarColor = getActivity().getWindow().getStatusBarColor();
+                // Set the default color
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.color_top_surface));
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.delete:
+                    showDeleteDialog();
+                    break;
+                default:
+                    return false;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode.finish();
+            roleListViewModel.resetToDefaultState();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // Return to old color of status bar
+                getActivity().getWindow().setStatusBarColor(statusBarColor);
+            }
+        }
+    };
+
+    public void showDeleteDialog() {
+        if (deleteDialog == null)
+            deleteDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.delete)
+                .setMessage(String.format(getString(R.string.delete_confirmation_message),
+                    getString(R.string.roles)))
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    roleListViewModel.deleteSelectedRole();
+                    roleListViewModel.resetToDefaultState();
+                    exitContextualMenuMode();
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create();
+
+        deleteDialog.show();
+    }
+
+    @Override
+    public void enterContextualMenuMode() {
+        actionMode = getActivity().startActionMode(actionCallback);
+    }
+
+    @Override
+    public void exitContextualMenuMode() {
+        if (actionMode != null)
+            actionMode.finish();
     }
 
     @Override
