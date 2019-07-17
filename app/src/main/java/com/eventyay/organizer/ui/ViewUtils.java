@@ -13,6 +13,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -116,5 +118,13 @@ public final class ViewUtils {
         } else {
             Timber.e("Fragment %s is not attached to any Activity", fragment);
         }
+    }
+
+    public static float dpToPx(Context context, int dp) {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            context.getResources().getDisplayMetrics()
+        );
     }
 }

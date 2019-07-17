@@ -25,6 +25,7 @@ import com.eventyay.organizer.core.notification.list.NotificationsFragment;
 import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.databinding.EventListFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.google.android.material.appbar.AppBarLayout;
 
 import javax.inject.Inject;
 
@@ -36,6 +37,9 @@ import static com.eventyay.organizer.core.event.list.EventsViewModel.SORTBYNAME;
  *
  */
 public class EventListFragment extends BaseFragment implements EventsView {
+
+    private static final int ACTION_BAR_ELEVATION = 4;
+
     @Inject
     ContextUtils utilModel;
 
@@ -46,6 +50,7 @@ public class EventListFragment extends BaseFragment implements EventsView {
 
     private EventListFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
+    private AppBarLayout appBarLayout;
 
     public static final String[] EVENT_TYPE = {"live", "past", "draft"};
     public static final String POSITION = "position";
@@ -59,6 +64,8 @@ public class EventListFragment extends BaseFragment implements EventsView {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.event_list_fragment, container, false);
+
+        appBarLayout = getActivity().findViewById(R.id.main_app_bar);
 
         eventsViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EventsViewModel.class);
         eventsViewModel.getSuccess().observe(this, this::onRefreshComplete);
@@ -110,6 +117,8 @@ public class EventListFragment extends BaseFragment implements EventsView {
     public void onStart() {
         super.onStart();
         setupRefreshListener();
+        appBarLayout.setElevation(0);
+        appBarLayout.setStateListAnimator(null);
     }
 
     @Override
@@ -135,6 +144,7 @@ public class EventListFragment extends BaseFragment implements EventsView {
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
+        appBarLayout.setElevation(ViewUtils.dpToPx(getContext(), ACTION_BAR_ELEVATION));
     }
 
     private void setupRefreshListener() {
