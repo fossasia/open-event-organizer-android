@@ -1,5 +1,7 @@
 package com.eventyay.organizer.data.role;
 
+import androidx.annotation.NonNull;
+
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.RateLimiter;
 import com.eventyay.organizer.data.Repository;
@@ -8,6 +10,7 @@ import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -57,5 +60,20 @@ public class RoleRepositoryImpl implements RoleRepository {
             .withDiskObservable(diskObservable)
             .withNetworkObservable(networkObservable)
             .build();
+    }
+
+    @NonNull
+    @Override
+    public Completable deleteRole(long roleInviteId) {
+        if (!repository.isConnected()) {
+            return Completable.error(new Throwable(Constants.NO_NETWORK));
+        }
+
+        return roleApi.deleteRole(roleInviteId)
+            .doOnComplete(() -> repository
+                .delete(Role.class, RoleInvite_Table.id.eq(roleInviteId))
+                .subscribe())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 }
