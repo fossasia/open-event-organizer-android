@@ -1,26 +1,8 @@
 package com.eventyay.organizer.core.attendee.list;
 
 import android.content.Context;
-
-import androidx.databinding.DataBindingUtil;
-
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-
-import com.eventyay.organizer.BR;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.ItemTouchHelper;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +10,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.SearchView;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.eventyay.organizer.BR;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.attendee.ScanningDecider;
@@ -39,6 +34,7 @@ import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.databinding.FragmentAttendeesBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.SearchUtils;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.utils.ComparableItemListImpl;
@@ -58,6 +54,10 @@ import javax.inject.Inject;
 @SuppressWarnings("PMD.TooManyMethods")
 public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
+    private static final int SORTBYTICKET = 1;
+    private static final int SORTBYNAME = 0;
+    private static final long ITEMS_PER_PAGE = 20;
+
     private Context context;
 
     private long eventId;
@@ -67,9 +67,6 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-
-    private static final int SORTBYTICKET = 1;
-    private static final int SORTBYNAME = 0;
 
     private FastAdapter<Attendee> fastAdapter;
 
@@ -261,8 +258,13 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
                     binding.fabScanQr.hide();
 
                 if (!recyclerView.canScrollVertically(1)) {
+
+                    if (recyclerView.getAdapter().getItemCount() > currentPage * ITEMS_PER_PAGE) {
+                        currentPage++;
+                    } else {
                         currentPage++;
                         attendeesViewModel.loadAttendeesPageWise(currentPage, true);
+                    }
                 }
             }
 
@@ -297,14 +299,8 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
             refreshLayout.setRefreshing(false);
             attendeeList.clear();
             attendeesViewModel.loadAttendeesPageWise(FIRST_PAGE, true);
+            currentPage = FIRST_PAGE;
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        attendeeList.clear();
-        attendeesViewModel.loadAttendeesPageWise(FIRST_PAGE, false);
     }
 
     // View Implementation
