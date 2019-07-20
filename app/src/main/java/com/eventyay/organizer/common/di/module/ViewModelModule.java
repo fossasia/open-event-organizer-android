@@ -28,6 +28,7 @@ import com.eventyay.organizer.core.notification.list.NotificationsViewModel;
 import com.eventyay.organizer.core.orders.create.CreateOrderViewModel;
 import com.eventyay.organizer.core.orders.detail.OrderDetailViewModel;
 import com.eventyay.organizer.core.orders.list.OrdersViewModel;
+import com.eventyay.organizer.core.orders.onsite.CreateAttendeesViewModel;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailViewModel;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
@@ -251,6 +252,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateSessionViewModel.class)
     public abstract ViewModel bindCreateSessionViewModel(CreateSessionViewModel createSessionViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateAttendeesViewModel.class)
+    public abstract ViewModel bindCreateAttendeesViewModel(CreateAttendeesViewModel createAttendeesViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);

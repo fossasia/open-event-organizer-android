@@ -13,7 +13,7 @@ import retrofit2.http.Path;
 
 public interface OrderApi {
 
-    @POST("orders?onsite=true")
+    @POST("orders")
     Observable<Order> postOrder(@Body Order order);
 
     @GET("events/{id}/orders?include=event&fields[event]=id&page[size]=0")

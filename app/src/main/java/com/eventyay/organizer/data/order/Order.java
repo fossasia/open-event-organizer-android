@@ -1,5 +1,6 @@
 package com.eventyay.organizer.data.order;
 
+import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.ticket.OnSiteTicket;
@@ -70,6 +71,9 @@ public class Order {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonSerialize(using= OnSiteTicketSerializer.class)
     public List<OnSiteTicket> onSiteTickets;
+
+    /*@Relationship("attendees")
+    public List<Attendee> attendees;*/
 
     public Order() { }
 }

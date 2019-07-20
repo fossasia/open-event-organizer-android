@@ -17,6 +17,7 @@ import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.core.orders.create.adapter.CreateOrderTicketsAdapter;
+import com.eventyay.organizer.core.orders.onsite.CreateAttendeesFragment;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.databinding.OrderCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
@@ -67,7 +68,13 @@ public class CreateOrderFragment extends BaseFragment implements CreateOrderView
 
         createOrderViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateOrderViewModel.class);
         binding.clearButton.setOnClickListener(view -> createOrderViewModel.clearSelectedTickets());
-        binding.submit.setOnClickListener(view -> createOrderViewModel.createOnSiteOrder(eventId));
+        binding.submit.setOnClickListener(view -> {
+            getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, CreateAttendeesFragment.newInstance(eventId))
+                .addToBackStack(null)
+                .commit();
+            }
+        );
 
         return binding.getRoot();
     }

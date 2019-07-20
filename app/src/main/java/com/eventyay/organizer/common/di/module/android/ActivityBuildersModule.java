@@ -10,6 +10,7 @@ import com.eventyay.organizer.core.event.create.EventDetailsStepTwo;
 import com.eventyay.organizer.core.event.create.UpdateEventFragment;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.core.orders.create.CreateOrderFragment;
+import com.eventyay.organizer.core.orders.onsite.CreateAttendeesFragment;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity;
 import com.eventyay.organizer.core.speaker.details.SpeakerDetailsActivity;
 import com.eventyay.organizer.core.speaker.details.SpeakerDetailsFragment;
@@ -63,4 +64,6 @@ public abstract class ActivityBuildersModule {
     @ContributesAndroidInjector
     abstract CreateOrderFragment contributeCreateOrderFragment();
 
+    @ContributesAndroidInjector
+    abstract CreateAttendeesFragment contributeCreateAttendeesFragment();
 }

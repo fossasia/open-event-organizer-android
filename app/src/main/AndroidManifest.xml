@@ -9,20 +9,21 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="com.eventyay.organizer.OrgaApplication"
+        android:name=".OrgaApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="${appName}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="allowBackup, android:label">
+        <activity android:name=".core.orders.onsite.CreateAttendeesFragment"></activity>
+
         <provider
-            android:name="com.eventyay.organizer.OrgaProvider"
+            android:name=".OrgaProvider"
             android:authorities="${applicationId}.com.eventyay.organizer"
-            android:exported="false" />
-        <!-- TODO: Current approach for resolving Toolbar issues is just a workaround -->
+            android:exported="false" /> <!-- TODO: Current approach for resolving Toolbar issues is just a workaround -->
         <activity
-            android:name="com.eventyay.organizer.core.auth.AuthActivity"
+            android:name=".core.auth.AuthActivity"
             android:label="${appName}"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden|adjustResize">
@@ -44,25 +45,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.eventyay.organizer.core.attendee.qrscan.ScanQRActivity"
+            android:name=".core.attendee.qrscan.ScanQRActivity"
             android:theme="@style/AppTheme.Main" />
         <activity
-            android:name="com.eventyay.organizer.core.main.MainActivity"
+            android:name=".core.main.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.Main.Light" />
         <activity
-            android:name="com.eventyay.organizer.core.event.chart.ChartActivity"
+            android:name=".core.event.chart.ChartActivity"
             android:theme="@style/AppTheme.Main.Light" />
         <activity
-            android:name="com.eventyay.organizer.core.event.about.AboutEventActivity"
+            android:name=".core.event.about.AboutEventActivity"
             android:label="@string/title_activity_about_event"
             android:theme="@style/AppTheme.Main.Light" />
         <activity
-            android:name="com.eventyay.organizer.core.event.create.CreateEventActivity"
+            android:name=".core.event.create.CreateEventActivity"
             android:label="@string/create_event"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity"
+            android:name=".core.organizer.detail.OrganizerDetailActivity"
             android:label="@string/title_activity_organizer_detail"
             android:theme="@style/AppTheme.Main.Light">
             <intent-filter>
@@ -77,9 +78,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.eventyay.organizer.core.speaker.details.SpeakerDetailsActivity"
+            android:name=".core.speaker.details.SpeakerDetailsActivity"
             android:label="@string/speaker_details_activity"
             android:theme="@style/AppTheme.Main" />
         <activity
@@ -90,7 +90,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${GOOGLE_PLACES_API_KEY}" />
-
         <meta-data
             android:name="@string/mapbox_access_token"
             android:value="${MAPBOX_ACCESS_TOKEN}" />

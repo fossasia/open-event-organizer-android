@@ -95,33 +95,6 @@ public class CreateOrderViewModel extends ViewModel {
         }
     }
 
-    public void createOnSiteOrder(long eventId) {
-        Order order = new Order();
-        Event event = new Event();
-        event.setId(eventId);
-        order.setEvent(event);
-        order.setAmount(orderAmount.getValue());
-
-        for (Long ticketId : onSiteTicketsMap.keySet()) {
-            OnSiteTicket onSiteTicket = new OnSiteTicket();
-            onSiteTicket.setId(ticketId);
-            onSiteTicket.setQuantity(onSiteTicketsMap.get(ticketId).get());
-            onSiteTicketsList.add(onSiteTicket);
-        }
-
-        order.setOnSiteTickets(onSiteTicketsList);
-
-        compositeDisposable.add(orderRepository.createOrder(order)
-            .compose(dispose(compositeDisposable))
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> {
-                clearSelectedTickets();
-                progress.setValue(false);
-            })
-            .subscribe(createdOrder -> success.setValue("Order created successfully"),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
-    }
-
     public void clearSelectedTickets() {
         for (Long ticketId : onSiteTicketsMap.keySet()) {
             onSiteTicketsMap.get(ticketId).set(0L);
