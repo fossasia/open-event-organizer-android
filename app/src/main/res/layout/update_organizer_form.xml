@@ -50,7 +50,7 @@
                     android:id="@+id/organizer_firstname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/first_name"
+                    android:hint="@string/name"
                     android:text="@={ user.firstName }" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -77,7 +77,7 @@
                     android:id="@+id/organizer_lastname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/last_name"
+                    android:hint="@string/family_name"
                     android:text="@={ user.lastName }" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -135,213 +135,9 @@
                     android:id="@+id/contact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/contact"
+                    android:hint="@string/phone"
                     android:text="@={user.contact}"
                     android:inputType="number" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_link" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/holder_thumbnail_image_url"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/thumbnail_image_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/thumbnail_image"
-                    android:text="@={user.thumbnailImageUrl}"
-                    android:inputType="textWebEmailAddress|textMultiLine"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_link" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/holder_icon_image_url"
-                android:padding="@dimen/spacing_extra_small">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/icon_image_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/icon_image_url"
-                    android:inputType="textWebEmailAddress|textMultiLine"
-                    android:text="@={user.iconImageUrl}" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_facebook" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/holder_facebook_url"
-                android:padding="@dimen/spacing_extra_small">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/facebook_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/facebook_url"
-                    android:inputType="textMultiLine"
-                    android:text="@={user.facebookUrl}"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_instagram" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/holder_instragram_url"
-                android:padding="@dimen/spacing_extra_small">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/instragram_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/instagram_url"
-                    android:inputType="textMultiLine"
-                    android:text="@={user.instagramUrl}"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_link" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/holder_avatar_url"
-                android:padding="@dimen/spacing_extra_small">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/avatar_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/avatar_url"
-                    android:inputType="textMultiLine"
-                    android:text="@={user.avatarUrl}"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_twitter" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/holder_twitter_url"
-                android:padding="@dimen/spacing_extra_small">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/twitter_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/twitter_url"
-                    android:inputType="textMultiLine"
-                    android:text="@={user.twitterUrl}"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/spacing_extra_large">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_extra_small"
-                app:srcCompat="@drawable/ic_google_plus" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/holder_google_plus_url"
-                android:padding="@dimen/spacing_extra_small">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/google_plus_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/google_plus_url"
-                    android:inputType="textMultiLine"
-                    android:text="@={user.googlePlusUrl}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
