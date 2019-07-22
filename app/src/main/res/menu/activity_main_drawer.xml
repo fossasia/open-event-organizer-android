@@ -118,10 +118,10 @@
             android:title="@string/device_settings"
             android:checkable="true"/>
 
-        <item
+        <!--<item
             android:id="@+id/nav_suggestion"
             android:icon="@drawable/ic_feedback"
-            android:title="@string/nav_suggestions"/>
+            android:title="@string/nav_suggestions"/>-->
 
         <item
             android:id="@+id/nav_logout"
