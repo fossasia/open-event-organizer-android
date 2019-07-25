@@ -50,4 +50,7 @@
     <dimen name="submit_button_width">56dp</dimen>
     <dimen name="event_image_height">200dp</dimen>
 
+    <!-- Overriding value of mini size of FAB -->
+    <dimen name="design_fab_size_mini">30dp</dimen>
+
 </resources>

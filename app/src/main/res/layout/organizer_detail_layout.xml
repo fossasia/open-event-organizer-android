@@ -23,16 +23,38 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/profile_picture"
-                android:layout_width="@dimen/avatar_size"
-                android:layout_height="@dimen/avatar_size"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/spacing_medium"
-                android:contentDescription="@string/profile_picture"
-                android:scaleType="centerCrop"
-                app:circleImageUrl="@{ user.avatarUrl }"
-                app:placeholder="@{ @drawable/ic_account_circle }" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/profile_picture"
+                        android:layout_width="@dimen/avatar_size"
+                        android:layout_height="@dimen/avatar_size"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/spacing_medium"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:padding="@dimen/spacing_normal"
+                        android:contentDescription="@string/profile_picture"
+                        android:scaleType="centerCrop"
+                        app:circleImageUrl="@{ user.avatarUrl }"
+                        app:placeholder="@{ @drawable/ic_account_circle }" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/delete_profile_picture"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/text_size_large"
+                        app:fabSize="mini"
+                        android:backgroundTint="@color/material_red"
+                        app:layout_constraintRight_toRightOf="@id/profile_picture"
+                        app:layout_constraintBottom_toBottomOf="@id/profile_picture"
+                        android:visibility="@{ user.avatarUrl != null ? View.VISIBLE : View.GONE }"
+                        app:srcCompat="@drawable/ic_delete_white" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
