@@ -134,4 +134,9 @@ public class OrganizerDetailViewModel extends ViewModel {
             return userRepository.getOrganizer(forceReload);
         }
     }
+
+    public void deleteProfilePicture() {
+        user.setAvatarUrl(null);
+        updateOrganizer();
+    }
 }
