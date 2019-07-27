@@ -15,4 +15,8 @@ public interface RoleListView {
     void showResults(List<RoleInvite> items);
 
     void showEmptyView(boolean show);
+
+    void exitContextualMenuMode();
+
+    void enterContextualMenuMode();
 }

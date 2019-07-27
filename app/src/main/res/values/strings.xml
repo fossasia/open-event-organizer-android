@@ -402,6 +402,14 @@
     <string name="no">No</string>
     <string name="my_account">My Account</string>
     <string name="start_scanning_again">Start scanning again</string>
+    <string name="play_sounds">Play sounds</string>
+    <string name="play_sounds_key">play_sounds</string>
+    <string name="play_sound_on_check_in_out">Play sound on check-in and check-out</string>
+    <string name="select_location">Select Location</string>
+    <string name="mapbox_access_token">Mapbox Access Token</string>
+    <string name="access_token_required">A valid access token is required</string>
+    <string name="family_name">Family Name</string>
+    <string name="phone">Phone</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

@@ -1,5 +1,6 @@
 package com.eventyay.organizer.core.organizer.detail;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -47,8 +48,12 @@ import static android.app.Activity.RESULT_OK;
 
 public class OrganizerDetailFragment extends BaseFragment implements OrganizerDetailView {
 
+    private static final String TOKEN_KEY = "token";
+
     private OrganizerDetailFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
+
+    private String token;
 
     @Inject
     ContextUtils utilModel;
@@ -61,6 +66,22 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
     public static final String INFO_FRAGMENT_TAG = "info";
 
     private static final int IMAGE_CHOOSER_REQUEST_CODE = 3;
+
+    public static OrganizerDetailFragment newInstance(String token) {
+        OrganizerDetailFragment fragment = new OrganizerDetailFragment();
+        Bundle args = new Bundle();
+        args.putString(TOKEN_KEY, token);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null)
+            token = getArguments().getString(TOKEN_KEY);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -152,6 +173,11 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
         organizerDetailViewModel.getError().observe(this, this::showError);
         organizerDetailViewModel.getUserLiveData().observe(this, this::setUser);
         binding.setUser(organizerDetailViewModel.getUser());
+
+        if (token != null) {
+            organizerDetailViewModel.setToken(token);
+            organizerDetailViewModel.verifyMail();
+        }
     }
 
     @Override

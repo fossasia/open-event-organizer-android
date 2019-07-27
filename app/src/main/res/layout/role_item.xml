@@ -20,7 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_small"
-        android:padding="@dimen/spacing_normal">
+        android:padding="@dimen/spacing_normal"
+        android:backgroundTint="@{ roleListViewModel.getRoleSelected(role) ? @color/blue_200 : 0 }">
 
         <LinearLayout
             android:layout_width="match_parent"

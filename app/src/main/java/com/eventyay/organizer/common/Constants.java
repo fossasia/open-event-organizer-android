@@ -26,6 +26,7 @@ public final class Constants {
     public static final String PREF_SCAN_WILL_CHECK_OUT = "check_out";
     public static final String PREF_SCAN_WILL_VALIDATE = "validate";
     public static final String PREF_USER_EMAIL = "user_email";
+    public static final String PREF_PLAY_SOUNDS = "play_sounds";
 
     private Constants() {
         // Never Called

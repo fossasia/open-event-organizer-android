@@ -8,6 +8,7 @@ apply plugin: "com.github.b3er.local.properties"
 
 def app_name = System.getenv('app_name') ?: "Eventyay Organizer"
 def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
+def MAPBOX_ACCESS_TOKEN = System.getenv('MAPBOX_ACCESS_TOKEN') ?: "YOUR_ACCESS_TOKEN"
 
 def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
 
@@ -27,13 +28,14 @@ android {
         applicationId "com.eventyay.organizer"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 14
-        versionName "1.4.0"
+        versionCode 15
+        versionName "1.5.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
             appName: app_name,
-            GOOGLE_PLACES_API_KEY: GOOGLE_PLACES_API_KEY
+            GOOGLE_PLACES_API_KEY: GOOGLE_PLACES_API_KEY,
+            MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN
         ]
     }
 
@@ -63,6 +65,7 @@ android {
 
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://api.eventyay.com/v1/"'
             resValue "string", "default_base_url", '"https://api.eventyay.com/v1/"'
+            resValue "string", "FRONTEND_HOST", "eventyay.com"
 
             if (LOCAL_KEY_PRESENT || TRAVIS_BUILD)
                 signingConfig signingConfigs.release
@@ -71,6 +74,7 @@ android {
             testCoverageEnabled = true
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://open-event-api-dev.herokuapp.com/v1/"'
             resValue "string", "default_base_url", '"https://open-event-api-dev.herokuapp.com/v1/"'
+            resValue "string", "FRONTEND_HOST", "open-event-fe.netlify.com"
         }
     }
 
@@ -144,7 +148,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0-rc01"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0-beta01"
-    implementation "com.google.android.material:material:1.1.0-alpha07"
+    implementation "com.google.android.material:material:1.1.0-alpha08"
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.palette:palette:1.0.0"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
@@ -190,7 +194,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
     implementation 'com.github.jasminb:jsonapi-converter:0.9'
 
     // RxJava
@@ -255,6 +259,9 @@ dependencies {
     // QR Code Scanner
     fdroidImplementation 'com.github.blikoon:QRCodeScanner:0.1.2'
 
+    // Mapbox
+    fdroidImplementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v8:0.9.0'
+
     //Testing
     androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -265,7 +272,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-core-utils'
     })
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-inline:2.28.2'
+    testImplementation 'org.mockito:mockito-inline:3.0.0'
     testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"

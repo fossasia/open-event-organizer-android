@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
+import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
@@ -30,6 +31,7 @@ public class AttendeesViewModel extends ViewModel {
 
     private final AttendeeRepository attendeeRepository;
     private final DatabaseChangeListener<Attendee> attendeeListener;
+    private final Preferences preferences;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final List<Attendee> attendeeList = new ArrayList<>();
@@ -40,14 +42,14 @@ public class AttendeesViewModel extends ViewModel {
     private final SingleEventLiveData<Boolean> showScanButtonLiveData = new SingleEventLiveData<>();
     private final SingleEventLiveData<Attendee> updateAttendeeLiveData = new SingleEventLiveData<>();
 
-    private final long FIRST_PAGE = 1;
-
     private long eventId;
 
     @Inject
-    public AttendeesViewModel(AttendeeRepository attendeeRepository, DatabaseChangeListener<Attendee> attendeeListener) {
+    public AttendeesViewModel(AttendeeRepository attendeeRepository, DatabaseChangeListener<Attendee> attendeeListener,
+                              Preferences preferences) {
         this.attendeeRepository = attendeeRepository;
         this.attendeeListener = attendeeListener;
+        this.preferences = preferences;
 
         eventId = ContextManager.getSelectedEvent().getId();
     }
@@ -74,6 +76,10 @@ public class AttendeesViewModel extends ViewModel {
 
     public List<Attendee> getAttendees() {
         return attendeeList;
+    }
+
+    public Preferences getPreferences() {
+        return preferences;
     }
 
     public void loadAttendees(boolean forceReload) {
@@ -137,7 +143,6 @@ public class AttendeesViewModel extends ViewModel {
             .map(DbFlowDatabaseChangeListener.ModelChange::getModel)
             .flatMap(filterAttendee -> attendeeRepository.getAttendee(filterAttendee.getId(), false))
             .subscribe(attendee -> {
-                loadAttendeesPageWise(FIRST_PAGE, false);
                 updateAttendeeLiveData.setValue(attendee);
                 updateLocal(attendee);
             }, Logger::logError);

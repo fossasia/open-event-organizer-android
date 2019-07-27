@@ -7,7 +7,7 @@
 [![Codacy Grade](https://img.shields.io/codacy/grade/d6ae120356c94c0d94d6449ec540f520.svg)](https://www.codacy.com/app/mb/open-event-organizer-android)
 [![Codecov Coverage](https://img.shields.io/codecov/c/github/fossasia/open-event-organizer-android/development.svg)](https://codecov.io/gh/fossasia/open-event-organizer-android)
 [![Appetize Preview](https://img.shields.io/badge/Preview-appetize.io-673AB7.svg)](https://appetize.io/app/w8v8z7pc9aewargb2uuyf108f0)
-[![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg)](https://gitter.im/fossasia/open-event-orga-app)
+[![Gitter](https://img.shields.io/badge/chat-on%20gitter-ff006f.svg)](https://gitter.im/fossasia/open-event-organizer-android)
 [![Twitter Follow](https://img.shields.io/twitter/follow/eventyay.svg?style=social&label=Follow&maxAge=2592000?style=flat-square)](https://twitter.com/eventyay)
 
 Event management app for organizers using Open Event Platform
@@ -25,7 +25,7 @@ Currently, the application is released in alpha phase and available here:
 [Google Play](https://play.google.com/store/apps/details?id=com.eventyay.organizer) and [F-Droid](https://f-droid.org/en/packages/com.eventyay.organizer/).
 
 <a href='https://play.google.com/store/apps/details?id=com.eventyay.organizer'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80"/></a>
-<a href='https://f-droid.org/en/packages/com.eventyay.organizer/'><img alt='Get it on F-Droid' src='https://f-droid.org/assets/fdroid-logo.svg' height="80"/></a>
+<a href='https://f-droid.org/en/packages/com.eventyay.organizer/'><img alt='Get it on F-Droid' src='https://fdroid.gitlab.io/artwork/badge/get-it-on.png' height="80"/></a>
 
 ## Roadmap
 
@@ -44,19 +44,19 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 <table>
   <tr>
-    <td><img src="docs/images/login.png"></td>
-    <td><img src="docs/images/dashboard_one.png"></td>
-    <td><img src="docs/images/dashboard_two.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/login.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard_one.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard_two.png"></td>
   </tr>
     <tr>
     <td><img src="docs/images/attendees.png"></td>
-    <td><img src="docs/images/checkin.png"></td>
-    <td><img src="docs/images/order_checkin.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/checkin.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/order_checkin.png"></td>
   </tr>
   <tr>
-    <td><img src="docs/images/create_ticket.png"></td>
-    <td><img src="docs/images/navigation.png"></td>
-    <td><img src="docs/images/organizer.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/create_ticket.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/navigation.png"></td>
+    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/organizer.png"></td>
   </tr>
 </table>
 

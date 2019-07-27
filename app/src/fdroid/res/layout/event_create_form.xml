@@ -236,44 +236,13 @@
                         android:textStyle="bold" />
 
                     <Button
-                        android:id="@+id/button_place_picker"
+                        android:id="@+id/select_location_button"
                         style="?attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_extra_small"
-                        android:text="@string/pick_from_map"
+                        android:text="@string/select_location"
                         android:textColor="@color/purple_500" />
-
-                    <LinearLayout
-                        android:id="@+id/layout_searchable_location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/searchable_location_name"
-                            android:padding="@dimen/spacing_extra_small"
-                            app:srcCompat="@drawable/ic_location" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/spacing_extra_small">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/searchable_location_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/searchable_location_name"
-                                android:inputType="textMultiLine"
-                                android:text="@={ event.searchableLocationName }" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/layout_location_name"
@@ -281,6 +250,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
+                        android:padding="@dimen/spacing_extra_small"
                         android:visibility="gone">
 
                         <ImageView
@@ -290,20 +260,11 @@
                             android:padding="@dimen/spacing_extra_small"
                             app:srcCompat="@drawable/ic_location" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <TextView
+                            android:id="@+id/location_name"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/spacing_extra_small">
+                            android:layout_height="wrap_content" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/location_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/location_name"
-                                android:inputType="textMultiLine"
-                                android:text="@={ event.locationName }" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <CheckBox

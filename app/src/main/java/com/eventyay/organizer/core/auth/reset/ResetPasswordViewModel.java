@@ -75,6 +75,10 @@ public class ResetPasswordViewModel extends ViewModel {
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
+    public void setToken(String token) {
+        submitToken.setToken(token);
+    }
+
     public LiveData<String> getError() {
         return error;
     }
