@@ -23,6 +23,7 @@ public final class ErrorUtils {
     public static final int NOT_FOUND = 404;
     public static final int METHOD_NOT_ALLOWED = 405;
     public static final int REQUEST_TIMEOUT = 408;
+    public static final int CONFLICT = 409;
     public static final int UNPROCESSABLE_ENTITY = 422;
 
     private ErrorUtils() {
@@ -37,7 +38,7 @@ public final class ErrorUtils {
             if (errorCode == BAD_REQUEST || errorCode == UNAUTHORIZED || errorCode == FORBIDDEN || errorCode == NOT_FOUND ||
                 errorCode == METHOD_NOT_ALLOWED || errorCode == REQUEST_TIMEOUT) {
                 error = getErrorTitleAndDetails(throwable);
-            } else if (errorCode == UNPROCESSABLE_ENTITY) {
+            } else if (errorCode == UNPROCESSABLE_ENTITY || errorCode == CONFLICT) {
                 error = getErrorDetails(throwable);
             } else {
                 error.setDetail(throwable.getMessage());

@@ -79,13 +79,6 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
         updateOrganizerInfoViewModel.getError().observe(this, this::showError);
         updateOrganizerInfoViewModel.getUserLiveData().observe(this, this::setUser);
         updateOrganizerInfoViewModel.loadUser();
-        validate(binding.form.holderAvatarUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.holderTwitterUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.holderFacebookUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.holderInstragramUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.holderThumbnailImageUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.holderGooglePlusUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.holderIconImageUrl, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
     }
 
     @Override

@@ -408,6 +408,8 @@
     <string name="select_location">Select Location</string>
     <string name="mapbox_access_token">Mapbox Access Token</string>
     <string name="access_token_required">A valid access token is required</string>
+    <string name="family_name">Family Name</string>
+    <string name="phone">Phone</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
