@@ -1,0 +1,19 @@
+🚀 Features and Enhancements
+
+- feat: Deletion of roles
+- feat: Implement Mapbox for event location in F-Droid build variant
+- feat: Implement sound for check-in and check-out
+- feat: Verify email with app
+- feat: Add app link for password reset
+
+🐛 Bug Fixes
+
+- fix: Show correct title in Edit Profile section
+- fix: Improve system of pagination in Attendees list
+- fix: Prevent adding of duplicate items on check-in
+- fix: Prevent Tickets fragment from becoming blank
+
+🧰 Maintenance
+
+- chore: Improve Edit Profile section
+- chore: Remove double elevation in action bar and tabs in EventListFragment
