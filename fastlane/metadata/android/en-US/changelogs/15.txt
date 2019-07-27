@@ -12,8 +12,3 @@
 - fix: Improve system of pagination in Attendees list
 - fix: Prevent adding of duplicate items on check-in
 - fix: Prevent Tickets fragment from becoming blank
-
-🧰 Maintenance
-
-- chore: Improve Edit Profile section
-- chore: Remove double elevation in action bar and tabs in EventListFragment
