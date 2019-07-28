@@ -138,7 +138,5 @@ public class SpeakerDetailsFragment extends BaseFragment implements SpeakerDetai
     @Override
     public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        if (success)
-            ViewUtils.showSnackbar(binding.mainContent, R.string.refresh_complete);
     }
 }

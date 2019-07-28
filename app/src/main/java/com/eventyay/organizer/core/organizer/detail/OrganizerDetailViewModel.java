@@ -72,7 +72,6 @@ public class OrganizerDetailViewModel extends ViewModel {
                 .subscribe(loadedUser -> {
                     this.user = loadedUser;
                     resendVerificationMail.setEmail(user.getEmail());
-                    success.setValue("Organizer Details Loaded Successfully");
                     userLiveData.setValue(user);
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
@@ -109,7 +108,6 @@ public class OrganizerDetailViewModel extends ViewModel {
                 .doOnSubscribe(disposable -> progress.setValue(true))
                 .doFinally(() -> progress.setValue(false))
                 .subscribe(uploadedImage -> {
-                    success.setValue("Image Uploaded Successfully");
                     Timber.e(uploadedImage.getUrl());
                     user.setAvatarUrl(uploadedImage.getUrl());
                     updateOrganizer();

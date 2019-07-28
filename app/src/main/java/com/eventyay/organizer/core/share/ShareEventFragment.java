@@ -141,8 +141,6 @@ public class ShareEventFragment extends BaseFragment implements ShareEventView {
     @Override
     public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        if (success)
-            ViewUtils.showSnackbar(binding.getRoot(), R.string.refresh_complete);
     }
 
     @Override

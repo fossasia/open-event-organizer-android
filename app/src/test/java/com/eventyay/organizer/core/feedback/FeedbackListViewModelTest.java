@@ -54,8 +54,6 @@ public class FeedbackListViewModelTest {
     @Mock
     Observer<Boolean> progress;
     @Mock
-    Observer<String> success;
-    @Mock
     Observer<String> error;
 
     private static final List<Feedback> FEEDBACKS = Arrays.asList(
@@ -85,15 +83,13 @@ public class FeedbackListViewModelTest {
         when(feedbackRepository.getFeedbacks(anyLong(), anyBoolean()))
             .thenReturn(Observable.fromIterable(FEEDBACKS));
 
-        InOrder inOrder = Mockito.inOrder(progress, success);
+        InOrder inOrder = Mockito.inOrder(progress);
 
         feedbackListViewModel.getProgress().observeForever(progress);
-        feedbackListViewModel.getSuccess().observeForever(success);
 
         feedbackListViewModel.loadFeedbacks(false);
 
         inOrder.verify(progress).onChanged(true);
-        inOrder.verify(success).onChanged(anyString());
         inOrder.verify(progress).onChanged(false);
     }
 

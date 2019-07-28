@@ -156,7 +156,6 @@ public class CreateOrderFragment extends BaseFragment implements CreateOrderView
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.getRoot(), R.string.refresh_complete);
+        // Nothing to do
     }
 }

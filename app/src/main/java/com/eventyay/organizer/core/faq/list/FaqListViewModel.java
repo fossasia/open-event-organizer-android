@@ -94,7 +94,6 @@ public class FaqListViewModel extends ViewModel {
                 .subscribe(loadedFaqs -> {
                     faqs.clear();
                     faqs.addAll(loadedFaqs);
-                    success.setValue("FAQs Loaded Successfully");
                     faqsLiveData.setValue(loadedFaqs);
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }

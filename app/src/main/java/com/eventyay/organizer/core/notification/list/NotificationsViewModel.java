@@ -75,7 +75,6 @@ public class NotificationsViewModel extends ViewModel {
                     Collections.reverse(notificationsList);
                     notifications.clear();
                     notifications.addAll(notificationsList);
-                    success.setValue("Notifications Loaded Successfully");
                     notificationsLiveData.setValue(notifications);
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }

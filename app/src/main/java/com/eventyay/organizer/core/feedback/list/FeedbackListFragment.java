@@ -130,8 +130,6 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
     @Override
     public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        if (success)
-            ViewUtils.showSnackbar(binding.feedbacksRecyclerView, R.string.refresh_complete);
     }
 
     private void showMessage(String message) {

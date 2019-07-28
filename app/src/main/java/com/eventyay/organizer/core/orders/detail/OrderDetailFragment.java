@@ -195,8 +195,7 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.getRoot(), R.string.refresh_complete);
+        // Nothing to do
     }
 
     public void showOrderDetails(Order order) {
