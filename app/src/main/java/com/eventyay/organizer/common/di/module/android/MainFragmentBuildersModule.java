@@ -17,7 +17,6 @@ import com.eventyay.organizer.core.role.list.RoleListFragment;
 import com.eventyay.organizer.core.role.invite.RoleInviteFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
 import com.eventyay.organizer.core.settings.restriction.CheckInRestrictions;
-import com.eventyay.organizer.core.share.ShareEventFragment;
 import com.eventyay.organizer.core.speaker.list.SpeakersFragment;
 import com.eventyay.organizer.core.speakerscall.detail.SpeakersCallFragment;
 import com.eventyay.organizer.core.sponsor.create.CreateSponsorFragment;
@@ -126,10 +125,6 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract OrderDetailFragment contributeOrderDetailFragment();
-
-    // Share
-    @ContributesAndroidInjector
-    abstract ShareEventFragment contributeShareEventFragment();
 
     // Notification
 

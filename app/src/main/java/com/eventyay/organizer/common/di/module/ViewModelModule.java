@@ -36,7 +36,6 @@ import com.eventyay.organizer.core.role.invite.RoleInviteViewModel;
 import com.eventyay.organizer.core.session.create.CreateSessionViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
-import com.eventyay.organizer.core.share.ShareEventViewModel;
 import com.eventyay.organizer.core.speaker.details.SpeakerDetailsViewModel;
 import com.eventyay.organizer.core.speakerscall.create.CreateSpeakersCallViewModel;
 import com.eventyay.organizer.core.sponsor.create.CreateSponsorViewModel;
@@ -96,11 +95,6 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateSpeakersCallViewModel.class)
     public abstract ViewModel bindCreateSpeakersCallViewModel(CreateSpeakersCallViewModel createSpeakersCallViewModel);
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(ShareEventViewModel.class)
-    public abstract ViewModel bindShareEventViewModel(ShareEventViewModel shareEventViewModel);
 
     @Binds
     @IntoMap

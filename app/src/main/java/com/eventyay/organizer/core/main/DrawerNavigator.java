@@ -7,11 +7,13 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import android.view.MenuItem;
 
+import com.eventyay.organizer.OrgaProvider;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.event.about.AboutEventActivity;
 import com.eventyay.organizer.core.event.create.CreateEventActivity;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity;
 import com.eventyay.organizer.utils.BrowserUtils;
+import com.eventyay.organizer.utils.Utils;
 
 import static com.eventyay.organizer.core.event.create.CreateEventActivity.EVENT_ID;
 
@@ -53,6 +55,8 @@ class DrawerNavigator {
             Intent intent = new Intent(context, AboutEventActivity.class);
             intent.putExtra(AboutEventActivity.EVENT_ID, fragmentNavigator.getEventId());
             context.startActivity(intent);
+        } else if (id == R.id.nav_share) {
+            Utils.shareEvent(OrgaProvider.context);
         } /*else if (id == R.id.nav_suggestion) {
             BrowserUtils.launchUrl(context, GOOGLE_FORM_LINK);
         }*/ else

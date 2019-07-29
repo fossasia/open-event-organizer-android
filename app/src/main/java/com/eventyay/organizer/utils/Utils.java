@@ -2,6 +2,7 @@ package com.eventyay.organizer.utils;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,6 +10,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Base64;
 
+import com.eventyay.organizer.R;
+import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.data.event.Event;
 
 import java.io.ByteArrayOutputStream;
@@ -104,5 +107,13 @@ public final class Utils {
         drawable.draw(canvas);
 
         return bitmap;
+    }
+
+    public static void shareEvent(Context context) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getShareableInformation(ContextManager.getSelectedEvent()));
+        shareIntent.setType("text/plain");
+        context.startActivity(Intent.createChooser(shareIntent, context.getResources().getText(R.string.send_to)));
     }
 }
