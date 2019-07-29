@@ -52,8 +52,6 @@ public class SalesSummaryViewModelTest {
     @Mock
     Observer<Boolean> progress;
     @Mock
-    Observer<String> success;
-    @Mock
     Observer<Event> event;
 
     private static final List<Attendee> ATTENDEES = Arrays.asList(
@@ -89,10 +87,9 @@ public class SalesSummaryViewModelTest {
         when(eventRepository.getEvent(ID, false))
             .thenReturn(Observable.just(EVENT));
 
-        InOrder inOrder = Mockito.inOrder(event, eventRepository, progress, success);
+        InOrder inOrder = Mockito.inOrder(event, eventRepository, progress);
 
         salesSummaryViewModel.getProgress().observeForever(progress);
-        salesSummaryViewModel.getSuccess().observeForever(success);
         salesSummaryViewModel.getEventLiveData().observeForever(event);
 
         salesSummaryViewModel.loadDetails(ID, false);
@@ -111,16 +108,14 @@ public class SalesSummaryViewModelTest {
         when(attendeeRepository.getAttendees(ID, false))
             .thenReturn(Observable.fromIterable(ATTENDEES));
 
-        InOrder inOrder = Mockito.inOrder(event, attendeeRepository, progress, success);
+        InOrder inOrder = Mockito.inOrder(event, attendeeRepository, progress);
 
         salesSummaryViewModel.getProgress().observeForever(progress);
-        salesSummaryViewModel.getSuccess().observeForever(success);
 
         salesSummaryViewModel.loadDetails(ID, false);
 
         inOrder.verify(attendeeRepository).getAttendees(ID, false);
         inOrder.verify(progress).onChanged(true);
-        inOrder.verify(success).onChanged("Loaded Successfully");
         inOrder.verify(progress).onChanged(false);
     }
 

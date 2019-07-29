@@ -318,8 +318,7 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.rvAttendeeList, R.string.refresh_complete);
+        // Nothing to do
     }
 
     @Override

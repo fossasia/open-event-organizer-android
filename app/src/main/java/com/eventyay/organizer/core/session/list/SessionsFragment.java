@@ -245,8 +245,7 @@ public class SessionsFragment extends BaseFragment<SessionsPresenter> implements
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.sessionsRecyclerView, R.string.refresh_complete);
+        // Nothing to do
     }
 
     @Override

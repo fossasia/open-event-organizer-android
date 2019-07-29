@@ -67,7 +67,6 @@ public class FeedbackListViewModel extends ViewModel {
                 .doFinally(() -> progress.setValue(false))
                 .toList()
                 .subscribe(feedbacks -> {
-                    success.setValue("Feedbacks Loaded Successfully");
                     feedbacksLiveData.setValue(feedbacks);
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }

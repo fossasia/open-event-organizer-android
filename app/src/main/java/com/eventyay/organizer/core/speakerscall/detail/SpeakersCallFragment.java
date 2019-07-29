@@ -152,8 +152,7 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.getRoot(), R.string.refresh_complete);
+        // Nothing to do
     }
 
     @Override

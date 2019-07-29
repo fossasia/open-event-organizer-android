@@ -118,8 +118,6 @@ public class NotificationsFragment extends BaseFragment implements Notifications
     @Override
     public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        if (success)
-            ViewUtils.showSnackbar(binding.notificationsRecyclerView, R.string.refresh_complete);
     }
 
     private void showMessage(String message) {

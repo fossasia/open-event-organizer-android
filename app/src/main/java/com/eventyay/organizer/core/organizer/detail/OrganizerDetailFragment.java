@@ -344,7 +344,5 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
     @Override
     public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        if (success)
-            ViewUtils.showSnackbar(binding.mainContent, R.string.refresh_complete);
     }
 }

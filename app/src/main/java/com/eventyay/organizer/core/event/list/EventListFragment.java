@@ -191,9 +191,7 @@ public class EventListFragment extends BaseFragment implements EventsView {
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success) {
-            ViewUtils.showSnackbar(binding.getRoot(), R.string.refresh_complete);
-        }
+        // Nothing to do
     }
 
     @Override

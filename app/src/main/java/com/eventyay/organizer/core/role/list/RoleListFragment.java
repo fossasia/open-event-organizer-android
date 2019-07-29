@@ -225,8 +225,6 @@ public class RoleListFragment extends BaseFragment implements RoleListView {
     @Override
     public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        if (success)
-            ViewUtils.showSnackbar(binding.rolesRecyclerView, R.string.refresh_complete);
     }
 
     private void showMessage(String message) {

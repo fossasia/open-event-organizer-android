@@ -73,7 +73,6 @@ public class SalesSummaryViewModel extends ViewModel {
                 })
                 .toList()
                 .subscribe(attendees -> {
-                    success.setValue("Loaded Successfully");
                     this.attendees = attendees;
                     ticketAnalyser.analyseSoldTickets(event, attendees);
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));

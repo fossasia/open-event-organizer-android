@@ -168,8 +168,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(container, R.string.refresh_complete);
+        // Nothing to do
     }
 
     @Override

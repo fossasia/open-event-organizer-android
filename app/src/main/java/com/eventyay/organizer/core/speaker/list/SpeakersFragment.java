@@ -114,8 +114,7 @@ public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.speakersRecyclerView, R.string.refresh_complete);
+        // Nothing to do
     }
 
     @Override

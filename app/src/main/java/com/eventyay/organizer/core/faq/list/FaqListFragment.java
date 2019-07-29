@@ -226,8 +226,6 @@ public class FaqListFragment extends BaseFragment implements FaqListView {
     public void onRefreshComplete(boolean success) {
         faqListViewModel.resetToDefaultState();
         exitContextualMenuMode();
-        if (success)
-            ViewUtils.showSnackbar(binding.faqsRecyclerView, R.string.refresh_complete);
     }
 
     @Override

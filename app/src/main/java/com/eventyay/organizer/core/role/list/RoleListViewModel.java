@@ -94,7 +94,6 @@ public class RoleListViewModel extends ViewModel {
                 .subscribe(roleList -> {
                     roles.clear();
                     roles.addAll(roleList);
-                    success.setValue("Roles Loaded Successfully");
                     rolesLiveData.setValue(roles);
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
