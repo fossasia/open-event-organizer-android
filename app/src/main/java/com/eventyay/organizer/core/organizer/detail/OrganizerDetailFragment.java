@@ -106,6 +106,10 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
         });
 
+        binding.detail.deleteProfilePicture.setOnClickListener(v -> {
+            organizerDetailViewModel.deleteProfilePicture();
+        });
+
         binding.detail.organizerEmail.setOnClickListener(view -> {
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", binding.detail.organizerEmail.getText().toString(), null));

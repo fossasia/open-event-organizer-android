@@ -28,8 +28,8 @@ android {
         applicationId "com.eventyay.organizer"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 14
-        versionName "1.4.0"
+        versionCode 15
+        versionName "1.5.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
