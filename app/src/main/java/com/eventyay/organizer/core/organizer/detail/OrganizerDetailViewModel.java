@@ -108,6 +108,7 @@ public class OrganizerDetailViewModel extends ViewModel {
                 .doOnSubscribe(disposable -> progress.setValue(true))
                 .doFinally(() -> progress.setValue(false))
                 .subscribe(uploadedImage -> {
+                    success.setValue("Image Uploaded Successfully");
                     Timber.e(uploadedImage.getUrl());
                     user.setAvatarUrl(uploadedImage.getUrl());
                     updateOrganizer();
