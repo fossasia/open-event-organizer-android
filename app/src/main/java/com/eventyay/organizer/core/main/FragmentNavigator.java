@@ -15,7 +15,6 @@ import com.eventyay.organizer.core.orders.list.OrdersFragment;
 import com.eventyay.organizer.core.role.list.RoleListFragment;
 import com.eventyay.organizer.core.settings.EventSettingsFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
-import com.eventyay.organizer.core.share.ShareEventFragment;
 import com.eventyay.organizer.core.speaker.list.SpeakersFragment;
 import com.eventyay.organizer.core.speakerscall.detail.SpeakersCallFragment;
 import com.eventyay.organizer.core.sponsor.list.SponsorsFragment;
@@ -110,9 +109,6 @@ class FragmentNavigator {
                 break;
             case R.id.nav_speakers_call:
                 fragment = SpeakersCallFragment.newInstance(eventId);
-                break;
-            case R.id.nav_share:
-                fragment = ShareEventFragment.newInstance(eventId);
                 break;
             default:
                 fragment = EventDashboardFragment.newInstance(eventId);
