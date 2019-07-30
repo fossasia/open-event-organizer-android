@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.eventyay.organizer.OrgaProvider;
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
@@ -157,6 +158,6 @@ public class AboutEventViewModel extends ViewModel {
     }
 
     public String getShareableInformation() {
-        return Utils.getShareableInformation(event);
+        return Utils.getShareableInformation(event, OrgaProvider.context);
     }
 }
