@@ -399,7 +399,7 @@
     <string name="no_stay_safe">No, I want to stay safe</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="my_account">My Account</string>
+    <string name="account">Account</string>
     <string name="start_scanning_again">Start scanning again</string>
     <string name="play_sounds">Play sounds</string>
     <string name="play_sounds_key">play_sounds</string>

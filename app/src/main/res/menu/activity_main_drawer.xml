@@ -10,7 +10,7 @@
         <item
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_account"
-            android:title="@string/my_account"
+            android:title="@string/account"
             android:checkable="false" />
     </group>
 
