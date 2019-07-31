@@ -26,7 +26,7 @@ class FragmentNavigator {
     private final FragmentManager fragmentManager;
     private long eventId;
 
-    private boolean dashboardActive = true;
+    private boolean myEventsActive = true;
     private int lastSelectedNavItemId;
 
     FragmentNavigator(FragmentManager fragmentManager, long eventId) {
@@ -34,8 +34,8 @@ class FragmentNavigator {
         this.eventId = eventId;
     }
 
-    public boolean isDashboardActive() {
-        return dashboardActive;
+    public boolean isMyEventsActive() {
+        return myEventsActive;
     }
 
     public long getEventId() {
@@ -50,8 +50,8 @@ class FragmentNavigator {
         int count = fragmentManager.getBackStackEntryCount();
         fragmentManager.popBackStack();
         if(count == 1) {
-            lastSelectedNavItemId = R.id.nav_dashboard;
-            dashboardActive = true;
+            lastSelectedNavItemId = R.id.nav_events;
+            myEventsActive = true;
         }
         return lastSelectedNavItemId;
     }
@@ -111,15 +111,15 @@ class FragmentNavigator {
                 fragment = SpeakersCallFragment.newInstance(eventId);
                 break;
             default:
-                fragment = EventDashboardFragment.newInstance(eventId);
+                fragment = EventListFragment.newInstance();
                 break;
         }
 
         fragmentManager.popBackStack();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        dashboardActive = navItemId == R.id.nav_dashboard;
-        if (dashboardActive) {
+        myEventsActive = navItemId == R.id.nav_events;
+        if (myEventsActive) {
             transaction.replace(R.id.fragment_container, fragment);
         } else {
             transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);

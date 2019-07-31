@@ -128,12 +128,16 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (fragmentNavigator.isDashboardActive())
+        } else if (fragmentNavigator.isMyEventsActive())
             super.onBackPressed();
         else if (eventId == -1)
             finish();
         else {
             int lastSelectedNavItemId = fragmentNavigator.back();
+
+            if (lastSelectedNavItemId == R.id.nav_events)
+                unselectEvent();
+
             binding.navView.getMenu().findItem(lastSelectedNavItemId).setChecked(true);
             getSupportActionBar().setTitle(lastSelectedNavItemId);
         }
@@ -141,6 +145,10 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == R.id.nav_events)
+            unselectEvent();
+
         binding.drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -170,6 +178,25 @@ public class MainActivity extends AppCompatActivity implements
         if (isDeveloperModeEnabled) {
             for (Integer itemId : drawerExtraItems) {
                 binding.navView.getMenu().findItem(itemId).setVisible(true);
+            }
+        }
+    }
+
+    @Override
+    public void unselectEvent() {
+        fragmentNavigator.setEventId(-1);
+        eventViewModel.unselectEvent();
+
+        for (Integer itemId : drawerItems) {
+            binding.navView.getMenu().findItem(itemId).setVisible(false);
+        }
+
+        boolean isDeveloperModeEnabled = sharedPreferences.getBoolean(
+            getString(R.string.developer_mode_key), false);
+
+        if (isDeveloperModeEnabled) {
+            for (Integer itemId : drawerExtraItems) {
+                binding.navView.getMenu().findItem(itemId).setVisible(false);
             }
         }
     }
