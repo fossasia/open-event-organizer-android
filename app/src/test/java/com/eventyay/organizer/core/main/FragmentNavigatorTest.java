@@ -98,14 +98,14 @@ public class FragmentNavigatorTest {
     }
 
     @Test
-    public void testDashboardActive() {
-        assertTrue(fragmentNavigator.isDashboardActive());
+    public void testMyEventsActive() {
+        assertTrue(fragmentNavigator.isMyEventsActive());
 
         when(fragmentManager.beginTransaction()).thenReturn(fragmentTransaction);
         when(fragmentTransaction.replace(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
-        assertFalse(fragmentNavigator.isDashboardActive());
+        assertFalse(fragmentNavigator.isMyEventsActive());
     }
 
     @Test
@@ -115,7 +115,7 @@ public class FragmentNavigatorTest {
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
 
-        assertFalse(fragmentNavigator.isDashboardActive());
+        assertFalse(fragmentNavigator.isMyEventsActive());
 
         InOrder inOrder = Mockito.inOrder(fragmentManager);
 
@@ -125,7 +125,7 @@ public class FragmentNavigatorTest {
 
         fragmentNavigator.back();
 
-        assertTrue(fragmentNavigator.isDashboardActive());
+        assertTrue(fragmentNavigator.isMyEventsActive());
 
         inOrder.verify(fragmentManager).popBackStack();
     }
