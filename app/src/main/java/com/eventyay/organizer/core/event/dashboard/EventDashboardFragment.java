@@ -226,14 +226,6 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
         binding.editEvent.setVisibility(View.VISIBLE);
     }
 
-    public void shareEvent() {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, Utils.getShareableInformation(getPresenter().getEvent()));
-        shareIntent.setType("text/plain");
-        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
-    }
-
     private void loadFragment(Fragment fragment) {
         getFragmentManager().beginTransaction()
             .replace(R.id.fragment_container, fragment)
@@ -259,7 +251,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
                 .setTitle(R.string.share_event)
                 .setMessage(getString(R.string.successfull_publish_message))
                 .setPositiveButton(R.string.share, (dialog, which) -> {
-                    shareEvent();
+                    Utils.shareEvent(context);
                 })
                 .setNegativeButton(R.string.not_now, (dialog, which) -> {
                     dialog.dismiss();
