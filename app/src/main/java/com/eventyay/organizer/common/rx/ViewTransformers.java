@@ -43,7 +43,7 @@ public final class ViewTransformers {
         return completable -> completable.doOnError(throwable -> view.showError(ErrorUtils.getMessage(throwable).toString()));
     }
 
-    private static <T, V extends Progressive> ObservableTransformer<T, T> progressive(V view) {
+    public static <T, V extends Progressive> ObservableTransformer<T, T> progressive(V view) {
         return observable -> observable
                 .doOnSubscribe(disposable -> view.showProgress(true))
                 .doFinally(() -> view.showProgress(false));

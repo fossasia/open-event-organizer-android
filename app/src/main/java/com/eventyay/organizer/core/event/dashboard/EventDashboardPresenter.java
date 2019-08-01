@@ -18,6 +18,7 @@ import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.data.event.EventStatistics;
 import com.eventyay.organizer.data.order.OrderRepository;
 import com.eventyay.organizer.data.order.OrderStatistics;
+import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.Utils;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -30,7 +31,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
 import static com.eventyay.organizer.common.rx.ViewTransformers.disposeCompletable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneous;
+import static com.eventyay.organizer.common.rx.ViewTransformers.progressive;
 import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
 import static com.eventyay.organizer.common.rx.ViewTransformers.result;
 
@@ -134,7 +135,7 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
         event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT;
         eventRepository.updateEvent(event)
             .compose(dispose(getDisposable()))
-            .compose(progressiveErroneous(getView()))
+            .compose(progressive(getView()))
             .doFinally(() -> getView().showResult(event))
             .subscribe(updatedEvent -> {
                     event.state = updatedEvent.state;
@@ -144,7 +145,13 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
                         getView().onSuccess(utilModel.getResourceString(R.string.draft_success));
                     }
                 },
-                throwable -> event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT);
+                throwable -> {
+                    if (ErrorUtils.getErrorDetails(throwable).getPointer().equals("starts-at"))
+                        getView().showError("Past events cannot be updated");
+                    else
+                        getView().showError(ErrorUtils.getErrorDetails(throwable).toString());
+                    event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT;
+                });
     }
 
     private void loadEventStatistics(boolean forceReload) {
