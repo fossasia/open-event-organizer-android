@@ -119,4 +119,8 @@ public class EventViewModel extends ViewModel {
         super.onCleared();
         compositeDisposable.dispose();
     }
+
+    public void unselectEvent() {
+        sharedPreferenceModel.setLong(EVENT_KEY, -1);
+    }
 }

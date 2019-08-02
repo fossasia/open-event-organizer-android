@@ -113,6 +113,7 @@ public class ListPageFragment extends Fragment implements ListPageView, Injectab
     @Override
     public void onStop() {
         super.onStop();
+        initialized = false;
         eventListAdapter.unregisterAdapterDataObserver(adapterDataObserver);
     }
 

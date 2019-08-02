@@ -68,6 +68,19 @@ public class EventListFragment extends BaseFragment implements EventsView {
         appBarLayout = getActivity().findViewById(R.id.main_app_bar);
 
         eventsViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EventsViewModel.class);
+
+        setHasOptionsMenu(true);
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setupRefreshListener();
+        appBarLayout.setElevation(0);
+        appBarLayout.setStateListAnimator(null);
+
         eventsViewModel.getSuccess().observe(this, this::onRefreshComplete);
         eventsViewModel.getError().observe(this, this::showError);
         eventsViewModel.getProgress().observe(this, this::showProgress);
@@ -101,24 +114,12 @@ public class EventListFragment extends BaseFragment implements EventsView {
         binding.pager.setOnTouchListener((v, event) -> {
             binding.swipeContainer.setEnabled(false);
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                    binding.swipeContainer.setEnabled(true);
+                binding.swipeContainer.setEnabled(true);
             }
             return false;
         });
 
         binding.createEventFab.setOnClickListener(view -> openCreateEventFragment());
-
-        setHasOptionsMenu(true);
-
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        setupRefreshListener();
-        appBarLayout.setElevation(0);
-        appBarLayout.setStateListAnimator(null);
     }
 
     @Override
