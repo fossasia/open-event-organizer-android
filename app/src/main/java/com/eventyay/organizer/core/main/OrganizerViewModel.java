@@ -31,6 +31,8 @@ public class OrganizerViewModel extends ViewModel {
     private final SingleEventLiveData<Void> logoutAction = new SingleEventLiveData<>();
     private final SingleEventLiveData<Void> localDatePreferenceAction = new SingleEventLiveData<>();
 
+    private User user = new User();
+
     @Inject
     public OrganizerViewModel(UserRepository userRepository, AuthService authService,
                               RxSharedPreferences sharedPreferences, ContextManager contextManager) {
@@ -66,6 +68,14 @@ public class OrganizerViewModel extends ViewModel {
                 error.setValue(throwable.getMessage());
                 Logger.logError(throwable);
             }));
+    }
+
+    public User loadUser() {
+        compositeDisposable.add(
+            userRepository
+                .getOrganizer(false)
+                .subscribe(loadedUser -> this.user = loadedUser, Logger::logError));
+        return user;
     }
 
     protected LiveData<String> getError() {
