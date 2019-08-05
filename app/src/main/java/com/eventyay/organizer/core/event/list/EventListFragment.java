@@ -52,7 +52,7 @@ public class EventListFragment extends BaseFragment implements EventsView {
     private SwipeRefreshLayout refreshLayout;
     private AppBarLayout appBarLayout;
 
-    public static final String[] EVENT_TYPE = {"live", "past", "draft"};
+    public static final String[] EVENT_TYPE = {"live", "draft", "past"};
     public static final String POSITION = "position";
 
     public static EventListFragment newInstance() {
