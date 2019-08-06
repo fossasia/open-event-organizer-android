@@ -130,8 +130,6 @@ public class MainActivity extends AppCompatActivity implements
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else if (fragmentNavigator.isMyEventsActive())
             super.onBackPressed();
-        else if (eventId == -1)
-            finish();
         else {
             int lastSelectedNavItemId = fragmentNavigator.back();
 
