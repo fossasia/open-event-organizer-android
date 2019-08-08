@@ -409,6 +409,7 @@
     <string name="access_token_required">A valid access token is required</string>
     <string name="family_name">Family Name</string>
     <string name="phone">Phone</string>
+    <string name="social_media_profiles">Social Media Profiles</string>
     <string name="profile">Profile</string>
 
     <string-array name="timezones">
