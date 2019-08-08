@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:background="#dedede"
                         android:padding="@dimen/spacing_small"
-                        android:text="@string/details"
+                        android:text="@string/profile"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="?android:textColorSecondary" />
 
