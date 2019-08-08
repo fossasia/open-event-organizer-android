@@ -1,5 +1,6 @@
 package com.eventyay.organizer.core.notification.list;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -33,6 +34,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsView
 
     @Override
     public void onBindViewHolder(@NonNull NotificationsViewHolder notificationsViewHolder, int position) {
+        notifications.get(position).setMessage(Html.fromHtml(notifications.get(position).getMessage()).toString());
         notificationsViewHolder.bind(notifications.get(position));
     }
 
