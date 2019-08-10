@@ -411,6 +411,7 @@
     <string name="phone">Phone</string>
     <string name="social_media_profiles">Social Media Profiles</string>
     <string name="profile">Profile</string>
+    <string name="bio">Bio</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
