@@ -51,11 +51,7 @@ class DrawerNavigator {
             Intent intent = new Intent(context, CreateEventActivity.class);
             intent.putExtra(EVENT_ID, fragmentNavigator.getEventId());
             context.startActivity(intent);
-        } /*else if (id == R.id.nav_about_event) {
-            Intent intent = new Intent(context, AboutEventActivity.class);
-            intent.putExtra(AboutEventActivity.EVENT_ID, fragmentNavigator.getEventId());
-            context.startActivity(intent);
-        }*/ else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) {
             Utils.shareEvent(OrgaProvider.context);
         } /*else if (id == R.id.nav_suggestion) {
             BrowserUtils.launchUrl(context, GOOGLE_FORM_LINK);
