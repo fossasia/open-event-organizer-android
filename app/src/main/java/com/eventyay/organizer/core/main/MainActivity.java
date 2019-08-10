@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements
         R.id.nav_dashboard,
         R.id.nav_attendees,
         R.id.nav_share,
-        R.id.nav_about_event,
         R.id.nav_event_settings);
 
     private final List<Integer> drawerExtraItems = Arrays.asList(
