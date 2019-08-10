@@ -160,9 +160,10 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
             startActivity(googlePlusIntent);
         });
 
-        binding.detail.resendVerificationMail.setOnClickListener(view -> {
-            organizerDetailViewModel.resendVerificationMail();
-        });
+        binding.detail.resendVerificationMail.setOnClickListener(view ->
+            organizerDetailViewModel.resendVerificationMail());
+
+        binding.detail.btnChangePassword.setOnClickListener(view -> openChangePasswordFragment());
 
         return binding.getRoot();
     }
@@ -200,9 +201,6 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_change_password:
-                openChangePasswordFragment();
-                break;
             case R.id.update_organizer:
                 getFragmentManager().beginTransaction()
                     .replace(R.id.fragment, UpdateOrganizerInfoFragment.newInstance(), INFO_FRAGMENT_TAG)

@@ -47,9 +47,9 @@ public class EventsViewModel extends ViewModel {
             case 0:
                 return liveEvents;
             case 1:
-                return pastEvents;
-            case 2:
                 return draftEvents;
+            case 2:
+                return pastEvents;
             default:
                 return events;
         }
