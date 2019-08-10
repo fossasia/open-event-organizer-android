@@ -96,11 +96,11 @@
             android:title="@string/speakers_call"
             android:visible="false" />
 
-        <item
+        <!--<item
             android:id="@+id/nav_about_event"
             android:icon="@drawable/ic_info"
             android:title="@string/about"
-            android:checkable="false" />
+            android:checkable="false" />-->
 
         <item
             android:id="@+id/nav_event_settings"
