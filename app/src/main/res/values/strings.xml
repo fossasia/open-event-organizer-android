@@ -409,6 +409,12 @@
     <string name="access_token_required">A valid access token is required</string>
     <string name="family_name">Family Name</string>
     <string name="phone">Phone</string>
+    <string name="about_the_app">About The App</string>
+    <string name="about_the_app_description">Event management app for organizers using the Eventyay Platform.\n\nThe core features of this app include:\n- Event manager log in and sign up\n- Event creation\n- Ticket creation\n- Manual attendee check-in\n- Attendee check-in through QR code scan\n- Basic event analytics\n- Basic ticket management\n- Event Details\n- Order Details\n- Organizer Details</string>
+    <string name="github_repo">GitHub repo</string>
+    <string name="developers">Developers</string>
+    <string name="github_repo_link">https://github.com/fossasia/open-event-organizer-android</string>
+    <string name="github_developers_link">https://github.com/fossasia/open-event-organizer-android/graphs/contributors</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

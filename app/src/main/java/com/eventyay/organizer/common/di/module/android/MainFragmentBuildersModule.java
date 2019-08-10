@@ -1,5 +1,6 @@
 package com.eventyay.organizer.common.di.module.android;
 
+import com.eventyay.organizer.core.about.AboutTheAppFragment;
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInFragment;
 import com.eventyay.organizer.core.attendee.history.CheckInHistoryFragment;
 import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
@@ -130,5 +131,10 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract NotificationsFragment contributeNotificationsFragment();
+
+    // About the app
+
+    @ContributesAndroidInjector
+    abstract AboutTheAppFragment contributeAboutTheAppFragment();
 }
 

@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.eventyay.organizer.R;
+import com.eventyay.organizer.core.about.AboutTheAppFragment;
 import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
 import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
 import com.eventyay.organizer.core.event.list.EventListFragment;
@@ -85,6 +86,9 @@ class FragmentNavigator {
                 break;
             case R.id.nav_events:
                 fragment = EventListFragment.newInstance();
+                break;
+            case R.id.nav_about_the_app:
+                fragment = AboutTheAppFragment.newInstance();
                 break;
             case R.id.nav_settings:
                 fragment = SettingsFragment.newInstance();
