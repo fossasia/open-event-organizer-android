@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.eventyay.organizer.R;
+import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
 import com.eventyay.organizer.core.event.chart.ChartActivity;
@@ -27,6 +29,7 @@ import com.eventyay.organizer.data.event.EventStatistics;
 import com.eventyay.organizer.data.order.OrderStatistics;
 import com.eventyay.organizer.databinding.EventDetailBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.Utils;
 import com.github.mikephil.charting.charts.LineChart;
 
@@ -134,6 +137,19 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Event event = ContextManager.getSelectedEvent();
+        String startsAt = DateUtils.formatDateWithDefault(DateUtils.FORMAT_DATE_TIME, event.getStartsAt());
+        String endsAt = DateUtils.formatDateWithDefault(DateUtils.FORMAT_DATE_TIME, event.getEndsAt());
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
+            event.getName());
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(
+            startsAt + " - " + endsAt);
+    }
+
+    @Override
     protected int getTitle() {
         return R.string.event_dashboard;
     }
@@ -142,6 +158,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("");
     }
 
     @Override
