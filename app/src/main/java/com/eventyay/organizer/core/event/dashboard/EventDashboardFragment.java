@@ -158,6 +158,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("");
     }
 
     @Override
