@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.eventyay.organizer.R;
+import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
 import com.eventyay.organizer.core.event.list.EventListFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
 import org.junit.Before;
@@ -59,14 +60,14 @@ public class FragmentNavigatorTest {
         when(fragmentTransaction.replace(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
-        fragmentNavigator.loadFragment(R.id.nav_events);
+        fragmentNavigator.loadFragment(R.id.nav_dashboard);
 
         InOrder inOrder = Mockito.inOrder(fragmentTransaction);
         inOrder.verify(fragmentTransaction).replace(any(Integer.TYPE), isA(SettingsFragment.class));
         inOrder.verify(fragmentTransaction).addToBackStack(null);
         inOrder.verify(fragmentTransaction).commit();
 
-        inOrder.verify(fragmentTransaction).replace(any(Integer.TYPE), isA(EventListFragment.class));
+        inOrder.verify(fragmentTransaction).replace(any(Integer.TYPE), isA(EventDashboardFragment.class));
         inOrder.verify(fragmentTransaction).addToBackStack(null);
         inOrder.verify(fragmentTransaction).commit();
         inOrder.verifyNoMoreInteractions();
@@ -98,14 +99,14 @@ public class FragmentNavigatorTest {
     }
 
     @Test
-    public void testDashboardActive() {
-        assertTrue(fragmentNavigator.isDashboardActive());
+    public void testMyEventsActive() {
+        assertTrue(fragmentNavigator.isMyEventsActive());
 
         when(fragmentManager.beginTransaction()).thenReturn(fragmentTransaction);
         when(fragmentTransaction.replace(any(Integer.TYPE), any())).thenReturn(fragmentTransaction);
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
-        assertFalse(fragmentNavigator.isDashboardActive());
+        assertFalse(fragmentNavigator.isMyEventsActive());
     }
 
     @Test
@@ -115,7 +116,7 @@ public class FragmentNavigatorTest {
 
         fragmentNavigator.loadFragment(R.id.nav_settings);
 
-        assertFalse(fragmentNavigator.isDashboardActive());
+        assertFalse(fragmentNavigator.isMyEventsActive());
 
         InOrder inOrder = Mockito.inOrder(fragmentManager);
 
@@ -125,7 +126,7 @@ public class FragmentNavigatorTest {
 
         fragmentNavigator.back();
 
-        assertTrue(fragmentNavigator.isDashboardActive());
+        assertTrue(fragmentNavigator.isMyEventsActive());
 
         inOrder.verify(fragmentManager).popBackStack();
     }

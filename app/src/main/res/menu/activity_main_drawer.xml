@@ -10,7 +10,7 @@
         <item
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_account"
-            android:title="@string/my_account"
+            android:title="@string/account"
             android:checkable="false" />
     </group>
 
@@ -95,12 +95,6 @@
             android:icon="@drawable/ic_speaker"
             android:title="@string/speakers_call"
             android:visible="false" />
-
-        <item
-            android:id="@+id/nav_about_event"
-            android:icon="@drawable/ic_info"
-            android:title="@string/about"
-            android:checkable="false" />
 
         <item
             android:id="@+id/nav_event_settings"

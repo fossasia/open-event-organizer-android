@@ -36,12 +36,12 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:title="@string/event_state_past"/>
+                    android:title="@string/event_state_draft"/>
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:title="@string/event_state_draft"/>
+                    android:title="@string/event_state_past"/>
 
             </com.google.android.material.tabs.TabLayout>
 
