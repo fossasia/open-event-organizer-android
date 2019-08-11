@@ -415,7 +415,7 @@
     <string name="developers">Developers</string>
     <string name="github_repo_link">https://github.com/fossasia/open-event-organizer-android</string>
     <string name="github_developers_link">https://github.com/fossasia/open-event-organizer-android/graphs/contributors</string>
-    <string name="oss_licenses">OSS Licenses</string>
+    <string name="third_party_licenses">3rd Party Licenses Used</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

@@ -3,6 +3,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="buildConfig"
+            type="com.eventyay.organizer.BuildConfig" />
+    </data>
+
     <FrameLayout
         android:id="@+id/fragment"
         android:layout_width="match_parent"
@@ -38,13 +47,14 @@
                     android:text="@string/about_the_app_description" />
 
                 <TextView
-                    android:id="@+id/oss_licenses"
+                    android:id="@+id/third_party_licenses"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_normal"
-                    android:text="@string/oss_licenses"
+                    android:text="@string/third_party_licenses"
+                    android:textColor="@color/color_accent"
                     android:textSize="@dimen/text_size_normal"
-                    android:textColor="@color/color_accent" />
+                    android:visibility='@{ buildConfig.FLAVOR.equals("playStore") ? View.VISIBLE : View.GONE }' />
 
             </LinearLayout>
         </LinearLayout>
