@@ -26,8 +26,8 @@
                 <ImageView
                     android:layout_width="@dimen/image_large"
                     android:layout_height="@dimen/image_large"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginBottom="@dimen/spacing_normal"
                     android:src="@mipmap/ic_launcher" />
 
                 <TextView
@@ -36,6 +36,15 @@
                     android:layout_marginBottom="20dp"
                     android:lineSpacingExtra="8dp"
                     android:text="@string/about_the_app_description" />
+
+                <TextView
+                    android:id="@+id/oss_licenses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:text="@string/oss_licenses"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textColor="@color/color_accent" />
 
             </LinearLayout>
         </LinearLayout>
