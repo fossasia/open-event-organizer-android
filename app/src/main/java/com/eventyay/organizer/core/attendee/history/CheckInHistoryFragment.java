@@ -122,8 +122,7 @@ public class CheckInHistoryFragment extends BaseFragment implements CheckInHisto
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.getRoot(), R.string.refresh_complete);
+        // Nothing to do
     }
 
     @Override

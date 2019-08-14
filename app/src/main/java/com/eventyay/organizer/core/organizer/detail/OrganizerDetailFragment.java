@@ -106,6 +106,10 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
         });
 
+        binding.detail.deleteProfilePicture.setOnClickListener(v -> {
+            organizerDetailViewModel.deleteProfilePicture();
+        });
+
         binding.detail.organizerEmail.setOnClickListener(view -> {
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", binding.detail.organizerEmail.getText().toString(), null));
@@ -156,9 +160,10 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
             startActivity(googlePlusIntent);
         });
 
-        binding.detail.resendVerificationMail.setOnClickListener(view -> {
-            organizerDetailViewModel.resendVerificationMail();
-        });
+        binding.detail.resendVerificationMail.setOnClickListener(view ->
+            organizerDetailViewModel.resendVerificationMail());
+
+        binding.detail.btnChangePassword.setOnClickListener(view -> openChangePasswordFragment());
 
         return binding.getRoot();
     }
@@ -196,9 +201,6 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_change_password:
-                openChangePasswordFragment();
-                break;
             case R.id.update_organizer:
                 getFragmentManager().beginTransaction()
                     .replace(R.id.fragment, UpdateOrganizerInfoFragment.newInstance(), INFO_FRAGMENT_TAG)
@@ -340,7 +342,5 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
     @Override
     public void onRefreshComplete(boolean success) {
         refreshLayout.setRefreshing(false);
-        if (success)
-            ViewUtils.showSnackbar(binding.mainContent, R.string.refresh_complete);
     }
 }

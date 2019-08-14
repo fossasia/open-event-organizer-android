@@ -28,8 +28,8 @@ android {
         applicationId "com.eventyay.organizer"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 15
-        versionName "1.5.0"
+        versionCode 16
+        versionName "1.6.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
@@ -147,8 +147,8 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.appcompat:appcompat:1.1.0-rc01"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.1.0-beta01"
-    implementation "com.google.android.material:material:1.1.0-alpha08"
+    implementation "androidx.recyclerview:recyclerview:1.1.0-beta02"
+    implementation "com.google.android.material:material:1.1.0-alpha09"
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.palette:palette:1.0.0"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
@@ -168,10 +168,10 @@ dependencies {
     compileOnly 'com.google.code.findbugs:findbugs-annotations:3.0.1'
 
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0-alpha02"
-    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02"
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha02"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha02"
+    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0-alpha03"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha03"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha03"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha03"
 
     //WorkManager
     implementation "android.arch.work:work-runtime:${versions.work_manager}"
@@ -194,7 +194,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.1.0'
     implementation 'com.github.jasminb:jsonapi-converter:0.9'
 
     // RxJava

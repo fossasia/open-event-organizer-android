@@ -61,7 +61,6 @@
     <string name="event_state_draft">Draft</string>
     <string name="gross_sales">Gross Sales</string>
     <string name="sales_summary">Sales Summary</string>
-    <string name="refresh_complete">Refresh Complete</string>
     <string name="search_title">Search</string>
     <string name="search_placeholder">Search Attendees</string>
     <string name="tickets">Tickets</string>
@@ -400,7 +399,7 @@
     <string name="no_stay_safe">No, I want to stay safe</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="my_account">My Account</string>
+    <string name="account">Account</string>
     <string name="start_scanning_again">Start scanning again</string>
     <string name="play_sounds">Play sounds</string>
     <string name="play_sounds_key">play_sounds</string>
@@ -410,6 +409,16 @@
     <string name="access_token_required">A valid access token is required</string>
     <string name="family_name">Family Name</string>
     <string name="phone">Phone</string>
+    <string name="social_media_profiles">Social Media Profiles</string>
+    <string name="profile">Profile</string>
+    <string name="bio">Bio</string>
+    <string name="about_the_app">About The App</string>
+    <string name="about_the_app_description">Event management app for organizers using the Eventyay Platform.\n\nThe core features of this app include:\n- Event manager log in and sign up\n- Event creation\n- Ticket creation\n- Manual attendee check-in\n- Attendee check-in through QR code scan\n- Basic event analytics\n- Basic ticket management\n- Event Details\n- Order Details\n- Organizer Details</string>
+    <string name="github_repo">GitHub repo</string>
+    <string name="developers">Developers</string>
+    <string name="github_repo_link">https://github.com/fossasia/open-event-organizer-android</string>
+    <string name="github_developers_link">https://github.com/fossasia/open-event-organizer-android/graphs/contributors</string>
+    <string name="third_party_licenses">3rd Party Licenses Used</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

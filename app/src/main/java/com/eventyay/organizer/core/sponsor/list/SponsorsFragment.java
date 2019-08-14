@@ -237,8 +237,7 @@ public class SponsorsFragment extends BaseFragment<SponsorsPresenter> implements
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.sponsorsRecyclerView, R.string.refresh_complete);
+        // Nothing to do
     }
 
     @Override

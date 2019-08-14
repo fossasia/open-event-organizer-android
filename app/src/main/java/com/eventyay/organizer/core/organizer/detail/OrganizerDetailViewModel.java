@@ -72,7 +72,6 @@ public class OrganizerDetailViewModel extends ViewModel {
                 .subscribe(loadedUser -> {
                     this.user = loadedUser;
                     resendVerificationMail.setEmail(user.getEmail());
-                    success.setValue("Organizer Details Loaded Successfully");
                     userLiveData.setValue(user);
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
@@ -133,5 +132,10 @@ public class OrganizerDetailViewModel extends ViewModel {
         } else {
             return userRepository.getOrganizer(forceReload);
         }
+    }
+
+    public void deleteProfilePicture() {
+        user.setAvatarUrl(null);
+        updateOrganizer();
     }
 }

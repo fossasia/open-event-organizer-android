@@ -61,8 +61,6 @@ public class FaqListViewModelTest {
     @Mock
     Observer<Boolean> progress;
     @Mock
-    Observer<String> success;
-    @Mock
     Observer<String> error;
     
     private static final List<Faq> FAQS = Arrays.asList(
@@ -96,15 +94,13 @@ public class FaqListViewModelTest {
             .thenReturn(Observable.fromIterable(FAQS));
         when(faqChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
-        InOrder inOrder = Mockito.inOrder(progress, success);
+        InOrder inOrder = Mockito.inOrder(progress);
 
         faqListViewModel.getProgress().observeForever(progress);
-        faqListViewModel.getSuccess().observeForever(success);
 
         faqListViewModel.loadFaqs(false);
 
         inOrder.verify(progress).onChanged(true);
-        inOrder.verify(success).onChanged(anyString());
         inOrder.verify(progress).onChanged(false);
     }
 

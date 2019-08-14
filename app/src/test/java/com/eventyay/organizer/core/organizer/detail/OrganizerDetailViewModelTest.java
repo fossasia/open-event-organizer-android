@@ -51,8 +51,6 @@ public class OrganizerDetailViewModelTest {
     Observer<String> error;
     @Mock
     Observer<Boolean> progress;
-    @Mock
-    Observer<String> success;
 
     @Before
     public void setUp() {
@@ -71,18 +69,15 @@ public class OrganizerDetailViewModelTest {
 
     @Test
     public void shouldLoadOrganizerSuccessfully() {
-        String successString = "Organizer Details Loaded Successfully";
         when(userRepository.getOrganizer(anyBoolean())).thenReturn(Observable.just(USER));
 
-        InOrder inOrder = Mockito.inOrder(progress, success);
+        InOrder inOrder = Mockito.inOrder(progress);
 
         organizerDetailViewModel.getProgress().observeForever(progress);
-        organizerDetailViewModel.getSuccess().observeForever(success);
 
         organizerDetailViewModel.loadOrganizer(false);
 
         inOrder.verify(progress).onChanged(true);
-        inOrder.verify(success).onChanged(successString);
         inOrder.verify(progress).onChanged(false);
     }
 
@@ -90,7 +85,7 @@ public class OrganizerDetailViewModelTest {
     public void shouldShowErrorOnOrganizerLoadFailure() {
         when(userRepository.getOrganizer(anyBoolean())).thenReturn(Observable.error(new Throwable("Error")));
 
-        InOrder inOrder = Mockito.inOrder(progress, error, success);
+        InOrder inOrder = Mockito.inOrder(progress, error);
 
         organizerDetailViewModel.getProgress().observeForever(progress);
         organizerDetailViewModel.getError().observeForever(error);
@@ -104,15 +99,9 @@ public class OrganizerDetailViewModelTest {
 
     @Test
     public void shouldShowOrganizerDetailsOnSwipeRefreshSuccess() {
-        String successString = "Organizer Details Loaded Successfully";
         when(userRepository.getOrganizer(true)).thenReturn(Observable.just(USER));
 
-        InOrder inOrder = Mockito.inOrder(success);
-
-        organizerDetailViewModel.getSuccess().observeForever(success);
         organizerDetailViewModel.loadOrganizer(true);
-
-        inOrder.verify(success).onChanged(successString);
     }
 
     @Test
@@ -129,19 +118,16 @@ public class OrganizerDetailViewModelTest {
 
     @Test
     public void testProgressbarOnSwipeRefreshSuccess() {
-        String successString = "Organizer Details Loaded Successfully";
         when(userRepository.getOrganizer(true)).thenReturn(Observable.just(USER));
 
-        InOrder inOrder = Mockito.inOrder(progress, success);
+        InOrder inOrder = Mockito.inOrder(progress);
 
         organizerDetailViewModel.getProgress().observeForever(progress);
-        organizerDetailViewModel.getSuccess().observeForever(success);
         organizerDetailViewModel.getProgress().observeForever(progress);
 
         organizerDetailViewModel.loadOrganizer(true);
 
         inOrder.verify(progress).onChanged(true);
-        inOrder.verify(success).onChanged(successString);
         inOrder.verify(progress).onChanged(false);
     }
 

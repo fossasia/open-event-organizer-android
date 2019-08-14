@@ -158,8 +158,7 @@ public class OrdersFragment extends BaseFragment implements OrdersView {
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.ordersRecyclerView, R.string.refresh_complete);
+        // Nothing to do
     }
 
     @Override

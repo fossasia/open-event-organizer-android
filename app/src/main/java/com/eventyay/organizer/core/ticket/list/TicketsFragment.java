@@ -154,8 +154,7 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.ticketsRecyclerView, R.string.refresh_complete);
+        // Nothing to do
     }
 
     @Override

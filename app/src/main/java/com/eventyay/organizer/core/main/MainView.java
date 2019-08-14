@@ -19,4 +19,6 @@ public interface MainView extends Erroneous, ItemResult<Event> {
 
     void onLogout();
 
+    void unselectEvent();
+
 }

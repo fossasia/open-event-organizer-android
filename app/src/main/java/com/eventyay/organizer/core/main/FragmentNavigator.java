@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.eventyay.organizer.R;
+import com.eventyay.organizer.core.about.AboutTheAppFragment;
 import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
 import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
 import com.eventyay.organizer.core.event.list.EventListFragment;
@@ -15,7 +16,6 @@ import com.eventyay.organizer.core.orders.list.OrdersFragment;
 import com.eventyay.organizer.core.role.list.RoleListFragment;
 import com.eventyay.organizer.core.settings.EventSettingsFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
-import com.eventyay.organizer.core.share.ShareEventFragment;
 import com.eventyay.organizer.core.speaker.list.SpeakersFragment;
 import com.eventyay.organizer.core.speakerscall.detail.SpeakersCallFragment;
 import com.eventyay.organizer.core.sponsor.list.SponsorsFragment;
@@ -27,7 +27,7 @@ class FragmentNavigator {
     private final FragmentManager fragmentManager;
     private long eventId;
 
-    private boolean dashboardActive = true;
+    private boolean myEventsActive = true;
     private int lastSelectedNavItemId;
 
     FragmentNavigator(FragmentManager fragmentManager, long eventId) {
@@ -35,8 +35,8 @@ class FragmentNavigator {
         this.eventId = eventId;
     }
 
-    public boolean isDashboardActive() {
-        return dashboardActive;
+    public boolean isMyEventsActive() {
+        return myEventsActive;
     }
 
     public long getEventId() {
@@ -51,8 +51,8 @@ class FragmentNavigator {
         int count = fragmentManager.getBackStackEntryCount();
         fragmentManager.popBackStack();
         if(count == 1) {
-            lastSelectedNavItemId = R.id.nav_dashboard;
-            dashboardActive = true;
+            lastSelectedNavItemId = R.id.nav_events;
+            myEventsActive = true;
         }
         return lastSelectedNavItemId;
     }
@@ -87,6 +87,9 @@ class FragmentNavigator {
             case R.id.nav_events:
                 fragment = EventListFragment.newInstance();
                 break;
+            case R.id.nav_about_the_app:
+                fragment = AboutTheAppFragment.newInstance();
+                break;
             case R.id.nav_settings:
                 fragment = SettingsFragment.newInstance();
                 break;
@@ -111,19 +114,16 @@ class FragmentNavigator {
             case R.id.nav_speakers_call:
                 fragment = SpeakersCallFragment.newInstance(eventId);
                 break;
-            case R.id.nav_share:
-                fragment = ShareEventFragment.newInstance(eventId);
-                break;
             default:
-                fragment = EventDashboardFragment.newInstance(eventId);
+                fragment = EventListFragment.newInstance();
                 break;
         }
 
         fragmentManager.popBackStack();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        dashboardActive = navItemId == R.id.nav_dashboard;
-        if (dashboardActive) {
+        myEventsActive = navItemId == R.id.nav_events;
+        if (myEventsActive) {
             transaction.replace(R.id.fragment_container, fragment);
         } else {
             transaction.replace(R.id.fragment_container, fragment).addToBackStack(null);

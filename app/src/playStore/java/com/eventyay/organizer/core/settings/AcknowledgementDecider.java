@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 
-class AcknowledgementDecider {
+public class AcknowledgementDecider {
 
     public boolean shouldShowAcknowledgement() {
         return true;

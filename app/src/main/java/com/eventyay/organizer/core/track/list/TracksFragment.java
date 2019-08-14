@@ -197,8 +197,7 @@ public class TracksFragment extends BaseFragment<TracksPresenter> implements Tra
 
     @Override
     public void onRefreshComplete(boolean success) {
-        if (success)
-            ViewUtils.showSnackbar(binding.tracksRecyclerView, R.string.refresh_complete);
+        // Nothing to do
     }
 
     @Override

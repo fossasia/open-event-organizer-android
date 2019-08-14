@@ -2,7 +2,7 @@ package com.eventyay.organizer.core.settings;
 
 import android.content.Context;
 
-class AcknowledgementDecider {
+public class AcknowledgementDecider {
 
     public boolean shouldShowAcknowledgement() {
         return false;
