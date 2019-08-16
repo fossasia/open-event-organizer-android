@@ -1,20 +1,12 @@
 package com.eventyay.organizer.core.organizer.detail;
 
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import androidx.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -36,6 +36,7 @@ import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.databinding.OrganizerDetailFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.Utils;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -182,6 +183,25 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
         if (token != null) {
             organizerDetailViewModel.setToken(token);
             organizerDetailViewModel.verifyMail();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        User user = organizerDetailViewModel.getUser();
+
+        if (user != null) {
+            String firstName = user.getFirstName();
+            String lastName = user.getLastName();
+            String email = user.getEmail();
+
+            if (firstName != null)
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
+                    firstName + " " + lastName);
+            else
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(email);
         }
     }
 
