@@ -324,10 +324,10 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="app_version_key">app_version</string>
     <string name="legal">Legal</string>
-    <string name="cookie_policy_key">cookie_policy</string>
+    <string name="refund_policy_key">refund_policy</string>
     <string name="terms_of_service_key">terms_of_service</string>
     <string name="terms_of_service">Terms of Service</string>
-    <string name="cookie_policy">Cookie Policy</string>
+    <string name="refund_policy">Refund Policy</string>
     <string name="legal_key">legal_key</string>
     <string name="signup_agreement">By signing up, I agree to Eventyay\'s</string>
     <string name="and">and</string>

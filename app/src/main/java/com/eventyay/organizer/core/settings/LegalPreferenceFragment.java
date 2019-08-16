@@ -16,9 +16,9 @@ import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 public class LegalPreferenceFragment extends PreferenceFragmentCompat {
 
-    public static final String PRIVACY_POLICY_URL = "https://eventyay.com/privacy-policy/";
-    public static final String COOKIE_POLICY_URL = "https://eventyay.com/cookie-policy/";
-    public static final String TERMS_OF_USE_URL = "https://eventyay.com/terms/";
+    public static final String PRIVACY_POLICY_URL = "https://eventyay.com/privacy-policy";
+    public static final String REFUND_POLICY_URL = "https://eventyay.com/refunds";
+    public static final String TERMS_OF_USE_URL = "https://eventyay.com/terms";
 
     public static LegalPreferenceFragment newInstance() {
         return new LegalPreferenceFragment();
@@ -48,8 +48,8 @@ public class LegalPreferenceFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-        findPreference(getString(R.string.cookie_policy_key)).setOnPreferenceClickListener(preference -> {
-            BrowserUtils.launchUrl(getContext(), COOKIE_POLICY_URL);
+        findPreference(getString(R.string.refund_policy_key)).setOnPreferenceClickListener(preference -> {
+            BrowserUtils.launchUrl(getContext(), REFUND_POLICY_URL);
             return true;
         });
     }
