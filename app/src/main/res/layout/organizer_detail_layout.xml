@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:background="#dedede"
                         android:padding="@dimen/spacing_small"
-                        android:text="@string/details"
+                        android:text="@string/profile"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="?android:textColorSecondary" />
 
@@ -95,6 +95,18 @@
                         android:gravity="center_vertical"
                         android:padding="@dimen/spacing_small"
                         android:text='@{ user.email }' />
+
+                    <TextView
+                        android:id="@+id/organizer_contact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@{ @drawable/ic_phone }"
+                        android:drawableLeft="@{ @drawable/ic_phone }"
+                        android:drawablePadding="@dimen/spacing_small"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_small"
+                        android:text='@{ user.contact }'
+                        android:visibility="@{user.contact == null ? View.GONE : View.VISIBLE}" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -136,11 +148,22 @@
 
             </androidx.cardview.widget.CardView>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/spacing_small"
+                app:backgroundTint="@color/color_accent"
+                android:text="@string/change_password"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white" />
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
-                android:visibility="@{user.facebookUrl != null || user.contact != null || user.twitterUrl != null || user.googlePlusUrl != null || user.instagramUrl != null ? View.VISIBLE : View.GONE}">
+                android:visibility="@{user.facebookUrl != null || user.twitterUrl != null || user.googlePlusUrl != null || user.instagramUrl != null ? View.VISIBLE : View.GONE}">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -152,21 +175,9 @@
                         android:layout_height="wrap_content"
                         android:background="#dedede"
                         android:padding="@dimen/spacing_small"
-                        android:text="@string/contact"
+                        android:text="@string/social_media_profiles"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="?android:textColorSecondary" />
-
-                    <TextView
-                        android:id="@+id/organizer_contact"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@{ @drawable/ic_contact }"
-                        android:drawableLeft="@{ @drawable/ic_contact }"
-                        android:drawablePadding="@dimen/spacing_small"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_small"
-                        android:text='@{ user.contact }'
-                        android:visibility="@{user.contact == null ? View.GONE : View.VISIBLE}" />
 
                     <TextView
                         android:id="@+id/organizer_facebook"

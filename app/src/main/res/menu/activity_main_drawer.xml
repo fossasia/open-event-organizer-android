@@ -10,7 +10,7 @@
         <item
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_account"
-            android:title="@string/my_account"
+            android:title="@string/account"
             android:checkable="false" />
     </group>
 
@@ -97,12 +97,6 @@
             android:visible="false" />
 
         <item
-            android:id="@+id/nav_about_event"
-            android:icon="@drawable/ic_info"
-            android:title="@string/about"
-            android:checkable="false" />
-
-        <item
             android:id="@+id/nav_event_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/event_settings"
@@ -111,6 +105,12 @@
     </group>
 
     <group android:id="@+id/mainMenu">
+
+        <item
+            android:id="@+id/nav_about_the_app"
+            android:icon="@drawable/ic_info"
+            android:title="@string/about_the_app"
+            android:checkable="true"/>
 
         <item
             android:id="@+id/nav_settings"
