@@ -2,59 +2,30 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.preference.CheckBoxPreference
+        android:defaultValue="false"
         android:key="@string/play_sounds_key"
-        android:title="@string/play_sounds"
         android:summary="@string/play_sound_on_check_in_out"
-        android:defaultValue="false" />
+        android:title="@string/play_sounds" />
 
     <androidx.preference.CheckBoxPreference
+        android:defaultValue="false"
         android:key="local_date"
-        android:title="Show dates in local timezone"
         android:summaryOff="Dates are shown in Event Timezone now"
         android:summaryOn="Dates are shown in Local Timezone now"
-        android:defaultValue="false" />
+        android:title="Show dates in local timezone" />
 
     <androidx.preference.EditTextPreference
         android:key="device_name"
-        android:title="Device Name"
-        android:summary="@string/device_name_summary" />
+        android:summary="@string/device_name_summary"
+        android:title="Device Name" />
 
     <Preference
         android:key="@string/sales_data_display_key"
         android:title="@string/sales_data_display" />
 
-    <PreferenceCategory android:title="@string/about">
-        <Preference
-            android:key="rate_us"
-            android:title="Rate Us"
-            android:selectable="true"
-            android:summary="Love us? Rate us on Google Play." />
-
-        <Preference
-            android:key="@string/legal_key"
-            android:title="@string/legal"
-            android:selectable="true" />
-
-        <Preference
-            android:key="@string/share_app_key"
-            android:title="@string/share_app"
-            android:selectable="true" />
-
-        <Preference
-            android:key="@string/acknowledgements_key"
-            android:selectable="true"
-            android:title="@string/acknowledgements" />
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/eventyay_organizer">
-        <Preference
-            android:selectable="false"
-            android:key="@string/app_version_key" />
-
-        <Preference
-            android:key="@string/developer_mode_key"
-            android:title="@string/developer_mode"
-            android:selectable="true" />
-    </PreferenceCategory>
+    <Preference
+        android:key="@string/developer_mode_key"
+        android:selectable="true"
+        android:title="@string/developer_mode" />
 
 </androidx.preference.PreferenceScreen>
