@@ -28,8 +28,8 @@ android {
         applicationId "com.eventyay.organizer"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 15
-        versionName "1.5.0"
+        versionCode 16
+        versionName "1.6.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
@@ -147,7 +147,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.appcompat:appcompat:1.1.0-rc01"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.1.0-beta02"
+    implementation "androidx.recyclerview:recyclerview:1.1.0-beta03"
     implementation "com.google.android.material:material:1.1.0-alpha09"
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.palette:palette:1.0.0"
@@ -161,7 +161,7 @@ dependencies {
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation 'com.mikhaellopez:circularprogressbar:2.0.0'
+    implementation 'com.mikhaellopez:circularprogressbar:3.0.2'
     implementation 'com.github.Ilhasoft:data-binding-validator:2.0.0'
     implementation "io.sentry:sentry-android:${versions.sentry_android}"
     implementation "com.github.PhilJay:MPAndroidChart:${versions.mp_android_chart}"
@@ -194,7 +194,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.1.0'
     implementation 'com.github.jasminb:jsonapi-converter:0.9'
 
     // RxJava
