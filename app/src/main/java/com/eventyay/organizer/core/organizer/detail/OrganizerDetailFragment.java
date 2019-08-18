@@ -197,11 +197,12 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
             String lastName = user.getLastName();
             String email = user.getEmail();
 
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+
             if (firstName != null)
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
-                    firstName + " " + lastName);
+                actionBar.setTitle(firstName + " " + lastName);
             else
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(email);
+                actionBar.setTitle(email);
         }
     }
 
