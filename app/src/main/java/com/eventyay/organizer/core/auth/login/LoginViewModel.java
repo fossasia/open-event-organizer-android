@@ -84,7 +84,12 @@ public class LoginViewModel extends ViewModel {
                     encryptUserCredentials();
                     actionLogin.call();
                 },
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                throwable -> {
+                    if (throwable.toString().contains("UNAUTHORIZED"))
+                        error.setValue("Please check the credentials you have entered");
+                    else
+                        error.setValue(ErrorUtils.getMessage(throwable).toString());
+                }));
     }
 
     public void setBaseUrl() {
