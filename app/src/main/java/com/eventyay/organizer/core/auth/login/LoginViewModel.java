@@ -93,6 +93,8 @@ public class LoginViewModel extends ViewModel {
                             error.setValue("Please check the credentials you have entered");
                         else
                             error.setValue(ErrorUtils.getMessage(throwable).toString());
+                    } else {
+                        error.setValue(ErrorUtils.getMessage(throwable).toString());
                     }
                 }));
     }
