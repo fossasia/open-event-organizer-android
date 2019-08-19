@@ -263,7 +263,7 @@
                         android:layout_marginLeft="@dimen/spacing_normal"
                         android:layout_marginTop="@dimen/spacing_normal"
                         android:layout_marginBottom="@dimen/spacing_normal"
-                        android:text='@{ContextManager.getCurrency() + " " + event.analytics.totalSale}'
+                        android:text='@{ContextManager.getCurrency() + " " + orderStats.sales.total}'
                         android:textColor="@color/color_accent"
                         android:textSize="@dimen/text_size_extra_large"
                         bind:layout_constraintStart_toStartOf="parent"
@@ -301,14 +301,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{event.analytics.totalAttendees}"
+                            android:text="@{orderStats.tickets.completed}"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{"/" + event.analytics.totalTickets}'
+                            android:text='@{"/" + event.ticketsAvailable}'
                             android:textSize="@dimen/text_size_small" />
 
                     </LinearLayout>
@@ -338,7 +338,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:max="100"
-                            android:progress="@{event.analytics.totalTickets == 0 ? 0 : (int) ((event.analytics.totalAttendees*100)/event.analytics.totalTickets)}" />
+                            android:progress="@{event.ticketsAvailable == 0 ? 0 : (int) ((orderStats.tickets.completed*100)/event.ticketsAvailable)}" />
 
                         <TextView
                             android:id="@+id/tv_tickets_progress_percent"
@@ -346,7 +346,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/spacing_extra_small"
                             android:layout_marginLeft="@dimen/spacing_extra_small"
-                            android:text='@{(event.analytics.totalTickets == 0 ? 0 : (int) ((event.analytics.totalAttendees*100)/event.analytics.totalTickets)) + "%"}' />
+                            android:text='@{(event.ticketsAvailable == 0 ? 0 : (int) ((orderStats.tickets.completed*100)/event.ticketsAvailable)) + "%"}' />
 
                     </LinearLayout>
 
@@ -382,7 +382,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{"/" + event.analytics.totalAttendees}'
+                            android:text='@{"/" + orderStats.tickets.completed}'
                             android:textSize="@dimen/text_size_small" />
 
                     </LinearLayout>
@@ -412,14 +412,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:max="100"
-                            android:progress="@{event.analytics.totalAttendees == 0 ? 0 : (int) ((event.analytics.checkedIn*100)/event.analytics.totalAttendees)}" />
+                            android:progress="@{orderStats.tickets.completed == 0 ? 0 : (int) ((event.analytics.checkedIn*100)/orderStats.tickets.completed)}" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/spacing_extra_small"
                             android:layout_marginLeft="@dimen/spacing_extra_small"
-                            android:text='@{(event.analytics.totalAttendees == 0 ? 0 : (int) ((event.analytics.checkedIn*100)/event.analytics.totalAttendees)) + "%"}' />
+                            android:text='@{(orderStats.tickets.completed == 0 ? 0 : (int) ((event.analytics.checkedIn*100)/orderStats.tickets.completed)) + "%"}' />
 
                     </LinearLayout>
 

@@ -19,6 +19,10 @@
         <variable
             name="selectedEventId"
             type="Long" />
+
+        <variable
+            name="orderStats"
+            type="com.eventyay.organizer.data.order.OrderStatistics" />
     </data>
 
     <LinearLayout
@@ -55,13 +59,13 @@
                     app:circular_progress_color='@{"light_blue"}'
                     app:cpb_background_progressbar_width="5dp"
                     app:cpb_progressbar_width="10dp"
-                    app:progress_with_animation="@{event.ticketsAvailable == 0 ? 0 : (int) ((event.ticketsSold*100)/event.ticketsAvailable)}" />
+                    app:progress_with_animation="@{orderStats.tickets.total == 0 ? 0 : (int) ((orderStats.tickets.completed*100)/orderStats.tickets.total)}" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text='@{(event.ticketsAvailable == 0 ? 0 : (int) ((event.ticketsSold*100)/event.ticketsAvailable)) + "%"}'
+                    android:text='@{(orderStats.tickets.total == 0 ? 0 : (int) ((orderStats.tickets.completed*100)/orderStats.tickets.total)) + "%"}'
                     android:textSize="@dimen/text_size_normal" />
 
             </FrameLayout>
@@ -140,14 +144,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/spacing_medium"
                             android:layout_marginStart="@dimen/spacing_medium"
-                            android:text="@{event.ticketsSold}"
+                            android:text="@{orderStats.tickets.completed}"
                             android:textSize="@dimen/text_size_normal"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{"/" + event.ticketsAvailable}'
+                            android:text='@{"/" + orderStats.tickets.total}'
                             android:textSize="@dimen/text_size_small" />
 
                     </LinearLayout>
