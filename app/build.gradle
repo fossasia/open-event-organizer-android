@@ -66,9 +66,6 @@ android {
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://api.eventyay.com/v1/"'
             resValue "string", "default_base_url", '"https://api.eventyay.com/v1/"'
             resValue "string", "FRONTEND_HOST", "eventyay.com"
-            resValue "string", "FACEBOOK_ID", "eventyay"
-            resValue "string", "TWITTER_ID", "eventyay"
-            resValue "string", "YOUTUBE_ID", "UCQprMsG-raCIMlBudm20iLQ"
 
             if (LOCAL_KEY_PRESENT || TRAVIS_BUILD)
                 signingConfig signingConfigs.release
@@ -78,9 +75,6 @@ android {
             buildConfigField "String", "DEFAULT_BASE_URL", '"https://open-event-api-dev.herokuapp.com/v1/"'
             resValue "string", "default_base_url", '"https://open-event-api-dev.herokuapp.com/v1/"'
             resValue "string", "FRONTEND_HOST", "open-event-fe.netlify.com"
-            resValue "string", "FACEBOOK_ID", "eventyay"
-            resValue "string", "TWITTER_ID", "eventyay"
-            resValue "string", "YOUTUBE_ID", "UCQprMsG-raCIMlBudm20iLQ"
         }
     }
 
@@ -89,6 +83,9 @@ android {
     }
     defaultConfig {
         multiDexEnabled true
+        resValue "string", "FACEBOOK_ID", "eventyay"
+        resValue "string", "TWITTER_ID", "eventyay"
+        resValue "string", "YOUTUBE_ID", "UCQprMsG-raCIMlBudm20iLQ"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
