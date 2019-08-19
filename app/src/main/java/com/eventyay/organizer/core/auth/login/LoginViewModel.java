@@ -19,6 +19,7 @@ import com.eventyay.organizer.utils.ErrorUtils;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.HttpException;
 
 import static com.eventyay.organizer.common.Constants.PREF_USER_EMAIL;
 
@@ -84,7 +85,18 @@ public class LoginViewModel extends ViewModel {
                     encryptUserCredentials();
                     actionLogin.call();
                 },
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                throwable -> {
+                    if (throwable instanceof HttpException) {
+                        int errorCode = ((HttpException) throwable).code();
+
+                        if (errorCode == 401)
+                            error.setValue("Please check the credentials you have entered");
+                        else
+                            error.setValue(ErrorUtils.getMessage(throwable).toString());
+                    } else {
+                        error.setValue(ErrorUtils.getMessage(throwable).toString());
+                    }
+                }));
     }
 
     public void setBaseUrl() {
