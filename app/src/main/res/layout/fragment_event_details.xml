@@ -43,41 +43,51 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switchEventState"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/spacing_normal"
-                        android:layout_marginTop="@dimen/spacing_normal"
-                        android:layout_marginRight="@dimen/spacing_normal"
-                        android:layout_marginBottom="@dimen/spacing_normal"
-                        android:checked='@{ event.state.equalsIgnoreCase("published") ? true : false }'
-                        android:onClick="@{ () -> presenter.confirmToggle() }"
-                        bind:layout_constraintEnd_toEndOf="parent"
-                        bind:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_event_state_publish"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/spacing_normal"
-                        android:layout_marginTop="@dimen/spacing_normal"
-                        android:layout_marginRight="@dimen/spacing_normal"
-                        android:layout_marginBottom="@dimen/spacing_normal"
-                        android:text="@string/event_state_publish"
-                        android:textSize="@dimen/text_size_normal"
-                        bind:layout_constraintRight_toLeftOf="@+id/switchEventState"
-                        bind:layout_constraintTop_toTopOf="parent" />
-
-                    <FrameLayout
-                        android:id="@+id/frame_separator_one"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/publish_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/spacing_tiniest"
-                        android:layout_marginTop="@dimen/spacing_normal"
-                        android:background="@color/color_shadow"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
                         bind:layout_constraintEnd_toEndOf="parent"
-                        bind:layout_constraintStart_toStartOf="parent"
-                        bind:layout_constraintTop_toBottomOf="@+id/tv_event_state_publish" />
+                        bind:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchEventState"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_normal"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:layout_marginRight="@dimen/spacing_normal"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:checked='@{ event.state.equalsIgnoreCase("published") ? true : false }'
+                            android:onClick="@{ () -> presenter.confirmToggle() }"
+                            bind:layout_constraintEnd_toEndOf="parent"
+                            bind:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_event_state_publish"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_normal"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:layout_marginRight="@dimen/spacing_normal"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:text="@string/event_state_publish"
+                            android:textSize="@dimen/text_size_normal"
+                            bind:layout_constraintRight_toLeftOf="@+id/switchEventState"
+                            bind:layout_constraintTop_toTopOf="parent" />
+
+                        <FrameLayout
+                            android:id="@+id/frame_separator_one"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_tiniest"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:background="@color/color_shadow"
+                            bind:layout_constraintEnd_toEndOf="parent"
+                            bind:layout_constraintStart_toStartOf="parent"
+                            bind:layout_constraintTop_toBottomOf="@+id/tv_event_state_publish" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <LinearLayout
                         android:id="@+id/check_in"
@@ -90,7 +100,7 @@
                         android:paddingBottom="@dimen/spacing_medium"
                         android:foreground="?android:attr/selectableItemBackground"
                         bind:layout_constraintStart_toStartOf="parent"
-                        bind:layout_constraintTop_toBottomOf="@+id/frame_separator_one">
+                        bind:layout_constraintTop_toBottomOf="@+id/publish_layout">
 
                         <ImageView
                             android:layout_width="wrap_content"
