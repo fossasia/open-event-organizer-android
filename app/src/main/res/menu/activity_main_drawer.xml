@@ -107,9 +107,9 @@
     <group android:id="@+id/mainMenu">
 
         <item
-            android:id="@+id/nav_about_the_app"
+            android:id="@+id/nav_about_us"
             android:icon="@drawable/ic_info"
-            android:title="@string/about_the_app"
+            android:title="@string/about_us"
             android:checkable="true"/>
 
         <item
