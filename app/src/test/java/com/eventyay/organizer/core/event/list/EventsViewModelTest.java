@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
 
 import com.eventyay.organizer.core.presenter.TestUtil;
+import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.utils.DateUtils;
@@ -36,6 +37,7 @@ public class EventsViewModelTest {
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Rule public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
     @Mock private EventRepository eventRepository;
+    @Mock private Preferences sharedPreferenceModel;
 
     @Mock
     Observer<List<Event>> events;
@@ -60,7 +62,7 @@ public class EventsViewModelTest {
     public void setUp() {
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
 
-        eventsViewModel = new EventsViewModel(eventRepository);
+        eventsViewModel = new EventsViewModel(eventRepository, sharedPreferenceModel);
     }
 
     @After
