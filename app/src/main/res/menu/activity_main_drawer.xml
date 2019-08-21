@@ -97,9 +97,9 @@
             android:visible="false" />
 
         <item
-            android:id="@+id/nav_event_settings"
+            android:id="@+id/nav_check_in_settings"
             android:icon="@drawable/ic_settings"
-            android:title="@string/event_settings"
+            android:title="@string/check_in_settings"
             android:checkable="true" />
 
     </group>
@@ -115,7 +115,7 @@
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
-            android:title="@string/device_settings"
+            android:title="@string/settings"
             android:checkable="true"/>
 
         <!--<item
