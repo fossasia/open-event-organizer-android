@@ -75,6 +75,7 @@
             android:layout_marginBottom="@dimen/spacing_normal"
             android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
+            android:visibility="gone"
             app:fabSize="normal"
             app:layout_anchor="@id/pager"
             app:layout_anchorGravity="bottom|right"
