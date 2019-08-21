@@ -55,7 +55,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{eventStatistics.sessionsAccepted}"
+                        android:text="@{eventStatistics.sessionsConfirmed}"
                         android:textSize="@dimen/text_size_large"
                         android:textStyle="bold" />
 
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/sessions_accepted"
+                    android:text="@string/sessions_confirmed"
                     android:textSize="@dimen/text_size_normal" />
 
                 <LinearLayout
@@ -84,14 +84,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:max="100"
-                        android:progress="@{eventStatistics.sessionsSubmitted == 0 ? 0 : (int) ((eventStatistics.sessionsAccepted*100)/eventStatistics.sessionsSubmitted)}" />
+                        android:progress="@{eventStatistics.sessionsSubmitted == 0 ? 0 : (int) ((eventStatistics.sessionsConfirmed*100)/eventStatistics.sessionsSubmitted)}" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/spacing_extra_small"
                         android:layout_marginStart="@dimen/spacing_extra_small"
-                        android:text='@{(eventStatistics.sessionsSubmitted == 0 ? 0 : (int) ((eventStatistics.sessionsAccepted*100)/eventStatistics.sessionsSubmitted)) + "%"}' />
+                        android:text='@{(eventStatistics.sessionsSubmitted == 0 ? 0 : (int) ((eventStatistics.sessionsConfirmed*100)/eventStatistics.sessionsSubmitted)) + "%"}' />
 
                 </LinearLayout>
             </LinearLayout>
@@ -159,7 +159,7 @@
                         android:layout_marginBottom="@dimen/spacing_normal"
                         android:layout_marginLeft="@dimen/spacing_large"
                         android:layout_marginStart="@dimen/spacing_large"
-                        android:text="@{ BindingAdapters.longToStr(eventStatistics.speakers.accepted) }"
+                        android:text="@{ BindingAdapters.longToStr(eventStatistics.speakers.confirmed) }"
                         android:textSize="@dimen/text_size_normal" />
 
                     <TextView

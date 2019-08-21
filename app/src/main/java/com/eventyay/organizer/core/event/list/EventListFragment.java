@@ -84,6 +84,7 @@ public class EventListFragment extends BaseFragment implements EventsView {
         eventsViewModel.getSuccess().observe(this, this::onRefreshComplete);
         eventsViewModel.getError().observe(this, this::showError);
         eventsViewModel.getProgress().observe(this, this::showProgress);
+        eventsViewModel.getShowDeveloperModeFeatures().observe(this, (showDeveloperModeFeatures) -> showDeveloperModeFeatures());
 
         eventsViewModel.loadUserEvents(false);
 
@@ -183,6 +184,10 @@ public class EventListFragment extends BaseFragment implements EventsView {
     @Override
     protected int getTitle() {
         return R.string.events;
+    }
+
+    private void showDeveloperModeFeatures() {
+        binding.createEventFab.setVisibility(View.VISIBLE);
     }
 
     @Override
