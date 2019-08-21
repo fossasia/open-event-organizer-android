@@ -79,7 +79,7 @@ public class EventSettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onResume() {
         super.onResume();
-        ViewUtils.setTitle(this, getString(R.string.event_settings));
+        ViewUtils.setTitle(this, getString(R.string.check_in_settings));
     }
 
 }

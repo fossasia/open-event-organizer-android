@@ -119,7 +119,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
             openEditEvent();
         });
 
-        binding.eventSettings.setOnClickListener(v -> {
+        binding.checkInSettings.setOnClickListener(v -> {
             Fragment fragment = EventSettingsFragment.newInstance(initialEventId);
             loadFragment(fragment);
         });
