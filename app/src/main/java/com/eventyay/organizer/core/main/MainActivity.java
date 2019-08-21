@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements
     public void unselectEvent() {
         fragmentNavigator.setEventId(-1);
         eventViewModel.unselectEvent();
+        binding.navView.getHeaderView(0).findViewById(R.id.eventDetailPalette).setVisibility(View.GONE);
 
         for (Integer itemId : drawerItems) {
             binding.navView.getMenu().findItem(itemId).setVisible(false);
