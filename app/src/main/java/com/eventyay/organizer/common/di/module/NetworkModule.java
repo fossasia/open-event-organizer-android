@@ -1,5 +1,6 @@
 package com.eventyay.organizer.common.di.module;
 
+import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.OrgaProvider;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.attendee.Attendee;
@@ -51,6 +52,8 @@ import timber.log.Timber;
 @Module(includes = ApiModule.class)
 @SuppressWarnings("PMD.CouplingBetweenObjects")
 public class NetworkModule {
+
+    private AuthHolder authHolder;
 
     @Provides
     @Singleton
@@ -110,6 +113,7 @@ public class NetworkModule {
     @Singleton
     @Named("authenticator")
     Interceptor authenticator(AuthHolder authHolder) {
+        this.authHolder = authHolder;
         return chain -> {
             Request original = chain.request();
 
@@ -164,7 +168,7 @@ public class NetworkModule {
             .addConverterFactory(jsonApiConverter)
             .addConverterFactory(factory)
             .client(client)
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl(authHolder.getBaseUrl())
             .build();
     }
 }
