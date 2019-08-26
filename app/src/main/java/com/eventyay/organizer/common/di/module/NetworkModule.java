@@ -1,8 +1,6 @@
 package com.eventyay.organizer.common.di.module;
 
-import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.OrgaProvider;
-import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.auth.AuthHolder;
 import com.eventyay.organizer.data.copyright.Copyright;
