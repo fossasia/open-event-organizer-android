@@ -5,6 +5,7 @@ apply from: './jacoco.gradle'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: "net.ltgt.errorprone"
 apply plugin: "com.github.b3er.local.properties"
+apply plugin: "com.diffplug.gradle.spotless"
 
 def app_name = System.getenv('app_name') ?: "Eventyay Organizer"
 def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
@@ -113,6 +114,13 @@ android {
 
 repositories {
     maven { url "https://jitpack.io" }
+}
+
+spotless {
+    java {
+        target'**/*.java'
+        googleJavaFormat().aosp()
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
