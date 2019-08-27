@@ -1,10 +1,8 @@
 package com.eventyay.organizer.robo;
 
 import android.Manifest;
-
 import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.OrgaProvider;
-
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 

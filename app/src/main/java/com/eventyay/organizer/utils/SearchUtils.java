@@ -1,7 +1,6 @@
 package com.eventyay.organizer.utils;
 
 import java.util.Locale;
-
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 public final class SearchUtils {
@@ -13,9 +12,8 @@ public final class SearchUtils {
     }
 
     /**
-     * Token sort partial ratio returns a value in percentage about similarity
-     * between two strings. The same is tested and found that
-     * greater than 60 does well.
+     * Token sort partial ratio returns a value in percentage about similarity between two strings.
+     * The same is tested and found that greater than 60 does well.
      *
      * @param query to be search
      * @param keys set of strings use to filter the item
@@ -25,10 +23,10 @@ public final class SearchUtils {
     public static boolean filter(String query, String... keys) {
         String queryNormalized = query.trim().toLowerCase(Locale.getDefault());
         for (String key : keys) {
-            if (FuzzySearch.tokenSortPartialRatio(queryNormalized, key.trim().toLowerCase(Locale.getDefault())) > MATCH_THRESHOLD)
-                return false;
+            if (FuzzySearch.tokenSortPartialRatio(
+                            queryNormalized, key.trim().toLowerCase(Locale.getDefault()))
+                    > MATCH_THRESHOLD) return false;
         }
         return true;
     }
-
 }

@@ -1,14 +1,13 @@
 package com.eventyay.organizer.utils;
 
-import com.eventyay.organizer.data.attendee.Attendee;
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import com.eventyay.organizer.data.attendee.Attendee;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.Test;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class UtilsTest {
@@ -57,44 +56,34 @@ public class UtilsTest {
 
         assertEquals(Utils.formatOptionalString("%s %s", nullString, nonEmptyString), " Full");
 
-        assertEquals(Utils.formatOptionalString("%s %s", nonEmptyString, nonEmptyString), "Full Full");
+        assertEquals(
+                Utils.formatOptionalString("%s %s", nonEmptyString, nonEmptyString), "Full Full");
     }
 
     @Test
     public void shouldFindIndex() {
-        List<Attendee> attendees = Arrays.asList(
-            Attendee.builder().id(12).build(),
-            Attendee.builder().id(34).build(),
-            Attendee.builder().id(10).build(),
-            Attendee.builder().id(90).build(),
-            Attendee.builder().id(3).build()
-        );
+        List<Attendee> attendees =
+                Arrays.asList(
+                        Attendee.builder().id(12).build(),
+                        Attendee.builder().id(34).build(),
+                        Attendee.builder().id(10).build(),
+                        Attendee.builder().id(90).build(),
+                        Attendee.builder().id(3).build());
 
         Attendee newAttendee = Attendee.builder().id(10).build();
 
-        Utils.PropertyMatcher<Attendee> idEqual = (first, second) -> first.getId() == second.getId();
+        Utils.PropertyMatcher<Attendee> idEqual =
+                (first, second) -> first.getId() == second.getId();
 
-        Utils.indexOf(attendees, newAttendee, idEqual)
-            .test()
-            .assertNoErrors()
-            .assertValue(2);
+        Utils.indexOf(attendees, newAttendee, idEqual).test().assertNoErrors().assertValue(2);
 
         newAttendee.setId(12);
-        Utils.indexOf(attendees, newAttendee, idEqual)
-            .test()
-            .assertNoErrors()
-            .assertValue(0);
+        Utils.indexOf(attendees, newAttendee, idEqual).test().assertNoErrors().assertValue(0);
 
         newAttendee.setId(3);
-        Utils.indexOf(attendees, newAttendee, idEqual)
-            .test()
-            .assertNoErrors()
-            .assertValue(4);
+        Utils.indexOf(attendees, newAttendee, idEqual).test().assertNoErrors().assertValue(4);
 
         newAttendee.setId(2);
-        Utils.indexOf(attendees, newAttendee, idEqual)
-            .test()
-            .assertNoErrors()
-            .assertValue(-1);
+        Utils.indexOf(attendees, newAttendee, idEqual).test().assertNoErrors().assertValue(-1);
     }
 }

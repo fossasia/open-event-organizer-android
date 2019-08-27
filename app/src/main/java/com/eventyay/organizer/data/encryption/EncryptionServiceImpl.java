@@ -3,9 +3,8 @@ package com.eventyay.organizer.data.encryption;
 import android.content.Context;
 import android.os.Build;
 import android.security.KeyPairGeneratorSpec;
-import androidx.annotation.RequiresApi;
 import android.util.Base64;
-
+import androidx.annotation.RequiresApi;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +25,6 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -37,7 +35,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
 import javax.security.auth.x500.X500Principal;
-
 import timber.log.Timber;
 
 public class EncryptionServiceImpl implements EncryptionService {
@@ -114,8 +111,10 @@ public class EncryptionServiceImpl implements EncryptionService {
                 Cipher output = Cipher.getInstance(CYPHER);
                 output.init(Cipher.DECRYPT_MODE, privateKey);
 
-                CipherInputStream cipherInputStream = new CipherInputStream(
-                    new ByteArrayInputStream(Base64.decode(encrypted, Base64.DEFAULT)), output);
+                CipherInputStream cipherInputStream =
+                        new CipherInputStream(
+                                new ByteArrayInputStream(Base64.decode(encrypted, Base64.DEFAULT)),
+                                output);
                 ArrayList<Byte> values = new ArrayList<>();
                 int nextByte;
                 while ((nextByte = cipherInputStream.read()) != -1) {
@@ -139,9 +138,9 @@ public class EncryptionServiceImpl implements EncryptionService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private KeyStore.PrivateKeyEntry getPrivateKey() throws KeyStoreException,
-        CertificateException, NoSuchAlgorithmException,
-        IOException, UnrecoverableEntryException {
+    private KeyStore.PrivateKeyEntry getPrivateKey()
+            throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException,
+                    UnrecoverableEntryException {
 
         KeyStore ks = KeyStore.getInstance(KEYSTORE);
 
@@ -150,7 +149,7 @@ public class EncryptionServiceImpl implements EncryptionService {
         // Load the key pair from the Android Key Store
         KeyStore.Entry entry = ks.getEntry(ALIAS, null);
 
-        //If the entry is null, keys were never stored under this alias.
+        // If the entry is null, keys were never stored under this alias.
         if (entry == null) {
             Timber.w("No key found under alias: " + ALIAS);
             Timber.w("Generating new key...");
@@ -189,30 +188,32 @@ public class EncryptionServiceImpl implements EncryptionService {
     }
 
     /**
-     * Creates a public and private key and stores it using the Android Key Store, so that only
-     * this application will be able to access the keys.
+     * Creates a public and private key and stores it using the Android Key Store, so that only this
+     * application will be able to access the keys.
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private void createKeys() throws NoSuchProviderException,
-        NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+    private void createKeys()
+            throws NoSuchProviderException, NoSuchAlgorithmException,
+                    InvalidAlgorithmParameterException {
         // Create a start and end time, for the validity range of the key pair that's about to be
         // generated.
         Calendar start = new GregorianCalendar();
         Calendar end = new GregorianCalendar();
         end.add(Calendar.YEAR, 25);
 
-        KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context)
-            // You'll use the alias later to retrieve the key.
-            .setAlias(ALIAS)
-            // The subject used for the self-signed certificate of the generated pair
-            .setSubject(new X500Principal("CN=" + ALIAS))
-            // The serial number used for the self-signed certificate of the
-            // generated pair.
-            .setSerialNumber(BigInteger.valueOf(1337))
-            // Date range of validity for the generated pair.
-            .setStartDate(start.getTime())
-            .setEndDate(end.getTime())
-            .build();
+        KeyPairGeneratorSpec spec =
+                new KeyPairGeneratorSpec.Builder(context)
+                        // You'll use the alias later to retrieve the key.
+                        .setAlias(ALIAS)
+                        // The subject used for the self-signed certificate of the generated pair
+                        .setSubject(new X500Principal("CN=" + ALIAS))
+                        // The serial number used for the self-signed certificate of the
+                        // generated pair.
+                        .setSerialNumber(BigInteger.valueOf(1337))
+                        // Date range of validity for the generated pair.
+                        .setStartDate(start.getTime())
+                        .setEndDate(end.getTime())
+                        .build();
 
         // Initialize a KeyPair generator using the the intended algorithm (in this example, RSA
         // and the KeyStore.  This example uses the AndroidKeyStore.
@@ -224,18 +225,21 @@ public class EncryptionServiceImpl implements EncryptionService {
     }
 
     /*
-    * The following methods are specifically taken into use when the API level is
-    * less than 18
-    *
-    */
+     * The following methods are specifically taken into use when the API level is
+     * less than 18
+     *
+     */
     private byte[] encryptString(String message, SecretKey secret) {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secret);
             return cipher.doFinal(message.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException |
-            InvalidKeyException | IllegalBlockSizeException | BadPaddingException |
-            UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException
+                | NoSuchPaddingException
+                | InvalidKeyException
+                | IllegalBlockSizeException
+                | BadPaddingException
+                | UnsupportedEncodingException e) {
             Timber.w(e);
             return null;
         }
@@ -247,9 +251,12 @@ public class EncryptionServiceImpl implements EncryptionService {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secret);
             return new String(cipher.doFinal(cipherText), "UTF-8");
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException |
-            InvalidKeyException | IllegalBlockSizeException | BadPaddingException |
-            UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException
+                | NoSuchPaddingException
+                | InvalidKeyException
+                | IllegalBlockSizeException
+                | BadPaddingException
+                | UnsupportedEncodingException e) {
             Timber.w(e);
             return null;
         }
@@ -258,6 +265,4 @@ public class EncryptionServiceImpl implements EncryptionService {
     private SecretKey generateKey(String password) {
         return new SecretKeySpec(password.getBytes(), "AES");
     }
-
 }
-

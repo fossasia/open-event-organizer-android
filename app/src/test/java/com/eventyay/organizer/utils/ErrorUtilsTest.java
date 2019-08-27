@@ -1,30 +1,26 @@
 package com.eventyay.organizer.utils;
 
-import android.accounts.Account;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
+import android.accounts.Account;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 import retrofit2.Response;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 @RunWith(JUnit4.class)
 public class ErrorUtilsTest {
@@ -65,7 +61,8 @@ public class ErrorUtilsTest {
     public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
 
         url1 = Resources.getResource("raw/content1.json");
         url2 = Resources.getResource("raw/content2.json");
@@ -112,7 +109,8 @@ public class ErrorUtilsTest {
     }
 
     @Test
-    public void shouldReturnNullOnNullAnsEmptyPointedField() throws IOException, URISyntaxException {
+    public void shouldReturnNullOnNullAnsEmptyPointedField()
+            throws IOException, URISyntaxException {
         assertNull(ErrorUtils.getPointedField(null));
         assertNull(ErrorUtils.getPointedField(""));
     }
@@ -155,7 +153,6 @@ public class ErrorUtilsTest {
         str = String.valueOf(ErrorUtils.getMessage(httpException5));
 
         assertEquals("Access Forbidden: Co-Organizer access required - order_id", str);
-
     }
 
     @Test
@@ -171,5 +168,4 @@ public class ErrorUtilsTest {
 
         assertEquals("Access Forbidden: Co-Organizer access required - order_id", str);
     }
-
 }

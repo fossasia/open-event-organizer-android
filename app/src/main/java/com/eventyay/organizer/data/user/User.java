@@ -1,5 +1,6 @@
 package com.eventyay.organizer.data.user;
 
+import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.IntegerIdHandler;
@@ -8,9 +9,6 @@ import com.github.jasminb.jsonapi.annotations.Type;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +26,7 @@ public class User {
     @Id(IntegerIdHandler.class)
     @PrimaryKey
     public int id;
+
     public boolean isAdmin;
     public String lastName;
     public String instagramUrl;
@@ -36,8 +35,7 @@ public class User {
     public String createdAt;
     public String lastAccessedAt;
     public String email;
-    @ColumnIgnore
-    public String password;
+    @ColumnIgnore public String password;
     public String iconImageUrl;
     public String contact;
     public String deletedAt;
@@ -50,5 +48,5 @@ public class User {
     public String twitterUrl;
     public String googlePlusUrl;
 
-    public User() { }
+    public User() {}
 }

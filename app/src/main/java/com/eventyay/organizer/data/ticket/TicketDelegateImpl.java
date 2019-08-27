@@ -1,7 +1,6 @@
 package com.eventyay.organizer.data.ticket;
 
 import androidx.annotation.NonNull;
-
 import com.eventyay.organizer.utils.CompareUtils;
 
 public class TicketDelegateImpl implements TicketDelegate {
@@ -16,5 +15,4 @@ public class TicketDelegateImpl implements TicketDelegate {
     public int compareTo(@NonNull Ticket otherOne) {
         return CompareUtils.compareCascading(ticket, otherOne, Ticket::getType);
     }
-
 }

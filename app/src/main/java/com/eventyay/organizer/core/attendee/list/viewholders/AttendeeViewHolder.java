@@ -1,8 +1,7 @@
 package com.eventyay.organizer.core.attendee.list.viewholders;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
-
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.databinding.AttendeeLayoutBinding;
 

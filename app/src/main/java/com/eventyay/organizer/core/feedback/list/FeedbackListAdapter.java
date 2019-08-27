@@ -1,15 +1,13 @@
 package com.eventyay.organizer.core.feedback.list;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.feedback.list.viewholder.FeedbackViewHolder;
 import com.eventyay.organizer.data.feedback.Feedback;
-
 import java.util.List;
 
 public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackViewHolder> {
@@ -27,8 +25,11 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackViewHolder
     @Override
     public FeedbackViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         return new FeedbackViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.feedbacklist_layout, viewGroup, false));
+                DataBindingUtil.inflate(
+                        LayoutInflater.from(viewGroup.getContext()),
+                        R.layout.feedbacklist_layout,
+                        viewGroup,
+                        false));
     }
 
     @Override

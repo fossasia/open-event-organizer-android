@@ -1,15 +1,13 @@
 package com.eventyay.organizer.core.speaker.list;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.speaker.list.viewholder.SpeakerViewHolder;
 import com.eventyay.organizer.data.speaker.Speaker;
-
 import java.util.List;
 
 public class SpeakersAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
@@ -24,9 +22,13 @@ public class SpeakersAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
     @NonNull
     @Override
     public SpeakerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        SpeakerViewHolder speakerViewHolder = new SpeakerViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.speaker_item, viewGroup, false));
+        SpeakerViewHolder speakerViewHolder =
+                new SpeakerViewHolder(
+                        DataBindingUtil.inflate(
+                                LayoutInflater.from(viewGroup.getContext()),
+                                R.layout.speaker_item,
+                                viewGroup,
+                                false));
 
         speakerViewHolder.setClickAction(speakersPresenter::click);
 

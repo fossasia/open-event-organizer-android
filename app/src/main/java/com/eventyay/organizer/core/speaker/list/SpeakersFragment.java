@@ -2,18 +2,17 @@ package com.eventyay.organizer.core.speaker.list;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.main.MainActivity;
@@ -21,19 +20,15 @@ import com.eventyay.organizer.core.speaker.details.SpeakerDetailsActivity;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.databinding.SpeakersFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
+import dagger.Lazy;
 import java.util.List;
-
 import javax.inject.Inject;
 
-import dagger.Lazy;
-
-public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements SpeakersView  {
+public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements SpeakersView {
     private Context context;
     private long eventId;
 
-    @Inject
-    Lazy<SpeakersPresenter> speakersPresenter;
+    @Inject Lazy<SpeakersPresenter> speakersPresenter;
 
     private SpeakersAdapter speakersAdapter;
     private SpeakersFragmentBinding binding;
@@ -52,13 +47,15 @@ public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements
         super.onCreate(savedInstanceState);
 
         context = getContext();
-        if (getArguments() != null)
-            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+        if (getArguments() != null) eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.speakers_fragment, container, false);
 
         return binding.getRoot();
@@ -96,10 +93,11 @@ public class SpeakersFragment extends BaseFragment<SpeakersPresenter> implements
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            getPresenter().loadSpeakers(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    getPresenter().loadSpeakers(true);
+                });
     }
 
     @Override

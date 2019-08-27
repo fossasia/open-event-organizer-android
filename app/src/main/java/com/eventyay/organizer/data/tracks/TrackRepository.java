@@ -1,7 +1,6 @@
 package com.eventyay.organizer.data.tracks;
 
 import androidx.annotation.NonNull;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 

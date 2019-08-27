@@ -1,19 +1,15 @@
 package com.eventyay.organizer.data.role;
 
 import androidx.annotation.NonNull;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.RateLimiter;
 import com.eventyay.organizer.data.Repository;
-
-import org.threeten.bp.Duration;
-
-import javax.inject.Inject;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import javax.inject.Inject;
+import org.threeten.bp.Duration;
 import timber.log.Timber;
 
 public class RoleRepositoryImpl implements RoleRepository {
@@ -34,32 +30,42 @@ public class RoleRepositoryImpl implements RoleRepository {
             return Observable.error(new Throwable(Constants.NO_NETWORK));
         }
 
-        return roleApi
-            .postRoleInvite(roleInvite)
-            .doOnNext(inviteSent -> Timber.d(String.valueOf(inviteSent)))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return roleApi.postRoleInvite(roleInvite)
+                .doOnNext(inviteSent -> Timber.d(String.valueOf(inviteSent)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public Observable<RoleInvite> getRoles(long eventId, boolean reload) {
-        Observable<RoleInvite> diskObservable = Observable.defer(() ->
-            repository.getItems(RoleInvite.class, RoleInvite_Table.event_id.eq(eventId))
-        );
+        Observable<RoleInvite> diskObservable =
+                Observable.defer(
+                        () ->
+                                repository.getItems(
+                                        RoleInvite.class, RoleInvite_Table.event_id.eq(eventId)));
 
-        Observable<RoleInvite> networkObservable = Observable.defer(() ->
-            roleApi.getRoles(eventId)
-                .doOnNext(roles -> repository
-                    .syncSave(RoleInvite.class, roles, RoleInvite::getId, RoleInvite_Table.id)
-                    .subscribe())
-                .flatMapIterable(roles -> roles));
+        Observable<RoleInvite> networkObservable =
+                Observable.defer(
+                        () ->
+                                roleApi.getRoles(eventId)
+                                        .doOnNext(
+                                                roles ->
+                                                        repository
+                                                                .syncSave(
+                                                                        RoleInvite.class,
+                                                                        roles,
+                                                                        RoleInvite::getId,
+                                                                        RoleInvite_Table.id)
+                                                                .subscribe())
+                                        .flatMapIterable(roles -> roles));
 
-        return repository.observableOf(RoleInvite.class)
-            .reload(reload)
-            .withRateLimiterConfig("Role", rateLimiter)
-            .withDiskObservable(diskObservable)
-            .withNetworkObservable(networkObservable)
-            .build();
+        return repository
+                .observableOf(RoleInvite.class)
+                .reload(reload)
+                .withRateLimiterConfig("Role", rateLimiter)
+                .withDiskObservable(diskObservable)
+                .withNetworkObservable(networkObservable)
+                .build();
     }
 
     @NonNull
@@ -70,10 +76,12 @@ public class RoleRepositoryImpl implements RoleRepository {
         }
 
         return roleApi.deleteRole(roleInviteId)
-            .doOnComplete(() -> repository
-                .delete(Role.class, RoleInvite_Table.id.eq(roleInviteId))
-                .subscribe())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+                .doOnComplete(
+                        () ->
+                                repository
+                                        .delete(Role.class, RoleInvite_Table.id.eq(roleInviteId))
+                                        .subscribe())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

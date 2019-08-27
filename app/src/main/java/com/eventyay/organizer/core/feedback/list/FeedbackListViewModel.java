@@ -1,27 +1,17 @@
 package com.eventyay.organizer.core.feedback.list;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
-
-import com.eventyay.organizer.common.ContextManager;
 import androidx.lifecycle.MutableLiveData;
-import com.eventyay.organizer.common.rx.Logger;
+import androidx.lifecycle.ViewModel;
+import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.data.feedback.Feedback;
 import com.eventyay.organizer.data.feedback.FeedbackRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
-
-import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
-import static com.eventyay.organizer.common.rx.ViewTransformers.emptiable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
 
 public class FeedbackListViewModel extends ViewModel {
 
@@ -62,13 +52,17 @@ public class FeedbackListViewModel extends ViewModel {
         eventId = ContextManager.getSelectedEvent().getId();
 
         compositeDisposable.add(
-            getFeedbackSource(forceReload)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .toList()
-                .subscribe(feedbacks -> {
-                    feedbacksLiveData.setValue(feedbacks);
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                getFeedbackSource(forceReload)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .toList()
+                        .subscribe(
+                                feedbacks -> {
+                                    feedbacksLiveData.setValue(feedbacks);
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     private Observable<Feedback> getFeedbackSource(boolean forceReload) {

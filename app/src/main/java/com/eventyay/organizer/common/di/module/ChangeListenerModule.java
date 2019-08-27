@@ -6,15 +6,14 @@ import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.faq.Faq;
-import com.eventyay.organizer.data.role.RoleInvite;
 import com.eventyay.organizer.data.notification.Notification;
+import com.eventyay.organizer.data.role.RoleInvite;
 import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.data.sponsor.Sponsor;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.tracks.Track;
-
 import dagger.Module;
 import dagger.Provides;
 

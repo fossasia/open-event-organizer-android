@@ -1,7 +1,6 @@
 package com.eventyay.organizer.data.ticket;
 
 import androidx.annotation.NonNull;
-
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -34,5 +33,4 @@ public interface TicketRepository {
 
     @NonNull
     Maybe<Float> getTotalSale(long eventId);
-
 }

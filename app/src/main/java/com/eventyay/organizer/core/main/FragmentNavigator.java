@@ -3,7 +3,6 @@ package com.eventyay.organizer.core.main;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.about.AboutUsFragment;
 import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
@@ -50,7 +49,7 @@ class FragmentNavigator {
     int back() {
         int count = fragmentManager.getBackStackEntryCount();
         fragmentManager.popBackStack();
-        if(count == 1) {
+        if (count == 1) {
             lastSelectedNavItemId = R.id.nav_events;
             myEventsActive = true;
         }
@@ -59,8 +58,7 @@ class FragmentNavigator {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.StdCyclomaticComplexity"})
     void loadFragment(int navItemId) {
-        if (lastSelectedNavItemId == navItemId)
-            return;
+        if (lastSelectedNavItemId == navItemId) return;
 
         lastSelectedNavItemId = navItemId;
 

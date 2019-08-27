@@ -1,18 +1,5 @@
 package com.eventyay.organizer.utils.misc;
 
-import com.eventyay.organizer.common.rx.Logger;
-import com.eventyay.organizer.common.model.SimpleModel;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-
-import java.util.List;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
-import timber.log.Timber;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
@@ -20,6 +7,17 @@ import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
+import com.eventyay.organizer.common.model.SimpleModel;
+import com.eventyay.organizer.common.rx.Logger;
+import edu.emory.mathcs.backport.java.util.Arrays;
+import java.util.List;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import timber.log.Timber;
 
 @SuppressWarnings("PMD.JUnit4TestShouldUseBeforeAnnotation")
 public class LoggerTest {
@@ -49,12 +47,14 @@ public class LoggerTest {
 
     @Test
     public void shouldLogList() {
-        List simpleModel = Arrays.asList(new SimpleModel[]{
-            new SimpleModel(2, "Title", "Description"),
-            new SimpleModel(3, "New Title", "Good description")
-        });
+        List simpleModel =
+                Arrays.asList(
+                        new SimpleModel[] {
+                            new SimpleModel(2, "Title", "Description"),
+                            new SimpleModel(3, "New Title", "Good description")
+                        });
         Logger.logSuccess(simpleModel);
-        verify(tree, atLeastOnce()).i(matches(".*\\b(List|count:|" + simpleModel.size() + ")\\b.*"));
+        verify(tree, atLeastOnce())
+                .i(matches(".*\\b(List|count:|" + simpleModel.size() + ")\\b.*"));
     }
-
 }

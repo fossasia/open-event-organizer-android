@@ -1,11 +1,9 @@
 package com.eventyay.organizer.data.event;
 
 import androidx.annotation.NonNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.service.DateService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class EventDelegateImpl implements EventDelegate {
 
@@ -24,7 +22,8 @@ public class EventDelegateImpl implements EventDelegate {
     @JsonIgnore
     public String getHeader() {
         if (event.getState() != null)
-            return DateUtils.formatDateWithDefault(DateUtils.FORMAT_MONTH_YEAR, event.getStartsAt());
+            return DateUtils.formatDateWithDefault(
+                    DateUtils.FORMAT_MONTH_YEAR, event.getStartsAt());
         return "";
     }
 
@@ -33,5 +32,4 @@ public class EventDelegateImpl implements EventDelegate {
     public long getHeaderId() {
         return Math.abs(getHeader().hashCode());
     }
-
 }

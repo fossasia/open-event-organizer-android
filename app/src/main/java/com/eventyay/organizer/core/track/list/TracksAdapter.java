@@ -1,15 +1,13 @@
 package com.eventyay.organizer.core.track.list;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.track.list.viewholder.TracksViewHolder;
 import com.eventyay.organizer.data.tracks.Track;
-
 import java.util.List;
 
 public class TracksAdapter extends RecyclerView.Adapter<TracksViewHolder> {
@@ -24,9 +22,14 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksViewHolder> {
     @NonNull
     @Override
     public TracksViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        TracksViewHolder tracksViewHolder = new TracksViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.track_item, viewGroup, false), tracksPresenter);
+        TracksViewHolder tracksViewHolder =
+                new TracksViewHolder(
+                        DataBindingUtil.inflate(
+                                LayoutInflater.from(viewGroup.getContext()),
+                                R.layout.track_item,
+                                viewGroup,
+                                false),
+                        tracksPresenter);
 
         tracksViewHolder.setClickAction(tracksPresenter::click);
         tracksViewHolder.setLongClickAction(tracksPresenter::longClick);

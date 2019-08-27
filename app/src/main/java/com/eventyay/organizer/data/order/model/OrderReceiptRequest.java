@@ -2,7 +2,6 @@ package com.eventyay.organizer.data.order.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import lombok.Data;
 
 @Data
@@ -11,4 +10,3 @@ public class OrderReceiptRequest {
 
     public String orderIdentifier;
 }
-

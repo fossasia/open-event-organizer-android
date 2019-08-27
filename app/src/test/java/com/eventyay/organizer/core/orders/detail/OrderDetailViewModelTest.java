@@ -1,8 +1,11 @@
 package com.eventyay.organizer.core.orders.detail;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
-
 import com.eventyay.organizer.core.presenter.TestUtil;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
@@ -13,6 +16,14 @@ import com.eventyay.organizer.data.order.OrderRepository;
 import com.eventyay.organizer.data.order.model.OrderReceiptRequest;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,37 +35,17 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 public class OrderDetailViewModelTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule
-    public TestRule rule = new InstantTaskExecutorRule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public TestRule rule = new InstantTaskExecutorRule();
 
     private OrderDetailViewModel orderDetailsViewModel;
 
-    @Mock
-    private OrderRepository orderRepository;
-    @Mock
-    private EventRepository eventRepository;
-    @Mock
-    private TicketRepository ticketRepository;
-    @Mock
-    private AttendeeRepository attendeeRepository;
+    @Mock private OrderRepository orderRepository;
+    @Mock private EventRepository eventRepository;
+    @Mock private TicketRepository ticketRepository;
+    @Mock private AttendeeRepository attendeeRepository;
 
     private static final Order ORDER = new Order();
     private static final Event EVENT = new Event();
@@ -66,38 +57,35 @@ public class OrderDetailViewModelTest {
     private static final String ERROR_MESSAGE = "Test Error";
     private static final String ERROR = "Error";
 
-    private static final List<Attendee> ATTENDEES_LIST = Arrays.asList(
-        Attendee.builder().id(12L).checking(false).isCheckedIn(false).build(),
-        Attendee.builder().id(13L).checking(false).isCheckedIn(false).build(),
-        Attendee.builder().id(14L).checking(false).isCheckedIn(false).build()
-    );
+    private static final List<Attendee> ATTENDEES_LIST =
+            Arrays.asList(
+                    Attendee.builder().id(12L).checking(false).isCheckedIn(false).build(),
+                    Attendee.builder().id(13L).checking(false).isCheckedIn(false).build(),
+                    Attendee.builder().id(14L).checking(false).isCheckedIn(false).build());
 
-    private static final List<Ticket> TICKETS_LIST = Arrays.asList(
-        Ticket.builder().id(12L).build(),
-        Ticket.builder().id(13L).build(),
-        Ticket.builder().id(14L).build()
-    );
+    private static final List<Ticket> TICKETS_LIST =
+            Arrays.asList(
+                    Ticket.builder().id(12L).build(),
+                    Ticket.builder().id(13L).build(),
+                    Ticket.builder().id(14L).build());
 
-    @Mock
-    Observer<List<Attendee>> attendees;
-    @Mock
-    Observer<List<Ticket>> tickets;
-    @Mock
-    Observer<String> error;
-    @Mock
-    Observer<Boolean> progress;
-    @Mock
-    Observer<Order> order;
-    @Mock
-    Observer<String> success;
+    @Mock Observer<List<Attendee>> attendees;
+    @Mock Observer<List<Ticket>> tickets;
+    @Mock Observer<String> error;
+    @Mock Observer<Boolean> progress;
+    @Mock Observer<Order> order;
+    @Mock Observer<String> success;
 
     @Before
     public void setUp() {
-        orderDetailsViewModel = new OrderDetailViewModel(orderRepository, eventRepository, attendeeRepository, ticketRepository);
+        orderDetailsViewModel =
+                new OrderDetailViewModel(
+                        orderRepository, eventRepository, attendeeRepository, ticketRepository);
         ORDER_RECEIPT_REQUEST.setOrderIdentifier(ORDER_IDENTIFIER);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
     }
 
     @After
@@ -122,7 +110,8 @@ public class OrderDetailViewModelTest {
 
     @Test
     public void shouldShowErrorOnLoadingOrderUnsuccessfully() {
-        when(orderRepository.getOrder(ORDER_IDENTIFIER, false)).thenReturn(Observable.error(new Throwable(ERROR)));
+        when(orderRepository.getOrder(ORDER_IDENTIFIER, false))
+                .thenReturn(Observable.error(new Throwable(ERROR)));
         when(eventRepository.getEvent(EVENT_ID, false)).thenReturn(Observable.just(EVENT));
 
         InOrder inOrder = Mockito.inOrder(orderRepository, eventRepository, order, error);
@@ -138,7 +127,8 @@ public class OrderDetailViewModelTest {
     @Test
     public void shouldShowErrorOnLoadingEventUnsuccessfully() {
         when(orderRepository.getOrder(ORDER_IDENTIFIER, false)).thenReturn(Observable.just(ORDER));
-        when(eventRepository.getEvent(EVENT_ID, false)).thenReturn(Observable.error(new Throwable(ERROR)));
+        when(eventRepository.getEvent(EVENT_ID, false))
+                .thenReturn(Observable.error(new Throwable(ERROR)));
 
         InOrder inOrder = Mockito.inOrder(orderRepository, eventRepository, order, error);
 
@@ -154,9 +144,9 @@ public class OrderDetailViewModelTest {
     public void shouldShowDataOnSwipeRefresh() {
         when(orderRepository.getOrder(ORDER_IDENTIFIER, true)).thenReturn(Observable.just(ORDER));
         when(attendeeRepository.getAttendeesUnderOrder(ORDER_IDENTIFIER, ORDER_ID, true))
-            .thenReturn(Observable.fromIterable(ATTENDEES_LIST));
+                .thenReturn(Observable.fromIterable(ATTENDEES_LIST));
         when(ticketRepository.getTicketsUnderOrder(ORDER_IDENTIFIER, ORDER_ID, true))
-            .thenReturn(Observable.fromIterable(TICKETS_LIST));
+                .thenReturn(Observable.fromIterable(TICKETS_LIST));
 
         attendees.onChanged(new ArrayList<>());
         tickets.onChanged(new ArrayList<>());
@@ -176,7 +166,7 @@ public class OrderDetailViewModelTest {
     @Test
     public void shouldLoadAttendeesSuccessfully() {
         when(attendeeRepository.getAttendeesUnderOrder(ORDER_IDENTIFIER, ORDER_ID, false))
-            .thenReturn(Observable.fromIterable(ATTENDEES_LIST));
+                .thenReturn(Observable.fromIterable(ATTENDEES_LIST));
 
         InOrder inOrder = Mockito.inOrder(attendees, attendeeRepository, progress);
 
@@ -187,7 +177,8 @@ public class OrderDetailViewModelTest {
         orderDetailsViewModel.getAttendeesUnderOrder(ORDER_IDENTIFIER, ORDER_ID, false);
 
         inOrder.verify(attendees).onChanged(new ArrayList<>());
-        inOrder.verify(attendeeRepository).getAttendeesUnderOrder(ORDER_IDENTIFIER, ORDER_ID, false);
+        inOrder.verify(attendeeRepository)
+                .getAttendeesUnderOrder(ORDER_IDENTIFIER, ORDER_ID, false);
         inOrder.verify(progress).onChanged(true);
         inOrder.verify(progress).onChanged(false);
     }
@@ -195,7 +186,7 @@ public class OrderDetailViewModelTest {
     @Test
     public void shouldLoadTicketsSuccessfully() {
         when(ticketRepository.getTicketsUnderOrder(ORDER_IDENTIFIER, ORDER_ID, false))
-            .thenReturn(Observable.fromIterable(TICKETS_LIST));
+                .thenReturn(Observable.fromIterable(TICKETS_LIST));
 
         InOrder inOrder = Mockito.inOrder(tickets, ticketRepository, progress);
 
@@ -214,7 +205,7 @@ public class OrderDetailViewModelTest {
     @Test
     public void shouldShowErrorInLoadingAttendees() {
         when(attendeeRepository.getAttendeesUnderOrder(ORDER_IDENTIFIER, ORDER_ID, false))
-            .thenReturn(TestUtil.ERROR_OBSERVABLE);
+                .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendees, attendeeRepository, progress, error);
 
@@ -225,7 +216,8 @@ public class OrderDetailViewModelTest {
 
         orderDetailsViewModel.getAttendeesUnderOrder(ORDER_IDENTIFIER, ORDER_ID, false);
 
-        inOrder.verify(attendeeRepository).getAttendeesUnderOrder(ORDER_IDENTIFIER, ORDER_ID, false);
+        inOrder.verify(attendeeRepository)
+                .getAttendeesUnderOrder(ORDER_IDENTIFIER, ORDER_ID, false);
         inOrder.verify(progress).onChanged(true);
         inOrder.verify(error).onChanged(ERROR_MESSAGE);
         inOrder.verify(progress).onChanged(false);
@@ -234,7 +226,7 @@ public class OrderDetailViewModelTest {
     @Test
     public void shouldShowErrorInLoadingTickets() {
         when(ticketRepository.getTicketsUnderOrder(ORDER_IDENTIFIER, ORDER_ID, false))
-            .thenReturn(TestUtil.ERROR_OBSERVABLE);
+                .thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(tickets, ticketRepository, progress, error);
 
@@ -253,7 +245,8 @@ public class OrderDetailViewModelTest {
 
     @Test
     public void shouldHandleTogglingError() {
-        when(attendeeRepository.scheduleToggle(ATTENDEES_LIST.get(1))).thenReturn(Completable.error(new Throwable()));
+        when(attendeeRepository.scheduleToggle(ATTENDEES_LIST.get(1)))
+                .thenReturn(Completable.error(new Throwable()));
         orderDetailsViewModel.setAttendees(ATTENDEES_LIST);
 
         InOrder inOrder = Mockito.inOrder(attendeeRepository, error);
@@ -281,14 +274,13 @@ public class OrderDetailViewModelTest {
         inOrder.verify(progress).onChanged(true);
         inOrder.verify(success).onChanged("Email Sent!");
         inOrder.verify(progress).onChanged(false);
-
     }
 
     @Test
     public void shouldShowEmailError() {
         String errorString = "Test Error";
         when(orderRepository.sendReceipt(ORDER_RECEIPT_REQUEST))
-            .thenReturn(Completable.error(com.eventyay.organizer.common.rx.Logger.TEST_ERROR));
+                .thenReturn(Completable.error(com.eventyay.organizer.common.rx.Logger.TEST_ERROR));
 
         InOrder inOrder = Mockito.inOrder(orderRepository, progress, error);
 
@@ -302,5 +294,4 @@ public class OrderDetailViewModelTest {
         inOrder.verify(error).onChanged(errorString);
         inOrder.verify(progress).onChanged(false);
     }
-
 }

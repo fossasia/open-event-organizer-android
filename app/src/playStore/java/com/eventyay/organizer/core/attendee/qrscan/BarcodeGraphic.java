@@ -6,11 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-
-import com.google.android.gms.vision.barcode.Barcode;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.attendee.qrscan.widget.GraphicOverlay;
+import com.google.android.gms.vision.barcode.Barcode;
 
 public class BarcodeGraphic extends GraphicOverlay.Graphic {
 
@@ -34,10 +32,14 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
         rectPaint.setStyle(Paint.Style.STROKE);
         rectPaint.setStrokeWidth(4.0f);
 
-        frameTopLeft = BitmapFactory.decodeResource(overlay.getResources(), R.drawable.frame_top_left);
-        frameTopRight = BitmapFactory.decodeResource(overlay.getResources(), R.drawable.frame_top_right);
-        frameBottomLeft = BitmapFactory.decodeResource(overlay.getResources(), R.drawable.frame_bottom_left);
-        frameBottomRight = BitmapFactory.decodeResource(overlay.getResources(), R.drawable.frame_bottom_right);
+        frameTopLeft =
+                BitmapFactory.decodeResource(overlay.getResources(), R.drawable.frame_top_left);
+        frameTopRight =
+                BitmapFactory.decodeResource(overlay.getResources(), R.drawable.frame_top_right);
+        frameBottomLeft =
+                BitmapFactory.decodeResource(overlay.getResources(), R.drawable.frame_bottom_left);
+        frameBottomRight =
+                BitmapFactory.decodeResource(overlay.getResources(), R.drawable.frame_bottom_right);
     }
 
     public int getId() {
@@ -53,7 +55,7 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
     }
 
     /**
-     * Updates the barcode instance from the detection of the most recent frame.  Invalidates the
+     * Updates the barcode instance from the detection of the most recent frame. Invalidates the
      * relevant portions of the overlay to trigger a redraw.
      */
     public void updateItem(Barcode barcode) {
@@ -61,9 +63,7 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
         postInvalidate();
     }
 
-    /**
-     * Draws the barcode annotations for position, size, and raw value on the supplied canvas.
-     */
+    /** Draws the barcode annotations for position, size, and raw value on the supplied canvas. */
     @Override
     public void draw(Canvas canvas) {
         if (barcode == null) {
@@ -80,12 +80,27 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
         int width = (int) ((rect.right - rect.left) / 3);
         int height = (int) ((rect.top - rect.bottom) / 3);
 
-        canvas.drawBitmap(Bitmap.createScaledBitmap(frameBottomLeft, width, height, false), rect.left, rect.top, null);
-        canvas.drawBitmap(Bitmap.createScaledBitmap(frameBottomRight, width, height, false), rect.right - width, rect.top, null);
-        canvas.drawBitmap(Bitmap.createScaledBitmap(frameTopLeft, width, height, false), rect.left, rect.bottom + height, null);
-        canvas.drawBitmap(Bitmap.createScaledBitmap(frameTopRight, width, height, false), rect.right - width, rect.bottom + height, null);
+        canvas.drawBitmap(
+                Bitmap.createScaledBitmap(frameBottomLeft, width, height, false),
+                rect.left,
+                rect.top,
+                null);
+        canvas.drawBitmap(
+                Bitmap.createScaledBitmap(frameBottomRight, width, height, false),
+                rect.right - width,
+                rect.top,
+                null);
+        canvas.drawBitmap(
+                Bitmap.createScaledBitmap(frameTopLeft, width, height, false),
+                rect.left,
+                rect.bottom + height,
+                null);
+        canvas.drawBitmap(
+                Bitmap.createScaledBitmap(frameTopRight, width, height, false),
+                rect.right - width,
+                rect.bottom + height,
+                null);
 
         canvas.drawRect(rect, rectPaint);
-
     }
 }

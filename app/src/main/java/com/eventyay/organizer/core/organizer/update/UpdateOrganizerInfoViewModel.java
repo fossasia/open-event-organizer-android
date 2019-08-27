@@ -1,19 +1,16 @@
 package com.eventyay.organizer.core.organizer.update;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.annotation.VisibleForTesting;
-
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.StringUtils;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 
 public class UpdateOrganizerInfoViewModel extends ViewModel {
 
@@ -47,13 +44,15 @@ public class UpdateOrganizerInfoViewModel extends ViewModel {
 
     public void loadUser() {
         compositeDisposable.add(
-            userRepository
-                .getOrganizer(false)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> {
-                    progress.setValue(false);
-                    userLiveData.setValue(user);
-                }).subscribe(loadedUser -> this.user = loadedUser, Logger::logError));
+                userRepository
+                        .getOrganizer(false)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(
+                                () -> {
+                                    progress.setValue(false);
+                                    userLiveData.setValue(user);
+                                })
+                        .subscribe(loadedUser -> this.user = loadedUser, Logger::logError));
     }
 
     public LiveData<User> getUserLiveData() {
@@ -80,12 +79,17 @@ public class UpdateOrganizerInfoViewModel extends ViewModel {
         nullifyEmptyFields(user);
 
         compositeDisposable.add(
-            userRepository.updateUser(user)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(updatedUser -> {
-                    success.setValue("User Updated");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                userRepository
+                        .updateUser(user)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                updatedUser -> {
+                                    success.setValue("User Updated");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 }

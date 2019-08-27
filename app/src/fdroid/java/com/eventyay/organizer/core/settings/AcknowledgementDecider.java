@@ -9,6 +9,6 @@ public class AcknowledgementDecider {
     }
 
     public void openAcknowledgementsSection(Context context) {
-        //do nothing
+        // do nothing
     }
 }

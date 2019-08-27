@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.role.list.viewholder;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.common.Pipe;
 import com.eventyay.organizer.core.role.list.RoleListViewModel;
 import com.eventyay.organizer.data.role.RoleInvite;
@@ -20,12 +19,14 @@ public class RoleViewHolder extends RecyclerView.ViewHolder {
         this.binding = binding;
         this.roleListViewModel = roleListViewModel;
 
-        binding.getRoot().setOnLongClickListener(view -> {
-            if (longClickAction != null) {
-                longClickAction.push(role);
-            }
-            return true;
-        });
+        binding.getRoot()
+                .setOnLongClickListener(
+                        view -> {
+                            if (longClickAction != null) {
+                                longClickAction.push(role);
+                            }
+                            return true;
+                        });
     }
 
     public void setLongClickAction(Pipe<RoleInvite> longClickAction) {

@@ -1,10 +1,11 @@
 package com.eventyay.organizer.core.auth.login;
 
+import static com.eventyay.organizer.common.Constants.PREF_USER_EMAIL;
+
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.annotation.VisibleForTesting;
-
 import com.eventyay.organizer.BuildConfig;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
@@ -15,13 +16,9 @@ import com.eventyay.organizer.data.auth.model.RequestToken;
 import com.eventyay.organizer.data.encryption.EncryptionService;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
 import com.eventyay.organizer.utils.ErrorUtils;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 import retrofit2.HttpException;
-
-import static com.eventyay.organizer.common.Constants.PREF_USER_EMAIL;
 
 public class LoginViewModel extends ViewModel {
 
@@ -37,12 +34,16 @@ public class LoginViewModel extends ViewModel {
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<Login> decryptedLogin = new MutableLiveData<>();
     private final SingleEventLiveData<Void> actionLogin = new SingleEventLiveData<>();
-    private final SingleEventLiveData<Boolean> actionOpenResetPassword = new SingleEventLiveData<>();
+    private final SingleEventLiveData<Boolean> actionOpenResetPassword =
+            new SingleEventLiveData<>();
     private final SingleEventLiveData<String> baseUrlLiveData = new SingleEventLiveData<>();
 
     @Inject
-    public LoginViewModel(AuthService loginModel, HostSelectionInterceptor interceptor,
-                          Preferences sharedPreferenceModel, EncryptionService encryptionService) {
+    public LoginViewModel(
+            AuthService loginModel,
+            HostSelectionInterceptor interceptor,
+            Preferences sharedPreferenceModel,
+            EncryptionService encryptionService) {
         this.loginModel = loginModel;
         this.interceptor = interceptor;
         this.sharedPreferenceModel = sharedPreferenceModel;
@@ -76,41 +77,51 @@ public class LoginViewModel extends ViewModel {
         sharedPreferenceModel.saveString(PREF_USER_PASSWORD, encryptedPassword);
     }
 
-    //for logging into the app
+    // for logging into the app
     public void login() {
-        compositeDisposable.add(loginModel.login(login)
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(() -> {
-                    encryptUserCredentials();
-                    actionLogin.call();
-                },
-                throwable -> {
-                    if (throwable instanceof HttpException) {
-                        int errorCode = ((HttpException) throwable).code();
+        compositeDisposable.add(
+                loginModel
+                        .login(login)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                () -> {
+                                    encryptUserCredentials();
+                                    actionLogin.call();
+                                },
+                                throwable -> {
+                                    if (throwable instanceof HttpException) {
+                                        int errorCode = ((HttpException) throwable).code();
 
-                        if (errorCode == 401)
-                            error.setValue("Please check the credentials you have entered");
-                        else
-                            error.setValue(ErrorUtils.getMessage(throwable).toString());
-                    } else {
-                        error.setValue(ErrorUtils.getMessage(throwable).toString());
-                    }
-                }));
+                                        if (errorCode == 401)
+                                            error.setValue(
+                                                    "Please check the credentials you have entered");
+                                        else
+                                            error.setValue(
+                                                    ErrorUtils.getMessage(throwable).toString());
+                                    } else {
+                                        error.setValue(ErrorUtils.getMessage(throwable).toString());
+                                    }
+                                }));
     }
 
     public void setBaseUrl() {
-        String baseUrl = sharedPreferenceModel.getString(Constants.SHARED_PREFS_BASE_URL,
-            BuildConfig.DEFAULT_BASE_URL);
+        String baseUrl =
+                sharedPreferenceModel.getString(
+                        Constants.SHARED_PREFS_BASE_URL, BuildConfig.DEFAULT_BASE_URL);
         baseUrlLiveData.setValue(baseUrl);
         interceptor.setInterceptor(baseUrl);
     }
 
     public LiveData<Login> getLogin(String email) {
         if (decryptedLogin.getValue() == null) {
-            String savedEmail = encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_EMAIL, null));
+            String savedEmail =
+                    encryptionService.decrypt(
+                            sharedPreferenceModel.getString(PREF_USER_EMAIL, null));
             if (savedEmail != null && savedEmail.equals(email)) {
-                login.setPassword(encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_PASSWORD, null)));
+                login.setPassword(
+                        encryptionService.decrypt(
+                                sharedPreferenceModel.getString(PREF_USER_PASSWORD, null)));
             }
             decryptedLogin.setValue(login);
         }
@@ -132,10 +143,15 @@ public class LoginViewModel extends ViewModel {
         RequestToken requestToken = new RequestToken();
         requestToken.setEmail(login.getEmail());
 
-        compositeDisposable.add(loginModel.requestToken(requestToken)
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(() -> actionOpenResetPassword.setValue(true),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                loginModel
+                        .requestToken(requestToken)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                () -> actionOpenResetPassword.setValue(true),
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 }

@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.orders.list.viewholder;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.common.Pipe;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.databinding.OrderLayoutBinding;
@@ -16,11 +15,13 @@ public class OrderViewHolder extends RecyclerView.ViewHolder {
         super(binding.getRoot());
         this.binding = binding;
 
-        binding.getRoot().setOnClickListener(view -> {
-            if (clickAction != null) {
-                clickAction.push(order);
-            }
-        });
+        binding.getRoot()
+                .setOnClickListener(
+                        view -> {
+                            if (clickAction != null) {
+                                clickAction.push(order);
+                            }
+                        });
     }
 
     public void setClickAction(Pipe<Order> clickAction) {

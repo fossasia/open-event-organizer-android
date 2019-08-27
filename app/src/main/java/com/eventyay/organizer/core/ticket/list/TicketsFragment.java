@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.main.MainActivity;
@@ -25,19 +23,14 @@ import com.eventyay.organizer.databinding.TicketsFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import dagger.Lazy;
+import java.util.List;
+import javax.inject.Inject;
 
 public class TicketsFragment extends BaseFragment<TicketsPresenter> implements TicketsView {
 
-    @Inject
-    ContextUtils utilModel;
-    @Inject
-    Lazy<TicketsPresenter> ticketsPresenter;
+    @Inject ContextUtils utilModel;
+    @Inject Lazy<TicketsPresenter> ticketsPresenter;
     private Context context;
     private long eventId;
     private TicketsAdapter ticketsAdapter;
@@ -58,20 +51,23 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
         super.onCreate(savedInstanceState);
 
         context = getContext();
-        if (getArguments() != null)
-            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+        if (getArguments() != null) eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.tickets_fragment, container, false);
 
         ticketsAdapter = null;
 
-        binding.createTicketFab.setOnClickListener(view -> {
-            openCreateTicketFragment();
-        });
+        binding.createTicketFab.setOnClickListener(
+                view -> {
+                    openCreateTicketFragment();
+                });
 
         return binding.getRoot();
     }
@@ -98,10 +94,11 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
     }
 
     public void openCreateTicketFragment() {
-        getFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, CreateTicketFragment.newInstance())
-            .addToBackStack(null)
-            .commit();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, CreateTicketFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
     }
 
     private void setupRecyclerView() {
@@ -112,16 +109,19 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(ticketsAdapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            StickyRecyclerHeadersDecoration decoration = new StickyRecyclerHeadersDecoration(ticketsAdapter);
+            StickyRecyclerHeadersDecoration decoration =
+                    new StickyRecyclerHeadersDecoration(ticketsAdapter);
             recyclerView.addItemDecoration(decoration);
-            recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+            recyclerView.addItemDecoration(
+                    new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
 
-            adapterDataObserver = new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onChanged() {
-                    decoration.invalidateHeaders();
-                }
-            };
+            adapterDataObserver =
+                    new RecyclerView.AdapterDataObserver() {
+                        @Override
+                        public void onChanged() {
+                            decoration.invalidateHeaders();
+                        }
+                    };
 
             ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.createTicketFab);
         }
@@ -131,10 +131,11 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            getPresenter().loadTickets(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    getPresenter().loadTickets(true);
+                });
     }
 
     @Override
@@ -174,7 +175,8 @@ public class TicketsFragment extends BaseFragment<TicketsPresenter> implements T
 
     @Override
     public void openTicketDetailFragment(long ticketId) {
-        BottomSheetDialogFragment bottomSheetDialogFragment = TicketDetailFragment.newInstance(ticketId);
+        BottomSheetDialogFragment bottomSheetDialogFragment =
+                TicketDetailFragment.newInstance(ticketId);
         bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 }

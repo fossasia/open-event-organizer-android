@@ -3,7 +3,6 @@ package com.eventyay.organizer.core.faq.list;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
@@ -13,17 +12,14 @@ import com.eventyay.organizer.data.faq.Faq;
 import com.eventyay.organizer.data.faq.FaqRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Inject;
-
-import io.reactivex.Observable;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class FaqListViewModel extends ViewModel {
 
@@ -45,7 +41,8 @@ public class FaqListViewModel extends ViewModel {
     private long eventId;
 
     @Inject
-    public FaqListViewModel(FaqRepository faqRepository, DatabaseChangeListener<Faq> faqChangeListener) {
+    public FaqListViewModel(
+            FaqRepository faqRepository, DatabaseChangeListener<Faq> faqChangeListener) {
         this.faqRepository = faqRepository;
         this.faqChangeListener = faqChangeListener;
 
@@ -87,20 +84,23 @@ public class FaqListViewModel extends ViewModel {
     public void loadFaqs(boolean forceReload) {
 
         compositeDisposable.add(
-            getFaqSource(forceReload)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .toList()
-                .subscribe(loadedFaqs -> {
-                    faqs.clear();
-                    faqs.addAll(loadedFaqs);
-                    faqsLiveData.setValue(loadedFaqs);
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                getFaqSource(forceReload)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .toList()
+                        .subscribe(
+                                loadedFaqs -> {
+                                    faqs.clear();
+                                    faqs.addAll(loadedFaqs);
+                                    faqsLiveData.setValue(loadedFaqs);
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     private Observable<Faq> getFaqSource(boolean forceReload) {
-        if (!forceReload && !faqs.isEmpty())
-            return Observable.fromIterable(faqs);
+        if (!forceReload && !faqs.isEmpty()) return Observable.fromIterable(faqs);
         else {
             return faqRepository.getFaqs(eventId, forceReload);
         }
@@ -108,11 +108,15 @@ public class FaqListViewModel extends ViewModel {
 
     public void listenChanges() {
         faqChangeListener.startListening();
-        faqChangeListener.getNotifier()
-            .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.DELETE))
-            .subscribeOn(Schedulers.io())
-            .subscribe(faqModelChange -> loadFaqs(false), Logger::logError);
+        faqChangeListener
+                .getNotifier()
+                .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
+                .filter(
+                        action ->
+                                action.equals(BaseModel.Action.INSERT)
+                                        || action.equals(BaseModel.Action.DELETE))
+                .subscribeOn(Schedulers.io())
+                .subscribe(faqModelChange -> loadFaqs(false), Logger::logError);
     }
 
     public List<Faq> getFaqs() {
@@ -121,31 +125,34 @@ public class FaqListViewModel extends ViewModel {
 
     public void deleteFaq(Faq faq) {
         faqRepository
-            .deleteFaq(faq.getId())
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(() -> {
-                selectedMap.remove(faq);
-                Logger.logSuccess(faq);
-            }, Logger::logError);
+                .deleteFaq(faq.getId())
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(
+                        () -> {
+                            selectedMap.remove(faq);
+                            Logger.logSuccess(faq);
+                        },
+                        Logger::logError);
     }
 
     public void deleteSelectedFaq() {
         Observable.fromIterable(selectedMap.entrySet())
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(entry -> {
-                if (entry.getValue().get()) {
-                    deleteFaq(entry.getKey());
-                }
-                loadFaqs(false);
-                success.setValue("FAQs Deleted Successfully");
-            }, Logger::logError);
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(
+                        entry -> {
+                            if (entry.getValue().get()) {
+                                deleteFaq(entry.getKey());
+                            }
+                            loadFaqs(false);
+                            success.setValue("FAQs Deleted Successfully");
+                        },
+                        Logger::logError);
     }
 
     public void unselectFaq(Faq faq) {
-        if (faq != null && selectedMap.containsKey(faq))
-            selectedMap.get(faq).set(false);
+        if (faq != null && selectedMap.containsKey(faq)) selectedMap.get(faq).set(false);
     }
 
     public void resetToDefaultState() {
@@ -201,8 +208,7 @@ public class FaqListViewModel extends ViewModel {
     private int countSelected() {
         int count = 0;
         for (Faq faq : selectedMap.keySet()) {
-            if (selectedMap.get(faq).get())
-                count++;
+            if (selectedMap.get(faq).get()) count++;
         }
         return count;
     }

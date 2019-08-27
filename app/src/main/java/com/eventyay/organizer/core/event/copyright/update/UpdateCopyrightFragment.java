@@ -1,36 +1,32 @@
 package com.eventyay.organizer.core.event.copyright.update;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.databinding.DataBindingUtil;
+import static com.eventyay.organizer.ui.ViewUtils.showView;
+
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import br.com.ilhasoft.support.validation.Validator;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.databinding.CopyrightCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import javax.inject.Inject;
-
-import br.com.ilhasoft.support.validation.Validator;
-
-import static com.eventyay.organizer.ui.ViewUtils.showView;
 
 public class UpdateCopyrightFragment extends BaseFragment implements UpdateCopyrightView {
 
     private static final String EVENT_ID = "id";
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private Validator validator;
     private CopyrightCreateLayoutBinding binding;
@@ -47,10 +43,16 @@ public class UpdateCopyrightFragment extends BaseFragment implements UpdateCopyr
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding =  DataBindingUtil.inflate(inflater, R.layout.copyright_create_layout, container, false);
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        binding =
+                DataBindingUtil.inflate(
+                        inflater, R.layout.copyright_create_layout, container, false);
         validator = new Validator(binding.form);
-        updateCopyrightViewModel = ViewModelProviders.of(this, viewModelFactory).get(UpdateCopyrightViewModel.class);
+        updateCopyrightViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(UpdateCopyrightViewModel.class);
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         activity.setSupportActionBar(binding.toolbar);
@@ -66,10 +68,10 @@ public class UpdateCopyrightFragment extends BaseFragment implements UpdateCopyr
         Bundle bundle = getArguments();
         copyrightId = bundle.getLong(EVENT_ID);
 
-        binding.submit.setOnClickListener(view -> {
-            if (validator.validate())
-                updateCopyrightViewModel.updateCopyright();
-        });
+        binding.submit.setOnClickListener(
+                view -> {
+                    if (validator.validate()) updateCopyrightViewModel.updateCopyright();
+                });
 
         return binding.getRoot();
     }

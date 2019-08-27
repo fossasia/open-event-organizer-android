@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.orders.create.viewholder;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.common.Pipe;
 import com.eventyay.organizer.core.orders.create.CreateOrderViewModel;
 import com.eventyay.organizer.data.ticket.Ticket;
@@ -14,16 +13,19 @@ public class CreateOrderTicketsViewHolder extends RecyclerView.ViewHolder {
     private Pipe<Ticket> clickAction;
     private CreateOrderViewModel createOrderViewModel;
 
-    public CreateOrderTicketsViewHolder(OrderCreateTicketLayoutBinding binding, CreateOrderViewModel createOrderViewModel) {
+    public CreateOrderTicketsViewHolder(
+            OrderCreateTicketLayoutBinding binding, CreateOrderViewModel createOrderViewModel) {
         super(binding.getRoot());
         this.binding = binding;
         this.createOrderViewModel = createOrderViewModel;
 
-        binding.getRoot().setOnClickListener(view -> {
-            if (clickAction != null) {
-                clickAction.push(ticket);
-            }
-        });
+        binding.getRoot()
+                .setOnClickListener(
+                        view -> {
+                            if (clickAction != null) {
+                                clickAction.push(ticket);
+                            }
+                        });
     }
 
     public void setClickAction(Pipe<Ticket> clickAction) {

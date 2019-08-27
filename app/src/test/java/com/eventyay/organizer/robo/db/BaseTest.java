@@ -1,7 +1,6 @@
 package com.eventyay.organizer.robo.db;
 
 import android.app.Application;
-
 import com.eventyay.organizer.robo.rule.DatabaseTestRule;
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,8 +12,7 @@ import org.robolectric.annotation.Config;
 @Config(sdk = Config.OLDEST_SDK, application = Application.class)
 public abstract class BaseTest {
 
-    @Rule
-    public final DatabaseTestRule dbRule = DatabaseTestRule.create();
+    @Rule public final DatabaseTestRule dbRule = DatabaseTestRule.create();
 
     @Before
     public final void before() {
@@ -22,5 +20,4 @@ public abstract class BaseTest {
     }
 
     public abstract void setUp();
-
 }

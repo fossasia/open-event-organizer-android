@@ -15,10 +15,8 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
 import android.print.pdf.PrintedPdfDocument;
 import androidx.annotation.RequiresApi;
-
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.utils.DateUtils;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -40,10 +38,12 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
     }
 
     @Override
-    public void onLayout(PrintAttributes oldAttributes,
-                         PrintAttributes newAttributes,
-                         CancellationSignal cancellationSignal,
-                         LayoutResultCallback callback, Bundle extras) {
+    public void onLayout(
+            PrintAttributes oldAttributes,
+            PrintAttributes newAttributes,
+            CancellationSignal cancellationSignal,
+            LayoutResultCallback callback,
+            Bundle extras) {
         ticketDocument = new PrintedPdfDocument(context, newAttributes);
         pageHeight = newAttributes.getMediaSize().getHeightMils() / 1000 * 72;
         pageWidth = newAttributes.getMediaSize().getWidthMils() / 1000 * 72;
@@ -53,20 +53,26 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
             return;
         }
 
-        PrintDocumentInfo.Builder builder = new PrintDocumentInfo
-            .Builder("Ticket_" + ticket.getEvent().getIdentifier() + "_" + ticket.getId() + ".pdf")
-            .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
-            .setPageCount(TOTAL_PAGES);
+        PrintDocumentInfo.Builder builder =
+                new PrintDocumentInfo.Builder(
+                                "Ticket_"
+                                        + ticket.getEvent().getIdentifier()
+                                        + "_"
+                                        + ticket.getId()
+                                        + ".pdf")
+                        .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
+                        .setPageCount(TOTAL_PAGES);
 
         PrintDocumentInfo info = builder.build();
         callback.onLayoutFinished(info, true);
     }
 
     @Override
-    public void onWrite(PageRange[] pages,
-                        ParcelFileDescriptor destination,
-                        CancellationSignal cancellationSignal,
-                        WriteResultCallback callback) {
+    public void onWrite(
+            PageRange[] pages,
+            ParcelFileDescriptor destination,
+            CancellationSignal cancellationSignal,
+            WriteResultCallback callback) {
 
         if (cancellationSignal.isCanceled()) {
             callback.onWriteCancelled();
@@ -74,7 +80,8 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
             return;
         }
 
-        PdfDocument.PageInfo newPage = new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, TOTAL_PAGES).create();
+        PdfDocument.PageInfo newPage =
+                new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, TOTAL_PAGES).create();
         PdfDocument.Page page = ticketDocument.startPage(newPage);
 
         drawPage(page);
@@ -103,16 +110,38 @@ public class TicketPrintAdapter extends PrintDocumentAdapter {
         canvas.drawText("Ticket Details", leftMargin, titleBaseLine, paintTicketDescription);
 
         paintTicketDescription.setTextSize(14);
-        canvas.drawText("Ticket Name: " + ticket.getName(), leftMargin, titleBaseLine + 55, paintTicketDescription);
-        canvas.drawText("Ticket Type: " + ticket.getType(), leftMargin, titleBaseLine + 85, paintTicketDescription);
-        canvas.drawText("Ticket Sales Start At: " + DateUtils.formatDateWithDefault(
-            DateUtils.FORMAT_DAY_COMPLETE, ticket.getSalesStartsAt()),
-            leftMargin,
-            titleBaseLine + 115,
-            paintTicketDescription);
-        canvas.drawText("Ticket Min Order: " + ticket.getMinOrder(), leftMargin, titleBaseLine + 145, paintTicketDescription);
-        canvas.drawText("Ticket Max Order: " + ticket.getMaxOrder(), leftMargin, titleBaseLine + 175, paintTicketDescription);
+        canvas.drawText(
+                "Ticket Name: " + ticket.getName(),
+                leftMargin,
+                titleBaseLine + 55,
+                paintTicketDescription);
+        canvas.drawText(
+                "Ticket Type: " + ticket.getType(),
+                leftMargin,
+                titleBaseLine + 85,
+                paintTicketDescription);
+        canvas.drawText(
+                "Ticket Sales Start At: "
+                        + DateUtils.formatDateWithDefault(
+                                DateUtils.FORMAT_DAY_COMPLETE, ticket.getSalesStartsAt()),
+                leftMargin,
+                titleBaseLine + 115,
+                paintTicketDescription);
+        canvas.drawText(
+                "Ticket Min Order: " + ticket.getMinOrder(),
+                leftMargin,
+                titleBaseLine + 145,
+                paintTicketDescription);
+        canvas.drawText(
+                "Ticket Max Order: " + ticket.getMaxOrder(),
+                leftMargin,
+                titleBaseLine + 175,
+                paintTicketDescription);
         if (ticket.getPrice() != 0)
-            canvas.drawText("Ticket Price: " + ticket.getPrice(), leftMargin, titleBaseLine + 205, paintTicketDescription);
+            canvas.drawText(
+                    "Ticket Price: " + ticket.getPrice(),
+                    leftMargin,
+                    titleBaseLine + 205,
+                    paintTicketDescription);
     }
 }

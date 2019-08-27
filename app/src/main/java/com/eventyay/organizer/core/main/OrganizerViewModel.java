@@ -3,9 +3,6 @@ package com.eventyay.organizer.core.main;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.f2prateek.rx.preferences2.RxSharedPreferences;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
@@ -14,10 +11,9 @@ import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserRepository;
 import com.eventyay.organizer.utils.DateUtils;
-
-import javax.inject.Inject;
-
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 
 public class OrganizerViewModel extends ViewModel {
     private final UserRepository userRepository;
@@ -32,8 +28,11 @@ public class OrganizerViewModel extends ViewModel {
     private final SingleEventLiveData<Void> localDatePreferenceAction = new SingleEventLiveData<>();
 
     @Inject
-    public OrganizerViewModel(UserRepository userRepository, AuthService authService,
-                              RxSharedPreferences sharedPreferences, ContextManager contextManager) {
+    public OrganizerViewModel(
+            UserRepository userRepository,
+            AuthService authService,
+            RxSharedPreferences sharedPreferences,
+            ContextManager contextManager) {
         this.userRepository = userRepository;
         this.authService = authService;
         this.sharedPreferences = sharedPreferences;
@@ -42,30 +41,37 @@ public class OrganizerViewModel extends ViewModel {
 
     protected LiveData<User> getOrganizer() {
         if (organizer.getValue() == null) {
-            compositeDisposable.add(userRepository
-                .getOrganizer(false)
-                .subscribe(organizer::setValue, Logger::logError));
+            compositeDisposable.add(
+                    userRepository
+                            .getOrganizer(false)
+                            .subscribe(organizer::setValue, Logger::logError));
         }
         return organizer;
     }
 
     protected void setLocalDatePreferenceAction() {
-        compositeDisposable.add(sharedPreferences.getBoolean(Constants.SHARED_PREFS_LOCAL_DATE)
-            .asObservable()
-            .distinctUntilChanged()
-            .doOnNext(changed -> localDatePreferenceAction.call())
-            .subscribe(DateUtils::setShowLocal));
+        compositeDisposable.add(
+                sharedPreferences
+                        .getBoolean(Constants.SHARED_PREFS_LOCAL_DATE)
+                        .asObservable()
+                        .distinctUntilChanged()
+                        .doOnNext(changed -> localDatePreferenceAction.call())
+                        .subscribe(DateUtils::setShowLocal));
     }
 
     public void logout() {
-        compositeDisposable.add(authService.logout()
-            .subscribe(() -> {
-                contextManager.clearOrganiser();
-                logoutAction.call();
-            }, throwable -> {
-                error.setValue(throwable.getMessage());
-                Logger.logError(throwable);
-            }));
+        compositeDisposable.add(
+                authService
+                        .logout()
+                        .subscribe(
+                                () -> {
+                                    contextManager.clearOrganiser();
+                                    logoutAction.call();
+                                },
+                                throwable -> {
+                                    error.setValue(throwable.getMessage());
+                                    Logger.logError(throwable);
+                                }));
     }
 
     protected LiveData<String> getError() {

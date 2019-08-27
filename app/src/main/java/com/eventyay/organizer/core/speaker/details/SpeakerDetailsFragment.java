@@ -1,32 +1,29 @@
 package com.eventyay.organizer.core.speaker.details;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import static com.eventyay.organizer.ui.ViewUtils.showView;
+
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.databinding.SpeakerDetailsFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import java.util.List;
-
 import javax.inject.Inject;
-
-import static com.eventyay.organizer.ui.ViewUtils.showView;
 
 public class SpeakerDetailsFragment extends BaseFragment implements SpeakerDetailsView {
 
@@ -34,8 +31,7 @@ public class SpeakerDetailsFragment extends BaseFragment implements SpeakerDetai
     private Context context;
     private static final String SPEAKER_ID = "speaker_id";
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private SpeakerDetailsViewModel speakerDetailsViewModel;
     private SpeakerDetailsFragmentBinding binding;
@@ -51,11 +47,14 @@ public class SpeakerDetailsFragment extends BaseFragment implements SpeakerDetai
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getContext();
-        binding = DataBindingUtil.inflate(inflater, R.layout.speaker_details_fragment, container, false);
-        speakerDetailsViewModel = ViewModelProviders.of(this, viewModelFactory).get(SpeakerDetailsViewModel.class);
+        binding =
+                DataBindingUtil.inflate(
+                        inflater, R.layout.speaker_details_fragment, container, false);
+        speakerDetailsViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(SpeakerDetailsViewModel.class);
         speakerId = getArguments().getLong(SPEAKER_ID);
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
@@ -99,10 +98,11 @@ public class SpeakerDetailsFragment extends BaseFragment implements SpeakerDetai
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            loadSpeaker(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    loadSpeaker(true);
+                });
     }
 
     private void loadSpeaker(boolean reload) {

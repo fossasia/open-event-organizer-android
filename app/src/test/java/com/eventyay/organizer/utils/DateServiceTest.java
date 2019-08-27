@@ -1,16 +1,14 @@
 package com.eventyay.organizer.utils;
 
-import com.eventyay.organizer.data.event.Event;
-import com.eventyay.organizer.utils.service.DateService;
-import org.junit.Test;
-import org.threeten.bp.LocalDateTime;
-
-import java.text.ParseException;
-
-import timber.log.Timber;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
+import com.eventyay.organizer.data.event.Event;
+import com.eventyay.organizer.utils.service.DateService;
+import java.text.ParseException;
+import org.junit.Test;
+import org.threeten.bp.LocalDateTime;
+import timber.log.Timber;
 
 public class DateServiceTest {
 
@@ -112,5 +110,4 @@ public class DateServiceTest {
 
         assertEquals(1, DateService.compareEventDates(UPCOMING, upcomingEarliest));
     }
-
 }

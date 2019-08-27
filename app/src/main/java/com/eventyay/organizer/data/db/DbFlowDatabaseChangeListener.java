@@ -2,10 +2,8 @@ package com.eventyay.organizer.data.db;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.raizlabs.android.dbflow.runtime.DirectModelNotifier;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -28,34 +26,36 @@ public class DbFlowDatabaseChangeListener<T> implements DatabaseChangeListener<T
 
     public Observable<ModelChange<T>> getNotifier() {
         return replaySubject
-            .doOnSubscribe(disposable -> this.disposable = disposable)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+                .doOnSubscribe(disposable -> this.disposable = disposable)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public void startListening() {
-        if (disposable == null || disposable.isDisposed())
-            replaySubject = ReplaySubject.create();
+        if (disposable == null || disposable.isDisposed()) replaySubject = ReplaySubject.create();
 
-        modelModelChangedListener = new DirectModelNotifier.ModelChangedListener<T>() {
+        modelModelChangedListener =
+                new DirectModelNotifier.ModelChangedListener<T>() {
 
-            @Override
-            public void onTableChanged(@Nullable Class<?> aClass, @NonNull BaseModel.Action action) {
-                replaySubject.onNext(new ModelChange<>(null, action));
-            }
+                    @Override
+                    public void onTableChanged(
+                            @Nullable Class<?> aClass, @NonNull BaseModel.Action action) {
+                        replaySubject.onNext(new ModelChange<>(null, action));
+                    }
 
-            @Override
-            public void onModelChanged(@NonNull T model, @NonNull BaseModel.Action action) {
-                replaySubject.onNext(new ModelChange<>(model, action));
-            }
-        };
+                    @Override
+                    public void onModelChanged(@NonNull T model, @NonNull BaseModel.Action action) {
+                        replaySubject.onNext(new ModelChange<>(model, action));
+                    }
+                };
 
         DirectModelNotifier.get().registerForModelChanges(classType, modelModelChangedListener);
     }
 
     public void stopListening() {
         if (modelModelChangedListener != null)
-            DirectModelNotifier.get().unregisterForModelChanges(classType, modelModelChangedListener);
+            DirectModelNotifier.get()
+                    .unregisterForModelChanges(classType, modelModelChangedListener);
         replaySubject.onComplete();
     }
 
@@ -69,8 +69,9 @@ public class DbFlowDatabaseChangeListener<T> implements DatabaseChangeListener<T
 
         @Override
         public boolean equals(Object obj) {
-            return obj instanceof ModelChange && ((ModelChange) obj).action.equals(action) && ((ModelChange) obj).model.equals(model);
+            return obj instanceof ModelChange
+                    && ((ModelChange) obj).action.equals(action)
+                    && ((ModelChange) obj).model.equals(model);
         }
     }
-
 }

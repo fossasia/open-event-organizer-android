@@ -2,9 +2,8 @@ package com.eventyay.organizer.utils.service;
 
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.utils.DateUtils;
-import org.threeten.bp.ZonedDateTime;
-
 import java.text.ParseException;
+import org.threeten.bp.ZonedDateTime;
 
 @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Bug in PMD related to DU anomaly
 public final class DateService {
@@ -18,12 +17,11 @@ public final class DateService {
     }
 
     /**
-     * Compare events for sorting
-     * the list will be in order of live events, upcoming events, past events
+     * Compare events for sorting the list will be in order of live events, upcoming events, past
+     * events
      *
-     * for both live events latest will be before in list
-     * for both past events lately ended will be before in list
-     * for both upcoming started earliest will be before in list
+     * <p>for both live events latest will be before in list for both past events lately ended will
+     * be before in list for both upcoming started earliest will be before in list
      *
      * @return int
      */

@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -21,7 +20,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.eventyay.organizer.BR;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -38,19 +36,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.utils.ComparableItemListImpl;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.inject.Inject;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link AttendeesFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A simple {@link Fragment} subclass. Use the {@link AttendeesFragment#newInstance} factory method
+ * to create an instance of this fragment.
  */
-
 @SuppressWarnings("PMD.TooManyMethods")
 public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
@@ -62,11 +56,9 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
     private long eventId;
 
-    @Inject
-    ContextUtils utilModel;
+    @Inject ContextUtils utilModel;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private FastAdapter<Attendee> fastAdapter;
 
@@ -89,8 +81,8 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
     private static final String FILTER_SYNC = "FILTER_SYNC";
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Use this factory method to create a new instance of this fragment using the provided
+     * parameters.
      *
      * @param eventId id of the event.
      * @return A new instance of fragment AttendeesFragment.
@@ -112,8 +104,7 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
         context = getActivity();
         setHasOptionsMenu(true);
 
-        if (getArguments() != null)
-            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+        if (getArguments() != null) eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
 
     @Override
@@ -154,9 +145,17 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
     private void sortAttendees(int sortBy) {
         if (sortBy == SORTBYTICKET) {
-            ((ComparableItemListImpl<Attendee>) fastItemAdapter.getItemList()).withComparator((Attendee a1, Attendee a2) -> a1.getTicket().getType().compareTo(a2.getTicket().getType()), true);
+            ((ComparableItemListImpl<Attendee>) fastItemAdapter.getItemList())
+                    .withComparator(
+                            (Attendee a1, Attendee a2) ->
+                                    a1.getTicket().getType().compareTo(a2.getTicket().getType()),
+                            true);
         } else {
-            ((ComparableItemListImpl<Attendee>) fastItemAdapter.getItemList()).withComparator((Attendee a1, Attendee a2) -> a1.getFirstname().compareTo(a2.getFirstname()), true);
+            ((ComparableItemListImpl<Attendee>) fastItemAdapter.getItemList())
+                    .withComparator(
+                            (Attendee a1, Attendee a2) ->
+                                    a1.getFirstname().compareTo(a2.getFirstname()),
+                            true);
         }
         fastItemAdapter.setNewList(attendeeList, true);
         binding.setVariable(BR.attendees, attendeeList);
@@ -164,14 +163,19 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_attendees, container, false);
-        attendeesViewModel = ViewModelProviders.of(this, viewModelFactory).get(AttendeesViewModel.class);
+        attendeesViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(AttendeesViewModel.class);
 
-        binding.fabScanQr.getDrawable().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
-        binding.fabScanQr.setOnClickListener(v -> scanningDecider.openScanQRActivity(getActivity(), eventId));
+        binding.fabScanQr
+                .getDrawable()
+                .setColorFilter(
+                        getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
+        binding.fabScanQr.setOnClickListener(
+                v -> scanningDecider.openScanQRActivity(getActivity(), eventId));
 
         return binding.getRoot();
     }
@@ -200,46 +204,45 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
     public void onStop() {
         super.onStop();
         refreshLayout.setOnRefreshListener(null);
-        if (searchView != null)
-            searchView.setOnQueryTextListener(null);
+        if (searchView != null) searchView.setOnQueryTextListener(null);
     }
 
     private void setupSearchListener() {
-        if (searchView == null)
-            return;
+        if (searchView == null) return;
 
         searchView.setQueryHint(getString(R.string.search_placeholder));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
+        searchView.setOnQueryTextListener(
+                new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        return false;
+                    }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                fastItemAdapter.filter(s.trim());
-                return true;
-            }
-        });
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        fastItemAdapter.filter(s.trim());
+                        return true;
+                    }
+                });
     }
 
     private void setupRecyclerView() {
         fastItemAdapter = new ItemAdapter<>();
-        fastItemAdapter.getItemFilter().setFilterPredicate(
-            (attendee, query) -> {
-                if (query == null)
-                    return true;
+        fastItemAdapter
+                .getItemFilter()
+                .setFilterPredicate(
+                        (attendee, query) -> {
+                            if (query == null) return true;
 
-                if (query.equals(FILTER_SYNC)) {
-                    return attendee.checking;
-                }
-                return !SearchUtils.filter(
-                    query.toString(),
-                    attendee.getFirstname(),
-                    attendee.getLastname(),
-                    attendee.getEmail());
-            }
-        );
+                            if (query.equals(FILTER_SYNC)) {
+                                return attendee.checking;
+                            }
+                            return !SearchUtils.filter(
+                                    query.toString(),
+                                    attendee.getFirstname(),
+                                    attendee.getLastname(),
+                                    attendee.getEmail());
+                        });
 
         fastAdapter = FastAdapter.with(Collections.singletonList(fastItemAdapter));
         fastAdapter.setHasStableIds(true);
@@ -247,47 +250,53 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
         RecyclerView recyclerView = binding.rvAttendeeList;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(fastAdapter);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 || dy < 0 && binding.fabScanQr.isShown())
-                    binding.fabScanQr.hide();
+        recyclerView.addOnScrollListener(
+                new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        if (dy > 0 || dy < 0 && binding.fabScanQr.isShown())
+                            binding.fabScanQr.hide();
 
-                if (!recyclerView.canScrollVertically(1)) {
+                        if (!recyclerView.canScrollVertically(1)) {
 
-                    if (recyclerView.getAdapter().getItemCount() > currentPage * ITEMS_PER_PAGE) {
-                        currentPage++;
-                    } else {
-                        currentPage++;
-                        attendeesViewModel.loadAttendeesPageWise(currentPage, true);
+                            if (recyclerView.getAdapter().getItemCount()
+                                    > currentPage * ITEMS_PER_PAGE) {
+                                currentPage++;
+                            } else {
+                                currentPage++;
+                                attendeesViewModel.loadAttendeesPageWise(currentPage, true);
+                            }
+                        }
                     }
-                }
-            }
 
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && recyclerView.getAdapter().getItemCount() != 0) {
-                    binding.fabScanQr.show();
-                }
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE
+                                && recyclerView.getAdapter().getItemCount() != 0) {
+                            binding.fabScanQr.show();
+                        }
+                        super.onScrollStateChanged(recyclerView, newState);
+                    }
+                });
 
-        SwipeController swipeController = new SwipeController(attendeesViewModel, attendeeList, context);
+        SwipeController swipeController =
+                new SwipeController(attendeesViewModel, attendeeList, context);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        observer = new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-            }
-        };
+        observer =
+                new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                    }
+                };
         fastAdapter.registerAdapterDataObserver(observer);
         ViewUtils.setRecyclerViewScrollAwareFabBehaviour(recyclerView, binding.fabScanQr);
     }
@@ -295,19 +304,21 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            attendeeList.clear();
-            attendeesViewModel.loadAttendeesPageWise(FIRST_PAGE, true);
-            currentPage = FIRST_PAGE;
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    attendeeList.clear();
+                    attendeesViewModel.loadAttendeesPageWise(FIRST_PAGE, true);
+                    currentPage = FIRST_PAGE;
+                });
     }
 
     // View Implementation
 
     @Override
     public void showToggleDialog(long attendeeId) {
-        BottomSheetDialogFragment bottomSheetDialogFragment = AttendeeCheckInFragment.newInstance(attendeeId);
+        BottomSheetDialogFragment bottomSheetDialogFragment =
+                AttendeeCheckInFragment.newInstance(attendeeId);
         bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 
@@ -336,8 +347,7 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
 
     @Override
     public void showEmptyView(boolean show) {
-        if (currentPage > 1)
-            return;
+        if (currentPage > 1) return;
 
         ViewUtils.showView(binding.emptyView, show);
     }
@@ -357,6 +367,4 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
     public List<Attendee> getAttendeeList() {
         return attendeeList;
     }
-
 }
-

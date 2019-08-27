@@ -119,7 +119,7 @@ repositories {
 spotless {
     java {
         target'**/*.java'
-        googleJavaFormat()
+        googleJavaFormat().aosp()
     }
 }
 

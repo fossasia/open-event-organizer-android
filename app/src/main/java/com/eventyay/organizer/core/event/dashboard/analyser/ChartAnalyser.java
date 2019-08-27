@@ -4,7 +4,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
-
+import com.eventyay.organizer.R;
+import com.eventyay.organizer.data.ContextUtils;
+import com.eventyay.organizer.data.attendee.Attendee;
+import com.eventyay.organizer.data.attendee.AttendeeRepositoryImpl;
+import com.eventyay.organizer.data.order.Order;
+import com.eventyay.organizer.utils.DateUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -15,26 +20,16 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.EntryXComparator;
-
-import com.eventyay.organizer.R;
-import com.eventyay.organizer.data.ContextUtils;
-import com.eventyay.organizer.data.attendee.Attendee;
-import com.eventyay.organizer.data.attendee.AttendeeRepositoryImpl;
-import com.eventyay.organizer.data.order.Order;
-import com.eventyay.organizer.utils.DateUtils;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Inject;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.reactivex.Completable;
-import io.reactivex.Observable;
 
 @SuppressWarnings("PMD.TooManyFields")
 public class ChartAnalyser {
@@ -61,9 +56,12 @@ public class ChartAnalyser {
     private List<Attendee> attendees;
     private boolean error;
     private boolean isCheckinChart;
-    String[] values = new String[] {"00:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00",
-        "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00",
-        "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
+    String[] values =
+            new String[] {
+                "00:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00",
+                "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00",
+                "19:00", "20:00", "21:00", "22:00", "23:00"
+            };
 
     @Inject
     protected ChartAnalyser(ContextUtils utilModel, AttendeeRepositoryImpl attendeeRepository) {
@@ -94,76 +92,79 @@ public class ChartAnalyser {
     private Observable<Attendee> getAttendeeSource(long eventId) {
         if (attendees == null || attendees.isEmpty())
             return attendeeRepository.getAttendees(eventId, false);
-        else
-            return Observable.fromIterable(attendees);
+        else return Observable.fromIterable(attendees);
     }
 
     public Completable loadData(long eventId) {
         clearData();
         isCheckinChart = false;
         return getAttendeeSource(eventId)
-            .doOnNext(attendee -> {
-                Order order = attendee.getOrder();
-                if (order == null) {
-                    error = true;
-                    return;
-                }
+                .doOnNext(
+                        attendee -> {
+                            Order order = attendee.getOrder();
+                            if (order == null) {
+                                error = true;
+                                return;
+                            }
 
-                String date = order.getCompletedAt();
-                switch (attendee.getTicket().getType()) {
-                    case TicketAnalyser.TICKET_FREE:
-                        addDataPointForSales(freeMap, date);
-                        break;
-                    case TicketAnalyser.TICKET_DONATION:
-                        addDataPointForSales(donationMap, date);
-                        break;
-                    case TicketAnalyser.TICKET_PAID:
-                        addDataPointForSales(paidMap, date);
-                        break;
-                    default:
-                        // No action
-                }
-            })
-            .toList()
-            .doAfterSuccess(attendees -> this.attendees = attendees)
-            .toCompletable()
-            .doOnComplete(() -> {
-                if (error) throw new IllegalAccessException("No order found");
-                normalizeDataSet();
-                freeSet = setDataForSales(freeMap, "Free");
-                paidSet = setDataForSales(paidMap, "Paid");
-                donationSet = setDataForSales(donationMap, "Donation");
-                prepare();
-            });
+                            String date = order.getCompletedAt();
+                            switch (attendee.getTicket().getType()) {
+                                case TicketAnalyser.TICKET_FREE:
+                                    addDataPointForSales(freeMap, date);
+                                    break;
+                                case TicketAnalyser.TICKET_DONATION:
+                                    addDataPointForSales(donationMap, date);
+                                    break;
+                                case TicketAnalyser.TICKET_PAID:
+                                    addDataPointForSales(paidMap, date);
+                                    break;
+                                default:
+                                    // No action
+                            }
+                        })
+                .toList()
+                .doAfterSuccess(attendees -> this.attendees = attendees)
+                .toCompletable()
+                .doOnComplete(
+                        () -> {
+                            if (error) throw new IllegalAccessException("No order found");
+                            normalizeDataSet();
+                            freeSet = setDataForSales(freeMap, "Free");
+                            paidSet = setDataForSales(paidMap, "Paid");
+                            donationSet = setDataForSales(donationMap, "Donation");
+                            prepare();
+                        });
     }
 
     public Completable loadDataCheckIn(long eventId) {
         clearData();
         isCheckinChart = true;
-        return getAttendeeSource(eventId).doOnNext(attendee -> {
-           String checkInTime = attendee.getCheckinTimes();
-           int length = checkInTime.split(",").length;
-           String latestCheckInTime = checkInTime.split(",")[length - 1];
-           error = checkInTime == null ? true : false;
-           addDataPointForCheckIn(checkInTimeMap, latestCheckInTime);
-        })
-          .toList()
-          .doAfterSuccess(attendees -> this.attendees = attendees)
-          .toCompletable()
-          .doOnComplete(() -> {
-              if (error)
-                  throw new IllegalAccessException("No checkin's found");
-              checkInDataSet = setDataForCheckIn(checkInTimeMap, "check-in time");
-              prepare();
-          });
+        return getAttendeeSource(eventId)
+                .doOnNext(
+                        attendee -> {
+                            String checkInTime = attendee.getCheckinTimes();
+                            int length = checkInTime.split(",").length;
+                            String latestCheckInTime = checkInTime.split(",")[length - 1];
+                            error = checkInTime == null ? true : false;
+                            addDataPointForCheckIn(checkInTimeMap, latestCheckInTime);
+                        })
+                .toList()
+                .doAfterSuccess(attendees -> this.attendees = attendees)
+                .toCompletable()
+                .doOnComplete(
+                        () -> {
+                            if (error) throw new IllegalAccessException("No checkin's found");
+                            checkInDataSet = setDataForCheckIn(checkInTimeMap, "check-in time");
+                            prepare();
+                        });
     }
 
     private void putIfNotPresent(Map<String, Long> map, String key) {
-        if (!map.containsKey(key))
-            map.put(key, 0L);
+        if (!map.containsKey(key)) map.put(key, 0L);
     }
 
-    private void normalizeDataSet(Map<String, Long> source, Map<String, Long> other1, Map<String, Long> other2) {
+    private void normalizeDataSet(
+            Map<String, Long> source, Map<String, Long> other1, Map<String, Long> other2) {
         for (Map.Entry<String, Long> entry : source.entrySet()) {
             putIfNotPresent(other1, entry.getKey());
             putIfNotPresent(other2, entry.getKey());
@@ -176,11 +177,13 @@ public class ChartAnalyser {
         normalizeDataSet(donationMap, paidMap, freeMap);
     }
 
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
+    @SuppressWarnings(
+            "PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
     private LineDataSet setDataForSales(Map<String, Long> map, String label) throws ParseException {
         List<Entry> entries = new ArrayList<>();
         for (Map.Entry<String, Long> entry : map.entrySet()) {
-            String date = DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, entry.getKey());
+            String date =
+                    DateUtils.formatDateWithDefault(DateUtils.FORMAT_DAY_COMPLETE, entry.getKey());
             float time = DateUtils.getDate(entry.getKey()).toEpochSecond();
 
             entries.add(new Entry(time, entry.getValue(), date));
@@ -193,8 +196,10 @@ public class ChartAnalyser {
         return new LineDataSet(entries, label);
     }
 
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
-    private LineDataSet setDataForCheckIn(Map<Integer, Long> map, String label) throws ParseException {
+    @SuppressWarnings(
+            "PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
+    private LineDataSet setDataForCheckIn(Map<Integer, Long> map, String label)
+            throws ParseException {
         List<Entry> entries = new ArrayList<>();
         for (Map.Entry<Integer, Long> entry : map.entrySet()) {
             entries.add(new Entry(entry.getKey(), entry.getValue()));
@@ -208,12 +213,10 @@ public class ChartAnalyser {
 
     private void addDataPointForSales(Map<String, Long> map, String dateString) {
         Long amount = map.get(dateString);
-        if (amount == null)
-            amount = 0L;
+        if (amount == null) amount = 0L;
         ++amount;
 
-        if (amount > maxTicketSale)
-            maxTicketSale = amount;
+        if (amount > maxTicketSale) maxTicketSale = amount;
         map.put(dateString, amount);
     }
 
@@ -221,8 +224,7 @@ public class ChartAnalyser {
         int hour = DateUtils.getDate(dateString).getHour();
         Long numberOfCheckins = map.get(hour);
 
-        if (numberOfCheckins == null)
-            numberOfCheckins = 0L;
+        if (numberOfCheckins == null) numberOfCheckins = 0L;
 
         map.put(hour, ++numberOfCheckins);
     }
@@ -254,12 +256,12 @@ public class ChartAnalyser {
             lineData.addDataSet(donationSet);
             lineData.setDrawValues(false);
         }
-    lineData.setDrawValues(false);
+        lineData.setDrawValues(false);
     }
 
     @SuppressFBWarnings(
-        value = "ICAST_IDIV_CAST_TO_DOUBLE",
-        justification = "We want granularity to be integer")
+            value = "ICAST_IDIV_CAST_TO_DOUBLE",
+            justification = "We want granularity to be integer")
     public void showChart(LineChart lineChart) {
         lineChart.setData(lineData);
         lineChart.getXAxis().setEnabled(true);
@@ -273,13 +275,13 @@ public class ChartAnalyser {
         if (!isCheckinChart)
             if (maxTicketSale > TICKET_SALE_THRESHOLD)
                 yAxis.setGranularity(maxTicketSale / TICKET_SALE_THRESHOLD);
-        else {
-            XAxis xAxis = lineChart.getXAxis();
-            xAxis.setValueFormatter(new MyAxisValueFormatter());
-            yAxis.setGranularity(1);
-            lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-            lineChart.getXAxis().setGranularity(1f);
-        }
+            else {
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setValueFormatter(new MyAxisValueFormatter());
+                yAxis.setGranularity(1);
+                lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+                lineChart.getXAxis().setGranularity(1f);
+            }
 
         Description description = new Description();
         description.setText("");
@@ -291,8 +293,7 @@ public class ChartAnalyser {
 
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            if (value < 0)
-                return values[24 + (int) value];
+            if (value < 0) return values[24 + (int) value];
             return values[(int) value];
         }
     }

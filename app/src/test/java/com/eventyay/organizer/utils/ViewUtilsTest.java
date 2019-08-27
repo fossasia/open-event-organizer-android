@@ -1,7 +1,6 @@
 package com.eventyay.organizer.utils;
 
 import android.view.View;
-
 import com.eventyay.organizer.ui.ViewUtils;
 import org.junit.Rule;
 import org.junit.Test;

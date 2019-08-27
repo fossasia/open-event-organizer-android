@@ -1,18 +1,15 @@
 package com.eventyay.organizer.core.event.about;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.MenuItem;
-
 import com.eventyay.organizer.R;
-
-import javax.inject.Inject;
-
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import javax.inject.Inject;
 
 public class AboutEventActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
@@ -20,8 +17,7 @@ public class AboutEventActivity extends AppCompatActivity implements HasSupportF
 
     private final FragmentManager fragmentManager = getSupportFragmentManager();
 
-    @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+    @Inject DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +26,10 @@ public class AboutEventActivity extends AppCompatActivity implements HasSupportF
 
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(EVENT_ID) && savedInstanceState == null) {
-            fragmentManager.beginTransaction()
-                .add(R.id.fragment, AboutEventFragment.newInstance(extras.getLong(EVENT_ID)))
-                .commit();
+            fragmentManager
+                    .beginTransaction()
+                    .add(R.id.fragment, AboutEventFragment.newInstance(extras.getLong(EVENT_ID)))
+                    .commit();
         }
     }
 
@@ -40,10 +37,8 @@ public class AboutEventActivity extends AppCompatActivity implements HasSupportF
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (fragmentManager.getBackStackEntryCount() > 0)
-                    fragmentManager.popBackStack();
-                else
-                    finish();
+                if (fragmentManager.getBackStackEntryCount() > 0) fragmentManager.popBackStack();
+                else finish();
                 return true;
             default:
         }

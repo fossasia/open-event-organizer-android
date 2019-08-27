@@ -9,11 +9,9 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.sql.language.property.IProperty;
 import com.raizlabs.android.dbflow.sql.language.property.Property;
 import com.raizlabs.android.dbflow.sql.queriable.ModelQueriable;
-
+import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
 
 public class QueryHelper<R> {
     private final List<IProperty> properties = new ArrayList<>();
@@ -23,18 +21,14 @@ public class QueryHelper<R> {
     private Where<R> where;
 
     public QueryHelper<R> select(IProperty... properties) {
-        for (IProperty property : properties)
-            this.properties.add(property.withTable());
+        for (IProperty property : properties) this.properties.add(property.withTable());
         return this;
     }
 
     public QueryHelper<R> from(Class<R> source) {
-        if (method != null)
-            properties.add(method);
+        if (method != null) properties.add(method);
 
-        from = SQLite
-            .select(properties.toArray(new IProperty[properties.size()]))
-            .from(source);
+        from = SQLite.select(properties.toArray(new IProperty[properties.size()])).from(source);
         return this;
     }
 
@@ -63,16 +57,13 @@ public class QueryHelper<R> {
     }
 
     public QueryHelper<R> group(IProperty by) {
-        if (where == null)
-            where = from.groupBy(by.withTable());
-        else
-            where = where.groupBy(by.withTable());
+        if (where == null) where = from.groupBy(by.withTable());
+        else where = where.groupBy(by.withTable());
         return this;
     }
 
     public ModelQueriable<R> build() {
-        if (where == null)
-            return from;
+        if (where == null) return from;
 
         return where;
     }
@@ -86,10 +77,9 @@ public class QueryHelper<R> {
     }
 
     public <T> Observable<T> toCustomObservable(Class<T> to) {
-        return RXSQLite
-            .rx(build())
-            .queryResults()
-            .map(rCursorResult -> rCursorResult.toCustomListClose(to))
-            .flatMapObservable(Observable::fromIterable);
+        return RXSQLite.rx(build())
+                .queryResults()
+                .map(rCursorResult -> rCursorResult.toCustomListClose(to))
+                .flatMapObservable(Observable::fromIterable);
     }
 }

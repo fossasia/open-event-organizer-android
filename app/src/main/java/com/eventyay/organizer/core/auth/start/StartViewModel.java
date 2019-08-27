@@ -1,9 +1,10 @@
 package com.eventyay.organizer.core.auth.start;
 
+import static com.eventyay.organizer.common.Constants.PREF_USER_EMAIL;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.BuildConfig;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
@@ -13,14 +14,9 @@ import com.eventyay.organizer.data.auth.model.EmailRequest;
 import com.eventyay.organizer.data.encryption.EncryptionService;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
 import com.eventyay.organizer.utils.ErrorUtils;
-
-import java.util.Set;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
-
-import static com.eventyay.organizer.common.Constants.PREF_USER_EMAIL;
+import java.util.Set;
+import javax.inject.Inject;
 
 public class StartViewModel extends ViewModel {
 
@@ -38,8 +34,11 @@ public class StartViewModel extends ViewModel {
     private final MutableLiveData<EmailRequest> emailRequestModel = new MutableLiveData<>();
 
     @Inject
-    public StartViewModel(AuthService authService, HostSelectionInterceptor interceptor,
-                          Preferences sharedPreferenceModel, EncryptionService encryptionService) {
+    public StartViewModel(
+            AuthService authService,
+            HostSelectionInterceptor interceptor,
+            Preferences sharedPreferenceModel,
+            EncryptionService encryptionService) {
         this.authService = authService;
         this.interceptor = interceptor;
         this.sharedPreferenceModel = sharedPreferenceModel;
@@ -47,19 +46,26 @@ public class StartViewModel extends ViewModel {
     }
 
     public void checkIsEmailRegistered(EmailRequest emailRequest) {
-        compositeDisposable.add(authService.checkEmailRegistered(emailRequest)
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe((isAvailable) -> {
-                    isEmailRegistered.setValue(!isAvailable.getResult());
-                },
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                authService
+                        .checkEmailRegistered(emailRequest)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                (isAvailable) -> {
+                                    isEmailRegistered.setValue(!isAvailable.getResult());
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public MutableLiveData<EmailRequest> getEmailRequestModel() {
         if (emailRequestModel.getValue() == null) {
             EmailRequest emailRequest = new EmailRequest();
-            emailRequest.setEmail(encryptionService.decrypt(sharedPreferenceModel.getString(PREF_USER_EMAIL, null)));
+            emailRequest.setEmail(
+                    encryptionService.decrypt(
+                            sharedPreferenceModel.getString(PREF_USER_EMAIL, null)));
             emailRequestModel.setValue(emailRequest);
         }
         return emailRequestModel;
@@ -75,7 +81,8 @@ public class StartViewModel extends ViewModel {
     }
 
     public LiveData<Set<String>> getEmailList() {
-        Set<String> emailSet = sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null);
+        Set<String> emailSet =
+                sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null);
 
         if (emailSet != null) {
             emailList.setValue(emailSet);

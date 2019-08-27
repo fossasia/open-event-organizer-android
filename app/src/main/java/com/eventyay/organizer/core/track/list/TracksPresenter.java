@@ -1,33 +1,27 @@
 package com.eventyay.organizer.core.track.list;
 
+import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
+import static com.eventyay.organizer.common.rx.ViewTransformers.disposeCompletable;
+import static com.eventyay.organizer.common.rx.ViewTransformers.emptiable;
+import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneous;
+import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
-import androidx.databinding.ObservableBoolean;
 import android.graphics.Color;
-
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
+import androidx.databinding.ObservableBoolean;
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.tracks.TrackRepository;
-
+import com.raizlabs.android.dbflow.structure.BaseModel;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Inject;
-
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
-
-import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
-import static com.eventyay.organizer.common.rx.ViewTransformers.disposeCompletable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.emptiable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneous;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
 
@@ -38,8 +32,10 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
     private boolean isContextualModeActive;
 
     private static final int EDITABLE_AT_ONCE = 1;
+
     @Inject
-    public TracksPresenter(TrackRepository trackRepository, DatabaseChangeListener<Track> trackChangeListener) {
+    public TracksPresenter(
+            TrackRepository trackRepository, DatabaseChangeListener<Track> trackChangeListener) {
         this.trackRepository = trackRepository;
         this.trackChangeListener = trackChangeListener;
     }
@@ -58,11 +54,11 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
 
     public void loadTracks(boolean forceReload) {
         getTrackSource(forceReload)
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneousRefresh(getView(), forceReload))
-            .toList()
-            .compose(emptiable(getView(), tracks))
-            .subscribe(Logger::logSuccess, Logger::logError);
+                .compose(dispose(getDisposable()))
+                .compose(progressiveErroneousRefresh(getView(), forceReload))
+                .toList()
+                .compose(emptiable(getView(), tracks))
+                .subscribe(Logger::logSuccess, Logger::logError);
     }
 
     private Observable<Track> getTrackSource(boolean forceReload) {
@@ -75,13 +71,17 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
 
     private void listenChanges() {
         trackChangeListener.startListening();
-        trackChangeListener.getNotifier()
-            .compose(dispose(getDisposable()))
-            .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.UPDATE) ||
-                action.equals(BaseModel.Action.DELETE))
-            .subscribeOn(Schedulers.io())
-            .subscribe(trackModelChange -> loadTracks(false), Logger::logError);
+        trackChangeListener
+                .getNotifier()
+                .compose(dispose(getDisposable()))
+                .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
+                .filter(
+                        action ->
+                                action.equals(BaseModel.Action.INSERT)
+                                        || action.equals(BaseModel.Action.UPDATE)
+                                        || action.equals(BaseModel.Action.DELETE))
+                .subscribeOn(Schedulers.io())
+                .subscribe(trackModelChange -> loadTracks(false), Logger::logError);
     }
 
     public List<Track> getTracks() {
@@ -117,32 +117,36 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
 
     private void deleteTrack(Long trackId) {
         trackRepository
-            .deleteTrack(trackId)
-            .compose(disposeCompletable(getDisposable()))
-            .subscribe(() -> {
-                selectedTracks.remove(trackId);
-                Logger.logSuccess(trackId);
-            }, Logger::logError);
+                .deleteTrack(trackId)
+                .compose(disposeCompletable(getDisposable()))
+                .subscribe(
+                        () -> {
+                            selectedTracks.remove(trackId);
+                            Logger.logSuccess(trackId);
+                        },
+                        Logger::logError);
     }
 
     public void deleteSelectedTracks() {
         Observable.fromIterable(selectedTracks.entrySet())
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneous(getView()))
-            .doFinally(() -> {
-                getView().showMessage("Tracks Deleted");
-                resetToolbarToDefaultState();
-            })
-            .subscribe(entry -> {
-                if (entry.getValue().get()) {
-                    deleteTrack(entry.getKey());
-                }
-            }, Logger::logError);
+                .compose(dispose(getDisposable()))
+                .compose(progressiveErroneous(getView()))
+                .doFinally(
+                        () -> {
+                            getView().showMessage("Tracks Deleted");
+                            resetToolbarToDefaultState();
+                        })
+                .subscribe(
+                        entry -> {
+                            if (entry.getValue().get()) {
+                                deleteTrack(entry.getKey());
+                            }
+                        },
+                        Logger::logError);
     }
 
     public void longClick(Track clickedTrack) {
-        if (isContextualModeActive)
-            click(clickedTrack.getId());
+        if (isContextualModeActive) click(clickedTrack.getId());
         else {
             selectedTracks.get(clickedTrack.getId()).set(true);
             isContextualModeActive = true;
@@ -161,14 +165,11 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
                 getView().changeToolbarMode(true, true);
             } else if (isTrackSelected(clickedTrackId).get())
                 selectedTracks.get(clickedTrackId).set(false);
-            else
-                selectedTracks.get(clickedTrackId).set(true);
+            else selectedTracks.get(clickedTrackId).set(true);
 
-            if (countSelected() > EDITABLE_AT_ONCE)
-                getView().changeToolbarMode(false, true);
+            if (countSelected() > EDITABLE_AT_ONCE) getView().changeToolbarMode(false, true);
 
-        } else
-            getView().openSessionsFragment(clickedTrackId);
+        } else getView().openSessionsFragment(clickedTrackId);
     }
 
     public void resetToolbarToDefaultState() {
@@ -195,8 +196,7 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
     private int countSelected() {
         int count = 0;
         for (Long id : selectedTracks.keySet()) {
-            if (selectedTracks.get(id).get())
-                count++;
+            if (selectedTracks.get(id).get()) count++;
         }
         return count;
     }

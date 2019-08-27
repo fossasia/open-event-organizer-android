@@ -2,10 +2,9 @@ package com.eventyay.organizer.core.role.list;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
-import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.ContextManager;
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
@@ -13,17 +12,14 @@ import com.eventyay.organizer.data.role.RoleInvite;
 import com.eventyay.organizer.data.role.RoleRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Inject;
-
-import io.reactivex.Observable;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class RoleListViewModel extends ViewModel {
 
@@ -45,7 +41,9 @@ public class RoleListViewModel extends ViewModel {
     private long eventId;
 
     @Inject
-    public RoleListViewModel(RoleRepository roleRepository, DatabaseChangeListener<RoleInvite> roleListChangeListener) {
+    public RoleListViewModel(
+            RoleRepository roleRepository,
+            DatabaseChangeListener<RoleInvite> roleListChangeListener) {
         this.roleRepository = roleRepository;
         this.roleListChangeListener = roleListChangeListener;
     }
@@ -87,15 +85,19 @@ public class RoleListViewModel extends ViewModel {
         eventId = ContextManager.getSelectedEvent().getId();
 
         compositeDisposable.add(
-            getRoleSource(forceReload)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .toList()
-                .subscribe(roleList -> {
-                    roles.clear();
-                    roles.addAll(roleList);
-                    rolesLiveData.setValue(roles);
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                getRoleSource(forceReload)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .toList()
+                        .subscribe(
+                                roleList -> {
+                                    roles.clear();
+                                    roles.addAll(roleList);
+                                    rolesLiveData.setValue(roles);
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     private Observable<RoleInvite> getRoleSource(boolean forceReload) {
@@ -108,11 +110,15 @@ public class RoleListViewModel extends ViewModel {
 
     public void listenChanges() {
         roleListChangeListener.startListening();
-        roleListChangeListener.getNotifier()
-            .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.DELETE))
-            .subscribeOn(Schedulers.io())
-            .subscribe(roleModelChange -> loadRoles(false), Logger::logError);
+        roleListChangeListener
+                .getNotifier()
+                .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
+                .filter(
+                        action ->
+                                action.equals(BaseModel.Action.INSERT)
+                                        || action.equals(BaseModel.Action.DELETE))
+                .subscribeOn(Schedulers.io())
+                .subscribe(roleModelChange -> loadRoles(false), Logger::logError);
     }
 
     public List<RoleInvite> getRoles() {
@@ -121,31 +127,34 @@ public class RoleListViewModel extends ViewModel {
 
     public void deleteRole(RoleInvite role) {
         roleRepository
-            .deleteRole(role.getId())
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(() -> {
-                selectedMap.remove(role);
-                loadRoles(true);
-                Logger.logSuccess(role);
-            }, Logger::logError);
+                .deleteRole(role.getId())
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(
+                        () -> {
+                            selectedMap.remove(role);
+                            loadRoles(true);
+                            Logger.logSuccess(role);
+                        },
+                        Logger::logError);
     }
 
     public void deleteSelectedRole() {
         Observable.fromIterable(selectedMap.entrySet())
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(entry -> {
-                if (entry.getValue().get()) {
-                    deleteRole(entry.getKey());
-                }
-                success.setValue("Deleted Successfully");
-            }, Logger::logError);
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(
+                        entry -> {
+                            if (entry.getValue().get()) {
+                                deleteRole(entry.getKey());
+                            }
+                            success.setValue("Deleted Successfully");
+                        },
+                        Logger::logError);
     }
 
     public void unselectRole(RoleInvite role) {
-        if (role != null && selectedMap.containsKey(role))
-            selectedMap.get(role).set(false);
+        if (role != null && selectedMap.containsKey(role)) selectedMap.get(role).set(false);
     }
 
     public void resetToDefaultState() {

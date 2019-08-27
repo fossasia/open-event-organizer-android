@@ -3,15 +3,12 @@ package com.eventyay.organizer.core.notification.list;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.notification.list.viewholder.NotificationsViewHolder;
 import com.eventyay.organizer.data.notification.Notification;
-
 import java.util.List;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsViewHolder> {
@@ -25,16 +22,23 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsView
     @NonNull
     @Override
     public NotificationsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        NotificationsViewHolder notificationsViewHolder= new NotificationsViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.notification_item, viewGroup, false));
+        NotificationsViewHolder notificationsViewHolder =
+                new NotificationsViewHolder(
+                        DataBindingUtil.inflate(
+                                LayoutInflater.from(viewGroup.getContext()),
+                                R.layout.notification_item,
+                                viewGroup,
+                                false));
 
         return notificationsViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotificationsViewHolder notificationsViewHolder, int position) {
-        notifications.get(position).setMessage(Html.fromHtml(notifications.get(position).getMessage()).toString());
+    public void onBindViewHolder(
+            @NonNull NotificationsViewHolder notificationsViewHolder, int position) {
+        notifications
+                .get(position)
+                .setMessage(Html.fromHtml(notifications.get(position).getMessage()).toString());
         notificationsViewHolder.bind(notifications.get(position));
     }
 
@@ -42,5 +46,4 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsView
     public int getItemCount() {
         return notifications.size();
     }
-
 }

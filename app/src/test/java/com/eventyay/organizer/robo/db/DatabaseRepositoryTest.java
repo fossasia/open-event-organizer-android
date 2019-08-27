@@ -1,13 +1,12 @@
 package com.eventyay.organizer.robo.db;
 
-import com.eventyay.organizer.data.user.User;
-import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
 import com.eventyay.organizer.common.model.SimpleModel;
 import com.eventyay.organizer.common.model.SimpleModel_Table;
-import org.junit.Test;
-
+import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
+import com.eventyay.organizer.data.user.User;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Test;
 
 public class DatabaseRepositoryTest extends BaseTest {
 
@@ -30,97 +29,66 @@ public class DatabaseRepositoryTest extends BaseTest {
 
     @Test
     public void testBasicSaveAndRead() {
-        databaseRepository
-            .save(SimpleModel.class, MODEL)
-            .subscribe();
+        databaseRepository.save(SimpleModel.class, MODEL).subscribe();
 
-        databaseRepository.getItems(SimpleModel.class, SimpleModel_Table.id.eq(1L))
-            .test()
-            .assertSubscribed()
-            .assertValue(savedModel -> savedModel.equals(MODEL));
+        databaseRepository
+                .getItems(SimpleModel.class, SimpleModel_Table.id.eq(1L))
+                .test()
+                .assertSubscribed()
+                .assertValue(savedModel -> savedModel.equals(MODEL));
     }
 
     @Test
     public void testBasicDelete() {
-        databaseRepository
-            .save(SimpleModel.class, MODEL)
-            .subscribe();
+        databaseRepository.save(SimpleModel.class, MODEL).subscribe();
+
+        databaseRepository.delete(SimpleModel.class, SimpleModel_Table.id.eq(1L)).subscribe();
 
         databaseRepository
-            .delete(SimpleModel.class, SimpleModel_Table.id.eq(1L))
-            .subscribe();
-
-        databaseRepository.getItems(SimpleModel.class, SimpleModel_Table.id.eq(1L))
-            .test()
-            .assertNoValues();
+                .getItems(SimpleModel.class, SimpleModel_Table.id.eq(1L))
+                .test()
+                .assertNoValues();
     }
 
     @Test
     public void testListSave() {
-        databaseRepository
-            .saveList(SimpleModel.class, LIST)
-            .subscribe();
+        databaseRepository.saveList(SimpleModel.class, LIST).subscribe();
 
-        databaseRepository
-            .getAllItems(SimpleModel.class)
-            .test()
-            .assertValueSequence(LIST);
+        databaseRepository.getAllItems(SimpleModel.class).test().assertValueSequence(LIST);
     }
 
     @Test
     public void testListDelete() {
-        databaseRepository
-            .saveList(SimpleModel.class, LIST)
-            .subscribe();
+        databaseRepository.saveList(SimpleModel.class, LIST).subscribe();
 
-        databaseRepository
-            .deleteAll(SimpleModel.class)
-            .test()
-            .assertNoValues();
+        databaseRepository.deleteAll(SimpleModel.class).test().assertNoValues();
     }
 
     @Test
     public void testMultipleDeleteAll() {
-        databaseRepository
-            .saveList(SimpleModel.class, LIST)
-            .subscribe();
+        databaseRepository.saveList(SimpleModel.class, LIST).subscribe();
 
-        databaseRepository
-            .save(User.class, new User())
-            .subscribe();
+        databaseRepository.save(User.class, new User()).subscribe();
 
-        databaseRepository
-            .deleteAll(User.class, SimpleModel.class)
-            .subscribe();
+        databaseRepository.deleteAll(User.class, SimpleModel.class).subscribe();
 
-        databaseRepository
-            .getAllItems(User.class)
-            .test()
-            .assertNoValues();
+        databaseRepository.getAllItems(User.class).test().assertNoValues();
 
-        databaseRepository
-            .getAllItems(SimpleModel.class)
-            .test()
-            .assertNoValues();
+        databaseRepository.getAllItems(SimpleModel.class).test().assertNoValues();
     }
 
     @Test
     public void testUpdate() {
-        databaseRepository
-            .save(SimpleModel.class, MODEL)
-            .subscribe();
+        databaseRepository.save(SimpleModel.class, MODEL).subscribe();
 
         SimpleModel newModel = SimpleModel.fromModel(MODEL);
         newModel.setDescription("Melshi Jones");
 
-        databaseRepository
-            .update(SimpleModel.class, newModel)
-            .subscribe();
+        databaseRepository.update(SimpleModel.class, newModel).subscribe();
 
         databaseRepository
-            .getItems(SimpleModel.class, SimpleModel_Table.id.eq(1L))
-            .test()
-            .assertValue(simpleModel -> simpleModel.getDescription().equals("Melshi Jones"));
+                .getItems(SimpleModel.class, SimpleModel_Table.id.eq(1L))
+                .test()
+                .assertValue(simpleModel -> simpleModel.getDescription().equals("Melshi Jones"));
     }
-
 }

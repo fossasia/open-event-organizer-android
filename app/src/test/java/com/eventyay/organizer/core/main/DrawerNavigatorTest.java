@@ -1,8 +1,10 @@
 package com.eventyay.organizer.core.main;
 
-import androidx.appcompat.app.AlertDialog;
-import android.view.MenuItem;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import android.view.MenuItem;
+import androidx.appcompat.app.AlertDialog;
 import com.eventyay.organizer.R;
 import org.junit.Before;
 import org.junit.Rule;
@@ -11,24 +13,16 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 public class DrawerNavigatorTest {
 
     private static final int RANDOM_ID = 1234;
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    @Mock
-    private OrganizerViewModel organizerViewModel;
-    @Mock
-    private FragmentNavigator fragmentNavigator;
-    @Mock
-    private AlertDialog alertDialog;
-    @Mock
-    private MenuItem menuItem;
+    @Mock private OrganizerViewModel organizerViewModel;
+    @Mock private FragmentNavigator fragmentNavigator;
+    @Mock private AlertDialog alertDialog;
+    @Mock private MenuItem menuItem;
 
     private DrawerNavigator drawerNavigator;
 
@@ -51,5 +45,4 @@ public class DrawerNavigatorTest {
         drawerNavigator.selectItem(menuItem);
         verify(fragmentNavigator).loadFragment(RANDOM_ID);
     }
-
 }

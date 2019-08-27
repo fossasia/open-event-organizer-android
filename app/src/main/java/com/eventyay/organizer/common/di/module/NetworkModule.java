@@ -18,6 +18,7 @@ import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.data.sponsor.Sponsor;
+import com.eventyay.organizer.data.ticket.OnSiteTicket;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.user.User;
@@ -27,14 +28,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
-
-import com.eventyay.organizer.data.ticket.OnSiteTicket;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -57,19 +54,36 @@ public class NetworkModule {
     @Singleton
     ObjectMapper providesObjectMapper() {
         return new ObjectMapper()
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-            // Handle constant breaking changes in API by not including null fields
-            // TODO: Remove when API stabilizes and/or need to include null values is there
-            .setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+                // Handle constant breaking changes in API by not including null fields
+                // TODO: Remove when API stabilizes and/or need to include null values is there
+                .setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
     }
 
     @Provides
     Class[] providesMappedClasses() {
-        return new Class[]{Event.class, Attendee.class, Ticket.class, User.class, EventStatistics.class,
-            Faq.class, Copyright.class, Feedback.class, Track.class, Session.class, Sponsor.class,
-            Speaker.class, SpeakersCall.class, Order.class, OrderStatistics.class, OnSiteTicket.class,
-            RoleInvite.class, Role.class, Notification.class};
+        return new Class[] {
+            Event.class,
+            Attendee.class,
+            Ticket.class,
+            User.class,
+            EventStatistics.class,
+            Faq.class,
+            Copyright.class,
+            Feedback.class,
+            Track.class,
+            Session.class,
+            Sponsor.class,
+            Speaker.class,
+            SpeakersCall.class,
+            Order.class,
+            OrderStatistics.class,
+            OnSiteTicket.class,
+            RoleInvite.class,
+            Role.class,
+            Notification.class
+        };
     }
 
     @Provides
@@ -117,14 +131,16 @@ public class NetworkModule {
 
             String authorization = authHolder.getAuthorization();
             if (authorization == null) {
-                Timber.d("Someone tried to access resources without auth token. Maybe auth request?");
+                Timber.d(
+                        "Someone tried to access resources without auth token. Maybe auth request?");
                 return chain.proceed(original);
             }
 
-            Request request = original.newBuilder()
-                .header("Authorization", authorization)
-                .method(original.method(), original.body())
-                .build();
+            Request request =
+                    original.newBuilder()
+                            .header("Authorization", authorization)
+                            .method(original.method(), original.body())
+                            .build();
 
             return chain.proceed(request);
         };
@@ -141,32 +157,33 @@ public class NetworkModule {
     @Provides
     @Singleton
     OkHttpClient providesOkHttpClient(
-        HostSelectionInterceptor hostSelectionInterceptor,
-        HttpLoggingInterceptor loggingInterceptor,
-        StethoInterceptor stethoInterceptor,
-        @Named("authenticator") Interceptor authenticator,
-        Cache cache
-    ) {
+            HostSelectionInterceptor hostSelectionInterceptor,
+            HttpLoggingInterceptor loggingInterceptor,
+            StethoInterceptor stethoInterceptor,
+            @Named("authenticator") Interceptor authenticator,
+            Cache cache) {
         return new OkHttpClient.Builder()
-            .addInterceptor(hostSelectionInterceptor)
-            .addInterceptor(loggingInterceptor)
-            .addInterceptor(authenticator)
-            .addNetworkInterceptor(stethoInterceptor)
-            .cache(cache)
-            .build();
+                .addInterceptor(hostSelectionInterceptor)
+                .addInterceptor(loggingInterceptor)
+                .addInterceptor(authenticator)
+                .addNetworkInterceptor(stethoInterceptor)
+                .cache(cache)
+                .build();
     }
 
     @Provides
     @Singleton
-    Retrofit providesRetrofitBuilder(CallAdapter.Factory callAdapterFactory,
-                                     @Named("jsonapi") Converter.Factory jsonApiConverter,
-                                     @Named("jackson") Converter.Factory factory, OkHttpClient client) {
+    Retrofit providesRetrofitBuilder(
+            CallAdapter.Factory callAdapterFactory,
+            @Named("jsonapi") Converter.Factory jsonApiConverter,
+            @Named("jackson") Converter.Factory factory,
+            OkHttpClient client) {
         return new Retrofit.Builder()
-            .addCallAdapterFactory(callAdapterFactory)
-            .addConverterFactory(jsonApiConverter)
-            .addConverterFactory(factory)
-            .client(client)
-            .baseUrl(authHolder.getBaseUrl())
-            .build();
+                .addCallAdapterFactory(callAdapterFactory)
+                .addConverterFactory(jsonApiConverter)
+                .addConverterFactory(factory)
+                .client(client)
+                .baseUrl(authHolder.getBaseUrl())
+                .build();
     }
 }

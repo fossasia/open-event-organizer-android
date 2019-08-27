@@ -1,22 +1,21 @@
 package com.eventyay.organizer.core.orders.detail;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.print.PrintManager;
-import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.main.MainActivity;
@@ -28,9 +27,7 @@ import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.databinding.OrderDetailFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import java.util.List;
-
 import javax.inject.Inject;
 
 public class OrderDetailFragment extends BaseFragment implements OrderDetailView {
@@ -43,8 +40,7 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
     private long orderId;
     private Context context;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private OrderDetailViewModel orderDetailViewModel;
     private OrderAttendeesAdapter orderAttendeesAdapter;
@@ -53,7 +49,8 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
     private OrderDetailFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
 
-    public static OrderDetailFragment newInstance(long eventId, String orderIdentifier, Long orderId) {
+    public static OrderDetailFragment newInstance(
+            long eventId, String orderIdentifier, Long orderId) {
         OrderDetailFragment fragment = new OrderDetailFragment();
         Bundle args = new Bundle();
         args.putLong(MainActivity.EVENT_KEY, eventId);
@@ -80,10 +77,15 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.order_detail_fragment, container, false);
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        binding =
+                DataBindingUtil.inflate(inflater, R.layout.order_detail_fragment, container, false);
 
-        orderDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(OrderDetailViewModel.class);
+        orderDetailViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(OrderDetailViewModel.class);
 
         return binding.getRoot();
     }
@@ -94,7 +96,9 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         setupRefreshListener();
         setupRecyclerView();
 
-        orderDetailViewModel.getOrder(orderIdentifier, eventId, false).observe(this, this::showOrderDetails);
+        orderDetailViewModel
+                .getOrder(orderIdentifier, eventId, false)
+                .observe(this, this::showOrderDetails);
         orderDetailViewModel.getProgress().observe(this, this::showProgress);
         orderDetailViewModel.getSuccess().observe(this, this::onSuccess);
         orderDetailViewModel.getError().observe(this, this::showError);
@@ -103,18 +107,21 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
             binding.printAction.setVisibility(View.GONE);
 
-       binding.printAction.setOnClickListener(view -> {
-            doPrint();
-        });
+        binding.printAction.setOnClickListener(
+                view -> {
+                    doPrint();
+                });
 
-        binding.emailReceipt.setOnClickListener(view -> {
-            sendReceipt();
-        });
+        binding.emailReceipt.setOnClickListener(
+                view -> {
+                    sendReceipt();
+                });
     }
 
     private void doPrint() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
+            PrintManager printManager =
+                    (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
             String jobName = this.getString(R.string.app_name) + " Document";
             printManager.print(jobName, new OrderDetailsPrintAdapter(getActivity(), order), null);
         }
@@ -147,7 +154,8 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
         ticketsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         ticketsRecyclerView.setAdapter(orderTicketsAdapter);
 
-        SwipeController swipeController = new SwipeController(orderDetailViewModel, orderAttendeesAdapter, context);
+        SwipeController swipeController =
+                new SwipeController(orderDetailViewModel, orderAttendeesAdapter, context);
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         itemTouchhelper.attachToRecyclerView(attendeesRecyclerView);
@@ -155,11 +163,14 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            orderDetailViewModel.getOrder(orderIdentifier, eventId, true).observe(this, this::showOrderDetails);
-            loadData(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    orderDetailViewModel
+                            .getOrder(orderIdentifier, eventId, true)
+                            .observe(this, this::showOrderDetails);
+                    loadData(true);
+                });
     }
 
     @Override
@@ -173,8 +184,12 @@ public class OrderDetailFragment extends BaseFragment implements OrderDetailView
     }
 
     public void loadData(boolean reload) {
-        orderDetailViewModel.getAttendeesUnderOrder(orderIdentifier, orderId, reload).observe(this, this::showAttendees);
-        orderDetailViewModel.getTicketsUnderOrder(orderIdentifier, orderId, reload).observe(this, this::showTickets);
+        orderDetailViewModel
+                .getAttendeesUnderOrder(orderIdentifier, orderId, reload)
+                .observe(this, this::showAttendees);
+        orderDetailViewModel
+                .getTicketsUnderOrder(orderIdentifier, orderId, reload)
+                .observe(this, this::showTickets);
     }
 
     public void showAttendees(List<Attendee> attendees) {

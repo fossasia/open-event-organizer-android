@@ -1,17 +1,14 @@
 package com.eventyay.organizer.utils;
 
 import androidx.annotation.NonNull;
-
 import com.eventyay.organizer.common.ContextManager;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.DateTimeParseException;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import timber.log.Timber;
 
 public final class DateUtils {
@@ -49,10 +46,8 @@ public final class DateUtils {
 
     @NonNull
     private static ZoneId getZoneId() {
-        if (showLocal || ContextManager.getSelectedEvent() == null)
-            return ZoneId.systemDefault();
-        else
-            return ZoneId.of(ContextManager.getSelectedEvent().getTimezone());
+        if (showLocal || ContextManager.getSelectedEvent() == null) return ZoneId.systemDefault();
+        else return ZoneId.of(ContextManager.getSelectedEvent().getTimezone());
     }
 
     // Public methods
@@ -68,8 +63,7 @@ public final class DateUtils {
 
     @NonNull
     public static ZonedDateTime getDate(@NonNull String isoDateString) {
-        if (isoDateString == null)
-            return ZonedDateTime.now();
+        if (isoDateString == null) return ZonedDateTime.now();
         return ZonedDateTime.parse(isoDateString).withZoneSameInstant(getZoneId());
     }
 
@@ -80,15 +74,15 @@ public final class DateUtils {
     }
 
     @NonNull
-    public static String formatDateWithDefault(@NonNull String format, @NonNull String isoString, @NonNull String defaultString) {
+    public static String formatDateWithDefault(
+            @NonNull String format, @NonNull String isoString, @NonNull String defaultString) {
         try {
             return formatDate(format, isoString);
         } catch (DateTimeParseException pe) {
             Timber.e(pe);
-            Timber.e("Error parsing date %s with format %s and default string %s",
-                isoString,
-                format,
-                defaultString);
+            Timber.e(
+                    "Error parsing date %s with format %s and default string %s",
+                    isoString, format, defaultString);
         }
 
         return defaultString;
@@ -103,5 +97,4 @@ public final class DateUtils {
     public static LocalDateTime getIsoOffsetTimeFromTimestamp(@NonNull String timestamp) {
         return LocalDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
-
 }

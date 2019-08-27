@@ -1,8 +1,7 @@
 package com.eventyay.organizer.data.speaker;
 
-import java.util.List;
-
 import io.reactivex.Observable;
+import java.util.List;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 

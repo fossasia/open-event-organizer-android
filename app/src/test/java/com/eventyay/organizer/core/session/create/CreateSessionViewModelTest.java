@@ -1,12 +1,20 @@
 package com.eventyay.organizer.core.session.create;
 
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.when;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
-
 import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.session.SessionRepository;
 import com.eventyay.organizer.utils.DateUtils;
-
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,36 +29,18 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.threeten.bp.LocalDateTime;
 
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.when;
-
 @RunWith(JUnit4.class)
 public class CreateSessionViewModelTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule
-    public TestRule rule = new InstantTaskExecutorRule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public TestRule rule = new InstantTaskExecutorRule();
 
-    @Mock
-    private SessionRepository sessionRepository;
+    @Mock private SessionRepository sessionRepository;
 
-    @Mock
-    Observer<String> error;
-    @Mock
-    Observer<Boolean> progress;
-    @Mock
-    Observer<String> success;
-    @Mock
-    Observer<Void> dismiss;
+    @Mock Observer<String> error;
+    @Mock Observer<Boolean> progress;
+    @Mock Observer<String> success;
+    @Mock Observer<Void> dismiss;
 
     private CreateSessionViewModel createSessionViewModel;
     private static final Session SESSION = Session.builder().id(2L).title("dd").build();
@@ -61,7 +51,8 @@ public class CreateSessionViewModelTest {
     @Before
     public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
 
         createSessionViewModel = new CreateSessionViewModel(sessionRepository);
     }
@@ -142,7 +133,8 @@ public class CreateSessionViewModelTest {
         session.setStartsAt(isoDateNow);
         session.setEndsAt(isoDateThen);
 
-        when(sessionRepository.createSession(createSessionViewModel.getSession())).thenReturn(Observable.just(SESSION));
+        when(sessionRepository.createSession(createSessionViewModel.getSession()))
+                .thenReturn(Observable.just(SESSION));
 
         InOrder inOrder = Mockito.inOrder(progress, success, dismiss);
 
@@ -167,7 +159,8 @@ public class CreateSessionViewModelTest {
         session.setStartsAt(isoDateNow);
         session.setEndsAt(isoDateThen);
 
-        when(sessionRepository.createSession(createSessionViewModel.getSession())).thenReturn(Observable.error(new Throwable(ERROR)));
+        when(sessionRepository.createSession(createSessionViewModel.getSession()))
+                .thenReturn(Observable.error(new Throwable(ERROR)));
 
         InOrder inOrder = Mockito.inOrder(progress, error);
 
@@ -190,7 +183,8 @@ public class CreateSessionViewModelTest {
         session.setStartsAt(isoDateNow);
         session.setEndsAt(isoDateThen);
 
-        when(sessionRepository.updateSession(createSessionViewModel.getSession())).thenReturn(Observable.just(SESSION));
+        when(sessionRepository.updateSession(createSessionViewModel.getSession()))
+                .thenReturn(Observable.just(SESSION));
 
         InOrder inOrder = Mockito.inOrder(progress, success, dismiss);
 
@@ -215,7 +209,8 @@ public class CreateSessionViewModelTest {
         session.setStartsAt(isoDateNow);
         session.setEndsAt(isoDateThen);
 
-        when(sessionRepository.updateSession(createSessionViewModel.getSession())).thenReturn(Observable.error(new Throwable(ERROR)));
+        when(sessionRepository.updateSession(createSessionViewModel.getSession()))
+                .thenReturn(Observable.error(new Throwable(ERROR)));
 
         InOrder inOrder = Mockito.inOrder(progress, error);
 

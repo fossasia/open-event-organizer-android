@@ -15,9 +15,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
 import android.print.pdf.PrintedPdfDocument;
 import androidx.annotation.RequiresApi;
-
 import com.eventyay.organizer.data.order.Order;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -39,10 +37,12 @@ public class OrderDetailsPrintAdapter extends PrintDocumentAdapter {
     }
 
     @Override
-    public void onLayout(PrintAttributes oldAttributes,
-                         PrintAttributes newAttributes,
-                         CancellationSignal cancellationSignal,
-                         LayoutResultCallback callback, Bundle extras) {
+    public void onLayout(
+            PrintAttributes oldAttributes,
+            PrintAttributes newAttributes,
+            CancellationSignal cancellationSignal,
+            LayoutResultCallback callback,
+            Bundle extras) {
         orderDocument = new PrintedPdfDocument(context, newAttributes);
         pageHeight = newAttributes.getMediaSize().getHeightMils() / 1000 * 72;
         pageWidth = newAttributes.getMediaSize().getWidthMils() / 1000 * 72;
@@ -52,20 +52,22 @@ public class OrderDetailsPrintAdapter extends PrintDocumentAdapter {
             return;
         }
 
-        PrintDocumentInfo.Builder builder = new PrintDocumentInfo
-            .Builder("Order_" + order.getIdentifier() + "_" + order.getId() + ".pdf")
-            .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
-            .setPageCount(TOTAL_PAGES);
+        PrintDocumentInfo.Builder builder =
+                new PrintDocumentInfo.Builder(
+                                "Order_" + order.getIdentifier() + "_" + order.getId() + ".pdf")
+                        .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
+                        .setPageCount(TOTAL_PAGES);
 
         PrintDocumentInfo info = builder.build();
         callback.onLayoutFinished(info, true);
     }
 
     @Override
-    public void onWrite(PageRange[] pages,
-                        ParcelFileDescriptor destination,
-                        CancellationSignal cancellationSignal,
-                        WriteResultCallback callback) {
+    public void onWrite(
+            PageRange[] pages,
+            ParcelFileDescriptor destination,
+            CancellationSignal cancellationSignal,
+            WriteResultCallback callback) {
 
         if (cancellationSignal.isCanceled()) {
             callback.onWriteCancelled();
@@ -73,7 +75,8 @@ public class OrderDetailsPrintAdapter extends PrintDocumentAdapter {
             return;
         }
 
-        PdfDocument.PageInfo newPage = new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, TOTAL_PAGES).create();
+        PdfDocument.PageInfo newPage =
+                new PdfDocument.PageInfo.Builder(pageWidth, pageHeight, TOTAL_PAGES).create();
         PdfDocument.Page page = orderDocument.startPage(newPage);
 
         drawPage(page);
@@ -102,12 +105,25 @@ public class OrderDetailsPrintAdapter extends PrintDocumentAdapter {
         canvas.drawText("Order Details", leftMargin, titleBaseLine, paintOrderDescription);
 
         paintOrderDescription.setTextSize(14);
-        canvas.drawText("Order Identitifer: " + order.getIdentifier(), leftMargin, titleBaseLine + 55, paintOrderDescription);
-        canvas.drawText("Order Status: " + order.getStatus(), leftMargin, titleBaseLine + 85, paintOrderDescription);
-        canvas.drawText("Order Amount: " + order.getAmount(),
-            leftMargin,
-            titleBaseLine + 115,
-            paintOrderDescription);
-        canvas.drawText("Payment Mode: " + order.getPaymentMode(), leftMargin, titleBaseLine + 145, paintOrderDescription);
+        canvas.drawText(
+                "Order Identitifer: " + order.getIdentifier(),
+                leftMargin,
+                titleBaseLine + 55,
+                paintOrderDescription);
+        canvas.drawText(
+                "Order Status: " + order.getStatus(),
+                leftMargin,
+                titleBaseLine + 85,
+                paintOrderDescription);
+        canvas.drawText(
+                "Order Amount: " + order.getAmount(),
+                leftMargin,
+                titleBaseLine + 115,
+                paintOrderDescription);
+        canvas.drawText(
+                "Payment Mode: " + order.getPaymentMode(),
+                leftMargin,
+                titleBaseLine + 145,
+                paintOrderDescription);
     }
 }

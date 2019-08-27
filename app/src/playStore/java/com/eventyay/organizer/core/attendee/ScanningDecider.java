@@ -2,7 +2,6 @@ package com.eventyay.organizer.core.attendee;
 
 import android.content.Context;
 import android.content.Intent;
-
 import com.eventyay.organizer.core.attendee.qrscan.ScanQRActivity;
 import com.eventyay.organizer.core.main.MainActivity;
 

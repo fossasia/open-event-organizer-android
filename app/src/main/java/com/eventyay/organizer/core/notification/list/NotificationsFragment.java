@@ -2,7 +2,9 @@ package com.eventyay.organizer.core.notification.list;
 
 import android.content.Context;
 import android.os.Bundle;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -12,27 +14,19 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.notification.Notification;
 import com.eventyay.organizer.databinding.NotificationsFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import java.util.List;
-
 import javax.inject.Inject;
 
 public class NotificationsFragment extends BaseFragment implements NotificationsView {
 
     private Context context;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private NotificationsAdapter notificationsAdapter;
     private NotificationsFragmentBinding binding;
@@ -53,9 +47,15 @@ public class NotificationsFragment extends BaseFragment implements Notifications
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.notifications_fragment, container, false);
-        notificationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(NotificationsViewModel.class);
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        binding =
+                DataBindingUtil.inflate(
+                        inflater, R.layout.notifications_fragment, container, false);
+        notificationsViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(NotificationsViewModel.class);
 
         return binding.getRoot();
     }
@@ -95,14 +95,14 @@ public class NotificationsFragment extends BaseFragment implements Notifications
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            notificationsViewModel.loadNotifications(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    notificationsViewModel.loadNotifications(true);
+                });
     }
 
     @Override
@@ -126,7 +126,7 @@ public class NotificationsFragment extends BaseFragment implements Notifications
 
     @Override
     public void showResults(List<Notification> notifications) {
-        if(notifications.isEmpty()) {
+        if (notifications.isEmpty()) {
             showEmptyView(true);
             return;
         } else {

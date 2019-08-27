@@ -1,16 +1,14 @@
 package com.eventyay.organizer.core.orders.list;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.orders.list.viewholder.OrderViewHolder;
 import com.eventyay.organizer.data.order.Order;
-
 import java.util.List;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrderViewHolder> {
@@ -25,9 +23,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrderViewHolder> {
     @NonNull
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        OrderViewHolder orderViewHolder = new OrderViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.order_layout, viewGroup, false));
+        OrderViewHolder orderViewHolder =
+                new OrderViewHolder(
+                        DataBindingUtil.inflate(
+                                LayoutInflater.from(viewGroup.getContext()),
+                                R.layout.order_layout,
+                                viewGroup,
+                                false));
 
         orderViewHolder.setClickAction(ordersViewModel::click);
 
@@ -54,28 +56,34 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrderViewHolder> {
             orders = newOrders;
             notifyItemRangeInserted(0, newOrders.size());
         } else {
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return orders.size();
-                }
+            DiffUtil.DiffResult result =
+                    DiffUtil.calculateDiff(
+                            new DiffUtil.Callback() {
+                                @Override
+                                public int getOldListSize() {
+                                    return orders.size();
+                                }
 
-                @Override
-                public int getNewListSize() {
-                    return newOrders.size();
-                }
+                                @Override
+                                public int getNewListSize() {
+                                    return newOrders.size();
+                                }
 
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    return orders.get(oldItemPosition).getId()
-                        .equals(newOrders.get(newItemPosition).getId());
-                }
+                                @Override
+                                public boolean areItemsTheSame(
+                                        int oldItemPosition, int newItemPosition) {
+                                    return orders.get(oldItemPosition)
+                                            .getId()
+                                            .equals(newOrders.get(newItemPosition).getId());
+                                }
 
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    return orders.get(oldItemPosition).equals(newOrders.get(newItemPosition));
-                }
-            });
+                                @Override
+                                public boolean areContentsTheSame(
+                                        int oldItemPosition, int newItemPosition) {
+                                    return orders.get(oldItemPosition)
+                                            .equals(newOrders.get(newItemPosition));
+                                }
+                            });
             orders = newOrders;
             result.dispatchUpdatesTo(this);
         }

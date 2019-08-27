@@ -1,21 +1,20 @@
 package com.eventyay.organizer.utils.ui;
 
-import android.content.Context;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-
-import com.eventyay.organizer.ui.ViewUtils;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import android.content.Context;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import com.eventyay.organizer.ui.ViewUtils;
+import org.junit.Test;
 
 public class ViewUtilsTest {
 
@@ -101,8 +100,8 @@ public class ViewUtilsTest {
         InputMethodManager inputMethodManager = mock(InputMethodManager.class);
         when(view.getContext()).thenReturn(context);
         when(context.getSystemService(Context.INPUT_METHOD_SERVICE))
-            .thenReturn(null)
-            .thenReturn(inputMethodManager);
+                .thenReturn(null)
+                .thenReturn(inputMethodManager);
 
         ViewUtils.hideKeyboard(view);
 
@@ -113,5 +112,4 @@ public class ViewUtilsTest {
         verify(view, atLeastOnce()).clearFocus();
         verify(inputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
 }

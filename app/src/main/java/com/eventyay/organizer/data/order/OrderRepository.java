@@ -1,9 +1,7 @@
 package com.eventyay.organizer.data.order;
 
 import androidx.annotation.NonNull;
-
 import com.eventyay.organizer.data.order.model.OrderReceiptRequest;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 

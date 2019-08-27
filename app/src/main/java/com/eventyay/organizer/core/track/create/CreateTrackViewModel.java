@@ -1,9 +1,8 @@
 package com.eventyay.organizer.core.track.create;
 
+import android.graphics.Color;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import android.graphics.Color;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
@@ -11,12 +10,9 @@ import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.tracks.TrackRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.StringUtils;
-
-import java.util.Random;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import java.util.Random;
+import javax.inject.Inject;
 
 public class CreateTrackViewModel extends ViewModel {
     private final TrackRepository trackRepository;
@@ -70,14 +66,18 @@ public class CreateTrackViewModel extends ViewModel {
         track.setEvent(event);
 
         compositeDisposable.add(
-            trackRepository
-                .createTrack(track)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(createdTrack -> {
-                    success.setValue("Track Created");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                trackRepository
+                        .createTrack(track)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                createdTrack -> {
+                                    success.setValue("Track Created");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public LiveData<Track> getTrackLiveData() {

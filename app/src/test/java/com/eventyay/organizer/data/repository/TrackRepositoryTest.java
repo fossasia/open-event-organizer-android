@@ -1,6 +1,10 @@
 package com.eventyay.organizer.data.repository;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.AbstractObservable;
@@ -9,6 +13,14 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.tracks.TrackApi;
 import com.eventyay.organizer.data.tracks.TrackRepositoryImpl;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,26 +29,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @SuppressWarnings("PMD.TooManyMethods")
 public class TrackRepositoryTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private TrackRepositoryImpl trackRepository;
     private static final Track TRACK = new Track();
@@ -53,10 +49,12 @@ public class TrackRepositoryTest {
 
     @Before
     public void setUp() {
-        when(repository.observableOf(Track.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
+        when(repository.observableOf(Track.class))
+                .thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
         trackRepository = new TrackRepositoryImpl(trackApi, repository);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
     }
 
     @After
@@ -74,8 +72,8 @@ public class TrackRepositoryTest {
         Observable<Track> trackObservable = trackRepository.createTrack(TRACK);
 
         trackObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -85,8 +83,8 @@ public class TrackRepositoryTest {
         Completable trackObservable = trackRepository.deleteTrack(ID);
 
         trackObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -96,20 +94,21 @@ public class TrackRepositoryTest {
         Observable<Track> trackObservable = trackRepository.getTrack(ID, true);
 
         trackObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
     public void shouldReturnConnectionErrorOnGetTrackWithNoneSaved() {
         when(repository.isConnected()).thenReturn(false);
-        when(repository.getItems(eq(Track.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Track.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         Observable<Track> trackObservable = trackRepository.getTrack(ID, false);
 
         trackObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -119,20 +118,21 @@ public class TrackRepositoryTest {
         Observable<Track> trackObservable = trackRepository.getTracks(ID, true);
 
         trackObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
     public void shouldReturnConnectionErrorOnGetTracksWithNoneSaved() {
         when(repository.isConnected()).thenReturn(false);
-        when(repository.getItems(eq(Track.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Track.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         Observable<Track> trackObservable = trackRepository.getTracks(ID, false);
 
         trackObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     // Network up tests
@@ -181,7 +181,8 @@ public class TrackRepositoryTest {
     public void shouldCallGetTrackServiceOnReload() {
         when(repository.isConnected()).thenReturn(true);
         when(trackApi.getTrack(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Track.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Track.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         trackRepository.getTrack(ID, true).subscribe();
 
@@ -192,7 +193,8 @@ public class TrackRepositoryTest {
     public void shouldCallGetTrackServiceWithNoneSaved() {
         when(repository.isConnected()).thenReturn(true);
         when(trackApi.getTrack(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Track.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Track.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         trackRepository.getTrack(ID, false).subscribe();
 
@@ -204,7 +206,8 @@ public class TrackRepositoryTest {
         when(repository.isConnected()).thenReturn(true);
         when(trackApi.getTrack(ID)).thenReturn(Observable.just(TRACK));
         when(repository.save(eq(Track.class), eq(TRACK))).thenReturn(Completable.complete());
-        when(repository.getItems(eq(Track.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Track.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         trackRepository.getTrack(ID, true).subscribe();
 
@@ -217,7 +220,8 @@ public class TrackRepositoryTest {
     public void shouldCallGetTracksServiceOnReload() {
         when(repository.isConnected()).thenReturn(true);
         when(trackApi.getTracks(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Track.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Track.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         trackRepository.getTracks(ID, true).subscribe();
 
@@ -228,7 +232,8 @@ public class TrackRepositoryTest {
     public void shouldCallGetTracksServiceWithNoneSaved() {
         when(repository.isConnected()).thenReturn(true);
         when(trackApi.getTracks(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Track.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Track.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         trackRepository.getTracks(ID, false).subscribe();
 
@@ -242,8 +247,10 @@ public class TrackRepositoryTest {
 
         when(repository.isConnected()).thenReturn(true);
         when(trackApi.getTracks(ID)).thenReturn(Observable.just(tracks));
-        when(repository.syncSave(eq(Track.class), eq(tracks), any(), any())).thenReturn(Completable.complete());
-        when(repository.getItems(eq(Track.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.syncSave(eq(Track.class), eq(tracks), any(), any()))
+                .thenReturn(Completable.complete());
+        when(repository.getItems(eq(Track.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         trackRepository.getTracks(ID, true).subscribe();
 

@@ -1,11 +1,9 @@
 package com.eventyay.organizer.common.di;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.annotation.NonNull;
-
 import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -22,11 +20,16 @@ public class OrgaViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     @Override
-    @SuppressWarnings({"unchecked", "PMD.AvoidThrowingRawExceptionTypes", "PMD.AvoidCatchingGenericException"})
+    @SuppressWarnings({
+        "unchecked",
+        "PMD.AvoidThrowingRawExceptionTypes",
+        "PMD.AvoidCatchingGenericException"
+    })
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         Provider<? extends ViewModel> creator = creators.get(modelClass);
         if (creator == null) {
-            for (Map.Entry<Class<? extends ViewModel>, Provider<ViewModel>> entry : creators.entrySet()) {
+            for (Map.Entry<Class<? extends ViewModel>, Provider<ViewModel>> entry :
+                    creators.entrySet()) {
                 if (modelClass.isAssignableFrom(entry.getKey())) {
                     creator = entry.getValue();
                     break;

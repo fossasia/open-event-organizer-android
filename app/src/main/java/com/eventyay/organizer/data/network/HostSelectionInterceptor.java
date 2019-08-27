@@ -1,12 +1,9 @@
 package com.eventyay.organizer.data.network;
 
 import androidx.annotation.NonNull;
-
 import java.io.IOException;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -20,13 +17,12 @@ public final class HostSelectionInterceptor implements Interceptor {
 
     @Inject
     public HostSelectionInterceptor() {
-        //Intentionally left blank
+        // Intentionally left blank
     }
 
     public void setInterceptor(String url) {
         HttpUrl httpUrl = HttpUrl.parse(url);
-        if (httpUrl == null)
-            return;
+        if (httpUrl == null) return;
         scheme = httpUrl.scheme();
         host = httpUrl.host();
         port = httpUrl.port();
@@ -38,14 +34,9 @@ public final class HostSelectionInterceptor implements Interceptor {
 
         // If new Base URL is properly formatted than replace with old one
         if (scheme != null && host != null) {
-            HttpUrl newUrl = original.url().newBuilder()
-                .scheme(scheme)
-                .host(host)
-                .port(port)
-                .build();
-            original = original.newBuilder()
-                .url(newUrl)
-                .build();
+            HttpUrl newUrl =
+                    original.url().newBuilder().scheme(scheme).host(host).port(port).build();
+            original = original.newBuilder().url(newUrl).build();
         }
         return chain.proceed(original);
     }

@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.speaker.list.viewholder;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.common.Pipe;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.databinding.SpeakerItemBinding;
@@ -15,11 +14,13 @@ public class SpeakerViewHolder extends RecyclerView.ViewHolder {
         super(binding.getRoot());
         this.binding = binding;
 
-        binding.getRoot().setOnClickListener(view -> {
-            if (clickAction != null) {
-                clickAction.push(speaker.getId());
-            }
-        });
+        binding.getRoot()
+                .setOnClickListener(
+                        view -> {
+                            if (clickAction != null) {
+                                clickAction.push(speaker.getId());
+                            }
+                        });
     }
 
     public void bind(Speaker speaker) {

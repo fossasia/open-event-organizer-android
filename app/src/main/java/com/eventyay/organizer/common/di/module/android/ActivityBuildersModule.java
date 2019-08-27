@@ -14,14 +14,14 @@ import com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity;
 import com.eventyay.organizer.core.speaker.details.SpeakerDetailsActivity;
 import com.eventyay.organizer.core.speaker.details.SpeakerDetailsFragment;
 import com.eventyay.organizer.core.speakerscall.create.CreateSpeakersCallFragment;
-
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 @Module
 public abstract class ActivityBuildersModule {
 
-    @ContributesAndroidInjector(modules = {MainFragmentBuildersModule.class, TracksFragmentBuildersModule.class})
+    @ContributesAndroidInjector(
+            modules = {MainFragmentBuildersModule.class, TracksFragmentBuildersModule.class})
     abstract MainActivity contributeMainActivity();
 
     @ContributesAndroidInjector(modules = AuthFragmentBuildersModule.class)
@@ -62,5 +62,4 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector
     abstract CreateOrderFragment contributeCreateOrderFragment();
-
 }

@@ -1,25 +1,23 @@
 package com.eventyay.organizer.core.settings.restriction;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.databinding.TicketSettingsFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import javax.inject.Inject;
 
 public class CheckInRestrictions extends BaseFragment implements CheckInRestrictionView {
@@ -27,8 +25,7 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
     private Context context;
     private long eventId;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private TicketSettingsViewModel ticketSettingsViewModel;
 
@@ -62,31 +59,46 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.ticket_settings_fragment, container, false);
+        binding =
+                DataBindingUtil.inflate(
+                        inflater, R.layout.ticket_settings_fragment, container, false);
 
-        ticketSettingsViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(TicketSettingsViewModel.class);
+        ticketSettingsViewModel =
+                ViewModelProviders.of(getActivity(), viewModelFactory)
+                        .get(TicketSettingsViewModel.class);
 
         ticketSettingsViewModel.getProgress().observe(this, this::showProgress);
         ticketSettingsViewModel.getError().observe(this, this::showError);
-        ticketSettingsViewModel.getTickets().observe(this, (newTickets) -> {
-            ticketsAdapter.setTickets(newTickets);
-            checkRestrictAll();
-        });
-        ticketSettingsViewModel.getTicketUpdatedAction().observe(this, (aVoid) -> {
-            checkRestrictAll();
-        });
+        ticketSettingsViewModel
+                .getTickets()
+                .observe(
+                        this,
+                        (newTickets) -> {
+                            ticketsAdapter.setTickets(newTickets);
+                            checkRestrictAll();
+                        });
+        ticketSettingsViewModel
+                .getTicketUpdatedAction()
+                .observe(
+                        this,
+                        (aVoid) -> {
+                            checkRestrictAll();
+                        });
 
         ticketSettingsViewModel.loadTickets(eventId);
 
-        binding.restrictAll.setOnClickListener(v -> {
-            restrictAll(!binding.restrictAllCheckbox.isChecked());
-        });
-        binding.restrictAllCheckbox.setOnClickListener(v -> {
-            //checkbox already checked
-            restrictAll(binding.restrictAllCheckbox.isChecked());
-        });
+        binding.restrictAll.setOnClickListener(
+                v -> {
+                    restrictAll(!binding.restrictAllCheckbox.isChecked());
+                });
+        binding.restrictAllCheckbox.setOnClickListener(
+                v -> {
+                    // checkbox already checked
+                    restrictAll(binding.restrictAllCheckbox.isChecked());
+                });
 
         return binding.getRoot();
     }
@@ -121,7 +133,10 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
     }
 
     private void setupRecyclerView() {
-        ticketsAdapter = new CheckInRestrictionsAdapter(ticketSettingsViewModel.getTickets().getValue(), ticketSettingsViewModel::updateTicket);
+        ticketsAdapter =
+                new CheckInRestrictionsAdapter(
+                        ticketSettingsViewModel.getTickets().getValue(),
+                        ticketSettingsViewModel::updateTicket);
 
         RecyclerView recyclerView = binding.ticketsRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -130,10 +145,11 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            ticketSettingsViewModel.loadTickets(eventId);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    ticketSettingsViewModel.loadTickets(eventId);
+                });
     }
 
     @Override
@@ -145,5 +161,4 @@ public class CheckInRestrictions extends BaseFragment implements CheckInRestrict
     public void showProgress(boolean show) {
         ViewUtils.showView(binding.progressBar, show);
     }
-
 }

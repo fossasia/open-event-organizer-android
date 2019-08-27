@@ -1,5 +1,7 @@
 package com.eventyay.organizer.core.organizer.detail;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -14,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.eventyay.organizer.R;
@@ -37,15 +37,10 @@ import com.eventyay.organizer.databinding.OrganizerDetailFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.Utils;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-
 import javax.inject.Inject;
-
 import timber.log.Timber;
-
-import static android.app.Activity.RESULT_OK;
 
 public class OrganizerDetailFragment extends BaseFragment implements OrganizerDetailView {
 
@@ -56,11 +51,9 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
 
     private String token;
 
-    @Inject
-    ContextUtils utilModel;
+    @Inject ContextUtils utilModel;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private OrganizerDetailViewModel organizerDetailViewModel;
 
@@ -80,14 +73,17 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null)
-            token = getArguments().getString(TOKEN_KEY);
+        if (getArguments() != null) token = getArguments().getString(TOKEN_KEY);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.organizer_detail_fragment, container, false);
-        organizerDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(OrganizerDetailViewModel.class);
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding =
+                DataBindingUtil.inflate(
+                        inflater, R.layout.organizer_detail_fragment, container, false);
+        organizerDetailViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(OrganizerDetailViewModel.class);
 
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         activity.setSupportActionBar(binding.toolbar);
@@ -100,69 +96,97 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
 
         setHasOptionsMenu(true);
 
-        binding.detail.profilePicture.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
-        });
+        binding.detail.profilePicture.setOnClickListener(
+                view -> {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(
+                            Intent.createChooser(intent, "Select Picture"),
+                            IMAGE_CHOOSER_REQUEST_CODE);
+                });
 
-        binding.detail.deleteProfilePicture.setOnClickListener(v -> {
-            organizerDetailViewModel.deleteProfilePicture();
-        });
+        binding.detail.deleteProfilePicture.setOnClickListener(
+                v -> {
+                    organizerDetailViewModel.deleteProfilePicture();
+                });
 
-        binding.detail.organizerEmail.setOnClickListener(view -> {
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", binding.detail.organizerEmail.getText().toString(), null));
-            startActivity(Intent.createChooser(emailIntent, "Send email"));
-        });
+        binding.detail.organizerEmail.setOnClickListener(
+                view -> {
+                    Intent emailIntent =
+                            new Intent(
+                                    Intent.ACTION_SENDTO,
+                                    Uri.fromParts(
+                                            "mailto",
+                                            binding.detail.organizerEmail.getText().toString(),
+                                            null));
+                    startActivity(Intent.createChooser(emailIntent, "Send email"));
+                });
 
-        binding.detail.organizerContact.setOnClickListener(view -> {
-            Intent callIntent = new Intent(Intent.ACTION_VIEW);
-            callIntent.setData(Uri.parse("tel:" + binding.detail.organizerContact.getText().toString()));
-            startActivity(callIntent);
-        });
+        binding.detail.organizerContact.setOnClickListener(
+                view -> {
+                    Intent callIntent = new Intent(Intent.ACTION_VIEW);
+                    callIntent.setData(
+                            Uri.parse(
+                                    "tel:" + binding.detail.organizerContact.getText().toString()));
+                    startActivity(callIntent);
+                });
 
-        binding.detail.organizerFacebook.setOnClickListener(view -> {
-            Intent facebookIntent = openFacebook(getContext().getPackageManager(),
-                binding.detail.organizerFacebook.getText().toString());
-            startActivity(facebookIntent);
-        });
+        binding.detail.organizerFacebook.setOnClickListener(
+                view -> {
+                    Intent facebookIntent =
+                            openFacebook(
+                                    getContext().getPackageManager(),
+                                    binding.detail.organizerFacebook.getText().toString());
+                    startActivity(facebookIntent);
+                });
 
-        binding.detail.organizerInstagram.setOnClickListener(view -> {
-            String instagramUrl = binding.detail.organizerInstagram.getText().toString();
+        binding.detail.organizerInstagram.setOnClickListener(
+                view -> {
+                    String instagramUrl = binding.detail.organizerInstagram.getText().toString();
 
-            if (instagramUrl.endsWith("/")) {
-                instagramUrl = instagramUrl.substring(0, instagramUrl.length() - 1);
-            }
+                    if (instagramUrl.endsWith("/")) {
+                        instagramUrl = instagramUrl.substring(0, instagramUrl.length() - 1);
+                    }
 
-            String instagramUsername = instagramUrl.substring(instagramUrl.lastIndexOf("/") + 1);
+                    String instagramUsername =
+                            instagramUrl.substring(instagramUrl.lastIndexOf("/") + 1);
 
-            Intent instagramIntent = openInstagram(getContext().getPackageManager(), instagramUrl, instagramUsername);
-            startActivity(instagramIntent);
-        });
+                    Intent instagramIntent =
+                            openInstagram(
+                                    getContext().getPackageManager(),
+                                    instagramUrl,
+                                    instagramUsername);
+                    startActivity(instagramIntent);
+                });
 
-        binding.detail.organizerTwitter.setOnClickListener(view -> {
-            String twitterUrl = binding.detail.organizerTwitter.getText().toString();
+        binding.detail.organizerTwitter.setOnClickListener(
+                view -> {
+                    String twitterUrl = binding.detail.organizerTwitter.getText().toString();
 
-            if (twitterUrl.endsWith("/")) {
-                twitterUrl = twitterUrl.substring(0, twitterUrl.length() - 1);
-            }
+                    if (twitterUrl.endsWith("/")) {
+                        twitterUrl = twitterUrl.substring(0, twitterUrl.length() - 1);
+                    }
 
-            String twitterUsername = twitterUrl.substring(twitterUrl.lastIndexOf("/") + 1);
+                    String twitterUsername = twitterUrl.substring(twitterUrl.lastIndexOf("/") + 1);
 
-            Intent twitterIntent = openTwitter(getContext().getPackageManager(), twitterUrl, twitterUsername);
-            startActivity(twitterIntent);
-        });
+                    Intent twitterIntent =
+                            openTwitter(
+                                    getContext().getPackageManager(), twitterUrl, twitterUsername);
+                    startActivity(twitterIntent);
+                });
 
-        binding.detail.organizerGooglePlus.setOnClickListener(view -> {
-            Intent googlePlusIntent = openGooglePlus(getContext().getPackageManager(),
-                binding.detail.organizerGooglePlus.getText().toString());
-            startActivity(googlePlusIntent);
-        });
+        binding.detail.organizerGooglePlus.setOnClickListener(
+                view -> {
+                    Intent googlePlusIntent =
+                            openGooglePlus(
+                                    getContext().getPackageManager(),
+                                    binding.detail.organizerGooglePlus.getText().toString());
+                    startActivity(googlePlusIntent);
+                });
 
-        binding.detail.resendVerificationMail.setOnClickListener(view ->
-            organizerDetailViewModel.resendVerificationMail());
+        binding.detail.resendVerificationMail.setOnClickListener(
+                view -> organizerDetailViewModel.resendVerificationMail());
 
         binding.detail.btnChangePassword.setOnClickListener(view -> openChangePasswordFragment());
 
@@ -199,10 +223,8 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
 
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
 
-            if (firstName != null)
-                actionBar.setTitle(firstName + " " + lastName);
-            else
-                actionBar.setTitle(email);
+            if (firstName != null) actionBar.setTitle(firstName + " " + lastName);
+            else actionBar.setTitle(email);
         }
     }
 
@@ -223,10 +245,14 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
 
         switch (item.getItemId()) {
             case R.id.update_organizer:
-                getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment, UpdateOrganizerInfoFragment.newInstance(), INFO_FRAGMENT_TAG)
-                    .addToBackStack(null)
-                    .commit();
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(
+                                R.id.fragment,
+                                UpdateOrganizerInfoFragment.newInstance(),
+                                INFO_FRAGMENT_TAG)
+                        .addToBackStack(null)
+                        .commit();
                 break;
             default:
                 super.onOptionsItemSelected(item);
@@ -241,37 +267,49 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
         if (requestCode == IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
             try {
-                InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
+                InputStream imageStream =
+                        getActivity().getContentResolver().openInputStream(selectedImageUri);
                 Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
                 String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
                 ImageData imageData = new ImageData(encodedImage);
                 organizerDetailViewModel.uploadImage(imageData);
-                Glide.with(getContext()).load(bitmap)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(binding.detail.profilePicture);
+                Glide.with(getContext())
+                        .load(bitmap)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(binding.detail.profilePicture);
             } catch (FileNotFoundException e) {
                 Timber.e(e, "File not found");
-                Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                                getActivity(),
+                                "File not found. Please try again.",
+                                Toast.LENGTH_SHORT)
+                        .show();
             }
         }
     }
 
     public void openChangePasswordFragment() {
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .replace(R.id.fragment, new ChangePasswordFragment())
-            .addToBackStack(null)
-            .commit();
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.enter_from_left,
+                        R.anim.exit_from_right,
+                        android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right)
+                .replace(R.id.fragment, new ChangePasswordFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
 
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            organizerDetailViewModel.loadOrganizer(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    organizerDetailViewModel.loadOrganizer(true);
+                });
     }
 
     public static Intent openFacebook(PackageManager pm, String url) {
@@ -308,7 +346,10 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
         try {
             // Open in the Twitter app if possible
             pm.getPackageInfo("com.twitter.android", 0);
-            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=" + username));
+            intent =
+                    new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("twitter://user?screen_name=" + username));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } catch (PackageManager.NameNotFoundException exception) {
             // Twitter app not installed, open in browser

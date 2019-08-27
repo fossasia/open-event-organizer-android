@@ -2,15 +2,12 @@ package com.eventyay.organizer.core.role.list;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.role.list.viewholder.RoleViewHolder;
 import com.eventyay.organizer.data.role.RoleInvite;
-
 import java.util.List;
 
 public class RoleListAdapter extends RecyclerView.Adapter<RoleViewHolder> {
@@ -26,9 +23,14 @@ public class RoleListAdapter extends RecyclerView.Adapter<RoleViewHolder> {
     @NonNull
     @Override
     public RoleViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        RoleViewHolder roleViewHolder= new RoleViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.role_item, viewGroup, false), roleListViewModel);
+        RoleViewHolder roleViewHolder =
+                new RoleViewHolder(
+                        DataBindingUtil.inflate(
+                                LayoutInflater.from(viewGroup.getContext()),
+                                R.layout.role_item,
+                                viewGroup,
+                                false),
+                        roleListViewModel);
 
         roleViewHolder.setLongClickAction(roleListViewModel::onLongSelect);
 
@@ -44,5 +46,4 @@ public class RoleListAdapter extends RecyclerView.Adapter<RoleViewHolder> {
     public int getItemCount() {
         return roles.size();
     }
-
 }

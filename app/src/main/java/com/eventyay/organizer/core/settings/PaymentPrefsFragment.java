@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
 
@@ -20,7 +18,8 @@ public class PaymentPrefsFragment extends PreferenceFragmentCompat {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         view.setBackgroundColor(Color.WHITE);
 
@@ -39,16 +38,16 @@ public class PaymentPrefsFragment extends PreferenceFragmentCompat {
     public void onDisplayPreferenceDialog(Preference preference) {
         CountryPreferenceFragmentCompat dialogFragment = null;
         if (preference instanceof CountryPreference)
-            dialogFragment = CountryPreferenceFragmentCompat.newInstance(Constants.PREF_PAYMENT_COUNTRY);
+            dialogFragment =
+                    CountryPreferenceFragmentCompat.newInstance(Constants.PREF_PAYMENT_COUNTRY);
 
         if (dialogFragment != null) {
             dialogFragment.setTargetFragment(this, 1);
-            dialogFragment.show(this.getFragmentManager(),
-                "android.support.v7.preference" +
-                    ".PreferenceFragment.DIALOG");
+            dialogFragment.show(
+                    this.getFragmentManager(),
+                    "android.support.v7.preference" + ".PreferenceFragment.DIALOG");
         } else {
             super.onDisplayPreferenceDialog(preference);
         }
     }
 }
-

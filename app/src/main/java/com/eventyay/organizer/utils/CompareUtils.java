@@ -1,7 +1,6 @@
 package com.eventyay.organizer.utils;
 
 import com.eventyay.organizer.common.Function;
-
 import java.util.Locale;
 
 public final class CompareUtils {
@@ -18,10 +17,8 @@ public final class CompareUtils {
     public static <T> int compareCascading(T one, T two, Function<T, String>... mappers) {
         for (Function<T, String> mapper : mappers) {
             int current = apply(mapper, one).compareTo(apply(mapper, two));
-            if (current != 0)
-                return current;
+            if (current != 0) return current;
         }
         return 0;
     }
-
 }

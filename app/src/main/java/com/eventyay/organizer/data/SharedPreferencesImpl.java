@@ -1,13 +1,10 @@
 package com.eventyay.organizer.data;
 
 import android.content.Context;
-
 import com.eventyay.organizer.OrgaProvider;
 import com.eventyay.organizer.common.Constants;
-
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.inject.Inject;
 
 public class SharedPreferencesImpl implements Preferences {
@@ -15,7 +12,9 @@ public class SharedPreferencesImpl implements Preferences {
 
     @Inject
     SharedPreferencesImpl() {
-        sharedPreferences = OrgaProvider.context.getSharedPreferences(Constants.FOSS_PREFS, Context.MODE_PRIVATE);
+        sharedPreferences =
+                OrgaProvider.context.getSharedPreferences(
+                        Constants.FOSS_PREFS, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -88,5 +87,4 @@ public class SharedPreferencesImpl implements Preferences {
     private android.content.SharedPreferences.Editor getEditor() {
         return sharedPreferences.edit();
     }
-
 }

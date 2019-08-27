@@ -3,7 +3,6 @@ package com.eventyay.organizer.common.di.module.android;
 import com.eventyay.organizer.core.event.about.AboutEventFragment;
 import com.eventyay.organizer.core.event.copyright.CreateCopyrightFragment;
 import com.eventyay.organizer.core.event.copyright.update.UpdateCopyrightFragment;
-
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -18,5 +17,4 @@ public abstract class AboutFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract UpdateCopyrightFragment contributeUpdateCopyrightFragment();
-
 }

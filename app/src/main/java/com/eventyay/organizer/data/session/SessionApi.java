@@ -1,9 +1,8 @@
 package com.eventyay.organizer.data.session;
 
-import java.util.List;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;

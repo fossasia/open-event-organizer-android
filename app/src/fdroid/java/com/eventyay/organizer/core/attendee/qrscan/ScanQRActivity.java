@@ -1,5 +1,7 @@
 package com.eventyay.organizer.core.attendee.qrscan;
 
+import static com.eventyay.organizer.ui.ViewUtils.showView;
+
 import android.Manifest;
 import android.Manifest.permission;
 import android.app.Activity;
@@ -7,18 +9,17 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.blikoon.qrcodescanner.QrCodeActivity;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.attendee.ScanQRView;
@@ -26,23 +27,18 @@ import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInFragment;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.ui.ViewUtils;
-
-import javax.inject.Inject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 import timber.log.Timber;
 
-import static com.eventyay.organizer.ui.ViewUtils.showView;
-
 @SuppressWarnings("PMD.TooManyMethods")
-public class ScanQRActivity extends DaggerAppCompatActivity implements ScanQRView, HasActivityInjector {
+public class ScanQRActivity extends DaggerAppCompatActivity
+        implements ScanQRView, HasActivityInjector {
 
     public static final int PERM_REQ_CODE = 123;
     private static final int REQUEST_CODE_QR_SCAN = 101;
@@ -56,11 +52,9 @@ public class ScanQRActivity extends DaggerAppCompatActivity implements ScanQRVie
     @BindView(R.id.startScanningAgain)
     Button startScanningAgain;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
-    @Inject
-    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+    @Inject DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
     private ScanQRViewModel scanQRViewModel;
 
@@ -121,9 +115,9 @@ public class ScanQRActivity extends DaggerAppCompatActivity implements ScanQRVie
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != PERM_REQ_CODE)
-            return;
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode != PERM_REQ_CODE) return;
 
         // If request is cancelled, the result arrays are empty.
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -137,12 +131,14 @@ public class ScanQRActivity extends DaggerAppCompatActivity implements ScanQRVie
 
     @Override
     public boolean hasCameraPermission() {
-        return ContextCompat.checkSelfPermission(this, permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(this, permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
     public void requestCameraPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERM_REQ_CODE);
+        ActivityCompat.requestPermissions(
+                this, new String[] {Manifest.permission.CAMERA}, PERM_REQ_CODE);
     }
 
     @Override
@@ -167,9 +163,9 @@ public class ScanQRActivity extends DaggerAppCompatActivity implements ScanQRVie
 
     @Override
     public void setTint(boolean matched) {
-        ViewUtils.setTint(barcodePanel,
-            ContextCompat.getColor(this, matched ? R.color.green_a400 : R.color.red_500)
-        );
+        ViewUtils.setTint(
+                barcodePanel,
+                ContextCompat.getColor(this, matched ? R.color.green_a400 : R.color.red_500));
     }
 
     @Override
@@ -203,11 +199,10 @@ public class ScanQRActivity extends DaggerAppCompatActivity implements ScanQRVie
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
         if (requestCode == REQUEST_CODE_QR_SCAN) {
-            if (intent == null)
-                return;
+            if (intent == null) return;
 
-            scanQRViewModel.processBarcode(intent.getStringExtra
-                ("com.blikoon.qrcodescanner.got_qr_scan_relult"));
+            scanQRViewModel.processBarcode(
+                    intent.getStringExtra("com.blikoon.qrcodescanner.got_qr_scan_relult"));
 
         } else {
             super.onActivityResult(requestCode, resultCode, intent);
@@ -215,13 +210,17 @@ public class ScanQRActivity extends DaggerAppCompatActivity implements ScanQRVie
     }
 
     public void showToggleDialog(long attendeeId) {
-        AttendeeCheckInFragment bottomSheetDialogFragment = AttendeeCheckInFragment.newInstance(attendeeId);
-        bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-        bottomSheetDialogFragment.setOnCancelListener(() -> {
-            ViewUtils.setTint(barcodePanel, ContextCompat.getColor(this, R.color.light_blue_a400));
-            showBarcodePanel(false);
-            startScan();
-        });
+        AttendeeCheckInFragment bottomSheetDialogFragment =
+                AttendeeCheckInFragment.newInstance(attendeeId);
+        bottomSheetDialogFragment.show(
+                getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+        bottomSheetDialogFragment.setOnCancelListener(
+                () -> {
+                    ViewUtils.setTint(
+                            barcodePanel, ContextCompat.getColor(this, R.color.light_blue_a400));
+                    showBarcodePanel(false);
+                    startScan();
+                });
     }
 
     @Override

@@ -2,10 +2,8 @@ package com.eventyay.organizer.core.settings;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.preference.DialogPreference;
 import android.util.AttributeSet;
-
-
+import androidx.preference.DialogPreference;
 import com.eventyay.organizer.R;
 
 public class CountryPreference extends DialogPreference {

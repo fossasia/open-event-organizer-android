@@ -1,14 +1,10 @@
 package com.eventyay.organizer.core.event.list;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import static com.eventyay.organizer.core.event.list.EventsViewModel.SORTBYDATE;
+import static com.eventyay.organizer.core.event.list.EventsViewModel.SORTBYNAME;
+
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +12,13 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.event.create.CreateEventActivity;
@@ -26,25 +28,16 @@ import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.databinding.EventListFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.google.android.material.appbar.AppBarLayout;
-
 import javax.inject.Inject;
 
-import static com.eventyay.organizer.core.event.list.EventsViewModel.SORTBYDATE;
-import static com.eventyay.organizer.core.event.list.EventsViewModel.SORTBYNAME;
-
-/**
- * A simple {@link Fragment} subclass.
- *
- */
+/** A simple {@link Fragment} subclass. */
 public class EventListFragment extends BaseFragment implements EventsView {
 
     private static final int ACTION_BAR_ELEVATION = 4;
 
-    @Inject
-    ContextUtils utilModel;
+    @Inject ContextUtils utilModel;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     EventsViewModel eventsViewModel;
 
@@ -60,14 +53,15 @@ public class EventListFragment extends BaseFragment implements EventsView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.event_list_fragment, container, false);
 
         appBarLayout = getActivity().findViewById(R.id.main_app_bar);
 
-        eventsViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EventsViewModel.class);
+        eventsViewModel =
+                ViewModelProviders.of(getActivity(), viewModelFactory).get(EventsViewModel.class);
 
         setHasOptionsMenu(true);
 
@@ -84,41 +78,45 @@ public class EventListFragment extends BaseFragment implements EventsView {
         eventsViewModel.getSuccess().observe(this, this::onRefreshComplete);
         eventsViewModel.getError().observe(this, this::showError);
         eventsViewModel.getProgress().observe(this, this::showProgress);
-        eventsViewModel.getShowDeveloperModeFeatures().observe(this, (showDeveloperModeFeatures) -> showDeveloperModeFeatures());
+        eventsViewModel
+                .getShowDeveloperModeFeatures()
+                .observe(this, (showDeveloperModeFeatures) -> showDeveloperModeFeatures());
 
         eventsViewModel.loadUserEvents(false);
 
         binding.tab.setupWithViewPager(binding.pager);
 
-        binding.pager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
-            @Override
-            public int getCount() {
-                return EVENT_TYPE.length;
-            }
+        binding.pager.setAdapter(
+                new FragmentStatePagerAdapter(getChildFragmentManager()) {
+                    @Override
+                    public int getCount() {
+                        return EVENT_TYPE.length;
+                    }
 
-            @Override
-            public Fragment getItem(int position) {
-                Fragment fragment = ListPageFragment.newInstance();
-                Bundle bundle = new Bundle();
-                bundle.putInt(POSITION, position);
-                fragment.setArguments(bundle);
-                return fragment;
-            }
+                    @Override
+                    public Fragment getItem(int position) {
+                        Fragment fragment = ListPageFragment.newInstance();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(POSITION, position);
+                        fragment.setArguments(bundle);
+                        return fragment;
+                    }
 
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return EVENT_TYPE[position];
-            }
-        });
+                    @Nullable
+                    @Override
+                    public CharSequence getPageTitle(int position) {
+                        return EVENT_TYPE[position];
+                    }
+                });
 
-        binding.pager.setOnTouchListener((v, event) -> {
-            binding.swipeContainer.setEnabled(false);
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                binding.swipeContainer.setEnabled(true);
-            }
-            return false;
-        });
+        binding.pager.setOnTouchListener(
+                (v, event) -> {
+                    binding.swipeContainer.setEnabled(false);
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        binding.swipeContainer.setEnabled(true);
+                    }
+                    return false;
+                });
 
         binding.createEventFab.setOnClickListener(view -> openCreateEventFragment());
     }
@@ -136,10 +134,11 @@ public class EventListFragment extends BaseFragment implements EventsView {
 
     public void openNotificationsFragment() {
 
-        getFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, NotificationsFragment.newInstance())
-            .addToBackStack(null)
-            .commit();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, NotificationsFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -152,10 +151,11 @@ public class EventListFragment extends BaseFragment implements EventsView {
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            eventsViewModel.loadUserEvents(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    eventsViewModel.loadUserEvents(true);
+                });
     }
 
     @Override
@@ -204,5 +204,4 @@ public class EventListFragment extends BaseFragment implements EventsView {
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
-
 }

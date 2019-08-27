@@ -2,14 +2,10 @@ package com.eventyay.organizer.data;
 
 import android.os.SystemClock;
 import androidx.collection.ArrayMap;
-
+import java.util.Map;
 import org.threeten.bp.Duration;
 
-import java.util.Map;
-
-/**
- * Utility class that decides whether we should fetch some data or not.
- */
+/** Utility class that decides whether we should fetch some data or not. */
 public class RateLimiter<K> {
     private final Map<K, Long> timestamps = new ArrayMap<>();
     private final long timeout;

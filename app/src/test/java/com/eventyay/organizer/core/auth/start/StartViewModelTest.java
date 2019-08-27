@@ -1,8 +1,9 @@
 package com.eventyay.organizer.core.auth.start;
 
+import static org.mockito.Mockito.verify;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
@@ -10,7 +11,10 @@ import com.eventyay.organizer.data.auth.model.EmailRequest;
 import com.eventyay.organizer.data.auth.model.EmailValidationResponse;
 import com.eventyay.organizer.data.encryption.EncryptionService;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
-
+import io.reactivex.Observable;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,52 +27,37 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-import io.reactivex.Observable;
-
-import static org.mockito.Mockito.verify;
-
 @RunWith(JUnit4.class)
 public class StartViewModelTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule
-    public TestRule rule = new InstantTaskExecutorRule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public TestRule rule = new InstantTaskExecutorRule();
 
-    @Mock
-    private Preferences sharedPreferenceModel;
-    @Mock
-    private AuthService authService;
-    @Mock
-    private HostSelectionInterceptor interceptor;
-    @Mock
-    private EncryptionService encryptionService;
+    @Mock private Preferences sharedPreferenceModel;
+    @Mock private AuthService authService;
+    @Mock private HostSelectionInterceptor interceptor;
+    @Mock private EncryptionService encryptionService;
 
     private static final String EMAIL = "test@gmail.com";
     private static final EmailRequest EMAIL_REQUEST = new EmailRequest(EMAIL);
     private StartViewModel startViewModel;
-    private static final Set<String> SAVED_EMAILS = new HashSet<>(Arrays.asList("email1", "email2", "email3"));
+    private static final Set<String> SAVED_EMAILS =
+            new HashSet<>(Arrays.asList("email1", "email2", "email3"));
 
-    private static final EmailValidationResponse EMAIL_RESPONSE_REGISTERED = EmailValidationResponse.builder().result(true).build();
+    private static final EmailValidationResponse EMAIL_RESPONSE_REGISTERED =
+            EmailValidationResponse.builder().result(true).build();
 
-    @Mock
-    private Observer<Boolean> isLoggedIn;
-    @Mock
-    private Observer<Boolean> isEmailRegistered;
-    @Mock
-    private Observer<String> error;
-    @Mock
-    private Observer<Set<String>> emailList;
-    @Mock
-    private Observer<Boolean> progress;
+    @Mock private Observer<Boolean> isLoggedIn;
+    @Mock private Observer<Boolean> isEmailRegistered;
+    @Mock private Observer<String> error;
+    @Mock private Observer<Set<String>> emailList;
+    @Mock private Observer<Boolean> progress;
 
     @Before
     public void setUp() {
-        startViewModel = new StartViewModel(authService, interceptor, sharedPreferenceModel, encryptionService);
+        startViewModel =
+                new StartViewModel(
+                        authService, interceptor, sharedPreferenceModel, encryptionService);
     }
 
     @Test
@@ -91,7 +80,8 @@ public class StartViewModelTest {
 
     @Test
     public void shouldAttachEmailAutomatically() {
-        Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(SAVED_EMAILS);
+        Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null))
+                .thenReturn(SAVED_EMAILS);
         Mockito.when(authService.isLoggedIn()).thenReturn(false);
 
         startViewModel.getEmailList().observeForever(emailList);
@@ -101,7 +91,8 @@ public class StartViewModelTest {
 
     @Test
     public void shouldNotAttachEmailAutomatically() {
-        Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null)).thenReturn(null);
+        Mockito.when(sharedPreferenceModel.getStringSet(Constants.SHARED_PREFS_SAVED_EMAIL, null))
+                .thenReturn(null);
         Mockito.when(authService.isLoggedIn()).thenReturn(false);
 
         startViewModel.getEmailList().observeForever(emailList);
@@ -112,7 +103,7 @@ public class StartViewModelTest {
     @Test
     public void shouldCheckIsEmailRegisteredSuccessfully() {
         Mockito.when(authService.checkEmailRegistered(EMAIL_REQUEST))
-            .thenReturn(Observable.just(EMAIL_RESPONSE_REGISTERED));
+                .thenReturn(Observable.just(EMAIL_RESPONSE_REGISTERED));
 
         InOrder inOrder = Mockito.inOrder(authService, progress, isEmailRegistered);
 
@@ -131,7 +122,7 @@ public class StartViewModelTest {
     public void shouldShowEmailCheckError() {
         String errorString = "Error";
         Mockito.when(authService.checkEmailRegistered(EMAIL_REQUEST))
-            .thenReturn(Observable.error(new Throwable("Error")));
+                .thenReturn(Observable.error(new Throwable("Error")));
 
         InOrder inOrder = Mockito.inOrder(authService, progress, error);
 
@@ -145,5 +136,4 @@ public class StartViewModelTest {
         inOrder.verify(error).onChanged(errorString);
         inOrder.verify(progress).onChanged(false);
     }
-
 }

@@ -1,13 +1,12 @@
 package com.eventyay.organizer.common.mvp.view;
 
 import androidx.fragment.app.DialogFragment;
-
 import com.eventyay.organizer.common.di.Injectable;
 import com.eventyay.organizer.common.mvp.presenter.BasePresenter;
-
 import dagger.Lazy;
 
-public class BaseDialogFragment<P extends BasePresenter> extends DialogFragment implements Injectable {
+public class BaseDialogFragment<P extends BasePresenter> extends DialogFragment
+        implements Injectable {
 
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     protected Lazy<P> getPresenterProvider() {
@@ -24,8 +23,6 @@ public class BaseDialogFragment<P extends BasePresenter> extends DialogFragment 
     public void onStop() {
         super.onStop();
         P presenter = getPresenter();
-        if (presenter != null)
-            presenter.detach();
+        if (presenter != null) presenter.detach();
     }
 }
-

@@ -1,8 +1,7 @@
 package com.eventyay.organizer.core.sponsor.list.viewholder;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
-
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.common.Pipe;
 import com.eventyay.organizer.core.sponsor.list.SponsorsPresenter;
 import com.eventyay.organizer.data.sponsor.Sponsor;
@@ -22,16 +21,19 @@ public class SponsorsViewHolder extends RecyclerView.ViewHolder {
         this.binding = binding;
         this.sponsorsPresenter = sponsorsPresenter;
 
-        binding.getRoot().setOnLongClickListener(view -> {
-            if (longClickAction != null) {
-                longClickAction.push(sponsor);
-            }
-            return true;
-        });
-        binding.getRoot().setOnClickListener(view -> {
-            if (clickAction != null)
-                clickAction.push(sponsor.getId());
-        });
+        binding.getRoot()
+                .setOnLongClickListener(
+                        view -> {
+                            if (longClickAction != null) {
+                                longClickAction.push(sponsor);
+                            }
+                            return true;
+                        });
+        binding.getRoot()
+                .setOnClickListener(
+                        view -> {
+                            if (clickAction != null) clickAction.push(sponsor.getId());
+                        });
     }
 
     public void setLongClickAction(Pipe<Sponsor> longClickAction) {
@@ -52,5 +54,4 @@ public class SponsorsViewHolder extends RecyclerView.ViewHolder {
     public View getRoot() {
         return binding.getRoot();
     }
-
 }

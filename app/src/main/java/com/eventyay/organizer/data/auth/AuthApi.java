@@ -4,9 +4,9 @@ import com.eventyay.organizer.data.auth.model.ChangePassword;
 import com.eventyay.organizer.data.auth.model.ChangePasswordResponse;
 import com.eventyay.organizer.data.auth.model.EmailRequest;
 import com.eventyay.organizer.data.auth.model.EmailValidationResponse;
+import com.eventyay.organizer.data.auth.model.EmailVerificationResponse;
 import com.eventyay.organizer.data.auth.model.Login;
 import com.eventyay.organizer.data.auth.model.LoginResponse;
-import com.eventyay.organizer.data.auth.model.EmailVerificationResponse;
 import com.eventyay.organizer.data.auth.model.RequestToken;
 import com.eventyay.organizer.data.auth.model.RequestTokenResponse;
 import com.eventyay.organizer.data.auth.model.ResendVerificationMail;
@@ -15,10 +15,8 @@ import com.eventyay.organizer.data.auth.model.SubmitEmailVerificationToken;
 import com.eventyay.organizer.data.auth.model.SubmitToken;
 import com.eventyay.organizer.data.auth.model.SubmitTokenResponse;
 import com.eventyay.organizer.data.user.User;
-
-import java.util.Map;
-
 import io.reactivex.Observable;
+import java.util.Map;
 import retrofit2.http.Body;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -41,11 +39,14 @@ public interface AuthApi {
     Observable<SubmitTokenResponse> submitToken(@Body Map<String, SubmitToken> subToken);
 
     @POST("auth/change-password")
-    Observable<ChangePasswordResponse> changePassword(@Body Map<String, ChangePassword> changePassword);
+    Observable<ChangePasswordResponse> changePassword(
+            @Body Map<String, ChangePassword> changePassword);
 
     @POST("auth/resend-verification-email")
-    Observable<ResendVerificationMailResponse> resendMail(@Body ResendVerificationMail resendVerificationMail);
+    Observable<ResendVerificationMailResponse> resendMail(
+            @Body ResendVerificationMail resendVerificationMail);
 
     @POST("auth/verify-email")
-    Observable<EmailVerificationResponse> verifyMail(@Body Map<String, SubmitEmailVerificationToken> submitMailVerificationToken);
+    Observable<EmailVerificationResponse> verifyMail(
+            @Body Map<String, SubmitEmailVerificationToken> submitMailVerificationToken);
 }

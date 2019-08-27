@@ -1,12 +1,8 @@
 package com.eventyay.organizer.core.session.create;
 
-import androidx.databinding.DataBindingUtil;
-import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import static com.eventyay.organizer.ui.ViewUtils.showView;
 
-import com.google.android.material.textfield.TextInputLayout;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,7 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import br.com.ilhasoft.support.validation.Validator;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -24,17 +24,12 @@ import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.databinding.SessionCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.ValidateUtils;
-
+import com.google.android.material.textfield.TextInputLayout;
 import javax.inject.Inject;
-
-import br.com.ilhasoft.support.validation.Validator;
-
-import static com.eventyay.organizer.ui.ViewUtils.showView;
 
 public class CreateSessionFragment extends BaseFragment implements CreateSessionView {
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private SessionCreateLayoutBinding binding;
     private Validator validator;
@@ -86,20 +81,26 @@ public class CreateSessionFragment extends BaseFragment implements CreateSession
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.session_create_layout, container, false);
-        createSessionViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateSessionViewModel.class);
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        binding =
+                DataBindingUtil.inflate(inflater, R.layout.session_create_layout, container, false);
+        createSessionViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(CreateSessionViewModel.class);
         validator = new Validator(binding.form);
 
-        binding.submit.setOnClickListener(view -> {
-            if (validator.validate()) {
-                if (isSessionUpdating) {
-                    createSessionViewModel.updateSession(trackId, eventId);
-                } else {
-                    createSessionViewModel.createSession(trackId, eventId);
-                }
-            }
-        });
+        binding.submit.setOnClickListener(
+                view -> {
+                    if (validator.validate()) {
+                        if (isSessionUpdating) {
+                            createSessionViewModel.updateSession(trackId, eventId);
+                        } else {
+                            createSessionViewModel.createSession(trackId, eventId);
+                        }
+                    }
+                });
 
         setUpSpinner();
 
@@ -107,7 +108,11 @@ public class CreateSessionFragment extends BaseFragment implements CreateSession
     }
 
     private void setUpSpinner() {
-        sessionStateAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.sessions_state, android.R.layout.simple_spinner_item);
+        sessionStateAdapter =
+                ArrayAdapter.createFromResource(
+                        getActivity(),
+                        R.array.sessions_state,
+                        android.R.layout.simple_spinner_item);
         sessionStateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.form.spinner.setAdapter(sessionStateAdapter);
     }
@@ -126,41 +131,61 @@ public class CreateSessionFragment extends BaseFragment implements CreateSession
             createSessionViewModel.loadSession(sessionId);
         }
 
-        validate(binding.form.slidesUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.audioUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.videoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.signupUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+        validate(
+                binding.form.slidesUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
+        validate(
+                binding.form.audioUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
+        validate(
+                binding.form.videoUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
+        validate(
+                binding.form.signupUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
     }
 
     @Override
-    public void validate(TextInputLayout textInputLayout, Function<String, Boolean> validationReference, String errorResponse) {
-        textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+    public void validate(
+            TextInputLayout textInputLayout,
+            Function<String, Boolean> validationReference,
+            String errorResponse) {
+        textInputLayout
+                .getEditText()
+                .addTextChangedListener(
+                        new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // Nothing here
-            }
+                            @Override
+                            public void beforeTextChanged(
+                                    CharSequence charSequence, int i, int i1, int i2) {
+                                // Nothing here
+                            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (validationReference.apply(charSequence.toString())) {
-                    textInputLayout.setError(null);
-                    textInputLayout.setErrorEnabled(false);
-                } else {
-                    textInputLayout.setErrorEnabled(true);
-                    textInputLayout.setError(errorResponse);
-                }
-                if (TextUtils.isEmpty(charSequence)) {
-                    textInputLayout.setError(null);
-                    textInputLayout.setErrorEnabled(false);
-                }
-            }
+                            @Override
+                            public void onTextChanged(
+                                    CharSequence charSequence, int i, int i1, int i2) {
+                                if (validationReference.apply(charSequence.toString())) {
+                                    textInputLayout.setError(null);
+                                    textInputLayout.setErrorEnabled(false);
+                                } else {
+                                    textInputLayout.setErrorEnabled(true);
+                                    textInputLayout.setError(errorResponse);
+                                }
+                                if (TextUtils.isEmpty(charSequence)) {
+                                    textInputLayout.setError(null);
+                                    textInputLayout.setErrorEnabled(false);
+                                }
+                            }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Nothing here
-            }
-        });
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                // Nothing here
+                            }
+                        });
     }
 
     @Override

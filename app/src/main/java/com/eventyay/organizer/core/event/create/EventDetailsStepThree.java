@@ -1,21 +1,24 @@
 package com.eventyay.organizer.core.event.create;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import static android.app.Activity.RESULT_OK;
+import static com.eventyay.organizer.ui.ViewUtils.showView;
+
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import br.com.ilhasoft.support.validation.Validator;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
 import com.eventyay.organizer.data.image.ImageData;
@@ -23,22 +26,15 @@ import com.eventyay.organizer.data.image.ImageUrl;
 import com.eventyay.organizer.databinding.EventDetailsStepThreeBinding;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-
 import javax.inject.Inject;
-
-import br.com.ilhasoft.support.validation.Validator;
 import timber.log.Timber;
 
-import static android.app.Activity.RESULT_OK;
-import static com.eventyay.organizer.ui.ViewUtils.showView;
+public class EventDetailsStepThree extends BaseBottomSheetFragment
+        implements EventDetailsStepThreeView {
 
-public class EventDetailsStepThree extends BaseBottomSheetFragment implements EventDetailsStepThreeView {
-
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private EventDetailsStepThreeBinding binding;
     private CreateEventViewModel createEventViewModel;
@@ -53,9 +49,16 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.event_details_step_three, container, false);
-        createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        binding =
+                DataBindingUtil.inflate(
+                        inflater, R.layout.event_details_step_three, container, false);
+        createEventViewModel =
+                ViewModelProviders.of(getActivity(), viewModelFactory)
+                        .get(CreateEventViewModel.class);
         validator = new Validator(binding);
         return binding.getRoot();
     }
@@ -73,29 +76,47 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
         createEventViewModel.getLogoUrlLiveData().observe(this, this::setLogoImageUrl);
         createEventViewModel.getImageUrlLiveData().observe(this, this::setOriginalImageUrl);
 
-        ValidateUtils.validate(binding.logoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        ValidateUtils.validate(binding.externalEventUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        ValidateUtils.validate(binding.originalImageUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
+        ValidateUtils.validate(
+                binding.logoUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
+        ValidateUtils.validate(
+                binding.externalEventUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
+        ValidateUtils.validate(
+                binding.originalImageUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
 
-        binding.logoImageLayout.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), LOGO_IMAGE_CHOOSER_REQUEST_CODE);
-        });
+        binding.logoImageLayout.setOnClickListener(
+                view -> {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(
+                            Intent.createChooser(intent, "Select Picture"),
+                            LOGO_IMAGE_CHOOSER_REQUEST_CODE);
+                });
 
-        binding.originalImageLayout.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), ORIGINAL_IMAGE_CHOOSER_REQUEST_CODE);
-        });
+        binding.originalImageLayout.setOnClickListener(
+                view -> {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(
+                            Intent.createChooser(intent, "Select Picture"),
+                            ORIGINAL_IMAGE_CHOOSER_REQUEST_CODE);
+                });
 
-        getActivity().findViewById(R.id.btn_submit).setOnClickListener(view -> {
-            if (validator.validate()) {
-                createEventViewModel.createEvent();
-            }
-        });
+        getActivity()
+                .findViewById(R.id.btn_submit)
+                .setOnClickListener(
+                        view -> {
+                            if (validator.validate()) {
+                                createEventViewModel.createEvent();
+                            }
+                        });
     }
 
     @Override
@@ -105,7 +126,8 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
         if (resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
             try {
-                InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
+                InputStream imageStream =
+                        getActivity().getContentResolver().openInputStream(selectedImageUri);
                 Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
                 String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
                 ImageData imageData = new ImageData(encodedImage);
@@ -119,7 +141,11 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
                 }
             } catch (FileNotFoundException e) {
                 Timber.e(e, "File not found");
-                Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                                getActivity(),
+                                "File not found. Please try again.",
+                                Toast.LENGTH_SHORT)
+                        .show();
             }
         }
     }
@@ -150,5 +176,4 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     public void close() {
         getActivity().finish();
     }
-
 }

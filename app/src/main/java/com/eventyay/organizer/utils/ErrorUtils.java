@@ -1,9 +1,8 @@
 package com.eventyay.organizer.utils;
 
 import com.eventyay.organizer.data.error.Error;
-import org.json.JSONObject;
-
 import okhttp3.ResponseBody;
+import org.json.JSONObject;
 import retrofit2.HttpException;
 import timber.log.Timber;
 
@@ -35,8 +34,12 @@ public final class ErrorUtils {
         if (throwable instanceof HttpException) {
             int errorCode = ((HttpException) throwable).code();
 
-            if (errorCode == BAD_REQUEST || errorCode == UNAUTHORIZED || errorCode == FORBIDDEN || errorCode == NOT_FOUND ||
-                errorCode == METHOD_NOT_ALLOWED || errorCode == REQUEST_TIMEOUT) {
+            if (errorCode == BAD_REQUEST
+                    || errorCode == UNAUTHORIZED
+                    || errorCode == FORBIDDEN
+                    || errorCode == NOT_FOUND
+                    || errorCode == METHOD_NOT_ALLOWED
+                    || errorCode == REQUEST_TIMEOUT) {
                 error = getErrorTitleAndDetails(throwable);
             } else if (errorCode == UNPROCESSABLE_ENTITY || errorCode == CONFLICT) {
                 error = getErrorDetails(throwable);
@@ -46,8 +49,7 @@ public final class ErrorUtils {
             }
         }
 
-        if (Utils.isEmpty(error.getDetail()))
-            error.setDetail(throwable.getMessage());
+        if (Utils.isEmpty(error.getDetail())) error.setDetail(throwable.getMessage());
 
         return error;
     }
@@ -60,7 +62,8 @@ public final class ErrorUtils {
 
             try {
                 JSONObject jsonObject = new JSONObject(responseBody.string());
-                JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
+                JSONObject jsonArray =
+                        new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
                 JSONObject errorSource = new JSONObject(jsonArray.get(SOURCE).toString());
 
                 try {
@@ -91,7 +94,8 @@ public final class ErrorUtils {
 
             try {
                 JSONObject jsonObject = new JSONObject(responseBody.string());
-                JSONObject jsonArray = new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
+                JSONObject jsonArray =
+                        new JSONObject(jsonObject.getJSONArray(ERRORS).get(0).toString());
                 JSONObject errorSource = new JSONObject(jsonArray.get(SOURCE).toString());
 
                 try {
@@ -118,14 +122,11 @@ public final class ErrorUtils {
     }
 
     public static String getPointedField(String pointerString) {
-        if (pointerString == null || Utils.isEmpty(pointerString))
-            return null;
+        if (pointerString == null || Utils.isEmpty(pointerString)) return null;
         else {
             String[] path = pointerString.split("/");
-            if (path.length > POINTER_LENGTH)
-                return path[path.length - 1];
-            else
-                return null;
+            if (path.length > POINTER_LENGTH) return path[path.length - 1];
+            else return null;
         }
     }
 }

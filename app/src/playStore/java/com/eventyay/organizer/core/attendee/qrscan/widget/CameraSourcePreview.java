@@ -3,18 +3,15 @@ package com.eventyay.organizer.core.attendee.qrscan.widget;
 import android.Manifest;
 import android.content.Context;
 import android.content.res.Configuration;
-import androidx.annotation.RequiresPermission;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
-
+import androidx.annotation.RequiresPermission;
 import com.google.android.gms.common.images.Size;
 import com.google.android.gms.vision.CameraSource;
-
 import java.io.IOException;
-
 import timber.log.Timber;
 
 @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DU Anomaly
@@ -55,7 +52,8 @@ public class CameraSourcePreview extends ViewGroup {
     }
 
     @RequiresPermission(Manifest.permission.CAMERA)
-    public void start(CameraSource cameraSource, GraphicOverlay overlay) throws IOException, SecurityException {
+    public void start(CameraSource cameraSource, GraphicOverlay overlay)
+            throws IOException, SecurityException {
         graphicOverlay = overlay;
         start(cameraSource);
     }
@@ -163,9 +161,12 @@ public class CameraSourcePreview extends ViewGroup {
         for (int i = 0; i < getChildCount(); ++i) {
             // One dimension will be cropped.  We shift child over or up by this offset and adjust
             // the size to maintain the proper aspect ratio.
-            getChildAt(i).layout(
-                -1 * childXOffset, -1 * childYOffset,
-                childWidth - childXOffset, childHeight - childYOffset);
+            getChildAt(i)
+                    .layout(
+                            -1 * childXOffset,
+                            -1 * childYOffset,
+                            childWidth - childXOffset,
+                            childHeight - childYOffset);
         }
 
         try {
@@ -175,7 +176,6 @@ public class CameraSourcePreview extends ViewGroup {
         } catch (SecurityException e) {
             Timber.e(e);
         }
-
     }
 
     private boolean isPortraitMode() {

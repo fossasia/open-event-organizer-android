@@ -3,9 +3,7 @@ package com.eventyay.organizer.data.network;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
 import com.eventyay.organizer.OrgaProvider;
-
 import javax.inject.Inject;
 
 public class ConnectionStatusImpl implements ConnectionStatus {
@@ -23,14 +21,13 @@ public class ConnectionStatusImpl implements ConnectionStatus {
 
     @Override
     public boolean isConnected() {
-        if (context != null)
-            return isConnected(context);
+        if (context != null) return isConnected(context);
         return isConnectedPure();
     }
 
     public static boolean isConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context
-            .getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
             NetworkInfo info = connectivityManager.getActiveNetworkInfo();
             return info != null && info.isConnected();
@@ -41,5 +38,4 @@ public class ConnectionStatusImpl implements ConnectionStatus {
     public static boolean isConnectedPure() {
         return isConnected(OrgaProvider.context);
     }
-
 }

@@ -2,18 +2,16 @@ package com.eventyay.organizer.data.auth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-
 import com.eventyay.organizer.BuildConfig;
-import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.data.Preferences;
+import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.utils.JWTUtils;
-import org.json.JSONException;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.json.JSONException;
 
 @Singleton
 public final class AuthHolder {
@@ -29,8 +27,7 @@ public final class AuthHolder {
     }
 
     public String getToken() {
-        if (token == null)
-            token = sharedPreferenceModel.getString(SHARED_PREFS_TOKEN, null);
+        if (token == null) token = sharedPreferenceModel.getString(SHARED_PREFS_TOKEN, null);
 
         return token;
     }
@@ -42,16 +39,14 @@ public final class AuthHolder {
 
     public String getAuthorization() {
         String token = getToken();
-        if (token == null)
-            return null;
+        if (token == null) return null;
         return JWTUtils.getAuthorization(token);
     }
 
     public int getIdentity() {
         String token = getToken();
 
-        if (token == null)
-            return -1;
+        if (token == null) return -1;
 
         try {
             return JWTUtils.getIdentity(token);
@@ -90,6 +85,7 @@ public final class AuthHolder {
     }
 
     public String getBaseUrl() {
-        return sharedPreferenceModel.getString(Constants.SHARED_PREFS_BASE_URL, BuildConfig.DEFAULT_BASE_URL);
+        return sharedPreferenceModel.getString(
+                Constants.SHARED_PREFS_BASE_URL, BuildConfig.DEFAULT_BASE_URL);
     }
 }

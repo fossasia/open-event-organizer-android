@@ -1,7 +1,6 @@
 package com.eventyay.organizer.ui;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.databinding.HeaderLayoutBinding;
 
 public class HeaderViewHolder extends RecyclerView.ViewHolder {

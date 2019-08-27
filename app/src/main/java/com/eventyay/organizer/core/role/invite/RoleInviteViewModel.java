@@ -2,7 +2,6 @@ package com.eventyay.organizer.core.role.invite;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
@@ -10,10 +9,8 @@ import com.eventyay.organizer.data.role.Role;
 import com.eventyay.organizer.data.role.RoleInvite;
 import com.eventyay.organizer.data.role.RoleRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 
 public class RoleInviteViewModel extends ViewModel {
 
@@ -62,13 +59,17 @@ public class RoleInviteViewModel extends ViewModel {
         roleInvite.setRole(role);
 
         compositeDisposable.add(
-            roleRepository
-                .sendRoleInvite(roleInvite)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(sentRoleInvite -> {
-                    success.setValue("Role Invite Sent");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                roleRepository
+                        .sendRoleInvite(roleInvite)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                sentRoleInvite -> {
+                                    success.setValue("Role Invite Sent");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 }

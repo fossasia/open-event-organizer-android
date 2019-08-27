@@ -1,34 +1,29 @@
 package com.eventyay.organizer.core.auth.reset;
 
+import static com.eventyay.organizer.ui.ViewUtils.showView;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-
+import br.com.ilhasoft.support.validation.Validator;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.auth.SharedViewModel;
 import com.eventyay.organizer.databinding.ResetPasswordByTokenFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import javax.inject.Inject;
-
-import br.com.ilhasoft.support.validation.Validator;
-
-import static com.eventyay.organizer.ui.ViewUtils.showView;
 
 public class ResetPasswordFragment extends BaseFragment implements ResetPasswordView {
 
     private static final String TOKEN_KEY = "token";
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private ResetPasswordViewModel resetPasswordViewModel;
     private ResetPasswordByTokenFragmentBinding binding;
@@ -52,15 +47,17 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null)
-            token = getArguments().getString(TOKEN_KEY);
+        if (getArguments() != null) token = getArguments().getString(TOKEN_KEY);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.reset_password_by_token_fragment, container, false);
-        resetPasswordViewModel = ViewModelProviders.of(this, viewModelFactory).get(ResetPasswordViewModel.class);
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding =
+                DataBindingUtil.inflate(
+                        inflater, R.layout.reset_password_by_token_fragment, container, false);
+        resetPasswordViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(ResetPasswordViewModel.class);
         validator = new Validator(binding);
         return binding.getRoot();
     }
@@ -79,23 +76,24 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
 
         resetPasswordViewModel.setBaseUrl();
 
-        if (token != null)
-            resetPasswordViewModel.setToken(token);
+        if (token != null) resetPasswordViewModel.setToken(token);
 
-        binding.btnResetPassword.setOnClickListener(view -> {
-            if (!validator.validate())
-                return;
+        binding.btnResetPassword.setOnClickListener(
+                view -> {
+                    if (!validator.validate()) return;
 
-            if (!binding.newPassword.getText().toString()
-                .equals(binding.confirmPassword.getText().toString())) {
+                    if (!binding.newPassword
+                            .getText()
+                            .toString()
+                            .equals(binding.confirmPassword.getText().toString())) {
 
-                showError("Passwords Do not Match");
-                return;
-            }
+                        showError("Passwords Do not Match");
+                        return;
+                    }
 
-            ViewUtils.hideKeyboard(view);
-            resetPasswordViewModel.submitRequest(resetPasswordViewModel.getSubmitToken());
-        });
+                    ViewUtils.hideKeyboard(view);
+                    resetPasswordViewModel.submitRequest(resetPasswordViewModel.getSubmitToken());
+                });
 
         binding.loginLink.setOnClickListener(view -> getFragmentManager().popBackStack());
 
@@ -103,7 +101,8 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
     }
 
     private void resendToken() {
-        SharedViewModel sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        SharedViewModel sharedViewModel =
+                ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         resetPasswordViewModel.requestToken(sharedViewModel.getEmail().getValue());
     }
 

@@ -6,16 +6,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
-
 import android.media.MediaPlayer;
 import android.view.View;
-
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.attendee.Attendee;
-
 import java.util.List;
 
 public class SwipeController extends ItemTouchHelper.SimpleCallback {
@@ -29,7 +26,8 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     private final Bitmap doneIcon;
     private final boolean playSound;
 
-    public SwipeController(AttendeesViewModel attendeesViewModel, List<Attendee> attendeeList, Context context) {
+    public SwipeController(
+            AttendeesViewModel attendeesViewModel, List<Attendee> attendeeList, Context context) {
         super(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
         this.attendeesViewModel = attendeesViewModel;
         this.attendeeList = attendeeList;
@@ -41,11 +39,15 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
         paintGreen.setColor(context.getResources().getColor(R.color.light_green_500));
         paintRed.setColor(context.getResources().getColor(R.color.red_500));
 
-        playSound = attendeesViewModel.getPreferences().getBoolean(Constants.PREF_PLAY_SOUNDS, false);
+        playSound =
+                attendeesViewModel.getPreferences().getBoolean(Constants.PREF_PLAY_SOUNDS, false);
     }
 
     @Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+    public boolean onMove(
+            RecyclerView recyclerView,
+            RecyclerView.ViewHolder viewHolder,
+            RecyclerView.ViewHolder target) {
         return false;
     }
 
@@ -73,8 +75,14 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     }
 
     @Override
-    public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                            float dX, float dY, int actionState, boolean isCurrentlyActive) {
+    public void onChildDraw(
+            Canvas canvas,
+            RecyclerView recyclerView,
+            RecyclerView.ViewHolder viewHolder,
+            float dX,
+            float dY,
+            int actionState,
+            boolean isCurrentlyActive) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && isCurrentlyActive) {
             View itemView = viewHolder.itemView;
             float height = (float) itemView.getBottom() - (float) itemView.getTop();
@@ -86,39 +94,67 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
 
             if (!attendeeList.get(viewHolder.getAdapterPosition()).isCheckedIn) {
                 if (dX > 0) {
-                    background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,
-                        (float) itemView.getBottom());
+                    background =
+                            new RectF(
+                                    (float) itemView.getLeft(),
+                                    (float) itemView.getTop(),
+                                    dX,
+                                    (float) itemView.getBottom());
                     paint = paintGreen;
                     icon = doneIcon;
-                    iconDest = new RectF((float) itemView.getLeft() + width,
-                        (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width,
-                        (float) itemView.getBottom() - width);
+                    iconDest =
+                            new RectF(
+                                    (float) itemView.getLeft() + width,
+                                    (float) itemView.getTop() + width,
+                                    (float) itemView.getLeft() + 2 * width,
+                                    (float) itemView.getBottom() - width);
                 } else {
-                    background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),
-                        (float) itemView.getRight(), (float) itemView.getBottom());
+                    background =
+                            new RectF(
+                                    (float) itemView.getRight() + dX,
+                                    (float) itemView.getTop(),
+                                    (float) itemView.getRight(),
+                                    (float) itemView.getBottom());
                     paint = paintGreen;
                     icon = doneIcon;
-                    iconDest = new RectF((float) itemView.getRight() - 2 * width,
-                        (float) itemView.getTop() + width, (float) itemView.getRight() - width,
-                        (float) itemView.getBottom() - width);
+                    iconDest =
+                            new RectF(
+                                    (float) itemView.getRight() - 2 * width,
+                                    (float) itemView.getTop() + width,
+                                    (float) itemView.getRight() - width,
+                                    (float) itemView.getBottom() - width);
                 }
             } else {
                 if (dX > 0) {
-                    background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,
-                        (float) itemView.getBottom());
+                    background =
+                            new RectF(
+                                    (float) itemView.getLeft(),
+                                    (float) itemView.getTop(),
+                                    dX,
+                                    (float) itemView.getBottom());
                     paint = paintRed;
                     icon = closeIcon;
-                    iconDest = new RectF((float) itemView.getLeft() + width,
-                        (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width,
-                        (float) itemView.getBottom() - width);
+                    iconDest =
+                            new RectF(
+                                    (float) itemView.getLeft() + width,
+                                    (float) itemView.getTop() + width,
+                                    (float) itemView.getLeft() + 2 * width,
+                                    (float) itemView.getBottom() - width);
                 } else {
-                    background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),
-                        (float) itemView.getRight(), (float) itemView.getBottom());
+                    background =
+                            new RectF(
+                                    (float) itemView.getRight() + dX,
+                                    (float) itemView.getTop(),
+                                    (float) itemView.getRight(),
+                                    (float) itemView.getBottom());
                     paint = paintRed;
                     icon = closeIcon;
-                    iconDest = new RectF((float) itemView.getRight() - 2 * width,
-                        (float) itemView.getTop() + width, (float) itemView.getRight() - width,
-                        (float) itemView.getBottom() - width);
+                    iconDest =
+                            new RectF(
+                                    (float) itemView.getRight() - 2 * width,
+                                    (float) itemView.getTop() + width,
+                                    (float) itemView.getRight() - width,
+                                    (float) itemView.getBottom() - width);
                 }
             }
 

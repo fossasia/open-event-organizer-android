@@ -1,9 +1,19 @@
 package com.eventyay.organizer.core.event.create;
 
+import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_BANK_TRANSFER;
+import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_CHEQUE;
+import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_PAYPAL;
+import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_STRIPE;
+import static com.eventyay.organizer.common.Constants.PREF_BANK_DETAILS;
+import static com.eventyay.organizer.common.Constants.PREF_CHEQUE_DETAILS;
+import static com.eventyay.organizer.common.Constants.PREF_PAYMENT_ACCEPT_ONSITE;
+import static com.eventyay.organizer.common.Constants.PREF_PAYMENT_ONSITE_DETAILS;
+import static com.eventyay.organizer.common.Constants.PREF_PAYPAL_EMAIL;
+import static com.eventyay.organizer.common.Constants.PREF_USE_PAYMENT_PREFS;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
@@ -16,32 +26,17 @@ import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.StringUtils;
 import com.eventyay.organizer.utils.Utils;
-
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZonedDateTime;
-import org.threeten.bp.format.DateTimeParseException;
-
+import io.reactivex.disposables.CompositeDisposable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-
 import javax.inject.Inject;
-
-import io.reactivex.disposables.CompositeDisposable;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.format.DateTimeParseException;
 import timber.log.Timber;
-
-import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_BANK_TRANSFER;
-import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_CHEQUE;
-import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_PAYPAL;
-import static com.eventyay.organizer.common.Constants.PREF_ACCEPT_STRIPE;
-import static com.eventyay.organizer.common.Constants.PREF_BANK_DETAILS;
-import static com.eventyay.organizer.common.Constants.PREF_CHEQUE_DETAILS;
-import static com.eventyay.organizer.common.Constants.PREF_PAYMENT_ACCEPT_ONSITE;
-import static com.eventyay.organizer.common.Constants.PREF_PAYMENT_ONSITE_DETAILS;
-import static com.eventyay.organizer.common.Constants.PREF_PAYPAL_EMAIL;
-import static com.eventyay.organizer.common.Constants.PREF_USE_PAYMENT_PREFS;
 
 public class CreateEventViewModel extends ViewModel {
 
@@ -63,7 +58,8 @@ public class CreateEventViewModel extends ViewModel {
     private Event event = new Event();
 
     @Inject
-    public CreateEventViewModel(EventRepository eventRepository, CurrencyUtils currencyUtils, Preferences preferences) {
+    public CreateEventViewModel(
+            EventRepository eventRepository, CurrencyUtils currencyUtils, Preferences preferences) {
         this.eventRepository = eventRepository;
         this.preferences = preferences;
         LocalDateTime current = LocalDateTime.now();
@@ -77,7 +73,6 @@ public class CreateEventViewModel extends ViewModel {
         currencyCodesList = currencyUtils.getCurrencyCodesList();
 
         setPaymentPreferences(preferences);
-
     }
 
     public int setTimeZoneList(List<String> timeZoneList) {
@@ -132,7 +127,6 @@ public class CreateEventViewModel extends ViewModel {
             onError.setValue("Please enter date in correct format");
             return false;
         }
-
     }
 
     protected void nullifyEmptyFields(Event event) {
@@ -144,22 +138,28 @@ public class CreateEventViewModel extends ViewModel {
     }
 
     public void createEvent() {
-        if (!verify())
-            return;
+        if (!verify()) return;
 
         nullifyEmptyFields(event);
 
-        compositeDisposable.add(eventRepository
-            .createEvent(event)
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(createdEvent -> {
-                onSuccess.setValue("Event Created Successfully");
-                close.setValue(null);
-            }, throwable -> {
-                onError.setValue(ErrorUtils.getErrorDetails(throwable).toString());
-                Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
-            }));
+        compositeDisposable.add(
+                eventRepository
+                        .createEvent(event)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                createdEvent -> {
+                                    onSuccess.setValue("Event Created Successfully");
+                                    close.setValue(null);
+                                },
+                                throwable -> {
+                                    onError.setValue(
+                                            ErrorUtils.getErrorDetails(throwable).toString());
+                                    Timber.e(
+                                            throwable,
+                                            "An exception occurred : %s",
+                                            throwable.getMessage());
+                                }));
     }
 
     public LiveData<String> getSuccessMessage() {
@@ -179,17 +179,18 @@ public class CreateEventViewModel extends ViewModel {
     }
 
     /**
-     * Returns the most accurate and searchable address substring, which a user can search for.
-     * Also makes sure that the substring doesn't contain any numbers by matching it to the regex,
-     * as those are more likely to be house numbers or block numbers.
+     * Returns the most accurate and searchable address substring, which a user can search for. Also
+     * makes sure that the substring doesn't contain any numbers by matching it to the regex, as
+     * those are more likely to be house numbers or block numbers.
      *
      * @param address full address string of a location
      * @return searchable address substring
      */
     public String getSearchableLocationName(String address) {
         String primary = address.substring(0, address.indexOf(','));
-        if (primary.matches(".*\\d+.*")) { //contains number => not likely to be searchable
-            return address.substring(address.indexOf(',') + 2, address.indexOf(",", address.indexOf(',') + 1));
+        if (primary.matches(".*\\d+.*")) { // contains number => not likely to be searchable
+            return address.substring(
+                    address.indexOf(',') + 2, address.indexOf(",", address.indexOf(',') + 1));
         } else return primary;
     }
 
@@ -207,33 +208,15 @@ public class CreateEventViewModel extends ViewModel {
 
     public void setPaymentPreferences(Preferences preferences) {
         if (preferences.getBoolean(PREF_USE_PAYMENT_PREFS, false)) {
-            event.setCanPayByPaypal(
-                preferences.getBoolean(PREF_ACCEPT_PAYPAL, false)
-            );
-            event.setPaypalEmail(
-                preferences.getString(PREF_PAYPAL_EMAIL, null)
-            );
-            event.setCanPayByStripe(
-                preferences.getBoolean(PREF_ACCEPT_STRIPE, false)
-            );
-            event.setCanPayByBank(
-                preferences.getBoolean(PREF_ACCEPT_BANK_TRANSFER, false)
-            );
-            event.setBankDetails(
-                preferences.getString(PREF_BANK_DETAILS, null)
-            );
-            event.setCanPayByCheque(
-                preferences.getBoolean(PREF_ACCEPT_CHEQUE, false)
-            );
-            event.setChequeDetails(
-                preferences.getString(PREF_CHEQUE_DETAILS, null)
-            );
-            event.setCanPayOnsite(
-                preferences.getBoolean(PREF_PAYMENT_ACCEPT_ONSITE, false)
-            );
-            event.setOnsiteDetails(
-                preferences.getString(PREF_PAYMENT_ONSITE_DETAILS, null)
-            );
+            event.setCanPayByPaypal(preferences.getBoolean(PREF_ACCEPT_PAYPAL, false));
+            event.setPaypalEmail(preferences.getString(PREF_PAYPAL_EMAIL, null));
+            event.setCanPayByStripe(preferences.getBoolean(PREF_ACCEPT_STRIPE, false));
+            event.setCanPayByBank(preferences.getBoolean(PREF_ACCEPT_BANK_TRANSFER, false));
+            event.setBankDetails(preferences.getString(PREF_BANK_DETAILS, null));
+            event.setCanPayByCheque(preferences.getBoolean(PREF_ACCEPT_CHEQUE, false));
+            event.setChequeDetails(preferences.getString(PREF_CHEQUE_DETAILS, null));
+            event.setCanPayOnsite(preferences.getBoolean(PREF_PAYMENT_ACCEPT_ONSITE, false));
+            event.setOnsiteDetails(preferences.getString(PREF_PAYMENT_ONSITE_DETAILS, null));
         }
     }
 
@@ -243,63 +226,72 @@ public class CreateEventViewModel extends ViewModel {
         return countryList.indexOf(Locale.getDefault().getDisplayCountry());
     }
 
-    //Used for loading the event information on start
+    // Used for loading the event information on start
     public void loadEvents(long eventId) {
-        compositeDisposable.add(eventRepository
-            .getEvent(eventId, false)
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> {
-                progress.setValue(false);
-                getEventLiveData();
-            })
-            .subscribe(loadedEvent -> this.event = loadedEvent, Logger::logError));
+        compositeDisposable.add(
+                eventRepository
+                        .getEvent(eventId, false)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(
+                                () -> {
+                                    progress.setValue(false);
+                                    getEventLiveData();
+                                })
+                        .subscribe(loadedEvent -> this.event = loadedEvent, Logger::logError));
     }
 
-    //method called for updating an event
+    // method called for updating an event
     public void updateEvent() {
-        if (!verify())
-            return;
+        if (!verify()) return;
 
         nullifyEmptyFields(event);
 
         compositeDisposable.add(
-            eventRepository
-                .updateEvent(event)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(updatedEvent -> {
-                        onSuccess.setValue("Event Updated Successfully");
-                        close.setValue(null);
-                    }, throwable -> {
-                        onError.setValue(ErrorUtils.getMessage(throwable).toString());
-                        Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
-                    }
-                ));
+                eventRepository
+                        .updateEvent(event)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                updatedEvent -> {
+                                    onSuccess.setValue("Event Updated Successfully");
+                                    close.setValue(null);
+                                },
+                                throwable -> {
+                                    onError.setValue(ErrorUtils.getMessage(throwable).toString());
+                                    Timber.e(
+                                            throwable,
+                                            "An exception occurred : %s",
+                                            throwable.getMessage());
+                                }));
     }
 
-    //Method for storing user uploaded image in temporary location
+    // Method for storing user uploaded image in temporary location
     public void uploadImage(ImageData imageData) {
         compositeDisposable.add(
-            eventRepository
-                .uploadEventImage(imageData)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(uploadedImage -> {
-                    onSuccess.setValue("Image Uploaded Successfully");
-                    imageUrlMutableLiveData.setValue(uploadedImage);
-                }, Logger::logError));
+                eventRepository
+                        .uploadEventImage(imageData)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                uploadedImage -> {
+                                    onSuccess.setValue("Image Uploaded Successfully");
+                                    imageUrlMutableLiveData.setValue(uploadedImage);
+                                },
+                                Logger::logError));
     }
 
-    //Method for storing user uploaded logo in temporary location
+    // Method for storing user uploaded logo in temporary location
     public void uploadLogo(ImageData imageData) {
         compositeDisposable.add(
-            eventRepository
-                .uploadEventImage(imageData)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(uploadedImage -> {
-                    onSuccess.setValue("Logo Uploaded Successfully");
-                    logoUrlMutableLiveData.setValue(uploadedImage);
-                }, Logger::logError));
+                eventRepository
+                        .uploadEventImage(imageData)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                uploadedImage -> {
+                                    onSuccess.setValue("Logo Uploaded Successfully");
+                                    logoUrlMutableLiveData.setValue(uploadedImage);
+                                },
+                                Logger::logError));
     }
 }

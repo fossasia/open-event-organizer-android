@@ -2,25 +2,22 @@ package com.eventyay.organizer.core.attendee.history;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.attendee.CheckInDetail;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.Utils;
-
+import io.reactivex.disposables.CompositeDisposable;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
-import io.reactivex.disposables.CompositeDisposable;
 
 public class CheckInHistoryViewModel extends ViewModel {
 
     private final AttendeeRepository attendeeRepository;
-    private final SingleEventLiveData<List<CheckInDetail>> checkInDetailsLiveData = new SingleEventLiveData<>();
+    private final SingleEventLiveData<List<CheckInDetail>> checkInDetailsLiveData =
+            new SingleEventLiveData<>();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final SingleEventLiveData<Attendee> attendeeLive = new SingleEventLiveData<>();
     private final SingleEventLiveData<Boolean> progress = new SingleEventLiveData<>();
@@ -35,13 +32,20 @@ public class CheckInHistoryViewModel extends ViewModel {
     }
 
     public void loadAttendee(long id, boolean reload) {
-        compositeDisposable.add(attendeeRepository.getAttendee(id, reload)
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> {
-                loadCheckInDetails(attendeeLive.getValue());
-                progress.setValue(false);
-            })
-            .subscribe(attendeeLive::setValue, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                attendeeRepository
+                        .getAttendee(id, reload)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(
+                                () -> {
+                                    loadCheckInDetails(attendeeLive.getValue());
+                                    progress.setValue(false);
+                                })
+                        .subscribe(
+                                attendeeLive::setValue,
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void loadCheckInDetails(Attendee attendee) {
@@ -67,11 +71,12 @@ public class CheckInHistoryViewModel extends ViewModel {
         checkInDetailsLiveData.setValue(checkInDetails);
     }
 
-    public List<CheckInDetail> getCheckInDetails(Attendee attendee, List<CheckInDetail> checkInDetails) {
+    public List<CheckInDetail> getCheckInDetails(
+            Attendee attendee, List<CheckInDetail> checkInDetails) {
         String[] checkInTimes = attendee.getCheckinTimes().split(",");
         String[] checkOutTimes = attendee.getCheckoutTimes().split(",");
 
-        for (int i = 0; i< checkInTimes.length + checkOutTimes.length; i++) {
+        for (int i = 0; i < checkInTimes.length + checkOutTimes.length; i++) {
             CheckInDetail checkInDetail = new CheckInDetail();
 
             if (i % 2 == 0) {

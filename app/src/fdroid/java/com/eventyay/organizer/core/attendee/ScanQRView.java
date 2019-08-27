@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.attendee;
 
 import androidx.annotation.NonNull;
-
 import com.eventyay.organizer.data.attendee.Attendee;
 
 public interface ScanQRView {

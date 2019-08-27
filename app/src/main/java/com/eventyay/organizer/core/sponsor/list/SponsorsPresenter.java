@@ -1,32 +1,27 @@
 package com.eventyay.organizer.core.sponsor.list;
 
-import androidx.databinding.ObservableBoolean;
+import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
+import static com.eventyay.organizer.common.rx.ViewTransformers.disposeCompletable;
+import static com.eventyay.organizer.common.rx.ViewTransformers.emptiable;
+import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneous;
+import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
+
 import androidx.annotation.VisibleForTesting;
-
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
+import androidx.databinding.ObservableBoolean;
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.sponsor.Sponsor;
 import com.eventyay.organizer.data.sponsor.SponsorRepository;
-
+import com.raizlabs.android.dbflow.structure.BaseModel;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Inject;
-
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
-
-import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
-import static com.eventyay.organizer.common.rx.ViewTransformers.disposeCompletable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.emptiable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneous;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsView> {
 
@@ -41,7 +36,9 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     public boolean isNewSponsorCreated = false;
 
     @Inject
-    public SponsorsPresenter(SponsorRepository sponsorRepository, DatabaseChangeListener<Sponsor> sponsorChangeListener) {
+    public SponsorsPresenter(
+            SponsorRepository sponsorRepository,
+            DatabaseChangeListener<Sponsor> sponsorChangeListener) {
         this.sponsorRepository = sponsorRepository;
         this.sponsorChangeListener = sponsorChangeListener;
     }
@@ -71,29 +68,32 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
 
     private void listenChanges() {
         sponsorChangeListener.startListening();
-        sponsorChangeListener.getNotifier()
-            .compose(dispose(getDisposable()))
-            .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.INSERT) || action.equals(BaseModel.Action.UPDATE) ||
-                action.equals(BaseModel.Action.DELETE))
-            .subscribeOn(Schedulers.io())
-            .subscribe(sponsorModelChange -> loadSponsors(false), Logger::logError);
+        sponsorChangeListener
+                .getNotifier()
+                .compose(dispose(getDisposable()))
+                .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
+                .filter(
+                        action ->
+                                action.equals(BaseModel.Action.INSERT)
+                                        || action.equals(BaseModel.Action.UPDATE)
+                                        || action.equals(BaseModel.Action.DELETE))
+                .subscribeOn(Schedulers.io())
+                .subscribe(sponsorModelChange -> loadSponsors(false), Logger::logError);
     }
 
     public void loadSponsors(boolean forceReload) {
         getSponsorSource(forceReload)
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneousRefresh(getView(), forceReload))
-            .toList()
-            .compose(emptiable(getView(), sponsors))
-            .subscribe(Logger::logSuccess, Logger::logError);
+                .compose(dispose(getDisposable()))
+                .compose(progressiveErroneousRefresh(getView(), forceReload))
+                .toList()
+                .compose(emptiable(getView(), sponsors))
+                .subscribe(Logger::logSuccess, Logger::logError);
     }
 
     private Observable<Sponsor> getSponsorSource(boolean forceReload) {
         if (!forceReload && !sponsors.isEmpty() && isRotated() && !isNewSponsorCreated)
             return Observable.fromIterable(sponsors);
-        else
-            return sponsorRepository.getSponsors(getId(), forceReload);
+        else return sponsorRepository.getSponsors(getId(), forceReload);
     }
 
     public List<Sponsor> getSponsors() {
@@ -103,33 +103,37 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     @VisibleForTesting
     protected void deleteSponsor(Long sponsorId) {
         sponsorRepository
-            .deleteSponsor(sponsorId)
-            .compose(disposeCompletable(getDisposable()))
-            .subscribe(() -> {
-                selectedSponsors.remove(sponsorId);
-                Logger.logSuccess(sponsorId);
-            }, Logger::logError);
+                .deleteSponsor(sponsorId)
+                .compose(disposeCompletable(getDisposable()))
+                .subscribe(
+                        () -> {
+                            selectedSponsors.remove(sponsorId);
+                            Logger.logSuccess(sponsorId);
+                        },
+                        Logger::logError);
     }
 
     public void deleteSelectedSponsors() {
         Observable.fromIterable(selectedSponsors.entrySet())
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneous(getView()))
-            .doFinally(() -> {
-                getView().showMessage("Sponsors Deleted");
-                resetToolbarToDefaultState();
-            })
-            .subscribe(entry -> {
-                if (entry.getValue().get()) {
-                    deleteSponsor(entry.getKey());
-                }
-                loadSponsors(false);
-            }, Logger::logError);
+                .compose(dispose(getDisposable()))
+                .compose(progressiveErroneous(getView()))
+                .doFinally(
+                        () -> {
+                            getView().showMessage("Sponsors Deleted");
+                            resetToolbarToDefaultState();
+                        })
+                .subscribe(
+                        entry -> {
+                            if (entry.getValue().get()) {
+                                deleteSponsor(entry.getKey());
+                            }
+                            loadSponsors(false);
+                        },
+                        Logger::logError);
     }
 
     public void longClick(Sponsor clickedSponsor) {
-        if (isContextualModeActive)
-            click(clickedSponsor.getId());
+        if (isContextualModeActive) click(clickedSponsor.getId());
         else {
             selectedSponsors.get(clickedSponsor.getId()).set(true);
             isContextualModeActive = true;
@@ -148,11 +152,9 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
                 getView().changeToolbarMode(true, true);
             } else if (isSponsorSelected(clickedSponsorId).get())
                 selectedSponsors.get(clickedSponsorId).set(false);
-            else
-                selectedSponsors.get(clickedSponsorId).set(true);
+            else selectedSponsors.get(clickedSponsorId).set(true);
 
-            if (countSelected() > EDITABLE_AT_ONCE)
-                getView().changeToolbarMode(false, true);
+            if (countSelected() > EDITABLE_AT_ONCE) getView().changeToolbarMode(false, true);
         }
     }
 
@@ -170,7 +172,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     }
 
     public void unselectSponsorsList() {
-        for (Long sessionId  : selectedSponsors.keySet()) {
+        for (Long sessionId : selectedSponsors.keySet()) {
             if (sessionId != null && selectedSponsors.containsKey(sessionId))
                 selectedSponsors.get(sessionId).set(false);
         }
@@ -180,8 +182,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     private int countSelected() {
         int count = 0;
         for (Long id : selectedSponsors.keySet()) {
-            if (selectedSponsors.get(id).get())
-                count++;
+            if (selectedSponsors.get(id).get()) count++;
         }
         return count;
     }
@@ -190,5 +191,4 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     protected Map<Long, ObservableBoolean> getSelectedSponsors() {
         return selectedSponsors;
     }
-
 }

@@ -1,7 +1,5 @@
 package com.eventyay.organizer.core.event.dashboard;
 
-import com.github.mikephil.charting.charts.LineChart;
-
 import com.eventyay.organizer.common.mvp.view.Erroneous;
 import com.eventyay.organizer.common.mvp.view.ItemResult;
 import com.eventyay.organizer.common.mvp.view.Progressive;
@@ -10,8 +8,10 @@ import com.eventyay.organizer.common.mvp.view.Successful;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventStatistics;
 import com.eventyay.organizer.data.order.OrderStatistics;
+import com.github.mikephil.charting.charts.LineChart;
 
-public interface EventDashboardView extends Progressive, Erroneous, Successful, Refreshable, ItemResult<Event> {
+public interface EventDashboardView
+        extends Progressive, Erroneous, Successful, Refreshable, ItemResult<Event> {
 
     LineChart getSalesChartView();
 

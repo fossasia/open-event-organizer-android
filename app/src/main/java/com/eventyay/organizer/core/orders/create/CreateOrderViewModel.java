@@ -1,10 +1,11 @@
 package com.eventyay.organizer.core.orders.create;
 
+import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
+
+import androidx.databinding.ObservableLong;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.databinding.ObservableLong;
-
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.order.Order;
@@ -13,17 +14,12 @@ import com.eventyay.organizer.data.ticket.OnSiteTicket;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
-
+import io.reactivex.disposables.CompositeDisposable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.inject.Inject;
-
-import io.reactivex.disposables.CompositeDisposable;
-
-import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
 
 public class CreateOrderViewModel extends ViewModel {
 
@@ -37,10 +33,11 @@ public class CreateOrderViewModel extends ViewModel {
     private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
     private final MutableLiveData<List<Ticket>> ticketsLiveData = new MutableLiveData<>();
     private final List<OnSiteTicket> onSiteTicketsList = new ArrayList<>();
-    private final Map<Long, ObservableLong> onSiteTicketsMap =  new ConcurrentHashMap<>();
+    private final Map<Long, ObservableLong> onSiteTicketsMap = new ConcurrentHashMap<>();
 
     @Inject
-    public CreateOrderViewModel(OrderRepository orderRepository, TicketRepository ticketRepository) {
+    public CreateOrderViewModel(
+            OrderRepository orderRepository, TicketRepository ticketRepository) {
         this.orderRepository = orderRepository;
         this.ticketRepository = ticketRepository;
         progress.setValue(false);
@@ -48,16 +45,20 @@ public class CreateOrderViewModel extends ViewModel {
     }
 
     public LiveData<List<Ticket>> getTicketsUnderEvent(long eventId, boolean reload) {
-        if (ticketsLiveData.getValue() != null && !reload)
-            return ticketsLiveData;
+        if (ticketsLiveData.getValue() != null && !reload) return ticketsLiveData;
 
-        compositeDisposable.add(ticketRepository.getTickets(eventId, reload)
-            .compose(dispose(compositeDisposable))
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .toList()
-            .subscribe(ticketsLiveData::setValue,
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                ticketRepository
+                        .getTickets(eventId, reload)
+                        .compose(dispose(compositeDisposable))
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .toList()
+                        .subscribe(
+                                ticketsLiveData::setValue,
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
 
         return ticketsLiveData;
     }
@@ -111,15 +112,21 @@ public class CreateOrderViewModel extends ViewModel {
 
         order.setOnSiteTickets(onSiteTicketsList);
 
-        compositeDisposable.add(orderRepository.createOrder(order)
-            .compose(dispose(compositeDisposable))
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> {
-                clearSelectedTickets();
-                progress.setValue(false);
-            })
-            .subscribe(createdOrder -> success.setValue("Order created successfully"),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                orderRepository
+                        .createOrder(order)
+                        .compose(dispose(compositeDisposable))
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(
+                                () -> {
+                                    clearSelectedTickets();
+                                    progress.setValue(false);
+                                })
+                        .subscribe(
+                                createdOrder -> success.setValue("Order created successfully"),
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void clearSelectedTickets() {

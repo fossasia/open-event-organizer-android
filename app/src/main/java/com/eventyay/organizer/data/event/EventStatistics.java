@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Type;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +17,7 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 public class EventStatistics {
 
-    @Id
-    public String id;
+    @Id public String id;
 
     public Long sessions;
     public SpeakerStatistics speakers;
@@ -32,4 +30,3 @@ public class EventStatistics {
     public Long sessionsAccepted;
     public Long sessionsDraft;
 }
-

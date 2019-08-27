@@ -2,10 +2,8 @@ package com.eventyay.organizer.data.order;
 
 import com.eventyay.organizer.data.order.model.OrderReceiptRequest;
 import com.eventyay.organizer.data.order.model.OrderReceiptResponse;
-
-import java.util.List;
-
 import io.reactivex.Observable;
+import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -26,6 +24,6 @@ public interface OrderApi {
     Observable<OrderStatistics> getOrderStatisticsForEvent(@Path("event_id") long id);
 
     @POST("attendees/send-receipt")
-    Observable<OrderReceiptResponse> sendReceiptEmail(@Body OrderReceiptRequest orderReceiptRequest);
-
+    Observable<OrderReceiptResponse> sendReceiptEmail(
+            @Body OrderReceiptRequest orderReceiptRequest);
 }

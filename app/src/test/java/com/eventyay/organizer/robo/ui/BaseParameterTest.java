@@ -8,6 +8,4 @@ import org.robolectric.annotation.Config;
 @SuppressWarnings({"PMD.AbstractClassWithoutAnyMethod", "PMD.AbstractClassWithoutAbstractMethod"})
 @RunWith(ParameterizedRobolectricTestRunner.class)
 @Config(sdk = Config.OLDEST_SDK, application = TestApplication.class)
-public abstract class BaseParameterTest {
-
-}
+public abstract class BaseParameterTest {}

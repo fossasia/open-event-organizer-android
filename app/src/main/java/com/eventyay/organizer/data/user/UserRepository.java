@@ -2,9 +2,7 @@ package com.eventyay.organizer.data.user;
 
 import com.eventyay.organizer.data.image.ImageData;
 import com.eventyay.organizer.data.image.ImageUrl;
-
 import io.reactivex.Observable;
-
 
 public interface UserRepository {
 

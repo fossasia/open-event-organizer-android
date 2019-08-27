@@ -1,7 +1,6 @@
 package com.eventyay.organizer.data.db.configuration;
 
 import androidx.annotation.NonNull;
-
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.data.event.Event;
@@ -29,19 +28,16 @@ import com.raizlabs.android.dbflow.sql.migration.AlterTableMigration;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
-
 import java.util.Arrays;
 import java.util.List;
-
 import timber.log.Timber;
 
 @Database(
-    name = OrgaDatabase.NAME,
-    version = OrgaDatabase.VERSION,
-    insertConflict = ConflictAction.REPLACE,
-    updateConflict = ConflictAction.REPLACE,
-    foreignKeyConstraintsEnforced = true
-)
+        name = OrgaDatabase.NAME,
+        version = OrgaDatabase.VERSION,
+        insertConflict = ConflictAction.REPLACE,
+        updateConflict = ConflictAction.REPLACE,
+        foreignKeyConstraintsEnforced = true)
 public final class OrgaDatabase {
 
     public static final String NAME = "orga_database";
@@ -61,17 +57,27 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 4");
 
-            Class<?>[] recreated = new Class[] {Attendee.class, Event.class, Order.class, Ticket.class, User.class};
-            String[] deleted = new String[] {"CallForPapers", "Copyright", "License", "SocialLink", "UserDetail", "Version"};
+            Class<?>[] recreated =
+                    new Class[] {
+                        Attendee.class, Event.class, Order.class, Ticket.class, User.class
+                    };
+            String[] deleted =
+                    new String[] {
+                        "CallForPapers",
+                        "Copyright",
+                        "License",
+                        "SocialLink",
+                        "UserDetail",
+                        "Version"
+                    };
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
             }
 
-            for (String delete: deleted)
-                databaseWrapper.execSQL(DROP_TABLE + delete);
+            for (String delete : deleted) databaseWrapper.execSQL(DROP_TABLE + delete);
         }
     }
 
@@ -99,11 +105,21 @@ public final class OrgaDatabase {
         @Override
         public void onPreMigrate() {
             super.onPreMigrate();
-            List<String> addedColumns = Arrays.asList("address", "zipcode", "city", "state", "country",
-                "expMonth", "expYear", "transactionId", "discountCodeId", "brand", "last4");
+            List<String> addedColumns =
+                    Arrays.asList(
+                            "address",
+                            "zipcode",
+                            "city",
+                            "state",
+                            "country",
+                            "expMonth",
+                            "expYear",
+                            "transactionId",
+                            "discountCodeId",
+                            "brand",
+                            "last4");
 
-            for (String column : addedColumns)
-                addColumn(SQLiteType.TEXT, column);
+            for (String column : addedColumns) addColumn(SQLiteType.TEXT, column);
         }
     }
 
@@ -117,12 +133,27 @@ public final class OrgaDatabase {
         @Override
         public void onPreMigrate() {
             super.onPreMigrate();
-            List<String> addedColumns = Arrays.asList("blog", "homeAddress", "workAddress", "jobTitle",
-                "country", "taxBusinessInfo", "phone", "gender", "company", "workPhone", "birthDate",
-                "twitter", "facebook", "github", "website", "shippingAddress", "billingAddress");
+            List<String> addedColumns =
+                    Arrays.asList(
+                            "blog",
+                            "homeAddress",
+                            "workAddress",
+                            "jobTitle",
+                            "country",
+                            "taxBusinessInfo",
+                            "phone",
+                            "gender",
+                            "company",
+                            "workPhone",
+                            "birthDate",
+                            "twitter",
+                            "facebook",
+                            "github",
+                            "website",
+                            "shippingAddress",
+                            "billingAddress");
 
-            for (String column : addedColumns)
-                addColumn(SQLiteType.TEXT, column);
+            for (String column : addedColumns) addColumn(SQLiteType.TEXT, column);
         }
     }
 
@@ -150,7 +181,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {Faq.class, Copyright.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL("DROP TABLE IF EXISTS " + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -167,7 +198,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {Feedback.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -184,7 +215,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {Track.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -201,7 +232,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {Session.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -218,7 +249,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {Sponsor.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -235,7 +266,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {Speaker.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -252,7 +283,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {SpeakersCall.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -269,7 +300,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {OrderStatistics.class, Statistics.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -306,8 +337,7 @@ public final class OrgaDatabase {
 
             List<String> addedColumns = Arrays.asList("ticketsSold", "ticketsAvailable", "revenue");
 
-            for (String column : addedColumns)
-                addColumn(SQLiteType.TEXT, column);
+            for (String column : addedColumns) addColumn(SQLiteType.TEXT, column);
         }
     }
 
@@ -320,7 +350,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {Role.class, RoleInvite.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -337,7 +367,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {Notification.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -354,7 +384,7 @@ public final class OrgaDatabase {
 
             Class<?>[] recreated = new Class[] {Event.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());

@@ -1,24 +1,22 @@
 package com.eventyay.organizer.core.event.about;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.event.copyright.CreateCopyrightFragment;
@@ -28,12 +26,9 @@ import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.databinding.AboutEventFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
-import java.util.Arrays;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import java.util.Arrays;
+import javax.inject.Inject;
 
 @SuppressWarnings("PMD.TooManyMethods")
 public class AboutEventFragment extends BaseFragment implements AboutEventView {
@@ -49,12 +44,9 @@ public class AboutEventFragment extends BaseFragment implements AboutEventView {
 
     private AboutEventViewModel aboutEventViewModel;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
-    @Inject
-    ContextUtils utilModel;
-    @Inject
-    ToolbarColorChanger toolbarColorChanger;
+    @Inject ViewModelProvider.Factory viewModelFactory;
+    @Inject ContextUtils utilModel;
+    @Inject ToolbarColorChanger toolbarColorChanger;
 
     public static AboutEventFragment newInstance(long id) {
         Bundle bundle = new Bundle();
@@ -65,11 +57,13 @@ public class AboutEventFragment extends BaseFragment implements AboutEventView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        binding = DataBindingUtil.inflate(inflater, R.layout.about_event_fragment, container, false);
-        aboutEventViewModel = ViewModelProviders.of(this, viewModelFactory).get(AboutEventViewModel.class);
+        binding =
+                DataBindingUtil.inflate(inflater, R.layout.about_event_fragment, container, false);
+        aboutEventViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(AboutEventViewModel.class);
 
         Bundle bundle = getArguments();
         eventId = bundle.getLong(EVENT_ID);
@@ -98,7 +92,9 @@ public class AboutEventFragment extends BaseFragment implements AboutEventView {
         aboutEventViewModel.getSuccess().observe(this, this::showResult);
         aboutEventViewModel.getError().observe(this, this::showError);
         aboutEventViewModel.getShowCopyright().observe(this, this::showCopyright);
-        aboutEventViewModel.getChangeCopyrightMenuItem().observe(this, this::changeCopyrightMenuItem);
+        aboutEventViewModel
+                .getChangeCopyrightMenuItem()
+                .observe(this, this::changeCopyrightMenuItem);
         aboutEventViewModel.getShowCopyrightDeleted().observe(this, this::showCopyrightDeleted);
         aboutEventViewModel.loadEvent(false);
         aboutEventViewModel.loadCopyright(false);
@@ -128,7 +124,8 @@ public class AboutEventFragment extends BaseFragment implements AboutEventView {
         super.onPrepareOptionsMenu(menu);
         MenuItem menuItem = menu.findItem(R.id.action_share_event);
         shareIcon = menu.findItem(R.id.action_share_event).getIcon();
-        shareIcon.setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
+        shareIcon.setColorFilter(
+                getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
         menuItem.setVisible(true);
     }
 
@@ -149,55 +146,79 @@ public class AboutEventFragment extends BaseFragment implements AboutEventView {
         Drawable icon = binding.toolbar.getNavigationIcon();
         Drawable overflowIcon = binding.toolbar.getOverflowIcon();
 
-        compositeDisposable.add(toolbarColorChanger.observeColor(binding.appBar, binding.collapsingToolbar)
-            .subscribe(color -> {
-                for (Drawable drawable : Arrays.asList(icon, overflowIcon, shareIcon)) {
-                    if (drawable != null) drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-                }
-            }));
+        compositeDisposable.add(
+                toolbarColorChanger
+                        .observeColor(binding.appBar, binding.collapsingToolbar)
+                        .subscribe(
+                                color -> {
+                                    for (Drawable drawable :
+                                            Arrays.asList(icon, overflowIcon, shareIcon)) {
+                                        if (drawable != null)
+                                            drawable.setColorFilter(
+                                                    color, PorterDuff.Mode.SRC_ATOP);
+                                    }
+                                }));
     }
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            aboutEventViewModel.loadEvent(true);
-            aboutEventViewModel.loadCopyright(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    aboutEventViewModel.loadEvent(true);
+                    aboutEventViewModel.loadCopyright(true);
+                });
     }
 
     private void addCopyrightListeners() {
-        binding.detail.actionCreateCopyright.setOnClickListener(view -> {
-            getFragmentManager().beginTransaction()
-                .add(R.id.fragment, CreateCopyrightFragment.newInstance())
-                .addToBackStack(null)
-                .commit();
-        });
+        binding.detail.actionCreateCopyright.setOnClickListener(
+                view -> {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.fragment, CreateCopyrightFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit();
+                });
 
-        binding.detail.actionChangeCopyright.setOnClickListener(view -> {
-            getFragmentManager().beginTransaction()
-                .add(R.id.fragment, UpdateCopyrightFragment.newInstance(eventId))
-                .addToBackStack(null)
-                .commit();
-        });
+        binding.detail.actionChangeCopyright.setOnClickListener(
+                view -> {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.fragment, UpdateCopyrightFragment.newInstance(eventId))
+                            .addToBackStack(null)
+                            .commit();
+                });
 
-        binding.detail.actionDeleteCopyright.setOnClickListener(view -> {
-            if (deleteDialog == null)
-                deleteDialog = new AlertDialog.Builder(getContext())
-                    .setTitle(R.string.delete)
-                    .setMessage(String.format(getString(R.string.delete_confirmation_message),
-                        getString(R.string.copyright)))
-                    .setPositiveButton(R.string.ok, (dialog, which) -> {
-                        aboutEventViewModel.deleteCopyright(aboutEventViewModel.getCopyright().getId());
-                    })
-                    .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                        dialog.dismiss();
-                    })
-                    .create();
+        binding.detail.actionDeleteCopyright.setOnClickListener(
+                view -> {
+                    if (deleteDialog == null)
+                        deleteDialog =
+                                new AlertDialog.Builder(getContext())
+                                        .setTitle(R.string.delete)
+                                        .setMessage(
+                                                String.format(
+                                                        getString(
+                                                                R.string
+                                                                        .delete_confirmation_message),
+                                                        getString(R.string.copyright)))
+                                        .setPositiveButton(
+                                                R.string.ok,
+                                                (dialog, which) -> {
+                                                    aboutEventViewModel.deleteCopyright(
+                                                            aboutEventViewModel
+                                                                    .getCopyright()
+                                                                    .getId());
+                                                })
+                                        .setNegativeButton(
+                                                R.string.cancel,
+                                                (dialog, which) -> {
+                                                    dialog.dismiss();
+                                                })
+                                        .create();
 
-            deleteDialog.show();
-        });
+                    deleteDialog.show();
+                });
     }
 
     public void handleVisibility() {

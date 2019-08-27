@@ -1,16 +1,14 @@
 package com.eventyay.organizer.core.orders.detail.adapter;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.orders.detail.viewholder.OrderAttendeesViewHolder;
 import com.eventyay.organizer.data.attendee.Attendee;
-
 import java.util.List;
 
 public class OrderAttendeesAdapter extends RecyclerView.Adapter<OrderAttendeesViewHolder> {
@@ -20,12 +18,17 @@ public class OrderAttendeesAdapter extends RecyclerView.Adapter<OrderAttendeesVi
     @NonNull
     @Override
     public OrderAttendeesViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        return new OrderAttendeesViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.order_attendee_layout, viewGroup, false));
+        return new OrderAttendeesViewHolder(
+                DataBindingUtil.inflate(
+                        LayoutInflater.from(viewGroup.getContext()),
+                        R.layout.order_attendee_layout,
+                        viewGroup,
+                        false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderAttendeesViewHolder orderAttendeesViewHolder, int position) {
+    public void onBindViewHolder(
+            @NonNull OrderAttendeesViewHolder orderAttendeesViewHolder, int position) {
         orderAttendeesViewHolder.bind(attendees.get(position));
     }
 
@@ -40,27 +43,34 @@ public class OrderAttendeesAdapter extends RecyclerView.Adapter<OrderAttendeesVi
             attendees = newAttendees;
             notifyItemRangeInserted(0, newAttendees.size());
         } else {
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return attendees.size();
-                }
+            DiffUtil.DiffResult result =
+                    DiffUtil.calculateDiff(
+                            new DiffUtil.Callback() {
+                                @Override
+                                public int getOldListSize() {
+                                    return attendees.size();
+                                }
 
-                @Override
-                public int getNewListSize() {
-                    return newAttendees.size();
-                }
+                                @Override
+                                public int getNewListSize() {
+                                    return newAttendees.size();
+                                }
 
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    return attendees.get(oldItemPosition).getId() == newAttendees.get(newItemPosition).getId();
-                }
+                                @Override
+                                public boolean areItemsTheSame(
+                                        int oldItemPosition, int newItemPosition) {
+                                    return attendees.get(oldItemPosition).getId()
+                                            == newAttendees.get(newItemPosition).getId();
+                                }
 
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    return attendees.get(oldItemPosition).equals(newAttendees.get(newItemPosition));
-                }
-            });
+                                @Override
+                                public boolean areContentsTheSame(
+                                        int oldItemPosition, int newItemPosition) {
+                                    return attendees
+                                            .get(oldItemPosition)
+                                            .equals(newAttendees.get(newItemPosition));
+                                }
+                            });
             attendees = newAttendees;
             result.dispatchUpdatesTo(this);
         }

@@ -1,12 +1,19 @@
 package com.eventyay.organizer.core.speakerscall.create;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.when;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.data.speakerscall.SpeakersCallRepository;
 import com.eventyay.organizer.utils.DateUtils;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,21 +26,10 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.threeten.bp.LocalDateTime;
 
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.when;
-
 public class CreateSpeakersCallViewModelTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule
-    public TestRule rule = new InstantTaskExecutorRule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public TestRule rule = new InstantTaskExecutorRule();
 
     private static final SpeakersCall SPEAKERS_CALL = new SpeakersCall();
     private static final long EVENT_ID = 5L;
@@ -41,19 +37,17 @@ public class CreateSpeakersCallViewModelTest {
 
     private CreateSpeakersCallViewModel createSpeakersCallViewModel;
 
-    @Mock
-    private SpeakersCallRepository speakersCallRepository;
-    @Mock
-    Observer<String> error;
-    @Mock
-    Observer<String> success;
+    @Mock private SpeakersCallRepository speakersCallRepository;
+    @Mock Observer<String> error;
+    @Mock Observer<String> success;
 
     @Before
     public void setUp() {
         createSpeakersCallViewModel = new CreateSpeakersCallViewModel(speakersCallRepository);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
     }
 
     @After
@@ -70,7 +64,8 @@ public class CreateSpeakersCallViewModelTest {
 
         createSpeakersCallViewModel.setSpeakersCall(SPEAKERS_CALL);
         LiveData<SpeakersCall> speakersCallLiveData = createSpeakersCallViewModel.getSpeakersCall();
-        when(speakersCallRepository.createSpeakersCall(speakersCallLiveData.getValue())).thenReturn(Observable.error(new Throwable(ERROR)));
+        when(speakersCallRepository.createSpeakersCall(speakersCallLiveData.getValue()))
+                .thenReturn(Observable.error(new Throwable(ERROR)));
 
         createSpeakersCallViewModel.getError().observeForever(error);
         createSpeakersCallViewModel.createSpeakersCall(EVENT_ID);
@@ -88,7 +83,8 @@ public class CreateSpeakersCallViewModelTest {
 
         createSpeakersCallViewModel.setSpeakersCall(SPEAKERS_CALL);
         LiveData<SpeakersCall> speakersCallLiveData = createSpeakersCallViewModel.getSpeakersCall();
-        when(speakersCallRepository.createSpeakersCall(speakersCallLiveData.getValue())).thenReturn(Observable.error(new Throwable(ERROR)));
+        when(speakersCallRepository.createSpeakersCall(speakersCallLiveData.getValue()))
+                .thenReturn(Observable.error(new Throwable(ERROR)));
 
         createSpeakersCallViewModel.getError().observeForever(error);
         createSpeakersCallViewModel.createSpeakersCall(EVENT_ID);
@@ -108,7 +104,8 @@ public class CreateSpeakersCallViewModelTest {
 
         createSpeakersCallViewModel.setSpeakersCall(SPEAKERS_CALL);
         LiveData<SpeakersCall> speakersCallLiveData = createSpeakersCallViewModel.getSpeakersCall();
-        when(speakersCallRepository.createSpeakersCall(speakersCallLiveData.getValue())).thenReturn(Observable.just(SPEAKERS_CALL));
+        when(speakersCallRepository.createSpeakersCall(speakersCallLiveData.getValue()))
+                .thenReturn(Observable.just(SPEAKERS_CALL));
 
         createSpeakersCallViewModel.getSuccess().observeForever(success);
         createSpeakersCallViewModel.createSpeakersCall(EVENT_ID);
@@ -128,7 +125,8 @@ public class CreateSpeakersCallViewModelTest {
 
         createSpeakersCallViewModel.setSpeakersCall(SPEAKERS_CALL);
         LiveData<SpeakersCall> speakersCallLiveData = createSpeakersCallViewModel.getSpeakersCall();
-        when(speakersCallRepository.createSpeakersCall(speakersCallLiveData.getValue())).thenReturn(Observable.error(new Throwable(ERROR)));
+        when(speakersCallRepository.createSpeakersCall(speakersCallLiveData.getValue()))
+                .thenReturn(Observable.error(new Throwable(ERROR)));
 
         createSpeakersCallViewModel.getError().observeForever(error);
         createSpeakersCallViewModel.createSpeakersCall(EVENT_ID);
@@ -148,7 +146,8 @@ public class CreateSpeakersCallViewModelTest {
 
         createSpeakersCallViewModel.setSpeakersCall(SPEAKERS_CALL);
         LiveData<SpeakersCall> speakersCallLiveData = createSpeakersCallViewModel.getSpeakersCall();
-        when(speakersCallRepository.updateSpeakersCall(speakersCallLiveData.getValue())).thenReturn(Observable.just(SPEAKERS_CALL));
+        when(speakersCallRepository.updateSpeakersCall(speakersCallLiveData.getValue()))
+                .thenReturn(Observable.just(SPEAKERS_CALL));
 
         createSpeakersCallViewModel.getSuccess().observeForever(success);
         createSpeakersCallViewModel.updateSpeakersCall(EVENT_ID);
@@ -168,7 +167,8 @@ public class CreateSpeakersCallViewModelTest {
 
         createSpeakersCallViewModel.setSpeakersCall(SPEAKERS_CALL);
         LiveData<SpeakersCall> speakersCallLiveData = createSpeakersCallViewModel.getSpeakersCall();
-        when(speakersCallRepository.updateSpeakersCall(speakersCallLiveData.getValue())).thenReturn(Observable.error(new Throwable(ERROR)));
+        when(speakersCallRepository.updateSpeakersCall(speakersCallLiveData.getValue()))
+                .thenReturn(Observable.error(new Throwable(ERROR)));
 
         createSpeakersCallViewModel.getError().observeForever(error);
         createSpeakersCallViewModel.updateSpeakersCall(EVENT_ID);

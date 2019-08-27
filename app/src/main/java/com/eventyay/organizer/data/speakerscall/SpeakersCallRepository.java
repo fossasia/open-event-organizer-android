@@ -1,7 +1,6 @@
 package com.eventyay.organizer.data.speakerscall;
 
 import androidx.annotation.NonNull;
-
 import io.reactivex.Observable;
 
 public interface SpeakersCallRepository {

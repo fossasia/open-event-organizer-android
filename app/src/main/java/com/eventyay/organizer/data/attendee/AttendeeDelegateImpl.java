@@ -1,19 +1,17 @@
 package com.eventyay.organizer.data.attendee;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
 import android.view.View;
-
-import com.mikepenz.fastadapter.items.AbstractItem;
-
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import com.eventyay.organizer.R;
-import com.eventyay.organizer.core.attendee.list.viewholders.AttendeeViewHolder;
 import com.eventyay.organizer.common.model.HeaderProvider;
+import com.eventyay.organizer.core.attendee.list.viewholders.AttendeeViewHolder;
 import com.eventyay.organizer.utils.CompareUtils;
-
+import com.mikepenz.fastadapter.items.AbstractItem;
 import java.util.List;
 
-public class AttendeeDelegateImpl extends AbstractItem<AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider {
+public class AttendeeDelegateImpl extends AbstractItem<AttendeeViewHolder>
+        implements Comparable<Attendee>, HeaderProvider {
 
     private final Attendee attendee;
 
@@ -23,9 +21,8 @@ public class AttendeeDelegateImpl extends AbstractItem<AttendeeViewHolder> imple
 
     @Override
     public int compareTo(@NonNull Attendee other) {
-        return CompareUtils.compareCascading(attendee, other,
-            Attendee::getFirstname, Attendee::getLastname, Attendee::getEmail
-        );
+        return CompareUtils.compareCascading(
+                attendee, other, Attendee::getFirstname, Attendee::getLastname, Attendee::getEmail);
     }
 
     @Override
@@ -69,5 +66,4 @@ public class AttendeeDelegateImpl extends AbstractItem<AttendeeViewHolder> imple
     public long getHeaderId() {
         return getHeader().charAt(0);
     }
-
 }

@@ -4,32 +4,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import androidx.databinding.BindingAdapter;
-import androidx.databinding.BindingConversion;
-import androidx.databinding.InverseBindingAdapter;
-import androidx.databinding.InverseBindingListener;
-import androidx.databinding.InverseMethod;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import androidx.annotation.ColorInt;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.mikhaellopez.circularprogressbar.CircularProgressBar;
-
+import androidx.annotation.ColorInt;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.BindingConversion;
+import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
+import androidx.databinding.InverseMethod;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.ui.views.DatePicker;
 import com.eventyay.organizer.ui.views.TimePicker;
 import com.eventyay.organizer.utils.Utils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 @SuppressWarnings("PMD.AvoidCatchingGenericException")
 public final class BindingAdapters {
@@ -41,13 +39,13 @@ public final class BindingAdapters {
     @BindingConversion
     @InverseMethod("strToLong")
     public static String longToStr(Long value) {
-        return value == null ?  "" : String.valueOf(value);
+        return value == null ? "" : String.valueOf(value);
     }
 
     @BindingConversion
     @InverseMethod("strToFloat")
     public static String floatToStr(Float value) {
-        return value == null ?  "" : String.valueOf(value);
+        return value == null ? "" : String.valueOf(value);
     }
 
     @InverseMethod("strToDouble")
@@ -58,12 +56,12 @@ public final class BindingAdapters {
     @BindingConversion
     @InverseMethod("strToInteger")
     public static String integerToStr(Integer value) {
-        return value == null ?  "" : String.valueOf(value);
+        return value == null ? "" : String.valueOf(value);
     }
 
     @SuppressWarnings("PMD")
     public static Long strToLong(String value) {
-        return Utils.isEmpty(value) ?  null : Long.parseLong(value);
+        return Utils.isEmpty(value) ? null : Long.parseLong(value);
     }
 
     @SuppressWarnings("PMD")
@@ -83,8 +81,7 @@ public final class BindingAdapters {
 
     @InverseMethod("getType")
     public static int toId(String ticketType) {
-        if (ticketType == null)
-            return R.id.free;
+        if (ticketType == null) return R.id.free;
 
         switch (ticketType) {
             case "free":
@@ -137,12 +134,21 @@ public final class BindingAdapters {
     }
 
     @BindingAdapter("circular_progress_color")
-    public static void bindCircularProgressColor(CircularProgressBar circularProgressBar, String colorName) {
+    public static void bindCircularProgressColor(
+            CircularProgressBar circularProgressBar, String colorName) {
         Context context = circularProgressBar.getContext();
         Resources resources = circularProgressBar.getResources();
 
-        int color = ContextCompat.getColor(context, resources.getIdentifier(colorName + "_500", "color", context.getPackageName()));
-        int bgColor = ContextCompat.getColor(context, resources.getIdentifier(colorName + "_100", "color", context.getPackageName()));
+        int color =
+                ContextCompat.getColor(
+                        context,
+                        resources.getIdentifier(
+                                colorName + "_500", "color", context.getPackageName()));
+        int bgColor =
+                ContextCompat.getColor(
+                        context,
+                        resources.getIdentifier(
+                                colorName + "_100", "color", context.getPackageName()));
 
         circularProgressBar.setProgressBarColor(color);
         circularProgressBar.setBackgroundColor(bgColor);
@@ -150,18 +156,20 @@ public final class BindingAdapters {
 
     @BindingAdapter("go")
     public static void doneAction(EditText editText, Runnable runnable) {
-        editText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_GO) {
-                ViewUtils.hideKeyboard(editText);
-                runnable.run();
-                return true;
-            }
-            return false;
-        });
+        editText.setOnEditorActionListener(
+                (v, actionId, event) -> {
+                    if (actionId == EditorInfo.IME_ACTION_GO) {
+                        ViewUtils.hideKeyboard(editText);
+                        runnable.run();
+                        return true;
+                    }
+                    return false;
+                });
     }
 
     @BindingAdapter(value = "valueAttrChanged")
-    public static void setDateChangeListener(DatePicker datePicker, final InverseBindingListener listener) {
+    public static void setDateChangeListener(
+            DatePicker datePicker, final InverseBindingListener listener) {
         if (listener != null) {
             datePicker.setOnDateChangedListener(newDate -> listener.onChange());
         }
@@ -173,7 +181,8 @@ public final class BindingAdapters {
     }
 
     @BindingAdapter(value = "valueAttrChanged")
-    public static void setTimeListener(TimePicker timePicker, final InverseBindingListener listener) {
+    public static void setTimeListener(
+            TimePicker timePicker, final InverseBindingListener listener) {
         if (listener != null) {
             timePicker.setOnDateChangedListener(newDate -> listener.onChange());
         }
@@ -186,17 +195,19 @@ public final class BindingAdapters {
 
     @BindingAdapter("imageOnClick")
     public static void bindOnImageButtonClickListener(ImageButton imageButton, String url) {
-        imageButton.setOnClickListener(view -> {
-            if (url != null) {
-                Context context = imageButton.getContext();
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(url));
-                if (intent.resolveActivity(context.getPackageManager()) == null) {
-                    Toast.makeText(context, "No Web browser found", Toast.LENGTH_SHORT).show();
-                } else {
-                    context.startActivity(intent);
-                }
-            }
-        });
+        imageButton.setOnClickListener(
+                view -> {
+                    if (url != null) {
+                        Context context = imageButton.getContext();
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(url));
+                        if (intent.resolveActivity(context.getPackageManager()) == null) {
+                            Toast.makeText(context, "No Web browser found", Toast.LENGTH_SHORT)
+                                    .show();
+                        } else {
+                            context.startActivity(intent);
+                        }
+                    }
+                });
     }
 }

@@ -1,10 +1,8 @@
 package com.eventyay.organizer.data.event;
 
 import androidx.annotation.NonNull;
-
 import com.eventyay.organizer.data.image.ImageData;
 import com.eventyay.organizer.data.image.ImageUrl;
-
 import io.reactivex.Observable;
 
 public interface EventRepository {

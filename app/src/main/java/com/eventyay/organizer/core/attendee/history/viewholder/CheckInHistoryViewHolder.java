@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.attendee.history.viewholder;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.data.attendee.CheckInDetail;
 import com.eventyay.organizer.databinding.CheckInHistoryLayoutBinding;
 

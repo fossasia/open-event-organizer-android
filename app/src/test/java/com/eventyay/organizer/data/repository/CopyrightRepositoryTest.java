@@ -1,6 +1,10 @@
 package com.eventyay.organizer.data.repository;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.AbstractObservable;
@@ -9,6 +13,12 @@ import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.data.copyright.CopyrightApi;
 import com.eventyay.organizer.data.copyright.CopyrightRepositoryImpl;
 import com.eventyay.organizer.data.event.Event;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,22 +27,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 public class CopyrightRepositoryTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private CopyrightRepositoryImpl copyrightRepository;
     private static final Copyright COPYRIGHT = new Copyright();
@@ -49,10 +46,12 @@ public class CopyrightRepositoryTest {
 
     @Before
     public void setUp() {
-        when(repository.observableOf(Copyright.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
+        when(repository.observableOf(Copyright.class))
+                .thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
         copyrightRepository = new CopyrightRepositoryImpl(repository, copyrightApi);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
     }
 
     @After
@@ -70,8 +69,8 @@ public class CopyrightRepositoryTest {
         Observable<Copyright> copyrightObservable = copyrightRepository.createCopyright(COPYRIGHT);
 
         copyrightObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -81,20 +80,21 @@ public class CopyrightRepositoryTest {
         Observable<Copyright> copyrightObservable = copyrightRepository.getCopyright(ID, true);
 
         copyrightObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
     public void shouldReturnConnectionErrorOnGetCopyrightWithNoneSaved() {
         when(repository.isConnected()).thenReturn(false);
-        when(repository.getItems(eq(Copyright.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Copyright.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         Observable<Copyright> copyrightObservable = copyrightRepository.getCopyright(ID, false);
 
         copyrightObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -104,8 +104,8 @@ public class CopyrightRepositoryTest {
         Observable<Copyright> copyrightObservable = copyrightRepository.updateCopyright(COPYRIGHT);
 
         copyrightObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -115,8 +115,8 @@ public class CopyrightRepositoryTest {
         Completable copyrightCompletable = copyrightRepository.deleteCopyright(ID);
 
         copyrightCompletable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     // Network up tests
@@ -165,7 +165,8 @@ public class CopyrightRepositoryTest {
     public void shouldCallGetCopyrightsServiceOnReload() {
         when(repository.isConnected()).thenReturn(true);
         when(copyrightApi.getCopyright(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Copyright.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Copyright.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         copyrightRepository.getCopyright(ID, true).subscribe();
 
@@ -176,7 +177,8 @@ public class CopyrightRepositoryTest {
     public void shouldCallGetCopyrightServiceWithNoneSaved() {
         when(repository.isConnected()).thenReturn(true);
         when(copyrightApi.getCopyright(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Copyright.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Copyright.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         copyrightRepository.getCopyright(ID, false).subscribe();
 
@@ -187,8 +189,10 @@ public class CopyrightRepositoryTest {
     public void shouldSaveCopyrightOnGet() {
         when(repository.isConnected()).thenReturn(true);
         when(copyrightApi.getCopyright(ID)).thenReturn(Observable.just(COPYRIGHT));
-        when(repository.getItems(eq(Copyright.class), any(SQLOperator.class))).thenReturn(Observable.empty());
-        when(repository.save(eq(Copyright.class), eq(COPYRIGHT))).thenReturn(Completable.complete());
+        when(repository.getItems(eq(Copyright.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
+        when(repository.save(eq(Copyright.class), eq(COPYRIGHT)))
+                .thenReturn(Completable.complete());
 
         copyrightRepository.getCopyright(ID, true).subscribe();
 
@@ -213,7 +217,8 @@ public class CopyrightRepositoryTest {
 
         when(repository.isConnected()).thenReturn(true);
         when(copyrightApi.patchCopyright(ID, COPYRIGHT)).thenReturn(Observable.just(updated));
-        when(repository.update(eq(Copyright.class), eq(updated))).thenReturn(Completable.complete());
+        when(repository.update(eq(Copyright.class), eq(updated)))
+                .thenReturn(Completable.complete());
 
         copyrightRepository.updateCopyright(COPYRIGHT).subscribe();
 
@@ -231,5 +236,4 @@ public class CopyrightRepositoryTest {
 
         verify(copyrightApi).deleteCopyright(ID);
     }
-
 }

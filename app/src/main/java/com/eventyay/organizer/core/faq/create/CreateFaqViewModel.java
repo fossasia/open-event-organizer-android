@@ -2,17 +2,14 @@ package com.eventyay.organizer.core.faq.create;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.faq.Faq;
 import com.eventyay.organizer.data.faq.FaqRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 
 public class CreateFaqViewModel extends ViewModel {
 
@@ -56,13 +53,17 @@ public class CreateFaqViewModel extends ViewModel {
         faq.setEvent(event);
 
         compositeDisposable.add(
-            faqRepository
-                .createFaq(faq)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(createdFaq -> {
-                    success.setValue("Faq Created");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                faqRepository
+                        .createFaq(faq)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                createdFaq -> {
+                                    success.setValue("Faq Created");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 }

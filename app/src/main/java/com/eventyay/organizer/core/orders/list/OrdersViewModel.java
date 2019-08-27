@@ -1,20 +1,16 @@
 package com.eventyay.organizer.core.orders.list;
 
+import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.order.OrderRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
-
-import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
+import java.util.List;
+import javax.inject.Inject;
 
 public class OrdersViewModel extends ViewModel {
 
@@ -33,16 +29,20 @@ public class OrdersViewModel extends ViewModel {
     }
 
     public LiveData<List<Order>> getOrders(long id, boolean reload) {
-        if (ordersLiveData.getValue() != null && !reload)
-            return ordersLiveData;
+        if (ordersLiveData.getValue() != null && !reload) return ordersLiveData;
 
-        compositeDisposable.add(orderRepository.getOrders(id, reload)
-            .compose(dispose(compositeDisposable))
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .toList()
-            .subscribe(ordersLiveData::setValue,
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                orderRepository
+                        .getOrders(id, reload)
+                        .compose(dispose(compositeDisposable))
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .toList()
+                        .subscribe(
+                                ordersLiveData::setValue,
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
 
         return ordersLiveData;
     }
@@ -73,5 +73,4 @@ public class OrdersViewModel extends ViewModel {
         compositeDisposable.dispose();
         orderLiveData.setValue(null);
     }
-
 }

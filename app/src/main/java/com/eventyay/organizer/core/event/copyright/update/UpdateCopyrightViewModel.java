@@ -2,7 +2,6 @@ package com.eventyay.organizer.core.event.copyright.update;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.copyright.Copyright;
@@ -10,10 +9,8 @@ import com.eventyay.organizer.data.copyright.CopyrightRepository;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.StringUtils;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 
 public class UpdateCopyrightViewModel extends ViewModel {
 
@@ -66,10 +63,8 @@ public class UpdateCopyrightViewModel extends ViewModel {
     }
 
     protected boolean verifyYear(Copyright copyright) {
-        if (copyright.getYear() == null)
-            return true;
-        else if (copyright.getYear().length() == YEAR_LENGTH)
-            return true;
+        if (copyright.getYear() == null) return true;
+        else if (copyright.getYear().length() == YEAR_LENGTH) return true;
         else {
             error.setValue("Please Enter a Valid Year");
             return false;
@@ -78,22 +73,25 @@ public class UpdateCopyrightViewModel extends ViewModel {
 
     public void loadCopyright(long eventId) {
         compositeDisposable.add(
-            copyrightRepository
-                .getCopyright(eventId, false)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> {
-                    progress.setValue(false);
-                    copyrightLiveData.setValue(copyright);
-                })
-                .subscribe(loadedCopyright -> this.copyright = loadedCopyright,
-                    throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                copyrightRepository
+                        .getCopyright(eventId, false)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(
+                                () -> {
+                                    progress.setValue(false);
+                                    copyrightLiveData.setValue(copyright);
+                                })
+                        .subscribe(
+                                loadedCopyright -> this.copyright = loadedCopyright,
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void updateCopyright() {
         nullifyEmptyFields(copyright);
 
-        if (!verifyYear(copyright))
-            return;
+        if (!verifyYear(copyright)) return;
 
         long eventId = ContextManager.getSelectedEvent().getId();
         Event event = new Event();
@@ -101,12 +99,17 @@ public class UpdateCopyrightViewModel extends ViewModel {
         copyright.setEvent(event);
 
         compositeDisposable.add(
-            copyrightRepository.updateCopyright(copyright)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(updatedTicket -> {
-                    success.setValue("Copyright Updated");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                copyrightRepository
+                        .updateCopyright(copyright)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                updatedTicket -> {
+                                    success.setValue("Copyright Updated");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 }

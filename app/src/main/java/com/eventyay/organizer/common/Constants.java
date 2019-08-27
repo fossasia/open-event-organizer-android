@@ -1,11 +1,11 @@
 package com.eventyay.organizer.common;
 
 public final class Constants {
-    //SharedPrefs db Name
+    // SharedPrefs db Name
     public static final String FOSS_PREFS = "FossPrefs";
-    //No network available string
+    // No network available string
     public static final String NO_NETWORK = "Network Not Available";
-    //Saved email for autocomplete
+    // Saved email for autocomplete
     public static final String SHARED_PREFS_SAVED_EMAIL = "saved_email";
     public static final String SHARED_PREFS_LOCAL_DATE = "local_date";
     public static final String SHARED_PREFS_BASE_URL = "base_url";

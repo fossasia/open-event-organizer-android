@@ -1,19 +1,17 @@
 package com.eventyay.organizer.core.settings;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 public class SalesDataSettings extends PreferenceFragmentCompat {
 
@@ -25,7 +23,8 @@ public class SalesDataSettings extends PreferenceFragmentCompat {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         view.setBackgroundColor(getResources().getColor(R.color.color_top_surface));
         return view;
@@ -42,21 +41,22 @@ public class SalesDataSettings extends PreferenceFragmentCompat {
         CheckBoxPreference netSales = (CheckBoxPreference) findPreference(NET_SALES);
         CheckBoxPreference grossSales = (CheckBoxPreference) findPreference(GROSS_SALES);
 
-        Preference.OnPreferenceChangeListener listener = (preference, newValue) -> {
-            String key = preference.getKey();
+        Preference.OnPreferenceChangeListener listener =
+                (preference, newValue) -> {
+                    String key = preference.getKey();
 
-            switch (key) {
-                case GROSS_SALES:
-                    netSales.setChecked(false);
-                    break;
-                case NET_SALES:
-                    grossSales.setChecked(false);
-                    break;
-                default:
-                    break;
-            }
-            return (Boolean) newValue;
-        };
+                    switch (key) {
+                        case GROSS_SALES:
+                            netSales.setChecked(false);
+                            break;
+                        case NET_SALES:
+                            grossSales.setChecked(false);
+                            break;
+                        default:
+                            break;
+                    }
+                    return (Boolean) newValue;
+                };
 
         netSales.setOnPreferenceChangeListener(listener);
         grossSales.setOnPreferenceChangeListener(listener);

@@ -1,11 +1,9 @@
 package com.eventyay.organizer.data.db;
 
 import com.raizlabs.android.dbflow.sql.language.SQLOperator;
-
-import java.util.List;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import java.util.List;
 
 public interface DatabaseRepository {
 
@@ -25,5 +23,4 @@ public interface DatabaseRepository {
 
     @SuppressWarnings("unchecked")
     Completable deleteAll(Class<?>... typeClass);
-
 }

@@ -2,7 +2,6 @@ package com.eventyay.organizer.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-
 import timber.log.Timber;
 
 public class LinkHandler {
@@ -28,8 +27,7 @@ public class LinkHandler {
         } else if (url.contains("verify")) {
             String token = url.substring(url.indexOf('=') + 1);
             return new LinkHandler(Destination.VERIFY_EMAIL, token);
-        } else
-            return null;
+        } else return null;
     }
 
     public Destination getDestination() {

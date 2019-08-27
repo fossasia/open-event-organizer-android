@@ -1,19 +1,18 @@
 package com.eventyay.organizer.core.event.create;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
 import com.eventyay.organizer.data.event.Event;
@@ -24,18 +23,15 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-
 import java.util.Arrays;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import timber.log.Timber;
 
-public class EventDetailsStepOne extends BaseBottomSheetFragment implements EventDetailsStepOneView {
+public class EventDetailsStepOne extends BaseBottomSheetFragment
+        implements EventDetailsStepOneView {
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private CreateEventViewModel createEventViewModel;
     private EventDetailsStepOneBinding binding;
@@ -46,9 +42,16 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.event_details_step_one, container, false);
-        createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        binding =
+                DataBindingUtil.inflate(
+                        inflater, R.layout.event_details_step_one, container, false);
+        createEventViewModel =
+                ViewModelProviders.of(getActivity(), viewModelFactory)
+                        .get(CreateEventViewModel.class);
         return binding.getRoot();
     }
 
@@ -63,31 +66,38 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
     }
 
     private void setupSpinner() {
-        ArrayAdapter<CharSequence> timezoneAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> timezoneAdapter =
+                new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
         timezoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timezoneAdapter.addAll(getTimeZoneList());
         binding.timezoneSpinner.setAdapter(timezoneAdapter);
 
-        binding.timezoneSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String timeZone = parent.getItemAtPosition(position).toString();
-                createEventViewModel.getEvent().setTimezone(timeZone);
-            }
+        binding.timezoneSpinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(
+                            AdapterView<?> parent, View view, int position, long id) {
+                        String timeZone = parent.getItemAtPosition(position).toString();
+                        createEventViewModel.getEvent().setTimezone(timeZone);
+                    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                String timeZone = parent.toString();
-                createEventViewModel.getEvent().setTimezone(timeZone);
-            }
-        });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        String timeZone = parent.toString();
+                        createEventViewModel.getEvent().setTimezone(timeZone);
+                    }
+                });
     }
 
     private void setupPlacesAutocomplete() {
 
         ApplicationInfo ai = null;
         try {
-            ai = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
+            ai =
+                    getContext()
+                            .getPackageManager()
+                            .getApplicationInfo(
+                                    getContext().getPackageName(), PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -96,28 +106,35 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
 
         Places.initialize(getActivity().getApplicationContext(), placesApiKey);
 
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-            getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        AutocompleteSupportFragment autocompleteFragment =
+                (AutocompleteSupportFragment)
+                        getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS));
+        autocompleteFragment.setPlaceFields(
+                Arrays.asList(
+                        Place.Field.ID,
+                        Place.Field.NAME,
+                        Place.Field.LAT_LNG,
+                        Place.Field.ADDRESS));
 
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
+        autocompleteFragment.setOnPlaceSelectedListener(
+                new PlaceSelectionListener() {
+                    @Override
+                    public void onPlaceSelected(Place place) {
 
-                Timber.d(place.getAddress());
-                Event event = binding.getEvent();
-                event.latitude = place.getLatLng().latitude;
-                event.longitude = place.getLatLng().longitude;
-                event.locationName = place.getAddress();
-                event.searchableLocationName = place.getName();
-            }
+                        Timber.d(place.getAddress());
+                        Event event = binding.getEvent();
+                        event.latitude = place.getLatLng().latitude;
+                        event.longitude = place.getLatLng().longitude;
+                        event.locationName = place.getAddress();
+                        event.searchableLocationName = place.getName();
+                    }
 
-            @Override
-            public void onError(Status status) {
-                ViewUtils.showSnackbar(binding.getRoot(), status.getStatusMessage());
-            }
-        });
+                    @Override
+                    public void onError(Status status) {
+                        ViewUtils.showSnackbar(binding.getRoot(), status.getStatusMessage());
+                    }
+                });
     }
 
     @Override
@@ -129,5 +146,4 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
     public void setDefaultTimeZone(int index) {
         binding.timezoneSpinner.setSelection(index);
     }
-
 }

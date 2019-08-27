@@ -1,9 +1,8 @@
 package com.eventyay.organizer.core.sponsor.create;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.annotation.VisibleForTesting;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
@@ -12,10 +11,8 @@ import com.eventyay.organizer.data.sponsor.Sponsor;
 import com.eventyay.organizer.data.sponsor.SponsorRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.StringUtils;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 
 public class CreateSponsorViewModel extends ViewModel {
 
@@ -70,25 +67,32 @@ public class CreateSponsorViewModel extends ViewModel {
         nullifyEmptyFields(sponsor);
 
         compositeDisposable.add(
-            sponsorRepository
-                .createSponsor(sponsor)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(createdSponsor -> {
-                    success.setValue("Sponsor Created");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                sponsorRepository
+                        .createSponsor(sponsor)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                createdSponsor -> {
+                                    success.setValue("Sponsor Created");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void loadSponsor(long sponsorId) {
         compositeDisposable.add(
-            sponsorRepository
-                .getSponsor(sponsorId, false)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> {
-                    progress.setValue(false);
-                    sponsorLiveData.setValue(sponsor);
-                }).subscribe(loadedSponsor -> this.sponsor = loadedSponsor, Logger::logError));
+                sponsorRepository
+                        .getSponsor(sponsorId, false)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(
+                                () -> {
+                                    progress.setValue(false);
+                                    sponsorLiveData.setValue(sponsor);
+                                })
+                        .subscribe(
+                                loadedSponsor -> this.sponsor = loadedSponsor, Logger::logError));
     }
 
     public LiveData<Sponsor> getSponsorLiveData() {
@@ -104,13 +108,17 @@ public class CreateSponsorViewModel extends ViewModel {
         sponsor.setEvent(event);
 
         compositeDisposable.add(
-            sponsorRepository
-                .updateSponsor(sponsor)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(updatedSponsor -> {
-                    success.setValue("Sponsor Updated");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                sponsorRepository
+                        .updateSponsor(sponsor)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                updatedSponsor -> {
+                                    success.setValue("Sponsor Updated");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 }

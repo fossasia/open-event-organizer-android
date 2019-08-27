@@ -3,15 +3,12 @@ package com.eventyay.organizer.core.ticket.detail;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 
 public class TicketDetailViewModel extends ViewModel {
 
@@ -31,10 +28,13 @@ public class TicketDetailViewModel extends ViewModel {
 
     public void loadTicket(long ticketId) {
         compositeDisposable.add(
-            ticketRepository
-                .getTicket(ticketId, false)
-                .subscribe(ticket::setValue,
-                    throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                ticketRepository
+                        .getTicket(ticketId, false)
+                        .subscribe(
+                                ticket::setValue,
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public LiveData<String> getError() {

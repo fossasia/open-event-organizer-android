@@ -1,14 +1,12 @@
 package com.eventyay.organizer.core.event.about;
 
 import android.content.res.Resources;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import androidx.core.view.ViewCompat;
-
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import javax.inject.Inject;
 
 class ToolbarColorChanger {
 
@@ -26,23 +24,25 @@ class ToolbarColorChanger {
     }
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    Observable<Integer> observeColor(AppBarLayout appBar, CollapsingToolbarLayout collapsingToolbar) {
+    Observable<Integer> observeColor(
+            AppBarLayout appBar, CollapsingToolbarLayout collapsingToolbar) {
         appBarLayout = appBar;
         Resources resources = appBar.getResources();
         PublishSubject<Boolean> offsetChanger = PublishSubject.create();
 
-        onOffsetChangedListener = (appBarLayout, verticalOffset) ->
-            offsetChanger.onNext((collapsingToolbar.getHeight() + verticalOffset) <
-                (2 * ViewCompat.getMinimumHeight(collapsingToolbar)));
+        onOffsetChangedListener =
+                (appBarLayout, verticalOffset) ->
+                        offsetChanger.onNext(
+                                (collapsingToolbar.getHeight() + verticalOffset)
+                                        < (2 * ViewCompat.getMinimumHeight(collapsingToolbar)));
         appBar.addOnOffsetChangedListener(onOffsetChangedListener);
 
-        return offsetChanger.distinctUntilChanged()
-            .map(collapsed -> {
-                if (collapsed)
-                    return resources.getColor(android.R.color.black);
-                else
-                    return resources.getColor(android.R.color.white);
-            });
+        return offsetChanger
+                .distinctUntilChanged()
+                .map(
+                        collapsed -> {
+                            if (collapsed) return resources.getColor(android.R.color.black);
+                            else return resources.getColor(android.R.color.white);
+                        });
     }
-
 }

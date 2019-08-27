@@ -1,10 +1,8 @@
 package com.eventyay.organizer.data.event;
 
 import com.eventyay.organizer.data.user.User;
-
-import java.util.List;
-
 import io.reactivex.Observable;
+import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;

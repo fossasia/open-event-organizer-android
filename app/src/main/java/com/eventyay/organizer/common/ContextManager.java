@@ -1,18 +1,14 @@
 package com.eventyay.organizer.common;
 
 import androidx.databinding.ObservableField;
-
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.user.User;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import io.sentry.Sentry;
 import io.sentry.event.UserBuilder;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import timber.log.Timber;
 
 @Singleton
@@ -24,7 +20,7 @@ public class ContextManager {
     private User organiser;
 
     @Inject
-    public ContextManager() { }
+    public ContextManager() {}
 
     public void setOrganiser(User user) {
         this.organiser = user;
@@ -33,13 +29,13 @@ public class ContextManager {
         userData.put("details", user);
 
         Timber.i("User logged in - %s", user);
-        Sentry.getContext().setUser(
-            new UserBuilder()
-            .setEmail(user.getEmail())
-            .setId(String.valueOf(user.getId()))
-            .setData(userData)
-            .build()
-        );
+        Sentry.getContext()
+                .setUser(
+                        new UserBuilder()
+                                .setEmail(user.getEmail())
+                                .setId(String.valueOf(user.getId()))
+                                .setData(userData)
+                                .build());
     }
 
     public User getOrganiser() {

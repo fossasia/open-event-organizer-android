@@ -2,7 +2,6 @@ package com.eventyay.organizer.core.ticket.create;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
@@ -10,14 +9,11 @@ import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.ErrorUtils;
-
+import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
-
-import javax.inject.Inject;
-
-import io.reactivex.disposables.CompositeDisposable;
 
 public class CreateTicketViewModel extends ViewModel {
 
@@ -36,8 +32,9 @@ public class CreateTicketViewModel extends ViewModel {
         String startDate = DateUtils.formatDateToIso(current);
         ticket.setSalesStartsAt(startDate);
 
-        LocalDateTime salesEndTime = DateUtils.getIsoOffsetTimeFromTimestamp(
-            ContextManager.getSelectedEvent().getStartsAt());
+        LocalDateTime salesEndTime =
+                DateUtils.getIsoOffsetTimeFromTimestamp(
+                        ContextManager.getSelectedEvent().getStartsAt());
 
         String endDate = DateUtils.formatDateToIso(salesEndTime);
         ticket.setSalesEndsAt(endDate);
@@ -57,7 +54,9 @@ public class CreateTicketViewModel extends ViewModel {
                 error.setValue("End time should be after start time");
                 return false;
             }
-            if (ticket.minOrder != null && ticket.maxOrder != null && ticket.minOrder > ticket.maxOrder) {
+            if (ticket.minOrder != null
+                    && ticket.maxOrder != null
+                    && ticket.minOrder > ticket.maxOrder) {
                 error.setValue("Minimum order should be greater than Maximum order");
                 return false;
             }
@@ -85,8 +84,7 @@ public class CreateTicketViewModel extends ViewModel {
     }
 
     public void createTicket() {
-        if (!verify())
-            return;
+        if (!verify()) return;
 
         long eventId = ContextManager.getSelectedEvent().getId();
         Event event = new Event();
@@ -94,13 +92,17 @@ public class CreateTicketViewModel extends ViewModel {
         ticket.setEvent(event);
 
         compositeDisposable.add(
-            ticketRepository
-                .createTicket(ticket)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(createdTicket -> {
-                    success.setValue("Ticket Created");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                ticketRepository
+                        .createTicket(ticket)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                createdTicket -> {
+                                    success.setValue("Ticket Created");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 }

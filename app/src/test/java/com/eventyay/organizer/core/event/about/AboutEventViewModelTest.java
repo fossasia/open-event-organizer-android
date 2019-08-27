@@ -1,15 +1,23 @@
 package com.eventyay.organizer.core.event.about;
 
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.data.copyright.CopyrightRepository;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
-
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,45 +31,24 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
-
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
-
 @RunWith(JUnit4.class)
 public class AboutEventViewModelTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule
-    public TestRule rule = new InstantTaskExecutorRule();
-    @Mock
-    private AboutEventView aboutEventView;
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public TestRule rule = new InstantTaskExecutorRule();
+    @Mock private AboutEventView aboutEventView;
     @Mock private EventRepository eventRepository;
     @Mock private CopyrightRepository copyrightRepository;
     @Mock private DatabaseChangeListener<Copyright> copyrightChangeListener;
 
-    @Mock
-    private Event event;
+    @Mock private Event event;
 
-    @Mock
-    Observer<Boolean> progress;
-    @Mock
-    Observer<Event> success;
-    @Mock
-    Observer<Copyright> showCopyright;
-    @Mock
-    Observer<String> showCopyrightDeleted;
-    @Mock
-    Observer<Boolean> changeCopyrightMenuItem;
-    @Mock
-    Observer<String> error;
+    @Mock Observer<Boolean> progress;
+    @Mock Observer<Event> success;
+    @Mock Observer<Copyright> showCopyright;
+    @Mock Observer<String> showCopyrightDeleted;
+    @Mock Observer<Boolean> changeCopyrightMenuItem;
+    @Mock Observer<String> error;
 
     private AboutEventViewModel aboutEventViewModel;
     private static final Event EVENT = new Event();
@@ -71,10 +58,13 @@ public class AboutEventViewModelTest {
     @Before
     public void setUp() {
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
 
         ContextManager.setSelectedEvent(event);
-        aboutEventViewModel = new AboutEventViewModel(eventRepository, copyrightRepository, copyrightChangeListener);
+        aboutEventViewModel =
+                new AboutEventViewModel(
+                        eventRepository, copyrightRepository, copyrightChangeListener);
         ContextManager.setSelectedEvent(null);
     }
 
@@ -103,10 +93,12 @@ public class AboutEventViewModelTest {
 
     @Test
     public void shouldLoadCopyrightSuccessfully() {
-        when(copyrightRepository.getCopyright(anyLong(), anyBoolean())).thenReturn(Observable.just(COPYRIGHT));
+        when(copyrightRepository.getCopyright(anyLong(), anyBoolean()))
+                .thenReturn(Observable.just(COPYRIGHT));
         when(copyrightChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
-        InOrder inOrder = Mockito.inOrder(copyrightRepository, aboutEventView, progress, showCopyright);
+        InOrder inOrder =
+                Mockito.inOrder(copyrightRepository, aboutEventView, progress, showCopyright);
 
         aboutEventViewModel.getProgress().observeForever(progress);
         aboutEventViewModel.getShowCopyright().observeForever(showCopyright);
@@ -121,7 +113,8 @@ public class AboutEventViewModelTest {
 
     @Test
     public void shouldChangeCopyrightMenuTextOnSuccessfulLoad() {
-        when(copyrightRepository.getCopyright(anyLong(), anyBoolean())).thenReturn(Observable.just(COPYRIGHT));
+        when(copyrightRepository.getCopyright(anyLong(), anyBoolean()))
+                .thenReturn(Observable.just(COPYRIGHT));
         when(copyrightChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         InOrder inOrder = Mockito.inOrder(eventRepository, changeCopyrightMenuItem);
@@ -135,7 +128,8 @@ public class AboutEventViewModelTest {
 
     @Test
     public void shouldShowErrorOnEventLoadFailure() {
-        when(eventRepository.getEvent(anyLong(), anyBoolean())).thenReturn(Observable.error(new Throwable("Error")));
+        when(eventRepository.getEvent(anyLong(), anyBoolean()))
+                .thenReturn(Observable.error(new Throwable("Error")));
 
         InOrder inOrder = Mockito.inOrder(eventRepository, progress, error);
 
@@ -168,7 +162,8 @@ public class AboutEventViewModelTest {
 
     @Test
     public void shouldRefreshCopyrightSuccessfully() {
-        when(copyrightRepository.getCopyright(anyLong(), anyBoolean())).thenReturn(Observable.just(COPYRIGHT));
+        when(copyrightRepository.getCopyright(anyLong(), anyBoolean()))
+                .thenReturn(Observable.just(COPYRIGHT));
         when(copyrightChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         InOrder inOrder = Mockito.inOrder(copyrightRepository, progress, showCopyright);
@@ -187,9 +182,12 @@ public class AboutEventViewModelTest {
     @Test
     public void shouldDeleteCopyrightSuccessfully() {
         when(copyrightRepository.deleteCopyright(anyLong())).thenReturn(Completable.complete());
-        when(copyrightRepository.getCopyright(anyLong(), anyBoolean())).thenReturn(Observable.just(COPYRIGHT));
+        when(copyrightRepository.getCopyright(anyLong(), anyBoolean()))
+                .thenReturn(Observable.just(COPYRIGHT));
 
-        InOrder inOrder = Mockito.inOrder(copyrightRepository, aboutEventView, progress, showCopyrightDeleted);
+        InOrder inOrder =
+                Mockito.inOrder(
+                        copyrightRepository, aboutEventView, progress, showCopyrightDeleted);
 
         aboutEventViewModel.getProgress().observeForever(progress);
         aboutEventViewModel.getShowCopyrightDeleted().observeForever(showCopyrightDeleted);
@@ -199,6 +197,7 @@ public class AboutEventViewModelTest {
         inOrder.verify(copyrightRepository).deleteCopyright(ID);
         inOrder.verify(progress).onChanged(true);
         inOrder.verify(showCopyrightDeleted).onChanged("Copyright Deleted");
-        inOrder.verify(progress).onChanged(false); // Delete copyright operation and load copyright operation
+        inOrder.verify(progress)
+                .onChanged(false); // Delete copyright operation and load copyright operation
     }
 }

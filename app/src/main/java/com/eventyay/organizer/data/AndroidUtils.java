@@ -5,20 +5,16 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
-
 import com.eventyay.organizer.OrgaApplication;
 import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
-
-import javax.inject.Inject;
-
 import io.reactivex.Completable;
+import javax.inject.Inject;
 import timber.log.Timber;
 
 /**
- * Utility class to be used by presenters and models for
- * Android Context based actions
+ * Utility class to be used by presenters and models for Android Context based actions
  *
- * Break in sub-modules if grows large
+ * <p>Break in sub-modules if grows large
  */
 public class AndroidUtils implements ContextUtils {
 
@@ -44,12 +40,16 @@ public class AndroidUtils implements ContextUtils {
     public Completable deleteDatabase() {
         String dbName = OrgaDatabase.NAME + ".db";
 
-        return Completable.fromAction(() -> {
-            OrgaApplication.destroyDatabase();
-            context.deleteDatabase(dbName);
-            OrgaApplication.initializeDatabase(context);
-        }).doOnComplete(() ->
-            Timber.d("Database %s deleted on Thread %s", dbName, Thread.currentThread().getName())
-        );
+        return Completable.fromAction(
+                        () -> {
+                            OrgaApplication.destroyDatabase();
+                            context.deleteDatabase(dbName);
+                            OrgaApplication.initializeDatabase(context);
+                        })
+                .doOnComplete(
+                        () ->
+                                Timber.d(
+                                        "Database %s deleted on Thread %s",
+                                        dbName, Thread.currentThread().getName()));
     }
 }

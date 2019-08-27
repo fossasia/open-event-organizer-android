@@ -1,14 +1,13 @@
 package com.eventyay.organizer.utils;
 
+import static org.junit.Assert.assertEquals;
+
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.data.event.Event;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.text.ParseException;
 import java.util.TimeZone;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 public class DateUtilsTest {
 
@@ -37,7 +36,7 @@ public class DateUtilsTest {
         EVENT.setTimezone(TIMEZONE_SINGAPORE);
 
         TimeZone.setDefault(TimeZone.getTimeZone(TIMEZONE_US_PACIFIC));
-        String date  = "2017-03-17T14:00:00+08:00";
+        String date = "2017-03-17T14:00:00+08:00";
         assertEquals(NORMALIZED_DATE, DateUtils.formatDate(NORMALIZED_DATE_FORMAT, date));
 
         TimeZone.setDefault(TimeZone.getTimeZone(TIMEZONE_SYDNEY));
@@ -51,7 +50,7 @@ public class DateUtilsTest {
     public void shouldConvertToEventTimezoneWithoutOffset() {
         EVENT.setTimezone(TIMEZONE_SINGAPORE);
 
-        String date  = "2017-03-17T06:00:00+00:00";
+        String date = "2017-03-17T06:00:00+00:00";
 
         TimeZone.setDefault(TimeZone.getTimeZone(TIMEZONE_US_PACIFIC));
         assertEquals(NORMALIZED_DATE, DateUtils.formatDate(NORMALIZED_DATE_FORMAT, date));
@@ -68,7 +67,7 @@ public class DateUtilsTest {
         EVENT.setTimezone(TIMEZONE_SINGAPORE);
         DateUtils.setShowLocal(true);
 
-        String date  = "2017-03-17T14:00:00+08:00";
+        String date = "2017-03-17T14:00:00+08:00";
 
         TimeZone.setDefault(TimeZone.getTimeZone(TIMEZONE_US_PACIFIC));
         assertEquals("16 03 2017 11:00:00 PM", DateUtils.formatDate(NORMALIZED_DATE_FORMAT, date));
@@ -85,7 +84,10 @@ public class DateUtilsTest {
         EVENT.setTimezone(TIMEZONE_SINGAPORE);
         String date = "2017-01-20T16:00:00+08:00";
 
-        assertEquals("Failed for Global Time", "04:00 PM", DateUtils.formatDate(DateUtils.FORMAT_12H, date));
+        assertEquals(
+                "Failed for Global Time",
+                "04:00 PM",
+                DateUtils.formatDate(DateUtils.FORMAT_12H, date));
     }
 
     @Test
@@ -93,14 +95,20 @@ public class DateUtilsTest {
         EVENT.setTimezone("Pacific/Gambier");
         String date = "2017-01-20T23:24:00-09:00";
 
-        assertEquals("Failed for Global Time", "23:24", DateUtils.formatDate(DateUtils.FORMAT_24H, date));
+        assertEquals(
+                "Failed for Global Time",
+                "23:24",
+                DateUtils.formatDate(DateUtils.FORMAT_24H, date));
     }
 
     @Test
     public void shouldReturnCompleteDate() {
         String date = "2017-11-09T23:08:06-07:30";
 
-        assertEquals("Failed for Global Time", "Fri, 10 Nov 2017", DateUtils.formatDate(DateUtils.FORMAT_DATE_COMPLETE, date));
+        assertEquals(
+                "Failed for Global Time",
+                "Fri, 10 Nov 2017",
+                DateUtils.formatDate(DateUtils.FORMAT_DATE_COMPLETE, date));
     }
 
     @Test

@@ -9,7 +9,6 @@ import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Type;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,5 +34,4 @@ public class OnSiteTicket {
 
     @JsonSerialize(using = ToStringSerializer.class)
     public Long quantity;
-
 }

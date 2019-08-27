@@ -14,9 +14,7 @@ import com.github.jasminb.jsonapi.annotations.Type;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +27,8 @@ import lombok.experimental.Delegate;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
-@EqualsAndHashCode(exclude = { "eventDelegate", "analytics" })
-@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
+@EqualsAndHashCode(exclude = {"eventDelegate", "analytics"})
+@SuppressWarnings({"PMD.ExcessivePublicCount", "PMD.TooManyFields"})
 public class Event implements Comparable<Event>, HeaderProvider {
 
     public static final String STATE_DRAFT = "draft";
@@ -47,6 +45,7 @@ public class Event implements Comparable<Event>, HeaderProvider {
     @Id(LongIdHandler.class)
     @PrimaryKey
     public Long id;
+
     public String paymentCountry;
     public String paypalEmail;
     public String thumbnailImageUrl;
@@ -105,6 +104,5 @@ public class Event implements Comparable<Event>, HeaderProvider {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public List<Ticket> tickets;
 
-    public Event() { }
-
+    public Event() {}
 }

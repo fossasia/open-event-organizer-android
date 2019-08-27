@@ -5,5 +5,4 @@ import com.eventyay.organizer.common.mvp.view.ItemResult;
 import com.eventyay.organizer.common.mvp.view.Progressive;
 import com.eventyay.organizer.data.event.Event;
 
-public interface SalesSummaryView extends Progressive, Erroneous, ItemResult<Event> {
-}
+public interface SalesSummaryView extends Progressive, Erroneous, ItemResult<Event> {}

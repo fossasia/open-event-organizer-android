@@ -1,7 +1,6 @@
 package com.eventyay.organizer.data.attendee;
 
 import androidx.annotation.NonNull;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 
@@ -17,7 +16,8 @@ public interface AttendeeRepository {
     Observable<Attendee> getAttendeesPageWise(long eventId, long pageNumber, boolean reload);
 
     @NonNull
-    Observable<Attendee> getAttendeesUnderOrder(String orderIdentifier, long orderId, boolean reload);
+    Observable<Attendee> getAttendeesUnderOrder(
+            String orderIdentifier, long orderId, boolean reload);
 
     Completable scheduleToggle(Attendee attendee);
 
@@ -29,5 +29,4 @@ public interface AttendeeRepository {
 
     @NonNull
     Observable<Long> getCheckedInAttendees(long eventId);
-
 }

@@ -2,12 +2,9 @@ package com.eventyay.organizer.data.notification;
 
 import com.eventyay.organizer.data.RateLimiter;
 import com.eventyay.organizer.data.Repository;
-
-import org.threeten.bp.Duration;
-
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
+import javax.inject.Inject;
+import org.threeten.bp.Duration;
 
 public class NotificationRepositoryImpl implements NotificationRepository {
 
@@ -23,23 +20,34 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 
     @Override
     public Observable<Notification> getNotifications(int userId, boolean reload) {
-        Observable<Notification> diskObservable = Observable.defer(() ->
-            repository.getItems(Notification.class, Notification_Table.user_id.eq(userId))
-        );
+        Observable<Notification> diskObservable =
+                Observable.defer(
+                        () ->
+                                repository.getItems(
+                                        Notification.class, Notification_Table.user_id.eq(userId)));
 
-        Observable<Notification> networkObservable = Observable.defer(() ->
-            notificationApi.getNotifications(userId)
-                .doOnNext(notifications -> repository
-                    .syncSave(Notification.class, notifications, Notification::getId, Notification_Table.id)
-                    .subscribe())
-                .flatMapIterable(notifications -> notifications));
+        Observable<Notification> networkObservable =
+                Observable.defer(
+                        () ->
+                                notificationApi
+                                        .getNotifications(userId)
+                                        .doOnNext(
+                                                notifications ->
+                                                        repository
+                                                                .syncSave(
+                                                                        Notification.class,
+                                                                        notifications,
+                                                                        Notification::getId,
+                                                                        Notification_Table.id)
+                                                                .subscribe())
+                                        .flatMapIterable(notifications -> notifications));
 
-        return repository.observableOf(Notification.class)
-            .reload(reload)
-            .withRateLimiterConfig("Notification", rateLimiter)
-            .withDiskObservable(diskObservable)
-            .withNetworkObservable(networkObservable)
-            .build();
+        return repository
+                .observableOf(Notification.class)
+                .reload(reload)
+                .withRateLimiterConfig("Notification", rateLimiter)
+                .withDiskObservable(diskObservable)
+                .withNetworkObservable(networkObservable)
+                .build();
     }
 }
-

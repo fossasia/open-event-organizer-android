@@ -1,9 +1,9 @@
 package com.eventyay.organizer.utils;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class SearchUtilsTest {
@@ -31,5 +31,4 @@ public class SearchUtilsTest {
         assertTrue(SearchUtils.filter("prri", "Henry", "Poish", "henry.poish@gmail.com"));
         assertTrue(SearchUtils.filter("hnr", "Hadley", "Parrish", "handly.chief@gmail.com"));
     }
-
 }

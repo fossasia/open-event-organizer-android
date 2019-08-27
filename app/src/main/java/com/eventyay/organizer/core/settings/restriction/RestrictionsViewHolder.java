@@ -1,8 +1,7 @@
 package com.eventyay.organizer.core.settings.restriction;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
-
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.common.Pipe;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.databinding.TicketSettingLayoutBinding;
@@ -22,12 +21,13 @@ class RestrictionsViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(Ticket ticket) {
         binding.setTicket(ticket);
-        View.OnClickListener listener = v -> {
-            ticket.isCheckinRestricted = !ticket.isCheckinRestricted;
-            binding.ticketCheckbox.setChecked(ticket.isCheckinRestricted);
-            updateTicketAction.push(ticket);
-            binding.executePendingBindings();
-        };
+        View.OnClickListener listener =
+                v -> {
+                    ticket.isCheckinRestricted = !ticket.isCheckinRestricted;
+                    binding.ticketCheckbox.setChecked(ticket.isCheckinRestricted);
+                    updateTicketAction.push(ticket);
+                    binding.executePendingBindings();
+                };
         itemView.setOnClickListener(listener);
         binding.ticketCheckbox.setOnClickListener(listener);
     }

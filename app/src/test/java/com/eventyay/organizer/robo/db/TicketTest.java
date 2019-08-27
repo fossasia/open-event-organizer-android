@@ -1,23 +1,21 @@
 package com.eventyay.organizer.robo.db;
 
-import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import com.eventyay.organizer.data.Repository;
 import com.eventyay.organizer.data.attendee.Attendee;
+import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepositoryImpl;
 import com.eventyay.organizer.data.ticket.TypeQuantity;
-import org.junit.After;
-import org.junit.Test;
-
-import java.util.Arrays;
-
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import java.util.Arrays;
+import org.junit.After;
+import org.junit.Test;
 
 public class TicketTest extends BaseTest {
 
@@ -30,98 +28,53 @@ public class TicketTest extends BaseTest {
     @Override
     public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
 
         Event event = new Event();
         event.setId(12L);
 
-        Ticket ticket1 = Ticket.builder()
-            .id(1L)
-            .quantity(120L)
-            .type(FREE)
-            .event(event)
-            .build();
+        Ticket ticket1 = Ticket.builder().id(1L).quantity(120L).type(FREE).event(event).build();
 
-        Ticket ticket2 = Ticket.builder()
-            .id(2L)
-            .quantity(20L)
-            .type(PAID)
-            .price(25.99f)
-            .event(event)
-            .build();
+        Ticket ticket2 =
+                Ticket.builder().id(2L).quantity(20L).type(PAID).price(25.99f).event(event).build();
 
-        Ticket ticket3 = Ticket.builder()
-            .id(3L)
-            .quantity(30L)
-            .type(DONATION)
-            .event(event)
-            .build();
+        Ticket ticket3 = Ticket.builder().id(3L).quantity(30L).type(DONATION).event(event).build();
 
-        Ticket ticket4 = Ticket.builder()
-            .id(4L)
-            .quantity(10L)
-            .type(DONATION)
-            .event(event)
-            .build();
+        Ticket ticket4 = Ticket.builder().id(4L).quantity(10L).type(DONATION).event(event).build();
 
-        Ticket ticket5 = Ticket.builder()
-            .id(5L)
-            .quantity(50L)
-            .type(PAID)
-            .price(99.99f)
-            .event(event)
-            .build();
+        Ticket ticket5 =
+                Ticket.builder().id(5L).quantity(50L).type(PAID).price(99.99f).event(event).build();
 
-        Attendee attendee = Attendee.builder()
-            .id(1L)
-            .ticket(ticket1)
-            .event(event)
-            .build();
+        Attendee attendee = Attendee.builder().id(1L).ticket(ticket1).event(event).build();
 
-        Attendee attendee2 = Attendee.builder()
-            .id(2L)
-            .ticket(ticket1)
-            .event(event)
-            .build();
+        Attendee attendee2 = Attendee.builder().id(2L).ticket(ticket1).event(event).build();
 
-        Attendee attendee3 = Attendee.builder()
-            .id(3L)
-            .ticket(ticket1)
-            .event(event)
-            .build();
+        Attendee attendee3 = Attendee.builder().id(3L).ticket(ticket1).event(event).build();
 
-        Attendee attendee4 = Attendee.builder()
-            .id(4L)
-            .ticket(ticket2)
-            .event(event)
-            .build();
+        Attendee attendee4 = Attendee.builder().id(4L).ticket(ticket2).event(event).build();
 
-        Attendee attendee5 = Attendee.builder()
-            .id(5L)
-            .ticket(ticket2)
-            .event(event)
-            .build();
+        Attendee attendee5 = Attendee.builder().id(5L).ticket(ticket2).event(event).build();
 
-        Attendee attendee6 = Attendee.builder()
-            .id(6L)
-            .ticket(ticket4)
-            .event(event)
-            .build();
+        Attendee attendee6 = Attendee.builder().id(6L).ticket(ticket4).event(event).build();
 
-        Attendee attendee7 = Attendee.builder()
-            .id(7L)
-            .ticket(ticket5)
-            .event(event)
-            .build();
+        Attendee attendee7 = Attendee.builder().id(7L).ticket(ticket5).event(event).build();
 
         event.setTickets(Arrays.asList(ticket1, ticket2, ticket3, ticket4, ticket5));
 
         DbFlowDatabaseRepository databaseRepository = new DbFlowDatabaseRepository();
 
         databaseRepository.save(Event.class, event).subscribe();
-        databaseRepository.saveList(Ticket.class, Arrays.asList(ticket1, ticket2, ticket3, ticket4, ticket5)).subscribe();
-        databaseRepository.saveList(Attendee.class, Arrays.asList(attendee, attendee2, attendee3,
-            attendee4, attendee5, attendee6, attendee7)).subscribe();
+        databaseRepository
+                .saveList(Ticket.class, Arrays.asList(ticket1, ticket2, ticket3, ticket4, ticket5))
+                .subscribe();
+        databaseRepository
+                .saveList(
+                        Attendee.class,
+                        Arrays.asList(
+                                attendee, attendee2, attendee3, attendee4, attendee5, attendee6,
+                                attendee7))
+                .subscribe();
 
         Repository repository = new Repository(null, null, null, databaseRepository);
 
@@ -136,7 +89,8 @@ public class TicketTest extends BaseTest {
 
     @Test
     public void testTicketQuantity() {
-        Iterable<TypeQuantity> typeQuantities = ticketRepository.getTicketsQuantity(12).blockingIterable();
+        Iterable<TypeQuantity> typeQuantities =
+                ticketRepository.getTicketsQuantity(12).blockingIterable();
 
         for (TypeQuantity typeQuantity : typeQuantities) {
             switch (typeQuantity.getType()) {
@@ -165,7 +119,8 @@ public class TicketTest extends BaseTest {
 
     @Test
     public void testSoldTicketQuantity() {
-        Iterable<TypeQuantity> typeQuantities = ticketRepository.getSoldTicketsQuantity(12).blockingIterable();
+        Iterable<TypeQuantity> typeQuantities =
+                ticketRepository.getSoldTicketsQuantity(12).blockingIterable();
 
         for (TypeQuantity typeQuantity : typeQuantities) {
             switch (typeQuantity.getType()) {
@@ -184,5 +139,4 @@ public class TicketTest extends BaseTest {
             }
         }
     }
-
 }

@@ -1,22 +1,19 @@
 package com.eventyay.organizer.core.speakerscall.create;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.annotation.VisibleForTesting;
-
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.data.speakerscall.SpeakersCallRepository;
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.ErrorUtils;
+import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
-
-import javax.inject.Inject;
-
-import io.reactivex.disposables.CompositeDisposable;
 
 public class CreateSpeakersCallViewModel extends ViewModel {
 
@@ -35,42 +32,56 @@ public class CreateSpeakersCallViewModel extends ViewModel {
     }
 
     public void createSpeakersCall(long eventId) {
-        if (!verify())
-            return;
+        if (!verify()) return;
 
         Event event = new Event();
 
         event.setId(eventId);
         speakersCallLive.getValue().setEvent(event);
 
-        compositeDisposable.add(speakersCallRepository.createSpeakersCall(speakersCallLive.getValue())
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(var -> success.setValue("Speakers Call Created Successfully"),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                speakersCallRepository
+                        .createSpeakersCall(speakersCallLive.getValue())
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                var -> success.setValue("Speakers Call Created Successfully"),
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void updateSpeakersCall(long eventId) {
-        if (!verify())
-            return;
+        if (!verify()) return;
 
         Event event = new Event();
 
         event.setId(eventId);
         speakersCallLive.getValue().setEvent(event);
 
-        compositeDisposable.add(speakersCallRepository.updateSpeakersCall(speakersCallLive.getValue())
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(var -> success.setValue("Speakers Call Updated Successfully"),
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                speakersCallRepository
+                        .updateSpeakersCall(speakersCallLive.getValue())
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                var -> success.setValue("Speakers Call Updated Successfully"),
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public SpeakersCall loadSpeakersCall(long id, boolean reload) {
-        compositeDisposable.add(speakersCallRepository.getSpeakersCall(id, reload)
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(speakersCallLive::setValue, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                speakersCallRepository
+                        .getSpeakersCall(id, reload)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                speakersCallLive::setValue,
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
         return speakersCallLive.getValue();
     }
 

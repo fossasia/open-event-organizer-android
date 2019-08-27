@@ -1,11 +1,25 @@
 package com.eventyay.organizer.core.presenter;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.core.speaker.list.SpeakersPresenter;
 import com.eventyay.organizer.core.speaker.list.SpeakersView;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.data.speaker.SpeakerRepository;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,40 +32,20 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @RunWith(JUnit4.class)
 public class SpeakersPresenterTest {
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Mock
-    private SpeakersView speakersView;
-    @Mock
-    private SpeakerRepository speakerRepository;
-    @Mock
-    private DatabaseChangeListener<Speaker> databaseChangeListener;
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock private SpeakersView speakersView;
+    @Mock private SpeakerRepository speakerRepository;
+    @Mock private DatabaseChangeListener<Speaker> databaseChangeListener;
 
     private static final long ID = 42;
 
-    private static final List<Speaker> SPEAKERS = Arrays.asList(
-        Speaker.builder().id(2L).name("xyz").build(),
-        Speaker.builder().id(3L).name("abc").build(),
-        Speaker.builder().id(4L).name("pqr").build()
-    );
+    private static final List<Speaker> SPEAKERS =
+            Arrays.asList(
+                    Speaker.builder().id(2L).name("xyz").build(),
+                    Speaker.builder().id(3L).name("abc").build(),
+                    Speaker.builder().id(4L).name("pqr").build());
 
     private SpeakersPresenter speakersPresenter;
 
@@ -59,7 +53,8 @@ public class SpeakersPresenterTest {
     public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
 
         speakersPresenter = new SpeakersPresenter(speakerRepository, databaseChangeListener);
         speakersPresenter.attach(ID, speakersView);
@@ -73,7 +68,8 @@ public class SpeakersPresenterTest {
 
     @Test
     public void shouldLoadSpeakersAutomatically() {
-        when(speakerRepository.getSpeakers(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(SPEAKERS));
+        when(speakerRepository.getSpeakers(anyLong(), anyBoolean()))
+                .thenReturn(Observable.fromIterable(SPEAKERS));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         speakersPresenter.start();
@@ -83,7 +79,8 @@ public class SpeakersPresenterTest {
 
     @Test
     public void shouldShowSpeakersAutomatically() {
-        when(speakerRepository.getSpeakers(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(SPEAKERS));
+        when(speakerRepository.getSpeakers(anyLong(), anyBoolean()))
+                .thenReturn(Observable.fromIterable(SPEAKERS));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         speakersPresenter.start();
@@ -93,7 +90,8 @@ public class SpeakersPresenterTest {
 
     @Test
     public void shouldActivateChangeListenerOnStart() {
-        when(speakerRepository.getSpeakers(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(SPEAKERS));
+        when(speakerRepository.getSpeakers(anyLong(), anyBoolean()))
+                .thenReturn(Observable.fromIterable(SPEAKERS));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         speakersPresenter.start();
@@ -110,7 +108,8 @@ public class SpeakersPresenterTest {
 
     @Test
     public void shouldShowEmptyViewOnNoSpeakers() {
-        when(speakerRepository.getSpeakers(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(new ArrayList<>()));
+        when(speakerRepository.getSpeakers(anyLong(), anyBoolean()))
+                .thenReturn(Observable.fromIterable(new ArrayList<>()));
 
         speakersPresenter.loadSpeakers(true);
 
@@ -128,7 +127,8 @@ public class SpeakersPresenterTest {
 
     @Test
     public void shouldShowErrorMessageOnSwipeRefreshError() {
-        when(speakerRepository.getSpeakers(ID, true)).thenReturn(Observable.error(Logger.TEST_ERROR));
+        when(speakerRepository.getSpeakers(ID, true))
+                .thenReturn(Observable.error(Logger.TEST_ERROR));
 
         speakersPresenter.loadSpeakers(true);
 
@@ -150,7 +150,8 @@ public class SpeakersPresenterTest {
 
     @Test
     public void testProgressbarOnSwipeRefreshError() {
-        when(speakerRepository.getSpeakers(ID, true)).thenReturn(Observable.error(Logger.TEST_ERROR));
+        when(speakerRepository.getSpeakers(ID, true))
+                .thenReturn(Observable.error(Logger.TEST_ERROR));
 
         speakersPresenter.loadSpeakers(true);
 
@@ -164,7 +165,8 @@ public class SpeakersPresenterTest {
     @Test
     public void testProgressbarOnSwipeRefreshNoItem() {
         List<Speaker> emptyList = new ArrayList<>();
-        when(speakerRepository.getSpeakers(ID, true)).thenReturn(Observable.fromIterable(emptyList));
+        when(speakerRepository.getSpeakers(ID, true))
+                .thenReturn(Observable.fromIterable(emptyList));
 
         speakersPresenter.loadSpeakers(true);
 

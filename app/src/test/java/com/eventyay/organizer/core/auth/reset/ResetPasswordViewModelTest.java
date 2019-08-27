@@ -2,11 +2,11 @@ package com.eventyay.organizer.core.auth.reset;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
-
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
+import io.reactivex.Completable;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,28 +18,20 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import io.reactivex.Completable;
-
 @RunWith(JUnit4.class)
 public class ResetPasswordViewModelTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Rule public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
     @Mock private AuthService tokenSubmitModel;
     private final HostSelectionInterceptor interceptor = new HostSelectionInterceptor();
 
-    @Mock
-    private Preferences sharedPreferenceModel;
+    @Mock private Preferences sharedPreferenceModel;
 
-    @Mock
-    private Observer<String> error;
-    @Mock
-    private Observer<String> success;
-    @Mock
-    private Observer<String> message;
-    @Mock
-    private Observer<Boolean> progress;
+    @Mock private Observer<String> error;
+    @Mock private Observer<String> success;
+    @Mock private Observer<String> message;
+    @Mock private Observer<Boolean> progress;
 
     private ResetPasswordViewModel resetPasswordViewModel;
 
@@ -50,7 +42,8 @@ public class ResetPasswordViewModelTest {
 
     @Before
     public void setUp() {
-        resetPasswordViewModel = new ResetPasswordViewModel(tokenSubmitModel, interceptor, sharedPreferenceModel);
+        resetPasswordViewModel =
+                new ResetPasswordViewModel(tokenSubmitModel, interceptor, sharedPreferenceModel);
         resetPasswordViewModel.getSubmitToken().setPassword(PASSWORD);
         resetPasswordViewModel.getSubmitToken().setToken(TOKEN);
         resetPasswordViewModel.getSubmitToken().setConfirmPassword(CONFIRM_PASSWORD);
@@ -60,7 +53,7 @@ public class ResetPasswordViewModelTest {
     @Test
     public void shouldSubmitTokenSuccessfully() {
         Mockito.when(tokenSubmitModel.submitToken(resetPasswordViewModel.getSubmitToken()))
-            .thenReturn(Completable.complete());
+                .thenReturn(Completable.complete());
 
         InOrder inOrder = Mockito.inOrder(tokenSubmitModel, progress, success);
 
@@ -79,7 +72,7 @@ public class ResetPasswordViewModelTest {
     public void shouldShowSubmitTokenError() {
         String errorString = "Test Error";
         Mockito.when(tokenSubmitModel.submitToken(resetPasswordViewModel.getSubmitToken()))
-            .thenReturn(Completable.error(Logger.TEST_ERROR));
+                .thenReturn(Completable.error(Logger.TEST_ERROR));
 
         InOrder inOrder = Mockito.inOrder(tokenSubmitModel, progress, error);
 
@@ -97,7 +90,7 @@ public class ResetPasswordViewModelTest {
     @Test
     public void shouldRequestTokenSuccessfully() {
         Mockito.when(tokenSubmitModel.requestToken(resetPasswordViewModel.getRequestToken()))
-            .thenReturn(Completable.complete());
+                .thenReturn(Completable.complete());
 
         InOrder inOrder = Mockito.inOrder(tokenSubmitModel, progress, message);
 
@@ -116,7 +109,7 @@ public class ResetPasswordViewModelTest {
     public void shouldShowRequestTokenError() {
         String errorString = "Test Error";
         Mockito.when(tokenSubmitModel.requestToken(resetPasswordViewModel.getRequestToken()))
-            .thenReturn(Completable.error(Logger.TEST_ERROR));
+                .thenReturn(Completable.error(Logger.TEST_ERROR));
 
         InOrder inOrder = Mockito.inOrder(tokenSubmitModel, progress, error);
 
@@ -130,5 +123,4 @@ public class ResetPasswordViewModelTest {
         inOrder.verify(error).onChanged(errorString);
         inOrder.verify(progress).onChanged(false);
     }
-
 }

@@ -2,7 +2,6 @@ package com.eventyay.organizer.core.session.create;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.session.Session;
@@ -11,14 +10,11 @@ import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.StringUtils;
-
+import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
-
-import javax.inject.Inject;
-
-import io.reactivex.disposables.CompositeDisposable;
 
 public class CreateSessionViewModel extends ViewModel {
 
@@ -94,13 +90,16 @@ public class CreateSessionViewModel extends ViewModel {
     public void loadSession(long sessionId) {
 
         compositeDisposable.add(
-            sessionRepository
-                .getSession(sessionId, false)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .doFinally(this::showSession)
-                .subscribe(loadedSession -> this.session = loadedSession,
-                    throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                sessionRepository
+                        .getSession(sessionId, false)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .doFinally(this::showSession)
+                        .subscribe(
+                                loadedSession -> this.session = loadedSession,
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     private void showSession() {
@@ -119,19 +118,22 @@ public class CreateSessionViewModel extends ViewModel {
         nullifyEmptyFields(session);
 
         compositeDisposable.add(
-            sessionRepository
-                .updateSession(session)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(updatedSession -> {
-                    success.setValue("Session Updated Successfully");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                sessionRepository
+                        .updateSession(session)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                updatedSession -> {
+                                    success.setValue("Session Updated Successfully");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void createSession(long trackId, long eventId) {
-        if (!verify())
-            return;
+        if (!verify()) return;
 
         Track track = new Track();
         Event event = new Event();
@@ -144,13 +146,17 @@ public class CreateSessionViewModel extends ViewModel {
         nullifyEmptyFields(session);
 
         compositeDisposable.add(
-            sessionRepository
-                .createSession(session)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(createdSession -> {
-                    success.setValue("Session Created");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                sessionRepository
+                        .createSession(session)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                createdSession -> {
+                                    success.setValue("Session Created");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 }

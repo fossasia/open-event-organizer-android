@@ -2,13 +2,11 @@ package com.eventyay.organizer.core.event.chart;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.core.event.dashboard.analyser.ChartAnalyser;
 import com.github.mikephil.charting.charts.LineChart;
-
 import javax.inject.Inject;
 
 public class ChartViewModel extends ViewModel {
@@ -36,10 +34,11 @@ public class ChartViewModel extends ViewModel {
     }
 
     public void loadChart() {
-        chartAnalyser.loadData(eventId)
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(() -> chartAnalyser.showChart(getChartView()), Logger::logError);
+        chartAnalyser
+                .loadData(eventId)
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> progress.setValue(false))
+                .subscribe(() -> chartAnalyser.showChart(getChartView()), Logger::logError);
     }
 
     public void setChartView(LineChart chart) {

@@ -6,8 +6,7 @@ import androidx.browser.customtabs.CustomTabsIntent;
 
 public final class BrowserUtils {
 
-    private BrowserUtils() {
-    }
+    private BrowserUtils() {}
 
     public static void launchUrl(Context context, String url) {
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();

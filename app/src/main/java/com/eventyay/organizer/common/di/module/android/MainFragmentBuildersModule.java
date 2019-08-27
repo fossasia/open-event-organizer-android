@@ -14,9 +14,10 @@ import com.eventyay.organizer.core.feedback.list.FeedbackListFragment;
 import com.eventyay.organizer.core.notification.list.NotificationsFragment;
 import com.eventyay.organizer.core.orders.detail.OrderDetailFragment;
 import com.eventyay.organizer.core.orders.list.OrdersFragment;
-import com.eventyay.organizer.core.role.list.RoleListFragment;
 import com.eventyay.organizer.core.role.invite.RoleInviteFragment;
+import com.eventyay.organizer.core.role.list.RoleListFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
+import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInFragment;
 import com.eventyay.organizer.core.settings.restriction.CheckInRestrictions;
 import com.eventyay.organizer.core.speaker.list.SpeakersFragment;
 import com.eventyay.organizer.core.speakerscall.detail.SpeakersCallFragment;
@@ -25,8 +26,6 @@ import com.eventyay.organizer.core.sponsor.list.SponsorsFragment;
 import com.eventyay.organizer.core.ticket.create.CreateTicketFragment;
 import com.eventyay.organizer.core.ticket.detail.TicketDetailFragment;
 import com.eventyay.organizer.core.ticket.list.TicketsFragment;
-import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInFragment;
-
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -88,7 +87,7 @@ public abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector
     abstract CreateFaqFragment contributeCreateFaqFragment();
 
-    //Feedback
+    // Feedback
 
     @ContributesAndroidInjector
     abstract FeedbackListFragment contributeFeedbackListFragment();
@@ -114,7 +113,7 @@ public abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector
     abstract SpeakersFragment contributeSpeakersFragment();
 
-    //SpeakersCall
+    // SpeakersCall
 
     @ContributesAndroidInjector
     abstract SpeakersCallFragment contributeSpeakersCallFragment();
@@ -137,4 +136,3 @@ public abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector
     abstract AboutUsFragment contributeAboutUsFragment();
 }
-

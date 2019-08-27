@@ -4,7 +4,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-
 import com.eventyay.organizer.data.event.serializer.ObservableString;
 import com.eventyay.organizer.utils.DateUtils;
 import org.threeten.bp.LocalDateTime;
@@ -29,11 +28,21 @@ public class TimePicker extends AbstractDateTimePicker {
             observableValue.set(value);
             String format = DateUtils.FORMAT_24H;
 
-            bindTemporal(value, format, zonedDateTime ->
-                new TimePickerDialog(this.getContext(), (picker, hourOfDay, minute) ->
-                    setPickedDate(
-                        LocalDateTime.of(zonedDateTime.toLocalDate(), LocalTime.of(hourOfDay, minute)), format),
-                    zonedDateTime.getHour(), zonedDateTime.getMinute(), true));
+            bindTemporal(
+                    value,
+                    format,
+                    zonedDateTime ->
+                            new TimePickerDialog(
+                                    this.getContext(),
+                                    (picker, hourOfDay, minute) ->
+                                            setPickedDate(
+                                                    LocalDateTime.of(
+                                                            zonedDateTime.toLocalDate(),
+                                                            LocalTime.of(hourOfDay, minute)),
+                                                    format),
+                                    zonedDateTime.getHour(),
+                                    zonedDateTime.getMinute(),
+                                    true));
         }
     }
 }

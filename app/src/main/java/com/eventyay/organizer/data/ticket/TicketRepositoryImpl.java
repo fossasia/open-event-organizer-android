@@ -1,10 +1,6 @@
 package com.eventyay.organizer.data.ticket;
 
 import androidx.annotation.NonNull;
-
-import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
-import com.raizlabs.android.dbflow.sql.language.Method;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.RateLimiter;
 import com.eventyay.organizer.data.Repository;
@@ -13,17 +9,16 @@ import com.eventyay.organizer.data.attendee.Attendee_Table;
 import com.eventyay.organizer.data.db.QueryHelper;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.Event_Table;
-import org.threeten.bp.Duration;
-
-import java.util.NoSuchElementException;
-
-import javax.inject.Inject;
-
+import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
+import com.raizlabs.android.dbflow.sql.language.Method;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import java.util.NoSuchElementException;
+import javax.inject.Inject;
+import org.threeten.bp.Duration;
 
 public class TicketRepositoryImpl implements TicketRepository {
 
@@ -45,15 +40,14 @@ public class TicketRepositoryImpl implements TicketRepository {
         }
 
         return ticketApi
-            .postTicket(ticket)
-            .doOnNext(created -> {
-                created.setEvent(ticket.getEvent());
-                repository
-                    .save(Ticket.class, created)
-                    .subscribe();
-            })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+                .postTicket(ticket)
+                .doOnNext(
+                        created -> {
+                            created.setEvent(ticket.getEvent());
+                            repository.save(Ticket.class, created).subscribe();
+                        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @NonNull
@@ -64,74 +58,104 @@ public class TicketRepositoryImpl implements TicketRepository {
         }
 
         return ticketApi
-            .updateTicket(ticket.getId(), ticket)
-            .doOnNext(updatedTicket -> repository
-                .update(Ticket.class, updatedTicket)
-                .subscribe())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+                .updateTicket(ticket.getId(), ticket)
+                .doOnNext(
+                        updatedTicket -> repository.update(Ticket.class, updatedTicket).subscribe())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @NonNull
     @Override
     public Observable<Ticket> getTicket(long ticketId, boolean reload) {
-        Observable<Ticket> diskObservable = Observable.defer(() ->
-            repository
-                .getItems(Ticket.class, Ticket_Table.id.eq(ticketId)).take(1)
-        );
+        Observable<Ticket> diskObservable =
+                Observable.defer(
+                        () ->
+                                repository
+                                        .getItems(Ticket.class, Ticket_Table.id.eq(ticketId))
+                                        .take(1));
 
-        Observable<Ticket> networkObservable = Observable.defer(() ->
-            ticketApi.getTicket(ticketId)
-                .doOnNext(ticket -> repository
-                    .save(Ticket.class, ticket)
-                    .subscribe()));
+        Observable<Ticket> networkObservable =
+                Observable.defer(
+                        () ->
+                                ticketApi
+                                        .getTicket(ticketId)
+                                        .doOnNext(
+                                                ticket ->
+                                                        repository
+                                                                .save(Ticket.class, ticket)
+                                                                .subscribe()));
 
         return repository
-            .observableOf(Ticket.class)
-            .reload(reload)
-            .withDiskObservable(diskObservable)
-            .withNetworkObservable(networkObservable)
-            .build();
+                .observableOf(Ticket.class)
+                .reload(reload)
+                .withDiskObservable(diskObservable)
+                .withNetworkObservable(networkObservable)
+                .build();
     }
 
     @NonNull
     @Override
     public Observable<Ticket> getTickets(long eventId, boolean reload) {
-        Observable<Ticket> diskObservable = Observable.defer(() ->
-            repository.getItems(Ticket.class, Ticket_Table.event_id.eq(eventId))
-        );
+        Observable<Ticket> diskObservable =
+                Observable.defer(
+                        () -> repository.getItems(Ticket.class, Ticket_Table.event_id.eq(eventId)));
 
-        Observable<Ticket> networkObservable = Observable.defer(() ->
-            ticketApi
-                .getTickets(eventId)
-                .doOnNext(tickets -> repository.syncSave(Ticket.class, tickets, Ticket::getId, Ticket_Table.id).subscribe()))
-                .flatMapIterable(tickets -> tickets);
+        Observable<Ticket> networkObservable =
+                Observable.defer(
+                                () ->
+                                        ticketApi
+                                                .getTickets(eventId)
+                                                .doOnNext(
+                                                        tickets ->
+                                                                repository
+                                                                        .syncSave(
+                                                                                Ticket.class,
+                                                                                tickets,
+                                                                                Ticket::getId,
+                                                                                Ticket_Table.id)
+                                                                        .subscribe()))
+                        .flatMapIterable(tickets -> tickets);
 
-        return repository.observableOf(Ticket.class)
-            .reload(reload)
-            .withRateLimiterConfig("Tickets", rateLimiter)
-            .withDiskObservable(diskObservable)
-            .withNetworkObservable(networkObservable)
-            .build();
+        return repository
+                .observableOf(Ticket.class)
+                .reload(reload)
+                .withRateLimiterConfig("Tickets", rateLimiter)
+                .withDiskObservable(diskObservable)
+                .withNetworkObservable(networkObservable)
+                .build();
     }
 
     @Override
-    public Observable<Ticket> getTicketsUnderOrder(String orderIdentifier, long orderId, boolean reload) {
-        Observable<Ticket> diskObservable = Observable.defer(() ->
-            repository.getItems(Ticket.class, Ticket_Table.order_id.eq(orderId))
-        );
+    public Observable<Ticket> getTicketsUnderOrder(
+            String orderIdentifier, long orderId, boolean reload) {
+        Observable<Ticket> diskObservable =
+                Observable.defer(
+                        () -> repository.getItems(Ticket.class, Ticket_Table.order_id.eq(orderId)));
 
-        Observable<Ticket> networkObservable = Observable.defer(() ->
-            ticketApi.getTicketsUnderOrder(orderIdentifier)
-                .doOnNext(tickets -> repository.syncSave(Ticket.class, tickets, Ticket::getId, Ticket_Table.id).subscribe())
-                .flatMapIterable(tickets -> tickets));
+        Observable<Ticket> networkObservable =
+                Observable.defer(
+                        () ->
+                                ticketApi
+                                        .getTicketsUnderOrder(orderIdentifier)
+                                        .doOnNext(
+                                                tickets ->
+                                                        repository
+                                                                .syncSave(
+                                                                        Ticket.class,
+                                                                        tickets,
+                                                                        Ticket::getId,
+                                                                        Ticket_Table.id)
+                                                                .subscribe())
+                                        .flatMapIterable(tickets -> tickets));
 
-        return repository.observableOf(Ticket.class)
-            .reload(reload)
-            .withRateLimiterConfig("TicketsUnderOrder", rateLimiter)
-            .withDiskObservable(diskObservable)
-            .withNetworkObservable(networkObservable)
-            .build();
+        return repository
+                .observableOf(Ticket.class)
+                .reload(reload)
+                .withRateLimiterConfig("TicketsUnderOrder", rateLimiter)
+                .withDiskObservable(diskObservable)
+                .withNetworkObservable(networkObservable)
+                .build();
     }
 
     @NonNull
@@ -141,60 +165,63 @@ public class TicketRepositoryImpl implements TicketRepository {
             return Completable.error(new Throwable(Constants.NO_NETWORK));
         }
 
-        return ticketApi.deleteTicket(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return ticketApi
+                .deleteTicket(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @NonNull
     @Override
     public Observable<TypeQuantity> getTicketsQuantity(long eventId) {
         return new QueryHelper<Ticket>()
-            .select(Ticket_Table.type)
-            .sum(Ticket_Table.quantity, "quantity")
-            .from(Ticket.class)
-            .equiJoin(Event.class, Ticket_Table.event_id, Event_Table.id)
-            .where(Ticket_Table.event_id.withTable().eq(eventId))
-            .group(Ticket_Table.type)
-            .toCustomObservable(TypeQuantity.class)
-            .subscribeOn(Schedulers.io());
+                .select(Ticket_Table.type)
+                .sum(Ticket_Table.quantity, "quantity")
+                .from(Ticket.class)
+                .equiJoin(Event.class, Ticket_Table.event_id, Event_Table.id)
+                .where(Ticket_Table.event_id.withTable().eq(eventId))
+                .group(Ticket_Table.type)
+                .toCustomObservable(TypeQuantity.class)
+                .subscribeOn(Schedulers.io());
     }
 
     @NonNull
     @Override
     public Observable<TypeQuantity> getSoldTicketsQuantity(long eventId) {
         return new QueryHelper<Ticket>()
-            .select(Ticket_Table.type)
-            .method(Method.count(), "quantity")
-            .from(Ticket.class)
-            .equiJoin(Attendee.class, Attendee_Table.ticket_id, Ticket_Table.id)
-            .equiJoin(Event.class, Attendee_Table.event_id, Event_Table.id)
-            .where(Ticket_Table.event_id.withTable().eq(eventId))
-            .group(Ticket_Table.type)
-            .toCustomObservable(TypeQuantity.class)
-            .subscribeOn(Schedulers.io());
+                .select(Ticket_Table.type)
+                .method(Method.count(), "quantity")
+                .from(Ticket.class)
+                .equiJoin(Attendee.class, Attendee_Table.ticket_id, Ticket_Table.id)
+                .equiJoin(Event.class, Attendee_Table.event_id, Event_Table.id)
+                .where(Ticket_Table.event_id.withTable().eq(eventId))
+                .group(Ticket_Table.type)
+                .toCustomObservable(TypeQuantity.class)
+                .subscribeOn(Schedulers.io());
     }
 
     @NonNull
     @Override
     public Maybe<Float> getTotalSale(long eventId) {
         return RXSQLite.rx(
-            new QueryHelper<Ticket>()
-                .sum(Ticket_Table.price, "price")
-                .from(Ticket.class)
-                .equiJoin(Attendee.class, Attendee_Table.ticket_id, Ticket_Table.id)
-                .equiJoin(Event.class, Ticket_Table.event_id, Event_Table.id)
-                .where(Ticket_Table.event_id.withTable().eq(eventId))
-                .build())
-            .query()
-            .map(cursor -> {
-                if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-                    float result = cursor.getFloat(0);
-                    cursor.close();
-                    return result;
-                }
-                cursor.close();
-                throw new NoSuchElementException();
-            }).subscribeOn(Schedulers.io());
+                        new QueryHelper<Ticket>()
+                                .sum(Ticket_Table.price, "price")
+                                .from(Ticket.class)
+                                .equiJoin(Attendee.class, Attendee_Table.ticket_id, Ticket_Table.id)
+                                .equiJoin(Event.class, Ticket_Table.event_id, Event_Table.id)
+                                .where(Ticket_Table.event_id.withTable().eq(eventId))
+                                .build())
+                .query()
+                .map(
+                        cursor -> {
+                            if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+                                float result = cursor.getFloat(0);
+                                cursor.close();
+                                return result;
+                            }
+                            cursor.close();
+                            throw new NoSuchElementException();
+                        })
+                .subscribeOn(Schedulers.io());
     }
 }

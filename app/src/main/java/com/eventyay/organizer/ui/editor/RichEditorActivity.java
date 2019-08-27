@@ -1,20 +1,19 @@
 package com.eventyay.organizer.ui.editor;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ContextThemeWrapper;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.databinding.DataBindingUtil;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.databinding.TextEditorLayoutBinding;
 
@@ -46,7 +45,8 @@ public class RichEditorActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             description = intent.getStringExtra(TAG_RICH_TEXT);
-            if (!TextUtils.isEmpty(description) && !description.equals(getString(R.string.describe_event))) {
+            if (!TextUtils.isEmpty(description)
+                    && !description.equals(getString(R.string.describe_event))) {
                 binding.editor.setHtml(description);
             }
         }
@@ -58,12 +58,13 @@ public class RichEditorActivity extends AppCompatActivity {
         binding.actionStrikethrough.setOnClickListener(v -> binding.editor.setStrikeThrough());
         binding.actionInsertBullets.setOnClickListener(v -> binding.editor.setBullets());
         binding.actionInsertNumbers.setOnClickListener(v -> binding.editor.setNumbers());
-        binding.actionInsertLink.setOnClickListener(v -> {
-            if (linkDialog == null) {
-                createLinkDialog();
-            }
-            linkDialog.show();
-        });
+        binding.actionInsertLink.setOnClickListener(
+                v -> {
+                    if (linkDialog == null) {
+                        createLinkDialog();
+                    }
+                    linkDialog.show();
+                });
     }
 
     private void createLinkDialog() {
@@ -78,15 +79,21 @@ public class RichEditorActivity extends AppCompatActivity {
         link.setHint(getString(R.string.insert_url));
         layout.addView(link);
 
-        linkDialog = new AlertDialog.Builder(this)
-            .setPositiveButton(getString(R.string.create), (dialog, which) -> {
-                binding.editor.insertLink(link.getText().toString(), text.getText().toString());
-            })
-            .setNegativeButton(getString(R.string.cancel), (dialog, which) -> {
-                dialog.dismiss();
-            })
-            .setView(layout)
-            .create();
+        linkDialog =
+                new AlertDialog.Builder(this)
+                        .setPositiveButton(
+                                getString(R.string.create),
+                                (dialog, which) -> {
+                                    binding.editor.insertLink(
+                                            link.getText().toString(), text.getText().toString());
+                                })
+                        .setNegativeButton(
+                                getString(R.string.cancel),
+                                (dialog, which) -> {
+                                    dialog.dismiss();
+                                })
+                        .setView(layout)
+                        .create();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -105,7 +112,7 @@ public class RichEditorActivity extends AppCompatActivity {
                 saveChanges(binding.editor.getHtml());
                 return true;
             default:
-                //do nothing
+                // do nothing
         }
         return super.onOptionsItemSelected(item);
     }
@@ -117,16 +124,21 @@ public class RichEditorActivity extends AppCompatActivity {
             return;
         }
         if (saveAlertDialog == null) {
-            saveAlertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialog))
-                .setMessage(getString(R.string.save_changes))
-                .setPositiveButton(getString(R.string.save), (dialog, which) -> {
-                    saveChanges(binding.editor.getHtml());
-                })
-                .setNegativeButton(getString(R.string.discard), (dialog, which) -> {
-                    dialog.dismiss();
-                    saveChanges(description);
-                })
-                .create();
+            saveAlertDialog =
+                    new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialog))
+                            .setMessage(getString(R.string.save_changes))
+                            .setPositiveButton(
+                                    getString(R.string.save),
+                                    (dialog, which) -> {
+                                        saveChanges(binding.editor.getHtml());
+                                    })
+                            .setNegativeButton(
+                                    getString(R.string.discard),
+                                    (dialog, which) -> {
+                                        dialog.dismiss();
+                                        saveChanges(description);
+                                    })
+                            .create();
         }
         saveAlertDialog.show();
     }

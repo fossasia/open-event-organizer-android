@@ -1,31 +1,27 @@
 package com.eventyay.organizer.core.faq.create;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import static com.eventyay.organizer.ui.ViewUtils.showView;
+
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import br.com.ilhasoft.support.validation.Validator;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.databinding.FaqCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import javax.inject.Inject;
-
-import br.com.ilhasoft.support.validation.Validator;
-
-import static com.eventyay.organizer.ui.ViewUtils.showView;
 
 public class CreateFaqFragment extends BaseFragment implements CreateFaqView {
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private CreateFaqViewModel createFaqViewModel;
     private FaqCreateLayoutBinding binding;
@@ -36,22 +32,31 @@ public class CreateFaqFragment extends BaseFragment implements CreateFaqView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        final Context contextThemeWrapper =
+                new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        binding =  DataBindingUtil.inflate(localInflater, R.layout.faq_create_layout, container, false);
-        createFaqViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateFaqViewModel.class);
+        binding =
+                DataBindingUtil.inflate(
+                        localInflater, R.layout.faq_create_layout, container, false);
+        createFaqViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(CreateFaqViewModel.class);
         validator = new Validator(binding.form);
 
-        binding.submit.setOnClickListener(view -> {
-            binding.form.faqQuestion.setText(binding.form.faqQuestion.getText().toString().trim());
-            binding.form.faqAnswer.setText(binding.form.faqAnswer.getText().toString().trim());
+        binding.submit.setOnClickListener(
+                view -> {
+                    binding.form.faqQuestion.setText(
+                            binding.form.faqQuestion.getText().toString().trim());
+                    binding.form.faqAnswer.setText(
+                            binding.form.faqAnswer.getText().toString().trim());
 
-            if (validator.validate())
-                createFaqViewModel.createFaq();
+                    if (validator.validate()) createFaqViewModel.createFaq();
 
-            ViewUtils.hideKeyboard(binding.getRoot());
-        });
+                    ViewUtils.hideKeyboard(binding.getRoot());
+                });
 
         return binding.getRoot();
     }

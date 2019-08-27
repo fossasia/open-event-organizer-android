@@ -5,7 +5,6 @@ import com.eventyay.organizer.core.session.list.SessionsFragment;
 import com.eventyay.organizer.core.track.create.CreateTrackFragment;
 import com.eventyay.organizer.core.track.list.TracksFragment;
 import com.eventyay.organizer.core.track.update.UpdateTrackFragment;
-
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 

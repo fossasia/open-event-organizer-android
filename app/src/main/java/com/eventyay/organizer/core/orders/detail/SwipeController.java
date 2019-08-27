@@ -6,10 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.View;
-
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.orders.detail.adapter.OrderAttendeesAdapter;
 
@@ -22,7 +21,10 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     private final Bitmap closeIcon;
     private final Bitmap doneIcon;
 
-    public SwipeController(OrderDetailViewModel orderDetailViewModel, OrderAttendeesAdapter orderAttendeesAdapter, Context context) {
+    public SwipeController(
+            OrderDetailViewModel orderDetailViewModel,
+            OrderAttendeesAdapter orderAttendeesAdapter,
+            Context context) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         this.orderDetailViewModel = orderDetailViewModel;
         this.orderAttendeesAdapter = orderAttendeesAdapter;
@@ -35,7 +37,10 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     }
 
     @Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+    public boolean onMove(
+            RecyclerView recyclerView,
+            RecyclerView.ViewHolder viewHolder,
+            RecyclerView.ViewHolder target) {
         return false;
     }
 
@@ -62,8 +67,14 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
     }
 
     @Override
-    public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                            float dX, float dY, int actionState, boolean isCurrentlyActive) {
+    public void onChildDraw(
+            Canvas canvas,
+            RecyclerView recyclerView,
+            RecyclerView.ViewHolder viewHolder,
+            float dX,
+            float dY,
+            int actionState,
+            boolean isCurrentlyActive) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             View itemView = viewHolder.itemView;
             float height = (float) itemView.getBottom() - (float) itemView.getTop();
@@ -74,21 +85,35 @@ public class SwipeController extends ItemTouchHelper.SimpleCallback {
             RectF iconDest;
 
             if (dX > 0) {
-                background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,
-                    (float) itemView.getBottom());
+                background =
+                        new RectF(
+                                (float) itemView.getLeft(),
+                                (float) itemView.getTop(),
+                                dX,
+                                (float) itemView.getBottom());
                 paint = paintGreen;
                 icon = doneIcon;
-                iconDest = new RectF((float) itemView.getLeft() + width,
-                    (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width,
-                    (float) itemView.getBottom() - width);
+                iconDest =
+                        new RectF(
+                                (float) itemView.getLeft() + width,
+                                (float) itemView.getTop() + width,
+                                (float) itemView.getLeft() + 2 * width,
+                                (float) itemView.getBottom() - width);
             } else {
-                background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),
-                    (float) itemView.getRight(), (float) itemView.getBottom());
+                background =
+                        new RectF(
+                                (float) itemView.getRight() + dX,
+                                (float) itemView.getTop(),
+                                (float) itemView.getRight(),
+                                (float) itemView.getBottom());
                 paint = paintRed;
                 icon = closeIcon;
-                iconDest = new RectF((float) itemView.getRight() - 2 * width,
-                    (float) itemView.getTop() + width, (float) itemView.getRight() - width,
-                    (float) itemView.getBottom() - width);
+                iconDest =
+                        new RectF(
+                                (float) itemView.getRight() - 2 * width,
+                                (float) itemView.getTop() + width,
+                                (float) itemView.getRight() - width,
+                                (float) itemView.getBottom() - width);
             }
 
             canvas.drawRect(background, paint);

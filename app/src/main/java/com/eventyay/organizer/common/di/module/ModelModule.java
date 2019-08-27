@@ -1,22 +1,20 @@
 package com.eventyay.organizer.common.di.module;
 
-import com.eventyay.organizer.data.auth.AuthServiceImpl;
 import com.eventyay.organizer.data.AndroidUtils;
+import com.eventyay.organizer.data.Bus;
 import com.eventyay.organizer.data.ContextUtils;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.RxBus;
-import com.eventyay.organizer.data.auth.AuthService;
-import com.eventyay.organizer.data.Bus;
 import com.eventyay.organizer.data.SharedPreferencesImpl;
+import com.eventyay.organizer.data.auth.AuthService;
+import com.eventyay.organizer.data.auth.AuthServiceImpl;
 import com.eventyay.organizer.data.encryption.EncryptionService;
 import com.eventyay.organizer.data.encryption.EncryptionServiceImpl;
 import com.eventyay.organizer.data.network.ConnectionStatus;
 import com.eventyay.organizer.data.network.ConnectionStatusImpl;
-
-import javax.inject.Singleton;
-
 import dagger.Binds;
 import dagger.Module;
+import javax.inject.Singleton;
 
 @Module
 public abstract class ModelModule {

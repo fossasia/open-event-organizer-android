@@ -1,7 +1,12 @@
 package com.eventyay.organizer.core.event.dashboard;
 
-import androidx.annotation.VisibleForTesting;
+import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
+import static com.eventyay.organizer.common.rx.ViewTransformers.disposeCompletable;
+import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneous;
+import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
+import static com.eventyay.organizer.common.rx.ViewTransformers.result;
 
+import androidx.annotation.VisibleForTesting;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
@@ -20,19 +25,10 @@ import com.eventyay.organizer.data.order.OrderRepository;
 import com.eventyay.organizer.data.order.OrderStatistics;
 import com.eventyay.organizer.utils.Utils;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
-import static com.eventyay.organizer.common.rx.ViewTransformers.disposeCompletable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneous;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
-import static com.eventyay.organizer.common.rx.ViewTransformers.result;
+import java.util.List;
+import javax.inject.Inject;
 
 public class EventDashboardPresenter extends AbstractDetailPresenter<Long, EventDashboardView> {
 
@@ -51,10 +47,15 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
     private OrderStatistics orderStatistics;
 
     @Inject
-    public EventDashboardPresenter(EventRepository eventRepository, AttendeeRepository attendeeRepository,
-                                   OrderRepository orderRepository, TicketAnalyser ticketAnalyser, ChartAnalyser chartAnalyser,
-                                   ContextUtils utilModel, DatabaseChangeListener<Event> eventChangeListener,
-                                   Preferences sharedPreferenceModel) {
+    public EventDashboardPresenter(
+            EventRepository eventRepository,
+            AttendeeRepository attendeeRepository,
+            OrderRepository orderRepository,
+            TicketAnalyser ticketAnalyser,
+            ChartAnalyser chartAnalyser,
+            ContextUtils utilModel,
+            DatabaseChangeListener<Event> eventChangeListener,
+            Preferences sharedPreferenceModel) {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
         this.attendeeRepository = attendeeRepository;
@@ -72,37 +73,38 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
     }
 
     public void loadDetails(boolean forceReload) {
-        if (getView() == null)
-            return;
+        if (getView() == null) return;
 
-        boolean isDeveloperModeEnabled = sharedPreferenceModel.getBoolean(
-            DEVELOPER_MODE_KEY, false);
+        boolean isDeveloperModeEnabled =
+                sharedPreferenceModel.getBoolean(DEVELOPER_MODE_KEY, false);
 
-        if (isDeveloperModeEnabled)
-            getView().showDeveloperModeFeatures();
+        if (isDeveloperModeEnabled) getView().showDeveloperModeFeatures();
 
         loadSalesChart();
         loadCheckInTimesChart();
         getEventSource(forceReload)
-            .compose(dispose(getDisposable()))
-            .compose(result(getView()))
-            .flatMap(loadedEvent -> {
-                this.event = loadedEvent;
-                ticketAnalyser.analyseTotalTickets(event);
-                return getAttendeeSource(forceReload);
-            })
-            .compose(progressiveErroneousRefresh(getView(), forceReload))
-            .toList()
-            .subscribe(attendees -> {
-                this.attendees = attendees;
-                ticketAnalyser.analyseSoldTickets(event, attendees);
+                .compose(dispose(getDisposable()))
+                .compose(result(getView()))
+                .flatMap(
+                        loadedEvent -> {
+                            this.event = loadedEvent;
+                            ticketAnalyser.analyseTotalTickets(event);
+                            return getAttendeeSource(forceReload);
+                        })
+                .compose(progressiveErroneousRefresh(getView(), forceReload))
+                .toList()
+                .subscribe(
+                        attendees -> {
+                            this.attendees = attendees;
+                            ticketAnalyser.analyseSoldTickets(event, attendees);
 
-                if (forceReload) {
-                    chartAnalyser.reset();
-                    loadSalesChart();
-                    loadCheckInTimesChart();
-                }
-            }, Logger::logError);
+                            if (forceReload) {
+                                chartAnalyser.reset();
+                                loadSalesChart();
+                                loadCheckInTimesChart();
+                            }
+                        },
+                        Logger::logError);
 
         loadEventStatistics(forceReload);
         loadOrderStatistics(forceReload);
@@ -110,12 +112,13 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
 
     private void listenChanges() {
         eventChangeListener.startListening();
-        eventChangeListener.getNotifier()
-            .compose(dispose(getDisposable()))
-            .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
-            .filter(action -> action.equals(BaseModel.Action.UPDATE))
-            .subscribeOn(Schedulers.io())
-            .subscribe(speakersCallModelChange -> loadDetails(false), Logger::logError);
+        eventChangeListener
+                .getNotifier()
+                .compose(dispose(getDisposable()))
+                .map(DbFlowDatabaseChangeListener.ModelChange::getAction)
+                .filter(action -> action.equals(BaseModel.Action.UPDATE))
+                .subscribeOn(Schedulers.io())
+                .subscribe(speakersCallModelChange -> loadDetails(false), Logger::logError);
     }
 
     public void confirmToggle() {
@@ -131,31 +134,42 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
     }
 
     public void toggleState() {
-        event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT;
-        eventRepository.updateEvent(event)
-            .compose(dispose(getDisposable()))
-            .compose(progressiveErroneous(getView()))
-            .doFinally(() -> getView().showResult(event))
-            .subscribe(updatedEvent -> {
-                    event.state = updatedEvent.state;
-                    if (Event.STATE_PUBLISHED.equals(event.state)) {
-                        getView().showEventShareDialog();
-                    } else {
-                        getView().onSuccess(utilModel.getResourceString(R.string.draft_success));
-                    }
-                },
-                throwable -> event.state = Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT);
+        event.state =
+                Event.STATE_DRAFT.equals(event.state) ? Event.STATE_PUBLISHED : Event.STATE_DRAFT;
+        eventRepository
+                .updateEvent(event)
+                .compose(dispose(getDisposable()))
+                .compose(progressiveErroneous(getView()))
+                .doFinally(() -> getView().showResult(event))
+                .subscribe(
+                        updatedEvent -> {
+                            event.state = updatedEvent.state;
+                            if (Event.STATE_PUBLISHED.equals(event.state)) {
+                                getView().showEventShareDialog();
+                            } else {
+                                getView()
+                                        .onSuccess(
+                                                utilModel.getResourceString(
+                                                        R.string.draft_success));
+                            }
+                        },
+                        throwable ->
+                                event.state =
+                                        Event.STATE_DRAFT.equals(event.state)
+                                                ? Event.STATE_PUBLISHED
+                                                : Event.STATE_DRAFT);
     }
 
     private void loadEventStatistics(boolean forceReload) {
         if (!forceReload && isRotated() && eventStatistics != null)
             getView().showStatistics(eventStatistics);
         else {
-            eventRepository.getEventStatistics(getId())
-                .compose(dispose(getDisposable()))
-                .compose(progressiveErroneousRefresh(getView(), forceReload))
-                .doFinally(() -> getView().showStatistics(eventStatistics))
-                .subscribe(statistics -> eventStatistics = statistics, Logger::logError);
+            eventRepository
+                    .getEventStatistics(getId())
+                    .compose(dispose(getDisposable()))
+                    .compose(progressiveErroneousRefresh(getView(), forceReload))
+                    .doFinally(() -> getView().showStatistics(eventStatistics))
+                    .subscribe(statistics -> eventStatistics = statistics, Logger::logError);
         }
     }
 
@@ -163,46 +177,50 @@ public class EventDashboardPresenter extends AbstractDetailPresenter<Long, Event
         if (!forceReload && isRotated() && orderStatistics != null)
             getView().showOrderStatistics(orderStatistics);
         else {
-            orderRepository.getOrderStatisticsForEvent(getId(), forceReload)
-                .compose(dispose(getDisposable()))
-                .compose(progressiveErroneousRefresh(getView(), forceReload))
-                .doFinally(() -> getView().showOrderStatistics(orderStatistics))
-                .subscribe(statistics -> orderStatistics = statistics, Logger::logError);
+            orderRepository
+                    .getOrderStatisticsForEvent(getId(), forceReload)
+                    .compose(dispose(getDisposable()))
+                    .compose(progressiveErroneousRefresh(getView(), forceReload))
+                    .doFinally(() -> getView().showOrderStatistics(orderStatistics))
+                    .subscribe(statistics -> orderStatistics = statistics, Logger::logError);
         }
     }
 
     private void loadSalesChart() {
         chartAnalyser.showChart(getView().getSalesChartView());
-        chartAnalyser.loadData(getId())
-            .compose(disposeCompletable(getDisposable()))
-            .subscribe(() -> {
-                getView().showChartSales(true);
-                chartAnalyser.showChart(getView().getSalesChartView());
-            }, throwable -> getView().showChartSales(false));
+        chartAnalyser
+                .loadData(getId())
+                .compose(disposeCompletable(getDisposable()))
+                .subscribe(
+                        () -> {
+                            getView().showChartSales(true);
+                            chartAnalyser.showChart(getView().getSalesChartView());
+                        },
+                        throwable -> getView().showChartSales(false));
     }
 
     private void loadCheckInTimesChart() {
         chartAnalyser.showChart(getView().getCheckinTimeChartView());
-        chartAnalyser.loadDataCheckIn(getId())
-            .compose(disposeCompletable(getDisposable()))
-            .subscribe(() -> {
-                getView().showChartCheckIn(true);
-                chartAnalyser.showChart(getView().getCheckinTimeChartView());
-            }, throwable -> getView().showChartCheckIn(false));
+        chartAnalyser
+                .loadDataCheckIn(getId())
+                .compose(disposeCompletable(getDisposable()))
+                .subscribe(
+                        () -> {
+                            getView().showChartCheckIn(true);
+                            chartAnalyser.showChart(getView().getCheckinTimeChartView());
+                        },
+                        throwable -> getView().showChartCheckIn(false));
     }
 
     private Observable<Event> getEventSource(boolean forceReload) {
-        if (!forceReload && event != null && isRotated())
-            return Observable.just(event);
-        else
-            return eventRepository.getEvent(getId(), forceReload);
+        if (!forceReload && event != null && isRotated()) return Observable.just(event);
+        else return eventRepository.getEvent(getId(), forceReload);
     }
 
     private Observable<Attendee> getAttendeeSource(boolean forceReload) {
         if (!forceReload && attendees != null && isRotated())
             return Observable.fromIterable(attendees);
-        else
-            return attendeeRepository.getAttendees(getId(), forceReload);
+        else return attendeeRepository.getAttendees(getId(), forceReload);
     }
 
     @VisibleForTesting

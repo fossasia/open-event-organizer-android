@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.notification.list;
 
 import com.eventyay.organizer.data.notification.Notification;
-
 import java.util.List;
 
 public interface NotificationsView {

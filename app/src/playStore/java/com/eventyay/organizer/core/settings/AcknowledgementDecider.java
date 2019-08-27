@@ -2,7 +2,6 @@ package com.eventyay.organizer.core.settings;
 
 import android.content.Context;
 import android.content.Intent;
-
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 
 public class AcknowledgementDecider {

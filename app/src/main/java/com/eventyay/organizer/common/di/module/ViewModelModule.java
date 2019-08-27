@@ -2,7 +2,6 @@ package com.eventyay.organizer.common.di.module;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.eventyay.organizer.common.di.OrgaViewModelFactory;
 import com.eventyay.organizer.core.attendee.checkin.AttendeeCheckInViewModel;
 import com.eventyay.organizer.core.attendee.history.CheckInHistoryViewModel;
@@ -31,8 +30,8 @@ import com.eventyay.organizer.core.orders.list.OrdersViewModel;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailViewModel;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
-import com.eventyay.organizer.core.role.list.RoleListViewModel;
 import com.eventyay.organizer.core.role.invite.RoleInviteViewModel;
+import com.eventyay.organizer.core.role.list.RoleListViewModel;
 import com.eventyay.organizer.core.session.create.CreateSessionViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
@@ -43,7 +42,6 @@ import com.eventyay.organizer.core.ticket.create.CreateTicketViewModel;
 import com.eventyay.organizer.core.ticket.detail.TicketDetailViewModel;
 import com.eventyay.organizer.core.track.create.CreateTrackViewModel;
 import com.eventyay.organizer.core.track.update.UpdateTrackViewModel;
-
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
@@ -64,7 +62,8 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(ResetPasswordViewModel.class)
-    public abstract ViewModel bindResetPasswordViewModel(ResetPasswordViewModel resetPasswordViewModel);
+    public abstract ViewModel bindResetPasswordViewModel(
+            ResetPasswordViewModel resetPasswordViewModel);
 
     @Binds
     @IntoMap
@@ -79,7 +78,8 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(SpeakerDetailsViewModel.class)
-    public abstract ViewModel bindSpeakerDetailsViewModel(SpeakerDetailsViewModel speakerDetailsViewModel);
+    public abstract ViewModel bindSpeakerDetailsViewModel(
+            SpeakerDetailsViewModel speakerDetailsViewModel);
 
     @Binds
     @IntoMap
@@ -94,7 +94,8 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(CreateSpeakersCallViewModel.class)
-    public abstract ViewModel bindCreateSpeakersCallViewModel(CreateSpeakersCallViewModel createSpeakersCallViewModel);
+    public abstract ViewModel bindCreateSpeakersCallViewModel(
+            CreateSpeakersCallViewModel createSpeakersCallViewModel);
 
     @Binds
     @IntoMap
@@ -124,12 +125,14 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(CreateCopyrightViewModel.class)
-    public abstract ViewModel bindCreateCopyrightViewModel(CreateCopyrightViewModel createCopyrightViewModel);
+    public abstract ViewModel bindCreateCopyrightViewModel(
+            CreateCopyrightViewModel createCopyrightViewModel);
 
     @Binds
     @IntoMap
     @ViewModelKey(UpdateCopyrightViewModel.class)
-    public abstract ViewModel bindUpdateCopyrightViewModel(UpdateCopyrightViewModel updateCopyrightViewModel);
+    public abstract ViewModel bindUpdateCopyrightViewModel(
+            UpdateCopyrightViewModel updateCopyrightViewModel);
 
     @Binds
     @IntoMap
@@ -169,37 +172,44 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(TicketSettingsViewModel.class)
-    public abstract ViewModel bindTicketSettingsViewModel(TicketSettingsViewModel ticketSettingsViewModel);
+    public abstract ViewModel bindTicketSettingsViewModel(
+            TicketSettingsViewModel ticketSettingsViewModel);
 
     @Binds
     @IntoMap
     @ViewModelKey(CheckInHistoryViewModel.class)
-    public abstract ViewModel bindCheckInHistoryViewModel(CheckInHistoryViewModel checkInHistoryViewModel);
+    public abstract ViewModel bindCheckInHistoryViewModel(
+            CheckInHistoryViewModel checkInHistoryViewModel);
 
     @Binds
     @IntoMap
     @ViewModelKey(OrganizerDetailViewModel.class)
-    public abstract ViewModel bindOrganizerDetailViewModel(OrganizerDetailViewModel organizerDetailViewModel);
+    public abstract ViewModel bindOrganizerDetailViewModel(
+            OrganizerDetailViewModel organizerDetailViewModel);
 
     @Binds
     @IntoMap
     @ViewModelKey(UpdateOrganizerInfoViewModel.class)
-    public abstract ViewModel bindUpdateOrganizerViewModel(UpdateOrganizerInfoViewModel ticketSettingsViewModel);
+    public abstract ViewModel bindUpdateOrganizerViewModel(
+            UpdateOrganizerInfoViewModel ticketSettingsViewModel);
 
     @Binds
     @IntoMap
     @ViewModelKey(ChangePasswordViewModel.class)
-    public abstract ViewModel bindChangePasswordViewModel(ChangePasswordViewModel changePasswordViewModel);
+    public abstract ViewModel bindChangePasswordViewModel(
+            ChangePasswordViewModel changePasswordViewModel);
 
     @Binds
     @IntoMap
     @ViewModelKey(TicketDetailViewModel.class)
-    public abstract ViewModel bindTicketDetailViewModel(TicketDetailViewModel ticketDetailViewModel);
+    public abstract ViewModel bindTicketDetailViewModel(
+            TicketDetailViewModel ticketDetailViewModel);
 
     @Binds
     @IntoMap
     @ViewModelKey(AttendeeCheckInViewModel.class)
-    public abstract ViewModel bindAttendeeCheckinViewModel(AttendeeCheckInViewModel attendeeCheckInViewModel);
+    public abstract ViewModel bindAttendeeCheckinViewModel(
+            AttendeeCheckInViewModel attendeeCheckInViewModel);
 
     @Binds
     @IntoMap
@@ -209,12 +219,14 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(SalesSummaryViewModel.class)
-    public abstract ViewModel bindSalesSummaryViewModel(SalesSummaryViewModel salesSummaryViewModel);
+    public abstract ViewModel bindSalesSummaryViewModel(
+            SalesSummaryViewModel salesSummaryViewModel);
 
     @Binds
     @IntoMap
     @ViewModelKey(FeedbackListViewModel.class)
-    public abstract ViewModel bindFeedbackListViewModel(FeedbackListViewModel feedbackListViewModel);
+    public abstract ViewModel bindFeedbackListViewModel(
+            FeedbackListViewModel feedbackListViewModel);
 
     @Binds
     @IntoMap
@@ -229,7 +241,8 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(NotificationsViewModel.class)
-    public abstract ViewModel bindNotificationsViewModel(NotificationsViewModel notificationsViewModel);
+    public abstract ViewModel bindNotificationsViewModel(
+            NotificationsViewModel notificationsViewModel);
 
     @Binds
     @IntoMap
@@ -244,9 +257,9 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(CreateSessionViewModel.class)
-    public abstract ViewModel bindCreateSessionViewModel(CreateSessionViewModel createSessionViewModel);
+    public abstract ViewModel bindCreateSessionViewModel(
+            CreateSessionViewModel createSessionViewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
-
 }

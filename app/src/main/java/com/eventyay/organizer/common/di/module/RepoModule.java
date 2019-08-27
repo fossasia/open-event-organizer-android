@@ -32,18 +32,17 @@ import com.eventyay.organizer.data.tracks.TrackRepository;
 import com.eventyay.organizer.data.tracks.TrackRepositoryImpl;
 import com.eventyay.organizer.data.user.UserRepository;
 import com.eventyay.organizer.data.user.UserRepositoryImpl;
-
-import javax.inject.Singleton;
-
 import dagger.Binds;
 import dagger.Module;
+import javax.inject.Singleton;
 
 @Module(includes = ChangeListenerModule.class)
 public abstract class RepoModule {
 
     @Binds
     @Singleton
-    abstract DatabaseRepository providesDatabaseRepository(DbFlowDatabaseRepository databaseRepository);
+    abstract DatabaseRepository providesDatabaseRepository(
+            DbFlowDatabaseRepository databaseRepository);
 
     @Binds
     @Singleton
@@ -51,7 +50,8 @@ public abstract class RepoModule {
 
     @Binds
     @Singleton
-    abstract AttendeeRepository providesAttendeeRepository(AttendeeRepositoryImpl attendeeRepository);
+    abstract AttendeeRepository providesAttendeeRepository(
+            AttendeeRepositoryImpl attendeeRepository);
 
     @Binds
     @Singleton
@@ -63,7 +63,8 @@ public abstract class RepoModule {
 
     @Binds
     @Singleton
-    abstract CopyrightRepository bindsCopyrightRepository(CopyrightRepositoryImpl copyrightRepository);
+    abstract CopyrightRepository bindsCopyrightRepository(
+            CopyrightRepositoryImpl copyrightRepository);
 
     @Binds
     @Singleton
@@ -91,7 +92,8 @@ public abstract class RepoModule {
 
     @Binds
     @Singleton
-    abstract SpeakersCallRepository bindsSpeakersCallRepository(SpeakersCallRepositoryImpl speakersCallRepository);
+    abstract SpeakersCallRepository bindsSpeakersCallRepository(
+            SpeakersCallRepositoryImpl speakersCallRepository);
 
     @Binds
     @Singleton
@@ -103,5 +105,6 @@ public abstract class RepoModule {
 
     @Binds
     @Singleton
-    abstract NotificationRepository bindsNotificationRepository(NotificationRepositoryImpl notificationRepository);
+    abstract NotificationRepository bindsNotificationRepository(
+            NotificationRepositoryImpl notificationRepository);
 }

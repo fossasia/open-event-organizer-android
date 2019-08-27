@@ -1,20 +1,17 @@
 package com.eventyay.organizer.robo.db;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
-import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
-import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
 import com.eventyay.organizer.common.model.SimpleModel;
 import com.eventyay.organizer.common.model.SimpleModel_Table;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
+import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 import io.reactivex.Observable;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Test;
 
 public class DatabaseChangeListenerTest extends BaseTest {
 
@@ -25,7 +22,8 @@ public class DatabaseChangeListenerTest extends BaseTest {
     @Override
     public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
         databaseRepository = new DbFlowDatabaseRepository();
         databaseChangeListener = new DbFlowDatabaseChangeListener<>(SimpleModel.class);
         databaseChangeListener.startListening();
@@ -35,15 +33,17 @@ public class DatabaseChangeListenerTest extends BaseTest {
     @Test
     public void testInsert() throws InterruptedException {
         List<DbFlowDatabaseChangeListener.ModelChange<SimpleModel>> changes = new ArrayList<>();
-        changes.add(new DbFlowDatabaseChangeListener.ModelChange<>(DatabaseRepositoryTest.MODEL, BaseModel.Action.INSERT));
-        changes.add(new DbFlowDatabaseChangeListener.ModelChange<>(DatabaseRepositoryTest.MODEL, BaseModel.Action.SAVE));
+        changes.add(
+                new DbFlowDatabaseChangeListener.ModelChange<>(
+                        DatabaseRepositoryTest.MODEL, BaseModel.Action.INSERT));
+        changes.add(
+                new DbFlowDatabaseChangeListener.ModelChange<>(
+                        DatabaseRepositoryTest.MODEL, BaseModel.Action.SAVE));
 
         databaseRepository.save(SimpleModel.class, DatabaseRepositoryTest.MODEL).subscribe();
         databaseChangeListener.stopListening();
 
-        notifier
-            .test()
-            .assertValueSequence(changes);
+        notifier.test().assertValueSequence(changes);
     }
 
     @Test
@@ -56,13 +56,12 @@ public class DatabaseChangeListenerTest extends BaseTest {
         databaseRepository.update(SimpleModel.class, newModel).subscribe();
         databaseChangeListener.stopListening();
 
-        notifier
-            .lastOrError()
-            .test()
-            .assertValue(value ->
-                value.getAction().equals(BaseModel.Action.UPDATE) &&
-                    value.getModel().equals(newModel)
-            );
+        notifier.lastOrError()
+                .test()
+                .assertValue(
+                        value ->
+                                value.getAction().equals(BaseModel.Action.UPDATE)
+                                        && value.getModel().equals(newModel));
     }
 
     @Test
@@ -71,19 +70,20 @@ public class DatabaseChangeListenerTest extends BaseTest {
         databaseRepository.delete(SimpleModel.class, SimpleModel_Table.id.eq(1L)).subscribe();
         databaseChangeListener.stopListening();
 
-        notifier
-            .lastOrError()
-            .test()
-            .assertValue(value ->
-                value.getAction().equals(BaseModel.Action.DELETE)
-            );
+        notifier.lastOrError()
+                .test()
+                .assertValue(value -> value.getAction().equals(BaseModel.Action.DELETE));
     }
 
     @Test
     public void testDisposed() {
         List<DbFlowDatabaseChangeListener.ModelChange<SimpleModel>> changes = new ArrayList<>();
-        changes.add(new DbFlowDatabaseChangeListener.ModelChange<>(DatabaseRepositoryTest.MODEL, BaseModel.Action.INSERT));
-        changes.add(new DbFlowDatabaseChangeListener.ModelChange<>(DatabaseRepositoryTest.MODEL, BaseModel.Action.SAVE));
+        changes.add(
+                new DbFlowDatabaseChangeListener.ModelChange<>(
+                        DatabaseRepositoryTest.MODEL, BaseModel.Action.INSERT));
+        changes.add(
+                new DbFlowDatabaseChangeListener.ModelChange<>(
+                        DatabaseRepositoryTest.MODEL, BaseModel.Action.SAVE));
 
         databaseChangeListener.stopListening();
         notifier.subscribe().dispose();
@@ -91,9 +91,6 @@ public class DatabaseChangeListenerTest extends BaseTest {
         databaseRepository.save(SimpleModel.class, DatabaseRepositoryTest.MODEL).subscribe();
         databaseChangeListener.stopListening();
 
-        databaseChangeListener.getNotifier()
-            .test()
-            .assertValueSequence(changes);
+        databaseChangeListener.getNotifier().test().assertValueSequence(changes);
     }
-
 }

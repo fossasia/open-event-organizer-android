@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -32,25 +30,20 @@ import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.DateUtils;
 import com.eventyay.organizer.utils.Utils;
 import com.github.mikephil.charting.charts.LineChart;
-
+import dagger.Lazy;
 import javax.inject.Inject;
 
-import dagger.Lazy;
-
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link EventDashboardFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A simple {@link Fragment} subclass. Use the {@link EventDashboardFragment#newInstance} factory
+ * method to create an instance of this fragment.
  */
-public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter> implements EventDashboardView {
+public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter>
+        implements EventDashboardView {
 
     public static final String EVENT_ID = "event_id";
-    @Inject
-    Context context;
-    @Inject
-    ContextUtils utilModel;
-    @Inject
-    Lazy<EventDashboardPresenter> presenterProvider;
+    @Inject Context context;
+    @Inject ContextUtils utilModel;
+    @Inject Lazy<EventDashboardPresenter> presenterProvider;
     private long initialEventId;
     private EventDetailBinding binding;
     private AlertDialog unpublishDialog;
@@ -63,8 +56,8 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Use this factory method to create a new instance of this fragment using the provided
+     * parameters.
      *
      * @param eventId Event for which the Fragment is to be created.
      * @return A new instance of fragment EventDashboardFragment.
@@ -84,45 +77,49 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
         super.onCreate(savedInstanceState);
 
         Bundle arguments = getArguments();
-        if (arguments != null)
-            initialEventId = arguments.getLong(EVENT_ID);
+        if (arguments != null) initialEventId = arguments.getLong(EVENT_ID);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = EventDetailBinding.inflate(inflater, container, false);
 
         binding.ticketAnalytics.btnChartFullScreen.setOnClickListener(
-            v -> {
-                Intent openChart = new Intent(getActivity(), ChartActivity.class);
-                openChart.putExtra(EVENT_ID, initialEventId);
-                startActivity(openChart);
-            });
+                v -> {
+                    Intent openChart = new Intent(getActivity(), ChartActivity.class);
+                    openChart.putExtra(EVENT_ID, initialEventId);
+                    startActivity(openChart);
+                });
 
-        binding.checkIn.setOnClickListener(v -> {
-            Fragment fragment = AttendeesFragment.newInstance(initialEventId);
-            loadFragment(fragment);
-        });
+        binding.checkIn.setOnClickListener(
+                v -> {
+                    Fragment fragment = AttendeesFragment.newInstance(initialEventId);
+                    loadFragment(fragment);
+                });
 
-        binding.orders.setOnClickListener(v -> {
-            Fragment fragment = OrdersFragment.newInstance(initialEventId);
-            loadFragment(fragment);
-        });
+        binding.orders.setOnClickListener(
+                v -> {
+                    Fragment fragment = OrdersFragment.newInstance(initialEventId);
+                    loadFragment(fragment);
+                });
 
-        binding.tickets.setOnClickListener(v -> {
-            Fragment fragment = TicketsFragment.newInstance(initialEventId);
-            loadFragment(fragment);
-        });
+        binding.tickets.setOnClickListener(
+                v -> {
+                    Fragment fragment = TicketsFragment.newInstance(initialEventId);
+                    loadFragment(fragment);
+                });
 
-        binding.editEvent.setOnClickListener(v -> {
-            openEditEvent();
-        });
+        binding.editEvent.setOnClickListener(
+                v -> {
+                    openEditEvent();
+                });
 
-        binding.checkInSettings.setOnClickListener(v -> {
-            Fragment fragment = EventSettingsFragment.newInstance(initialEventId);
-            loadFragment(fragment);
-        });
+        binding.checkInSettings.setOnClickListener(
+                v -> {
+                    Fragment fragment = EventSettingsFragment.newInstance(initialEventId);
+                    loadFragment(fragment);
+                });
 
         return binding.getRoot();
     }
@@ -140,13 +137,15 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     public void onResume() {
         super.onResume();
         Event event = ContextManager.getSelectedEvent();
-        String startsAt = DateUtils.formatDateWithDefault(DateUtils.FORMAT_DATE_TIME, event.getStartsAt());
-        String endsAt = DateUtils.formatDateWithDefault(DateUtils.FORMAT_DATE_TIME, event.getEndsAt());
+        String startsAt =
+                DateUtils.formatDateWithDefault(DateUtils.FORMAT_DATE_TIME, event.getStartsAt());
+        String endsAt =
+                DateUtils.formatDateWithDefault(DateUtils.FORMAT_DATE_TIME, event.getEndsAt());
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(
-            event.getName());
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(
-            startsAt + " - " + endsAt);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(event.getName());
+        ((AppCompatActivity) getActivity())
+                .getSupportActionBar()
+                .setSubtitle(startsAt + " - " + endsAt);
     }
 
     @Override
@@ -170,10 +169,11 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
         container = binding.container;
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(utilModel.getResourceColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            getPresenter().loadDetails(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    getPresenter().loadDetails(true);
+                });
     }
 
     // View implementation
@@ -245,10 +245,11 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     }
 
     private void loadFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
-            .commit();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     public void openEditEvent() {
@@ -259,22 +260,32 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     }
 
     public void showEventLocationDialog() {
-        ViewUtils.showDialog(this, getString(R.string.event_location),
-            getString(R.string.event_location_required), getString(R.string.add_location), this::openEditEvent);
+        ViewUtils.showDialog(
+                this,
+                getString(R.string.event_location),
+                getString(R.string.event_location_required),
+                getString(R.string.add_location),
+                this::openEditEvent);
     }
 
     public void showEventShareDialog() {
         if (shareEventDialog == null) {
-            shareEventDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialog))
-                .setTitle(R.string.share_event)
-                .setMessage(getString(R.string.successfull_publish_message))
-                .setPositiveButton(R.string.share, (dialog, which) -> {
-                    Utils.shareEvent(context);
-                })
-                .setNegativeButton(R.string.not_now, (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .create();
+            shareEventDialog =
+                    new AlertDialog.Builder(
+                                    new ContextThemeWrapper(getActivity(), R.style.AlertDialog))
+                            .setTitle(R.string.share_event)
+                            .setMessage(getString(R.string.successfull_publish_message))
+                            .setPositiveButton(
+                                    R.string.share,
+                                    (dialog, which) -> {
+                                        Utils.shareEvent(context);
+                                    })
+                            .setNegativeButton(
+                                    R.string.not_now,
+                                    (dialog, which) -> {
+                                        dialog.dismiss();
+                                    })
+                            .create();
         }
 
         shareEventDialog.show();
@@ -287,16 +298,22 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
     @Override
     public void showEventUnpublishDialog() {
         if (unpublishDialog == null) {
-            unpublishDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AlertDialog))
-                .setTitle(R.string.unpublish_event)
-                .setMessage(getString(R.string.unpublish_confirmation_message))
-                .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    getPresenter().toggleState();
-                })
-                .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .create();
+            unpublishDialog =
+                    new AlertDialog.Builder(
+                                    new ContextThemeWrapper(getActivity(), R.style.AlertDialog))
+                            .setTitle(R.string.unpublish_event)
+                            .setMessage(getString(R.string.unpublish_confirmation_message))
+                            .setPositiveButton(
+                                    R.string.ok,
+                                    (dialog, which) -> {
+                                        getPresenter().toggleState();
+                                    })
+                            .setNegativeButton(
+                                    R.string.cancel,
+                                    (dialog, which) -> {
+                                        dialog.dismiss();
+                                    })
+                            .create();
         }
 
         unpublishDialog.show();

@@ -1,16 +1,18 @@
 package com.eventyay.organizer.core.auth.login;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import static com.eventyay.organizer.ui.ViewUtils.showView;
+
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import br.com.ilhasoft.support.validation.Validator;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.auth.SharedViewModel;
@@ -18,17 +20,11 @@ import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.databinding.LoginFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import javax.inject.Inject;
-
-import br.com.ilhasoft.support.validation.Validator;
-
-import static com.eventyay.organizer.ui.ViewUtils.showView;
 
 public class LoginFragment extends BaseFragment implements LoginView {
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private LoginViewModel loginFragmentViewModel;
     private LoginFragmentBinding binding;
@@ -40,9 +36,11 @@ public class LoginFragment extends BaseFragment implements LoginView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.login_fragment, container, false);
-        loginFragmentViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+        loginFragmentViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         sharedViewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
         validator = new Validator(binding);
         return binding.getRoot();
@@ -55,44 +53,57 @@ public class LoginFragment extends BaseFragment implements LoginView {
         loginFragmentViewModel.getProgress().observe(this, this::showProgress);
         loginFragmentViewModel.getError().observe(this, this::showError);
         loginFragmentViewModel.getActionLogIn().observe(this, isLoggedIn -> handleIntent());
-        loginFragmentViewModel.getLogin(sharedViewModel.getEmail().getValue()).observe(this, login -> {
-            binding.setLogin(login);
-            sharedViewModel.getEmail().observe(this, email -> binding.getLogin().setEmail(email));
-        });
-        loginFragmentViewModel.getActionOpenResetPassword().observe(this, this::openResetPasswordFragment);
+        loginFragmentViewModel
+                .getLogin(sharedViewModel.getEmail().getValue())
+                .observe(
+                        this,
+                        login -> {
+                            binding.setLogin(login);
+                            sharedViewModel
+                                    .getEmail()
+                                    .observe(this, email -> binding.getLogin().setEmail(email));
+                        });
+        loginFragmentViewModel
+                .getActionOpenResetPassword()
+                .observe(this, this::openResetPasswordFragment);
         loginFragmentViewModel.getBaseUrl().observe(this, this::setBaseUrl);
 
         loginFragmentViewModel.setBaseUrl();
 
-        binding.btnLogin.setOnClickListener(view -> {
-            if (!validator.validate())
-                return;
+        binding.btnLogin.setOnClickListener(
+                view -> {
+                    if (!validator.validate()) return;
 
-            ViewUtils.hideKeyboard(view);
-            loginFragmentViewModel.login();
-        });
+                    ViewUtils.hideKeyboard(view);
+                    loginFragmentViewModel.login();
+                });
         binding.forgotPasswordLink.setOnClickListener(view -> clickForgotPassword());
 
-        binding.emailLayout.getEditText().addTextChangedListener(new TextWatcher() {
+        binding.emailLayout
+                .getEditText()
+                .addTextChangedListener(
+                        new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //do nothing
-            }
+                            @Override
+                            public void beforeTextChanged(
+                                    CharSequence s, int start, int count, int after) {
+                                // do nothing
+                            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (start != 0) {
-                    sharedViewModel.setEmail(s.toString());
-                    getFragmentManager().popBackStack();
-                }
-            }
+                            @Override
+                            public void onTextChanged(
+                                    CharSequence s, int start, int before, int count) {
+                                if (start != 0) {
+                                    sharedViewModel.setEmail(s.toString());
+                                    getFragmentManager().popBackStack();
+                                }
+                            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                //do nothing
-            }
-        });
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                // do nothing
+                            }
+                        });
     }
 
     public void handleIntent() {
@@ -119,8 +130,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
     }
 
     private void clickForgotPassword() {
-        if (!validator.validate(binding.emailDropdown))
-            return;
+        if (!validator.validate(binding.emailDropdown)) return;
 
         loginFragmentViewModel.requestToken();
         sharedViewModel.setEmail(binding.getLogin().getEmail());
@@ -145,10 +155,15 @@ public class LoginFragment extends BaseFragment implements LoginView {
 
     @Override
     public void openResetPasswordFragment(boolean resetPassword) {
-        getFragmentManager().beginTransaction()
-            .setCustomAnimations(R.anim.enter_from_left, R.anim.exit_from_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .replace(R.id.fragment_container, new ResetPasswordFragment())
-            .addToBackStack(null)
-            .commit();
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.enter_from_left,
+                        R.anim.exit_from_right,
+                        android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right)
+                .replace(R.id.fragment_container, new ResetPasswordFragment())
+                .addToBackStack(null)
+                .commit();
     }
 }

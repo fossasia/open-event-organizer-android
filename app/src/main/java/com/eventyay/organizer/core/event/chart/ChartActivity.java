@@ -3,28 +3,22 @@ package com.eventyay.organizer.core.event.chart;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.github.mikephil.charting.charts.LineChart;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
 import com.eventyay.organizer.ui.ViewUtils;
-
-import javax.inject.Inject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.github.mikephil.charting.charts.LineChart;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import javax.inject.Inject;
 
 public class ChartActivity extends AppCompatActivity implements ChartView, HasActivityInjector {
 
@@ -37,11 +31,9 @@ public class ChartActivity extends AppCompatActivity implements ChartView, HasAc
     @BindView(R.id.progressBar)
     View progressView;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
-    @Inject
-    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+    @Inject DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
     private ChartViewModel chartViewModel;
 

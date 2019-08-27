@@ -1,13 +1,23 @@
 package com.eventyay.organizer.core.ticket.create;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
 import com.eventyay.organizer.utils.DateUtils;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,45 +32,27 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.threeten.bp.LocalDateTime;
 
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @RunWith(JUnit4.class)
 public class TicketCreateViewModelTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule
-    public TestRule rule = new InstantTaskExecutorRule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public TestRule rule = new InstantTaskExecutorRule();
 
     @Mock private TicketRepository ticketRepository;
     @Mock private Event event;
 
     private CreateTicketViewModel createTicketViewModel;
 
-    @Mock
-    Observer<String> error;
-    @Mock
-    Observer<Boolean> progress;
-    @Mock
-    Observer<String> success;
-    @Mock
-    Observer<Void> dismiss;
+    @Mock Observer<String> error;
+    @Mock Observer<Boolean> progress;
+    @Mock Observer<String> success;
+    @Mock Observer<Void> dismiss;
 
     @Before
     public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
 
         setupMockEvent();
         ContextManager.setSelectedEvent(event);
@@ -135,7 +127,8 @@ public class TicketCreateViewModelTest {
         Ticket ticket = createTicketViewModel.getTicket();
         ContextManager.setSelectedEvent(event);
 
-        when(ticketRepository.createTicket(ticket)).thenReturn(Observable.error(new Throwable("Error")));
+        when(ticketRepository.createTicket(ticket))
+                .thenReturn(Observable.error(new Throwable("Error")));
 
         String isoDateNow = DateUtils.formatDateToIso(LocalDateTime.now());
         String isoDateThen = DateUtils.formatDateToIso(LocalDateTime.MAX);

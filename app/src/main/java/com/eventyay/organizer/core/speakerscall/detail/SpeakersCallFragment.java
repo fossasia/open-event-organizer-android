@@ -1,16 +1,15 @@
 package com.eventyay.organizer.core.speakerscall.detail;
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.main.MainActivity;
@@ -18,17 +17,15 @@ import com.eventyay.organizer.core.speakerscall.create.CreateSpeakersCallFragmen
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.databinding.SpeakersCallFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
+import dagger.Lazy;
 import javax.inject.Inject;
 
-import dagger.Lazy;
-
-public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> implements SpeakersCallView {
+public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter>
+        implements SpeakersCallView {
 
     private long eventId;
 
-    @Inject
-    Lazy<SpeakersCallPresenter> speakersCallPresenter;
+    @Inject Lazy<SpeakersCallPresenter> speakersCallPresenter;
 
     private SpeakersCallFragmentBinding binding;
     private SwipeRefreshLayout refreshLayout;
@@ -48,25 +45,31 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
 
         setHasOptionsMenu(true);
 
-        if (getArguments() != null)
-            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+        if (getArguments() != null) eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.speakers_call_fragment, container, false);
-        binding.createSpeakersCallFab.setOnClickListener(view -> {
-            openCreateSpeakersCallFragment();
-        });
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        binding =
+                DataBindingUtil.inflate(
+                        inflater, R.layout.speakers_call_fragment, container, false);
+        binding.createSpeakersCallFab.setOnClickListener(
+                view -> {
+                    openCreateSpeakersCallFragment();
+                });
         return binding.getRoot();
     }
 
     public void openCreateSpeakersCallFragment() {
-        getFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, CreateSpeakersCallFragment.newInstance(eventId))
-            .addToBackStack(null)
-            .commit();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, CreateSpeakersCallFragment.newInstance(eventId))
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -101,21 +104,25 @@ public class SpeakersCallFragment extends BaseFragment<SpeakersCallPresenter> im
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            ViewUtils.showView(binding.emptyView, false);
-            getPresenter().loadSpeakersCall(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    ViewUtils.showView(binding.emptyView, false);
+                    getPresenter().loadSpeakersCall(true);
+                });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit:
-                getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, CreateSpeakersCallFragment.newInstance(eventId, true))
-                    .addToBackStack(null)
-                    .commit();
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(
+                                R.id.fragment_container,
+                                CreateSpeakersCallFragment.newInstance(eventId, true))
+                        .addToBackStack(null)
+                        .commit();
                 break;
             default:
                 // No implementation

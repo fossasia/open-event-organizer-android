@@ -2,7 +2,6 @@ package com.eventyay.organizer.common.mvp.presenter;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.VisibleForTesting;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class AbstractBasePresenter<V> implements Presenter<V> {
@@ -37,5 +36,4 @@ public abstract class AbstractBasePresenter<V> implements Presenter<V> {
     protected boolean isRotated() {
         return attachCount > 1;
     }
-
 }

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-
 import com.eventyay.organizer.data.event.serializer.ObservableString;
 import com.eventyay.organizer.utils.DateUtils;
 import org.threeten.bp.LocalDate;
@@ -29,11 +28,22 @@ public class DatePicker extends AbstractDateTimePicker {
             observableValue.set(value);
             String format = DateUtils.FORMAT_DATE_COMPLETE;
 
-            bindTemporal(value, format, zonedDateTime ->
-                new DatePickerDialog(this.getContext(), (picker, year, month, dayOfMonth) ->
-                    setPickedDate(
-                        LocalDateTime.of(LocalDate.of(year, month + 1, dayOfMonth), zonedDateTime.toLocalTime()), format),
-                    zonedDateTime.getYear(), zonedDateTime.getMonthValue() - 1, zonedDateTime.getDayOfMonth()));
+            bindTemporal(
+                    value,
+                    format,
+                    zonedDateTime ->
+                            new DatePickerDialog(
+                                    this.getContext(),
+                                    (picker, year, month, dayOfMonth) ->
+                                            setPickedDate(
+                                                    LocalDateTime.of(
+                                                            LocalDate.of(
+                                                                    year, month + 1, dayOfMonth),
+                                                            zonedDateTime.toLocalTime()),
+                                                    format),
+                                    zonedDateTime.getYear(),
+                                    zonedDateTime.getMonthValue() - 1,
+                                    zonedDateTime.getDayOfMonth()));
         }
     }
 }

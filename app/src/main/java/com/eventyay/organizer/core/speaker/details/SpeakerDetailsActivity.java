@@ -1,26 +1,23 @@
 package com.eventyay.organizer.core.speaker.details;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.MenuItem;
-
 import com.eventyay.organizer.R;
-
-import javax.inject.Inject;
-
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import javax.inject.Inject;
 
-public class SpeakerDetailsActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+public class SpeakerDetailsActivity extends AppCompatActivity
+        implements HasSupportFragmentInjector {
     public static final String SPEAKER_ID = "speaker_id";
 
     private final FragmentManager fragmentManager = getSupportFragmentManager();
 
-    @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+    @Inject DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +26,12 @@ public class SpeakerDetailsActivity extends AppCompatActivity implements HasSupp
 
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(SPEAKER_ID) && savedInstanceState == null) {
-            fragmentManager.beginTransaction()
-                .add(R.id.fragment, SpeakerDetailsFragment.newInstance(extras.getLong(SPEAKER_ID)))
-                .commit();
+            fragmentManager
+                    .beginTransaction()
+                    .add(
+                            R.id.fragment,
+                            SpeakerDetailsFragment.newInstance(extras.getLong(SPEAKER_ID)))
+                    .commit();
         }
     }
 
@@ -39,10 +39,8 @@ public class SpeakerDetailsActivity extends AppCompatActivity implements HasSupp
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (fragmentManager.getBackStackEntryCount() > 0)
-                    fragmentManager.popBackStack();
-                else
-                    finish();
+                if (fragmentManager.getBackStackEntryCount() > 0) fragmentManager.popBackStack();
+                else finish();
                 return true;
             default:
         }

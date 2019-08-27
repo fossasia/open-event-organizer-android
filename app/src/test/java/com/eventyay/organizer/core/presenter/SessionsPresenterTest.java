@@ -1,11 +1,28 @@
 package com.eventyay.organizer.core.presenter;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.core.session.list.SessionsPresenter;
 import com.eventyay.organizer.core.session.list.SessionsView;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.session.SessionRepository;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,37 +35,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @RunWith(JUnit4.class)
 @SuppressWarnings("PMD.TooManyMethods")
 public class SessionsPresenterTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Mock
-    private SessionsView sessionsView;
-    @Mock
-    private SessionRepository sessionRepository;
-    @Mock
-    private DatabaseChangeListener<Session> databaseChangeListener;
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock private SessionsView sessionsView;
+    @Mock private SessionRepository sessionRepository;
+    @Mock private DatabaseChangeListener<Session> databaseChangeListener;
 
     private SessionsPresenter sessionsPresenter;
 
@@ -56,11 +50,12 @@ public class SessionsPresenterTest {
 
     private static final String SESSION_DELETION_SUCCESS = "Sessions Deleted";
 
-    private static List<Session> sessions = new ArrayList<Session>(Arrays.asList(
-        Session.builder().id(2L).title("a").build(),
-        Session.builder().id(3L).title("b").build(),
-        Session.builder().id(4L).title("c").build()
-    ));
+    private static List<Session> sessions =
+            new ArrayList<Session>(
+                    Arrays.asList(
+                            Session.builder().id(2L).title("a").build(),
+                            Session.builder().id(3L).title("b").build(),
+                            Session.builder().id(4L).title("c").build()));
 
     private static final Session SESSION = Session.builder().id(7L).title("a").build();
 
@@ -71,7 +66,8 @@ public class SessionsPresenterTest {
 
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
     }
 
     @After
@@ -82,7 +78,8 @@ public class SessionsPresenterTest {
 
     @Test
     public void shouldLoadSessionListAutomatically() {
-        when(sessionRepository.getSessions(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(sessions));
+        when(sessionRepository.getSessions(anyLong(), anyBoolean()))
+                .thenReturn(Observable.fromIterable(sessions));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         sessionsPresenter.start();
@@ -92,7 +89,8 @@ public class SessionsPresenterTest {
 
     @Test
     public void shouldShowSessionListAutomatically() {
-        when(sessionRepository.getSessions(ID, false)).thenReturn(Observable.fromIterable(sessions));
+        when(sessionRepository.getSessions(ID, false))
+                .thenReturn(Observable.fromIterable(sessions));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         sessionsPresenter.start();
@@ -102,7 +100,8 @@ public class SessionsPresenterTest {
 
     @Test
     public void shouldActivateChangeListenerOnStart() {
-        when(sessionRepository.getSessions(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(sessions));
+        when(sessionRepository.getSessions(anyLong(), anyBoolean()))
+                .thenReturn(Observable.fromIterable(sessions));
         when(databaseChangeListener.getNotifier()).thenReturn(PublishSubject.create());
 
         sessionsPresenter.start();
@@ -119,7 +118,8 @@ public class SessionsPresenterTest {
 
     @Test
     public void shouldShowEmptyViewOnNoSessionList() {
-        when(sessionRepository.getSessions(anyLong(), anyBoolean())).thenReturn(Observable.fromIterable(new ArrayList<>()));
+        when(sessionRepository.getSessions(anyLong(), anyBoolean()))
+                .thenReturn(Observable.fromIterable(new ArrayList<>()));
 
         sessionsPresenter.loadSessions(true);
 
@@ -137,7 +137,8 @@ public class SessionsPresenterTest {
 
     @Test
     public void shouldShowErrorMessageOnSwipeRefreshError() {
-        when(sessionRepository.getSessions(ID, true)).thenReturn(Observable.error(Logger.TEST_ERROR));
+        when(sessionRepository.getSessions(ID, true))
+                .thenReturn(Observable.error(Logger.TEST_ERROR));
 
         sessionsPresenter.loadSessions(true);
 
@@ -159,7 +160,8 @@ public class SessionsPresenterTest {
 
     @Test
     public void testProgressbarOnSwipeRefreshError() {
-        when(sessionRepository.getSessions(ID, true)).thenReturn(Observable.error(Logger.TEST_ERROR));
+        when(sessionRepository.getSessions(ID, true))
+                .thenReturn(Observable.error(Logger.TEST_ERROR));
 
         sessionsPresenter.loadSessions(true);
 
@@ -173,7 +175,8 @@ public class SessionsPresenterTest {
     @Test
     public void testProgressbarOnSwipeRefreshNoItem() {
         List<Session> emptyList = new ArrayList<>();
-        when(sessionRepository.getSessions(ID, true)).thenReturn(Observable.fromIterable(emptyList));
+        when(sessionRepository.getSessions(ID, true))
+                .thenReturn(Observable.fromIterable(emptyList));
 
         sessionsPresenter.loadSessions(true);
 
@@ -219,7 +222,8 @@ public class SessionsPresenterTest {
     @Test
     public void shouldNotDeleteUnselectedSessions() {
         for (Long sessionId : sessionsPresenter.getSelectedSessions().keySet()) {
-            when(sessionRepository.deleteSession(sessionId)).thenReturn(Completable.error(Logger.TEST_ERROR));
+            when(sessionRepository.deleteSession(sessionId))
+                    .thenReturn(Completable.error(Logger.TEST_ERROR));
         }
 
         sessionsPresenter.deleteSelectedSessions();

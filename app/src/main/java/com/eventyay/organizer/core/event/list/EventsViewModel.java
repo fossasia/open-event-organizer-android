@@ -1,24 +1,19 @@
 package com.eventyay.organizer.core.event.list;
 
 import androidx.lifecycle.LiveData;
-import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.service.DateService;
-
+import io.reactivex.disposables.CompositeDisposable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.inject.Inject;
-
-import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 public class EventsViewModel extends ViewModel {
@@ -45,7 +40,8 @@ public class EventsViewModel extends ViewModel {
     public static final int SORTBYNAME = 1;
 
     @Inject
-    public EventsViewModel(EventRepository eventsDataRepository, Preferences sharedPreferenceModel) {
+    public EventsViewModel(
+            EventRepository eventsDataRepository, Preferences sharedPreferenceModel) {
         this.eventsDataRepository = eventsDataRepository;
         this.sharedPreferenceModel = sharedPreferenceModel;
     }
@@ -68,7 +64,8 @@ public class EventsViewModel extends ViewModel {
             return;
         }
         if (criteria == SORTBYNAME)
-            Collections.sort(events.getValue(), (e1, e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
+            Collections.sort(
+                    events.getValue(), (e1, e2) -> e1.getName().compareToIgnoreCase(e2.getName()));
         else {
             Collections.sort(events.getValue(), DateService::compareEventDates);
         }
@@ -77,21 +74,26 @@ public class EventsViewModel extends ViewModel {
 
     public void loadUserEvents(boolean forceReload) {
 
-        boolean isDeveloperModeEnabled = sharedPreferenceModel.getBoolean(
-            DEVELOPER_MODE_KEY, false);
+        boolean isDeveloperModeEnabled =
+                sharedPreferenceModel.getBoolean(DEVELOPER_MODE_KEY, false);
 
-        if (isDeveloperModeEnabled)
-            showDeveloperModeFeatures.call();
+        if (isDeveloperModeEnabled) showDeveloperModeFeatures.call();
 
-        compositeDisposable.add(eventsDataRepository.getEvents(forceReload)
-            .toSortedList()
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(newEvents -> {
-                events.setValue(newEvents);
-                success.setValue(true);
-                filter();
-            }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                eventsDataRepository
+                        .getEvents(forceReload)
+                        .toSortedList()
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                newEvents -> {
+                                    events.setValue(newEvents);
+                                    success.setValue(true);
+                                    filter();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public LiveData<String> getError() {
@@ -117,12 +119,10 @@ public class EventsViewModel extends ViewModel {
 
         for (Event event : events.getValue()) {
             try {
-                if (event.getState().equals("draft"))
-                    draft.add(event);
+                if (event.getState().equals("draft")) draft.add(event);
                 else if ("past".equalsIgnoreCase(DateService.getEventStatus(event)))
                     past.add(event);
-                else
-                    live.add(event);
+                else live.add(event);
             } catch (ParseException e) {
                 Timber.e(e);
             }

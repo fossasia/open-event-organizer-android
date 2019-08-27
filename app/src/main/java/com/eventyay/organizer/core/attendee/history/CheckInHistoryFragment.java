@@ -1,28 +1,25 @@
 package com.eventyay.organizer.core.attendee.history;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.CheckInDetail;
 import com.eventyay.organizer.databinding.CheckInHistoryFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import java.util.List;
-
 import javax.inject.Inject;
 
 public class CheckInHistoryFragment extends BaseFragment implements CheckInHistoryView {
@@ -31,8 +28,7 @@ public class CheckInHistoryFragment extends BaseFragment implements CheckInHisto
     private long attendeeId;
     private Context context;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private CheckInHistoryViewModel checkInHistoryViewModel;
 
@@ -62,9 +58,15 @@ public class CheckInHistoryFragment extends BaseFragment implements CheckInHisto
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.check_in_history_fragment, container, false);
-        checkInHistoryViewModel = ViewModelProviders.of(this, viewModelFactory).get(CheckInHistoryViewModel.class);
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        binding =
+                DataBindingUtil.inflate(
+                        inflater, R.layout.check_in_history_fragment, container, false);
+        checkInHistoryViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(CheckInHistoryViewModel.class);
 
         return binding.getRoot();
     }
@@ -104,10 +106,11 @@ public class CheckInHistoryFragment extends BaseFragment implements CheckInHisto
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            checkInHistoryViewModel.loadAttendee(attendeeId, true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    checkInHistoryViewModel.loadAttendee(attendeeId, true);
+                });
     }
 
     @Override

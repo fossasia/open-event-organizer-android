@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.notification.list.viewholder;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.data.notification.Notification;
 import com.eventyay.organizer.databinding.NotificationItemBinding;
 
@@ -18,5 +17,4 @@ public class NotificationsViewHolder extends RecyclerView.ViewHolder {
         binding.setNotification(notification);
         binding.executePendingBindings();
     }
-
 }

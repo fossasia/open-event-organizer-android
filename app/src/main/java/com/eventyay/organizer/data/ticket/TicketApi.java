@@ -1,9 +1,8 @@
 package com.eventyay.organizer.data.ticket;
 
-import java.util.List;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -30,5 +29,4 @@ public interface TicketApi {
 
     @PATCH("tickets/{ticket_id}")
     Observable<Ticket> updateTicket(@Path("ticket_id") long id, @Body Ticket ticket);
-
 }

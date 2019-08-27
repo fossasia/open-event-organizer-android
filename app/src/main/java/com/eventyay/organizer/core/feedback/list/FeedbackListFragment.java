@@ -1,30 +1,27 @@
 package com.eventyay.organizer.core.feedback.list;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.data.feedback.Feedback;
 import com.eventyay.organizer.databinding.FeedbackFragmentBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import java.util.List;
-
 import javax.inject.Inject;
 
 public class FeedbackListFragment extends BaseFragment implements FeedbackListView {
@@ -32,8 +29,7 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
     private Context context;
     private long eventId;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private FeedbackListAdapter feedbacksAdapter;
     private FeedbackFragmentBinding binding;
@@ -56,15 +52,18 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
         super.onCreate(savedInstanceState);
 
         context = getContext();
-        if (getArguments() != null)
-            eventId = getArguments().getLong(MainActivity.EVENT_KEY);
+        if (getArguments() != null) eventId = getArguments().getLong(MainActivity.EVENT_KEY);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.feedback_fragment, container, false);
-        feedbackListViewModel = ViewModelProviders.of(this, viewModelFactory).get(FeedbackListViewModel.class);
+        feedbackListViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(FeedbackListViewModel.class);
 
         return binding.getRoot();
     }
@@ -95,8 +94,7 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
     }
 
     private void setupRecyclerView() {
-        if (initialized)
-            return;
+        if (initialized) return;
 
         feedbacksAdapter = new FeedbackListAdapter(feedbackListViewModel);
 
@@ -104,17 +102,18 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(feedbacksAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
     }
-
 
     private void setupRefreshListener() {
         refreshLayout = binding.swipeContainer;
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.color_accent));
-        refreshLayout.setOnRefreshListener(() -> {
-            refreshLayout.setRefreshing(false);
-            feedbackListViewModel.loadFeedbacks(true);
-        });
+        refreshLayout.setOnRefreshListener(
+                () -> {
+                    refreshLayout.setRefreshing(false);
+                    feedbackListViewModel.loadFeedbacks(true);
+                });
     }
 
     @Override
@@ -147,5 +146,4 @@ public class FeedbackListFragment extends BaseFragment implements FeedbackListVi
     public void showEmptyView(boolean show) {
         ViewUtils.showView(binding.emptyView, show);
     }
-
 }

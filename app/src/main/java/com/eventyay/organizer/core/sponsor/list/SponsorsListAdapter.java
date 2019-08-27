@@ -1,15 +1,13 @@
 package com.eventyay.organizer.core.sponsor.list;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.sponsor.list.viewholder.SponsorsViewHolder;
 import com.eventyay.organizer.data.sponsor.Sponsor;
-
 import java.util.List;
 
 public class SponsorsListAdapter extends RecyclerView.Adapter<SponsorsViewHolder> {
@@ -25,9 +23,14 @@ public class SponsorsListAdapter extends RecyclerView.Adapter<SponsorsViewHolder
     @NonNull
     @Override
     public SponsorsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        SponsorsViewHolder sponsorsViewHolder = new SponsorsViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.sponsor_item, viewGroup, false), sponsorsPresenter);
+        SponsorsViewHolder sponsorsViewHolder =
+                new SponsorsViewHolder(
+                        DataBindingUtil.inflate(
+                                LayoutInflater.from(viewGroup.getContext()),
+                                R.layout.sponsor_item,
+                                viewGroup,
+                                false),
+                        sponsorsPresenter);
 
         sponsorsViewHolder.setLongClickAction(sponsorsPresenter::longClick);
         sponsorsViewHolder.setClickAction(sponsorsPresenter::click);
@@ -44,5 +47,4 @@ public class SponsorsListAdapter extends RecyclerView.Adapter<SponsorsViewHolder
     public int getItemCount() {
         return sponsors.size();
     }
-
 }

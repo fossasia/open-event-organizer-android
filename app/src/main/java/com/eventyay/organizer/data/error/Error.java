@@ -1,7 +1,6 @@
 package com.eventyay.organizer.data.error;
 
 import com.eventyay.organizer.utils.Utils;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

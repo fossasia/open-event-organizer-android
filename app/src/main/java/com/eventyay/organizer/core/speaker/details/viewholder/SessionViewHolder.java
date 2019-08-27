@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.speaker.details.viewholder;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.databinding.SpeakerSessionLayoutBinding;
 

@@ -1,6 +1,10 @@
 package com.eventyay.organizer.data.repository;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.AbstractObservable;
@@ -9,6 +13,14 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketApi;
 import com.eventyay.organizer.data.ticket.TicketRepositoryImpl;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,26 +29,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @SuppressWarnings("PMD.TooManyMethods")
 public class TicketRepositoryTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private TicketRepositoryImpl ticketRepository;
     private static final Ticket TICKET = new Ticket();
@@ -52,10 +48,12 @@ public class TicketRepositoryTest {
 
     @Before
     public void setUp() {
-        when(repository.observableOf(Ticket.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
+        when(repository.observableOf(Ticket.class))
+                .thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
         ticketRepository = new TicketRepositoryImpl(ticketApi, repository);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
     }
 
     @After
@@ -73,8 +71,8 @@ public class TicketRepositoryTest {
         Observable<Ticket> ticketObservable = ticketRepository.createTicket(TICKET);
 
         ticketObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -84,8 +82,8 @@ public class TicketRepositoryTest {
         Completable ticketObservable = ticketRepository.deleteTicket(ID);
 
         ticketObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -95,20 +93,21 @@ public class TicketRepositoryTest {
         Observable<Ticket> ticketObservable = ticketRepository.getTicket(ID, true);
 
         ticketObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
     public void shouldReturnConnectionErrorOnGetTicketWithNoneSaved() {
         when(repository.isConnected()).thenReturn(false);
-        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         Observable<Ticket> ticketObservable = ticketRepository.getTicket(ID, false);
 
         ticketObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -118,20 +117,21 @@ public class TicketRepositoryTest {
         Observable<Ticket> ticketObservable = ticketRepository.getTickets(ID, true);
 
         ticketObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
     public void shouldReturnConnectionErrorOnGetTicketsWithNoneSaved() {
         when(repository.isConnected()).thenReturn(false);
-        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         Observable<Ticket> ticketObservable = ticketRepository.getTickets(ID, false);
 
         ticketObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     // Network up tests
@@ -180,7 +180,8 @@ public class TicketRepositoryTest {
     public void shouldCallGetTicketServiceOnReload() {
         when(repository.isConnected()).thenReturn(true);
         when(ticketApi.getTicket(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         ticketRepository.getTicket(ID, true).subscribe();
 
@@ -191,7 +192,8 @@ public class TicketRepositoryTest {
     public void shouldCallGetTicketServiceWithNoneSaved() {
         when(repository.isConnected()).thenReturn(true);
         when(ticketApi.getTicket(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         ticketRepository.getTicket(ID, false).subscribe();
 
@@ -203,7 +205,8 @@ public class TicketRepositoryTest {
         when(repository.isConnected()).thenReturn(true);
         when(ticketApi.getTicket(ID)).thenReturn(Observable.just(TICKET));
         when(repository.save(eq(Ticket.class), eq(TICKET))).thenReturn(Completable.complete());
-        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         ticketRepository.getTicket(ID, true).subscribe();
 
@@ -216,7 +219,8 @@ public class TicketRepositoryTest {
     public void shouldCallGetTicketsServiceOnReload() {
         when(repository.isConnected()).thenReturn(true);
         when(ticketApi.getTickets(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         ticketRepository.getTickets(ID, true).subscribe();
 
@@ -227,7 +231,8 @@ public class TicketRepositoryTest {
     public void shouldCallGetTicketsServiceWithNoneSaved() {
         when(repository.isConnected()).thenReturn(true);
         when(ticketApi.getTickets(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         ticketRepository.getTickets(ID, false).subscribe();
 
@@ -241,12 +246,13 @@ public class TicketRepositoryTest {
 
         when(repository.isConnected()).thenReturn(true);
         when(ticketApi.getTickets(ID)).thenReturn(Observable.just(tickets));
-        when(repository.syncSave(eq(Ticket.class), eq(tickets), any(), any())).thenReturn(Completable.complete());
-        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.syncSave(eq(Ticket.class), eq(tickets), any(), any()))
+                .thenReturn(Completable.complete());
+        when(repository.getItems(eq(Ticket.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         ticketRepository.getTickets(ID, true).subscribe();
 
         verify(repository).syncSave(eq(Ticket.class), eq(tickets), any(), any());
     }
-
 }

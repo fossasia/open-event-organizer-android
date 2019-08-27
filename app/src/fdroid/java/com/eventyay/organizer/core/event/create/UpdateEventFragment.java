@@ -1,11 +1,12 @@
 package com.eventyay.organizer.core.event.create;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import static android.app.Activity.RESULT_OK;
+import static com.eventyay.organizer.ui.ViewUtils.showView;
+import static com.eventyay.organizer.ui.editor.RichEditorActivity.TAG_RICH_TEXT;
+
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import androidx.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,12 +14,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-
-import com.eventyay.organizer.core.settings.PaymentPrefsFragment;
-import com.google.android.material.textfield.TextInputLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -31,10 +26,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import br.com.ilhasoft.support.validation.Validator;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
+import com.eventyay.organizer.core.settings.PaymentPrefsFragment;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.image.ImageData;
 import com.eventyay.organizer.data.image.ImageUrl;
@@ -43,29 +45,21 @@ import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.ui.editor.RichEditorActivity;
 import com.eventyay.organizer.utils.Utils;
 import com.eventyay.organizer.utils.ValidateUtils;
+import com.google.android.material.textfield.TextInputLayout;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment;
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.inject.Inject;
-
-import br.com.ilhasoft.support.validation.Validator;
 import timber.log.Timber;
-
-import static android.app.Activity.RESULT_OK;
-import static com.eventyay.organizer.ui.ViewUtils.showView;
-import static com.eventyay.organizer.ui.editor.RichEditorActivity.TAG_RICH_TEXT;
 
 public class UpdateEventFragment extends BaseFragment implements CreateEventView {
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private EventCreateLayoutBinding binding;
     private Validator validator;
@@ -92,10 +86,15 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.event_create_layout, container, false);
         validator = new Validator(binding.form);
-        createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
+        createEventViewModel =
+                ViewModelProviders.of(getActivity(), viewModelFactory)
+                        .get(CreateEventViewModel.class);
 
         if (getArguments() != null) {
             Bundle bundle = getArguments();
@@ -113,25 +112,32 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         setHasOptionsMenu(true);
 
-        binding.form.eventOriginalImageLayout.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_CHOOSER_REQUEST_CODE);
-        });
+        binding.form.eventOriginalImageLayout.setOnClickListener(
+                view -> {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(
+                            Intent.createChooser(intent, "Select Picture"),
+                            IMAGE_CHOOSER_REQUEST_CODE);
+                });
 
-        binding.form.description.setOnClickListener(view -> {
-            Intent richEditorIntent = new Intent(getContext(), RichEditorActivity.class);
-            richEditorIntent.putExtra(TAG_RICH_TEXT, binding.form.description.getText().toString());
-            startActivityForResult(richEditorIntent, RICH_TEXT_REQUEST);
-        });
+        binding.form.description.setOnClickListener(
+                view -> {
+                    Intent richEditorIntent = new Intent(getContext(), RichEditorActivity.class);
+                    richEditorIntent.putExtra(
+                            TAG_RICH_TEXT, binding.form.description.getText().toString());
+                    startActivityForResult(richEditorIntent, RICH_TEXT_REQUEST);
+                });
 
-        binding.form.paymentPrefs.setOnClickListener(view -> {
-            getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, PaymentPrefsFragment.newInstance())
-                .addToBackStack(null)
-                .commit();
-        });
+        binding.form.paymentPrefs.setOnClickListener(
+                view -> {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, PaymentPrefsFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit();
+                });
 
         setupSpinners();
         attachCountryList(createEventViewModel.getCountryList());
@@ -145,27 +151,32 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     private void setupSpinners() {
         currencyAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        paymentCountryAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
-        paymentCountryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        paymentCountryAdapter =
+                new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
+        paymentCountryAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
         timezoneAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
         timezoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timezoneAdapter.addAll(getTimeZoneList());
         binding.form.timezoneSpinner.setAdapter(timezoneAdapter);
 
-        binding.form.paymentCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.form.paymentCountrySpinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int index = createEventViewModel.onPaymentCountrySelected(adapterView.getItemAtPosition(i).toString());
-                setPaymentCurrency(index);
-            }
+                    @Override
+                    public void onItemSelected(
+                            AdapterView<?> adapterView, View view, int i, long l) {
+                        int index =
+                                createEventViewModel.onPaymentCountrySelected(
+                                        adapterView.getItemAtPosition(i).toString());
+                        setPaymentCurrency(index);
+                    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //do nothing
-            }
-
-        });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        // do nothing
+                    }
+                });
     }
 
     @Override
@@ -173,18 +184,37 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         super.onStart();
         createEventViewModel.getProgress().observe(this, this::showProgress);
         createEventViewModel.getErrorMessage().observe(this, this::showError);
-        createEventViewModel.getEventLiveData().observe(this, event -> {
-            setEvent(event);
-            setPaymentBinding(event);
-        });
+        createEventViewModel
+                .getEventLiveData()
+                .observe(
+                        this,
+                        event -> {
+                            setEvent(event);
+                            setPaymentBinding(event);
+                        });
         createEventViewModel.getImageUrlLiveData().observe(this, this::setImageUrl);
         createEventViewModel.getCloseState().observe(this, isClose -> close());
 
-        validate(binding.form.ticketUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.logoUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.externalEventUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.originalImageUrlLayout, ValidateUtils::validateUrl, getResources().getString(R.string.url_validation_error));
-        validate(binding.form.paypalEmailLayout, ValidateUtils::validateEmail, getResources().getString(R.string.email_validation_error));
+        validate(
+                binding.form.ticketUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
+        validate(
+                binding.form.logoUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
+        validate(
+                binding.form.externalEventUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
+        validate(
+                binding.form.originalImageUrlLayout,
+                ValidateUtils::validateUrl,
+                getResources().getString(R.string.url_validation_error));
+        validate(
+                binding.form.paypalEmailLayout,
+                ValidateUtils::validateEmail,
+                getResources().getString(R.string.email_validation_error));
 
         createEventViewModel.loadEvents(eventId);
 
@@ -215,7 +245,8 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         super.onPrepareOptionsMenu(menu);
         MenuItem menuItem = menu.findItem(R.id.action_menu_done);
         Drawable shareIcon = menu.findItem(R.id.action_menu_done).getIcon();
-        shareIcon.setColorFilter(getResources().getColor(android.R.color.black), PorterDuff.Mode.SRC_ATOP);
+        shareIcon.setColorFilter(
+                getResources().getColor(android.R.color.black), PorterDuff.Mode.SRC_ATOP);
         menuItem.setVisible(true);
     }
 
@@ -225,34 +256,42 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     }
 
     @Override
-    public void validate(TextInputLayout textInputLayout, Function<String, Boolean> validationReference, String errorResponse) {
-        textInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+    public void validate(
+            TextInputLayout textInputLayout,
+            Function<String, Boolean> validationReference,
+            String errorResponse) {
+        textInputLayout
+                .getEditText()
+                .addTextChangedListener(
+                        new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // Nothing here
-            }
+                            @Override
+                            public void beforeTextChanged(
+                                    CharSequence charSequence, int i, int i1, int i2) {
+                                // Nothing here
+                            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (validationReference.apply(charSequence.toString())) {
-                    textInputLayout.setError(null);
-                    textInputLayout.setErrorEnabled(false);
-                } else {
-                    textInputLayout.setErrorEnabled(true);
-                    textInputLayout.setError(errorResponse);
-                }
-                if (TextUtils.isEmpty(charSequence)) {
-                    textInputLayout.setError(null);
-                    textInputLayout.setErrorEnabled(false);
-                }
-            }
+                            @Override
+                            public void onTextChanged(
+                                    CharSequence charSequence, int i, int i1, int i2) {
+                                if (validationReference.apply(charSequence.toString())) {
+                                    textInputLayout.setError(null);
+                                    textInputLayout.setErrorEnabled(false);
+                                } else {
+                                    textInputLayout.setErrorEnabled(true);
+                                    textInputLayout.setError(errorResponse);
+                                }
+                                if (TextUtils.isEmpty(charSequence)) {
+                                    textInputLayout.setError(null);
+                                    textInputLayout.setErrorEnabled(false);
+                                }
+                            }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Nothing here
-            }
-        });
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                // Nothing here
+                            }
+                        });
     }
 
     @Override
@@ -277,7 +316,6 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
     protected int getTitle() {
         return R.string.update_event;
     }
-
 
     @Override
     public void showError(String error) {
@@ -307,7 +345,11 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         ApplicationInfo applicationInfo = null;
         try {
-            applicationInfo = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
+            applicationInfo =
+                    getContext()
+                            .getPackageManager()
+                            .getApplicationInfo(
+                                    getContext().getPackageName(), PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             Timber.e(e);
         }
@@ -315,40 +357,44 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         String mapboxAccessToken = bundle.getString(getString(R.string.mapbox_access_token));
 
-        binding.form.selectLocationButton.setOnClickListener(view -> {
+        binding.form.selectLocationButton.setOnClickListener(
+                view -> {
+                    if (mapboxAccessToken.equals("YOUR_ACCESS_TOKEN")) {
+                        ViewUtils.showSnackbar(binding.getRoot(), R.string.access_token_required);
+                        return;
+                    }
 
-            if (mapboxAccessToken.equals("YOUR_ACCESS_TOKEN")) {
-                ViewUtils.showSnackbar(binding.getRoot(), R.string.access_token_required);
-                return;
-            }
+                    PlaceAutocompleteFragment autocompleteFragment =
+                            PlaceAutocompleteFragment.newInstance(
+                                    mapboxAccessToken,
+                                    PlaceOptions.builder().backgroundColor(Color.WHITE).build());
 
-            PlaceAutocompleteFragment autocompleteFragment = PlaceAutocompleteFragment.newInstance(
-                mapboxAccessToken, PlaceOptions.builder().backgroundColor(Color.WHITE).build());
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment, autocompleteFragment)
+                            .addToBackStack(null)
+                            .commit();
 
-            getFragmentManager().beginTransaction()
-                .replace(R.id.fragment, autocompleteFragment)
-                .addToBackStack(null)
-                .commit();
+                    autocompleteFragment.setOnPlaceSelectedListener(
+                            new PlaceSelectionListener() {
+                                @Override
+                                public void onPlaceSelected(CarmenFeature carmenFeature) {
+                                    Event event = binding.getEvent();
+                                    event.setLatitude(carmenFeature.center().latitude());
+                                    event.setLongitude(carmenFeature.center().longitude());
+                                    event.setLocationName(carmenFeature.placeName());
+                                    event.setSearchableLocationName(carmenFeature.text());
+                                    binding.form.layoutLocationName.setVisibility(View.VISIBLE);
+                                    binding.form.locationName.setText(event.getLocationName());
+                                    getFragmentManager().popBackStack();
+                                }
 
-            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                @Override
-                public void onPlaceSelected(CarmenFeature carmenFeature) {
-                    Event event = binding.getEvent();
-                    event.setLatitude(carmenFeature.center().latitude());
-                    event.setLongitude(carmenFeature.center().longitude());
-                    event.setLocationName(carmenFeature.placeName());
-                    event.setSearchableLocationName(carmenFeature.text());
-                    binding.form.layoutLocationName.setVisibility(View.VISIBLE);
-                    binding.form.locationName.setText(event.getLocationName());
-                    getFragmentManager().popBackStack();
-                }
-
-                @Override
-                public void onCancel() {
-                    getFragmentManager().popBackStack();
-                }
-            });
-        });
+                                @Override
+                                public void onCancel() {
+                                    getFragmentManager().popBackStack();
+                                }
+                            });
+                });
     }
 
     @Override
@@ -364,7 +410,8 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         } else if (requestCode == IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
             try {
-                InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImageUri);
+                InputStream imageStream =
+                        getActivity().getContentResolver().openInputStream(selectedImageUri);
                 Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
                 String encodedImage = Utils.encodeImage(getActivity(), bitmap, selectedImageUri);
                 ImageData imageData = new ImageData(encodedImage);
@@ -372,7 +419,11 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
                 binding.form.eventOriginalImage.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 Timber.e(e, "File not found");
-                Toast.makeText(getActivity(), "File not found. Please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                                getActivity(),
+                                "File not found. Please try again.",
+                                Toast.LENGTH_SHORT)
+                        .show();
             }
         }
     }

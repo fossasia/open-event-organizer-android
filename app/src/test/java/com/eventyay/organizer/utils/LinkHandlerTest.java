@@ -1,10 +1,10 @@
 package com.eventyay.organizer.utils;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
 public class LinkHandlerTest {
@@ -14,25 +14,27 @@ public class LinkHandlerTest {
 
     @Test
     public void shouldHaveCorrectDestination() {
-        assertEquals(LinkHandler.Destination.RESET_PASSWORD,
-            LinkHandler.getDestinationAndToken(resetPassUrl).getDestination());
-        assertEquals(LinkHandler.Destination.VERIFY_EMAIL,
-            LinkHandler.getDestinationAndToken(verifyEmailUrl).getDestination());
+        assertEquals(
+                LinkHandler.Destination.RESET_PASSWORD,
+                LinkHandler.getDestinationAndToken(resetPassUrl).getDestination());
+        assertEquals(
+                LinkHandler.Destination.VERIFY_EMAIL,
+                LinkHandler.getDestinationAndToken(verifyEmailUrl).getDestination());
     }
 
     @Test
     public void shouldGetPasswordResetToken() {
-        assertEquals(LinkHandler.Destination.RESET_PASSWORD,
-            LinkHandler.getDestinationAndToken(resetPassUrl).getDestination());
-        assertEquals("12345678",
-            LinkHandler.getDestinationAndToken(resetPassUrl).getToken());
+        assertEquals(
+                LinkHandler.Destination.RESET_PASSWORD,
+                LinkHandler.getDestinationAndToken(resetPassUrl).getDestination());
+        assertEquals("12345678", LinkHandler.getDestinationAndToken(resetPassUrl).getToken());
     }
 
     @Test
     public void shouldGetEmailVerificationToken() {
-        assertEquals(LinkHandler.Destination.VERIFY_EMAIL,
-            LinkHandler.getDestinationAndToken(verifyEmailUrl).getDestination());
-        assertEquals("12345678",
-            LinkHandler.getDestinationAndToken(verifyEmailUrl).getToken());
+        assertEquals(
+                LinkHandler.Destination.VERIFY_EMAIL,
+                LinkHandler.getDestinationAndToken(verifyEmailUrl).getDestination());
+        assertEquals("12345678", LinkHandler.getDestinationAndToken(verifyEmailUrl).getToken());
     }
 }

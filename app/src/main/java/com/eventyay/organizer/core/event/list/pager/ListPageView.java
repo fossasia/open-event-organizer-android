@@ -8,5 +8,4 @@ public interface ListPageView extends Emptiable<Event> {
     void openSalesSummary(Long id);
 
     void closeSalesSummary();
-
 }

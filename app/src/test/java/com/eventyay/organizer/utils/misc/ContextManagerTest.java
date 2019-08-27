@@ -1,7 +1,16 @@
 package com.eventyay.organizer.utils.misc;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.data.user.User;
+import io.sentry.Sentry;
+import io.sentry.SentryClient;
+import io.sentry.context.Context;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -10,17 +19,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import io.sentry.Sentry;
-import io.sentry.SentryClient;
-import io.sentry.context.Context;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class ContextManagerTest {
 
@@ -60,12 +58,12 @@ public class ContextManagerTest {
         data.put("details", user);
 
         contextManager.setOrganiser(user);
-        ArgumentCaptor<io.sentry.event.User> argument = ArgumentCaptor.forClass(io.sentry.event.User.class);
+        ArgumentCaptor<io.sentry.event.User> argument =
+                ArgumentCaptor.forClass(io.sentry.event.User.class);
         verify(context).setUser(argument.capture());
 
         assertEquals("test@example.com", argument.getValue().getEmail());
         assertEquals("32", argument.getValue().getId());
         assertEquals(data, argument.getValue().getData());
     }
-
 }

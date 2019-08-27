@@ -2,7 +2,6 @@ package com.eventyay.organizer.core.event.list.sales;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.core.event.dashboard.analyser.TicketAnalyser;
 import com.eventyay.organizer.data.attendee.Attendee;
@@ -10,13 +9,10 @@ import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
+import java.util.List;
+import javax.inject.Inject;
 
 public class SalesSummaryViewModel extends ViewModel {
 
@@ -33,12 +29,13 @@ public class SalesSummaryViewModel extends ViewModel {
     private final SingleEventLiveData<Event> eventLiveData = new SingleEventLiveData<>();
 
     @Inject
-    public SalesSummaryViewModel(EventRepository eventRepository, AttendeeRepository attendeeRepository,
-                                 TicketAnalyser ticketAnalyser) {
+    public SalesSummaryViewModel(
+            EventRepository eventRepository,
+            AttendeeRepository attendeeRepository,
+            TicketAnalyser ticketAnalyser) {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
         this.attendeeRepository = attendeeRepository;
-
     }
 
     public LiveData<Boolean> getProgress() {
@@ -60,36 +57,37 @@ public class SalesSummaryViewModel extends ViewModel {
     public void loadDetails(long eventId, boolean forceReload) {
 
         compositeDisposable.add(
-            getEventSource(eventId, forceReload)
-                .flatMap(loadedEvent -> {
-                    this.event = loadedEvent;
-                    ticketAnalyser.analyseTotalTickets(event);
-                    return getAttendeeSource(eventId, forceReload);
-                })
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> {
-                    progress.setValue(false);
-                    eventLiveData.setValue(event);
-                })
-                .toList()
-                .subscribe(attendees -> {
-                    this.attendees = attendees;
-                    ticketAnalyser.analyseSoldTickets(event, attendees);
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
-
+                getEventSource(eventId, forceReload)
+                        .flatMap(
+                                loadedEvent -> {
+                                    this.event = loadedEvent;
+                                    ticketAnalyser.analyseTotalTickets(event);
+                                    return getAttendeeSource(eventId, forceReload);
+                                })
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(
+                                () -> {
+                                    progress.setValue(false);
+                                    eventLiveData.setValue(event);
+                                })
+                        .toList()
+                        .subscribe(
+                                attendees -> {
+                                    this.attendees = attendees;
+                                    ticketAnalyser.analyseSoldTickets(event, attendees);
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     private Observable<Event> getEventSource(long eventId, boolean forceReload) {
-        if (!forceReload && event != null)
-            return Observable.just(event);
-        else
-            return eventRepository.getEvent(eventId, forceReload);
+        if (!forceReload && event != null) return Observable.just(event);
+        else return eventRepository.getEvent(eventId, forceReload);
     }
 
     private Observable<Attendee> getAttendeeSource(long eventId, boolean forceReload) {
-        if (!forceReload && attendees != null)
-            return Observable.fromIterable(attendees);
-        else
-            return attendeeRepository.getAttendees(eventId, forceReload);
+        if (!forceReload && attendees != null) return Observable.fromIterable(attendees);
+        else return attendeeRepository.getAttendees(eventId, forceReload);
     }
 }

@@ -1,17 +1,15 @@
 package com.eventyay.organizer.core.orders.create.adapter;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.orders.create.CreateOrderViewModel;
 import com.eventyay.organizer.core.orders.create.viewholder.CreateOrderTicketsViewHolder;
 import com.eventyay.organizer.data.ticket.Ticket;
-
 import java.util.List;
 
 public class CreateOrderTicketsAdapter extends RecyclerView.Adapter<CreateOrderTicketsViewHolder> {
@@ -25,9 +23,16 @@ public class CreateOrderTicketsAdapter extends RecyclerView.Adapter<CreateOrderT
 
     @NonNull
     @Override
-    public CreateOrderTicketsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        CreateOrderTicketsViewHolder createOrderTicketsViewHolder = new CreateOrderTicketsViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-            R.layout.order_create_ticket_layout, viewGroup, false), createOrderViewModel);
+    public CreateOrderTicketsViewHolder onCreateViewHolder(
+            @NonNull ViewGroup viewGroup, int position) {
+        CreateOrderTicketsViewHolder createOrderTicketsViewHolder =
+                new CreateOrderTicketsViewHolder(
+                        DataBindingUtil.inflate(
+                                LayoutInflater.from(viewGroup.getContext()),
+                                R.layout.order_create_ticket_layout,
+                                viewGroup,
+                                false),
+                        createOrderViewModel);
 
         createOrderTicketsViewHolder.setClickAction(createOrderViewModel::ticketClick);
 
@@ -35,7 +40,8 @@ public class CreateOrderTicketsAdapter extends RecyclerView.Adapter<CreateOrderT
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CreateOrderTicketsViewHolder createOrderTicketsViewHolder, int position) {
+    public void onBindViewHolder(
+            @NonNull CreateOrderTicketsViewHolder createOrderTicketsViewHolder, int position) {
         createOrderTicketsViewHolder.bind(tickets.get(position));
     }
 
@@ -50,27 +56,33 @@ public class CreateOrderTicketsAdapter extends RecyclerView.Adapter<CreateOrderT
             tickets = newTickets;
             notifyItemRangeInserted(0, newTickets.size());
         } else {
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return tickets.size();
-                }
+            DiffUtil.DiffResult result =
+                    DiffUtil.calculateDiff(
+                            new DiffUtil.Callback() {
+                                @Override
+                                public int getOldListSize() {
+                                    return tickets.size();
+                                }
 
-                @Override
-                public int getNewListSize() {
-                    return newTickets.size();
-                }
+                                @Override
+                                public int getNewListSize() {
+                                    return newTickets.size();
+                                }
 
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    return tickets.get(oldItemPosition).getId() == newTickets.get(newItemPosition).getId();
-                }
+                                @Override
+                                public boolean areItemsTheSame(
+                                        int oldItemPosition, int newItemPosition) {
+                                    return tickets.get(oldItemPosition).getId()
+                                            == newTickets.get(newItemPosition).getId();
+                                }
 
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    return tickets.get(oldItemPosition).equals(newTickets.get(newItemPosition));
-                }
-            });
+                                @Override
+                                public boolean areContentsTheSame(
+                                        int oldItemPosition, int newItemPosition) {
+                                    return tickets.get(oldItemPosition)
+                                            .equals(newTickets.get(newItemPosition));
+                                }
+                            });
             tickets = newTickets;
             result.dispatchUpdatesTo(this);
         }

@@ -3,19 +3,15 @@ package com.eventyay.organizer.core.settings.autocheckin;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
+import java.util.List;
+import javax.inject.Inject;
 
 public class AutoCheckInViewModel extends ViewModel {
 
@@ -34,35 +30,45 @@ public class AutoCheckInViewModel extends ViewModel {
     }
 
     public void loadTickets(long eventId) {
-        compositeDisposable.add(ticketRepository.getTickets(eventId, true)
-            .toSortedList()
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> progress.setValue(false))
-            .subscribe(tickets::setValue,
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+        compositeDisposable.add(
+                ticketRepository
+                        .getTickets(eventId, true)
+                        .toSortedList()
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                tickets::setValue,
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void updateTicket(Ticket ticket) {
         compositeDisposable.add(
-            ticketRepository
-                .updateTicket(ticket)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(updatedTicket -> {
-                    ticketUpdatedAction.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                ticketRepository
+                        .updateTicket(ticket)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                updatedTicket -> {
+                                    ticketUpdatedAction.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void updateAllTickets(boolean toAutoCheckIn) {
         compositeDisposable.add(
-            Observable.fromIterable(tickets.getValue())
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(ticket -> {
-                    ticket.autoCheckinEnabled = toAutoCheckIn;
-                    updateTicket(ticket);
-                }, Logger::logError)
-        );
+                Observable.fromIterable(tickets.getValue())
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                ticket -> {
+                                    ticket.autoCheckinEnabled = toAutoCheckIn;
+                                    updateTicket(ticket);
+                                },
+                                Logger::logError));
     }
 
     public LiveData<List<Ticket>> getTickets() {
@@ -80,5 +86,4 @@ public class AutoCheckInViewModel extends ViewModel {
     public LiveData<Void> getTicketUpdatedAction() {
         return ticketUpdatedAction;
     }
-
 }

@@ -1,5 +1,13 @@
 package com.eventyay.organizer.data.repository;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.refEq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.AbstractObservable;
@@ -13,6 +21,15 @@ import com.eventyay.organizer.data.image.ImageUploadApi;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserApi;
 import com.eventyay.organizer.data.user.UserRepositoryImpl;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.internal.operators.observable.ObservableLift;
+import io.reactivex.observers.TestObserver;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,30 +38,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Arrays;
-import java.util.List;
-
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.internal.operators.observable.ObservableLift;
-import io.reactivex.observers.TestObserver;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.refEq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
-
 @SuppressWarnings("PMD.TooManyMethods")
 public class EventRepositoryTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private EventRepositoryImpl eventRepository;
     private UserRepositoryImpl userRepository;
@@ -55,23 +52,27 @@ public class EventRepositoryTest {
     @Mock private AuthHolder authHolder;
     @Mock private ImageUploadApi imageUploadApi;
 
-    private static final List<Event> EVENTS = Arrays.asList(
-        Event.builder().id(12L).build(),
-        Event.builder().id(21L).build(),
-        Event.builder().id(52L).build()
-    );
+    private static final List<Event> EVENTS =
+            Arrays.asList(
+                    Event.builder().id(12L).build(),
+                    Event.builder().id(21L).build(),
+                    Event.builder().id(52L).build());
     private static final long ID = 4L;
     private static final Event EVENT = Event.builder().id(ID).state(Event.STATE_PUBLISHED).build();
-    private static final Event UPDATED_EVENT = Event.builder().id(ID).state(Event.STATE_PUBLISHED).build();
+    private static final Event UPDATED_EVENT =
+            Event.builder().id(ID).state(Event.STATE_PUBLISHED).build();
 
     @Before
     public void setUp() {
-        when(repository.observableOf(Event.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
-        when(repository.observableOf(User.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
+        when(repository.observableOf(Event.class))
+                .thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
+        when(repository.observableOf(User.class))
+                .thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
         eventRepository = new EventRepositoryImpl(repository, eventApi, authHolder, imageUploadApi);
         userRepository = new UserRepositoryImpl(userApi, repository, authHolder, imageUploadApi);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
     }
 
     @After
@@ -86,29 +87,17 @@ public class EventRepositoryTest {
         when(repository.getAllItems(any())).thenReturn(Observable.empty());
         when(repository.getItems(any(), any())).thenReturn(Observable.empty());
 
-        eventRepository.getEvents(false)
-            .test()
-            .assertErrorMessage(Constants.NO_NETWORK);
+        eventRepository.getEvents(false).test().assertErrorMessage(Constants.NO_NETWORK);
 
-        eventRepository.getEvents(true)
-            .test()
-            .assertErrorMessage(Constants.NO_NETWORK);
+        eventRepository.getEvents(true).test().assertErrorMessage(Constants.NO_NETWORK);
 
-        eventRepository.getEvent(21L, false)
-            .test()
-            .assertErrorMessage(Constants.NO_NETWORK);
+        eventRepository.getEvent(21L, false).test().assertErrorMessage(Constants.NO_NETWORK);
 
-        eventRepository.getEvent(21L, true)
-            .test()
-            .assertErrorMessage(Constants.NO_NETWORK);
+        eventRepository.getEvent(21L, true).test().assertErrorMessage(Constants.NO_NETWORK);
 
-        userRepository.getOrganizer(false)
-            .test()
-            .assertErrorMessage(Constants.NO_NETWORK);
+        userRepository.getOrganizer(false).test().assertErrorMessage(Constants.NO_NETWORK);
 
-        userRepository.getOrganizer(true)
-            .test()
-            .assertErrorMessage(Constants.NO_NETWORK);
+        userRepository.getOrganizer(true).test().assertErrorMessage(Constants.NO_NETWORK);
 
         verifyZeroInteractions(eventApi);
     }
@@ -118,23 +107,20 @@ public class EventRepositoryTest {
         User user = new User();
 
         TestObserver testObserver = TestObserver.create();
-        Completable completable = Completable.complete()
-            .doOnSubscribe(testObserver::onSubscribe);
+        Completable completable = Completable.complete().doOnSubscribe(testObserver::onSubscribe);
 
         when(repository.isConnected()).thenReturn(true);
         when(authHolder.getIdentity()).thenReturn(344);
         when(repository.getItems(eq(User.class), any()))
-            .thenReturn(Observable.empty())
-            .thenReturn(Observable.just(user));
+                .thenReturn(Observable.empty())
+                .thenReturn(Observable.just(user));
         when(repository.save(User.class, user)).thenReturn(completable);
         when(userApi.getOrganizer(344)).thenReturn(Observable.just(user));
 
         // No force reload ensures use of cache
         Observable<User> userObservable = userRepository.getOrganizer(false);
 
-        userObservable
-            .test()
-            .assertValue(user);
+        userObservable.test().assertValue(user);
 
         // Verify loads from network
         verify(userApi).getOrganizer(344);
@@ -151,9 +137,7 @@ public class EventRepositoryTest {
         // No force reload ensures use of cache
         Observable<User> userObservable = userRepository.getOrganizer(false);
 
-        userObservable
-            .test()
-            .assertValue(user);
+        userObservable.test().assertValue(user);
 
         verifyZeroInteractions(userApi);
     }
@@ -182,22 +166,19 @@ public class EventRepositoryTest {
         Event event = new Event();
 
         TestObserver testObserver = TestObserver.create();
-        Completable completable = Completable.complete()
-            .doOnSubscribe(testObserver::onSubscribe);
+        Completable completable = Completable.complete().doOnSubscribe(testObserver::onSubscribe);
 
         when(repository.isConnected()).thenReturn(true);
         when(repository.getItems(eq(Event.class), refEq(Event_Table.id.eq(id))))
-            .thenReturn(Observable.empty())
-            .thenReturn(Observable.just(event));
+                .thenReturn(Observable.empty())
+                .thenReturn(Observable.just(event));
         when(repository.save(Event.class, event)).thenReturn(completable);
         when(eventApi.getEvent(id)).thenReturn(Observable.just(event));
 
         // No force reload ensures use of cache
         Observable<Event> userObservable = eventRepository.getEvent(23, false);
 
-        userObservable.test()
-            .assertSubscribed()
-            .assertValue(event);
+        userObservable.test().assertSubscribed().assertValue(event);
 
         testObserver.assertSubscribed();
 
@@ -212,7 +193,7 @@ public class EventRepositoryTest {
 
         Event event = new Event();
         when(repository.getItems(eq(Event.class), refEq(Event_Table.id.eq(id))))
-            .thenReturn(Observable.just(event));
+                .thenReturn(Observable.just(event));
 
         // No force reload ensures use of cache
         Observable<Event> eventObservable = eventRepository.getEvent(id, false);
@@ -229,16 +210,14 @@ public class EventRepositoryTest {
         Event event = new Event();
         when(repository.save(Event.class, event)).thenReturn(Completable.complete());
         when(repository.getItems(eq(Event.class), refEq(Event_Table.id.eq(id))))
-            .thenReturn(Observable.just(event));
+                .thenReturn(Observable.just(event));
         when(repository.isConnected()).thenReturn(true);
         when(eventApi.getEvent(id)).thenReturn(Observable.just(event));
 
         // Force reload ensures no use of cache
         Observable<Event> userObservable = eventRepository.getEvent(id, true);
 
-        userObservable
-            .test()
-            .assertValue(event);
+        userObservable.test().assertValue(event);
 
         // Verify loads from network
         verify(eventApi).getEvent(id);
@@ -247,24 +226,21 @@ public class EventRepositoryTest {
     @Test
     public void shouldSaveEventsInCache() {
         TestObserver testObserver = TestObserver.create();
-        Completable completable = Completable.complete()
-            .doOnSubscribe(testObserver::onSubscribe);
+        Completable completable = Completable.complete().doOnSubscribe(testObserver::onSubscribe);
 
         when(repository.isConnected()).thenReturn(true);
         when(authHolder.getIdentity()).thenReturn(344);
         when(repository.getAllItems(eq(Event.class)))
-            .thenReturn(Observable.empty())
-            .thenReturn(Observable.fromIterable(EVENTS));
-        when(repository.syncSave(eq(Event.class), eq(EVENTS), any(), any())).thenReturn(completable);
+                .thenReturn(Observable.empty())
+                .thenReturn(Observable.fromIterable(EVENTS));
+        when(repository.syncSave(eq(Event.class), eq(EVENTS), any(), any()))
+                .thenReturn(completable);
         when(eventApi.getEvents(344L)).thenReturn(Observable.just(EVENTS));
 
         // No force reload ensures use of cache
         Observable<Event> eventObservable = eventRepository.getEvents(false);
 
-        eventObservable
-            .toList()
-            .test()
-            .assertValue(EVENTS);
+        eventObservable.toList().test().assertValue(EVENTS);
 
         // Verify loads from network
         verify(eventApi).getEvents(344L);
@@ -275,15 +251,11 @@ public class EventRepositoryTest {
 
     @Test
     public void shouldLoadEventsFromCache() {
-        when(repository.getAllItems(eq(Event.class)))
-            .thenReturn(Observable.fromIterable(EVENTS));
+        when(repository.getAllItems(eq(Event.class))).thenReturn(Observable.fromIterable(EVENTS));
         // No force reload ensures use of cache
         Observable<Event> eventsObservable = eventRepository.getEvents(false);
 
-        eventsObservable
-            .toList()
-            .test()
-            .assertValue(EVENTS);
+        eventsObservable.toList().test().assertValue(EVENTS);
 
         verify(repository).getAllItems(eq(Event.class));
         verifyZeroInteractions(eventApi);
@@ -294,18 +266,15 @@ public class EventRepositoryTest {
         when(repository.isConnected()).thenReturn(true);
         when(authHolder.getIdentity()).thenReturn(344);
         when(repository.saveList(Event.class, EVENTS)).thenReturn(Completable.complete());
-        when(repository.getAllItems(eq(Event.class)))
-            .thenReturn(Observable.fromIterable(EVENTS));
-        when(repository.syncSave(eq(Event.class), eq(EVENTS), any(), any())).thenReturn(Completable.complete());
+        when(repository.getAllItems(eq(Event.class))).thenReturn(Observable.fromIterable(EVENTS));
+        when(repository.syncSave(eq(Event.class), eq(EVENTS), any(), any()))
+                .thenReturn(Completable.complete());
         when(eventApi.getEvents(344)).thenReturn(Observable.just(EVENTS));
 
         // Force reload ensures no use of cache
         Observable<Event> eventsObservable = eventRepository.getEvents(true);
 
-        eventsObservable
-            .toList()
-            .test()
-            .assertValue(EVENTS);
+        eventsObservable.toList().test().assertValue(EVENTS);
 
         // Verify loads from network
         verify(eventApi).getEvents(344L);
@@ -316,8 +285,8 @@ public class EventRepositoryTest {
     public void shouldSaveOnForceReload() {
         when(repository.isConnected()).thenReturn(true);
         when(authHolder.getIdentity()).thenReturn(344);
-        //when(repository.saveList(Event.class, EVENTS)).thenReturn(Completable.complete());
-        //when(repository.deleteAll(Event.class)).thenReturn(Completable.complete());
+        // when(repository.saveList(Event.class, EVENTS)).thenReturn(Completable.complete());
+        // when(repository.deleteAll(Event.class)).thenReturn(Completable.complete());
         when(eventApi.getEvents(344L)).thenReturn(Observable.just(EVENTS));
 
         eventRepository.getEvents(true).test();
@@ -328,8 +297,7 @@ public class EventRepositoryTest {
     @Test
     public void shouldUpdateToggledEventToDatabaseOnSuccess() {
         TestObserver testObserver = TestObserver.create();
-        Completable completable = Completable.complete()
-            .doOnSubscribe(testObserver::onSubscribe);
+        Completable completable = Completable.complete().doOnSubscribe(testObserver::onSubscribe);
 
         when(repository.isConnected()).thenReturn(true);
         when(authHolder.getIdentity()).thenReturn(344);
@@ -344,12 +312,12 @@ public class EventRepositoryTest {
     @Test
     public void shouldNotUpdateToggledEventOnError() {
         TestObserver testObserver = TestObserver.create();
-        Completable completable = Completable.complete()
-            .doOnSubscribe(testObserver::onSubscribe);
+        Completable completable = Completable.complete().doOnSubscribe(testObserver::onSubscribe);
 
         when(repository.isConnected()).thenReturn(true);
         when(authHolder.getIdentity()).thenReturn(344);
-        when(eventApi.patchEvent(EVENT.id, EVENT)).thenReturn(ObservableLift.error(Logger.TEST_ERROR));
+        when(eventApi.patchEvent(EVENT.id, EVENT))
+                .thenReturn(ObservableLift.error(Logger.TEST_ERROR));
         when(repository.update(Event.class, UPDATED_EVENT)).thenReturn(completable);
 
         eventRepository.updateEvent(EVENT).test();
@@ -360,8 +328,7 @@ public class EventRepositoryTest {
     @Test
     public void shouldSaveCreatedEventToDatabaseOnSuccess() {
         TestObserver testObserver = TestObserver.create();
-        Completable completable = Completable.complete()
-            .doOnSubscribe(testObserver::onSubscribe);
+        Completable completable = Completable.complete().doOnSubscribe(testObserver::onSubscribe);
 
         when(repository.isConnected()).thenReturn(true);
         when(eventApi.postEvent(EVENT)).thenReturn(Observable.just(EVENT));
@@ -375,8 +342,7 @@ public class EventRepositoryTest {
     @Test
     public void shouldNotSaveCreatedEventOnError() {
         TestObserver testObserver = TestObserver.create();
-        Completable completable = Completable.complete()
-            .doOnSubscribe(testObserver::onSubscribe);
+        Completable completable = Completable.complete().doOnSubscribe(testObserver::onSubscribe);
 
         when(repository.isConnected()).thenReturn(true);
         when(eventApi.postEvent(EVENT)).thenReturn(ObservableLift.error(Logger.TEST_ERROR));

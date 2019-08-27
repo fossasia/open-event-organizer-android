@@ -6,5 +6,5 @@ import com.eventyay.organizer.common.mvp.view.Progressive;
 import com.eventyay.organizer.common.mvp.view.Refreshable;
 import com.eventyay.organizer.data.attendee.CheckInDetail;
 
-public interface CheckInHistoryView extends Progressive, Erroneous, Refreshable, Emptiable<CheckInDetail> {
-}
+public interface CheckInHistoryView
+        extends Progressive, Erroneous, Refreshable, Emptiable<CheckInDetail> {}

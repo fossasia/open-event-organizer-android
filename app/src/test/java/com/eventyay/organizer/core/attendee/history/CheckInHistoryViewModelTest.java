@@ -1,13 +1,20 @@
 package com.eventyay.organizer.core.attendee.history;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
-
 import com.eventyay.organizer.core.presenter.TestUtil;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
 import com.eventyay.organizer.data.attendee.CheckInDetail;
-
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,30 +28,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-
 @RunWith(JUnit4.class)
 public class CheckInHistoryViewModelTest {
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule
-    public TestRule rule = new InstantTaskExecutorRule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public TestRule rule = new InstantTaskExecutorRule();
 
-    @Mock
-    private AttendeeRepository attendeeRepository;
-    @Mock
-    Observer<String> error;
-    @Mock
-    Observer<Boolean> progress;
+    @Mock private AttendeeRepository attendeeRepository;
+    @Mock Observer<String> error;
+    @Mock Observer<Boolean> progress;
 
     private CheckInHistoryViewModel checkInHistoryViewModel;
 
@@ -52,19 +43,25 @@ public class CheckInHistoryViewModelTest {
 
     private static final String SCAN_IN = "Scan In";
     private static final String SCAN_OUT = "Scan Out";
-    private static final String CHECKIN_TIMES = "2018-07-20T20:36:32.822+03:00," +
-        "2018-07-22T20:36:32.822+03:00,2018-07-24T20:36:32.822+03:00";
-    private static final String CHECKOUT_TIMES = "2018-07-21T20:36:32.822+03:00," +
-        "2018-07-23T20:36:32.822+03:00";
+    private static final String CHECKIN_TIMES =
+            "2018-07-20T20:36:32.822+03:00,"
+                    + "2018-07-22T20:36:32.822+03:00,2018-07-24T20:36:32.822+03:00";
+    private static final String CHECKOUT_TIMES =
+            "2018-07-21T20:36:32.822+03:00," + "2018-07-23T20:36:32.822+03:00";
 
-    private static final Attendee ATTENDEE = Attendee.builder().id(2L).checkinTimes(CHECKIN_TIMES)
-        .checkoutTimes(CHECKOUT_TIMES).build();
+    private static final Attendee ATTENDEE =
+            Attendee.builder()
+                    .id(2L)
+                    .checkinTimes(CHECKIN_TIMES)
+                    .checkoutTimes(CHECKOUT_TIMES)
+                    .build();
 
     @Before
     public void setUp() {
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
 
         checkInHistoryViewModel = new CheckInHistoryViewModel(attendeeRepository);
     }
@@ -78,7 +75,8 @@ public class CheckInHistoryViewModelTest {
     @Test
     public void shouldLoadCheckInDetailsSuccessfully() {
         List<CheckInDetail> ch = new ArrayList<>();
-        List<CheckInDetail> checkInDetails = checkInHistoryViewModel.getCheckInDetails(ATTENDEE, ch);
+        List<CheckInDetail> checkInDetails =
+                checkInHistoryViewModel.getCheckInDetails(ATTENDEE, ch);
 
         assertEquals(checkInDetails.get(0).getCheckTime(), "2018-07-20T20:36:32.822+03:00");
         assertEquals(checkInDetails.get(0).getScanAction(), SCAN_IN);
@@ -94,8 +92,7 @@ public class CheckInHistoryViewModelTest {
 
     @Test
     public void shouldShowProgressWhenLoadingAttendees() {
-        when(attendeeRepository.getAttendee(EVENT_ID, false))
-            .thenReturn(Observable.just(ATTENDEE));
+        when(attendeeRepository.getAttendee(EVENT_ID, false)).thenReturn(Observable.just(ATTENDEE));
 
         InOrder inOrder = Mockito.inOrder(attendeeRepository, progress);
 
@@ -111,8 +108,7 @@ public class CheckInHistoryViewModelTest {
     @Test
     public void shouldShowErrorWhenLoadingAttendees() {
         String errorString = "Test Error";
-        when(attendeeRepository.getAttendee(EVENT_ID, false))
-            .thenReturn(TestUtil.ERROR_OBSERVABLE);
+        when(attendeeRepository.getAttendee(EVENT_ID, false)).thenReturn(TestUtil.ERROR_OBSERVABLE);
 
         InOrder inOrder = Mockito.inOrder(attendeeRepository, progress, error);
 

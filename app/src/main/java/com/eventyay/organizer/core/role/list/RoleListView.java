@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.role.list;
 
 import com.eventyay.organizer.data.role.RoleInvite;
-
 import java.util.List;
 
 public interface RoleListView {

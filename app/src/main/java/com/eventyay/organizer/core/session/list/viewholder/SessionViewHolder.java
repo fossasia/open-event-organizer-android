@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.session.list.viewholder;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.eventyay.organizer.common.Pipe;
 import com.eventyay.organizer.core.session.list.SessionsPresenter;
 import com.eventyay.organizer.data.session.Session;
@@ -20,17 +19,21 @@ public class SessionViewHolder extends RecyclerView.ViewHolder {
         this.binding = binding;
         this.sessionsPresenter = sessionsPresenter;
 
-        binding.getRoot().setOnLongClickListener(view -> {
-            if (longClickAction != null) {
-                longClickAction.push(session);
-            }
-            return true;
-        });
-        binding.getRoot().setOnClickListener(view -> {
-            if (clickAction != null) {
-                clickAction.push(session.getId());
-           }
-        });
+        binding.getRoot()
+                .setOnLongClickListener(
+                        view -> {
+                            if (longClickAction != null) {
+                                longClickAction.push(session);
+                            }
+                            return true;
+                        });
+        binding.getRoot()
+                .setOnClickListener(
+                        view -> {
+                            if (clickAction != null) {
+                                clickAction.push(session.getId());
+                            }
+                        });
     }
 
     public void setLongClickAction(Pipe<Session> longClickAction) {

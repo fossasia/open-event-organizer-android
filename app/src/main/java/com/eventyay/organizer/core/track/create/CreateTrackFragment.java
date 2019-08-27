@@ -1,32 +1,27 @@
 package com.eventyay.organizer.core.track.create;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.databinding.DataBindingUtil;
+import static com.eventyay.organizer.ui.ViewUtils.showView;
+
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.eventyay.organizer.data.tracks.Track;
-import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
-
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import br.com.ilhasoft.support.validation.Validator;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
+import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.databinding.TrackCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-
+import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import javax.inject.Inject;
-
-import br.com.ilhasoft.support.validation.Validator;
-
-import static com.eventyay.organizer.ui.ViewUtils.showView;
 
 public class CreateTrackFragment extends BaseFragment implements CreateTrackView {
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
 
     private TrackCreateLayoutBinding binding;
     private Validator validator;
@@ -38,23 +33,30 @@ public class CreateTrackFragment extends BaseFragment implements CreateTrackView
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding =  DataBindingUtil.inflate(inflater, R.layout.track_create_layout, container, false);
+    public View onCreateView(
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.track_create_layout, container, false);
         binding.form.trackName.requestFocus();
         ViewUtils.showKeyboard(getContext());
-        createTrackViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateTrackViewModel.class);
+        createTrackViewModel =
+                ViewModelProviders.of(this, viewModelFactory).get(CreateTrackViewModel.class);
         validator = new Validator(binding.form);
 
-        binding.submit.setOnClickListener(view -> {
-            binding.form.trackName.setText(binding.form.trackName.getText().toString().trim());
-            binding.form.trackDescription.setText(binding.form.trackDescription.getText().toString().trim());
-            binding.form.trackColor.setText(binding.form.trackColor.getText().toString().trim());
+        binding.submit.setOnClickListener(
+                view -> {
+                    binding.form.trackName.setText(
+                            binding.form.trackName.getText().toString().trim());
+                    binding.form.trackDescription.setText(
+                            binding.form.trackDescription.getText().toString().trim());
+                    binding.form.trackColor.setText(
+                            binding.form.trackColor.getText().toString().trim());
 
-            if (validator.validate())
-                createTrackViewModel.createTrack();
+                    if (validator.validate()) createTrackViewModel.createTrack();
 
-            ViewUtils.hideKeyboard(binding.getRoot());
-        });
+                    ViewUtils.hideKeyboard(binding.getRoot());
+                });
 
         return binding.getRoot();
     }
@@ -73,19 +75,26 @@ public class CreateTrackFragment extends BaseFragment implements CreateTrackView
 
     private void setColorPicker() {
         if (colorPickerDialog == null)
-            colorPickerDialog = new ColorPicker(getActivity(), createTrackViewModel.getRed(), createTrackViewModel.getGreen(), createTrackViewModel.getBlue());
+            colorPickerDialog =
+                    new ColorPicker(
+                            getActivity(),
+                            createTrackViewModel.getRed(),
+                            createTrackViewModel.getGreen(),
+                            createTrackViewModel.getBlue());
 
         binding.form.colorPicker.setBackgroundColor(createTrackViewModel.getColorRGB());
 
-        binding.form.colorPicker.setOnClickListener(view -> {
-            colorPickerDialog.show();
-        });
+        binding.form.colorPicker.setOnClickListener(
+                view -> {
+                    colorPickerDialog.show();
+                });
 
-        colorPickerDialog.setCallback(color -> {
-            binding.form.trackColor.setText(String.format("#%06X", 0xFFFFFF & color));
-            binding.form.colorPicker.setBackgroundColor(color);
-            colorPickerDialog.dismiss();
-        });
+        colorPickerDialog.setCallback(
+                color -> {
+                    binding.form.trackColor.setText(String.format("#%06X", 0xFFFFFF & color));
+                    binding.form.colorPicker.setBackgroundColor(color);
+                    colorPickerDialog.dismiss();
+                });
     }
 
     @Override

@@ -1,18 +1,15 @@
 package com.eventyay.organizer.core.settings;
 
 import android.os.Bundle;
-import androidx.preference.DialogPreference;
-import androidx.preference.PreferenceDialogFragmentCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
-
+import androidx.preference.DialogPreference;
+import androidx.preference.PreferenceDialogFragmentCompat;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.utils.CurrencyUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +21,8 @@ public class CountryPreferenceFragmentCompat extends PreferenceDialogFragmentCom
     private int savedIndex;
 
     public static CountryPreferenceFragmentCompat newInstance(String key) {
-        final CountryPreferenceFragmentCompat fragmentCompat = new CountryPreferenceFragmentCompat();
+        final CountryPreferenceFragmentCompat fragmentCompat =
+                new CountryPreferenceFragmentCompat();
         final Bundle bundle = new Bundle();
         bundle.putString(Constants.PREF_PAYMENT_COUNTRY, key);
         fragmentCompat.setArguments(bundle);
@@ -59,24 +57,27 @@ public class CountryPreferenceFragmentCompat extends PreferenceDialogFragmentCom
         Map<String, String> countryCurrencyMap = currencyUtils.getCountryCurrencyMap();
         List<String> countryList = new ArrayList<>(countryCurrencyMap.keySet());
 
-        ArrayAdapter<CharSequence> paymentCountryAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
-        paymentCountryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> paymentCountryAdapter =
+                new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item);
+        paymentCountryAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
 
         paymentCountryAdapter.addAll(countryList);
         countrySpinner.setAdapter(paymentCountryAdapter);
         countrySpinner.setSelection(savedIndex);
 
-        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                index = position;
-            }
+        countrySpinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(
+                            AdapterView<?> parent, View view, int position, long id) {
+                        index = position;
+                    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //empty
-            }
-        });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // empty
+                    }
+                });
     }
-
 }

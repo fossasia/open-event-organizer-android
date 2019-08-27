@@ -1,6 +1,10 @@
 package com.eventyay.organizer.data.repository;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.AbstractObservable;
@@ -9,6 +13,14 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.sponsor.Sponsor;
 import com.eventyay.organizer.data.sponsor.SponsorApi;
 import com.eventyay.organizer.data.sponsor.SponsorRepositoryImpl;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,34 +29,17 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @SuppressWarnings("PMD.TooManyMethods")
 public class SponsorRepositoryTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private SponsorRepositoryImpl sponsorRepository;
     private static final Sponsor SPONSOR = new Sponsor();
     private static final Event EVENT = new Event();
     private static final long ID = 10L;
 
-    @Mock
-    private SponsorApi sponsorApi;
+    @Mock private SponsorApi sponsorApi;
     @Mock private Repository repository;
 
     static {
@@ -54,10 +49,12 @@ public class SponsorRepositoryTest {
 
     @Before
     public void setUp() {
-        when(repository.observableOf(Sponsor.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
+        when(repository.observableOf(Sponsor.class))
+                .thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
         sponsorRepository = new SponsorRepositoryImpl(repository, sponsorApi);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
     }
 
     @After
@@ -75,8 +72,8 @@ public class SponsorRepositoryTest {
         Observable<Sponsor> sponsorObservable = sponsorRepository.createSponsor(SPONSOR);
 
         sponsorObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -86,8 +83,8 @@ public class SponsorRepositoryTest {
         Completable sponsorObservable = sponsorRepository.deleteSponsor(ID);
 
         sponsorObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -97,20 +94,21 @@ public class SponsorRepositoryTest {
         Observable<Sponsor> sponsorObservable = sponsorRepository.getSponsor(ID, true);
 
         sponsorObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
     public void shouldReturnConnectionErrorOnGetSponsorWithNoneSaved() {
         when(repository.isConnected()).thenReturn(false);
-        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         Observable<Sponsor> sponsorObservable = sponsorRepository.getSponsor(ID, false);
 
         sponsorObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
@@ -120,20 +118,21 @@ public class SponsorRepositoryTest {
         Observable<Sponsor> sponsorObservable = sponsorRepository.getSponsors(ID, true);
 
         sponsorObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
     public void shouldReturnConnectionErrorOnGetSponsorsWithNoneSaved() {
         when(repository.isConnected()).thenReturn(false);
-        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         Observable<Sponsor> sponsorObservable = sponsorRepository.getSponsors(ID, false);
 
         sponsorObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     // Network up tests
@@ -182,7 +181,8 @@ public class SponsorRepositoryTest {
     public void shouldCallGetSponsorServiceOnReload() {
         when(repository.isConnected()).thenReturn(true);
         when(sponsorApi.getSponsor(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         sponsorRepository.getSponsor(ID, true).subscribe();
 
@@ -193,7 +193,8 @@ public class SponsorRepositoryTest {
     public void shouldCallGetSponsorServiceWithNoneSaved() {
         when(repository.isConnected()).thenReturn(true);
         when(sponsorApi.getSponsor(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         sponsorRepository.getSponsor(ID, false).subscribe();
 
@@ -205,7 +206,8 @@ public class SponsorRepositoryTest {
         when(repository.isConnected()).thenReturn(true);
         when(sponsorApi.getSponsor(ID)).thenReturn(Observable.just(SPONSOR));
         when(repository.save(eq(Sponsor.class), eq(SPONSOR))).thenReturn(Completable.complete());
-        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         sponsorRepository.getSponsor(ID, true).subscribe();
 
@@ -218,7 +220,8 @@ public class SponsorRepositoryTest {
     public void shouldCallGetSponsorsServiceOnReload() {
         when(repository.isConnected()).thenReturn(true);
         when(sponsorApi.getSponsors(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         sponsorRepository.getSponsors(ID, true).subscribe();
 
@@ -229,7 +232,8 @@ public class SponsorRepositoryTest {
     public void shouldCallGetSponsorsServiceWithNoneSaved() {
         when(repository.isConnected()).thenReturn(true);
         when(sponsorApi.getSponsors(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         sponsorRepository.getSponsors(ID, false).subscribe();
 
@@ -243,8 +247,10 @@ public class SponsorRepositoryTest {
 
         when(repository.isConnected()).thenReturn(true);
         when(sponsorApi.getSponsors(ID)).thenReturn(Observable.just(sponsors));
-        when(repository.syncSave(eq(Sponsor.class), eq(sponsors), any(), any())).thenReturn(Completable.complete());
-        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.syncSave(eq(Sponsor.class), eq(sponsors), any(), any()))
+                .thenReturn(Completable.complete());
+        when(repository.getItems(eq(Sponsor.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         sponsorRepository.getSponsors(ID, true).subscribe();
 

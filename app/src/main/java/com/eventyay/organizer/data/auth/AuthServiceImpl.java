@@ -1,5 +1,7 @@
 package com.eventyay.organizer.data.auth;
 
+import com.eventyay.organizer.common.Constants;
+import com.eventyay.organizer.data.Repository;
 import com.eventyay.organizer.data.auth.model.ChangePassword;
 import com.eventyay.organizer.data.auth.model.CustomObjectWrapper;
 import com.eventyay.organizer.data.auth.model.EmailRequest;
@@ -11,16 +13,12 @@ import com.eventyay.organizer.data.auth.model.ResendVerificationMailResponse;
 import com.eventyay.organizer.data.auth.model.SubmitEmailVerificationToken;
 import com.eventyay.organizer.data.auth.model.SubmitToken;
 import com.eventyay.organizer.data.user.User;
-import com.eventyay.organizer.common.Constants;
-import com.eventyay.organizer.data.Repository;
-
-import javax.inject.Inject;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import javax.inject.Inject;
 
 public class AuthServiceImpl implements AuthService {
 
@@ -39,58 +37,53 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Observable<EmailValidationResponse> checkEmailRegistered(EmailRequest emailRequest) {
-        if (!repository.isConnected())
-            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        if (!repository.isConnected()) return Observable.error(new Throwable(Constants.NO_NETWORK));
 
-        return authApi
-            .checkEmail(emailRequest)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return authApi.checkEmail(emailRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public Completable login(Login login) {
-        if (isLoggedIn())
-            return Completable.complete();
+        if (isLoggedIn()) return Completable.complete();
 
         if (!repository.isConnected())
             return Completable.error(new Throwable(Constants.NO_NETWORK));
 
-        return authApi
-            .login(login)
-            .flatMapSingle(loginResponse -> {
-                String token = loginResponse.getAccessToken();
-                authHolder.login(token);
-                authHolder.saveEmail(login.getEmail());
+        return authApi.login(login)
+                .flatMapSingle(
+                        loginResponse -> {
+                            String token = loginResponse.getAccessToken();
+                            authHolder.login(token);
+                            authHolder.saveEmail(login.getEmail());
 
-                return isPreviousUser();
-            })
-            .flatMapCompletable(isPrevious -> {
-                if (!isPrevious)
-                    return repository.deleteDatabase();
+                            return isPreviousUser();
+                        })
+                .flatMapCompletable(
+                        isPrevious -> {
+                            if (!isPrevious) return repository.deleteDatabase();
 
-                return Completable.complete();
-            })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+                            return Completable.complete();
+                        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public Observable<User> signUp(User newUser) {
-        if (!repository.isConnected())
-            return Observable.error(new Throwable(Constants.NO_NETWORK));
+        if (!repository.isConnected()) return Observable.error(new Throwable(Constants.NO_NETWORK));
 
-        return authApi
-            .signUp(newUser)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return authApi.signUp(newUser)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     private Single<Boolean> isPreviousUser() {
         return repository
-            .getAllItems(User.class)
-            .first(EMPTY)
-            .map(user -> !user.equals(EMPTY) && authHolder.isUser(user));
+                .getAllItems(User.class)
+                .first(EMPTY)
+                .map(user -> !user.equals(EMPTY) && authHolder.isUser(user));
     }
 
     @Override
@@ -100,10 +93,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Completable logout() {
-        return Completable.fromAction(
-            authHolder::logout)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return Completable.fromAction(authHolder::logout)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
@@ -111,12 +103,10 @@ public class AuthServiceImpl implements AuthService {
         if (!repository.isConnected())
             return Completable.error(new Throwable(Constants.NO_NETWORK));
 
-        return authApi
-            .requestToken(CustomObjectWrapper.withLabel("data", reqToken))
-            .flatMapCompletable(
-                var -> Completable.complete())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return authApi.requestToken(CustomObjectWrapper.withLabel("data", reqToken))
+                .flatMapCompletable(var -> Completable.complete())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
@@ -124,12 +114,10 @@ public class AuthServiceImpl implements AuthService {
         if (!repository.isConnected())
             return Completable.error(new Throwable(Constants.NO_NETWORK));
 
-        return authApi
-            .submitToken(CustomObjectWrapper.withLabel("data", tokenData))
-            .flatMapCompletable(
-                var -> Completable.complete())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return authApi.submitToken(CustomObjectWrapper.withLabel("data", tokenData))
+                .flatMapCompletable(var -> Completable.complete())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
@@ -137,23 +125,20 @@ public class AuthServiceImpl implements AuthService {
         if (!repository.isConnected())
             return Completable.error(new Throwable(Constants.NO_NETWORK));
 
-        return authApi
-            .changePassword(CustomObjectWrapper.withLabel("data", changePassword))
-            .flatMapCompletable(
-                var -> Completable.complete())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return authApi.changePassword(CustomObjectWrapper.withLabel("data", changePassword))
+                .flatMapCompletable(var -> Completable.complete())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public Observable<ResendVerificationMailResponse> resendVerificationMail(ResendVerificationMail resendVerificationMail) {
-        if (!repository.isConnected())
-            return Observable.error(new Throwable(Constants.NO_NETWORK));
+    public Observable<ResendVerificationMailResponse> resendVerificationMail(
+            ResendVerificationMail resendVerificationMail) {
+        if (!repository.isConnected()) return Observable.error(new Throwable(Constants.NO_NETWORK));
 
-        return authApi
-            .resendMail(resendVerificationMail)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return authApi.resendMail(resendVerificationMail)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
@@ -161,11 +146,9 @@ public class AuthServiceImpl implements AuthService {
         if (!repository.isConnected())
             return Completable.error(new Throwable(Constants.NO_NETWORK));
 
-        return authApi
-            .verifyMail(CustomObjectWrapper.withLabel("data", token))
-            .flatMapCompletable(
-                var -> Completable.complete())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return authApi.verifyMail(CustomObjectWrapper.withLabel("data", token))
+                .flatMapCompletable(var -> Completable.complete())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

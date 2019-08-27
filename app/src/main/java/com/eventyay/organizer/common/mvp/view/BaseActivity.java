@@ -2,9 +2,7 @@ package com.eventyay.organizer.common.mvp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-
 import com.eventyay.organizer.common.mvp.presenter.BasePresenter;
-
 import dagger.Lazy;
 
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity {

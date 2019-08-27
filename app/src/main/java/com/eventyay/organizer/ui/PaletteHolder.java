@@ -1,17 +1,14 @@
 package com.eventyay.organizer.ui;
 
 import android.graphics.drawable.Drawable;
-import androidx.collection.SparseArrayCompat;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import androidx.collection.SparseArrayCompat;
 import com.github.florent37.glidepalette.GlidePalette;
-
+import io.reactivex.functions.Consumer;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import io.reactivex.functions.Consumer;
 import timber.log.Timber;
 
 // TODO: Reimplement once Glide Palette is fixed
@@ -23,8 +20,10 @@ public final class PaletteHolder {
 
     private static class Holder {
         private WeakReference<GlidePalette<Drawable>> glidePalette;
-        private final SparseArrayCompat<WeakReference<ViewGroup>> headerMap = new SparseArrayCompat<>();
-        private final SparseArrayCompat<WeakReference<TextView>> textMap = new SparseArrayCompat<>();
+        private final SparseArrayCompat<WeakReference<ViewGroup>> headerMap =
+                new SparseArrayCompat<>();
+        private final SparseArrayCompat<WeakReference<TextView>> textMap =
+                new SparseArrayCompat<>();
 
         Holder(GlidePalette<Drawable> glidePalette) {
             this.glidePalette = new WeakReference<>(glidePalette);
@@ -41,9 +40,7 @@ public final class PaletteHolder {
 
     public static PaletteHolder getInstance() {
         synchronized (PaletteHolder.class) {
-
-            if (paletteHolderInstance == null)
-                paletteHolderInstance = new PaletteHolder();
+            if (paletteHolderInstance == null) paletteHolderInstance = new PaletteHolder();
 
             return paletteHolderInstance;
         }
@@ -88,7 +85,8 @@ public final class PaletteHolder {
         }
     }
 
-    private <T> void setColor(SparseArrayCompat<WeakReference<T>> sparseArray, Consumer<T> consumer) {
+    private <T> void setColor(
+            SparseArrayCompat<WeakReference<T>> sparseArray, Consumer<T> consumer) {
         for (int i = 0; i < sparseArray.size(); i++) {
             T t = sparseArray.valueAt(i).get();
 
@@ -109,22 +107,20 @@ public final class PaletteHolder {
         setColor(holder.textMap, textView -> setTextColor(holder.glidePalette, textView));
     }
 
-    private void setHeaderColor(WeakReference<GlidePalette<Drawable>> glidePalette, ViewGroup viewGroup) {
-        if (glidePalette == null || viewGroup == null)
-            return;
+    private void setHeaderColor(
+            WeakReference<GlidePalette<Drawable>> glidePalette, ViewGroup viewGroup) {
+        if (glidePalette == null || viewGroup == null) return;
 
-        if (glidePalette.get() == null)
-            return;
+        if (glidePalette.get() == null) return;
 
         glidePalette.get().intoBackground(viewGroup);
     }
 
-    private void setTextColor(WeakReference<GlidePalette<Drawable>> glidePalette, TextView textView) {
-        if (glidePalette == null || textView == null)
-            return;
+    private void setTextColor(
+            WeakReference<GlidePalette<Drawable>> glidePalette, TextView textView) {
+        if (glidePalette == null || textView == null) return;
 
-        if (glidePalette.get() == null)
-            return;
+        if (glidePalette.get() == null) return;
 
         glidePalette.get().intoTextColor(textView, GlidePalette.Swatch.TITLE_TEXT_COLOR);
     }
@@ -139,5 +135,4 @@ public final class PaletteHolder {
 
         return holder;
     }
-
 }

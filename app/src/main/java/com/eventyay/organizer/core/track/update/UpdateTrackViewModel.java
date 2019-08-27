@@ -1,9 +1,8 @@
 package com.eventyay.organizer.core.track.update;
 
+import android.graphics.Color;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import android.graphics.Color;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
@@ -11,10 +10,8 @@ import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.tracks.TrackRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
 import com.eventyay.organizer.utils.StringUtils;
-
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import javax.inject.Inject;
 
 public class UpdateTrackViewModel extends ViewModel {
     private final TrackRepository trackRepository;
@@ -62,15 +59,19 @@ public class UpdateTrackViewModel extends ViewModel {
 
     public void loadTrack(long trackId) {
         compositeDisposable.add(
-        trackRepository
-            .getTrack(trackId, false)
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> {
-                progress.setValue(false);
-                showTrack();
-            })
-            .subscribe(loadedTrack -> this.track = loadedTrack,
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                trackRepository
+                        .getTrack(trackId, false)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(
+                                () -> {
+                                    progress.setValue(false);
+                                    showTrack();
+                                })
+                        .subscribe(
+                                loadedTrack -> this.track = loadedTrack,
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void updateTrack() {
@@ -82,20 +83,23 @@ public class UpdateTrackViewModel extends ViewModel {
         track.setEvent(event);
 
         compositeDisposable.add(
-            trackRepository
-                .updateTrack(track)
-                .doOnSubscribe(disposable -> progress.setValue(true))
-                .doFinally(() -> progress.setValue(false))
-                .subscribe(updatedTrack -> {
-                    success.setValue("Track Updated");
-                    dismiss.call();
-                }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+                trackRepository
+                        .updateTrack(track)
+                        .doOnSubscribe(disposable -> progress.setValue(true))
+                        .doFinally(() -> progress.setValue(false))
+                        .subscribe(
+                                updatedTrack -> {
+                                    success.setValue("Track Updated");
+                                    dismiss.call();
+                                },
+                                throwable ->
+                                        error.setValue(
+                                                ErrorUtils.getMessage(throwable).toString())));
     }
 
     private void showTrack() {
         trackLiveData.setValue(track);
     }
-
 
     public int getRed() {
         String colorRed = track.getColor();

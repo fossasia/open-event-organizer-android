@@ -1,6 +1,5 @@
 package com.eventyay.organizer.core.ticket.list;
 
-
 import com.eventyay.organizer.common.mvp.view.Emptiable;
 import com.eventyay.organizer.common.mvp.view.Erroneous;
 import com.eventyay.organizer.common.mvp.view.Progressive;
@@ -12,5 +11,4 @@ public interface TicketsView extends Progressive, Erroneous, Refreshable, Emptia
     void showTicketDeleted(String message);
 
     void openTicketDetailFragment(long ticketId);
-
 }

@@ -1,13 +1,22 @@
 package com.eventyay.organizer.core.attendee.checkin;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
-
-import com.eventyay.organizer.data.attendee.AttendeeRepository;
-import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
-import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.attendee.Attendee;
+import com.eventyay.organizer.data.attendee.AttendeeRepository;
+import com.eventyay.organizer.data.db.DatabaseChangeListener;
+import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.event.Event;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,23 +30,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @RunWith(JUnit4.class)
 public class AttendeeCheckInViewModelTest {
 
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule
-    public TestRule rule = new InstantTaskExecutorRule();
+    @Rule public TestRule rule = new InstantTaskExecutorRule();
     @Mock private AttendeeRepository attendeeRepository;
     @Mock private DatabaseChangeListener<Attendee> databaseChangeListener;
     private PublishSubject<DbFlowDatabaseChangeListener.ModelChange<Attendee>> notifier;
@@ -52,19 +49,19 @@ public class AttendeeCheckInViewModelTest {
 
     private AttendeeCheckInViewModel attendeeCheckInViewModel;
 
-    @Mock
-    Observer<Attendee> attendeeObserver;
-    @Mock
-    Observer<String> error;
+    @Mock Observer<Attendee> attendeeObserver;
+    @Mock Observer<String> error;
 
     @Before
     public void setUp() {
-        attendeeCheckInViewModel = new AttendeeCheckInViewModel(attendeeRepository, databaseChangeListener);
+        attendeeCheckInViewModel =
+                new AttendeeCheckInViewModel(attendeeRepository, databaseChangeListener);
         notifier = PublishSubject.create();
 
         RxJavaPlugins.setComputationSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
     }
 
     @After
@@ -75,8 +72,7 @@ public class AttendeeCheckInViewModelTest {
 
     private void setLoadAttendeeBehaviour() {
         when(databaseChangeListener.getNotifier()).thenReturn(notifier);
-        when(attendeeRepository.getAttendee(ID, false))
-            .thenReturn(Observable.just(ATTENDEE));
+        when(attendeeRepository.getAttendee(ID, false)).thenReturn(Observable.just(ATTENDEE));
     }
 
     private Attendee getCheckedInAttendee() {
@@ -119,8 +115,8 @@ public class AttendeeCheckInViewModelTest {
         Attendee toggled = getCheckedInAttendee();
         when(databaseChangeListener.getNotifier()).thenReturn(notifier);
         when(attendeeRepository.getAttendee(ID, false))
-            .thenReturn(Observable.empty())
-            .thenReturn(Observable.just(toggled));
+                .thenReturn(Observable.empty())
+                .thenReturn(Observable.just(toggled));
 
         attendeeCheckInViewModel.setAttendee(ATTENDEE);
         when(attendeeRepository.scheduleToggle(ATTENDEE)).thenReturn(Completable.complete());
@@ -135,7 +131,8 @@ public class AttendeeCheckInViewModelTest {
     @Test
     public void shouldHandleTogglingError() {
         attendeeCheckInViewModel.setAttendee(ATTENDEE);
-        when(attendeeRepository.scheduleToggle(ATTENDEE)).thenReturn(Completable.error(new Throwable()));
+        when(attendeeRepository.scheduleToggle(ATTENDEE))
+                .thenReturn(Completable.error(new Throwable()));
 
         InOrder inOrder = Mockito.inOrder(error);
 
@@ -145,5 +142,4 @@ public class AttendeeCheckInViewModelTest {
 
         inOrder.verify(error).onChanged(any());
     }
-
 }

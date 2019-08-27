@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.presenter;
 
 import com.eventyay.organizer.common.rx.Logger;
-
 import io.reactivex.Observable;
 
 public final class TestUtil {

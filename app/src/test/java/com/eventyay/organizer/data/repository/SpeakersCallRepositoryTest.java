@@ -1,6 +1,10 @@
 package com.eventyay.organizer.data.repository;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.AbstractObservable;
@@ -9,6 +13,12 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.data.speakerscall.SpeakersCallApi;
 import com.eventyay.organizer.data.speakerscall.SpeakersCallRepositoryImpl;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,30 +27,16 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 public class SpeakersCallRepositoryTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private SpeakersCallRepositoryImpl speakersCallRepository;
     private static final SpeakersCall SPEAKERS_CALL = new SpeakersCall();
     private static final Event EVENT = new Event();
     private static final long ID = 10L;
 
-    @Mock
-    private SpeakersCallApi speakersCallApi;
+    @Mock private SpeakersCallApi speakersCallApi;
     @Mock private Repository repository;
 
     static {
@@ -50,10 +46,12 @@ public class SpeakersCallRepositoryTest {
 
     @Before
     public void setUp() {
-        when(repository.observableOf(SpeakersCall.class)).thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
+        when(repository.observableOf(SpeakersCall.class))
+                .thenReturn(new AbstractObservable.AbstractObservableBuilder<>(repository));
         speakersCallRepository = new SpeakersCallRepositoryImpl(speakersCallApi, repository);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                schedulerCallable -> Schedulers.trampoline());
     }
 
     @After
@@ -68,34 +66,38 @@ public class SpeakersCallRepositoryTest {
     public void shouldReturnConnectionErrorOnCreateSpeakersCall() {
         when(repository.isConnected()).thenReturn(false);
 
-        Observable<SpeakersCall> speakersCallObservable = speakersCallRepository.createSpeakersCall(SPEAKERS_CALL);
+        Observable<SpeakersCall> speakersCallObservable =
+                speakersCallRepository.createSpeakersCall(SPEAKERS_CALL);
 
         speakersCallObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
     public void shouldReturnConnectionErrorOnGetSpeakersCallWithReload() {
         when(repository.isConnected()).thenReturn(false);
 
-        Observable<SpeakersCall> speakersCallObservable = speakersCallRepository.getSpeakersCall(ID, true);
+        Observable<SpeakersCall> speakersCallObservable =
+                speakersCallRepository.getSpeakersCall(ID, true);
 
         speakersCallObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     @Test
     public void shouldReturnConnectionErrorOnGetSpeakersCallWithNoneSaved() {
         when(repository.isConnected()).thenReturn(false);
-        when(repository.getItems(eq(SpeakersCall.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(SpeakersCall.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
-        Observable<SpeakersCall> speakersCallObservable = speakersCallRepository.getSpeakersCall(ID, false);
+        Observable<SpeakersCall> speakersCallObservable =
+                speakersCallRepository.getSpeakersCall(ID, false);
 
         speakersCallObservable
-            .test()
-            .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
+                .test()
+                .assertError(throwable -> throwable.getMessage().equals(Constants.NO_NETWORK));
     }
 
     // SpeakersCall Create Tests
@@ -116,7 +118,8 @@ public class SpeakersCallRepositoryTest {
 
         when(repository.isConnected()).thenReturn(true);
         when(speakersCallApi.postSpeakersCall(SPEAKERS_CALL)).thenReturn(Observable.just(created));
-        when(repository.save(eq(SpeakersCall.class), eq(created))).thenReturn(Completable.complete());
+        when(repository.save(eq(SpeakersCall.class), eq(created)))
+                .thenReturn(Completable.complete());
 
         speakersCallRepository.createSpeakersCall(SPEAKERS_CALL).subscribe();
 
@@ -129,7 +132,8 @@ public class SpeakersCallRepositoryTest {
 
         when(repository.isConnected()).thenReturn(true);
         when(speakersCallApi.postSpeakersCall(SPEAKERS_CALL)).thenReturn(Observable.just(created));
-        when(repository.save(eq(SpeakersCall.class), eq(created))).thenReturn(Completable.complete());
+        when(repository.save(eq(SpeakersCall.class), eq(created)))
+                .thenReturn(Completable.complete());
 
         speakersCallRepository.createSpeakersCall(SPEAKERS_CALL).subscribe();
 
@@ -142,7 +146,8 @@ public class SpeakersCallRepositoryTest {
     public void shouldCallGetSpeakersCallServiceOnReload() {
         when(repository.isConnected()).thenReturn(true);
         when(speakersCallApi.getSpeakersCall(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(SpeakersCall.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(SpeakersCall.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         speakersCallRepository.getSpeakersCall(ID, true).subscribe();
 
@@ -153,7 +158,8 @@ public class SpeakersCallRepositoryTest {
     public void shouldCallGetSpeakersCallServiceWithNoneSaved() {
         when(repository.isConnected()).thenReturn(true);
         when(speakersCallApi.getSpeakersCall(ID)).thenReturn(Observable.empty());
-        when(repository.getItems(eq(SpeakersCall.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.getItems(eq(SpeakersCall.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         speakersCallRepository.getSpeakersCall(ID, false).subscribe();
 
@@ -164,8 +170,10 @@ public class SpeakersCallRepositoryTest {
     public void shouldSaveSpeakersCallOnGet() {
         when(repository.isConnected()).thenReturn(true);
         when(speakersCallApi.getSpeakersCall(ID)).thenReturn(Observable.just(SPEAKERS_CALL));
-        when(repository.save(eq(SpeakersCall.class), eq(SPEAKERS_CALL))).thenReturn(Completable.complete());
-        when(repository.getItems(eq(SpeakersCall.class), any(SQLOperator.class))).thenReturn(Observable.empty());
+        when(repository.save(eq(SpeakersCall.class), eq(SPEAKERS_CALL)))
+                .thenReturn(Completable.complete());
+        when(repository.getItems(eq(SpeakersCall.class), any(SQLOperator.class)))
+                .thenReturn(Observable.empty());
 
         speakersCallRepository.getSpeakersCall(ID, true).subscribe();
 
@@ -189,8 +197,10 @@ public class SpeakersCallRepositoryTest {
         SpeakersCall updated = mock(SpeakersCall.class);
 
         when(repository.isConnected()).thenReturn(true);
-        when(speakersCallApi.updateSpeakersCall(ID, SPEAKERS_CALL)).thenReturn(Observable.just(updated));
-        when(repository.update(eq(SpeakersCall.class), eq(updated))).thenReturn(Completable.complete());
+        when(speakersCallApi.updateSpeakersCall(ID, SPEAKERS_CALL))
+                .thenReturn(Observable.just(updated));
+        when(repository.update(eq(SpeakersCall.class), eq(updated)))
+                .thenReturn(Completable.complete());
 
         speakersCallRepository.updateSpeakersCall(SPEAKERS_CALL).subscribe();
 

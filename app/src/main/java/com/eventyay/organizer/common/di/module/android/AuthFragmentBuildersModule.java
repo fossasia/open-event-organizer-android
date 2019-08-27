@@ -4,7 +4,6 @@ import com.eventyay.organizer.core.auth.login.LoginFragment;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
 import com.eventyay.organizer.core.auth.signup.SignUpFragment;
 import com.eventyay.organizer.core.auth.start.StartFragment;
-
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -22,5 +21,4 @@ public abstract class AuthFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract SignUpFragment contributeSignupFragment();
-
 }

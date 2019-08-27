@@ -1,15 +1,13 @@
 package com.eventyay.organizer.core.session.list;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.session.list.viewholder.SessionViewHolder;
 import com.eventyay.organizer.data.session.Session;
-
 import java.util.List;
 
 public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
@@ -25,9 +23,14 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
     @NonNull
     @Override
     public SessionViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        SessionViewHolder sessionViewHolder = new SessionViewHolder(
-            DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.session_layout, viewGroup, false), sessionsPresenter);
+        SessionViewHolder sessionViewHolder =
+                new SessionViewHolder(
+                        DataBindingUtil.inflate(
+                                LayoutInflater.from(viewGroup.getContext()),
+                                R.layout.session_layout,
+                                viewGroup,
+                                false),
+                        sessionsPresenter);
 
         sessionViewHolder.setLongClickAction(sessionsPresenter::longClick);
         sessionViewHolder.setClickAction(sessionsPresenter::click);

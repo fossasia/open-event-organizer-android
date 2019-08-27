@@ -1,18 +1,15 @@
 package com.eventyay.organizer.data.faq;
 
 import androidx.annotation.NonNull;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.RateLimiter;
 import com.eventyay.organizer.data.Repository;
-import org.threeten.bp.Duration;
-
-import javax.inject.Inject;
-
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import javax.inject.Inject;
+import org.threeten.bp.Duration;
 
 public class FaqRepositoryImpl implements FaqRepository {
 
@@ -28,21 +25,32 @@ public class FaqRepositoryImpl implements FaqRepository {
 
     @Override
     public Observable<Faq> getFaqs(long eventId, boolean reload) {
-        Observable<Faq> diskObservable = Observable.defer(() ->
-            repository.getItems(Faq.class, Faq_Table.event_id.eq(eventId))
-        );
+        Observable<Faq> diskObservable =
+                Observable.defer(
+                        () -> repository.getItems(Faq.class, Faq_Table.event_id.eq(eventId)));
 
-        Observable<Faq> networkObservable = Observable.defer(() ->
-            faqApi.getFaqs(eventId)
-                .doOnNext(faqs -> repository.syncSave(Faq.class, faqs, Faq::getId, Faq_Table.id).subscribe())
-                .flatMapIterable(faqs -> faqs));
+        Observable<Faq> networkObservable =
+                Observable.defer(
+                        () ->
+                                faqApi.getFaqs(eventId)
+                                        .doOnNext(
+                                                faqs ->
+                                                        repository
+                                                                .syncSave(
+                                                                        Faq.class,
+                                                                        faqs,
+                                                                        Faq::getId,
+                                                                        Faq_Table.id)
+                                                                .subscribe())
+                                        .flatMapIterable(faqs -> faqs));
 
-        return repository.observableOf(Faq.class)
-            .reload(reload)
-            .withRateLimiterConfig("Faqs", rateLimiter)
-            .withDiskObservable(diskObservable)
-            .withNetworkObservable(networkObservable)
-            .build();
+        return repository
+                .observableOf(Faq.class)
+                .reload(reload)
+                .withRateLimiterConfig("Faqs", rateLimiter)
+                .withDiskObservable(diskObservable)
+                .withNetworkObservable(networkObservable)
+                .build();
     }
 
     @NonNull
@@ -52,16 +60,14 @@ public class FaqRepositoryImpl implements FaqRepository {
             return Observable.error(new Throwable(Constants.NO_NETWORK));
         }
 
-        return faqApi
-            .postFaq(faq)
-            .doOnNext(created -> {
-                created.setEvent(faq.getEvent());
-                repository
-                    .save(Faq.class, created)
-                    .subscribe();
-            })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+        return faqApi.postFaq(faq)
+                .doOnNext(
+                        created -> {
+                            created.setEvent(faq.getEvent());
+                            repository.save(Faq.class, created).subscribe();
+                        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @NonNull
@@ -72,10 +78,8 @@ public class FaqRepositoryImpl implements FaqRepository {
         }
 
         return faqApi.deleteFaq(id)
-            .doOnComplete(() -> repository
-                .delete(Faq.class, Faq_Table.id.eq(id))
-                .subscribe())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+                .doOnComplete(() -> repository.delete(Faq.class, Faq_Table.id.eq(id)).subscribe())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

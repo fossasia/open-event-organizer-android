@@ -1,12 +1,9 @@
 package com.eventyay.organizer.utils;
 
 import androidx.collection.SparseArrayCompat;
-
+import java.io.UnsupportedEncodingException;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-
 import timber.log.Timber;
 
 @SuppressWarnings("PMD.UseUtilityClass") // This class is already Utility class
@@ -29,7 +26,8 @@ public final class JWTUtils {
     public static long getExpiry(String token) throws JSONException {
         SparseArrayCompat<String> decoded = decode(token);
 
-        // We are using JSONObject instead of GSON as it takes about 5 ms instead of 150 ms taken by GSON
+        // We are using JSONObject instead of GSON as it takes about 5 ms instead of 150 ms taken by
+        // GSON
         return Long.parseLong(new JSONObject(decoded.get(1)).get("exp").toString());
     }
 
@@ -61,13 +59,12 @@ public final class JWTUtils {
         return String.format("JWT %s", token);
     }
 
-    /**
-     * Base64 class because we can't test Android class and this is faster
-     */
+    /** Base64 class because we can't test Android class and this is faster */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private static class Base64Utils {
 
-        private static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
+        private static final char[] ALPHABET =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
 
         private static int[] toInt = new int[128];
 
@@ -105,6 +102,5 @@ public final class JWTUtils {
             }
             return buffer;
         }
-
     }
 }

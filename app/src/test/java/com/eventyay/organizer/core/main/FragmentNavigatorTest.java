@@ -1,11 +1,17 @@
 package com.eventyay.organizer.core.main;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
-import com.eventyay.organizer.core.event.list.EventListFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,23 +22,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
 public class FragmentNavigatorTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    @Mock
-    private FragmentManager fragmentManager;
-    @Mock
-    private FragmentTransaction fragmentTransaction;
+    @Mock private FragmentManager fragmentManager;
+    @Mock private FragmentTransaction fragmentTransaction;
 
     private FragmentNavigator fragmentNavigator;
 
@@ -67,7 +62,8 @@ public class FragmentNavigatorTest {
         inOrder.verify(fragmentTransaction).addToBackStack(null);
         inOrder.verify(fragmentTransaction).commit();
 
-        inOrder.verify(fragmentTransaction).replace(any(Integer.TYPE), isA(EventDashboardFragment.class));
+        inOrder.verify(fragmentTransaction)
+                .replace(any(Integer.TYPE), isA(EventDashboardFragment.class));
         inOrder.verify(fragmentTransaction).addToBackStack(null);
         inOrder.verify(fragmentTransaction).commit();
         inOrder.verifyNoMoreInteractions();
@@ -130,5 +126,4 @@ public class FragmentNavigatorTest {
 
         inOrder.verify(fragmentManager).popBackStack();
     }
-
 }
