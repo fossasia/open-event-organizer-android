@@ -3,6 +3,7 @@ package com.eventyay.organizer.data.auth;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
+import com.eventyay.organizer.BuildConfig;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.ContextManager;
@@ -86,5 +87,9 @@ public final class AuthHolder {
 
     void saveEmail(String email) {
         sharedPreferenceModel.addStringSetElement(Constants.SHARED_PREFS_SAVED_EMAIL, email);
+    }
+
+    public String getBaseUrl() {
+        return sharedPreferenceModel.getString(Constants.SHARED_PREFS_BASE_URL, BuildConfig.DEFAULT_BASE_URL);
     }
 }
