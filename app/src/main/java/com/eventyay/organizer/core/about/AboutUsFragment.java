@@ -44,7 +44,7 @@ public class AboutUsFragment extends BaseFragment {
         legalElement.setOnClickListener(v -> {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction
-                .replace(R.id.fragment, LegalPreferenceFragment.newInstance())
+                .replace(R.id.fragment_container, LegalPreferenceFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
         });
