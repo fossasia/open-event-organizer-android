@@ -133,7 +133,7 @@ public final class BindingAdapters {
 
     @BindingAdapter("progress_with_animation")
     public static void bindCircularProgress(CircularProgressBar circularProgressBar, int progress) {
-        circularProgressBar.setProgressWithAnimation(progress, 500);
+        circularProgressBar.setProgressWithAnimation(progress, 500L);
     }
 
     @BindingAdapter("circular_progress_color")
@@ -144,7 +144,7 @@ public final class BindingAdapters {
         int color = ContextCompat.getColor(context, resources.getIdentifier(colorName + "_500", "color", context.getPackageName()));
         int bgColor = ContextCompat.getColor(context, resources.getIdentifier(colorName + "_100", "color", context.getPackageName()));
 
-        circularProgressBar.setColor(color);
+        circularProgressBar.setProgressBarColor(color);
         circularProgressBar.setBackgroundColor(bgColor);
     }
 

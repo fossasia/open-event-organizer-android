@@ -1,8 +1,6 @@
 package com.eventyay.organizer.common;
 
 public final class Constants {
-    //url to login organiser
-    public static final String BASE_URL = "https://open-event-api-dev.herokuapp.com/v1/";
     //SharedPrefs db Name
     public static final String FOSS_PREFS = "FossPrefs";
     //No network available string

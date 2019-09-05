@@ -10,7 +10,7 @@
         android:title="@string/terms_of_service" />
 
     <Preference
-        android:key="@string/cookie_policy_key"
-        android:title="@string/cookie_policy" />
+        android:key="@string/refund_policy_key"
+        android:title="@string/refund_policy" />
 
 </PreferenceScreen>

@@ -69,49 +69,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-        findPreference(getString(R.string.app_version_key)).setTitle(VERSION + " " + BuildConfig.VERSION_NAME);
-
-        findPreference("rate_us").setOnPreferenceClickListener(preference -> {
-            Uri uri = Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID);
-            Intent playStoreIntent = new Intent(Intent.ACTION_VIEW, uri);
-            try {
-                startActivity(playStoreIntent);
-            } catch (ActivityNotFoundException e) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
-            }
-            return true;
-        });
-
-        findPreference(getString(R.string.legal_key)).setOnPreferenceClickListener(preference -> {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction
-                .replace(R.id.fragment_container, LegalPreferenceFragment.newInstance())
-                .addToBackStack(null)
-                .commit();
-            return true;
-        });
-
-        findPreference(getString(R.string.share_app_key)).setOnPreferenceClickListener(preference -> {
-            Intent sharingIntent = new Intent();
-            sharingIntent.setAction(Intent.ACTION_SEND);
-            sharingIntent.setType("text/plain");
-            String shareSub = getString(R.string.msg_check_out);
-            String shareBody = getString(R.string.msg_check_this_out) + getString(R.string.play_store_link);
-            String shareTitle = getString(R.string.msg_share_using);
-            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-            startActivity(Intent.createChooser(sharingIntent, shareTitle));
-            return true;
-        });
-
-        findPreference(getString(R.string.acknowledgements_key)).setVisible(acknowledgementDecider.shouldShowAcknowledgement());
-
-        findPreference(getString(R.string.acknowledgements_key)).setOnPreferenceClickListener(preference -> {
-            acknowledgementDecider.openAcknowledgementsSection(getActivity());
-            return true;
-        });
-
         findPreference("developer_mode").setOnPreferenceClickListener(preference -> {
             isDeveloperModeEnabled = manager.getSharedPreferences().getBoolean(
                 getString(R.string.developer_mode_key), false);
@@ -179,7 +136,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onResume() {
         super.onResume();
-        ViewUtils.setTitle(this, getString(R.string.device_settings));
+        ViewUtils.setTitle(this, getString(R.string.settings));
         setSalesDataSummary();
     }
 }

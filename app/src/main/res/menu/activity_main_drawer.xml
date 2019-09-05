@@ -97,9 +97,9 @@
             android:visible="false" />
 
         <item
-            android:id="@+id/nav_event_settings"
+            android:id="@+id/nav_check_in_settings"
             android:icon="@drawable/ic_settings"
-            android:title="@string/event_settings"
+            android:title="@string/check_in_settings"
             android:checkable="true" />
 
     </group>
@@ -107,15 +107,15 @@
     <group android:id="@+id/mainMenu">
 
         <item
-            android:id="@+id/nav_about_the_app"
+            android:id="@+id/nav_about_us"
             android:icon="@drawable/ic_info"
-            android:title="@string/about_the_app"
+            android:title="@string/about_us"
             android:checkable="true"/>
 
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
-            android:title="@string/device_settings"
+            android:title="@string/settings"
             android:checkable="true"/>
 
         <!--<item

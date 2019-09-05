@@ -119,7 +119,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
             openEditEvent();
         });
 
-        binding.eventSettings.setOnClickListener(v -> {
+        binding.checkInSettings.setOnClickListener(v -> {
             Fragment fragment = EventSettingsFragment.newInstance(initialEventId);
             loadFragment(fragment);
         });
@@ -241,6 +241,7 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
         binding.orders.setVisibility(View.VISIBLE);
         binding.tickets.setVisibility(View.VISIBLE);
         binding.editEvent.setVisibility(View.VISIBLE);
+        binding.publishLayout.setVisibility(View.VISIBLE);
     }
 
     private void loadFragment(Fragment fragment) {

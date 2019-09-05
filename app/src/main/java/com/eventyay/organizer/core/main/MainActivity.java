@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements
         R.id.nav_dashboard,
         R.id.nav_attendees,
         R.id.nav_share,
-        R.id.nav_event_settings);
+        R.id.nav_check_in_settings);
 
     private final List<Integer> drawerExtraItems = Arrays.asList(
         R.id.nav_sell,
@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements
     public void unselectEvent() {
         fragmentNavigator.setEventId(-1);
         eventViewModel.unselectEvent();
+        binding.navView.getHeaderView(0).findViewById(R.id.eventDetailPalette).setVisibility(View.GONE);
 
         for (Integer itemId : drawerItems) {
             binding.navView.getMenu().findItem(itemId).setVisible(false);
