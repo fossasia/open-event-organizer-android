@@ -26,3 +26,8 @@ script:
 after_success:
     - bash <(curl -s https://codecov.io/bash)
     - bash scripts/update-apk.sh
+
+branches:
+  only:
+    - master
+    - development
