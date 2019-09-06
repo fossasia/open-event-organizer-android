@@ -171,7 +171,7 @@ dependencies {
     compileOnly 'com.google.code.findbugs:findbugs-annotations:3.0.1'
 
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0-alpha03"
+    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0-alpha04"
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha03"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha03"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha03"
