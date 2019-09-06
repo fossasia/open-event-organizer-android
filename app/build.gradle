@@ -173,7 +173,7 @@ dependencies {
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha03"
+    implementation "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
 
     //WorkManager
