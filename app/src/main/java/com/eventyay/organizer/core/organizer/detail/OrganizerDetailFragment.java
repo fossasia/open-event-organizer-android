@@ -173,7 +173,7 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
     public void onStart() {
         super.onStart();
         setupRefreshListener();
-        organizerDetailViewModel.loadOrganizer(false);
+        organizerDetailViewModel.loadOrganizer(true);
         organizerDetailViewModel.getProgress().observe(this, this::showProgress);
         organizerDetailViewModel.getSuccess().observe(this, this::onSuccess);
         organizerDetailViewModel.getError().observe(this, this::showError);
@@ -189,7 +189,6 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
     @Override
     public void onResume() {
         super.onResume();
-
         User user = organizerDetailViewModel.getUser();
 
         if (user != null) {
