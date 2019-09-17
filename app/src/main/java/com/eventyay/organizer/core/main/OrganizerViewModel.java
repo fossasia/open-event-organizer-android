@@ -41,11 +41,9 @@ public class OrganizerViewModel extends ViewModel {
     }
 
     protected LiveData<User> getOrganizer() {
-        if (organizer.getValue() == null) {
-            compositeDisposable.add(userRepository
+        compositeDisposable.add(userRepository
                 .getOrganizer(false)
                 .subscribe(organizer::setValue, Logger::logError));
-        }
         return organizer;
     }
 
