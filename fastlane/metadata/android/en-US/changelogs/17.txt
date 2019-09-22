@@ -1,0 +1,14 @@
+
+🐛 Bug Fixes
+- Hide contact and bio fields in organizer details if null
+- Prevent event details from showing in nav drawer when no event is selected
+- Use correct values for tickets, sales and orders
+- Use correct policy links and change Cookie Policy to Refund Policy
+- Prevent Account section's action bar title from changing
+- Display user friendly error message for wrong credential
+- Use confirmed sessions instead of accepted session
+- Use confirmed speakers instead of accepted speakers
+
+🧰 Maintenance
+- Rename Device Settings and Event Settings
+- Shift Event Creation and Publish features to Developer Mode
