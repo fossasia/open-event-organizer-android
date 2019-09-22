@@ -1,0 +1,15 @@
+🚀 Features and Enhancements
+- feat(ui): Add event name and time in dashboard
+- feat: Add 'About The App' section
+- feat: Add bio section in Edit Profile
+- feat: Option to delete profile picture
+
+🐛 Bug Fixes
+- fix: Prevent app from closing while navigating back from Device Settings
+
+🧰 Maintenance
+- chore: Improve Account section
+- chore: Improve navigation flow
+- chore: Show event end time in nav drawer
+- chore: Share event link and location also
+- chore: Simplify event sharing process
