@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.transition.ChangeBounds;
-import androidx.transition.Fade;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.ViewCompat;
+
+import android.transition.ChangeBounds;
+import android.transition.Fade; // Workarounds for crash due to ClassCastException
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,10 +138,10 @@ public class StartFragment extends BaseFragment implements StartView {
             .commit();
     }
 
-    public void setupTransitionAnimation(Fragment fragment) {
+    private void setupTransitionAnimation(Fragment fragment) {
         Fade exitFade = new Fade();
         exitFade.setDuration(100);
-        this.setExitTransition(exitFade);
+        setExitTransition(exitFade);
         fragment.setReturnTransition(exitFade);
 
         ChangeBounds changeBoundsTransition = new ChangeBounds();
@@ -150,7 +151,7 @@ public class StartFragment extends BaseFragment implements StartView {
         enterFade.setStartDelay(300);
         enterFade.setDuration(300);
         fragment.setEnterTransition(enterFade);
-        this.setReenterTransition(enterFade);
+        setReenterTransition(enterFade);
     }
 
     @Override
