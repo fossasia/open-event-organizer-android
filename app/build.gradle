@@ -151,7 +151,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0-beta04"
-    implementation "com.google.android.material:material:1.1.0-alpha10"
+    implementation "com.google.android.material:material:1.1.0-beta01"
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.palette:palette:1.0.0"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
@@ -197,7 +197,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
     implementation 'com.github.jasminb:jsonapi-converter:0.9'
 
     // RxJava
@@ -206,7 +206,7 @@ dependencies {
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
     // Fast Adapter
-    implementation "com.mikepenz:fastadapter:4.0.1"
+    implementation "com.mikepenz:fastadapter:4.1.0"
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     implementation 'me.xdrop:fuzzywuzzy:1.1.9'
 
