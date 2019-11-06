@@ -57,6 +57,7 @@
                     android:id="@+id/email_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/email"
                     android:paddingBottom="@dimen/spacing_normal"
                     android:paddingTop="@dimen/spacing_normal"
                     android:transitionName="@string/email">
@@ -65,7 +66,6 @@
                         android:id="@+id/email_dropdown"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/email"
                         android:text="@={ emailRequest.email }"
                         android:inputType="textEmailAddress"
                         android:imeOptions="actionNext"
