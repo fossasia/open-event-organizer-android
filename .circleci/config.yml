@@ -2,10 +2,8 @@ version: 2
 jobs:
   build:
     working_directory: ~/code
-    docker:
+    machine:
       - image: circleci/android:api-28-alpha
-    environment:
-      JAVA_TOOL_OPTIONS: -Xmx3200m
     steps:
       - checkout
       - restore_cache:
