@@ -17,7 +17,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run Tests
-          command: ./gradlew lint androidCheck androidPmd
+          command: ./gradlew lint androidCheck androidPmd --no-daemon -Pkotlin.incremental=false --max-workers=2
       - run:
           name: Test Coverage
           command: ./gradlew testPlayStoreDebugUnitTestCoverage
