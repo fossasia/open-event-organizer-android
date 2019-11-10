@@ -32,7 +32,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:title='@{ user.firstName == null ? user.email : user.firstName + " " + user.lastName }'
+                    app:title='@{ user.firstName == null ? user.email : user.firstName + " " + (user.lastName == null ? "" : user.lastName) }'
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
             </com.google.android.material.appbar.AppBarLayout>
