@@ -200,7 +200,7 @@ public class OrganizerDetailFragment extends BaseFragment implements OrganizerDe
 
             if (firstName != null && lastName!=null)
                 actionBar.setTitle(firstName + " " + lastName);
-            else if(firstName!=null)
+            else if (firstName!=null)
                 actionBar.setTitle(firstName);
             else
                 actionBar.setTitle(email);
