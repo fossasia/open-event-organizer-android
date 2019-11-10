@@ -2,8 +2,8 @@ version: 2
 jobs:
   build:
     working_directory: ~/code
-    machine:
-      image: circleci/android:api-28-alpha
+    docker:
+      - image: circleci/android:api-28-alpha
     steps:
       - checkout
       - restore_cache:
