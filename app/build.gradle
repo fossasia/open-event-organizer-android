@@ -7,7 +7,6 @@ apply plugin: "net.ltgt.errorprone"
 apply plugin: "com.github.b3er.local.properties"
 
 def app_name = System.getenv('app_name') ?: "Eventyay Organizer"
-def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
 def MAPBOX_ACCESS_TOKEN = System.getenv('MAPBOX_ACCESS_TOKEN') ?: "YOUR_ACCESS_TOKEN"
 
 def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
@@ -34,7 +33,6 @@ android {
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
             appName: app_name,
-            GOOGLE_PLACES_API_KEY: GOOGLE_PLACES_API_KEY,
             MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN
         ]
     }
@@ -159,7 +157,6 @@ dependencies {
     //implementation "androidx.legacy:legacy-support-v4:1.0.0" // GradleIncompatible Workaround
     annotationProcessor 'androidx.annotation:annotation:1.1.0' // Required for Glide
     playStoreImplementation "com.google.android.gms:play-services-vision:${versions.play_services_vision}"
-    playStoreImplementation "com.google.android.libraries.places:places:${versions.places}"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     // Misc
