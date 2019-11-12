@@ -1,36 +1,35 @@
 package com.eventyay.organizer.core.event.create;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import androidx.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.databinding.EventDetailsStepOneBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceAutocompleteFragment;
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener;
 
 import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import timber.log.Timber;
 
 public class EventDetailsStepOne extends BaseBottomSheetFragment implements EventDetailsStepOneView {
 
@@ -92,31 +91,41 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
             e.printStackTrace();
         }
         Bundle bundle = ai.metaData;
-        String placesApiKey = bundle.getString("com.google.android.geo.API_KEY");
+        String mapboxAccessToken = bundle.getString(getString(R.string.mapbox_access_token));
 
-        Places.initialize(getActivity().getApplicationContext(), placesApiKey);
+        binding.selectLocationButton.setOnClickListener(view -> {
 
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-            getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS));
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-
-                Timber.d(place.getAddress());
-                Event event = binding.getEvent();
-                event.latitude = place.getLatLng().latitude;
-                event.longitude = place.getLatLng().longitude;
-                event.locationName = place.getAddress();
-                event.searchableLocationName = place.getName();
+            if (mapboxAccessToken.equals("YOUR_ACCESS_TOKEN")) {
+                ViewUtils.showSnackbar(binding.getRoot(), R.string.access_token_required);
+                return;
             }
 
-            @Override
-            public void onError(Status status) {
-                ViewUtils.showSnackbar(binding.getRoot(), status.getStatusMessage());
-            }
+            PlaceAutocompleteFragment autocompleteFragment = PlaceAutocompleteFragment.newInstance(
+                mapboxAccessToken, PlaceOptions.builder().backgroundColor(Color.WHITE).build());
+
+            getFragmentManager().beginTransaction()
+                .replace(R.id.fragment, autocompleteFragment)
+                .addToBackStack(null)
+                .commit();
+
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(CarmenFeature carmenFeature) {
+                    Event event = binding.getEvent();
+                    event.setLatitude(carmenFeature.center().latitude());
+                    event.setLongitude(carmenFeature.center().longitude());
+                    event.setLocationName(carmenFeature.placeName());
+                    event.setSearchableLocationName(carmenFeature.text());
+                    binding.layoutLocationName.setVisibility(View.VISIBLE);
+                    binding.locationName.setText(event.getLocationName());
+                    getFragmentManager().popBackStack();
+                }
+
+                @Override
+                public void onCancel() {
+                    getFragmentManager().popBackStack();
+                }
+            });
         });
     }
 

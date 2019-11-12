@@ -4,6 +4,7 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
         <import type="com.eventyay.organizer.ui.binding.BindingAdapters" />
@@ -21,12 +22,12 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/event_image_height"
+            android:contentDescription="@string/event_poster_image"
             android:fitsSystemWindows="true"
             android:scaleType="centerCrop"
+            android:visibility="@{ event.originalImageUrl == null ? View.GONE : View.VISIBLE }"
             app:imageUrl='@{ event.originalImageUrl }'
-            app:placeholder="@{ @drawable/header }"
-            android:contentDescription="@string/event_poster_image"
-            android:visibility="@{ event.originalImageUrl == null ? View.GONE : View.VISIBLE }"/>
+            app:placeholder="@{ @drawable/header }" />
 
         <FrameLayout
             android:id="@+id/event_original_image_layout"
@@ -39,10 +40,10 @@
                 android:id="@+id/event_original_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_camera"
                 android:layout_gravity="center"
-                android:contentDescription="Add event image" />
+                android:contentDescription="Add event image"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_camera" />
 
         </FrameLayout>
 
@@ -87,9 +88,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="@dimen/spacing_big"
                 android:layout_marginStart="@dimen/spacing_big"
+                android:layout_marginLeft="@dimen/spacing_big"
+                android:orientation="vertical"
                 android:padding="@dimen/spacing_extra_small">
 
                 <CheckBox
@@ -133,11 +134,11 @@
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_small"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:background="?android:attr/selectableItemBackground"
+                    android:ellipsize="end"
                     android:maxLines="2"
-                    android:ellipsize="end"/>
+                    android:padding="@dimen/spacing_small" />
 
             </LinearLayout>
 
@@ -156,7 +157,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/date_and_time"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <include
                     layout="@layout/starts_at_time_picker"
@@ -222,41 +223,58 @@
                     android:orientation="vertical"
                     android:visibility="@{ onlineEvent.checked ? View.GONE : View.VISIBLE }">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_extra_small"
-                    android:layout_marginStart="@dimen/spacing_extra_small"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:divider="?android:dividerHorizontal"
-                    android:showDividers="beginning"
-                    android:text="@string/location_details"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
-
-                    <androidx.cardview.widget.CardView
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_extra_small"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        app:cardCornerRadius="@dimen/spacing_extra_small">
+                        android:layout_marginStart="@dimen/spacing_extra_small"
+                        android:layout_marginLeft="@dimen/spacing_extra_small"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:divider="?android:dividerHorizontal"
+                        android:showDividers="beginning"
+                        android:text="@string/location_details"
+                        android:textSize="@dimen/text_size_normal"
+                        android:textStyle="bold" />
 
-                        <fragment
-                            android:id="@+id/autocomplete_fragment"
-                            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    <Button
+                        android:id="@+id/select_location_button"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_extra_small"
+                        android:text="@string/select_location"
+                        android:textColor="@color/purple_500" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_location_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/location_name"
+                            android:padding="@dimen/spacing_extra_small"
+                            app:srcCompat="@drawable/ic_location" />
+
+                        <TextView
+                            android:id="@+id/location_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
-                    </androidx.cardview.widget.CardView>
+                    </LinearLayout>
 
-                <CheckBox
-                    android:id="@+id/map_shown"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked='@{ event.isMapShown ? true : false }'
-                    android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
-                    android:padding="@dimen/spacing_extra_small"
-                    android:text="@string/show_map" />
+                    <CheckBox
+                        android:id="@+id/map_shown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked='@{ event.isMapShown ? true : false }'
+                        android:onCheckedChanged="@{ (switch, checked) -> event.setMapShown(checked) }"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:text="@string/show_map" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -277,7 +295,7 @@
                     android:showDividers="beginning"
                     android:text="@string/ticketing_details"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <CheckBox
                     android:id="@+id/ticketing_details"
@@ -334,7 +352,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/listing_privacy"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/listing_privacy_group"
@@ -376,7 +394,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/speakers_and_sponsors"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <CheckBox
                     android:id="@+id/enableSponsor"
@@ -409,12 +427,41 @@
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/payment_details"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/payment_prefs"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/spacing_extra_small"
+                    android:elevation="@dimen/cardview_default_elevation"
+                    android:foreground="?selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="?android:dividerHorizontal"
+                        android:orientation="vertical"
+                        android:showDividers="beginning">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/spacing_normal"
+                            android:text="@string/payment_preferences"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_normal" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/spacing_small">
 
                     <CheckBox
                         android:id="@+id/enable_tax"
@@ -427,8 +474,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/spacing_large"
                         android:layout_marginStart="@dimen/spacing_large"
+                        android:layout_marginLeft="@dimen/spacing_large"
                         android:layout_marginTop="@dimen/spacing_small"
                         android:padding="@dimen/spacing_small"
                         android:text="@string/payment_country"
@@ -457,8 +504,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/spacing_large"
                         android:layout_marginStart="@dimen/spacing_large"
+                        android:layout_marginLeft="@dimen/spacing_large"
                         android:layout_marginTop="@dimen/spacing_small"
                         android:padding="@dimen/spacing_small"
                         android:text="@string/payment_currency"
@@ -503,13 +550,13 @@
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/payment_methods"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_small"
                     android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_small"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:orientation="vertical">
 
@@ -677,7 +724,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/graphics"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -726,9 +773,9 @@
                         android:id="@+id/original_image_url_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/spacing_extra_small"
                         android:paddingLeft="@dimen/spacing_extra_small"
-                        android:paddingRight="@dimen/spacing_extra_small">
+                        android:paddingRight="@dimen/spacing_extra_small"
+                        android:paddingBottom="@dimen/spacing_extra_small">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/original_image_url"
@@ -758,7 +805,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/event_state"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/state_group"
@@ -800,7 +847,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/others"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -848,7 +895,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/code_of_conduct"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

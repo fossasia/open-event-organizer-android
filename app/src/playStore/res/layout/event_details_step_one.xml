@@ -58,9 +58,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_big"
-                android:layout_marginLeft="@dimen/spacing_big"
                 android:orientation="vertical"
+                android:layout_marginLeft="@dimen/spacing_big"
+                android:layout_marginStart="@dimen/spacing_big"
                 android:padding="@dimen/spacing_extra_small">
 
                 <CheckBox
@@ -131,7 +131,7 @@
                     android:padding="@dimen/spacing_extra_small"
                     android:text="@string/date_and_time"
                     android:textSize="@dimen/text_size_normal"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <include
                     layout="@layout/starts_at_time_picker"
@@ -150,7 +150,7 @@
                     android:padding="@dimen/spacing_medium"
                     android:text="@string/timezone"
                     android:textSize="@dimen/text_size_small"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -201,29 +201,46 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/spacing_extra_small"
                         android:layout_marginLeft="@dimen/spacing_extra_small"
+                        android:layout_marginStart="@dimen/spacing_extra_small"
                         android:layout_marginTop="@dimen/spacing_normal"
                         android:divider="?android:dividerHorizontal"
                         android:showDividers="beginning"
                         android:text="@string/location_details"
                         android:textSize="@dimen/text_size_normal"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
 
-                    <androidx.cardview.widget.CardView
+                    <Button
+                        android:id="@+id/select_location_button"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_extra_small"
+                        android:text="@string/select_location"
+                        android:textColor="@color/purple_500" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_location_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_extra_small"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        app:cardCornerRadius="@dimen/spacing_extra_small">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
-                        <fragment
-                            android:id="@+id/autocomplete_fragment"
-                            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/location_name"
+                            android:padding="@dimen/spacing_extra_small"
+                            app:srcCompat="@drawable/ic_location" />
+
+                        <TextView
+                            android:id="@+id/location_name"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/spacing_extra_small" />
 
-                    </androidx.cardview.widget.CardView>
+                    </LinearLayout>
 
                     <CheckBox
                         android:id="@+id/map_shown"
