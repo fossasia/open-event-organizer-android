@@ -317,7 +317,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         binding.form.selectLocationButton.setOnClickListener(view -> {
 
-            if (mapboxAccessToken.equals(getString(R.string.your_access_token))) {
+            if (getString(R.string.your_access_token).equals(mapboxAccessToken)) {
                 ViewUtils.showSnackbar(binding.getRoot(), R.string.access_token_required);
                 return;
             }
