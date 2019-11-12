@@ -98,7 +98,7 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
 
         binding.selectLocationButton.setOnClickListener(view -> {
 
-            if (mapboxAccessToken.equals("YOUR_ACCESS_TOKEN")) {
+            if (mapboxAccessToken.equals(getString(R.string.your_access_token))) {
                 ViewUtils.showSnackbar(binding.getRoot(), R.string.access_token_required);
                 return;
             }
