@@ -134,7 +134,10 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
 
     @Override
     public void showError(String error) {
-        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+        if(!error.equals("")) {
+            Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+            createEventViewModel.setErrorMessage("");
+        }
     }
 
     @Override
@@ -144,7 +147,10 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
 
     @Override
     public void onSuccess(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        if(!message.equals("")){
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+            createEventViewModel.setSuccessMessage("");
+        }
     }
 
     public void close() {

@@ -170,6 +170,14 @@ public class CreateEventViewModel extends ViewModel {
         return onError;
     }
 
+    public void setErrorMessage(String s) {
+        onError.setValue(s);
+    }
+
+    public void setSuccessMessage(String s) {
+        onSuccess.setValue(s);
+    }
+
     public LiveData<Void> getCloseState() {
         return close;
     }
