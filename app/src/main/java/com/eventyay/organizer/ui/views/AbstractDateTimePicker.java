@@ -11,6 +11,8 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeParseException;
 
+import java.text.ParseException;
+
 import timber.log.Timber;
 
 public abstract class AbstractDateTimePicker extends androidx.appcompat.widget.AppCompatButton {
@@ -36,7 +38,11 @@ public abstract class AbstractDateTimePicker extends androidx.appcompat.widget.A
     private void init() {
         current = LocalDateTime.now();
         String isoDate = DateUtils.formatDateToIso(current);
-        setValue(isoDate);
+        try {
+            setValue(isoDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Inevitable DD anomaly
@@ -66,7 +72,7 @@ public abstract class AbstractDateTimePicker extends androidx.appcompat.widget.A
         }
     }
 
-    public abstract void setValue(String value);
+    public abstract void setValue(String value) throws ParseException;
 
     public ObservableString getValue() {
         return value;
