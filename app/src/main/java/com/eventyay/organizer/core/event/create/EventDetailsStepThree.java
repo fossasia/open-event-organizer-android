@@ -57,6 +57,8 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
         binding = DataBindingUtil.inflate(inflater, R.layout.event_details_step_three, container, false);
         createEventViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CreateEventViewModel.class);
         validator = new Validator(binding);
+        createEventViewModel.getSuccessMessage().observe(this, this::onSuccess);
+        createEventViewModel.getErrorMessage().observe(this, this::showError);
         return binding.getRoot();
     }
 
@@ -64,8 +66,6 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     public void onStart() {
         super.onStart();
         binding.setEvent(createEventViewModel.getEvent());
-        createEventViewModel.getSuccessMessage().observe(this, this::onSuccess);
-        createEventViewModel.getErrorMessage().observe(this, this::showError);
         createEventViewModel.getCloseState().observe(this, isClosed -> close());
         createEventViewModel.getProgress().observe(this, this::showProgress);
         createEventViewModel.getEvent().isTaxEnabled = true;
