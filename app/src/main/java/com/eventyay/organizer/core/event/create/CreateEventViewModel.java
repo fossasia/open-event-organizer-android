@@ -132,7 +132,6 @@ public class CreateEventViewModel extends ViewModel {
             onError.setValue("Please enter date in correct format");
             return false;
         }
-
     }
 
     protected void nullifyEmptyFields(Event event) {
@@ -168,14 +167,6 @@ public class CreateEventViewModel extends ViewModel {
 
     public LiveData<String> getErrorMessage() {
         return onError;
-    }
-
-    public void setErrorMessage(String s) {
-        onError.setValue(s);
-    }
-
-    public void setSuccessMessage(String s) {
-        onSuccess.setValue(s);
     }
 
     public LiveData<Void> getCloseState() {
