@@ -69,6 +69,7 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
         createEventViewModel.getCloseState().observe(this, isClosed -> close());
         createEventViewModel.getProgress().observe(this, this::showProgress);
         createEventViewModel.getEvent().isTaxEnabled = true;
+
         createEventViewModel.getLogoUrlLiveData().observe(this, this::setLogoImageUrl);
         createEventViewModel.getImageUrlLiveData().observe(this, this::setOriginalImageUrl);
 
