@@ -47,7 +47,7 @@ public class DatePicker extends AbstractDateTimePicker {
 
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
-            int hour = calendar.get(Calendar.HOUR);
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
 
             bindTemporal(value, format, zonedDateTime ->
