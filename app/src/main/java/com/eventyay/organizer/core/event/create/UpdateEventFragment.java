@@ -2,13 +2,10 @@ package com.eventyay.organizer.core.event.create;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-
 import androidx.databinding.DataBindingUtil;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -16,22 +13,16 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.eventyay.organizer.BuildConfig;
+import com.eventyay.organizer.core.settings.PaymentPrefsFragment;
 import com.google.android.material.textfield.TextInputLayout;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -123,6 +114,12 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         setHasOptionsMenu(true);
 
+        if(BuildConfig.FLAVOR.equals("fdroid")) {
+            binding.form.paymentPrefs.setVisibility(View.VISIBLE);
+        } else {
+            binding.form.paymentPrefs.setVisibility(View.GONE);
+        }
+
         binding.form.eventOriginalImageLayout.setOnClickListener(view -> {
             Intent intent = new Intent();
             intent.setType("image/*");
@@ -134,6 +131,13 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
             Intent richEditorIntent = new Intent(getContext(), RichEditorActivity.class);
             richEditorIntent.putExtra(TAG_RICH_TEXT, binding.form.description.getText().toString());
             startActivityForResult(richEditorIntent, RICH_TEXT_REQUEST);
+        });
+
+        binding.form.paymentPrefs.setOnClickListener(view -> {
+            getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, PaymentPrefsFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
         });
 
         setupSpinners();
@@ -320,7 +324,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         binding.form.selectLocationButton.setOnClickListener(view -> {
 
-            if ("YOUR_ACCESS_TOKEN".equals(mapboxAccessToken)) {
+            if (mapboxAccessToken.equals("YOUR_ACCESS_TOKEN")) {
                 ViewUtils.showSnackbar(binding.getRoot(), R.string.access_token_required);
                 return;
             }

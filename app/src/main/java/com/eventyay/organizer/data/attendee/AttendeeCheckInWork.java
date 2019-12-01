@@ -3,7 +3,6 @@ package com.eventyay.organizer.data.attendee;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
-import com.eventyay.organizer.common.di.component.DaggerAppComponent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +17,9 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
+import com.eventyay.organizer.common.di.component.DaggerAppComponent;
+
 import timber.log.Timber;
 
 public class AttendeeCheckInWork extends Worker {
