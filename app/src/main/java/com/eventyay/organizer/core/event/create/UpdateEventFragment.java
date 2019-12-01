@@ -114,7 +114,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         setHasOptionsMenu(true);
 
-        if(BuildConfig.FLAVOR.equals("fdroid")) {
+        if("fdroid".equals(BuildConfig.FLAVOR)) {
             binding.form.paymentPrefs.setVisibility(View.VISIBLE);
         } else {
             binding.form.paymentPrefs.setVisibility(View.GONE);
