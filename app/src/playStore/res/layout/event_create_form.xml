@@ -234,20 +234,37 @@
                     android:textSize="@dimen/text_size_normal"
                     android:textStyle="bold"/>
 
-                    <androidx.cardview.widget.CardView
+                    <Button
+                        android:id="@+id/select_location_button"
+                        style="?attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_extra_small"
+                        android:text="@string/select_location"
+                        android:textColor="@color/purple_500" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_location_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_extra_small"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        app:cardCornerRadius="@dimen/spacing_extra_small">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/spacing_extra_small"
+                        android:visibility="gone">
 
-                        <fragment
-                            android:id="@+id/autocomplete_fragment"
-                            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/location_name"
+                            android:padding="@dimen/spacing_extra_small"
+                            app:srcCompat="@drawable/ic_location" />
+
+                        <TextView
+                            android:id="@+id/location_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
-                    </androidx.cardview.widget.CardView>
+                    </LinearLayout>
 
                 <CheckBox
                     android:id="@+id/map_shown"

@@ -7,7 +7,6 @@ apply plugin: "net.ltgt.errorprone"
 apply plugin: "com.github.b3er.local.properties"
 
 def app_name = System.getenv('app_name') ?: "Eventyay Organizer"
-def GOOGLE_PLACES_API_KEY = System.getenv('GOOGLE_PLACES_API_KEY') ?: "YOUR_API_KEY"
 def MAPBOX_ACCESS_TOKEN = System.getenv('MAPBOX_ACCESS_TOKEN') ?: "YOUR_ACCESS_TOKEN"
 
 def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
@@ -34,7 +33,6 @@ android {
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
             appName: app_name,
-            GOOGLE_PLACES_API_KEY: GOOGLE_PLACES_API_KEY,
             MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN
         ]
     }
@@ -263,7 +261,7 @@ dependencies {
     fdroidImplementation 'com.github.blikoon:QRCodeScanner:0.1.2'
 
     // Mapbox
-    fdroidImplementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v8:0.9.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v8:0.9.0'
 
     // About Page
     implementation 'com.github.medyo:android-about-page:1.2.5'
