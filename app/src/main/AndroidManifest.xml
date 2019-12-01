@@ -88,10 +88,6 @@
             android:theme="@style/AppTheme.Main.Light" />
 
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${GOOGLE_PLACES_API_KEY}" />
-
-        <meta-data
             android:name="@string/mapbox_access_token"
             android:value="${MAPBOX_ACCESS_TOKEN}" />
     </application>

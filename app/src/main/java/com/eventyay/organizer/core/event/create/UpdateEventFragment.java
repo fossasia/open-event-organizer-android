@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
+import com.eventyay.organizer.BuildConfig;
 import com.eventyay.organizer.core.settings.PaymentPrefsFragment;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.appcompat.app.ActionBar;
@@ -112,6 +113,12 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
         }
 
         setHasOptionsMenu(true);
+
+        if ("fdroid".equals(BuildConfig.FLAVOR)) {
+            binding.form.paymentPrefs.setVisibility(View.VISIBLE);
+        } else {
+            binding.form.paymentPrefs.setVisibility(View.GONE);
+        }
 
         binding.form.eventOriginalImageLayout.setOnClickListener(view -> {
             Intent intent = new Intent();
@@ -317,7 +324,7 @@ public class UpdateEventFragment extends BaseFragment implements CreateEventView
 
         binding.form.selectLocationButton.setOnClickListener(view -> {
 
-            if (mapboxAccessToken.equals("YOUR_ACCESS_TOKEN")) {
+            if ("YOUR_ACCESS_TOKEN".equals(mapboxAccessToken)) {
                 ViewUtils.showSnackbar(binding.getRoot(), R.string.access_token_required);
                 return;
             }
