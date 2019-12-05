@@ -4,6 +4,8 @@ jobs:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-28-alpha
+    environment:
+      JVM_OPTS: -Xmx3600m
     steps:
       - checkout
       - restore_cache:
@@ -17,7 +19,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:	
           name: Run Tests	
-          command: ./gradlew lint
+          command: ./gradlew lint androidCheck androidPmd
       - run:
           name: Test Coverage
           command: ./gradlew testPlayStoreDebugUnitTestCoverage
