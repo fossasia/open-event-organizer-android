@@ -15,6 +15,9 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:	
+          name: Run Tests	
+          command: ./gradlew lint
       - run:
           name: Test Coverage
           command: ./gradlew testPlayStoreDebugUnitTestCoverage
