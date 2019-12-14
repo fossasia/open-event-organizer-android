@@ -7,6 +7,7 @@ import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,8 +26,10 @@ public class ResetPasswordViewModelTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
-    @Mock private AuthService tokenSubmitModel;
+    @Rule
+    public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
+    @Mock
+    private AuthService tokenSubmitModel;
     private final HostSelectionInterceptor interceptor = new HostSelectionInterceptor();
 
     @Mock
@@ -130,5 +133,4 @@ public class ResetPasswordViewModelTest {
         inOrder.verify(error).onChanged(errorString);
         inOrder.verify(progress).onChanged(false);
     }
-
 }

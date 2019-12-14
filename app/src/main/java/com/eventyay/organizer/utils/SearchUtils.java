@@ -18,7 +18,7 @@ public final class SearchUtils {
      * greater than 60 does well.
      *
      * @param query to be search
-     * @param keys set of strings use to filter the item
+     * @param keys  set of strings use to filter the item
      * @return boolean saying filer or not
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // Bug in PMD related to DU anomaly
@@ -30,5 +30,4 @@ public final class SearchUtils {
         }
         return true;
     }
-
 }

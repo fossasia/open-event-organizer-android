@@ -1,15 +1,7 @@
 package com.eventyay.organizer.core.event.copyright;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.textfield.TextInputLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,12 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.databinding.CopyrightCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.ValidateUtils;
+import com.google.android.material.textfield.TextInputLayout;
 
 import javax.inject.Inject;
 
@@ -50,7 +51,7 @@ public class CreateCopyrightFragment extends BaseFragment implements CreateCopyr
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        binding =  DataBindingUtil.inflate(localInflater, R.layout.copyright_create_layout, container, false);
+        binding = DataBindingUtil.inflate(localInflater, R.layout.copyright_create_layout, container, false);
         createCopyrightViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateCopyrightViewModel.class);
         validator = new Validator(binding.form);
 

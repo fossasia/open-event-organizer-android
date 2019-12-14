@@ -11,7 +11,8 @@ public class RxBus implements Bus {
     private static PublishSubject<Event> eventPublisher = PublishSubject.create();
 
     @Inject
-    RxBus() { }
+    RxBus() {
+    }
 
     @Override
     public void pushSelectedEvent(Event event) {

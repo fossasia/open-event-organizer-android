@@ -9,5 +9,4 @@ public interface Bus {
     void pushSelectedEvent(Event event);
 
     Observable<Event> getSelectedEvent();
-
 }

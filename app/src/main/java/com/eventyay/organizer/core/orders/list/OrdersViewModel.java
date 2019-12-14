@@ -73,5 +73,4 @@ public class OrdersViewModel extends ViewModel {
         compositeDisposable.dispose();
         orderLiveData.setValue(null);
     }
-
 }

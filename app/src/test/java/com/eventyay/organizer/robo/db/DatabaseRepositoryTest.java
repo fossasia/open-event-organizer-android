@@ -1,9 +1,10 @@
 package com.eventyay.organizer.robo.db;
 
-import com.eventyay.organizer.data.user.User;
-import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
 import com.eventyay.organizer.common.model.SimpleModel;
 import com.eventyay.organizer.common.model.SimpleModel_Table;
+import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
+import com.eventyay.organizer.data.user.User;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -122,5 +123,4 @@ public class DatabaseRepositoryTest extends BaseTest {
             .test()
             .assertValue(simpleModel -> simpleModel.getDescription().equals("Melshi Jones"));
     }
-
 }

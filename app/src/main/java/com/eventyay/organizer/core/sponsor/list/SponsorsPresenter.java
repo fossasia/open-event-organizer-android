@@ -1,9 +1,7 @@
 package com.eventyay.organizer.core.sponsor.list;
 
-import androidx.databinding.ObservableBoolean;
 import androidx.annotation.VisibleForTesting;
-
-import com.raizlabs.android.dbflow.structure.BaseModel;
+import androidx.databinding.ObservableBoolean;
 
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
@@ -11,6 +9,7 @@ import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.sponsor.Sponsor;
 import com.eventyay.organizer.data.sponsor.SponsorRepository;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,7 +169,7 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     }
 
     public void unselectSponsorsList() {
-        for (Long sessionId  : selectedSponsors.keySet()) {
+        for (Long sessionId : selectedSponsors.keySet()) {
             if (sessionId != null && selectedSponsors.containsKey(sessionId))
                 selectedSponsors.get(sessionId).set(false);
         }
@@ -190,5 +189,4 @@ public class SponsorsPresenter extends AbstractDetailPresenter<Long, SponsorsVie
     protected Map<Long, ObservableBoolean> getSelectedSponsors() {
         return selectedSponsors;
     }
-
 }

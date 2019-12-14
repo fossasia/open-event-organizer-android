@@ -1,10 +1,9 @@
 package com.eventyay.organizer.core.track.list;
 
 
-import androidx.databinding.ObservableBoolean;
 import android.graphics.Color;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
+import androidx.databinding.ObservableBoolean;
 
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
@@ -12,6 +11,7 @@ import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.tracks.TrackRepository;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,7 @@ public class TracksPresenter extends AbstractDetailPresenter<Long, TracksView> {
     private boolean isContextualModeActive;
 
     private static final int EDITABLE_AT_ONCE = 1;
+
     @Inject
     public TracksPresenter(TrackRepository trackRepository, DatabaseChangeListener<Track> trackChangeListener) {
         this.trackRepository = trackRepository;

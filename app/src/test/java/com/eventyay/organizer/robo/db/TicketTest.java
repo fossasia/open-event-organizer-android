@@ -1,12 +1,13 @@
 package com.eventyay.organizer.robo.db;
 
-import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
 import com.eventyay.organizer.data.Repository;
 import com.eventyay.organizer.data.attendee.Attendee;
+import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepositoryImpl;
 import com.eventyay.organizer.data.ticket.TypeQuantity;
+
 import org.junit.After;
 import org.junit.Test;
 
@@ -184,5 +185,4 @@ public class TicketTest extends BaseTest {
             }
         }
     }
-
 }

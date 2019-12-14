@@ -32,4 +32,3 @@ public class EventStatistics {
     public Long sessionsAccepted;
     public Long sessionsDraft;
 }
-

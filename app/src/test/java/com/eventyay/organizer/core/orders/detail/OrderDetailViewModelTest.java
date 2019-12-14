@@ -13,6 +13,7 @@ import com.eventyay.organizer.data.order.OrderRepository;
 import com.eventyay.organizer.data.order.model.OrderReceiptRequest;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -281,7 +282,6 @@ public class OrderDetailViewModelTest {
         inOrder.verify(progress).onChanged(true);
         inOrder.verify(success).onChanged("Email Sent!");
         inOrder.verify(progress).onChanged(false);
-
     }
 
     @Test
@@ -302,5 +302,4 @@ public class OrderDetailViewModelTest {
         inOrder.verify(error).onChanged(errorString);
         inOrder.verify(progress).onChanged(false);
     }
-
 }

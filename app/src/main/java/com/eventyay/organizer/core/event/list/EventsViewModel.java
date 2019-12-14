@@ -1,7 +1,6 @@
 package com.eventyay.organizer.core.event.list;
 
 import androidx.lifecycle.LiveData;
-import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;

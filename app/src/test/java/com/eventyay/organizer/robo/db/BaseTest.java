@@ -3,6 +3,7 @@ package com.eventyay.organizer.robo.db;
 import android.app.Application;
 
 import com.eventyay.organizer.robo.rule.DatabaseTestRule;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
@@ -22,5 +23,4 @@ public abstract class BaseTest {
     }
 
     public abstract void setUp();
-
 }

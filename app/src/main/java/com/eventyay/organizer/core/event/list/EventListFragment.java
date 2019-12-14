@@ -1,14 +1,7 @@
 package com.eventyay.organizer.core.event.list;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +9,14 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -34,7 +35,6 @@ import static com.eventyay.organizer.core.event.list.EventsViewModel.SORTBYNAME;
 
 /**
  * A simple {@link Fragment} subclass.
- *
  */
 public class EventListFragment extends BaseFragment implements EventsView {
 
@@ -204,5 +204,4 @@ public class EventListFragment extends BaseFragment implements EventsView {
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
-
 }

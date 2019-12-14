@@ -4,6 +4,7 @@ import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,7 +35,8 @@ public class AuthHolderTest {
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
 
-    @Mock private Preferences preferenceModel;
+    @Mock
+    private Preferences preferenceModel;
 
     @Before
     public void setUp() {
@@ -130,5 +132,4 @@ public class AuthHolderTest {
         assertNull(authHolder.getToken());
         assertNull(authHolder.getAuthorization());
     }
-
 }

@@ -7,6 +7,7 @@ import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.faq.Faq;
 import com.eventyay.organizer.data.faq.FaqRepository;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

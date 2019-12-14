@@ -109,5 +109,4 @@ public class UpdateOrganizerInfoViewModelTest {
 
         ContextManager.setSelectedEvent(null);
     }
-
 }

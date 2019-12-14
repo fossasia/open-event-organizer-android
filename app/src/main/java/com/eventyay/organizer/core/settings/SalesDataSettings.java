@@ -1,19 +1,19 @@
 package com.eventyay.organizer.core.settings;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.preference.CheckBoxPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
+import androidx.annotation.Nullable;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceManager;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 public class SalesDataSettings extends PreferenceFragmentCompat {
 

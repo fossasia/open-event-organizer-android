@@ -1,15 +1,16 @@
 package com.eventyay.organizer.core.attendee.checkin;
 
 import android.annotation.SuppressLint;
+
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.annotation.VisibleForTesting;
 
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
-import com.eventyay.organizer.data.db.DatabaseChangeListener;
-import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeRepository;
+import com.eventyay.organizer.data.db.DatabaseChangeListener;
+import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.utils.ErrorUtils;
 
 import javax.inject.Inject;
@@ -81,5 +82,4 @@ public class AttendeeCheckInViewModel extends ViewModel {
     public void setAttendee(Attendee attendee) {
         this.attendeeliveData.setValue(attendee);
     }
-
 }

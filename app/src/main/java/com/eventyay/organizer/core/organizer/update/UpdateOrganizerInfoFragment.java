@@ -1,15 +1,7 @@
 package com.eventyay.organizer.core.organizer.update;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.textfield.TextInputLayout;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,17 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.databinding.UpdateOrganizerLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
-import com.eventyay.organizer.utils.ValidateUtils;
+import com.google.android.material.textfield.TextInputLayout;
 
 import javax.inject.Inject;
-import br.com.ilhasoft.support.validation.Validator;
 
+import br.com.ilhasoft.support.validation.Validator;
 
 import static com.eventyay.organizer.ui.ViewUtils.showView;
 
@@ -52,7 +52,7 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        binding =  DataBindingUtil.inflate(localInflater, R.layout.update_organizer_layout, container, false);
+        binding = DataBindingUtil.inflate(localInflater, R.layout.update_organizer_layout, container, false);
         updateOrganizerInfoViewModel = ViewModelProviders.of(this, viewModelFactory).get(UpdateOrganizerInfoViewModel.class);
         validator = new Validator(binding.form);
 
@@ -163,5 +163,4 @@ public class UpdateOrganizerInfoFragment extends BaseFragment implements UpdateO
         }
         saveAlertDialog.show();
     }
-
 }

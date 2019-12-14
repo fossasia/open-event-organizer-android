@@ -1,13 +1,12 @@
 package com.eventyay.organizer.core.speakerscall.detail;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.data.speakerscall.SpeakersCallRepository;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import javax.inject.Inject;
 

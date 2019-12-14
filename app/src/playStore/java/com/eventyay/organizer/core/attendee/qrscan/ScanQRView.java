@@ -24,5 +24,4 @@ public interface ScanQRView extends Progressive {
     void startScan();
 
     void stopScan();
-
 }

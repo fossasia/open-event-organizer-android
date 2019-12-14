@@ -162,4 +162,3 @@ public class ChangePasswordViewModelTest {
         inOrder.verify(error).onChanged(errorString);
     }
 }
-

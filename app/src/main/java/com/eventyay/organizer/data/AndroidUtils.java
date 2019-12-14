@@ -1,6 +1,7 @@
 package com.eventyay.organizer.data;
 
 import android.content.Context;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.StringRes;
@@ -17,7 +18,7 @@ import timber.log.Timber;
 /**
  * Utility class to be used by presenters and models for
  * Android Context based actions
- *
+ * <p>
  * Break in sub-modules if grows large
  */
 public class AndroidUtils implements ContextUtils {

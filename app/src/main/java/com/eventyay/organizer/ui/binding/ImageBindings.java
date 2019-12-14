@@ -1,6 +1,5 @@
 package com.eventyay.organizer.ui.binding;
 
-import androidx.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -8,11 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.github.florent37.glidepalette.GlidePalette;
+import androidx.databinding.BindingAdapter;
 
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.eventyay.organizer.ui.GlideApp;
 import com.eventyay.organizer.ui.GlideRequest;
+import com.github.florent37.glidepalette.GlidePalette;
 
 import io.reactivex.functions.Consumer;
 import timber.log.Timber;
@@ -90,5 +90,4 @@ public final class ImageBindings {
     public static void bindTextWithPalette(TextView textView, String key) {
         //PaletteHolder.getInstance().registerText(key, textView);
     }
-
 }

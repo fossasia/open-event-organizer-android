@@ -1,5 +1,7 @@
 package com.eventyay.organizer.data.copyright;
 
+import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
+import com.eventyay.organizer.data.event.Event;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
@@ -10,9 +12,6 @@ import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
-import com.eventyay.organizer.data.event.Event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,5 +42,4 @@ public class Copyright {
     @Relationship("event")
     @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
     public Event event;
-
 }

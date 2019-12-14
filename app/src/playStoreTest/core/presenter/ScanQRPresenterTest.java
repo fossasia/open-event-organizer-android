@@ -112,7 +112,6 @@ public class ScanQRPresenterTest {
             .thenReturn(Observable.fromIterable(ATTENDEES));
 
         scanQRPresenter.start();
-
     }
 
     @Test
@@ -322,7 +321,6 @@ public class ScanQRPresenterTest {
         inOrder.verify(scanQRView).showMessage(R.string.invalid_ticket, false);
         inOrder.verify(scanQRView).onScannedAttendee(ATTENDEES.get(3));
         inOrder.verify(scanQRView, never()).showMessage(anyInt(), anyBoolean());
-
     }
 
     @Test
@@ -361,5 +359,4 @@ public class ScanQRPresenterTest {
 
         verify(scanQRView).onScannedAttendee(ATTENDEES.get(3));
     }
-
 }

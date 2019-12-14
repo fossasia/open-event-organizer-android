@@ -6,6 +6,7 @@ import com.eventyay.organizer.core.speaker.list.SpeakersView;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.data.speaker.SpeakerRepository;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

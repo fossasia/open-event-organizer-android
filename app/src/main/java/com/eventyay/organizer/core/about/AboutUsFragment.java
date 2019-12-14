@@ -36,7 +36,7 @@ public class AboutUsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        binding =  DataBindingUtil.inflate(localInflater, R.layout.about_us_fragment, container, false);
+        binding = DataBindingUtil.inflate(localInflater, R.layout.about_us_fragment, container, false);
 
         Element legalElement = new Element();
         legalElement.setTitle("Legal");
@@ -94,7 +94,7 @@ public class AboutUsFragment extends BaseFragment {
             .addItem(legalElement)
             .addItem(shareElement);
 
-        if (BuildConfig.FLAVOR.equals("playStore")) {
+        if ("playStore".equals(BuildConfig.FLAVOR)) {
             aboutPage.addItem(thirdPartyLicenses);
         }
 

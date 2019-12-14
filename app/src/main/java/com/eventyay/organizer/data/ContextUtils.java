@@ -10,8 +10,8 @@ public interface ContextUtils {
 
     String getResourceString(@StringRes int stringId);
 
-    @ColorInt int getResourceColor(@ColorRes int colorId);
+    @ColorInt
+    int getResourceColor(@ColorRes int colorId);
 
     Completable deleteDatabase();
-
 }

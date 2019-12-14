@@ -17,5 +17,4 @@ public interface SpeakersCallApi {
 
     @PATCH("speakers-calls/{id}")
     Observable<SpeakersCall> updateSpeakersCall(@Path("id") long id, @Body SpeakersCall speakersCall);
-
 }

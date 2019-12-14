@@ -1,16 +1,16 @@
 package com.eventyay.organizer.core.attendee.list.listeners;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 
-import com.mikepenz.fastadapter.FastAdapter;
-import com.mikepenz.fastadapter.listeners.ClickEventHook;
-
-import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.core.attendee.list.AttendeesView;
 import com.eventyay.organizer.core.attendee.list.viewholders.AttendeeViewHolder;
+import com.eventyay.organizer.data.attendee.Attendee;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.listeners.ClickEventHook;
 
 import java.util.Arrays;
 import java.util.List;

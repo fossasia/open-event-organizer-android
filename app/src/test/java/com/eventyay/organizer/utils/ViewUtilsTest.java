@@ -3,6 +3,7 @@ package com.eventyay.organizer.utils;
 import android.view.View;
 
 import com.eventyay.organizer.ui.ViewUtils;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -12,8 +13,10 @@ import org.mockito.junit.MockitoRule;
 
 public class ViewUtilsTest {
 
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Mock private View view;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock
+    private View view;
 
     @Test
     public void shouldShowView() {

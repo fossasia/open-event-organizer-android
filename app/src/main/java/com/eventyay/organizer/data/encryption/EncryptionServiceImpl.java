@@ -3,8 +3,9 @@ package com.eventyay.organizer.data.encryption;
 import android.content.Context;
 import android.os.Build;
 import android.security.KeyPairGeneratorSpec;
-import androidx.annotation.RequiresApi;
 import android.util.Base64;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -224,10 +225,9 @@ public class EncryptionServiceImpl implements EncryptionService {
     }
 
     /*
-    * The following methods are specifically taken into use when the API level is
-    * less than 18
-    *
-    */
+     * The following methods are specifically taken into use when the API level is
+     * less than 18
+     */
     private byte[] encryptString(String message, SecretKey secret) {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
@@ -258,6 +258,4 @@ public class EncryptionServiceImpl implements EncryptionService {
     private SecretKey generateKey(String password) {
         return new SecretKeySpec(password.getBytes(), "AES");
     }
-
 }
-

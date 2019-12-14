@@ -1,6 +1,11 @@
 package com.eventyay.organizer.data.attendee;
 
+import com.eventyay.organizer.common.model.HeaderProvider;
 import com.eventyay.organizer.core.attendee.list.viewholders.AttendeeViewHolder;
+import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
+import com.eventyay.organizer.data.event.Event;
+import com.eventyay.organizer.data.order.Order;
+import com.eventyay.organizer.data.ticket.Ticket;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -16,12 +21,6 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
-import com.eventyay.organizer.common.model.HeaderProvider;
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
-import com.eventyay.organizer.data.event.Event;
-import com.eventyay.organizer.data.order.Order;
-import com.eventyay.organizer.data.ticket.Ticket;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,9 +32,9 @@ import lombok.experimental.Delegate;
 @Type("attendee")
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
-@EqualsAndHashCode(callSuper = false, exclude = { "attendeeDelegate", "checking" })
+@EqualsAndHashCode(callSuper = false, exclude = {"attendeeDelegate", "checking"})
 @Table(database = OrgaDatabase.class)
-@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
+@SuppressWarnings({"PMD.ExcessivePublicCount", "PMD.TooManyFields"})
 public class Attendee extends AbstractItem<AttendeeViewHolder> implements Comparable<Attendee>, HeaderProvider, IItem<AttendeeViewHolder> {
 
     @Delegate(types = AttendeeDelegate.class)
@@ -127,5 +126,6 @@ public class Attendee extends AbstractItem<AttendeeViewHolder> implements Compar
     @Column
     public boolean checking;
 
-    public Attendee() { }
+    public Attendee() {
+    }
 }

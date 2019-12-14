@@ -1,16 +1,16 @@
 package com.eventyay.organizer.core.settings;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
+
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.ui.ViewUtils;
-
 import com.eventyay.organizer.utils.BrowserUtils;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 

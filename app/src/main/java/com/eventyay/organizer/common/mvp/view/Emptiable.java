@@ -7,5 +7,4 @@ public interface Emptiable<T> {
     void showResults(List<T> items);
 
     void showEmptyView(boolean show);
-
 }

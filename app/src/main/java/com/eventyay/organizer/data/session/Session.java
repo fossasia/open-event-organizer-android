@@ -1,5 +1,9 @@
 package com.eventyay.organizer.data.session;
 
+import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
+import com.eventyay.organizer.data.event.Event;
+import com.eventyay.organizer.data.speaker.Speaker;
+import com.eventyay.organizer.data.tracks.Track;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.jasminb.jsonapi.LongIdHandler;
@@ -10,11 +14,6 @@ import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
-import com.eventyay.organizer.data.event.Event;
-import com.eventyay.organizer.data.speaker.Speaker;
-import com.eventyay.organizer.data.tracks.Track;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

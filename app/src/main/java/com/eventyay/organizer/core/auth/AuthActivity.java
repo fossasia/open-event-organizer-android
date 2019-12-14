@@ -3,10 +3,11 @@ package com.eventyay.organizer.core.auth;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
@@ -59,7 +60,7 @@ public class AuthActivity extends AppCompatActivity implements HasSupportFragmen
         String appLinkAction = intent.getAction();
         Uri appLinkData = intent.getData();
 
-        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null){
+        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
             LinkHandler.Destination destination = LinkHandler.getDestinationAndToken(appLinkData.toString()).getDestination();
             String token = LinkHandler.getDestinationAndToken(appLinkData.toString()).getToken();
 

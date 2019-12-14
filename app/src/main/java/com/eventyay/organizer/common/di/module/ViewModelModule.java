@@ -31,8 +31,8 @@ import com.eventyay.organizer.core.orders.list.OrdersViewModel;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailViewModel;
 import com.eventyay.organizer.core.organizer.password.ChangePasswordViewModel;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoViewModel;
-import com.eventyay.organizer.core.role.list.RoleListViewModel;
 import com.eventyay.organizer.core.role.invite.RoleInviteViewModel;
+import com.eventyay.organizer.core.role.list.RoleListViewModel;
 import com.eventyay.organizer.core.session.create.CreateSessionViewModel;
 import com.eventyay.organizer.core.settings.autocheckin.AutoCheckInViewModel;
 import com.eventyay.organizer.core.settings.restriction.TicketSettingsViewModel;
@@ -248,5 +248,4 @@ public abstract class ViewModelModule {
 
     @Binds
     public abstract ViewModelProvider.Factory bindViewModelFactory(OrgaViewModelFactory factory);
-
 }

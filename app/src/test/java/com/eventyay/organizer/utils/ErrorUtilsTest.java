@@ -155,7 +155,6 @@ public class ErrorUtilsTest {
         str = String.valueOf(ErrorUtils.getMessage(httpException5));
 
         assertEquals("Access Forbidden: Co-Organizer access required - order_id", str);
-
     }
 
     @Test
@@ -171,5 +170,4 @@ public class ErrorUtilsTest {
 
         assertEquals("Access Forbidden: Co-Organizer access required - order_id", str);
     }
-
 }

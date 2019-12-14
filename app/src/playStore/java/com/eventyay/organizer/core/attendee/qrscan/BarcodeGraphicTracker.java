@@ -66,4 +66,3 @@ public class BarcodeGraphicTracker extends Tracker<Barcode> {
         graphicOverlay.remove(graphic);
     }
 }
-

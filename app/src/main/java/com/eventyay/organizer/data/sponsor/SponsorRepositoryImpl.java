@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.RateLimiter;
 import com.eventyay.organizer.data.Repository;
+
 import org.threeten.bp.Duration;
 
 import javax.inject.Inject;
@@ -117,5 +118,4 @@ public class SponsorRepositoryImpl implements SponsorRepository {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread());
     }
-
 }

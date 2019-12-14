@@ -5,8 +5,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
-import com.eventyay.organizer.core.event.list.EventListFragment;
 import com.eventyay.organizer.core.settings.SettingsFragment;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -130,5 +130,4 @@ public class FragmentNavigatorTest {
 
         inOrder.verify(fragmentManager).popBackStack();
     }
-
 }

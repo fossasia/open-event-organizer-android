@@ -1,19 +1,19 @@
 package com.eventyay.organizer.core.settings;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.preference.CheckBoxPreference;
-import androidx.preference.PreferenceManager;
-import androidx.preference.Preference.OnPreferenceChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
+import androidx.annotation.Nullable;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.Preference.OnPreferenceChangeListener;
+import androidx.preference.PreferenceManager;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 public class ScanSettings extends PreferenceFragmentCompat {
 
@@ -74,7 +74,6 @@ public class ScanSettings extends PreferenceFragmentCompat {
         checkIn.setOnPreferenceChangeListener(listener);
         checkOut.setOnPreferenceChangeListener(listener);
         validate.setOnPreferenceChangeListener(listener);
-
     }
 
     @Override
@@ -82,5 +81,4 @@ public class ScanSettings extends PreferenceFragmentCompat {
         super.onResume();
         ViewUtils.setTitle(this, getString(R.string.scan_settings));
     }
-
 }

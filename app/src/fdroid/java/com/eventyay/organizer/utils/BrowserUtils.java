@@ -3,6 +3,7 @@ package com.eventyay.organizer.utils;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 

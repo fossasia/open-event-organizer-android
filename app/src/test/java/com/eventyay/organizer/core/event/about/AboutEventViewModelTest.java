@@ -43,9 +43,12 @@ public class AboutEventViewModelTest {
     public TestRule rule = new InstantTaskExecutorRule();
     @Mock
     private AboutEventView aboutEventView;
-    @Mock private EventRepository eventRepository;
-    @Mock private CopyrightRepository copyrightRepository;
-    @Mock private DatabaseChangeListener<Copyright> copyrightChangeListener;
+    @Mock
+    private EventRepository eventRepository;
+    @Mock
+    private CopyrightRepository copyrightRepository;
+    @Mock
+    private DatabaseChangeListener<Copyright> copyrightChangeListener;
 
     @Mock
     private Event event;

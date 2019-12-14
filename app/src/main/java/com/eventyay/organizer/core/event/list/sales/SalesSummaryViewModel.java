@@ -38,7 +38,6 @@ public class SalesSummaryViewModel extends ViewModel {
         this.eventRepository = eventRepository;
         this.ticketAnalyser = ticketAnalyser;
         this.attendeeRepository = attendeeRepository;
-
     }
 
     public LiveData<Boolean> getProgress() {
@@ -76,7 +75,6 @@ public class SalesSummaryViewModel extends ViewModel {
                     this.attendees = attendees;
                     ticketAnalyser.analyseSoldTickets(event, attendees);
                 }, throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
-
     }
 
     private Observable<Event> getEventSource(long eventId, boolean forceReload) {

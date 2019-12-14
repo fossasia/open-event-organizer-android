@@ -2,6 +2,9 @@ package com.eventyay.organizer.core.notification.list;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,10 +15,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -126,7 +125,7 @@ public class NotificationsFragment extends BaseFragment implements Notifications
 
     @Override
     public void showResults(List<Notification> notifications) {
-        if(notifications.isEmpty()) {
+        if (notifications.isEmpty()) {
             showEmptyView(true);
             return;
         } else {
