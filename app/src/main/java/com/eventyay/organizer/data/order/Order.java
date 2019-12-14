@@ -32,7 +32,7 @@ import lombok.ToString;
 @ToString(exclude = {"event"})
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
-@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
+@SuppressWarnings({"PMD.ExcessivePublicCount", "PMD.TooManyFields"})
 public class Order {
 
     @PrimaryKey
@@ -68,8 +68,9 @@ public class Order {
 
     @ColumnIgnore
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @JsonSerialize(using= OnSiteTicketSerializer.class)
+    @JsonSerialize(using = OnSiteTicketSerializer.class)
     public List<OnSiteTicket> onSiteTickets;
 
-    public Order() { }
+    public Order() {
+    }
 }

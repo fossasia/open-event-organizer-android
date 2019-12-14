@@ -1,21 +1,21 @@
 package com.eventyay.organizer.core.track.create;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.eventyay.organizer.data.tracks.Track;
-import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
+import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.databinding.TrackCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 
 import javax.inject.Inject;
 
@@ -39,7 +39,7 @@ public class CreateTrackFragment extends BaseFragment implements CreateTrackView
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding =  DataBindingUtil.inflate(inflater, R.layout.track_create_layout, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.track_create_layout, container, false);
         binding.form.trackName.requestFocus();
         ViewUtils.showKeyboard(getContext());
         createTrackViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateTrackViewModel.class);

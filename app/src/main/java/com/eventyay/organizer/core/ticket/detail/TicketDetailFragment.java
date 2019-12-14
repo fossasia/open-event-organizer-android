@@ -1,16 +1,17 @@
 package com.eventyay.organizer.core.ticket.detail;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.print.PrintManager;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
@@ -33,7 +34,7 @@ public class TicketDetailFragment extends BaseBottomSheetFragment implements Tic
 
     public static TicketDetailFragment newInstance(long ticketId) {
         Bundle args = new Bundle();
-        
+
         args.putLong(TICKET_ID, ticketId);
 
         TicketDetailFragment fragment = new TicketDetailFragment();
@@ -54,7 +55,7 @@ public class TicketDetailFragment extends BaseBottomSheetFragment implements Tic
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.ticket_detail_layout, container, false);
-        ticketDetailViewModel =  ViewModelProviders.of(this, viewModelFactory).get(TicketDetailViewModel.class);
+        ticketDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(TicketDetailViewModel.class);
         return binding.getRoot();
     }
 

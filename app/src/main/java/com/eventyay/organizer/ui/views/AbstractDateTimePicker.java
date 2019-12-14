@@ -7,11 +7,9 @@ import android.util.AttributeSet;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.data.event.serializer.ObservableString;
 import com.eventyay.organizer.utils.DateUtils;
+
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
-import org.threeten.bp.format.DateTimeParseException;
-
-import timber.log.Timber;
 
 public abstract class AbstractDateTimePicker extends androidx.appcompat.widget.AppCompatButton {
     private final ObservableString value = new ObservableString();

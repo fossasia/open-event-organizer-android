@@ -4,19 +4,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
-import androidx.annotation.NonNull;
-import androidx.multidex.MultiDexApplication;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.multidex.MultiDexApplication;
+
+import com.eventyay.organizer.common.di.AppInjector;
+import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 import com.facebook.stetho.Stetho;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.raizlabs.android.dbflow.config.DatabaseConfig;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.runtime.DirectModelNotifier;
-
-import com.eventyay.organizer.common.di.AppInjector;
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -132,5 +132,4 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
             }
         }
     }
-
 }

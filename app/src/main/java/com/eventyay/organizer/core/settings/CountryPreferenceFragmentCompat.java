@@ -1,13 +1,13 @@
 package com.eventyay.organizer.core.settings;
 
 import android.os.Bundle;
-import androidx.preference.DialogPreference;
-import androidx.preference.PreferenceDialogFragmentCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.preference.DialogPreference;
+import androidx.preference.PreferenceDialogFragmentCompat;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
@@ -78,5 +78,4 @@ public class CountryPreferenceFragmentCompat extends PreferenceDialogFragmentCom
             }
         });
     }
-
 }

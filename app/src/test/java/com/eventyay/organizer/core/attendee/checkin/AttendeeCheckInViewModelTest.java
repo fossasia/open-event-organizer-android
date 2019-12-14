@@ -3,11 +3,12 @@ package com.eventyay.organizer.core.attendee.checkin;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
 
-import com.eventyay.organizer.data.attendee.AttendeeRepository;
-import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
-import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.attendee.Attendee;
+import com.eventyay.organizer.data.attendee.AttendeeRepository;
+import com.eventyay.organizer.data.db.DatabaseChangeListener;
+import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.event.Event;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,11 +36,14 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class AttendeeCheckInViewModelTest {
 
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Rule
     public TestRule rule = new InstantTaskExecutorRule();
-    @Mock private AttendeeRepository attendeeRepository;
-    @Mock private DatabaseChangeListener<Attendee> databaseChangeListener;
+    @Mock
+    private AttendeeRepository attendeeRepository;
+    @Mock
+    private DatabaseChangeListener<Attendee> databaseChangeListener;
     private PublishSubject<DbFlowDatabaseChangeListener.ModelChange<Attendee>> notifier;
 
     private static final long ID = 42;
@@ -145,5 +149,4 @@ public class AttendeeCheckInViewModelTest {
 
         inOrder.verify(error).onChanged(any());
     }
-
 }

@@ -8,6 +8,7 @@ import com.eventyay.organizer.common.mvp.view.Refreshable;
 import com.eventyay.organizer.common.mvp.view.Successful;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.common.rx.ViewTransformers;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -32,11 +33,14 @@ public class ViewTransformersTest {
 
     private static final String TAG = "Test";
 
-    @Rule public MockitoRule rule = MockitoJUnit.rule();
-    @Mock private CombinedView view;
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
+    @Mock
+    private CombinedView view;
 
     private interface CombinedView extends Progressive, Erroneous, ItemResult<String>,
-        Refreshable, Successful, Emptiable<String> { }
+        Refreshable, Successful, Emptiable<String> {
+    }
 
     private static void testProgessive(CombinedView view) {
         InOrder inOrder = Mockito.inOrder(view);
@@ -127,5 +131,4 @@ public class ViewTransformersTest {
         verify(list).addAll(any());
         verify(view).showResults(list);
     }
-
 }

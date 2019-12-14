@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment;
 
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.core.attendee.list.AttendeesFragment;
-import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
 import com.eventyay.organizer.core.auth.login.LoginFragment;
+import com.eventyay.organizer.core.auth.reset.ResetPasswordFragment;
 import com.eventyay.organizer.core.auth.signup.SignUpFragment;
 import com.eventyay.organizer.core.event.dashboard.EventDashboardFragment;
 import com.eventyay.organizer.core.event.list.EventListFragment;
@@ -13,6 +13,7 @@ import com.eventyay.organizer.core.settings.SettingsFragment;
 import com.eventyay.organizer.core.ticket.create.CreateTicketFragment;
 import com.eventyay.organizer.core.ticket.list.TicketsFragment;
 import com.eventyay.organizer.data.event.Event;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -90,5 +91,4 @@ public class FragmentInstanceTest<T extends Fragment> extends BaseParameterTest 
     public void shouldInstantiate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         testFragmentCreation(getFragment());
     }
-
 }

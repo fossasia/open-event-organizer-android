@@ -1,14 +1,15 @@
 package com.eventyay.organizer.core.attendee.checkin;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseBottomSheetFragment;
@@ -99,5 +100,4 @@ public class AttendeeCheckInFragment extends BaseBottomSheetFragment implements 
     public void showError(String error) {
         ViewUtils.showSnackbar(binding.getRoot(), error);
     }
-
 }

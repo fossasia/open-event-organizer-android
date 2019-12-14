@@ -1,9 +1,9 @@
 package com.eventyay.organizer.core.orders.detail;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.annotation.VisibleForTesting;
 
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.attendee.Attendee;
@@ -113,7 +113,7 @@ public class OrderDetailViewModel extends ViewModel {
         compositeDisposable.add(attendeeRepository.scheduleToggle(attendeesLiveData.getValue().get(index))
             .subscribe(() -> {
                     //Nothing here
-                 },
+                },
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
@@ -137,6 +137,7 @@ public class OrderDetailViewModel extends ViewModel {
     public LiveData<String> getSuccess() {
         return success;
     }
+
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -153,5 +154,4 @@ public class OrderDetailViewModel extends ViewModel {
             .subscribe(() -> success.setValue("Email Sent!"),
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
-
 }

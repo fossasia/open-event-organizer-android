@@ -2,14 +2,13 @@ package com.eventyay.organizer.core.session.list;
 
 import androidx.databinding.ObservableBoolean;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.session.SessionRepository;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,7 +154,6 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
             if (countSelected() > EDITABLE_AT_ONCE) {
                 getView().changeToolbarMode(false, true);
             }
-
         }
     }
 
@@ -166,7 +164,7 @@ public class SessionsPresenter extends AbstractDetailPresenter<Long, SessionsVie
     }
 
     public void unselectSessionList() {
-        for (Long sessionId  : selectedSessions.keySet()) {
+        for (Long sessionId : selectedSessions.keySet()) {
             if (sessionId != null && selectedSessions.containsKey(sessionId))
                 selectedSessions.get(sessionId).set(false);
         }

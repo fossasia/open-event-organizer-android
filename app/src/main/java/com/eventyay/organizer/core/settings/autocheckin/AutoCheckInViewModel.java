@@ -80,5 +80,4 @@ public class AutoCheckInViewModel extends ViewModel {
     public LiveData<Void> getTicketUpdatedAction() {
         return ticketUpdatedAction;
     }
-
 }

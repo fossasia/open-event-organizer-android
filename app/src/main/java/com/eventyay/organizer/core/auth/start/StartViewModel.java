@@ -33,7 +33,8 @@ public class StartViewModel extends ViewModel {
     private final MutableLiveData<Boolean> progress = new MutableLiveData<>();
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
-    private final MutableLiveData<Set<String>> emailList = new MutableLiveData<>();;
+    private final MutableLiveData<Set<String>> emailList = new MutableLiveData<>();
+    ;
     private final SingleEventLiveData<Boolean> isEmailRegistered = new SingleEventLiveData<>();
     private final MutableLiveData<EmailRequest> emailRequestModel = new MutableLiveData<>();
 

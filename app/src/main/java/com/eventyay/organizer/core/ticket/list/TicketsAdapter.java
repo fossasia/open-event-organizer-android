@@ -1,17 +1,17 @@
 package com.eventyay.organizer.core.ticket.list;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.ticket.list.viewholder.TicketViewHolder;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.databinding.HeaderLayoutBinding;
 import com.eventyay.organizer.ui.HeaderViewHolder;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketViewHolder> imple
     public TicketViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         TicketViewHolder ticketViewHolder = new TicketViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-            R.layout.ticket_layout, viewGroup, false));
+                R.layout.ticket_layout, viewGroup, false));
         ticketViewHolder.setDeleteAction(ticketsPresenter::deleteTicket);
         ticketViewHolder.setClickAction(ticketsPresenter::showDetails);
 

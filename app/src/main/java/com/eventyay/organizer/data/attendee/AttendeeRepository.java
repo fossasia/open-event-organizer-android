@@ -29,5 +29,4 @@ public interface AttendeeRepository {
 
     @NonNull
     Observable<Long> getCheckedInAttendees(long eventId);
-
 }

@@ -12,5 +12,4 @@ public interface StartView extends Progressive, Erroneous {
     void handleIntent();
 
     void toNextAuthFragment(boolean isEmailRegistered);
-
 }

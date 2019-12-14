@@ -1,11 +1,10 @@
 package com.eventyay.organizer.core.feedback.list;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.eventyay.organizer.common.ContextManager;
-import androidx.lifecycle.MutableLiveData;
-import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.feedback.Feedback;
 import com.eventyay.organizer.data.feedback.FeedbackRepository;
 import com.eventyay.organizer.utils.ErrorUtils;
@@ -17,11 +16,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
-
-import static com.eventyay.organizer.common.rx.ViewTransformers.dispose;
-import static com.eventyay.organizer.common.rx.ViewTransformers.emptiable;
-import static com.eventyay.organizer.common.rx.ViewTransformers.progressiveErroneousRefresh;
 
 public class FeedbackListViewModel extends ViewModel {
 

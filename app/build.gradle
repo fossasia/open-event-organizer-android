@@ -1,3 +1,6 @@
+plugins {
+    id "com.diffplug.gradle.spotless" version "3.26.1"
+}
 apply plugin: 'com.android.application'
 apply plugin: 'io.sentry.android.gradle'
 apply plugin: 'com.noveogroup.android.check'
@@ -32,7 +35,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
-            appName: app_name,
+            appName            : app_name,
             MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN
         ]
     }
@@ -93,6 +96,9 @@ android {
         unitTests {
             includeAndroidResources = true
             unitTests.returnDefaultValues = true
+            all {
+                maxHeapSize = "512m"
+            }
         }
     }
 
@@ -106,6 +112,16 @@ android {
         playStore {
             dimension "default"
         }
+    }
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        indentWithSpaces(2)
+        endWithNewline()
+        trimTrailingWhitespace()
+        target '**/*.java'
     }
 }
 
@@ -209,7 +225,7 @@ dependencies {
     implementation 'me.xdrop:fuzzywuzzy:1.1.9'
 
     // Glide
-    implementation ("com.github.florent37:glidepalette:2.1.2") {
+    implementation("com.github.florent37:glidepalette:2.1.2") {
         transitive = false
     }
     implementation "com.github.bumptech.glide:glide:${versions.glide}"

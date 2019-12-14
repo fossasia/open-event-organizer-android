@@ -4,18 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import androidx.databinding.BindingAdapter;
-import androidx.databinding.BindingConversion;
-import androidx.databinding.InverseBindingAdapter;
-import androidx.databinding.InverseBindingListener;
-import androidx.databinding.InverseMethod;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import androidx.annotation.ColorInt;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -23,13 +13,23 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+import androidx.annotation.ColorInt;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.BindingConversion;
+import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
+import androidx.databinding.InverseMethod;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.ui.views.DatePicker;
 import com.eventyay.organizer.ui.views.TimePicker;
 import com.eventyay.organizer.utils.Utils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 @SuppressWarnings("PMD.AvoidCatchingGenericException")
 public final class BindingAdapters {
@@ -41,13 +41,13 @@ public final class BindingAdapters {
     @BindingConversion
     @InverseMethod("strToLong")
     public static String longToStr(Long value) {
-        return value == null ?  "" : String.valueOf(value);
+        return value == null ? "" : String.valueOf(value);
     }
 
     @BindingConversion
     @InverseMethod("strToFloat")
     public static String floatToStr(Float value) {
-        return value == null ?  "" : String.valueOf(value);
+        return value == null ? "" : String.valueOf(value);
     }
 
     @InverseMethod("strToDouble")
@@ -58,12 +58,12 @@ public final class BindingAdapters {
     @BindingConversion
     @InverseMethod("strToInteger")
     public static String integerToStr(Integer value) {
-        return value == null ?  "" : String.valueOf(value);
+        return value == null ? "" : String.valueOf(value);
     }
 
     @SuppressWarnings("PMD")
     public static Long strToLong(String value) {
-        return Utils.isEmpty(value) ?  null : Long.parseLong(value);
+        return Utils.isEmpty(value) ? null : Long.parseLong(value);
     }
 
     @SuppressWarnings("PMD")

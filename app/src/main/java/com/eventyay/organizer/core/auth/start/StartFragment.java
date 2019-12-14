@@ -1,19 +1,19 @@
 package com.eventyay.organizer.core.auth.start;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.core.view.ViewCompat;
-
 import android.transition.ChangeBounds;
-import android.transition.Fade; // Workarounds for crash due to ClassCastException
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import androidx.core.view.ViewCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -99,7 +99,7 @@ public class StartFragment extends BaseFragment implements StartView {
 
             boolean isBaseUrlLayoutVisible = binding.url.baseUrlLayout.getVisibility() == View.VISIBLE;
 
-            if(isBaseUrlLayoutVisible && !validateUrl(url)) {
+            if (isBaseUrlLayoutVisible && !validateUrl(url)) {
                 return;
             }
 

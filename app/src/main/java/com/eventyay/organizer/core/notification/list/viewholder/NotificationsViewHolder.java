@@ -18,5 +18,4 @@ public class NotificationsViewHolder extends RecyclerView.ViewHolder {
         binding.setNotification(notification);
         binding.executePendingBindings();
     }
-
 }

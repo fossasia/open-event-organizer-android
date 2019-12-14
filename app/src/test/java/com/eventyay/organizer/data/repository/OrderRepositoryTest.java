@@ -1,7 +1,5 @@
 package com.eventyay.organizer.data.repository;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.AbstractObservable;
 import com.eventyay.organizer.data.Repository;
@@ -9,6 +7,8 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.order.Order;
 import com.eventyay.organizer.data.order.OrderApi;
 import com.eventyay.organizer.data.order.OrderRepositoryImpl;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -44,7 +44,8 @@ public class OrderRepositoryTest {
 
     @Mock
     private OrderApi orderApi;
-    @Mock private Repository repository;
+    @Mock
+    private Repository repository;
 
     static {
         ORDER.setEvent(EVENT);

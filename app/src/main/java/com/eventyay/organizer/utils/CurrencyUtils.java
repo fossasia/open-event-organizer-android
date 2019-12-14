@@ -28,7 +28,7 @@ public final class CurrencyUtils {
         // Never Called
     }
 
-    @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock" })
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.EmptyCatchBlock"})
     private Single<SortedMap<Currency, Locale>> getCurrecyMap() {
         if (currencyLocaleMap != null && !currencyLocaleMap.isEmpty())
             return Single.just(currencyLocaleMap);
@@ -63,7 +63,7 @@ public final class CurrencyUtils {
             .subscribeOn(Schedulers.computation());
     }
 
-    @SuppressWarnings({ "PMD.UseConcurrentHashMap"})
+    @SuppressWarnings({"PMD.UseConcurrentHashMap"})
     public Map<String, String> getCountryCurrencyMap() {
 
         if (countryCurrencyMap != null)
@@ -102,5 +102,4 @@ public final class CurrencyUtils {
 
         return priorCurrencyCodes;
     }
-
 }

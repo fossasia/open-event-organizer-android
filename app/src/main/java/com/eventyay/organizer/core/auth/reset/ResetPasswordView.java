@@ -7,5 +7,4 @@ import com.eventyay.organizer.common.mvp.view.Successful;
 public interface ResetPasswordView extends Progressive, Successful, Erroneous {
 
     void showMessage(String message);
-
 }

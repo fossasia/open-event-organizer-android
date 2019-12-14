@@ -72,5 +72,4 @@ public class DbFlowDatabaseChangeListener<T> implements DatabaseChangeListener<T
             return obj instanceof ModelChange && ((ModelChange) obj).action.equals(action) && ((ModelChange) obj).model.equals(model);
         }
     }
-
 }

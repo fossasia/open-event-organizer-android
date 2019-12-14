@@ -28,5 +28,4 @@ public class CurrencyUtilsTest {
     public void testPound() {
         assertEquals("£", currencyUtils.getCurrencySymbol("GBP").blockingGet());
     }
-
 }

@@ -71,7 +71,7 @@ public class CheckInHistoryViewModel extends ViewModel {
         String[] checkInTimes = attendee.getCheckinTimes().split(",");
         String[] checkOutTimes = attendee.getCheckoutTimes().split(",");
 
-        for (int i = 0; i< checkInTimes.length + checkOutTimes.length; i++) {
+        for (int i = 0; i < checkInTimes.length + checkOutTimes.length; i++) {
             CheckInDetail checkInDetail = new CheckInDetail();
 
             if (i % 2 == 0) {

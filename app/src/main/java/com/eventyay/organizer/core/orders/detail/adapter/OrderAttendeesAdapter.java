@@ -1,11 +1,12 @@
 package com.eventyay.organizer.core.orders.detail.adapter;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.orders.detail.viewholder.OrderAttendeesViewHolder;
@@ -21,7 +22,7 @@ public class OrderAttendeesAdapter extends RecyclerView.Adapter<OrderAttendeesVi
     @Override
     public OrderAttendeesViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         return new OrderAttendeesViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.order_attendee_layout, viewGroup, false));
+            R.layout.order_attendee_layout, viewGroup, false));
     }
 
     @Override

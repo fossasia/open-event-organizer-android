@@ -1,7 +1,5 @@
 package com.eventyay.organizer.data.repository;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.AbstractObservable;
 import com.eventyay.organizer.data.Repository;
@@ -9,6 +7,8 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.data.speakerscall.SpeakersCallApi;
 import com.eventyay.organizer.data.speakerscall.SpeakersCallRepositoryImpl;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -41,7 +41,8 @@ public class SpeakersCallRepositoryTest {
 
     @Mock
     private SpeakersCallApi speakersCallApi;
-    @Mock private Repository repository;
+    @Mock
+    private Repository repository;
 
     static {
         SPEAKERS_CALL.setEvent(EVENT);

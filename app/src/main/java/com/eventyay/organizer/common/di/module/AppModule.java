@@ -12,5 +12,4 @@ import dagger.Module;
 public class AppModule {
 
     // Add misc dependencies
-
 }

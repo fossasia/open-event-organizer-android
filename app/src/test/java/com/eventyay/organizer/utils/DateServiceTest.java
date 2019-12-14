@@ -2,6 +2,7 @@ package com.eventyay.organizer.utils;
 
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.utils.service.DateService;
+
 import org.junit.Test;
 import org.threeten.bp.LocalDateTime;
 
@@ -112,5 +113,4 @@ public class DateServiceTest {
 
         assertEquals(1, DateService.compareEventDates(UPCOMING, upcomingEarliest));
     }
-
 }

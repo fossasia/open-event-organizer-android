@@ -23,7 +23,7 @@ import io.reactivex.Single;
 /**
  * Pure Android free static utility class
  * No Android specific code should be added
- *
+ * <p>
  * All static Android specific utility go into
  * ui/ViewUtils and others to data/UtilModel
  */
@@ -35,6 +35,7 @@ public final class Utils {
 
     /**
      * Copy from TextUtils to use out of Android
+     *
      * @param str CharSequence to be checked
      * @return boolean denoting if str is null or empty
      */
@@ -102,9 +103,9 @@ public final class Utils {
         return "data:" + type + ";base64," + encImage;
     }
 
-    public static Bitmap drawableToBitmap (Drawable drawable) {
+    public static Bitmap drawableToBitmap(Drawable drawable) {
         if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable)drawable).getBitmap();
+            return ((BitmapDrawable) drawable).getBitmap();
         }
 
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);

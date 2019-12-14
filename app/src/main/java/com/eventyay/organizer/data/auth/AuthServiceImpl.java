@@ -1,5 +1,7 @@
 package com.eventyay.organizer.data.auth;
 
+import com.eventyay.organizer.common.Constants;
+import com.eventyay.organizer.data.Repository;
 import com.eventyay.organizer.data.auth.model.ChangePassword;
 import com.eventyay.organizer.data.auth.model.CustomObjectWrapper;
 import com.eventyay.organizer.data.auth.model.EmailRequest;
@@ -11,8 +13,6 @@ import com.eventyay.organizer.data.auth.model.ResendVerificationMailResponse;
 import com.eventyay.organizer.data.auth.model.SubmitEmailVerificationToken;
 import com.eventyay.organizer.data.auth.model.SubmitToken;
 import com.eventyay.organizer.data.user.User;
-import com.eventyay.organizer.common.Constants;
-import com.eventyay.organizer.data.Repository;
 
 import javax.inject.Inject;
 

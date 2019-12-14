@@ -7,6 +7,7 @@ import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.session.SessionRepository;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.data.speaker.SpeakerRepository;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -116,5 +117,4 @@ public class SpeakerDetailsViewModelTest {
         inOrder.verify(speakerRepository).getSpeaker(SPEAKER_ID, true);
         inOrder.verify(error).onChanged(Logger.TEST_ERROR.getMessage());
     }
-
 }

@@ -16,5 +16,4 @@ public class TicketDelegateImpl implements TicketDelegate {
     public int compareTo(@NonNull Ticket otherOne) {
         return CompareUtils.compareCascading(ticket, otherOne, Ticket::getType);
     }
-
 }

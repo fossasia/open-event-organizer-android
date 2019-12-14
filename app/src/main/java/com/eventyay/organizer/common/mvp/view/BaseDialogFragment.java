@@ -28,4 +28,3 @@ public class BaseDialogFragment<P extends BasePresenter> extends DialogFragment 
             presenter.detach();
     }
 }
-

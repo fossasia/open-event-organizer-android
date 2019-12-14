@@ -80,5 +80,4 @@ public class TicketSettingsViewModel extends ViewModel {
     public SingleEventLiveData<Void> getTicketUpdatedAction() {
         return ticketUpdatedAction;
     }
-
 }

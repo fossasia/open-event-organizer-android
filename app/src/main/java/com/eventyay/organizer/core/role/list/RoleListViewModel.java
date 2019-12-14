@@ -2,10 +2,10 @@ package com.eventyay.organizer.core.role.list;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
-import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.eventyay.organizer.common.ContextManager;
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;

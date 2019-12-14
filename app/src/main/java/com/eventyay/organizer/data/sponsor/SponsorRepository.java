@@ -14,5 +14,4 @@ public interface SponsorRepository {
     Observable<Sponsor> updateSponsor(Sponsor sponsor);
 
     Completable deleteSponsor(long id);
-
 }

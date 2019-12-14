@@ -29,7 +29,7 @@ public class SessionViewHolder extends RecyclerView.ViewHolder {
         binding.getRoot().setOnClickListener(view -> {
             if (clickAction != null) {
                 clickAction.push(session.getId());
-           }
+            }
         });
     }
 

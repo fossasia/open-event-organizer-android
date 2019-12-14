@@ -175,7 +175,6 @@ public class CameraSourcePreview extends ViewGroup {
         } catch (SecurityException e) {
             Timber.e(e);
         }
-
     }
 
     private boolean isPortraitMode() {

@@ -8,5 +8,4 @@ public interface EventDetailsStepOneView {
     List<String> getTimeZoneList();
 
     void setDefaultTimeZone(int index);
-
 }

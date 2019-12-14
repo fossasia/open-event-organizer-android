@@ -26,5 +26,4 @@ public final class Logger {
     public static void logError(@NonNull Throwable throwable) {
         Timber.e(throwable, "An exception occurred : %s", throwable.getMessage());
     }
-
 }

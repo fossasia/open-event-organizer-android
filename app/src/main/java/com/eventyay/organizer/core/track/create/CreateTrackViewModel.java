@@ -1,8 +1,9 @@
 package com.eventyay.organizer.core.track.create;
 
+import android.graphics.Color;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import android.graphics.Color;
 
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;

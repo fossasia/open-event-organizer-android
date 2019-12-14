@@ -2,6 +2,7 @@ package com.eventyay.organizer.utils;
 
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.data.event.Event;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,7 +38,7 @@ public class DateUtilsTest {
         EVENT.setTimezone(TIMEZONE_SINGAPORE);
 
         TimeZone.setDefault(TimeZone.getTimeZone(TIMEZONE_US_PACIFIC));
-        String date  = "2017-03-17T14:00:00+08:00";
+        String date = "2017-03-17T14:00:00+08:00";
         assertEquals(NORMALIZED_DATE, DateUtils.formatDate(NORMALIZED_DATE_FORMAT, date));
 
         TimeZone.setDefault(TimeZone.getTimeZone(TIMEZONE_SYDNEY));
@@ -51,7 +52,7 @@ public class DateUtilsTest {
     public void shouldConvertToEventTimezoneWithoutOffset() {
         EVENT.setTimezone(TIMEZONE_SINGAPORE);
 
-        String date  = "2017-03-17T06:00:00+00:00";
+        String date = "2017-03-17T06:00:00+00:00";
 
         TimeZone.setDefault(TimeZone.getTimeZone(TIMEZONE_US_PACIFIC));
         assertEquals(NORMALIZED_DATE, DateUtils.formatDate(NORMALIZED_DATE_FORMAT, date));
@@ -68,7 +69,7 @@ public class DateUtilsTest {
         EVENT.setTimezone(TIMEZONE_SINGAPORE);
         DateUtils.setShowLocal(true);
 
-        String date  = "2017-03-17T14:00:00+08:00";
+        String date = "2017-03-17T14:00:00+08:00";
 
         TimeZone.setDefault(TimeZone.getTimeZone(TIMEZONE_US_PACIFIC));
         assertEquals("16 03 2017 11:00:00 PM", DateUtils.formatDate(NORMALIZED_DATE_FORMAT, date));
