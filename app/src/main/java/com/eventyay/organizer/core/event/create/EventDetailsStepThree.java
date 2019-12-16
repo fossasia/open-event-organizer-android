@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,8 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     private static final int LOGO_IMAGE_CHOOSER_REQUEST_CODE = 1;
     private static final int ORIGINAL_IMAGE_CHOOSER_REQUEST_CODE = 2;
 
+    private StrictMode.ThreadPolicy defaultThreadPolicy;
+
     public static Fragment newInstance() {
         return new EventDetailsStepThree();
     }
@@ -66,6 +69,10 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     @Override
     public void onStart() {
         super.onStart();
+
+        defaultThreadPolicy = StrictMode.getThreadPolicy();
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().build());
+
         binding.setEvent(createEventViewModel.getEvent());
         createEventViewModel.getCloseState().observe(this, isClosed -> close());
         createEventViewModel.getProgress().observe(this, this::showProgress);
@@ -149,6 +156,7 @@ public class EventDetailsStepThree extends BaseBottomSheetFragment implements Ev
     }
 
     public void close() {
+        StrictMode.setThreadPolicy(defaultThreadPolicy);
         getActivity().finish();
     }
 }
