@@ -1,9 +1,9 @@
 package com.eventyay.organizer.core.orders.create;
 
+import androidx.databinding.ObservableLong;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.databinding.ObservableLong;
 
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.event.Event;
@@ -37,7 +37,7 @@ public class CreateOrderViewModel extends ViewModel {
     private final SingleEventLiveData<String> error = new SingleEventLiveData<>();
     private final MutableLiveData<List<Ticket>> ticketsLiveData = new MutableLiveData<>();
     private final List<OnSiteTicket> onSiteTicketsList = new ArrayList<>();
-    private final Map<Long, ObservableLong> onSiteTicketsMap =  new ConcurrentHashMap<>();
+    private final Map<Long, ObservableLong> onSiteTicketsMap = new ConcurrentHashMap<>();
 
     @Inject
     public CreateOrderViewModel(OrderRepository orderRepository, TicketRepository ticketRepository) {

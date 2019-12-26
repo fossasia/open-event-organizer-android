@@ -8,6 +8,7 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
 import com.eventyay.organizer.utils.DateUtils;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,7 +28,6 @@ import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.inOrder;
@@ -43,8 +43,10 @@ public class TicketCreateViewModelTest {
     @Rule
     public TestRule rule = new InstantTaskExecutorRule();
 
-    @Mock private TicketRepository ticketRepository;
-    @Mock private Event event;
+    @Mock
+    private TicketRepository ticketRepository;
+    @Mock
+    private Event event;
 
     private CreateTicketViewModel createTicketViewModel;
 

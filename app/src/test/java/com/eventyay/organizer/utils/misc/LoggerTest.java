@@ -1,7 +1,8 @@
 package com.eventyay.organizer.utils.misc;
 
-import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.common.model.SimpleModel;
+import com.eventyay.organizer.common.rx.Logger;
+
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,7 +25,8 @@ import static org.mockito.Mockito.verify;
 @SuppressWarnings("PMD.JUnit4TestShouldUseBeforeAnnotation")
 public class LoggerTest {
 
-    @Rule public final MockitoRule rule = MockitoJUnit.rule();
+    @Rule
+    public final MockitoRule rule = MockitoJUnit.rule();
     private static Timber.Tree tree;
 
     @BeforeClass
@@ -56,5 +58,4 @@ public class LoggerTest {
         Logger.logSuccess(simpleModel);
         verify(tree, atLeastOnce()).i(matches(".*\\b(List|count:|" + simpleModel.size() + ")\\b.*"));
     }
-
 }

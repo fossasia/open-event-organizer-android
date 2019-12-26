@@ -1,25 +1,23 @@
 package com.eventyay.organizer.core.main;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-
-import com.eventyay.organizer.common.Constants;
-import com.google.android.material.navigation.NavigationView;
-import androidx.fragment.app.Fragment;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.eventyay.organizer.R;
+import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.core.auth.AuthActivity;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity;
 import com.eventyay.organizer.data.event.Event;
@@ -27,6 +25,7 @@ import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.databinding.MainActivityBinding;
 import com.eventyay.organizer.databinding.MainNavHeaderBinding;
 import com.eventyay.organizer.ui.ViewUtils;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,13 +1,8 @@
 package com.eventyay.organizer.data.attendee;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
-
-
-import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
-
 import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
 import androidx.work.ExistingWorkPolicy;
@@ -19,6 +14,10 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.eventyay.organizer.common.di.component.DaggerAppComponent;
+
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import timber.log.Timber;
 

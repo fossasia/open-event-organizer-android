@@ -31,8 +31,8 @@ public class SpeakersCallRepositoryImpl implements SpeakersCallRepository {
         Observable<SpeakersCall> networkObservable = Observable.defer(() ->
             speakersCallApi.getSpeakersCall(eventId)
                 .doOnNext(speakersCall -> repository
-                        .save(SpeakersCall.class, speakersCall)
-                        .subscribe()));
+                    .save(SpeakersCall.class, speakersCall)
+                    .subscribe()));
 
         return repository.observableOf(SpeakersCall.class)
             .reload(reload)

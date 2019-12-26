@@ -6,8 +6,9 @@ import androidx.lifecycle.Observer;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
-import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
+import com.eventyay.organizer.data.user.User;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,8 +31,10 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class SignUpViewModelTest {
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Mock private AuthService authModel;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock
+    private AuthService authModel;
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 

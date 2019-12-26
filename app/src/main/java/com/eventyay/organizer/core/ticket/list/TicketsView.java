@@ -12,5 +12,4 @@ public interface TicketsView extends Progressive, Erroneous, Refreshable, Emptia
     void showTicketDeleted(String message);
 
     void openTicketDetailFragment(long ticketId);
-
 }

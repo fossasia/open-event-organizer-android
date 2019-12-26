@@ -1,9 +1,11 @@
 package com.eventyay.organizer.core.event.about;
 
 import android.content.res.Resources;
+
+import androidx.core.view.ViewCompat;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import androidx.core.view.ViewCompat;
 
 import javax.inject.Inject;
 
@@ -44,5 +46,4 @@ class ToolbarColorChanger {
                     return resources.getColor(android.R.color.white);
             });
     }
-
 }

@@ -357,6 +357,4 @@ public class AttendeesFragment extends BaseFragment implements AttendeesView {
     public List<Attendee> getAttendeeList() {
         return attendeeList;
     }
-
 }
-

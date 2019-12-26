@@ -1,13 +1,13 @@
 package com.eventyay.organizer.data.repository;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.AbstractObservable;
 import com.eventyay.organizer.data.Repository;
 import com.eventyay.organizer.data.attendee.Attendee;
 import com.eventyay.organizer.data.attendee.AttendeeApi;
 import com.eventyay.organizer.data.attendee.AttendeeRepositoryImpl;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,12 +34,15 @@ import static org.mockito.Mockito.when;
 
 public class AttendeeRepositoryTest {
 
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private AttendeeRepositoryImpl attendeeRepository;
 
-    @Mock private AttendeeApi attendeeApi;
-    @Mock private Repository repository;
+    @Mock
+    private AttendeeApi attendeeApi;
+    @Mock
+    private Repository repository;
 
     private static final List<Attendee> ATTENDEES = Arrays.asList(
         new Attendee(),
@@ -161,5 +164,4 @@ public class AttendeeRepositoryTest {
 
         testObserver.assertSubscribed();
     }
-
 }

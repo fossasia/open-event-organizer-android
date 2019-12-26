@@ -1,11 +1,11 @@
 package com.eventyay.organizer.utils;
 
-import com.google.android.material.textfield.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 
 import com.eventyay.organizer.common.Function;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,12 +22,12 @@ public final class ValidateUtils {
     }
 
     public static boolean validateEmail(String emailStr) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
 
     public static boolean validateUrl(String urlStr) {
-        Matcher matcher = VALID_URL_REGEX .matcher(urlStr);
+        Matcher matcher = VALID_URL_REGEX.matcher(urlStr);
         return matcher.find();
     }
 
@@ -60,5 +60,4 @@ public final class ValidateUtils {
             }
         });
     }
-
 }

@@ -23,5 +23,4 @@ public class Location {
     public CharSequence getAddress() {
         return address;
     }
-
 }

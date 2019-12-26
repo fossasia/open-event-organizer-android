@@ -27,5 +27,4 @@ public interface OrderApi {
 
     @POST("attendees/send-receipt")
     Observable<OrderReceiptResponse> sendReceiptEmail(@Body OrderReceiptRequest orderReceiptRequest);
-
 }

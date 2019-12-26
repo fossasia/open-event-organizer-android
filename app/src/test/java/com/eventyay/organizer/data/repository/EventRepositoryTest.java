@@ -13,6 +13,7 @@ import com.eventyay.organizer.data.image.ImageUploadApi;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserApi;
 import com.eventyay.organizer.data.user.UserRepositoryImpl;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -49,11 +50,16 @@ public class EventRepositoryTest {
     private EventRepositoryImpl eventRepository;
     private UserRepositoryImpl userRepository;
 
-    @Mock private EventApi eventApi;
-    @Mock private UserApi userApi;
-    @Mock private Repository repository;
-    @Mock private AuthHolder authHolder;
-    @Mock private ImageUploadApi imageUploadApi;
+    @Mock
+    private EventApi eventApi;
+    @Mock
+    private UserApi userApi;
+    @Mock
+    private Repository repository;
+    @Mock
+    private AuthHolder authHolder;
+    @Mock
+    private ImageUploadApi imageUploadApi;
 
     private static final List<Event> EVENTS = Arrays.asList(
         Event.builder().id(12L).build(),

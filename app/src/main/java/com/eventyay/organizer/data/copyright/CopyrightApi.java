@@ -22,5 +22,4 @@ public interface CopyrightApi {
 
     @DELETE("event-copyrights/{id}")
     Completable deleteCopyright(@Path("id") long id);
-
 }

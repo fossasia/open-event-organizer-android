@@ -1,7 +1,8 @@
 package com.eventyay.organizer.core.feedback.list.viewholder;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.data.feedback.Feedback;
 import com.eventyay.organizer.databinding.FeedbacklistLayoutBinding;
@@ -28,5 +29,4 @@ public class FeedbackViewHolder extends RecyclerView.ViewHolder {
         binding.setFeedback(feedback);
         binding.executePendingBindings();
     }
-
 }

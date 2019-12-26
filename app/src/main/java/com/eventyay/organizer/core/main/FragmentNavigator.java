@@ -50,7 +50,7 @@ class FragmentNavigator {
     int back() {
         int count = fragmentManager.getBackStackEntryCount();
         fragmentManager.popBackStack();
-        if(count == 1) {
+        if (count == 1) {
             lastSelectedNavItemId = R.id.nav_events;
             myEventsActive = true;
         }

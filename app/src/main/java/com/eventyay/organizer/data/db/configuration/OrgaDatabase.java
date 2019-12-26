@@ -61,16 +61,16 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 4");
 
-            Class<?>[] recreated = new Class[] {Attendee.class, Event.class, Order.class, Ticket.class, User.class};
-            String[] deleted = new String[] {"CallForPapers", "Copyright", "License", "SocialLink", "UserDetail", "Version"};
+            Class<?>[] recreated = new Class[]{Attendee.class, Event.class, Order.class, Ticket.class, User.class};
+            String[] deleted = new String[]{"CallForPapers", "Copyright", "License", "SocialLink", "UserDetail", "Version"};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
             }
 
-            for (String delete: deleted)
+            for (String delete : deleted)
                 databaseWrapper.execSQL(DROP_TABLE + delete);
         }
     }
@@ -148,9 +148,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 9");
 
-            Class<?>[] recreated = new Class[] {Faq.class, Copyright.class};
+            Class<?>[] recreated = new Class[]{Faq.class, Copyright.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL("DROP TABLE IF EXISTS " + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -165,9 +165,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 10");
 
-            Class<?>[] recreated = new Class[] {Feedback.class};
+            Class<?>[] recreated = new Class[]{Feedback.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -182,9 +182,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 11");
 
-            Class<?>[] recreated = new Class[] {Track.class};
+            Class<?>[] recreated = new Class[]{Track.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -199,9 +199,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 12");
 
-            Class<?>[] recreated = new Class[] {Session.class};
+            Class<?>[] recreated = new Class[]{Session.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -216,9 +216,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 13");
 
-            Class<?>[] recreated = new Class[] {Sponsor.class};
+            Class<?>[] recreated = new Class[]{Sponsor.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -233,9 +233,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 14");
 
-            Class<?>[] recreated = new Class[] {Speaker.class};
+            Class<?>[] recreated = new Class[]{Speaker.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -250,9 +250,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 15");
 
-            Class<?>[] recreated = new Class[] {SpeakersCall.class};
+            Class<?>[] recreated = new Class[]{SpeakersCall.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -267,9 +267,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 16");
 
-            Class<?>[] recreated = new Class[] {OrderStatistics.class, Statistics.class};
+            Class<?>[] recreated = new Class[]{OrderStatistics.class, Statistics.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -318,9 +318,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 19");
 
-            Class<?>[] recreated = new Class[] {Role.class, RoleInvite.class};
+            Class<?>[] recreated = new Class[]{Role.class, RoleInvite.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -335,9 +335,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 20");
 
-            Class<?>[] recreated = new Class[] {Notification.class};
+            Class<?>[] recreated = new Class[]{Notification.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());
@@ -352,9 +352,9 @@ public final class OrgaDatabase {
         public void migrate(@NonNull DatabaseWrapper databaseWrapper) {
             Timber.d("Running migration for DB version 21");
 
-            Class<?>[] recreated = new Class[] {Event.class};
+            Class<?>[] recreated = new Class[]{Event.class};
 
-            for (Class<?> recreate: recreated) {
+            for (Class<?> recreate : recreated) {
                 ModelAdapter modelAdapter = FlowManager.getModelAdapter(recreate);
                 databaseWrapper.execSQL(DROP_TABLE + modelAdapter.getTableName());
                 databaseWrapper.execSQL(modelAdapter.getCreationQuery());

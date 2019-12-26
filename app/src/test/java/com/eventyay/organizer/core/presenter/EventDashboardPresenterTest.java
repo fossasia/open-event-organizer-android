@@ -17,6 +17,7 @@ import com.eventyay.organizer.data.event.EventStatistics;
 import com.eventyay.organizer.data.order.OrderRepository;
 import com.eventyay.organizer.data.order.OrderStatistics;
 import com.eventyay.organizer.data.ticket.Ticket;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

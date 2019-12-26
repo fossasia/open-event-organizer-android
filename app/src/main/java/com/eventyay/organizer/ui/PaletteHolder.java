@@ -1,9 +1,10 @@
 package com.eventyay.organizer.ui;
 
 import android.graphics.drawable.Drawable;
-import androidx.collection.SparseArrayCompat;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.collection.SparseArrayCompat;
 
 import com.github.florent37.glidepalette.GlidePalette;
 
@@ -139,5 +140,4 @@ public final class PaletteHolder {
 
         return holder;
     }
-
 }

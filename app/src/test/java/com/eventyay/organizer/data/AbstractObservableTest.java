@@ -2,6 +2,7 @@ package com.eventyay.organizer.data;
 
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.network.ConnectionStatus;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -145,5 +146,4 @@ public class AbstractObservableTest {
             .test()
             .assertErrorMessage(Constants.NO_NETWORK);
     }
-
 }

@@ -11,7 +11,7 @@ public class BarcodeDetected {
 
     public void onBarcodeDetected(Barcode barcode, PublishSubject<Boolean> detect,
                                   PublishSubject<String> data, List<Attendee> attendees) {
-        
+
         detect.onNext(barcode == null);
 
         if (barcode == null || attendees.isEmpty())

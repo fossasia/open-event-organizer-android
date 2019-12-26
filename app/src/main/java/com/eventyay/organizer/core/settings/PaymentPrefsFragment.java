@@ -51,4 +51,3 @@ public class PaymentPrefsFragment extends PreferenceFragmentCompat {
         }
     }
 }
-

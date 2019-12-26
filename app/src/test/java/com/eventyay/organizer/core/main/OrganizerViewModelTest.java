@@ -3,14 +3,14 @@ package com.eventyay.organizer.core.main;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
 
-import com.f2prateek.rx.preferences2.Preference;
-import com.f2prateek.rx.preferences2.RxSharedPreferences;
-
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserRepository;
+import com.f2prateek.rx.preferences2.Preference;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,7 +45,8 @@ public class OrganizerViewModelTest {
     private RxSharedPreferences sharedPreferences;
     @Mock
     private ContextManager contextManager;
-    @Mock private Preference<Boolean> booleanPref;
+    @Mock
+    private Preference<Boolean> booleanPref;
 
     @Mock
     Observer<User> organizer;

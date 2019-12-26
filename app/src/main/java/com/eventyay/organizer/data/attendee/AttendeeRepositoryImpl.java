@@ -2,8 +2,6 @@ package com.eventyay.organizer.data.attendee;
 
 import androidx.annotation.NonNull;
 
-import com.raizlabs.android.dbflow.sql.language.Method;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.RateLimiter;
 import com.eventyay.organizer.data.Repository;
@@ -11,6 +9,8 @@ import com.eventyay.organizer.data.db.QueryHelper;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.Event_Table;
 import com.eventyay.organizer.utils.DateUtils;
+import com.raizlabs.android.dbflow.sql.language.Method;
+
 import org.threeten.bp.Duration;
 import org.threeten.bp.LocalDateTime;
 
@@ -166,6 +166,7 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
 
     /**
      * A synchronous method for getting pending attendee check ins
+     *
      * @return Pending attendee check ins
      */
     @NonNull
@@ -174,5 +175,4 @@ public class AttendeeRepositoryImpl implements AttendeeRepository {
         return repository.getItems(Attendee.class,
             Attendee_Table.checking.eq(true));
     }
-
 }

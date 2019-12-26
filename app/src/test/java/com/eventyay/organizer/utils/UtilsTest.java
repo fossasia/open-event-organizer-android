@@ -1,6 +1,7 @@
 package com.eventyay.organizer.utils;
 
 import com.eventyay.organizer.data.attendee.Attendee;
+
 import org.junit.Test;
 
 import java.util.Arrays;

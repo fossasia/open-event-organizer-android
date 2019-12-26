@@ -35,5 +35,4 @@ public class OnSiteTicket {
 
     @JsonSerialize(using = ToStringSerializer.class)
     public Long quantity;
-
 }

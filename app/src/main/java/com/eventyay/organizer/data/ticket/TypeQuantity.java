@@ -1,8 +1,7 @@
 package com.eventyay.organizer.data.ticket;
 
-import com.raizlabs.android.dbflow.annotation.QueryModel;
-
 import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
+import com.raizlabs.android.dbflow.annotation.QueryModel;
 
 import lombok.Data;
 

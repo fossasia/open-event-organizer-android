@@ -29,8 +29,8 @@ import lombok.experimental.Delegate;
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.KebabCaseStrategy.class)
 @Table(database = OrgaDatabase.class, allFields = true)
-@EqualsAndHashCode(exclude = { "eventDelegate", "analytics" })
-@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.TooManyFields" })
+@EqualsAndHashCode(exclude = {"eventDelegate", "analytics"})
+@SuppressWarnings({"PMD.ExcessivePublicCount", "PMD.TooManyFields"})
 public class Event implements Comparable<Event>, HeaderProvider {
 
     public static final String STATE_DRAFT = "draft";
@@ -105,6 +105,6 @@ public class Event implements Comparable<Event>, HeaderProvider {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public List<Ticket> tickets;
 
-    public Event() { }
-
+    public Event() {
+    }
 }

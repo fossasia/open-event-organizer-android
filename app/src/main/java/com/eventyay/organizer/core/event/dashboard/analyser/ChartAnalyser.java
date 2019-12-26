@@ -2,9 +2,16 @@ package com.eventyay.organizer.core.event.dashboard.analyser;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 
+import com.eventyay.organizer.R;
+import com.eventyay.organizer.data.ContextUtils;
+import com.eventyay.organizer.data.attendee.Attendee;
+import com.eventyay.organizer.data.attendee.AttendeeRepositoryImpl;
+import com.eventyay.organizer.data.order.Order;
+import com.eventyay.organizer.utils.DateUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -15,13 +22,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.EntryXComparator;
-
-import com.eventyay.organizer.R;
-import com.eventyay.organizer.data.ContextUtils;
-import com.eventyay.organizer.data.attendee.Attendee;
-import com.eventyay.organizer.data.attendee.AttendeeRepositoryImpl;
-import com.eventyay.organizer.data.order.Order;
-import com.eventyay.organizer.utils.DateUtils;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class ChartAnalyser {
     private List<Attendee> attendees;
     private boolean error;
     private boolean isCheckinChart;
-    String[] values = new String[] {"00:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00",
+    String[] values = new String[]{"00:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00",
         "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00",
         "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
 
@@ -141,21 +141,21 @@ public class ChartAnalyser {
         clearData();
         isCheckinChart = true;
         return getAttendeeSource(eventId).doOnNext(attendee -> {
-           String checkInTime = attendee.getCheckinTimes();
-           int length = checkInTime.split(",").length;
-           String latestCheckInTime = checkInTime.split(",")[length - 1];
-           error = checkInTime == null ? true : false;
-           addDataPointForCheckIn(checkInTimeMap, latestCheckInTime);
+            String checkInTime = attendee.getCheckinTimes();
+            int length = checkInTime.split(",").length;
+            String latestCheckInTime = checkInTime.split(",")[length - 1];
+            error = checkInTime == null ? true : false;
+            addDataPointForCheckIn(checkInTimeMap, latestCheckInTime);
         })
-          .toList()
-          .doAfterSuccess(attendees -> this.attendees = attendees)
-          .toCompletable()
-          .doOnComplete(() -> {
-              if (error)
-                  throw new IllegalAccessException("No checkin's found");
-              checkInDataSet = setDataForCheckIn(checkInTimeMap, "check-in time");
-              prepare();
-          });
+            .toList()
+            .doAfterSuccess(attendees -> this.attendees = attendees)
+            .toCompletable()
+            .doOnComplete(() -> {
+                if (error)
+                    throw new IllegalAccessException("No checkin's found");
+                checkInDataSet = setDataForCheckIn(checkInTimeMap, "check-in time");
+                prepare();
+            });
     }
 
     private void putIfNotPresent(Map<String, Long> map, String key) {
@@ -176,7 +176,8 @@ public class ChartAnalyser {
         normalizeDataSet(donationMap, paidMap, freeMap);
     }
 
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    // Entries cannot be created outside loop
     private LineDataSet setDataForSales(Map<String, Long> map, String label) throws ParseException {
         List<Entry> entries = new ArrayList<>();
         for (Map.Entry<String, Long> entry : map.entrySet()) {
@@ -193,7 +194,8 @@ public class ChartAnalyser {
         return new LineDataSet(entries, label);
     }
 
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops") // Entries cannot be created outside loop
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    // Entries cannot be created outside loop
     private LineDataSet setDataForCheckIn(Map<Integer, Long> map, String label) throws ParseException {
         List<Entry> entries = new ArrayList<>();
         for (Map.Entry<Integer, Long> entry : map.entrySet()) {
@@ -254,7 +256,7 @@ public class ChartAnalyser {
             lineData.addDataSet(donationSet);
             lineData.setDrawValues(false);
         }
-    lineData.setDrawValues(false);
+        lineData.setDrawValues(false);
     }
 
     @SuppressFBWarnings(
@@ -273,13 +275,13 @@ public class ChartAnalyser {
         if (!isCheckinChart)
             if (maxTicketSale > TICKET_SALE_THRESHOLD)
                 yAxis.setGranularity(maxTicketSale / TICKET_SALE_THRESHOLD);
-        else {
-            XAxis xAxis = lineChart.getXAxis();
-            xAxis.setValueFormatter(new MyAxisValueFormatter());
-            yAxis.setGranularity(1);
-            lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-            lineChart.getXAxis().setGranularity(1f);
-        }
+            else {
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setValueFormatter(new MyAxisValueFormatter());
+                yAxis.setGranularity(1);
+                lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+                lineChart.getXAxis().setGranularity(1f);
+            }
 
         Description description = new Description();
         description.setText("");

@@ -11,4 +11,3 @@ public class OrderReceiptRequest {
 
     public String orderIdentifier;
 }
-

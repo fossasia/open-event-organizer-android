@@ -1,9 +1,10 @@
 package com.eventyay.organizer.core.settings.restriction;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Pipe;
@@ -44,5 +45,4 @@ public class CheckInRestrictionsAdapter extends RecyclerView.Adapter<Restriction
         tickets = newTickets;
         notifyDataSetChanged();
     }
-
 }

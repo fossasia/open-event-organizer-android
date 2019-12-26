@@ -45,8 +45,8 @@ public final class ViewTransformers {
 
     private static <T, V extends Progressive> ObservableTransformer<T, T> progressive(V view) {
         return observable -> observable
-                .doOnSubscribe(disposable -> view.showProgress(true))
-                .doFinally(() -> view.showProgress(false));
+            .doOnSubscribe(disposable -> view.showProgress(true))
+            .doFinally(() -> view.showProgress(false));
     }
 
     private static <V extends Progressive> CompletableTransformer progressiveCompletable(V view) {
@@ -126,5 +126,4 @@ public final class ViewTransformers {
             })
             .doFinally(() -> view.showEmptyView(items.isEmpty()));
     }
-
 }

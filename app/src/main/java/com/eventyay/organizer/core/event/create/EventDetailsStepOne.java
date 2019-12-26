@@ -141,5 +141,4 @@ public class EventDetailsStepOne extends BaseBottomSheetFragment implements Even
     public void setDefaultTimeZone(int index) {
         binding.timezoneSpinner.setSelection(index);
     }
-
 }

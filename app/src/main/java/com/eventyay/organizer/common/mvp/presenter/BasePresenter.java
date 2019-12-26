@@ -5,5 +5,4 @@ public interface BasePresenter {
     void start();
 
     void detach();
-
 }

@@ -86,6 +86,5 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
         canvas.drawBitmap(Bitmap.createScaledBitmap(frameTopRight, width, height, false), rect.right - width, rect.bottom + height, null);
 
         canvas.drawRect(rect, rectPaint);
-
     }
 }

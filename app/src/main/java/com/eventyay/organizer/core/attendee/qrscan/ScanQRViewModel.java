@@ -3,11 +3,10 @@ package com.eventyay.organizer.core.attendee.qrscan;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.eventyay.organizer.common.ContextManager;
-import com.eventyay.organizer.common.livedata.SingleEventLiveData;
-
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Constants;
+import com.eventyay.organizer.common.ContextManager;
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.attendee.Attendee;

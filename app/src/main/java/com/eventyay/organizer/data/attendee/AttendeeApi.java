@@ -22,5 +22,4 @@ public interface AttendeeApi {
 
     @PATCH("attendees/{attendee_id}?include=ticket,event,order&fields[event]=id&fields[ticket]=id")
     Observable<Attendee> patchAttendee(@Path("attendee_id") long attendeeId, @Body Attendee attendee);
-
 }

@@ -3,6 +3,7 @@ package com.eventyay.organizer.utils;
 import androidx.annotation.NonNull;
 
 import com.eventyay.organizer.common.ContextManager;
+
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
@@ -103,5 +104,4 @@ public final class DateUtils {
     public static LocalDateTime getIsoOffsetTimeFromTimestamp(@NonNull String timestamp) {
         return LocalDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
-
 }

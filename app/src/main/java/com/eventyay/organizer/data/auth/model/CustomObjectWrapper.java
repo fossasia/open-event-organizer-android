@@ -6,7 +6,7 @@ import java.util.Map;
 /*
  * This class helps to wrap java objects with custom objects such that users can define
  * their own tags to wrap objects with while serialising in JSON.
-*/
+ */
 
 public final class CustomObjectWrapper {
 

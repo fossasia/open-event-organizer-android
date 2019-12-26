@@ -1,10 +1,9 @@
 package com.eventyay.organizer.data;
 
-import com.raizlabs.android.dbflow.sql.language.property.Property;
-
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.data.db.DatabaseRepository;
 import com.eventyay.organizer.data.network.ConnectionStatus;
+import com.raizlabs.android.dbflow.sql.language.property.Property;
 
 import java.util.List;
 

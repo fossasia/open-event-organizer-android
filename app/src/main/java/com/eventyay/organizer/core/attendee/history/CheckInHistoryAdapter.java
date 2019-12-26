@@ -1,11 +1,12 @@
 package com.eventyay.organizer.core.attendee.history;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.attendee.history.viewholder.CheckInHistoryViewHolder;
@@ -65,7 +66,7 @@ public class CheckInHistoryAdapter extends RecyclerView.Adapter<CheckInHistoryVi
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
                     return checkInHistory.get(oldItemPosition).getId()
-                    == newCheckInHistory.get(newItemPosition).getId();
+                        == newCheckInHistory.get(newItemPosition).getId();
                 }
 
                 @Override

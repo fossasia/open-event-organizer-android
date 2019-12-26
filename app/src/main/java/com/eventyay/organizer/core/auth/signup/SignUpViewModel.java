@@ -8,8 +8,8 @@ import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.auth.AuthService;
-import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.network.HostSelectionInterceptor;
+import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.utils.ErrorUtils;
 
 import javax.inject.Inject;

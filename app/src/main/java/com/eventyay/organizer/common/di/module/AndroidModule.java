@@ -3,10 +3,9 @@ package com.eventyay.organizer.common.di.module;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.f2prateek.rx.preferences2.RxSharedPreferences;
-
 import com.eventyay.organizer.OrgaProvider;
 import com.eventyay.organizer.common.Constants;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
 
 import javax.inject.Singleton;
 
@@ -33,5 +32,4 @@ public class AndroidModule {
     RxSharedPreferences rxSharedPreferences(SharedPreferences sharedPreferences) {
         return RxSharedPreferences.create(sharedPreferences);
     }
-
 }

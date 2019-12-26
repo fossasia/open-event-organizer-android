@@ -34,5 +34,4 @@ public interface TicketRepository {
 
     @NonNull
     Maybe<Float> getTotalSale(long eventId);
-
 }

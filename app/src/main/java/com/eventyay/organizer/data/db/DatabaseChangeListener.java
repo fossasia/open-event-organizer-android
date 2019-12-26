@@ -9,5 +9,4 @@ public interface DatabaseChangeListener<T> {
     void startListening();
 
     void stopListening();
-
 }

@@ -16,5 +16,4 @@ public abstract class AbstractDetailPresenter<K, V> extends AbstractBasePresente
     protected K getId() {
         return id;
     }
-
 }

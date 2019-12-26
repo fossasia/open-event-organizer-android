@@ -1,7 +1,5 @@
 package com.eventyay.organizer.data.repository;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.AbstractObservable;
 import com.eventyay.organizer.data.Repository;
@@ -9,6 +7,8 @@ import com.eventyay.organizer.data.copyright.Copyright;
 import com.eventyay.organizer.data.copyright.CopyrightApi;
 import com.eventyay.organizer.data.copyright.CopyrightRepositoryImpl;
 import com.eventyay.organizer.data.event.Event;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,8 +39,10 @@ public class CopyrightRepositoryTest {
     private static final Event EVENT = new Event();
     private static final long ID = 10L;
 
-    @Mock private CopyrightApi copyrightApi;
-    @Mock private Repository repository;
+    @Mock
+    private CopyrightApi copyrightApi;
+    @Mock
+    private Repository repository;
 
     static {
         COPYRIGHT.setEvent(EVENT);
@@ -231,5 +233,4 @@ public class CopyrightRepositoryTest {
 
         verify(copyrightApi).deleteCopyright(ID);
     }
-
 }

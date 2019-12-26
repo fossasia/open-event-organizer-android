@@ -66,5 +66,4 @@ public class JWTUtilsTest {
 
         assertEquals("JWT token", JWTUtils.getAuthorization(token));
     }
-
 }

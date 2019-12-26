@@ -39,6 +39,7 @@ public class TracksViewHolder extends RecyclerView.ViewHolder {
     public void setLongClickAction(Pipe<Track> longClickAction) {
         this.longClickAction = longClickAction;
     }
+
     public void bind(Track track) {
         this.track = track;
         binding.setTrack(track);
