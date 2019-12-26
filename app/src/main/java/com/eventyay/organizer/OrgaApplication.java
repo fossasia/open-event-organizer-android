@@ -74,7 +74,7 @@ public class OrgaApplication extends MultiDexApplication implements HasActivityI
 
             StrictMode.ThreadPolicy.Builder policyBuilder = new StrictMode.ThreadPolicy.Builder()
                 .detectAll()
-                .penaltyLog();
+                .penaltyDialog();
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 /**
