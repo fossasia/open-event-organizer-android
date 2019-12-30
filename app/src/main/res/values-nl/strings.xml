@@ -421,224 +421,224 @@
     <string name="third_party_licenses">Gebruikte externe bibliotheken</string>
 
     <string-array name="timezones">
-        <item>Afrika/Abidjan</item>
-        <item>Afrika/Accra</item>
-        <item>Afrika/Addis_Abbeba</item>
-        <item>Afrika/Algerije</item>
-        <item>Afrika/Asmara</item>
-        <item>Afrika/Asmera</item>
-        <item>Afrika/Bamako</item>
-        <item>Afrika/Bangui</item>
-        <item>Afrika/Banjul</item>
-        <item>Afrika/Bissau</item>
-        <item>Afrika/Blantyre</item>
-        <item>Afrika/Brazzaville</item>
-        <item>Afrika/Bujumbura</item>
-        <item>Afrika/Caïro</item>
-        <item>Afrika/Casablanca</item>
-        <item>Afrika/Ceuta</item>
-        <item>Afrika/Conakry</item>
-        <item>Afrika/Dakar</item>
-        <item>Afrika/Dar_es_Salaam</item>
-        <item>Afrika/Djibouti</item>
-        <item>Afrika/Douala</item>
-        <item>Afrika/El_Aaiun</item>
-        <item>Afrika/Freetown</item>
-        <item>Afrika/Gaborone</item>
-        <item>Afrika/Harare</item>
-        <item>Afrika/Johannesburg</item>
-        <item>Afrika/Juba</item>
-        <item>Afrika/Kampala</item>
-        <item>Afrika/Khartoum</item>
-        <item>Afrika/Kigali</item>
-        <item>Afrika/Kinshasa</item>
-        <item>Afrika/Lagos</item>
-        <item>Afrika/Libreville</item>
-        <item>Afrika/Lome</item>
-        <item>Afrika/Luanda</item>
-        <item>Afrika/Lubumbashi</item>
-        <item>Afrika/Lusaka</item>
-        <item>Afrika/Malabo</item>
-        <item>Afrika/Maputo</item>
-        <item>Afrika/Maseru</item>
-        <item>Afrika/Mbabane</item>
-        <item>Afrika/Mogadishu</item>
-        <item>Afrika/Monrovia</item>
-        <item>Afrika/Nairobi</item>
-        <item>Afrika/Ndjamena</item>
-        <item>Afrika/Niamey</item>
-        <item>Afrika/Nouakchott</item>
-        <item>Afrika/Ouagadougou</item>
-        <item>Afrika/Porto-Novo</item>
-        <item>Afrika/Sao_Tome</item>
-        <item>Afrika/Timboektoe</item>
-        <item>Afrika/Tripoli</item>
-        <item>Afrika/Tunis</item>
-        <item>Afrika/Windhoek</item>
-        <item>Amerika/Adak</item>
-        <item>Amerika/Anchorage</item>
-        <item>Amerika/Anguilla</item>
-        <item>Amerika/Antigua</item>
-        <item>Amerika/Araguaina</item>
-        <item>Amerika/Argentinië/Buenos_Aires</item>
-        <item>Amerika/Argentinië/Catamarca</item>
-        <item>Amerika/Argentinië/ComodRivadavia</item>
-        <item>Amerika/Argentinië/Cordoba</item>
-        <item>Amerika/Argentinië/Jujuy</item>
-        <item>Amerika/Argentinië/La_Rioja</item>
-        <item>Amerika/Argentinië/Mendoza</item>
-        <item>Amerika/Argentinië/Rio_Gallegos</item>
-        <item>Amerika/Argentinië/Salta</item>
-        <item>Amerika/Argentinië/San_Juan</item>
-        <item>Amerika/Argentinië/San_Luis</item>
-        <item>Amerika/Argentinië/Tucuman</item>
-        <item>Amerika/Argentinië/ushuaia</item>
-        <item>Amerika/Aruba</item>
-        <item>Amerika/Asuncion</item>
-        <item>Amerika/Atikokan</item>
-        <item>Amerika/Atka</item>
-        <item>Amerika/Bahia</item>
-        <item>Amerika/Bahia_Banderas</item>
-        <item>Amerika/Barbados</item>
-        <item>Amerika/Belem</item>
-        <item>Amerika/Belize</item>
-        <item>Amerika/Blanc-Sablon</item>
-        <item>Amerika/Boa_Vista</item>
-        <item>Amerika/Bogota</item>
-        <item>Amerika/Boise</item>
-        <item>Amerika/Buenos_Aires</item>
-        <item>Amerika/Cambridge_Bay</item>
-        <item>Amerika/Campo_Grande</item>
-        <item>Amerika/Cancun</item>
-        <item>Amerika/Caracas</item>
-        <item>Amerika/Catamarca</item>
-        <item>Amerika/Cayenne</item>
-        <item>Amerika/Chicago</item>
-        <item>Amerika/Chihuahua</item>
-        <item>Amerika/Coral_Harbour</item>
-        <item>Amerika/Cordoba</item>
-        <item>Amerika/Costa_Rica</item>
-        <item>Amerika/Creston</item>
-        <item>Amerika/Cuiaba</item>
-        <item>Amerika/Curacao</item>
-        <item>Amerika/Danmarkshavn</item>
-        <item>Amerika/Dawson</item>
-        <item>Amerika/Dawson_Creek</item>
-        <item>Amerika/Denver</item>
-        <item>Amerika/Detroit</item>
-        <item>Amerika/Dominica</item>
-        <item>Amerika/Edmonton</item>
-        <item>Amerika/Eirunepe</item>
-        <item>Amerika/El_Salvador</item>
-        <item>Amerika/Ensenada</item>
-        <item>Amerika/Fort_Wayne</item>
-        <item>Amerika/Fortaleza</item>
-        <item>Amerika/Glace_Bay</item>
-        <item>Amerika/Godthab</item>
-        <item>Amerika/Goose_Bay</item>
-        <item>Amerika/Grand_Turk</item>
-        <item>Amerika/Grenada</item>
-        <item>Amerika/Guadeloupe</item>
-        <item>Amerika/Guatemala</item>
-        <item>Amerika/Guayaquil</item>
-        <item>Amerika/Guyana</item>
-        <item>Amerika/Halifax</item>
-        <item>Amerika/Havana</item>
-        <item>Amerika/Hermosillo</item>
-        <item>Amerika/Indiana/Indianapolis</item>
-        <item>Amerika/Indiana/Knox</item>
-        <item>Amerika/Indiana/Marengo</item>
-        <item>Amerika/Indiana/Petersburg</item>
-        <item>Amerika/Indiana/Tell_City</item>
-        <item>Amerika/Indiana/Vevay</item>
-        <item>Amerika/Indiana/Vincennes</item>
-        <item>Amerika/Indiana/Winamac</item>
-        <item>Amerika/Indianapolis</item>
-        <item>Amerika/Inuvik</item>
-        <item>Amerika/Iqaluit</item>
-        <item>Amerika/Jamaica</item>
-        <item>Amerika/Jujuy</item>
-        <item>Amerika/Juneau</item>
-        <item>Amerika/Kaaimaneilanden</item>
-        <item>Amerika/Kentucky/Louisville</item>
-        <item>Amerika/Kentucky/Monticello</item>
-        <item>Amerika/Knox_IN</item>
-        <item>Amerika/Kralendijk</item>
-        <item>Amerika/La_Paz</item>
-        <item>Amerika/Lima</item>
-        <item>Amerika/Los_Angeles</item>
-        <item>Amerika/Louisville</item>
-        <item>Amerika/Lower_Princes</item>
-        <item>Amerika/Maceio</item>
-        <item>Amerika/Managua</item>
-        <item>Amerika/Manaus</item>
-        <item>Amerika/Marigot</item>
-        <item>Amerika/Martinique</item>
-        <item>Amerika/Matamoros</item>
-        <item>Amerika/Mazatlan</item>
-        <item>Amerika/Mendoza</item>
-        <item>Amerika/Menominee</item>
-        <item>Amerika/Merida</item>
-        <item>Amerika/Metlakatla</item>
-        <item>Amerika/Mexico-Stad</item>
-        <item>Amerika/Miquelon</item>
-        <item>Amerika/Moncton</item>
-        <item>Amerika/Monterrey</item>
-        <item>Amerika/Montevideo</item>
-        <item>Amerika/Montréal</item>
-        <item>Amerika/Montserrat</item>
-        <item>Amerika/Nassau</item>
-        <item>Amerika/New_York</item>
-        <item>Amerika/Nipigon</item>
-        <item>Amerika/Nome</item>
-        <item>Amerika/Noronha</item>
-        <item>Amerika/North_Dakota/Beulah</item>
-        <item>Amerika/North_Dakota/Centraal</item>
-        <item>Amerika/North_Dakota/New_Salem</item>
-        <item>Amerika/Ojinaga</item>
-        <item>Amerika/Panama</item>
-        <item>Amerika/Pangnirtung</item>
-        <item>Amerika/Paramaribo</item>
-        <item>Amerika/Phoenix</item>
-        <item>Amerika/Port-au-Prince</item>
-        <item>Amerika/Port_of_Spain</item>
-        <item>Amerika/Porto_Acre</item>
-        <item>Amerika/Porto_Velho</item>
-        <item>Amerika/Puerto_Rico</item>
-        <item>Amerika/Rainy_River</item>
-        <item>Amerika/Rankin_Inlet</item>
-        <item>Amerika/Recife</item>
-        <item>Amerika/Regina</item>
-        <item>Amerika/Resolute</item>
-        <item>Amerika/Rio_Branco</item>
-        <item>Amerika/Rosario</item>
-        <item>Amerika/Santa_Isabel</item>
-        <item>Amerika/Santarem</item>
-        <item>Amerika/Santiago</item>
-        <item>Amerika/Santo_Domingo</item>
-        <item>Amerika/Sao_Paulo</item>
-        <item>Amerika/Scoresbysund</item>
-        <item>Amerika/Shiprock</item>
-        <item>Amerika/Sitka</item>
-        <item>Amerika/St_Barthelemy</item>
-        <item>Amerika/St_Johns</item>
-        <item>Amerika/St_Kitts</item>
-        <item>Amerika/St_Lucia</item>
-        <item>Amerika/St_Thomas</item>
-        <item>Amerika/St_Vincent</item>
-        <item>Amerika/Swift_Current</item>
-        <item>Amerika/Tegucigalpa</item>
-        <item>Amerika/Thule</item>
-        <item>Amerika/Thunder_Bay</item>
-        <item>Amerika/Tijuana</item>
-        <item>Amerika/Toronto</item>
-        <item>Amerika/Tortola</item>
-        <item>Amerika/Vancouver</item>
-        <item>Amerika/Virgin</item>
-        <item>Amerika/Whitehorse</item>
-        <item>Amerika/Winnipeg</item>
-        <item>Amerika/Yakutat</item>
-        <item>Amerika/Yellowknife</item>
+        <item>Africa/Abidjan</item>
+        <item>Africa/Accra</item>
+        <item>Africa/Addis_Ababa</item>
+        <item>Africa/Algiers</item>
+        <item>Africa/Asmara</item>
+        <item>Africa/Asmera</item>
+        <item>Africa/Bamako</item>
+        <item>Africa/Bangui</item>
+        <item>Africa/Banjul</item>
+        <item>Africa/Bissau</item>
+        <item>Africa/Blantyre</item>
+        <item>Africa/Brazzaville</item>
+        <item>Africa/Bujumbura</item>
+        <item>Africa/Cairo</item>
+        <item>Africa/Casablanca</item>
+        <item>Africa/Ceuta</item>
+        <item>Africa/Conakry</item>
+        <item>Africa/Dakar</item>
+        <item>Africa/Dar_es_Salaam</item>
+        <item>Africa/Djibouti</item>
+        <item>Africa/Douala</item>
+        <item>Africa/El_Aaiun</item>
+        <item>Africa/Freetown</item>
+        <item>Africa/Gaborone</item>
+        <item>Africa/Harare</item>
+        <item>Africa/Johannesburg</item>
+        <item>Africa/Juba</item>
+        <item>Africa/Kampala</item>
+        <item>Africa/Khartoum</item>
+        <item>Africa/Kigali</item>
+        <item>Africa/Kinshasa</item>
+        <item>Africa/Lagos</item>
+        <item>Africa/Libreville</item>
+        <item>Africa/Lome</item>
+        <item>Africa/Luanda</item>
+        <item>Africa/Lubumbashi</item>
+        <item>Africa/Lusaka</item>
+        <item>Africa/Malabo</item>
+        <item>Africa/Maputo</item>
+        <item>Africa/Maseru</item>
+        <item>Africa/Mbabane</item>
+        <item>Africa/Mogadishu</item>
+        <item>Africa/Monrovia</item>
+        <item>Africa/Nairobi</item>
+        <item>Africa/Ndjamena</item>
+        <item>Africa/Niamey</item>
+        <item>Africa/Nouakchott</item>
+        <item>Africa/Ouagadougou</item>
+        <item>Africa/Porto-Novo</item>
+        <item>Africa/Sao_Tome</item>
+        <item>Africa/Timbuktu</item>
+        <item>Africa/Tripoli</item>
+        <item>Africa/Tunis</item>
+        <item>Africa/Windhoek</item>
+        <item>America/Adak</item>
+        <item>America/Anchorage</item>
+        <item>America/Anguilla</item>
+        <item>America/Antigua</item>
+        <item>America/Araguaina</item>
+        <item>America/Argentina/Buenos_Aires</item>
+        <item>America/Argentina/Catamarca</item>
+        <item>America/Argentina/ComodRivadavia</item>
+        <item>America/Argentina/Cordoba</item>
+        <item>America/Argentina/Jujuy</item>
+        <item>America/Argentina/La_Rioja</item>
+        <item>America/Argentina/Mendoza</item>
+        <item>America/Argentina/Rio_Gallegos</item>
+        <item>America/Argentina/Salta</item>
+        <item>America/Argentina/San_Juan</item>
+        <item>America/Argentina/San_Luis</item>
+        <item>America/Argentina/Tucuman</item>
+        <item>America/Argentina/Ushuaia</item>
+        <item>America/Aruba</item>
+        <item>America/Asuncion</item>
+        <item>America/Atikokan</item>
+        <item>America/Atka</item>
+        <item>America/Bahia</item>
+        <item>America/Bahia_Banderas</item>
+        <item>America/Barbados</item>
+        <item>America/Belem</item>
+        <item>America/Belize</item>
+        <item>America/Blanc-Sablon</item>
+        <item>America/Boa_Vista</item>
+        <item>America/Bogota</item>
+        <item>America/Boise</item>
+        <item>America/Buenos_Aires</item>
+        <item>America/Cambridge_Bay</item>
+        <item>America/Campo_Grande</item>
+        <item>America/Cancun</item>
+        <item>America/Caracas</item>
+        <item>America/Catamarca</item>
+        <item>America/Cayenne</item>
+        <item>America/Cayman</item>
+        <item>America/Chicago</item>
+        <item>America/Chihuahua</item>
+        <item>America/Coral_Harbour</item>
+        <item>America/Cordoba</item>
+        <item>America/Costa_Rica</item>
+        <item>America/Creston</item>
+        <item>America/Cuiaba</item>
+        <item>America/Curacao</item>
+        <item>America/Danmarkshavn</item>
+        <item>America/Dawson</item>
+        <item>America/Dawson_Creek</item>
+        <item>America/Denver</item>
+        <item>America/Detroit</item>
+        <item>America/Dominica</item>
+        <item>America/Edmonton</item>
+        <item>America/Eirunepe</item>
+        <item>America/El_Salvador</item>
+        <item>America/Ensenada</item>
+        <item>America/Fort_Wayne</item>
+        <item>America/Fortaleza</item>
+        <item>America/Glace_Bay</item>
+        <item>America/Godthab</item>
+        <item>America/Goose_Bay</item>
+        <item>America/Grand_Turk</item>
+        <item>America/Grenada</item>
+        <item>America/Guadeloupe</item>
+        <item>America/Guatemala</item>
+        <item>America/Guayaquil</item>
+        <item>America/Guyana</item>
+        <item>America/Halifax</item>
+        <item>America/Havana</item>
+        <item>America/Hermosillo</item>
+        <item>America/Indiana/Indianapolis</item>
+        <item>America/Indiana/Knox</item>
+        <item>America/Indiana/Marengo</item>
+        <item>America/Indiana/Petersburg</item>
+        <item>America/Indiana/Tell_City</item>
+        <item>America/Indiana/Vevay</item>
+        <item>America/Indiana/Vincennes</item>
+        <item>America/Indiana/Winamac</item>
+        <item>America/Indianapolis</item>
+        <item>America/Inuvik</item>
+        <item>America/Iqaluit</item>
+        <item>America/Jamaica</item>
+        <item>America/Jujuy</item>
+        <item>America/Juneau</item>
+        <item>America/Kentucky/Louisville</item>
+        <item>America/Kentucky/Monticello</item>
+        <item>America/Knox_IN</item>
+        <item>America/Kralendijk</item>
+        <item>America/La_Paz</item>
+        <item>America/Lima</item>
+        <item>America/Los_Angeles</item>
+        <item>America/Louisville</item>
+        <item>America/Lower_Princes</item>
+        <item>America/Maceio</item>
+        <item>America/Managua</item>
+        <item>America/Manaus</item>
+        <item>America/Marigot</item>
+        <item>America/Martinique</item>
+        <item>America/Matamoros</item>
+        <item>America/Mazatlan</item>
+        <item>America/Mendoza</item>
+        <item>America/Menominee</item>
+        <item>America/Merida</item>
+        <item>America/Metlakatla</item>
+        <item>America/Mexico_City</item>
+        <item>America/Miquelon</item>
+        <item>America/Moncton</item>
+        <item>America/Monterrey</item>
+        <item>America/Montevideo</item>
+        <item>America/Montreal</item>
+        <item>America/Montserrat</item>
+        <item>America/Nassau</item>
+        <item>America/New_York</item>
+        <item>America/Nipigon</item>
+        <item>America/Nome</item>
+        <item>America/Noronha</item>
+        <item>America/North_Dakota/Beulah</item>
+        <item>America/North_Dakota/Center</item>
+        <item>America/North_Dakota/New_Salem</item>
+        <item>America/Ojinaga</item>
+        <item>America/Panama</item>
+        <item>America/Pangnirtung</item>
+        <item>America/Paramaribo</item>
+        <item>America/Phoenix</item>
+        <item>America/Port-au-Prince</item>
+        <item>America/Port_of_Spain</item>
+        <item>America/Porto_Acre</item>
+        <item>America/Porto_Velho</item>
+        <item>America/Puerto_Rico</item>
+        <item>America/Rainy_River</item>
+        <item>America/Rankin_Inlet</item>
+        <item>America/Recife</item>
+        <item>America/Regina</item>
+        <item>America/Resolute</item>
+        <item>America/Rio_Branco</item>
+        <item>America/Rosario</item>
+        <item>America/Santa_Isabel</item>
+        <item>America/Santarem</item>
+        <item>America/Santiago</item>
+        <item>America/Santo_Domingo</item>
+        <item>America/Sao_Paulo</item>
+        <item>America/Scoresbysund</item>
+        <item>America/Shiprock</item>
+        <item>America/Sitka</item>
+        <item>America/St_Barthelemy</item>
+        <item>America/St_Johns</item>
+        <item>America/St_Kitts</item>
+        <item>America/St_Lucia</item>
+        <item>America/St_Thomas</item>
+        <item>America/St_Vincent</item>
+        <item>America/Swift_Current</item>
+        <item>America/Tegucigalpa</item>
+        <item>America/Thule</item>
+        <item>America/Thunder_Bay</item>
+        <item>America/Tijuana</item>
+        <item>America/Toronto</item>
+        <item>America/Tortola</item>
+        <item>America/Vancouver</item>
+        <item>America/Virgin</item>
+        <item>America/Whitehorse</item>
+        <item>America/Winnipeg</item>
+        <item>America/Yakutat</item>
+        <item>America/Yellowknife</item>
         <item>Antarctica/Casey</item>
         <item>Antarctica/Davis</item>
         <item>Antarctica/DumontDUrville</item>
@@ -647,161 +647,163 @@
         <item>Antarctica/McMurdo</item>
         <item>Antarctica/Palmer</item>
         <item>Antarctica/Rothera</item>
+        <item>Antarctica/South_Pole</item>
         <item>Antarctica/Syowa</item>
         <item>Antarctica/Troll</item>
         <item>Antarctica/Vostok</item>
-        <item>Antarctica/Zuidpool</item>
         <item>Arctic/Longyearbyen</item>
-        <item>Azië/Aden</item>
-        <item>Azië/Almaty</item>
-        <item>Azië/Amman</item>
-        <item>Azië/Anadyr</item>
-        <item>Azië/Aqtau</item>
-        <item>Azië/Aqtobe</item>
-        <item>Azië/Ashgabat</item>
-        <item>Azië/Ashkhabad</item>
-        <item>Azië/Baghdad</item>
-        <item>Azië/Bahrain</item>
-        <item>Azië/Baku</item>
-        <item>Azië/Bangkok</item>
-        <item>Azië/Beiroet</item>
-        <item>Azië/Bishkek</item>
-        <item>Azië/Brunei</item>
-        <item>Azië/Calcutta</item>
-        <item>Azië/Chita</item>
-        <item>Azië/Choibalsan</item>
-        <item>Azië/Chongqing</item>
-        <item>Azië/Chungking</item>
-        <item>Azië/Colombo</item>
-        <item>Azië/Dacca</item>
-        <item>Azië/Damascus</item>
-        <item>Azië/Dhaka</item>
-        <item>Azië/Dili</item>
-        <item>Azië/Dubai</item>
-        <item>Azië/Dushanbe</item>
-        <item>Azië/Gaza</item>
-        <item>Azië/Hanoi</item>
-        <item>Azië/Harbin</item>
-        <item>Azië/Hebron</item>
-        <item>Azië/Ho_Chi_Minh</item>
-        <item>Azië/Hongkong</item>
-        <item>Azië/Hovd</item>
-        <item>Azië/Irkutsk</item>
-        <item>Azië/Istanboel</item>
-        <item>Azië/Jakarta</item>
-        <item>Azië/Jayapura</item>
-        <item>Azië/Jeruzalem</item>
-        <item>Azië/Kaboel</item>
-        <item>Azië/Kamchatka</item>
-        <item>Azië/Karachi</item>
-        <item>Azië/Kashgar</item>
-        <item>Azië/Kathmandu</item>
-        <item>Azië/Katmandu</item>
-        <item>Azië/Khandyga</item>
-        <item>Azië/Koeweit</item>
-        <item>Azië/Kolkata</item>
-        <item>Azië/Krasnoyarsk</item>
-        <item>Azië/Kuala_Lumpur</item>
-        <item>Azië/Kuching</item>
-        <item>Azië/Macao</item>
-        <item>Azië/Macau</item>
-        <item>Azië/Magadan</item>
-        <item>Azië/Makassar</item>
-        <item>Azië/Manilla</item>
-        <item>Azië/Muscat</item>
-        <item>Azië/Nicosia</item>
-        <item>Azië/Novokuznetsk</item>
-        <item>Azië/Novosibirsk</item>
-        <item>Azië/Omsk</item>
-        <item>Azië/Oral</item>
-        <item>Azië/Phnom_Penh</item>
-        <item>Azië/Pontianak</item>
-        <item>Azië/Pyongyang</item>
-        <item>Azië/Qatar</item>
-        <item>Azië/Qyzylorda</item>
-        <item>Azië/Rangoon</item>
-        <item>Azië/Riyadh</item>
-        <item>Azië/Saigon</item>
-        <item>Azië/Sakhalin</item>
-        <item>Azië/Samarkand</item>
-        <item>Azië/Seoul</item>
-        <item>Azië/Shanghai</item>
-        <item>Azië/Singapore</item>
-        <item>Azië/Srednekolymsk</item>
-        <item>Azië/Taipei</item>
-        <item>Azië/Tashkent</item>
-        <item>Azië/Tbilisi</item>
-        <item>Azië/Teheran</item>
-        <item>Azië/Tel_Aviv</item>
-        <item>Azië/Thimbu</item>
-        <item>Azië/Thimphu</item>
-        <item>Azië/Tokio</item>
-        <item>Azië/Ujung_Pandang</item>
-        <item>Azië/Ulaanbaatar</item>
-        <item>Azië/Ulan_Bator</item>
-        <item>Azië/Urumqi</item>
-        <item>Azië/ust-Nera</item>
-        <item>Azië/Vientiane</item>
-        <item>Azië/Vladivostok</item>
-        <item>Azië/Yakutsk</item>
-        <item>Azië/Yekaterinburg</item>
-        <item>Azië/Yerevan</item>
-        <item>Atlantische Oceaan/Azoren</item>
-        <item>Atlantische Oceaan/Bermuda</item>
-        <item>Atlantische Oceaan/Canary</item>
-        <item>Atlantische Oceaan/Faeröer</item>
-        <item>Atlantische Oceaan/Jan_Mayen</item>
-        <item>Atlantische Oceaan/Kaapverdië</item>
-        <item>Atlantische Oceaan/Madeira</item>
-        <item>Atlantische Oceaan/Reykjavik</item>
-        <item>Atlantische Oceaan/St_Helena</item>
-        <item>Atlantische Oceaan/Stanley</item>
-        <item>Atlantische Oceaan/Zuid-Georgië</item>
-        <item>Australië/ACT</item>
-        <item>Australië/Adelaide</item>
-        <item>Australië/Brisbane</item>
-        <item>Australië/Broken_Hill</item>
-        <item>Australië/Canberra</item>
-        <item>Australië/Currie</item>
-        <item>Australië/Darwin</item>
-        <item>Australië/Eucla</item>
-        <item>Australië/Hobart</item>
-        <item>Australië/LHI</item>
-        <item>Australië/Lindeman</item>
-        <item>Australië/Lord_Howe</item>
-        <item>Australië/Melbourne</item>
-        <item>Australië/NZW</item>
-        <item>Australië/Noorden</item>
-        <item>Australië/Perth</item>
-        <item>Australië/Queensland</item>
-        <item>Australië/Sydney</item>
-        <item>Australië/Tasmanië</item>
-        <item>Australië/Victoria</item>
-        <item>Australië/Westen</item>
-        <item>Australië/Yancowinna</item>
-        <item>Australië/Zuiden</item>
-        <item>Brazilië/Acre</item>
-        <item>Brazilië/DeNoronha</item>
-        <item>Brazilië/Oosten</item>
-        <item>Brazilië/Westen</item>
+        <item>Asia/Aden</item>
+        <item>Asia/Almaty</item>
+        <item>Asia/Amman</item>
+        <item>Asia/Anadyr</item>
+        <item>Asia/Aqtau</item>
+        <item>Asia/Aqtobe</item>
+        <item>Asia/Ashgabat</item>
+        <item>Asia/Ashkhabad</item>
+        <item>Asia/Baghdad</item>
+        <item>Asia/Bahrain</item>
+        <item>Asia/Baku</item>
+        <item>Asia/Bangkok</item>
+        <item>Asia/Beirut</item>
+        <item>Asia/Bishkek</item>
+        <item>Asia/Brunei</item>
+        <item>Asia/Calcutta</item>
+        <item>Asia/Chita</item>
+        <item>Asia/Choibalsan</item>
+        <item>Asia/Chongqing</item>
+        <item>Asia/Chungking</item>
+        <item>Asia/Colombo</item>
+        <item>Asia/Dacca</item>
+        <item>Asia/Damascus</item>
+        <item>Asia/Dhaka</item>
+        <item>Asia/Dili</item>
+        <item>Asia/Dubai</item>
+        <item>Asia/Dushanbe</item>
+        <item>Asia/Gaza</item>
+        <item>Asia/Hanoi</item>
+        <item>Asia/Harbin</item>
+        <item>Asia/Hebron</item>
+        <item>Asia/Ho_Chi_Minh</item>
+        <item>Asia/Hong_Kong</item>
+        <item>Asia/Hovd</item>
+        <item>Asia/Irkutsk</item>
+        <item>Asia/Istanbul</item>
+        <item>Asia/Jakarta</item>
+        <item>Asia/Jayapura</item>
+        <item>Asia/Jerusalem</item>
+        <item>Asia/Kabul</item>
+        <item>Asia/Kamchatka</item>
+        <item>Asia/Karachi</item>
+        <item>Asia/Kashgar</item>
+        <item>Asia/Kathmandu</item>
+        <item>Asia/Katmandu</item>
+        <item>Asia/Khandyga</item>
+        <item>Asia/Kolkata</item>
+        <item>Asia/Krasnoyarsk</item>
+        <item>Asia/Kuala_Lumpur</item>
+        <item>Asia/Kuching</item>
+        <item>Asia/Kuwait</item>
+        <item>Asia/Macao</item>
+        <item>Asia/Macau</item>
+        <item>Asia/Magadan</item>
+        <item>Asia/Makassar</item>
+        <item>Asia/Manila</item>
+        <item>Asia/Muscat</item>
+        <item>Asia/Nicosia</item>
+        <item>Asia/Novokuznetsk</item>
+        <item>Asia/Novosibirsk</item>
+        <item>Asia/Omsk</item>
+        <item>Asia/Oral</item>
+        <item>Asia/Phnom_Penh</item>
+        <item>Asia/Pontianak</item>
+        <item>Asia/Pyongyang</item>
+        <item>Asia/Qatar</item>
+        <item>Asia/Qyzylorda</item>
+        <item>Asia/Rangoon</item>
+        <item>Asia/Riyadh</item>
+        <item>Asia/Saigon</item>
+        <item>Asia/Sakhalin</item>
+        <item>Asia/Samarkand</item>
+        <item>Asia/Seoul</item>
+        <item>Asia/Shanghai</item>
+        <item>Asia/Singapore</item>
+        <item>Asia/Srednekolymsk</item>
+        <item>Asia/Taipei</item>
+        <item>Asia/Tashkent</item>
+        <item>Asia/Tbilisi</item>
+        <item>Asia/Tehran</item>
+        <item>Asia/Tel_Aviv</item>
+        <item>Asia/Thimbu</item>
+        <item>Asia/Thimphu</item>
+        <item>Asia/Tokyo</item>
+        <item>Asia/Ujung_Pandang</item>
+        <item>Asia/Ulaanbaatar</item>
+        <item>Asia/Ulan_Bator</item>
+        <item>Asia/Urumqi</item>
+        <item>Asia/Ust-Nera</item>
+        <item>Asia/Vientiane</item>
+        <item>Asia/Vladivostok</item>
+        <item>Asia/Yakutsk</item>
+        <item>Asia/Yekaterinburg</item>
+        <item>Asia/Yerevan</item>
+        <item>Atlantic/Azores</item>
+        <item>Atlantic/Bermuda</item>
+        <item>Atlantic/Canary</item>
+        <item>Atlantic/Cape_Verde</item>
+        <item>Atlantic/Faeroe</item>
+        <item>Atlantic/Faroe</item>
+        <item>Atlantic/Jan_Mayen</item>
+        <item>Atlantic/Madeira</item>
+        <item>Atlantic/Reykjavik</item>
+        <item>Atlantic/South_Georgia</item>
+        <item>Atlantic/St_Helena</item>
+        <item>Atlantic/Stanley</item>
+        <item>Australia/ACT</item>
+        <item>Australia/Adelaide</item>
+        <item>Australia/Brisbane</item>
+        <item>Australia/Broken_Hill</item>
+        <item>Australia/Canberra</item>
+        <item>Australia/Currie</item>
+        <item>Australia/Darwin</item>
+        <item>Australia/Eucla</item>
+        <item>Australia/Hobart</item>
+        <item>Australia/LHI</item>
+        <item>Australia/Lindeman</item>
+        <item>Australia/Lord_Howe</item>
+        <item>Australia/Melbourne</item>
+        <item>Australia/NSW</item>
+        <item>Australia/North</item>
+        <item>Australia/Perth</item>
+        <item>Australia/Queensland</item>
+        <item>Australia/South</item>
+        <item>Australia/Sydney</item>
+        <item>Australia/Tasmania</item>
+        <item>Australia/Victoria</item>
+        <item>Australia/West</item>
+        <item>Australia/Yancowinna</item>
+        <item>Brazil/Acre</item>
+        <item>Brazil/DeNoronha</item>
+        <item>Brazil/East</item>
+        <item>Brazil/West</item>
         <item>CET</item>
         <item>CST6CDT</item>
-        <item>Canada/Atlantisch</item>
-        <item>Canada/Centraal</item>
-        <item>Canada/Oost-Saskatchewan</item>
-        <item>Canada/Oosterlijk</item>
-        <item>Canada/Berg</item>
+        <item>Canada/Atlantic</item>
+        <item>Canada/Central</item>
+        <item>Canada/East-Saskatchewan</item>
+        <item>Canada/Eastern</item>
+        <item>Canada/Mountain</item>
         <item>Canada/Newfoundland</item>
-        <item>Canada/Stille Oceaan</item>
+        <item>Canada/Pacific</item>
         <item>Canada/Saskatchewan</item>
         <item>Canada/Yukon</item>
-        <item>Chili/Continentaal</item>
-        <item>Chili/Paaseiland</item>
+        <item>Chile/Continental</item>
+        <item>Chile/EasterIsland</item>
         <item>Cuba</item>
         <item>EET</item>
         <item>EST</item>
         <item>EST5EDT</item>
-        <item>Egypte</item>
+        <item>Egypt</item>
+        <item>Eire</item>
         <item>Etc/GMT</item>
         <item>Etc/GMT+0</item>
         <item>Etc/GMT+1</item>
@@ -837,65 +839,67 @@
         <item>Etc/UTC</item>
         <item>Etc/Universal</item>
         <item>Etc/Zulu</item>
-        <item>Europa/Amsterdam</item>
-        <item>Europa/Andorra</item>
-        <item>Europa/Athene</item>
-        <item>Europa/Belfast</item>
-        <item>Europa/Belgrado</item>
-        <item>Europa/Berlijn</item>
-        <item>Europa/Boedapest</item>
-        <item>Europa/Boekarest</item>
-        <item>Europa/Bratislawa</item>
-        <item>Europa/Brussel</item>
-        <item>Europa/Busingen</item>
-        <item>Europa/Chisinau</item>
-        <item>Europa/Dublin</item>
-        <item>Europa/Gibraltar</item>
-        <item>Europa/Guernsey</item>
-        <item>Europa/Helsinki</item>
-        <item>Europa/Isle_of_Man</item>
-        <item>Europa/Istanboel</item>
-        <item>Europa/Jersey</item>
-        <item>Europa/Kaliningrad</item>
-        <item>Europa/Kiev</item>
-        <item>Europa/Kopenhagen</item>
-        <item>Europa/Lissabon</item>
-        <item>Europa/Ljubljana</item>
-        <item>Europa/Londen</item>
-        <item>Europa/Luxemburg</item>
-        <item>Europa/Madrid</item>
-        <item>Europa/Malta</item>
-        <item>Europa/Mariehamn</item>
-        <item>Europa/Minsk</item>
-        <item>Europa/Monaco</item>
-        <item>Europa/Moskou</item>
-        <item>Europa/Nicosia</item>
-        <item>Europa/Oslo</item>
-        <item>Europa/Parijs</item>
-        <item>Europa/Podgorica</item>
-        <item>Europa/Praag</item>
-        <item>Europa/Riga</item>
-        <item>Europa/Rome</item>
-        <item>Europa/Samara</item>
-        <item>Europa/San_Marino</item>
-        <item>Europa/Sarajevo</item>
-        <item>Europa/Simferopol</item>
-        <item>Europa/Skopje</item>
-        <item>Europa/Sofia</item>
-        <item>Europa/Stockholm</item>
-        <item>Europa/Tallinn</item>
-        <item>Europa/Tirane</item>
-        <item>Europa/Tiraspol</item>
-        <item>Europa/Uzhgorod</item>
-        <item>Europa/Vadoez</item>
-        <item>Europa/Vaticaanstad</item>
-        <item>Europa/Vilnius</item>
-        <item>Europa/Volgograd</item>
-        <item>Europa/Warschau</item>
-        <item>Europa/Wenen</item>
-        <item>Europa/Zagreb</item>
-        <item>Europa/Zaporozhye</item>
-        <item>Europa/Zürich</item>
+        <item>Europe/Amsterdam</item>
+        <item>Europe/Andorra</item>
+        <item>Europe/Athens</item>
+        <item>Europe/Belfast</item>
+        <item>Europe/Belgrade</item>
+        <item>Europe/Berlin</item>
+        <item>Europe/Bratislava</item>
+        <item>Europe/Brussels</item>
+        <item>Europe/Bucharest</item>
+        <item>Europe/Budapest</item>
+        <item>Europe/Busingen</item>
+        <item>Europe/Chisinau</item>
+        <item>Europe/Copenhagen</item>
+        <item>Europe/Dublin</item>
+        <item>Europe/Gibraltar</item>
+        <item>Europe/Guernsey</item>
+        <item>Europe/Helsinki</item>
+        <item>Europe/Isle_of_Man</item>
+        <item>Europe/Istanbul</item>
+        <item>Europe/Jersey</item>
+        <item>Europe/Kaliningrad</item>
+        <item>Europe/Kiev</item>
+        <item>Europe/Lisbon</item>
+        <item>Europe/Ljubljana</item>
+        <item>Europe/London</item>
+        <item>Europe/Luxembourg</item>
+        <item>Europe/Madrid</item>
+        <item>Europe/Malta</item>
+        <item>Europe/Mariehamn</item>
+        <item>Europe/Minsk</item>
+        <item>Europe/Monaco</item>
+        <item>Europe/Moscow</item>
+        <item>Europe/Nicosia</item>
+        <item>Europe/Oslo</item>
+        <item>Europe/Paris</item>
+        <item>Europe/Podgorica</item>
+        <item>Europe/Prague</item>
+        <item>Europe/Riga</item>
+        <item>Europe/Rome</item>
+        <item>Europe/Samara</item>
+        <item>Europe/San_Marino</item>
+        <item>Europe/Sarajevo</item>
+        <item>Europe/Simferopol</item>
+        <item>Europe/Skopje</item>
+        <item>Europe/Sofia</item>
+        <item>Europe/Stockholm</item>
+        <item>Europe/Tallinn</item>
+        <item>Europe/Tirane</item>
+        <item>Europe/Tiraspol</item>
+        <item>Europe/Uzhgorod</item>
+        <item>Europe/Vaduz</item>
+        <item>Europe/Vatican</item>
+        <item>Europe/Vienna</item>
+        <item>Europe/Vilnius</item>
+        <item>Europe/Volgograd</item>
+        <item>Europe/Warsaw</item>
+        <item>Europe/Zagreb</item>
+        <item>Europe/Zaporozhye</item>
+        <item>Europe/Zurich</item>
+        <item>GB</item>
+        <item>GB-Eire</item>
         <item>GMT</item>
         <item>GMT+0</item>
         <item>GMT-0</item>
@@ -903,105 +907,102 @@
         <item>Greenwich</item>
         <item>HST</item>
         <item>Hongkong</item>
-        <item>Ierland</item>
-        <item>IJsland</item>
-        <item>Indische Oceaan/Antananarivo</item>
-        <item>Indische Oceaan/Chagos</item>
-        <item>Indische Oceaan/Cocos</item>
-        <item>Indische Oceaan/Comoro</item>
-        <item>Indische Oceaan/Kerguelen</item>
-        <item>Indische Oceaan/Kersteiland</item>
-        <item>Indische Oceaan/Mahe</item>
-        <item>Indische Oceaan/Maladiven</item>
-        <item>Indische Oceaan/Mauritius</item>
-        <item>Indische Oceaan/Mayotte</item>
-        <item>Indische Oceaan/Réunion</item>
+        <item>Iceland</item>
+        <item>Indian/Antananarivo</item>
+        <item>Indian/Chagos</item>
+        <item>Indian/Christmas</item>
+        <item>Indian/Cocos</item>
+        <item>Indian/Comoro</item>
+        <item>Indian/Kerguelen</item>
+        <item>Indian/Mahe</item>
+        <item>Indian/Maldives</item>
+        <item>Indian/Mauritius</item>
+        <item>Indian/Mayotte</item>
+        <item>Indian/Reunion</item>
         <item>Iran</item>
-        <item>Israël</item>
+        <item>Israel</item>
         <item>Jamaica</item>
         <item>Japan</item>
         <item>Kwajalein</item>
-        <item>Libië</item>
+        <item>Libya</item>
         <item>MET</item>
         <item>MST</item>
         <item>MST7MDT</item>
         <item>Mexico/BajaNorte</item>
         <item>Mexico/BajaSur</item>
-        <item>Mexico/Algemeen</item>
+        <item>Mexico/General</item>
         <item>NZ</item>
         <item>NZ-CHAT</item>
         <item>Navajo</item>
         <item>PRC</item>
         <item>PST8PDT</item>
-        <item>Polen</item>
+        <item>Pacific/Apia</item>
+        <item>Pacific/Auckland</item>
+        <item>Pacific/Bougainville</item>
+        <item>Pacific/Chatham</item>
+        <item>Pacific/Chuuk</item>
+        <item>Pacific/Easter</item>
+        <item>Pacific/Efate</item>
+        <item>Pacific/Enderbury</item>
+        <item>Pacific/Fakaofo</item>
+        <item>Pacific/Fiji</item>
+        <item>Pacific/Funafuti</item>
+        <item>Pacific/Galapagos</item>
+        <item>Pacific/Gambier</item>
+        <item>Pacific/Guadalcanal</item>
+        <item>Pacific/Guam</item>
+        <item>Pacific/Honolulu</item>
+        <item>Pacific/Johnston</item>
+        <item>Pacific/Kiritimati</item>
+        <item>Pacific/Kosrae</item>
+        <item>Pacific/Kwajalein</item>
+        <item>Pacific/Majuro</item>
+        <item>Pacific/Marquesas</item>
+        <item>Pacific/Midway</item>
+        <item>Pacific/Nauru</item>
+        <item>Pacific/Niue</item>
+        <item>Pacific/Norfolk</item>
+        <item>Pacific/Noumea</item>
+        <item>Pacific/Pago_Pago</item>
+        <item>Pacific/Palau</item>
+        <item>Pacific/Pitcairn</item>
+        <item>Pacific/Pohnpei</item>
+        <item>Pacific/Ponape</item>
+        <item>Pacific/Port_Moresby</item>
+        <item>Pacific/Rarotonga</item>
+        <item>Pacific/Saipan</item>
+        <item>Pacific/Samoa</item>
+        <item>Pacific/Tahiti</item>
+        <item>Pacific/Tarawa</item>
+        <item>Pacific/Tongatapu</item>
+        <item>Pacific/Truk</item>
+        <item>Pacific/Wake</item>
+        <item>Pacific/Wallis</item>
+        <item>Pacific/Yap</item>
+        <item>Poland</item>
         <item>Portugal</item>
         <item>ROC</item>
         <item>ROK</item>
         <item>Singapore</item>
-        <item>Stille Oceaan/Apia</item>
-        <item>Stille Oceaan/Auckland</item>
-        <item>Stille Oceaan/Bougainville</item>
-        <item>Stille Oceaan/Chatham</item>
-        <item>Stille Oceaan/Chuuk</item>
-        <item>Stille Oceaan/Efate</item>
-        <item>Stille Oceaan/Enderbury</item>
-        <item>Stille Oceaan/Fakaofo</item>
-        <item>Stille Oceaan/Fiji</item>
-        <item>Stille Oceaan/Funafuti</item>
-        <item>Stille Oceaan/Galapagos</item>
-        <item>Stille Oceaan/Gambier</item>
-        <item>Stille Oceaan/Guadalcanal</item>
-        <item>Stille Oceaan/Guam</item>
-        <item>Stille Oceaan/Honolulu</item>
-        <item>Stille Oceaan/Johnston</item>
-        <item>Stille Oceaan/Kiritimati</item>
-        <item>Stille Oceaan/Kosrae</item>
-        <item>Stille Oceaan/Kwajalein</item>
-        <item>Stille Oceaan/Majuro</item>
-        <item>Stille Oceaan/Marquesas</item>
-        <item>Stille Oceaan/Midway</item>
-        <item>Stille Oceaan/Nauru</item>
-        <item>Stille Oceaan/Niue</item>
-        <item>Stille Oceaan/Norfolk</item>
-        <item>Stille Oceaan/Noumea</item>
-        <item>Stille Oceaan/Paaseiland</item>
-        <item>Stille Oceaan/Pago_Pago</item>
-        <item>Stille Oceaan/Palau</item>
-        <item>Stille Oceaan/Pitcairn</item>
-        <item>Stille Oceaan/Pohnpei</item>
-        <item>Stille Oceaan/Ponape</item>
-        <item>Stille Oceaan/Port_Moresby</item>
-        <item>Stille Oceaan/Rarotonga</item>
-        <item>Stille Oceaan/Saipan</item>
-        <item>Stille Oceaan/Samoa</item>
-        <item>Stille Oceaan/Tahiti</item>
-        <item>Stille Oceaan/Tarawa</item>
-        <item>Stille Oceaan/Tongatapu</item>
-        <item>Stille Oceaan/Truk</item>
-        <item>Stille Oceaan/Wake</item>
-        <item>Stille Oceaan/Wallis</item>
-        <item>Stille Oceaan/Yap</item>
-        <item>Turkije</item>
+        <item>Turkey</item>
         <item>UCT</item>
-        <item>VK</item>
-        <item>VK-Ierland</item>
-        <item>VS/Alaska</item>
-        <item>VS/Aleutian</item>
-        <item>VS/Arizona</item>
-        <item>VS/Berg</item>
-        <item>VS/Centraal</item>
-        <item>VS/Hawaii</item>
-        <item>VS/Indisch-Starke</item>
-        <item>VS/Michigan</item>
-        <item>VS/Oostindië</item>
-        <item>VS/Oosten</item>
-        <item>VS/Stille Oceaan</item>
-        <item>VS/Samoa</item>
+        <item>US/Alaska</item>
+        <item>US/Aleutian</item>
+        <item>US/Arizona</item>
+        <item>US/Central</item>
+        <item>US/East-Indiana</item>
+        <item>US/Eastern</item>
+        <item>US/Hawaii</item>
+        <item>US/Indiana-Starke</item>
+        <item>US/Michigan</item>
+        <item>US/Mountain</item>
+        <item>US/Pacific</item>
+        <item>US/Samoa</item>
         <item>UTC</item>
-        <item>Universeel</item>
+        <item>Universal</item>
         <item>W-SU</item>
         <item>WET</item>
-        <item>Zoeloe</item>
+        <item>Zulu</item>
     </string-array>
 
     <string-array name="sessions_state">
