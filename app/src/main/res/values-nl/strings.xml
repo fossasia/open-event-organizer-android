@@ -1,0 +1,1029 @@
+<resources>
+    <string name="checked_in">Ingecheckt</string>
+    <string name="checked_out">Uitgecheckt</string>
+    <string name="check_in">Inchecken</string>
+    <string name="event_title">Naam van evenement</string>
+    <string name="tickets_sold">Aantal verkochte tickets</string>
+    <string name="to"> Aan </string>
+    <string name="comma"> , </string>
+    <string name="divide">/</string>
+    <string name="attendance">Aanwezigheid</string>
+    <string name="scan_qr_code">QR-code scannen</string>
+    <string name="first_name">Voornaam (optioneel)</string>
+    <string name="last_name">Achternaam (optioneel)</string>
+    <string name="email">E-mailadres</string>
+    <string name="edit_profile">Profiel aanpassen</string>
+    <string name="update">Bijwerken</string>
+    <string name="thumbnail_image">URL van miniatuurvoorbeeld</string>
+    <string name="icon_image_url">URL van pictogram</string>
+    <string name="facebook_url">Facebook-url</string>
+    <string name="instagram_url">Instagram-url</string>
+    <string name="avatar_url">Profielfoto-url</string>
+    <string name="twitter_url">Twitter-url</string>
+    <string name="google_plus_url">Google Plus-url</string>
+    <string name="password">Wachtwoord</string>
+    <string name="base_url">Basis-url</string>
+    <string name="login">Inloggen</string>
+    <string name="rating">beoordeling</string>
+    <string name="sign_up">Registreren</string>
+    <string name="sign_up_link"><u>Registreren voor Open Event</u></string>
+    <string name="scan_the_barcode">Barcode scannen</string>
+    <string name="event_title_here">Voer hier de naam van het evenement in</string>
+    <string name="title_feedbacks">Feedback</string>
+    <string name="feedback">Feedback</string>
+    <string name="forgot_password_link">Ik ben mijn wachtwoord vergeten</string>
+    <string name="speaker_details">Sprekerinformatie</string>
+
+    <!-- Place Holders -->
+    <string name="date_placeholder">25 mei 2017</string>
+    <string name="date_placeholder_2">31 mei 2017</string>
+    <string name="hour_placeholder">1300</string>
+    <string name="tickets_amount_placeholder">0</string>
+    <string name="attendance_placeholder">0/0</string>
+    <string name="last_name_placeholder">Smit</string>
+    <string name="first_name_placeholder">Jan</string>
+    <string name="email_placeholder">jan.jansen@gmail.com</string>
+    <string name="logout">Uitloggen</string>
+    <string name="at">\@</string>
+    <string name="title_activity_event_container">EventContainerActivity</string>
+    <string name="title_details">Controlepaneel</string>
+    <string name="title_attendees">Bezoekers</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="title_event_list">Evenementen</string>
+    <string name="title_event_detail">Evenementinformatie</string>
+    <string name="subtitle_organizer">Organisator: %s</string>
+    <string name="event_thumbnail">Evenementminiatuur</string>
+    <string name="text_empty">Er valt hier niks te zien</string>
+    <string name="empty_view_icon">Leeg weergavepictogram</string>
+    <string name="event_summary">Evenementsamenvatting</string>
+    <string name="event_state_publish">Publiceren</string>
+    <string name="event_state_draft">Concepten</string>
+    <string name="gross_sales">Brutoverkoop</string>
+    <string name="sales_summary">Verkoopsamenvatting</string>
+    <string name="search_title">Zoeken</string>
+    <string name="search_placeholder">Bezoekers zoeken</string>
+    <string name="tickets">Tickets</string>
+    <string name="ticket_free">Gratis</string>
+    <string name="ticket_paid">Betaald</string>
+    <string name="ticket_donation">Donatie</string>
+    <string name="logout_confirmation">Uitloggen</string>
+    <string name="logout_confirmation_message">Weet u zeker dat u wilt uitloggen?</string>
+    <string name="ok">Oké</string>
+    <string name="cancel">Annuleren</string>
+    <string name="save_changes">Wilt u de wijzingen opslaan?</string>
+    <string name="save">OPSLAAN</string>
+    <string name="discard">VERWERPEN</string>
+
+    <string name="navigation_drawer_open">Navigatiemenu openen</string>
+    <string name="navigation_drawer_close">Navigatiemenu sluiten</string>
+    <string name="check_in_status">Incheckstatus</string>
+    <string name="event_dashboard">Overzicht</string>
+    <string name="attendees">Bezoekers</string>
+    <string name="events">Evenementen</string>
+    <string name="nav_events">Mijn evenementen</string>
+    <string name="log_out">Uitloggen</string>
+    <string name="settings">Instellingen</string>
+    <string name="event_background">Evenementachtergrond</string>
+    <string name="create_ticket">Ticket aanmaken</string>
+    <string name="ticket_name">Naam van ticket</string>
+    <string name="quantity">Aantal</string>
+    <string name="price">Prijs</string>
+    <string name="sale_start_time">Verkoop begint op</string>
+    <string name="sale_end_time">Verkoop eindigt op</string>
+    <string name="starts_at">Begint op:</string>
+    <string name="ends_at">Eindigt op:</string>
+    <string name="pick">Kies:</string>
+    <string name="minOrder">Minimumaantal</string>
+    <string name="maxOrder">Maximumaantal</string>
+    <string name="about">Over</string>
+    <string name="title_activity_about_event">AboutEventActivity</string>
+    <string name="details">Informatie</string>
+    <string name="title_activity_organizer_detail">OrganizerDetailActivity</string>
+    <string name="verified">Geverifieerd</string>
+    <string name="not_verified">Niet geverifieerd</string>
+    <string name="contact">Contact</string>
+    <string name="profile_picture">Profielfoto</string>
+    <string name="filter">filter</string>
+    <string name="filter_by_sync">Wacht op synchronisatie</string>
+    <string name="filter_by_none">Geen</string>
+    <string name="publish_success">Uw evenement is gepubliceerd.</string>
+    <string name="draft_success">De publicatie is ingetrokken.</string>
+    <string name="request_token">Toegangssleutel aanvragen</string>
+    <string name="back_to_login">Terug naar inlogpagina</string>
+    <string name="reset_password">Machtwoord herstellen</string>
+    <string name="resend_token">Geen toegangssleutel ontvangen? Opnieuw versturen</string>
+    <string name="token">Toegangssleutel</string>
+    <string name="confirm_password">Wachtwoord bevestigen</string>
+    <string name="change_password">Wachtwoord wijzigen</string>
+    <string name="old_password">Oud wachtwoord</string>
+    <string name="new_password">Nieuw wachtwoord</string>
+    <string name="create_event">Evenement aanmaken</string>
+    <string name="event_name">Naam van evenement</string>
+    <string name="payment_currency">Valuta</string>
+    <string name="ticket">Ticket</string>
+    <string name="date_and_time">Datum en tijd</string>
+    <string name="timezone">Tijdzone</string>
+    <string name="location_details">Locatie-informatie</string>
+    <string name="show_map">Kaart tonen op openbare pagina</string>
+    <string name="latitude">Breedtegraad</string>
+    <string name="longitude">Lengtegraad</string>
+    <string name="location_name">Naam van locatie</string>
+    <string name="searchable_location_name">Vindbare locatienaam</string>
+    <string name="ticketing_details">Ticketinformatie</string>
+    <string name="use_ticketing_system">Ticketsysteem gebruiken</string>
+    <string name="ticket_url">Ticket-url</string>
+    <string name="organizer_details">Informatie over organisator</string>
+    <string name="add_organizer_information">Organisatorinformatie toevoegen</string>
+    <string name="organizer_name">Naam van organisator</string>
+    <string name="organizer_description">Beschrijving van organisator</string>
+    <string name="listing_privacy">Privacy</string>
+    <string name="public_event">Openbaar evenement</string>
+    <string name="private_event">Privé-evenement</string>
+    <string name="speakers_and_sponsors">Sprekers en sponsoren</string>
+    <string name="enable_session_speakers">Sessiesprekers gebruiken</string>
+    <string name="enable_sponsors">Sponsoren gebruiken</string>
+    <string name="payment_details">Transactie-informatie</string>
+    <string name="payment_country">Transactieland</string>
+    <string name="payment_methods">Betaalmethoden</string>
+    <string name="payment_by_paypal">Betalen met PayPal</string>
+    <string name="accept_payment_through_paypal">PayPal-betalingen toestaan</string>
+    <string name="paypal_email">Paypal-e-mailadres</string>
+    <string name="payment_by_stripe">Betalen met Stripe</string>
+    <string name="accept_payment_through_stripe">Stripe-betalingen toestaan</string>
+    <string name="offline_payments">Offline-betalingen</string>
+    <string name="accept_payment_by_cheque">Cheque-betalingen toestaan</string>
+    <string name="enter_your_cheque_details">Voer uw chequegegevens in</string>
+    <string name="accept_payment_by_bank_transfer">Bankoverschrijvingen toestaan</string>
+    <string name="enter_your_bank_details">Voer uw bankgegevens in</string>
+    <string name="enter_your_onsite_details">Voer uw locatiegegevens in</string>
+    <string name="accept_payment_at_the_event_onsite">Betalingen ter plekke toestaan</string>
+    <string name="graphics">Grafisch</string>
+    <string name="logo_url">Logo-url</string>
+    <string name="original_image_url">Afbeeldings-url</string>
+    <string name="event_state">Status van evenement</string>
+    <string name="published">Gepubliceerd</string>
+    <string name="draft">Concept</string>
+    <string name="others">Overig</string>
+    <string name="description">Beschrijf in het kort uw evenement</string>
+    <string name="external_event_url">Externe evenement-url</string>
+    <string name="code_of_conduct">Gedragscode</string>
+    <string name="enable_tax">BTW gebruiken</string>
+    <string name="url_validation_error">Voer een geldige url in</string>
+    <string name="email_validation_error">Voer een geldig e-mailadres in</string>
+    <string name="event_statistics">Evenementstatistieken</string>
+    <string name="speakers">Sprekers</string>
+    <string name="sponsors">Sponsoren</string>
+    <string name="create_sponsor">Sponsor toevoegen</string>
+    <string name="update_sponsor">Sponsor bijwerken</string>
+    <string name="sponsor_name">Naam van sponsor</string>
+    <string name="sponsor_description">Beschrijving</string>
+    <string name="sponsor_url">URL</string>
+    <string name="sponsor_logo_url">Logo-url</string>
+    <string name="sponsor_level">Niveau</string>
+    <string name="sponsor_type">Soort</string>
+    <string name="sessions">Sessies</string>
+    <string name="sort_by">Sorteren op</string>
+    <string name="sort_by_name">Naam</string>
+    <string name="sort_by_date">Datum</string>
+    <string name="sessions_submitted">Ingediende sessies</string>
+    <string name="sessions_accepted">Goedgekeurde sessies</string>
+    <string name="sessions_confirmed">Bevestigde sessies</string>
+    <string name="sessions_draft">Conceptsessies</string>
+    <string name="sessions_pending">In behandeling zijnde sessies</string>
+    <string name="faq">Veelgestelde vragen</string>
+    <string name="track">Track</string>
+    <string name="tracks">Tracks</string>
+    <string name="pdf_url">PDF-url</string>
+    <string name="country">Land</string>
+    <string name="state">Provincie/Staat</string>
+    <string name="city">Woonplaats</string>
+    <string name="address">Adres</string>
+    <string name="pdf_url_colon">PDF-url:  </string>
+    <string name="answer_initial">A:</string>
+    <string name="question_initial">V:</string>
+    <string name="create_copyright">Auteursrecht toevoegen</string>
+    <string name="edit_copyright">Auteursrecht aanpassen</string>
+    <string name="edit_track">Track aanpassen</string>
+    <string name="holder_name">Naam van houder</string>
+    <string name="holder_url">URL van houder</string>
+    <string name="license_text">Licentietekst</string>
+    <string name="license_url">Licentie-url</string>
+    <string name="copyright_year">Jaar</string>
+    <string name="copyright">Auteursrecht</string>
+    <string name="create_faq">Veelgestelde vragen toevoegen</string>
+    <string name="question">Vraag</string>
+    <string name="answer">Antwoord</string>
+    <string name="pick_from_map">Kiezen op kaart</string>
+    <string name="save_icon">Pictogram opslaan</string>
+    <string name="use_date_time_picker">Kiezer gebruiken</string>
+    <string name="welcome">Aan de slag</string>
+    <string name="delete_copyright">Auteursrecht verwijderen</string>
+    <string name="year_validation_error">Voer een geldig jaartal in</string>
+    <string name="delete_confirmation_message">Weet u zeker dat u %s wilt verwijderen?</string>
+    <string name="delete">Verwijderen</string>
+    <string name="create_track">Track aanmaken</string>
+    <string name="name">Naam</string>
+    <string name="color">Kleur</string>
+    <string name="session">Sessie</string>
+    <string name="delete_track">Track verwijderen</string>
+    <string name="create_session">Sessie aanmaken</string>
+    <string name="slides_url">URL naar diavoorstelling</string>
+    <string name="long_abstract">Lang uittreksel</string>
+    <string name="short_abstract">Kort uittreksel</string>
+    <string name="language">Taal</string>
+    <string name="audio_url">Audio-url</string>
+    <string name="video_url">Video-url</string>
+    <string name="signup_url">Registratie-url</string>
+    <string name="links">Links</string>
+    <string name="comments">Reacties</string>
+    <string name="level">Niveau</string>
+    <string name="subtitle">Ondertitel</string>
+    <string name="title">Titel</string>
+    <string name="session_abstract">Uittreksel</string>
+    <string name="speakers_call">Sprekersoproep</string>
+    <string name="speakers_photo">Foto van spreker</string>
+    <string name="announcement">Aankondiging</string>
+    <string name="edit_event">Evenement aanpassen</string>
+    <string name="update_event">Evenement bijwerken</string>
+    <string name="edit_sponsor">Sponsor aanpassen</string>
+    <string name="delete_sponsor">Sponsor verwijderen</string>
+    <string name="send_to">Versturen naar</string>
+    <string name="share">Delen</string>
+    <string name="check_in_summary">INCHECKSAMENVATTING</string>
+    <string name="check_in_time">TIJD</string>
+    <string name="event_state_live">Live</string>
+    <string name="event_state_past">Eerder</string>
+    <string name="update_session">Sessie bijverken</string>
+    <string name="facebook_icon">Facebook-pictogram</string>
+    <string name="linkedin_icon">LinkedIn-pictogram</string>
+    <string name="twitter_icon">Twitter-pictogram</string>
+    <string name="github_icon">GitHub-pictogram</string>
+    <string name="domain_icon">Domein-pictogram</string>
+    <string name="speaker_details_activity">Sprekeractiviteit</string>
+    <string name="orders">Bestellingen</string>
+    <string name="create_speakers_call">Sprekersoproep aanmaken</string>
+    <string name="privacy">Privacy</string>
+    <string name="hash">Hash</string>
+    <string name="other_url">Ander soort url</string>
+    <string name="device_name">Apparaatnaam</string>
+    <string name="device_name_summary">Geef uw apparaat een naam om check-ins en verkopen, die door dit apparaat zijn verwerkt, bij te houden middels uw Open Event-account</string>
+    <string name="check_in_settings">Incheck-instellingen</string>
+    <string name="event_payment_preferences">Betaalvoorkeuren</string>
+    <string name="use_payment_prefs">Betaalvoorkeuren gebruiken</string>
+    <string name="using_payment_preferences">Betaalvoorkeuren gebruiken bij aanmaken van evenementen</string>
+    <string name="not_using_payment_preferences">Betaalvoorkeuren niet gebruiken bij aanmaken van evenementen</string>
+    <string name="bank_details">Bankgegevens</string>
+    <string name="cheque_details">Chequegegevens</string>
+    <string name="onsite_details">\'Ter plekke\'-informatie</string>
+    <string name="default_payment_country">Kies het standaard transactieland</string>
+    <string name="payment_preferences">Betaalvoorkeuren</string>
+    <string name="order_details">Bestelgegevens</string>
+    <string name="order_identifier">Bestelidentificatie</string>
+    <string name="swipe_left_to_check_out">Veeg naar links om uit te checken</string>
+    <string name="swipe_right_to_check_in">Veeg naar rechts om in te checken</string>
+    <string name="scan_settings">Scan-instellingen</string>
+    <string name="check_out">Uitchecken</string>
+    <string name="check_in_settings_summary">Scannen om bezoekers in te checken</string>
+    <string name="check_out_settings_summary">Scannen om bezoekers uit te checken</string>
+    <string name="validate_settings_summary">Scannen om de geldigheid van tickets te controleren</string>
+    <string name="validate">Valideren</string>
+    <string name="ticket_is_valid">Dit ticket is geldig!</string>
+    <string name="invalid_ticket">Dit ticket is ongeldig!</string>
+    <string name="already_checked_in">De bezoeker is al ingecheckt</string>
+    <string name="already_checked_out">De bezoeker is al uitgecheckt</string>
+    <string name="now_checked_in">Bezoeker is ingecheckt</string>
+    <string name="now_checked_out">Bezoeker is uitgecheckt</string>
+    <string name="check_your_email">Controleer uw Postvak IN!</string>
+    <string name="check_email_reset_password_msg">We hebben u een e-mail gestuurd met daarin een toegangssleutel om uw wachtwoord te herstellen.</string>
+    <string name="done">Klaar</string>
+    <string name="nav_suggestions">Suggesties</string>
+    <string name="total_paid">Totaalbedrag (betalingen)</string>
+    <string name="status">Status</string>
+    <string name="date">Datum</string>
+    <string name="paidVia">Betaald met</string>
+    <string name="payment_mode">Betaalmodus</string>
+    <string name="previous">Vorige</string>
+    <string name="next">Volgende</string>
+    <string name="create">Maken</string>
+    <string name="update_speakers_call">Sprekersoproep bijwerken</string>
+    <string name="create_order">Bestelling aanmaken</string>
+    <string name="sell">Verkopen</string>
+    <string name="clear">Wissen</string>
+    <string name="sales_data_display">Weergave van verkopen</string>
+    <string name="collect_attendee_info">Bezoekersinformatie verzamelen</string>
+    <string name="attendee_info">Bezoekersinformatie</string>
+    <string name="eventyay_organizer">Eventyay-organisator</string>
+    <string name="rate_us">Beoordeel ons</string>
+    <string name="share_app">Deel de app</string>
+    <string name="msg_check_out">"Bekijk deze app"</string>
+    <string name="msg_check_this_out">"Gebruik de Eventyay-organisator-app om evenementen aan te maken en te beheren. Bekijk de app!"</string>
+    <string name="msg_share_using">Delen via</string>
+    <string name="privacy_policy_key">privacy_policy</string>
+    <string name="share_app_key">share_app</string>
+    <string name="privacy_policy">Privacybeleid</string>
+    <string name="app_version_key">app_version</string>
+    <string name="legal">Juridisch</string>
+    <string name="refund_policy_key">refund_policy</string>
+    <string name="terms_of_service_key">terms_of_service</string>
+    <string name="terms_of_service">Algemene voorwaarden</string>
+    <string name="refund_policy">Teruggavebeleid</string>
+    <string name="legal_key">legal_key</string>
+    <string name="signup_agreement">Als ik me registreer, ga ik akkoord met Eventyay\'s</string>
+    <string name="and">en</string>
+    <string name="sales_data_display_key">sales_data_display</string>
+    <string name="restrict_all">Alles inperken</string>
+    <string name="check_in_restrictions">Incheckbeperkingen</string>
+    <string name="check_in_restrictions_key">check_in_restrictions</string>
+    <string name="scan_settings_key">scan_settings</string>
+    <string name="payment_preference_key">payment_preferences</string>
+    <string name="get_started">Aan de slag</string>
+    <string name="unpublish_confirmation_message">Ingetrokken publicaties worden gemarkeerd als concept.</string>
+    <string name="successfull_publish_message">Gefeliciteerd! Uw evenement is gepubliceerd. Laat het anderen weten.</string>
+    <string name="unpublish_event">Publicatie intrekken</string>
+    <string name="share_event">Evenement delen</string>
+    <string name="not_now">Niet nu</string>
+    <string name="event_location_required">Voeg een evenementlocatie toe</string>
+    <string name="add_location">Locatie toevoegen</string>
+    <string name="event_location">Evenementlocatie</string>
+    <string name="gross_sales_key">gross_sales</string>
+    <string name="net_sales_key">net_sales</string>
+    <string name="net_sales">Nettoverkoop</string>
+    <string name="acknowledgements">Erkenningen</string>
+    <string name="acknowledgements_key">acknowledgement</string>
+    <string name="check_in_history">Incheckgeschiedenis</string>
+    <string name="activity_log">Logboek</string>
+    <string name="ticket_buyer">Ticketkoper</string>
+    <string name="order_statistics">Bestelstatistieken</string>
+    <string name="sales">Verkoop</string>
+    <string name="attendee">Bezoeker</string>
+    <string name="ticket_type">Soort ticket</string>
+    <string name="scanning_disabled_message">Scannen is uitgeschakeld in deze versie</string>
+    <string name="print">Afdrukken</string>
+    <string name="receipt">Factuur</string>
+    <string name="get_started_hint">Registreer of log in om evenementen te organiseren en beheren.</string>
+    <string name="event_poster_image">Posterafbeelding</string>
+    <string name="event_online">Online-evenement</string>
+    <string name="auto_check_in_all">Alle soorten</string>
+    <string name="auto_check_in">Automatisch inchecken</string>
+    <string name="auto_check_in_key">auto_check_in_key</string>
+    <string name="describe_event">Omschrijf in het kort uw evenement</string>
+    <string name="enter_text">Voer hier tekst in...</string>
+    <string name="text">Tekst</string>
+    <string name="insert_url">URL invoegen</string>
+    <string name="action_undo">Ongedaan maken</string>
+    <string name="action_redo">Opnieuw uitvoeren</string>
+    <string name="format_bold">Vetgedrukte tekst</string>
+    <string name="format_italic">Cursieve tekst</string>
+    <string name="format_strikethrough">Doorgehaalde teksn</string>
+    <string name="list_bullets">Lijst met opsommingstekens</string>
+    <string name="list_numbered">Lijst met numerieke tekens</string>
+    <string name="action_insert_link">Link invoegen</string>
+    <string name="play_store_link">https://play.google.com/store/apps/details?id=com.eventyay.organizer</string>
+    <string name="resend_verification_mail">Verificatiemail opnieuw versturen</string>
+    <string name="attendee_id">Bezoekers-id</string>
+    <string name="roles">Rollen</string>
+    <string name="send_invite">Uitnodiging versturen</string>
+    <string name="add_role">Rol toevoegen</string>
+    <string name="select_role">Kies een rol</string>
+    <string name="notifications">Meldingen</string>
+    <string name="use_another_url">Andere url opgeven</string>
+    <string name="use_default_url">Standaard-url gebruiken</string>
+    <string name="developer_mode">Ontwikkelaarsmodus</string>
+    <string name="developer_mode_key">developer_mode</string>
+    <string name="activate_developer_mode">Ontwikkelaarsmodus inschakelen</string>
+    <string name="developer_mode_activation_message">U staat op het punt de ontwikkelaarsmodus in te schakelen. Deze modus geeft u toegang tot functies die nog niet officeel zijn vrijgegeven. Deze functies zijn mogelijk instabiel en kunnen bijwerkingen hebben of tot gegevensverlies leiden. Wees dus voorzichtig! Weet u zeker dat u deze modus wilt inschakelen?</string>
+    <string name="deactivate_developer_mode">Ontwikkelaarsmodus uitschakelen</string>
+    <string name="developer_mode_deactivation_message">U staat op het punt de ontwikkelaarsmodus uit te schakelen. De niet-vrijgegeven functies worden verborgen. Wilt u doorgaan?</string>
+    <string name="yes_take_chances">Ja, ik neem het risico</string>
+    <string name="no_stay_safe">Nee, toch maar niet</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="account">Account</string>
+    <string name="start_scanning_again">Opnieuw scannen</string>
+    <string name="play_sounds">Geluiden afspelen</string>
+    <string name="play_sounds_key">play_sounds</string>
+    <string name="play_sound_on_check_in_out">Geluid afspelen bij in- en uitchecken</string>
+    <string name="select_location">Kies een locatie</string>
+    <string name="mapbox_access_token">Mapbox-toegangssleutel</string>
+    <string name="access_token_required">U heeft een geldige toegangssleutel nodig</string>
+    <string name="family_name">Achternaam</string>
+    <string name="phone">Telefoonnummer</string>
+    <string name="social_media_profiles">Socialemediaprofielen</string>
+    <string name="profile">Profiel</string>
+    <string name="bio">Biografie</string>
+    <string name="about_us">Over ons</string>
+    <string name="about_us_description">Evenementbeheer-app voor organisatoren, gebruikmakend van het Eventyay-platform.\n\nDe kernfunctionaliteit van deze app bevat onder meer:\n Inloggen en registreren\n Evenementen organiseren\n Tickets aanmaken\n Bezoekers handmatig inchecken\n Bezoekers inchecken door hun QR-code te scannen\n Eenvoudige evenementstatistieken\n Eenvoudig ticketbeheer\n Evenementinformatie\n Bestelinformatie\n Organisatorinformatie</string>
+    <string name="github_repo">GitHub-repo</string>
+    <string name="developers">Ontwikkelaars</string>
+    <string name="github_repo_link">https://github.com/fossAzië/open-event-organizer-android</string>
+    <string name="github_developers_link">https://github.com/fossAzië/open-event-organizer-android/graphs/contributors</string>
+    <string name="third_party_licenses">Gebruikte externe bibliotheken</string>
+
+    <string-array name="timezones">
+        <item>Afrika/Abidjan</item>
+        <item>Afrika/Accra</item>
+        <item>Afrika/Addis_Abbeba</item>
+        <item>Afrika/Algerije</item>
+        <item>Afrika/Asmara</item>
+        <item>Afrika/Asmera</item>
+        <item>Afrika/Bamako</item>
+        <item>Afrika/Bangui</item>
+        <item>Afrika/Banjul</item>
+        <item>Afrika/Bissau</item>
+        <item>Afrika/Blantyre</item>
+        <item>Afrika/Brazzaville</item>
+        <item>Afrika/Bujumbura</item>
+        <item>Afrika/Caïro</item>
+        <item>Afrika/Casablanca</item>
+        <item>Afrika/Ceuta</item>
+        <item>Afrika/Conakry</item>
+        <item>Afrika/Dakar</item>
+        <item>Afrika/Dar_es_Salaam</item>
+        <item>Afrika/Djibouti</item>
+        <item>Afrika/Douala</item>
+        <item>Afrika/El_Aaiun</item>
+        <item>Afrika/Freetown</item>
+        <item>Afrika/Gaborone</item>
+        <item>Afrika/Harare</item>
+        <item>Afrika/Johannesburg</item>
+        <item>Afrika/Juba</item>
+        <item>Afrika/Kampala</item>
+        <item>Afrika/Khartoum</item>
+        <item>Afrika/Kigali</item>
+        <item>Afrika/Kinshasa</item>
+        <item>Afrika/Lagos</item>
+        <item>Afrika/Libreville</item>
+        <item>Afrika/Lome</item>
+        <item>Afrika/Luanda</item>
+        <item>Afrika/Lubumbashi</item>
+        <item>Afrika/Lusaka</item>
+        <item>Afrika/Malabo</item>
+        <item>Afrika/Maputo</item>
+        <item>Afrika/Maseru</item>
+        <item>Afrika/Mbabane</item>
+        <item>Afrika/Mogadishu</item>
+        <item>Afrika/Monrovia</item>
+        <item>Afrika/Nairobi</item>
+        <item>Afrika/Ndjamena</item>
+        <item>Afrika/Niamey</item>
+        <item>Afrika/Nouakchott</item>
+        <item>Afrika/Ouagadougou</item>
+        <item>Afrika/Porto-Novo</item>
+        <item>Afrika/Sao_Tome</item>
+        <item>Afrika/Timboektoe</item>
+        <item>Afrika/Tripoli</item>
+        <item>Afrika/Tunis</item>
+        <item>Afrika/Windhoek</item>
+        <item>Amerika/Adak</item>
+        <item>Amerika/Anchorage</item>
+        <item>Amerika/Anguilla</item>
+        <item>Amerika/Antigua</item>
+        <item>Amerika/Araguaina</item>
+        <item>Amerika/Argentinië/Buenos_Aires</item>
+        <item>Amerika/Argentinië/Catamarca</item>
+        <item>Amerika/Argentinië/ComodRivadavia</item>
+        <item>Amerika/Argentinië/Cordoba</item>
+        <item>Amerika/Argentinië/Jujuy</item>
+        <item>Amerika/Argentinië/La_Rioja</item>
+        <item>Amerika/Argentinië/Mendoza</item>
+        <item>Amerika/Argentinië/Rio_Gallegos</item>
+        <item>Amerika/Argentinië/Salta</item>
+        <item>Amerika/Argentinië/San_Juan</item>
+        <item>Amerika/Argentinië/San_Luis</item>
+        <item>Amerika/Argentinië/Tucuman</item>
+        <item>Amerika/Argentinië/ushuaia</item>
+        <item>Amerika/Aruba</item>
+        <item>Amerika/Asuncion</item>
+        <item>Amerika/Atikokan</item>
+        <item>Amerika/Atka</item>
+        <item>Amerika/Bahia</item>
+        <item>Amerika/Bahia_Banderas</item>
+        <item>Amerika/Barbados</item>
+        <item>Amerika/Belem</item>
+        <item>Amerika/Belize</item>
+        <item>Amerika/Blanc-Sablon</item>
+        <item>Amerika/Boa_Vista</item>
+        <item>Amerika/Bogota</item>
+        <item>Amerika/Boise</item>
+        <item>Amerika/Buenos_Aires</item>
+        <item>Amerika/Cambridge_Bay</item>
+        <item>Amerika/Campo_Grande</item>
+        <item>Amerika/Cancun</item>
+        <item>Amerika/Caracas</item>
+        <item>Amerika/Catamarca</item>
+        <item>Amerika/Cayenne</item>
+        <item>Amerika/Chicago</item>
+        <item>Amerika/Chihuahua</item>
+        <item>Amerika/Coral_Harbour</item>
+        <item>Amerika/Cordoba</item>
+        <item>Amerika/Costa_Rica</item>
+        <item>Amerika/Creston</item>
+        <item>Amerika/Cuiaba</item>
+        <item>Amerika/Curacao</item>
+        <item>Amerika/Danmarkshavn</item>
+        <item>Amerika/Dawson</item>
+        <item>Amerika/Dawson_Creek</item>
+        <item>Amerika/Denver</item>
+        <item>Amerika/Detroit</item>
+        <item>Amerika/Dominica</item>
+        <item>Amerika/Edmonton</item>
+        <item>Amerika/Eirunepe</item>
+        <item>Amerika/El_Salvador</item>
+        <item>Amerika/Ensenada</item>
+        <item>Amerika/Fort_Wayne</item>
+        <item>Amerika/Fortaleza</item>
+        <item>Amerika/Glace_Bay</item>
+        <item>Amerika/Godthab</item>
+        <item>Amerika/Goose_Bay</item>
+        <item>Amerika/Grand_Turk</item>
+        <item>Amerika/Grenada</item>
+        <item>Amerika/Guadeloupe</item>
+        <item>Amerika/Guatemala</item>
+        <item>Amerika/Guayaquil</item>
+        <item>Amerika/Guyana</item>
+        <item>Amerika/Halifax</item>
+        <item>Amerika/Havana</item>
+        <item>Amerika/Hermosillo</item>
+        <item>Amerika/Indiana/Indianapolis</item>
+        <item>Amerika/Indiana/Knox</item>
+        <item>Amerika/Indiana/Marengo</item>
+        <item>Amerika/Indiana/Petersburg</item>
+        <item>Amerika/Indiana/Tell_City</item>
+        <item>Amerika/Indiana/Vevay</item>
+        <item>Amerika/Indiana/Vincennes</item>
+        <item>Amerika/Indiana/Winamac</item>
+        <item>Amerika/Indianapolis</item>
+        <item>Amerika/Inuvik</item>
+        <item>Amerika/Iqaluit</item>
+        <item>Amerika/Jamaica</item>
+        <item>Amerika/Jujuy</item>
+        <item>Amerika/Juneau</item>
+        <item>Amerika/Kaaimaneilanden</item>
+        <item>Amerika/Kentucky/Louisville</item>
+        <item>Amerika/Kentucky/Monticello</item>
+        <item>Amerika/Knox_IN</item>
+        <item>Amerika/Kralendijk</item>
+        <item>Amerika/La_Paz</item>
+        <item>Amerika/Lima</item>
+        <item>Amerika/Los_Angeles</item>
+        <item>Amerika/Louisville</item>
+        <item>Amerika/Lower_Princes</item>
+        <item>Amerika/Maceio</item>
+        <item>Amerika/Managua</item>
+        <item>Amerika/Manaus</item>
+        <item>Amerika/Marigot</item>
+        <item>Amerika/Martinique</item>
+        <item>Amerika/Matamoros</item>
+        <item>Amerika/Mazatlan</item>
+        <item>Amerika/Mendoza</item>
+        <item>Amerika/Menominee</item>
+        <item>Amerika/Merida</item>
+        <item>Amerika/Metlakatla</item>
+        <item>Amerika/Mexico-Stad</item>
+        <item>Amerika/Miquelon</item>
+        <item>Amerika/Moncton</item>
+        <item>Amerika/Monterrey</item>
+        <item>Amerika/Montevideo</item>
+        <item>Amerika/Montréal</item>
+        <item>Amerika/Montserrat</item>
+        <item>Amerika/Nassau</item>
+        <item>Amerika/New_York</item>
+        <item>Amerika/Nipigon</item>
+        <item>Amerika/Nome</item>
+        <item>Amerika/Noronha</item>
+        <item>Amerika/North_Dakota/Beulah</item>
+        <item>Amerika/North_Dakota/Centraal</item>
+        <item>Amerika/North_Dakota/New_Salem</item>
+        <item>Amerika/Ojinaga</item>
+        <item>Amerika/Panama</item>
+        <item>Amerika/Pangnirtung</item>
+        <item>Amerika/Paramaribo</item>
+        <item>Amerika/Phoenix</item>
+        <item>Amerika/Port-au-Prince</item>
+        <item>Amerika/Port_of_Spain</item>
+        <item>Amerika/Porto_Acre</item>
+        <item>Amerika/Porto_Velho</item>
+        <item>Amerika/Puerto_Rico</item>
+        <item>Amerika/Rainy_River</item>
+        <item>Amerika/Rankin_Inlet</item>
+        <item>Amerika/Recife</item>
+        <item>Amerika/Regina</item>
+        <item>Amerika/Resolute</item>
+        <item>Amerika/Rio_Branco</item>
+        <item>Amerika/Rosario</item>
+        <item>Amerika/Santa_Isabel</item>
+        <item>Amerika/Santarem</item>
+        <item>Amerika/Santiago</item>
+        <item>Amerika/Santo_Domingo</item>
+        <item>Amerika/Sao_Paulo</item>
+        <item>Amerika/Scoresbysund</item>
+        <item>Amerika/Shiprock</item>
+        <item>Amerika/Sitka</item>
+        <item>Amerika/St_Barthelemy</item>
+        <item>Amerika/St_Johns</item>
+        <item>Amerika/St_Kitts</item>
+        <item>Amerika/St_Lucia</item>
+        <item>Amerika/St_Thomas</item>
+        <item>Amerika/St_Vincent</item>
+        <item>Amerika/Swift_Current</item>
+        <item>Amerika/Tegucigalpa</item>
+        <item>Amerika/Thule</item>
+        <item>Amerika/Thunder_Bay</item>
+        <item>Amerika/Tijuana</item>
+        <item>Amerika/Toronto</item>
+        <item>Amerika/Tortola</item>
+        <item>Amerika/Vancouver</item>
+        <item>Amerika/Virgin</item>
+        <item>Amerika/Whitehorse</item>
+        <item>Amerika/Winnipeg</item>
+        <item>Amerika/Yakutat</item>
+        <item>Amerika/Yellowknife</item>
+        <item>Antarctica/Casey</item>
+        <item>Antarctica/Davis</item>
+        <item>Antarctica/DumontDUrville</item>
+        <item>Antarctica/Macquarie</item>
+        <item>Antarctica/Mawson</item>
+        <item>Antarctica/McMurdo</item>
+        <item>Antarctica/Palmer</item>
+        <item>Antarctica/Rothera</item>
+        <item>Antarctica/Syowa</item>
+        <item>Antarctica/Troll</item>
+        <item>Antarctica/Vostok</item>
+        <item>Antarctica/Zuidpool</item>
+        <item>Arctic/Longyearbyen</item>
+        <item>Azië/Aden</item>
+        <item>Azië/Almaty</item>
+        <item>Azië/Amman</item>
+        <item>Azië/Anadyr</item>
+        <item>Azië/Aqtau</item>
+        <item>Azië/Aqtobe</item>
+        <item>Azië/Ashgabat</item>
+        <item>Azië/Ashkhabad</item>
+        <item>Azië/Baghdad</item>
+        <item>Azië/Bahrain</item>
+        <item>Azië/Baku</item>
+        <item>Azië/Bangkok</item>
+        <item>Azië/Beiroet</item>
+        <item>Azië/Bishkek</item>
+        <item>Azië/Brunei</item>
+        <item>Azië/Calcutta</item>
+        <item>Azië/Chita</item>
+        <item>Azië/Choibalsan</item>
+        <item>Azië/Chongqing</item>
+        <item>Azië/Chungking</item>
+        <item>Azië/Colombo</item>
+        <item>Azië/Dacca</item>
+        <item>Azië/Damascus</item>
+        <item>Azië/Dhaka</item>
+        <item>Azië/Dili</item>
+        <item>Azië/Dubai</item>
+        <item>Azië/Dushanbe</item>
+        <item>Azië/Gaza</item>
+        <item>Azië/Hanoi</item>
+        <item>Azië/Harbin</item>
+        <item>Azië/Hebron</item>
+        <item>Azië/Ho_Chi_Minh</item>
+        <item>Azië/Hongkong</item>
+        <item>Azië/Hovd</item>
+        <item>Azië/Irkutsk</item>
+        <item>Azië/Istanboel</item>
+        <item>Azië/Jakarta</item>
+        <item>Azië/Jayapura</item>
+        <item>Azië/Jeruzalem</item>
+        <item>Azië/Kaboel</item>
+        <item>Azië/Kamchatka</item>
+        <item>Azië/Karachi</item>
+        <item>Azië/Kashgar</item>
+        <item>Azië/Kathmandu</item>
+        <item>Azië/Katmandu</item>
+        <item>Azië/Khandyga</item>
+        <item>Azië/Koeweit</item>
+        <item>Azië/Kolkata</item>
+        <item>Azië/Krasnoyarsk</item>
+        <item>Azië/Kuala_Lumpur</item>
+        <item>Azië/Kuching</item>
+        <item>Azië/Macao</item>
+        <item>Azië/Macau</item>
+        <item>Azië/Magadan</item>
+        <item>Azië/Makassar</item>
+        <item>Azië/Manilla</item>
+        <item>Azië/Muscat</item>
+        <item>Azië/Nicosia</item>
+        <item>Azië/Novokuznetsk</item>
+        <item>Azië/Novosibirsk</item>
+        <item>Azië/Omsk</item>
+        <item>Azië/Oral</item>
+        <item>Azië/Phnom_Penh</item>
+        <item>Azië/Pontianak</item>
+        <item>Azië/Pyongyang</item>
+        <item>Azië/Qatar</item>
+        <item>Azië/Qyzylorda</item>
+        <item>Azië/Rangoon</item>
+        <item>Azië/Riyadh</item>
+        <item>Azië/Saigon</item>
+        <item>Azië/Sakhalin</item>
+        <item>Azië/Samarkand</item>
+        <item>Azië/Seoul</item>
+        <item>Azië/Shanghai</item>
+        <item>Azië/Singapore</item>
+        <item>Azië/Srednekolymsk</item>
+        <item>Azië/Taipei</item>
+        <item>Azië/Tashkent</item>
+        <item>Azië/Tbilisi</item>
+        <item>Azië/Teheran</item>
+        <item>Azië/Tel_Aviv</item>
+        <item>Azië/Thimbu</item>
+        <item>Azië/Thimphu</item>
+        <item>Azië/Tokio</item>
+        <item>Azië/Ujung_Pandang</item>
+        <item>Azië/Ulaanbaatar</item>
+        <item>Azië/Ulan_Bator</item>
+        <item>Azië/Urumqi</item>
+        <item>Azië/ust-Nera</item>
+        <item>Azië/Vientiane</item>
+        <item>Azië/Vladivostok</item>
+        <item>Azië/Yakutsk</item>
+        <item>Azië/Yekaterinburg</item>
+        <item>Azië/Yerevan</item>
+        <item>Atlantische Oceaan/Azoren</item>
+        <item>Atlantische Oceaan/Bermuda</item>
+        <item>Atlantische Oceaan/Canary</item>
+        <item>Atlantische Oceaan/Faeröer</item>
+        <item>Atlantische Oceaan/Jan_Mayen</item>
+        <item>Atlantische Oceaan/Kaapverdië</item>
+        <item>Atlantische Oceaan/Madeira</item>
+        <item>Atlantische Oceaan/Reykjavik</item>
+        <item>Atlantische Oceaan/St_Helena</item>
+        <item>Atlantische Oceaan/Stanley</item>
+        <item>Atlantische Oceaan/Zuid-Georgië</item>
+        <item>Australië/ACT</item>
+        <item>Australië/Adelaide</item>
+        <item>Australië/Brisbane</item>
+        <item>Australië/Broken_Hill</item>
+        <item>Australië/Canberra</item>
+        <item>Australië/Currie</item>
+        <item>Australië/Darwin</item>
+        <item>Australië/Eucla</item>
+        <item>Australië/Hobart</item>
+        <item>Australië/LHI</item>
+        <item>Australië/Lindeman</item>
+        <item>Australië/Lord_Howe</item>
+        <item>Australië/Melbourne</item>
+        <item>Australië/NZW</item>
+        <item>Australië/Noorden</item>
+        <item>Australië/Perth</item>
+        <item>Australië/Queensland</item>
+        <item>Australië/Sydney</item>
+        <item>Australië/Tasmanië</item>
+        <item>Australië/Victoria</item>
+        <item>Australië/Westen</item>
+        <item>Australië/Yancowinna</item>
+        <item>Australië/Zuiden</item>
+        <item>Brazilië/Acre</item>
+        <item>Brazilië/DeNoronha</item>
+        <item>Brazilië/Oosten</item>
+        <item>Brazilië/Westen</item>
+        <item>CET</item>
+        <item>CST6CDT</item>
+        <item>Canada/Atlantisch</item>
+        <item>Canada/Centraal</item>
+        <item>Canada/Oost-Saskatchewan</item>
+        <item>Canada/Oosterlijk</item>
+        <item>Canada/Berg</item>
+        <item>Canada/Newfoundland</item>
+        <item>Canada/Stille Oceaan</item>
+        <item>Canada/Saskatchewan</item>
+        <item>Canada/Yukon</item>
+        <item>Chili/Continentaal</item>
+        <item>Chili/Paaseiland</item>
+        <item>Cuba</item>
+        <item>EET</item>
+        <item>EST</item>
+        <item>EST5EDT</item>
+        <item>Egypte</item>
+        <item>Etc/GMT</item>
+        <item>Etc/GMT+0</item>
+        <item>Etc/GMT+1</item>
+        <item>Etc/GMT+10</item>
+        <item>Etc/GMT+11</item>
+        <item>Etc/GMT+12</item>
+        <item>Etc/GMT+2</item>
+        <item>Etc/GMT+3</item>
+        <item>Etc/GMT+4</item>
+        <item>Etc/GMT+5</item>
+        <item>Etc/GMT+6</item>
+        <item>Etc/GMT+7</item>
+        <item>Etc/GMT+8</item>
+        <item>Etc/GMT+9</item>
+        <item>Etc/GMT-0</item>
+        <item>Etc/GMT-1</item>
+        <item>Etc/GMT-10</item>
+        <item>Etc/GMT-11</item>
+        <item>Etc/GMT-12</item>
+        <item>Etc/GMT-13</item>
+        <item>Etc/GMT-14</item>
+        <item>Etc/GMT-2</item>
+        <item>Etc/GMT-3</item>
+        <item>Etc/GMT-4</item>
+        <item>Etc/GMT-5</item>
+        <item>Etc/GMT-6</item>
+        <item>Etc/GMT-7</item>
+        <item>Etc/GMT-8</item>
+        <item>Etc/GMT-9</item>
+        <item>Etc/GMT0</item>
+        <item>Etc/Greenwich</item>
+        <item>Etc/UCT</item>
+        <item>Etc/UTC</item>
+        <item>Etc/Universal</item>
+        <item>Etc/Zulu</item>
+        <item>Europa/Amsterdam</item>
+        <item>Europa/Andorra</item>
+        <item>Europa/Athene</item>
+        <item>Europa/Belfast</item>
+        <item>Europa/Belgrado</item>
+        <item>Europa/Berlijn</item>
+        <item>Europa/Boedapest</item>
+        <item>Europa/Boekarest</item>
+        <item>Europa/Bratislawa</item>
+        <item>Europa/Brussel</item>
+        <item>Europa/Busingen</item>
+        <item>Europa/Chisinau</item>
+        <item>Europa/Dublin</item>
+        <item>Europa/Gibraltar</item>
+        <item>Europa/Guernsey</item>
+        <item>Europa/Helsinki</item>
+        <item>Europa/Isle_of_Man</item>
+        <item>Europa/Istanboel</item>
+        <item>Europa/Jersey</item>
+        <item>Europa/Kaliningrad</item>
+        <item>Europa/Kiev</item>
+        <item>Europa/Kopenhagen</item>
+        <item>Europa/Lissabon</item>
+        <item>Europa/Ljubljana</item>
+        <item>Europa/Londen</item>
+        <item>Europa/Luxemburg</item>
+        <item>Europa/Madrid</item>
+        <item>Europa/Malta</item>
+        <item>Europa/Mariehamn</item>
+        <item>Europa/Minsk</item>
+        <item>Europa/Monaco</item>
+        <item>Europa/Moskou</item>
+        <item>Europa/Nicosia</item>
+        <item>Europa/Oslo</item>
+        <item>Europa/Parijs</item>
+        <item>Europa/Podgorica</item>
+        <item>Europa/Praag</item>
+        <item>Europa/Riga</item>
+        <item>Europa/Rome</item>
+        <item>Europa/Samara</item>
+        <item>Europa/San_Marino</item>
+        <item>Europa/Sarajevo</item>
+        <item>Europa/Simferopol</item>
+        <item>Europa/Skopje</item>
+        <item>Europa/Sofia</item>
+        <item>Europa/Stockholm</item>
+        <item>Europa/Tallinn</item>
+        <item>Europa/Tirane</item>
+        <item>Europa/Tiraspol</item>
+        <item>Europa/Uzhgorod</item>
+        <item>Europa/Vadoez</item>
+        <item>Europa/Vaticaanstad</item>
+        <item>Europa/Vilnius</item>
+        <item>Europa/Volgograd</item>
+        <item>Europa/Warschau</item>
+        <item>Europa/Wenen</item>
+        <item>Europa/Zagreb</item>
+        <item>Europa/Zaporozhye</item>
+        <item>Europa/Zürich</item>
+        <item>GMT</item>
+        <item>GMT+0</item>
+        <item>GMT-0</item>
+        <item>GMT0</item>
+        <item>Greenwich</item>
+        <item>HST</item>
+        <item>Hongkong</item>
+        <item>Ierland</item>
+        <item>IJsland</item>
+        <item>Indische Oceaan/Antananarivo</item>
+        <item>Indische Oceaan/Chagos</item>
+        <item>Indische Oceaan/Cocos</item>
+        <item>Indische Oceaan/Comoro</item>
+        <item>Indische Oceaan/Kerguelen</item>
+        <item>Indische Oceaan/Kersteiland</item>
+        <item>Indische Oceaan/Mahe</item>
+        <item>Indische Oceaan/Maladiven</item>
+        <item>Indische Oceaan/Mauritius</item>
+        <item>Indische Oceaan/Mayotte</item>
+        <item>Indische Oceaan/Réunion</item>
+        <item>Iran</item>
+        <item>Israël</item>
+        <item>Jamaica</item>
+        <item>Japan</item>
+        <item>Kwajalein</item>
+        <item>Libië</item>
+        <item>MET</item>
+        <item>MST</item>
+        <item>MST7MDT</item>
+        <item>Mexico/BajaNorte</item>
+        <item>Mexico/BajaSur</item>
+        <item>Mexico/Algemeen</item>
+        <item>NZ</item>
+        <item>NZ-CHAT</item>
+        <item>Navajo</item>
+        <item>PRC</item>
+        <item>PST8PDT</item>
+        <item>Polen</item>
+        <item>Portugal</item>
+        <item>ROC</item>
+        <item>ROK</item>
+        <item>Singapore</item>
+        <item>Stille Oceaan/Apia</item>
+        <item>Stille Oceaan/Auckland</item>
+        <item>Stille Oceaan/Bougainville</item>
+        <item>Stille Oceaan/Chatham</item>
+        <item>Stille Oceaan/Chuuk</item>
+        <item>Stille Oceaan/Efate</item>
+        <item>Stille Oceaan/Enderbury</item>
+        <item>Stille Oceaan/Fakaofo</item>
+        <item>Stille Oceaan/Fiji</item>
+        <item>Stille Oceaan/Funafuti</item>
+        <item>Stille Oceaan/Galapagos</item>
+        <item>Stille Oceaan/Gambier</item>
+        <item>Stille Oceaan/Guadalcanal</item>
+        <item>Stille Oceaan/Guam</item>
+        <item>Stille Oceaan/Honolulu</item>
+        <item>Stille Oceaan/Johnston</item>
+        <item>Stille Oceaan/Kiritimati</item>
+        <item>Stille Oceaan/Kosrae</item>
+        <item>Stille Oceaan/Kwajalein</item>
+        <item>Stille Oceaan/Majuro</item>
+        <item>Stille Oceaan/Marquesas</item>
+        <item>Stille Oceaan/Midway</item>
+        <item>Stille Oceaan/Nauru</item>
+        <item>Stille Oceaan/Niue</item>
+        <item>Stille Oceaan/Norfolk</item>
+        <item>Stille Oceaan/Noumea</item>
+        <item>Stille Oceaan/Paaseiland</item>
+        <item>Stille Oceaan/Pago_Pago</item>
+        <item>Stille Oceaan/Palau</item>
+        <item>Stille Oceaan/Pitcairn</item>
+        <item>Stille Oceaan/Pohnpei</item>
+        <item>Stille Oceaan/Ponape</item>
+        <item>Stille Oceaan/Port_Moresby</item>
+        <item>Stille Oceaan/Rarotonga</item>
+        <item>Stille Oceaan/Saipan</item>
+        <item>Stille Oceaan/Samoa</item>
+        <item>Stille Oceaan/Tahiti</item>
+        <item>Stille Oceaan/Tarawa</item>
+        <item>Stille Oceaan/Tongatapu</item>
+        <item>Stille Oceaan/Truk</item>
+        <item>Stille Oceaan/Wake</item>
+        <item>Stille Oceaan/Wallis</item>
+        <item>Stille Oceaan/Yap</item>
+        <item>Turkije</item>
+        <item>UCT</item>
+        <item>VK</item>
+        <item>VK-Ierland</item>
+        <item>VS/Alaska</item>
+        <item>VS/Aleutian</item>
+        <item>VS/Arizona</item>
+        <item>VS/Berg</item>
+        <item>VS/Centraal</item>
+        <item>VS/Hawaii</item>
+        <item>VS/Indisch-Starke</item>
+        <item>VS/Michigan</item>
+        <item>VS/Oostindië</item>
+        <item>VS/Oosten</item>
+        <item>VS/Stille Oceaan</item>
+        <item>VS/Samoa</item>
+        <item>UTC</item>
+        <item>Universeel</item>
+        <item>W-SU</item>
+        <item>WET</item>
+        <item>Zoeloe</item>
+    </string-array>
+
+    <string-array name="sessions_state">
+        <item>concept</item>
+        <item>goedgekeurd</item>
+        <item>in behandeling</item>
+        <item>bevestigd</item>
+    </string-array>
+
+    <string-array name="roles">
+        <item>organisator</item>
+        <item>mede-organisator</item>
+        <item>track-organisator</item>
+        <item>moderator</item>
+        <item>bezoeker</item>
+        <item>geregistreerde</item>
+    </string-array>
+
+    <string-array name="stepLabels">
+        <item>Stap 1</item>
+        <item>Stap 2</item>
+        <item>Stap 3</item>
+    </string-array>
+
+</resources>
