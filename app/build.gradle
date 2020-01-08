@@ -1,5 +1,5 @@
 plugins {
-    id "com.diffplug.gradle.spotless" version "3.26.1"
+    id "com.diffplug.gradle.spotless" version "3.27.0"
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.sentry.android.gradle'
@@ -123,6 +123,10 @@ spotless {
         trimTrailingWhitespace()
         target '**/*.java'
     }
+}
+
+gradle.projectsEvaluated {
+    preBuild.dependsOn(spotlessApply)
 }
 
 repositories {
