@@ -49,7 +49,6 @@
     <string name="title_details">仪表板</string>
     <string name="title_attendees">参会者</string>
     <string name="title_activity_main">MainActivity</string>
-
     <string name="title_event_list">大事记</string>
     <string name="title_event_detail">活动详情</string>
     <string name="subtitle_organizer">组织者: %s</string>
@@ -406,6 +405,7 @@
     <string name="play_sounds_key">play_sounds</string>
     <string name="play_sound_on_check_in_out">在入住和退房时播放声音</string>
     <string name="select_location">选择位置</string>
+    <string name="mapbox_access_token">Mapbox Access Token</string>
     <string name="access_token_required">需要有效的访问令牌</string>
     <string name="family_name">姓</string>
     <string name="phone">电话</string>

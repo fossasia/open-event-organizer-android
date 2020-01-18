@@ -88,7 +88,7 @@
             android:theme="@style/AppTheme.Main.Light" />
 
         <meta-data
-            android:name="@string/mapbox_access_token"
+            android:name="Mapbox Access Token"
             android:value="${MAPBOX_ACCESS_TOKEN}" />
     </application>
 
