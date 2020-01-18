@@ -1,0 +1,1032 @@
+<resources>
+    <string name="checked_in">入住</string>
+    <string name="checked_out">检查过了</string>
+    <string name="check_in">报到</string>
+    <string name="event_title">活动标题</string>
+    <string name="tickets_sold">售票</string>
+    <string name="to"> 至 </string>
+    <string name="comma"> , </string>
+    <string name="divide">/</string>
+    <string name="attendance">出勤率</string>
+    <string name="scan_qr_code">扫描二维码</string>
+    <string name="first_name">名字 (可选的)</string>
+    <string name="last_name">姓 (可选的)</string>
+    <string name="email">电子邮件</string>
+    <string name="edit_profile">编辑个人资料</string>
+    <string name="update">更新资料</string>
+    <string name="thumbnail_image">缩图图片网址</string>
+    <string name="icon_image_url">图标图片网址</string>
+    <string name="facebook_url">Facebook网址</string>
+    <string name="instagram_url">Instagram网址</string>
+    <string name="avatar_url">头像网址</string>
+    <string name="twitter_url">Twitter网址</string>
+    <string name="google_plus_url">Google Plus网址</string>
+    <string name="password">密码</string>
+    <string name="base_url">基本网址</string>
+    <string name="login">登录</string>
+    <string name="rating">评分</string>
+    <string name="sign_up">注册</string>
+    <string name="sign_up_link"><u>报名参加公开赛</u></string>
+    <string name="scan_the_barcode">扫描条码</string>
+    <string name="event_title_here">这里的活动标题</string>
+    <string name="title_feedbacks">反馈</string>
+    <string name="feedback">反馈</string>
+    <string name="forgot_password_link">我忘记了我的密码</string>
+    <string name="speaker_details">演讲者详情</string>
+
+    <!-- Place Holders -->
+    <string name="date_placeholder">May 25th 2017</string>
+    <string name="date_placeholder_2">May 31th 2017</string>
+    <string name="hour_placeholder">1300</string>
+    <string name="tickets_amount_placeholder">0</string>
+    <string name="attendance_placeholder">0/0</string>
+    <string name="last_name_placeholder">Smith</string>
+    <string name="first_name_placeholder">John</string>
+    <string name="email_placeholder">johh.doe@gmail.com</string>
+    <string name="logout">登出</string>
+    <string name="at">\@</string>
+    <string name="title_activity_event_container">EventContainerActivity</string>
+    <string name="title_details">仪表板</string>
+    <string name="title_attendees">参会者</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="title_event_list">大事记</string>
+    <string name="title_event_detail">活动详情</string>
+    <string name="subtitle_organizer">组织者: %s</string>
+    <string name="event_thumbnail">活动缩略图</string>
+    <string name="text_empty">这里什么也没显示</string>
+    <string name="empty_view_icon">空视图图标</string>
+    <string name="event_summary">活动总结</string>
+    <string name="event_state_publish">发布</string>
+    <string name="event_state_draft">草案</string>
+    <string name="gross_sales">销售总额</string>
+    <string name="sales_summary">销售总结</string>
+    <string name="search_title">搜索</string>
+    <string name="search_placeholder">搜索参加者</string>
+    <string name="tickets">入场券</string>
+    <string name="ticket_free">自由</string>
+    <string name="ticket_paid">已付费</string>
+    <string name="ticket_donation">捐款</string>
+    <string name="logout_confirmation">登出</string>
+    <string name="logout_confirmation_message">您确定要注销吗？</string>
+    <string name="ok">OK</string>
+    <string name="cancel">取消</string>
+    <string name="save_changes">您要保存所做的更改吗？</string>
+    <string name="save">SAVE</string>
+    <string name="discard">DISCARD</string>
+
+    <string name="navigation_drawer_open">打开导航抽屉</string>
+    <string name="navigation_drawer_close">关闭导航抽屉</string>
+    <string name="check_in_status">入住状态</string>
+    <string name="event_dashboard">活动仪表板</string>
+    <string name="attendees">参会者</string>
+    <string name="events">大事记</string>
+    <string name="nav_events">我的活动</string>
+    <string name="log_out">登出</string>
+    <string name="settings">设定值</string>
+    <string name="event_background">活动背景</string>
+    <string name="create_ticket">创建工单</string>
+    <string name="ticket_name">机票名称</string>
+    <string name="quantity">数量</string>
+    <string name="price">价钱</string>
+    <string name="sale_start_time">销售开始时间</string>
+    <string name="sale_end_time">销售结束时间</string>
+    <string name="starts_at">开始于:</string>
+    <string name="ends_at">结束于:</string>
+    <string name="pick">挑 :</string>
+    <string name="minOrder">最低订购量</string>
+    <string name="maxOrder">最大订单</string>
+    <string name="about">关于</string>
+    <string name="title_activity_about_event">AboutEventActivity</string>
+    <string name="details">细节</string>
+    <string name="title_activity_organizer_detail">OrganizerDetailActivity</string>
+    <string name="verified">已验证</string>
+    <string name="not_verified">未经审核的</string>
+    <string name="contact">联系</string>
+    <string name="profile_picture">个人资料图片</string>
+    <string name="filter">过滤</string>
+    <string name="filter_by_sync">待同步</string>
+    <string name="filter_by_none">没有</string>
+    <string name="publish_success">您的活动已成功发布。</string>
+    <string name="draft_success">您的活动未成功发布。</string>
+    <string name="request_token">请求令牌</string>
+    <string name="back_to_login">回到登入</string>
+    <string name="reset_password">重设密码</string>
+    <string name="resend_token">没有收到令牌吗？ 重发</string>
+    <string name="token">代币</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="change_password">更改密码</string>
+    <string name="old_password">旧密码</string>
+    <string name="new_password">新密码</string>
+    <string name="create_event">建立活动</string>
+    <string name="event_name">活动名称</string>
+    <string name="payment_currency">付款货币</string>
+
+    <string name="ticket">票</string>
+    <string name="date_and_time">日期和时间</string>
+    <string name="timezone">时区</string>
+    <string name="location_details">位置详情</string>
+    <string name="show_map">在公共页面上显示地图</string>
+    <string name="latitude">纬度</string>
+    <string name="longitude">经度</string>
+    <string name="location_name">地点名称</string>
+    <string name="searchable_location_name">可搜索的位置名称</string>
+    <string name="ticketing_details">票务详情</string>
+    <string name="use_ticketing_system">使用票务系统</string>
+    <string name="ticket_url">票务网址</string>
+    <string name="organizer_details">主办单位详细信息</string>
+    <string name="add_organizer_information">添加组织者信息</string>
+    <string name="organizer_name">主办单位名称</string>
+    <string name="organizer_description">主办单位说明</string>
+    <string name="listing_privacy">上市隐私</string>
+    <string name="public_event">公开活动</string>
+    <string name="private_event">私人活动</string>
+    <string name="speakers_and_sponsors">演讲嘉宾</string>
+    <string name="enable_session_speakers">启用会议发言人</string>
+    <string name="enable_sponsors">启用赞助商</string>
+    <string name="payment_details">付款详情</string>
+    <string name="payment_country">付款国家</string>
+    <string name="payment_methods">支付方式</string>
+    <string name="payment_by_paypal">通过贝宝付款</string>
+    <string name="accept_payment_through_paypal">接受通过贝宝付款</string>
+    <string name="paypal_email">贝宝电子邮件</string>
+    <string name="payment_by_stripe">分条付款</string>
+    <string name="accept_payment_through_stripe">接受通过条带付款</string>
+    <string name="offline_payments">离线付款</string>
+    <string name="accept_payment_by_cheque">接受支票付款</string>
+    <string name="enter_your_cheque_details">输入您的支票详细信息</string>
+    <string name="accept_payment_by_bank_transfer">接受银行转账付款</string>
+    <string name="enter_your_bank_details">输入您的银行资料</string>
+    <string name="enter_your_onsite_details">输入您的现场详细信息</string>
+    <string name="accept_payment_at_the_event_onsite">在活动现场接受付款</string>
+    <string name="graphics">图形</string>
+    <string name="logo_url">徽标网址</string>
+    <string name="original_image_url">原始图片网址</string>
+    <string name="event_state">事件状态</string>
+    <string name="published">已发表</string>
+    <string name="draft">草案</string>
+    <string name="others">其他</string>
+    <string name="description">简要描述您的活动</string>
+    <string name="external_event_url">外部事件网址</string>
+    <string name="code_of_conduct">行为守则</string>
+    <string name="enable_tax">启用税收</string>
+    <string name="url_validation_error">请输入有效网址</string>
+    <string name="email_validation_error">请输入有效电子邮件</string>
+    <string name="event_statistics">活动统计</string>
+    <string name="speakers">讲者</string>
+    <string name="sponsors">赞助商</string>
+    <string name="create_sponsor">创建赞助商</string>
+    <string name="update_sponsor">更新赞助商</string>
+    <string name="sponsor_name">赞助商名称</string>
+    <string name="sponsor_description">描述</string>
+    <string name="sponsor_url">URL</string>
+    <string name="sponsor_logo_url">徽标网址</string>
+    <string name="sponsor_level">水平</string>
+    <string name="sponsor_type">类型</string>
+    <string name="sessions">届会</string>
+    <string name="sort_by">排序方式</string>
+    <string name="sort_by_name">名称</string>
+    <string name="sort_by_date">日期</string>
+    <string name="sessions_submitted">提交的会议</string>
+    <string name="sessions_accepted">接受的会议</string>
+    <string name="sessions_confirmed">会议确认</string>
+    <string name="sessions_draft">会议草稿</string>
+    <string name="sessions_pending">待处理的会话</string>
+    <string name="faq">FAQ</string>
+    <string name="track">跟踪</string>
+    <string name="tracks">曲目</string>
+    <string name="pdf_url">PDF URL</string>
+    <string name="country">国家</string>
+    <string name="state">州</string>
+    <string name="city">市</string>
+    <string name="address">地址</string>
+    <string name="pdf_url_colon">PDF URL:  </string>
+    <string name="answer_initial">A:</string>
+    <string name="question_initial">Q:</string>
+    <string name="create_copyright">建立版权</string>
+    <string name="edit_copyright">编辑版权</string>
+    <string name="edit_track">编辑曲目</string>
+    <string name="holder_name">持有人名称</string>
+    <string name="holder_url">持有人网址</string>
+    <string name="license_text">许可文本</string>
+    <string name="license_url">许可网址</string>
+    <string name="copyright_year">年</string>
+    <string name="copyright">版权</string>
+    <string name="create_faq">建立常见问题</string>
+    <string name="question">题</string>
+    <string name="answer">回答</string>
+    <string name="pick_from_map">从地图选择</string>
+    <string name="save_icon">保存图标</string>
+    <string name="use_date_time_picker">使用选择器</string>
+    <string name="welcome">开始</string>
+    <string name="delete_copyright">删除版权</string>
+    <string name="year_validation_error">请输入有效年份</string>
+    <string name="delete_confirmation_message">您确定要删除％s吗？</string>
+    <string name="delete">删除</string>
+    <string name="create_track">创建曲目</string>
+    <string name="name">名称</string>
+    <string name="color">颜色</string>
+    <string name="session">届会</string>
+    <string name="delete_track">删除曲目</string>
+    <string name="create_session">建立工作阶段</string>
+    <string name="slides_url">幻灯片网址</string>
+    <string name="long_abstract">长摘要</string>
+    <string name="short_abstract">简短摘要</string>
+    <string name="language">Language</string>
+    <string name="audio_url">音频网址</string>
+    <string name="video_url">影片网址</string>
+    <string name="signup_url">注册网址</string>
+    <string name="links">链接</string>
+    <string name="comments">注释</string>
+    <string name="level">水平</string>
+    <string name="subtitle">字幕</string>
+    <string name="title">标题</string>
+    <string name="session_abstract">抽象</string>
+    <string name="speakers_call">演讲者电话</string>
+    <string name="speakers_photo">演讲者的照片</string>
+    <string name="announcement">公告</string>
+    <string name="edit_event">编辑活动</string>
+    <string name="update_event">更新事件</string>
+    <string name="edit_sponsor">编辑赞助商</string>
+    <string name="delete_sponsor">删除赞助商</string>
+    <string name="send_to">发给</string>
+    <string name="share">分享</string>
+    <string name="check_in_summary">CHECK IN SUMMARY</string>
+    <string name="check_in_time">TIME</string>
+    <string name="event_state_live">生活</string>
+    <string name="event_state_past">过去</string>
+    <string name="update_session">更新会话</string>
+    <string name="facebook_icon">Facebook的图标</string>
+    <string name="linkedin_icon">LinkedIn图标</string>
+    <string name="twitter_icon">Twitter图标</string>
+    <string name="github_icon">Github图标</string>
+    <string name="domain_icon">域图标</string>
+    <string name="speaker_details_activity">演讲者详细信息活动</string>
+    <string name="orders">订单</string>
+    <string name="create_speakers_call">创建发言人通话</string>
+    <string name="privacy">隐私</string>
+    <string name="hash">杂凑</string>
+    <string name="other_url">其他网址</string>
+    <string name="device_name">设备名称</string>
+    <string name="device_name_summary">命名您的设备以在您的Open Event帐户中跟踪此设备处理的签到和销售</string>
+    <string name="check_in_settings">值机设定</string>
+    <string name="event_payment_preferences">付款首选项</string>
+    <string name="use_payment_prefs">使用付款首选项</string>
+    <string name="using_payment_preferences">创建事件时使用付款首选项</string>
+    <string name="not_using_payment_preferences">创建事件时不使用付款首选项</string>
+    <string name="bank_details">银行明细</string>
+    <string name="cheque_details">查看详情</string>
+    <string name="onsite_details">现场详细信息</string>
+    <string name="default_payment_country">选择默认的付款国家</string>
+    <string name="payment_preferences">付款首选项</string>
+    <string name="order_details">订单详细信息</string>
+    <string name="order_identifier">订单编号</string>
+    <string name="swipe_left_to_check_out">向左滑动即可签出</string>
+    <string name="swipe_right_to_check_in">向右轻扫以签入</string>
+    <string name="scan_settings">扫描设定</string>
+    <string name="check_out">查看</string>
+    <string name="check_in_settings_summary">扫描将扫描中的检查参与者</string>
+    <string name="check_out_settings_summary">扫描将把签出的与会者扫描出去</string>
+    <string name="validate_settings_summary">扫描将检查票证是否有效</string>
+    <string name="validate">验证</string>
+    <string name="ticket_is_valid">这张票有效！</string>
+    <string name="invalid_ticket">门票无效！</string>
+    <string name="already_checked_in">参加者已签到</string>
+    <string name="already_checked_out">与会者已签出</string>
+    <string name="now_checked_in">与会者签到</string>
+    <string name="now_checked_out">参加者签出</string>
+    <string name="check_your_email">查看你的邮件！</string>
+    <string name="check_email_reset_password_msg">我们刚刚向您发送了一封带有令牌的电子邮件，以重置您的密码。</string>
+    <string name="done">完成</string>
+    <string name="nav_suggestions">意见建议</string>
+    <string name="total_paid">支付总额</string>
+    <string name="status">状态</string>
+    <string name="date">日期</string>
+    <string name="paidVia">通过付费</string>
+    <string name="payment_mode">付款方式</string>
+    <string name="previous">以前</string>
+    <string name="next">下一个</string>
+    <string name="create">创建</string>
+    <string name="update_speakers_call">更新发言人电话</string>
+    <string name="create_order">创建订单</string>
+    <string name="sell">卖</string>
+    <string name="clear">明确</string>
+    <string name="sales_data_display">销售数据显示</string>
+    <string name="collect_attendee_info">收集与会者信息</string>
+    <string name="attendee_info">参会人员信息</string>
+    <string name="eventyay_organizer">Eventyay组织者</string>
+    <string name="rate_us">评价我们</string>
+    <string name="share_app">分享应用</string>
+    <string name="msg_check_out">"立即结帐"</string>
+    <string name="msg_check_this_out">"使用Eventyay Organizers应用创建和管理事件。 立即查看 "</string>
+    <string name="msg_share_using">分享使用</string>
+    <string name="privacy_policy_key">privacy_policy</string>
+    <string name="share_app_key">share_app</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="app_version_key">app_version</string>
+    <string name="legal">法律</string>
+    <string name="refund_policy_key">refund_policy</string>
+    <string name="terms_of_service_key">terms_of_service</string>
+    <string name="terms_of_service">服务条款</string>
+    <string name="refund_policy">退款政策</string>
+    <string name="legal_key">legal_key</string>
+    <string name="signup_agreement">通过注册，我同意Eventyay的</string>
+    <string name="and">和</string>
+    <string name="sales_data_display_key">sales_data_display</string>
+    <string name="restrict_all">全部限制</string>
+    <string name="check_in_restrictions">签入限制</string>
+    <string name="check_in_restrictions_key">check_in_restrictions</string>
+    <string name="scan_settings_key">scan_settings</string>
+    <string name="payment_preference_key">payment_preferences</string>
+    <string name="get_started">开始使用</string>
+    <string name="unpublish_confirmation_message">取消发布将使您的活动恢复为草稿状态。</string>
+    <string name="successfull_publish_message">恭喜！ 您的活动正在进行。 宣传您的活动。</string>
+    <string name="unpublish_event">取消发布活动</string>
+    <string name="share_event">分享活动</string>
+    <string name="not_now">现在不要</string>
+    <string name="event_location_required">请添加活动位置以发布活动</string>
+    <string name="add_location">添加位置</string>
+    <string name="event_location">活动地点</string>
+    <string name="gross_sales_key">gross_sales</string>
+    <string name="net_sales_key">net_sales</string>
+    <string name="net_sales">净销售额</string>
+    <string name="acknowledgements">致谢</string>
+    <string name="acknowledgements_key">致谢</string>
+    <string name="check_in_history">签入历史</string>
+    <string name="activity_log">活动日志</string>
+    <string name="ticket_buyer">购票者</string>
+    <string name="order_statistics">订单统计</string>
+    <string name="sales">营业额</string>
+    <string name="attendee">参加者</string>
+    <string name="ticket_type">机票类型</string>
+    <string name="scanning_disabled_message">在此版本中未启用扫描</string>
+    <string name="print">打印</string>
+    <string name="receipt">收据</string>
+    <string name="get_started_hint">注册或登录以创建和管理事件。</string>
+    <string name="event_poster_image">活动海报图片</string>
+    <string name="event_online">线上活动</string>
+    <string name="auto_check_in_all">所有类型</string>
+    <string name="auto_check_in">自动签到</string>
+    <string name="auto_check_in_key">auto_check_in_key</string>
+    <string name="describe_event">简要描述您的活动</string>
+    <string name="enter_text">在这里输入文字...</string>
+    <string name="text">文本</string>
+    <string name="insert_url">插入网址</string>
+    <string name="action_undo">动作撤消</string>
+    <string name="action_redo">重做动作</string>
+    <string name="format_bold">格式加粗</string>
+    <string name="format_italic">斜体格式</string>
+    <string name="format_strikethrough">格式删除线</string>
+    <string name="list_bullets">要点中的动作列表</string>
+    <string name="list_numbered">动作列表中的编号点</string>
+    <string name="action_insert_link">动作插入链接</string>
+    <string name="play_store_link">https://play.google.com/store/apps/details?id=com.eventyay.organizer</string>
+    <string name="resend_verification_mail">重新发送验证邮件</string>
+    <string name="attendee_id">参加者编号</string>
+    <string name="roles">的角色</string>
+    <string name="send_invite">发送邀请</string>
+    <string name="add_role">新增角色</string>
+    <string name="select_role">选择角色</string>
+    <string name="notifications">通知事项</string>
+    <string name="use_another_url">使用其他网址</string>
+    <string name="use_default_url">使用默认网址</string>
+    <string name="developer_mode">开发者模式</string>
+    <string name="developer_mode_key">developer_mode</string>
+    <string name="activate_developer_mode">激活开发者模式</string>
+    <string name="developer_mode_activation_message">您正在激活开发人员模式。 通过此模式，您可以访问未发布的应用程序功能。 这些功能不稳定，可能会导致事件发生意外更改或丢失数据。 小心使用！ 您真的要激活开发人员模式吗？</string>
+    <string name="deactivate_developer_mode">停用开发人员模式</string>
+    <string name="developer_mode_deactivation_message">您正在停用开发人员模式。 这将隐藏未发布的应用程序功能。 你想继续吗？</string>
+    <string name="yes_take_chances">是的，我趁机</string>
+    <string name="no_stay_safe">不，我要保持安全</string>
+    <string name="yes">是</string>
+    <string name="no">没有</string>
+    <string name="account">帐户</string>
+    <string name="start_scanning_again">重新开始扫描</string>
+    <string name="play_sounds">播放声音</string>
+    <string name="play_sounds_key">play_sounds</string>
+    <string name="play_sound_on_check_in_out">在入住和退房时播放声音</string>
+    <string name="select_location">选择位置</string>
+    <string name="access_token_required">需要有效的访问令牌</string>
+    <string name="family_name">姓</string>
+    <string name="phone">电话</string>
+    <string name="social_media_profiles">社交媒体资料</string>
+    <string name="profile">轮廓</string>
+    <string name="bio">生化</string>
+    <string name="about_us">关于我们</string>
+    <string name="about_us_description">使用Eventyay平台面向组织者的活动管理应用。\n\n此应用的核心功能包括：\n活动管理器登录并注册\n活动创建\n票务创建\n手动签到\n与会者签到-通过QR码扫描\n基本事件分析\n基本票务管理\n事件详细信息\n订单详细信息\n组织者详细信息</string>
+    <string name="github_repo">GitHub回购</string>
+    <string name="developers">开发者</string>
+    <string name="github_repo_link">https://github.com/fossasia/open-event-organizer-android</string>
+    <string name="github_developers_link">https://github.com/fossasia/open-event-organizer-android/graphs/contributors</string>
+    <string name="third_party_licenses">使用的第三方库</string>
+    <string name="event_owner_detail_organiser">组织者</string>
+
+    <string-array name="timezones">
+        <item>Africa/Abidjan</item>
+        <item>Africa/Accra</item>
+        <item>Africa/Addis_Ababa</item>
+        <item>Africa/Algiers</item>
+        <item>Africa/Asmara</item>
+        <item>Africa/Asmera</item>
+        <item>Africa/Bamako</item>
+        <item>Africa/Bangui</item>
+        <item>Africa/Banjul</item>
+        <item>Africa/Bissau</item>
+        <item>Africa/Blantyre</item>
+        <item>Africa/Brazzaville</item>
+        <item>Africa/Bujumbura</item>
+        <item>Africa/Cairo</item>
+        <item>Africa/Casablanca</item>
+        <item>Africa/Ceuta</item>
+        <item>Africa/Conakry</item>
+        <item>Africa/Dakar</item>
+        <item>Africa/Dar_es_Salaam</item>
+        <item>Africa/Djibouti</item>
+        <item>Africa/Douala</item>
+        <item>Africa/El_Aaiun</item>
+        <item>Africa/Freetown</item>
+        <item>Africa/Gaborone</item>
+        <item>Africa/Harare</item>
+        <item>Africa/Johannesburg</item>
+        <item>Africa/Juba</item>
+        <item>Africa/Kampala</item>
+        <item>Africa/Khartoum</item>
+        <item>Africa/Kigali</item>
+        <item>Africa/Kinshasa</item>
+        <item>Africa/Lagos</item>
+        <item>Africa/Libreville</item>
+        <item>Africa/Lome</item>
+        <item>Africa/Luanda</item>
+        <item>Africa/Lubumbashi</item>
+        <item>Africa/Lusaka</item>
+        <item>Africa/Malabo</item>
+        <item>Africa/Maputo</item>
+        <item>Africa/Maseru</item>
+        <item>Africa/Mbabane</item>
+        <item>Africa/Mogadishu</item>
+        <item>Africa/Monrovia</item>
+        <item>Africa/Nairobi</item>
+        <item>Africa/Ndjamena</item>
+        <item>Africa/Niamey</item>
+        <item>Africa/Nouakchott</item>
+        <item>Africa/Ouagadougou</item>
+        <item>Africa/Porto-Novo</item>
+        <item>Africa/Sao_Tome</item>
+        <item>Africa/Timbuktu</item>
+        <item>Africa/Tripoli</item>
+        <item>Africa/Tunis</item>
+        <item>Africa/Windhoek</item>
+        <item>America/Adak</item>
+        <item>America/Anchorage</item>
+        <item>America/Anguilla</item>
+        <item>America/Antigua</item>
+        <item>America/Araguaina</item>
+        <item>America/Argentina/Buenos_Aires</item>
+        <item>America/Argentina/Catamarca</item>
+        <item>America/Argentina/ComodRivadavia</item>
+        <item>America/Argentina/Cordoba</item>
+        <item>America/Argentina/Jujuy</item>
+        <item>America/Argentina/La_Rioja</item>
+        <item>America/Argentina/Mendoza</item>
+        <item>America/Argentina/Rio_Gallegos</item>
+        <item>America/Argentina/Salta</item>
+        <item>America/Argentina/San_Juan</item>
+        <item>America/Argentina/San_Luis</item>
+        <item>America/Argentina/Tucuman</item>
+        <item>America/Argentina/Ushuaia</item>
+        <item>America/Aruba</item>
+        <item>America/Asuncion</item>
+        <item>America/Atikokan</item>
+        <item>America/Atka</item>
+        <item>America/Bahia</item>
+        <item>America/Bahia_Banderas</item>
+        <item>America/Barbados</item>
+        <item>America/Belem</item>
+        <item>America/Belize</item>
+        <item>America/Blanc-Sablon</item>
+        <item>America/Boa_Vista</item>
+        <item>America/Bogota</item>
+        <item>America/Boise</item>
+        <item>America/Buenos_Aires</item>
+        <item>America/Cambridge_Bay</item>
+        <item>America/Campo_Grande</item>
+        <item>America/Cancun</item>
+        <item>America/Caracas</item>
+        <item>America/Catamarca</item>
+        <item>America/Cayenne</item>
+        <item>America/Cayman</item>
+        <item>America/Chicago</item>
+        <item>America/Chihuahua</item>
+        <item>America/Coral_Harbour</item>
+        <item>America/Cordoba</item>
+        <item>America/Costa_Rica</item>
+        <item>America/Creston</item>
+        <item>America/Cuiaba</item>
+        <item>America/Curacao</item>
+        <item>America/Danmarkshavn</item>
+        <item>America/Dawson</item>
+        <item>America/Dawson_Creek</item>
+        <item>America/Denver</item>
+        <item>America/Detroit</item>
+        <item>America/Dominica</item>
+        <item>America/Edmonton</item>
+        <item>America/Eirunepe</item>
+        <item>America/El_Salvador</item>
+        <item>America/Ensenada</item>
+        <item>America/Fort_Wayne</item>
+        <item>America/Fortaleza</item>
+        <item>America/Glace_Bay</item>
+        <item>America/Godthab</item>
+        <item>America/Goose_Bay</item>
+        <item>America/Grand_Turk</item>
+        <item>America/Grenada</item>
+        <item>America/Guadeloupe</item>
+        <item>America/Guatemala</item>
+        <item>America/Guayaquil</item>
+        <item>America/Guyana</item>
+        <item>America/Halifax</item>
+        <item>America/Havana</item>
+        <item>America/Hermosillo</item>
+        <item>America/Indiana/Indianapolis</item>
+        <item>America/Indiana/Knox</item>
+        <item>America/Indiana/Marengo</item>
+        <item>America/Indiana/Petersburg</item>
+        <item>America/Indiana/Tell_City</item>
+        <item>America/Indiana/Vevay</item>
+        <item>America/Indiana/Vincennes</item>
+        <item>America/Indiana/Winamac</item>
+        <item>America/Indianapolis</item>
+        <item>America/Inuvik</item>
+        <item>America/Iqaluit</item>
+        <item>America/Jamaica</item>
+        <item>America/Jujuy</item>
+        <item>America/Juneau</item>
+        <item>America/Kentucky/Louisville</item>
+        <item>America/Kentucky/Monticello</item>
+        <item>America/Knox_IN</item>
+        <item>America/Kralendijk</item>
+        <item>America/La_Paz</item>
+        <item>America/Lima</item>
+        <item>America/Los_Angeles</item>
+        <item>America/Louisville</item>
+        <item>America/Lower_Princes</item>
+        <item>America/Maceio</item>
+        <item>America/Managua</item>
+        <item>America/Manaus</item>
+        <item>America/Marigot</item>
+        <item>America/Martinique</item>
+        <item>America/Matamoros</item>
+        <item>America/Mazatlan</item>
+        <item>America/Mendoza</item>
+        <item>America/Menominee</item>
+        <item>America/Merida</item>
+        <item>America/Metlakatla</item>
+        <item>America/Mexico_City</item>
+        <item>America/Miquelon</item>
+        <item>America/Moncton</item>
+        <item>America/Monterrey</item>
+        <item>America/Montevideo</item>
+        <item>America/Montreal</item>
+        <item>America/Montserrat</item>
+        <item>America/Nassau</item>
+        <item>America/New_York</item>
+        <item>America/Nipigon</item>
+        <item>America/Nome</item>
+        <item>America/Noronha</item>
+        <item>America/North_Dakota/Beulah</item>
+        <item>America/North_Dakota/Center</item>
+        <item>America/North_Dakota/New_Salem</item>
+        <item>America/Ojinaga</item>
+        <item>America/Panama</item>
+        <item>America/Pangnirtung</item>
+        <item>America/Paramaribo</item>
+        <item>America/Phoenix</item>
+        <item>America/Port-au-Prince</item>
+        <item>America/Port_of_Spain</item>
+        <item>America/Porto_Acre</item>
+        <item>America/Porto_Velho</item>
+        <item>America/Puerto_Rico</item>
+        <item>America/Rainy_River</item>
+        <item>America/Rankin_Inlet</item>
+        <item>America/Recife</item>
+        <item>America/Regina</item>
+        <item>America/Resolute</item>
+        <item>America/Rio_Branco</item>
+        <item>America/Rosario</item>
+        <item>America/Santa_Isabel</item>
+        <item>America/Santarem</item>
+        <item>America/Santiago</item>
+        <item>America/Santo_Domingo</item>
+        <item>America/Sao_Paulo</item>
+        <item>America/Scoresbysund</item>
+        <item>America/Shiprock</item>
+        <item>America/Sitka</item>
+        <item>America/St_Barthelemy</item>
+        <item>America/St_Johns</item>
+        <item>America/St_Kitts</item>
+        <item>America/St_Lucia</item>
+        <item>America/St_Thomas</item>
+        <item>America/St_Vincent</item>
+        <item>America/Swift_Current</item>
+        <item>America/Tegucigalpa</item>
+        <item>America/Thule</item>
+        <item>America/Thunder_Bay</item>
+        <item>America/Tijuana</item>
+        <item>America/Toronto</item>
+        <item>America/Tortola</item>
+        <item>America/Vancouver</item>
+        <item>America/Virgin</item>
+        <item>America/Whitehorse</item>
+        <item>America/Winnipeg</item>
+        <item>America/Yakutat</item>
+        <item>America/Yellowknife</item>
+        <item>Antarctica/Casey</item>
+        <item>Antarctica/Davis</item>
+        <item>Antarctica/DumontDUrville</item>
+        <item>Antarctica/Macquarie</item>
+        <item>Antarctica/Mawson</item>
+        <item>Antarctica/McMurdo</item>
+        <item>Antarctica/Palmer</item>
+        <item>Antarctica/Rothera</item>
+        <item>Antarctica/South_Pole</item>
+        <item>Antarctica/Syowa</item>
+        <item>Antarctica/Troll</item>
+        <item>Antarctica/Vostok</item>
+        <item>Arctic/Longyearbyen</item>
+        <item>Asia/Aden</item>
+        <item>Asia/Almaty</item>
+        <item>Asia/Amman</item>
+        <item>Asia/Anadyr</item>
+        <item>Asia/Aqtau</item>
+        <item>Asia/Aqtobe</item>
+        <item>Asia/Ashgabat</item>
+        <item>Asia/Ashkhabad</item>
+        <item>Asia/Baghdad</item>
+        <item>Asia/Bahrain</item>
+        <item>Asia/Baku</item>
+        <item>Asia/Bangkok</item>
+        <item>Asia/Beirut</item>
+        <item>Asia/Bishkek</item>
+        <item>Asia/Brunei</item>
+        <item>Asia/Calcutta</item>
+        <item>Asia/Chita</item>
+        <item>Asia/Choibalsan</item>
+        <item>Asia/Chongqing</item>
+        <item>Asia/Chungking</item>
+        <item>Asia/Colombo</item>
+        <item>Asia/Dacca</item>
+        <item>Asia/Damascus</item>
+        <item>Asia/Dhaka</item>
+        <item>Asia/Dili</item>
+        <item>Asia/Dubai</item>
+        <item>Asia/Dushanbe</item>
+        <item>Asia/Gaza</item>
+        <item>Asia/Hanoi</item>
+        <item>Asia/Harbin</item>
+        <item>Asia/Hebron</item>
+        <item>Asia/Ho_Chi_Minh</item>
+        <item>Asia/Hong_Kong</item>
+        <item>Asia/Hovd</item>
+        <item>Asia/Irkutsk</item>
+        <item>Asia/Istanbul</item>
+        <item>Asia/Jakarta</item>
+        <item>Asia/Jayapura</item>
+        <item>Asia/Jerusalem</item>
+        <item>Asia/Kabul</item>
+        <item>Asia/Kamchatka</item>
+        <item>Asia/Karachi</item>
+        <item>Asia/Kashgar</item>
+        <item>Asia/Kathmandu</item>
+        <item>Asia/Katmandu</item>
+        <item>Asia/Khandyga</item>
+        <item>Asia/Kolkata</item>
+        <item>Asia/Krasnoyarsk</item>
+        <item>Asia/Kuala_Lumpur</item>
+        <item>Asia/Kuching</item>
+        <item>Asia/Kuwait</item>
+        <item>Asia/Macao</item>
+        <item>Asia/Macau</item>
+        <item>Asia/Magadan</item>
+        <item>Asia/Makassar</item>
+        <item>Asia/Manila</item>
+        <item>Asia/Muscat</item>
+        <item>Asia/Nicosia</item>
+        <item>Asia/Novokuznetsk</item>
+        <item>Asia/Novosibirsk</item>
+        <item>Asia/Omsk</item>
+        <item>Asia/Oral</item>
+        <item>Asia/Phnom_Penh</item>
+        <item>Asia/Pontianak</item>
+        <item>Asia/Pyongyang</item>
+        <item>Asia/Qatar</item>
+        <item>Asia/Qyzylorda</item>
+        <item>Asia/Rangoon</item>
+        <item>Asia/Riyadh</item>
+        <item>Asia/Saigon</item>
+        <item>Asia/Sakhalin</item>
+        <item>Asia/Samarkand</item>
+        <item>Asia/Seoul</item>
+        <item>Asia/Shanghai</item>
+        <item>Asia/Singapore</item>
+        <item>Asia/Srednekolymsk</item>
+        <item>Asia/Taipei</item>
+        <item>Asia/Tashkent</item>
+        <item>Asia/Tbilisi</item>
+        <item>Asia/Tehran</item>
+        <item>Asia/Tel_Aviv</item>
+        <item>Asia/Thimbu</item>
+        <item>Asia/Thimphu</item>
+        <item>Asia/Tokyo</item>
+        <item>Asia/Ujung_Pandang</item>
+        <item>Asia/Ulaanbaatar</item>
+        <item>Asia/Ulan_Bator</item>
+        <item>Asia/Urumqi</item>
+        <item>Asia/Ust-Nera</item>
+        <item>Asia/Vientiane</item>
+        <item>Asia/Vladivostok</item>
+        <item>Asia/Yakutsk</item>
+        <item>Asia/Yekaterinburg</item>
+        <item>Asia/Yerevan</item>
+        <item>Atlantic/Azores</item>
+        <item>Atlantic/Bermuda</item>
+        <item>Atlantic/Canary</item>
+        <item>Atlantic/Cape_Verde</item>
+        <item>Atlantic/Faeroe</item>
+        <item>Atlantic/Faroe</item>
+        <item>Atlantic/Jan_Mayen</item>
+        <item>Atlantic/Madeira</item>
+        <item>Atlantic/Reykjavik</item>
+        <item>Atlantic/South_Georgia</item>
+        <item>Atlantic/St_Helena</item>
+        <item>Atlantic/Stanley</item>
+        <item>Australia/ACT</item>
+        <item>Australia/Adelaide</item>
+        <item>Australia/Brisbane</item>
+        <item>Australia/Broken_Hill</item>
+        <item>Australia/Canberra</item>
+        <item>Australia/Currie</item>
+        <item>Australia/Darwin</item>
+        <item>Australia/Eucla</item>
+        <item>Australia/Hobart</item>
+        <item>Australia/LHI</item>
+        <item>Australia/Lindeman</item>
+        <item>Australia/Lord_Howe</item>
+        <item>Australia/Melbourne</item>
+        <item>Australia/NSW</item>
+        <item>Australia/North</item>
+        <item>Australia/Perth</item>
+        <item>Australia/Queensland</item>
+        <item>Australia/South</item>
+        <item>Australia/Sydney</item>
+        <item>Australia/Tasmania</item>
+        <item>Australia/Victoria</item>
+        <item>Australia/West</item>
+        <item>Australia/Yancowinna</item>
+        <item>Brazil/Acre</item>
+        <item>Brazil/DeNoronha</item>
+        <item>Brazil/East</item>
+        <item>Brazil/West</item>
+        <item>CET</item>
+        <item>CST6CDT</item>
+        <item>Canada/Atlantic</item>
+        <item>Canada/Central</item>
+        <item>Canada/East-Saskatchewan</item>
+        <item>Canada/Eastern</item>
+        <item>Canada/Mountain</item>
+        <item>Canada/Newfoundland</item>
+        <item>Canada/Pacific</item>
+        <item>Canada/Saskatchewan</item>
+        <item>Canada/Yukon</item>
+        <item>Chile/Continental</item>
+        <item>Chile/EasterIsland</item>
+        <item>Cuba</item>
+        <item>EET</item>
+        <item>EST</item>
+        <item>EST5EDT</item>
+        <item>Egypt</item>
+        <item>Eire</item>
+        <item>Etc/GMT</item>
+        <item>Etc/GMT+0</item>
+        <item>Etc/GMT+1</item>
+        <item>Etc/GMT+10</item>
+        <item>Etc/GMT+11</item>
+        <item>Etc/GMT+12</item>
+        <item>Etc/GMT+2</item>
+        <item>Etc/GMT+3</item>
+        <item>Etc/GMT+4</item>
+        <item>Etc/GMT+5</item>
+        <item>Etc/GMT+6</item>
+        <item>Etc/GMT+7</item>
+        <item>Etc/GMT+8</item>
+        <item>Etc/GMT+9</item>
+        <item>Etc/GMT-0</item>
+        <item>Etc/GMT-1</item>
+        <item>Etc/GMT-10</item>
+        <item>Etc/GMT-11</item>
+        <item>Etc/GMT-12</item>
+        <item>Etc/GMT-13</item>
+        <item>Etc/GMT-14</item>
+        <item>Etc/GMT-2</item>
+        <item>Etc/GMT-3</item>
+        <item>Etc/GMT-4</item>
+        <item>Etc/GMT-5</item>
+        <item>Etc/GMT-6</item>
+        <item>Etc/GMT-7</item>
+        <item>Etc/GMT-8</item>
+        <item>Etc/GMT-9</item>
+        <item>Etc/GMT0</item>
+        <item>Etc/Greenwich</item>
+        <item>Etc/UCT</item>
+        <item>Etc/UTC</item>
+        <item>Etc/Universal</item>
+        <item>Etc/Zulu</item>
+        <item>Europe/Amsterdam</item>
+        <item>Europe/Andorra</item>
+        <item>Europe/Athens</item>
+        <item>Europe/Belfast</item>
+        <item>Europe/Belgrade</item>
+        <item>Europe/Berlin</item>
+        <item>Europe/Bratislava</item>
+        <item>Europe/Brussels</item>
+        <item>Europe/Bucharest</item>
+        <item>Europe/Budapest</item>
+        <item>Europe/Busingen</item>
+        <item>Europe/Chisinau</item>
+        <item>Europe/Copenhagen</item>
+        <item>Europe/Dublin</item>
+        <item>Europe/Gibraltar</item>
+        <item>Europe/Guernsey</item>
+        <item>Europe/Helsinki</item>
+        <item>Europe/Isle_of_Man</item>
+        <item>Europe/Istanbul</item>
+        <item>Europe/Jersey</item>
+        <item>Europe/Kaliningrad</item>
+        <item>Europe/Kiev</item>
+        <item>Europe/Lisbon</item>
+        <item>Europe/Ljubljana</item>
+        <item>Europe/London</item>
+        <item>Europe/Luxembourg</item>
+        <item>Europe/Madrid</item>
+        <item>Europe/Malta</item>
+        <item>Europe/Mariehamn</item>
+        <item>Europe/Minsk</item>
+        <item>Europe/Monaco</item>
+        <item>Europe/Moscow</item>
+        <item>Europe/Nicosia</item>
+        <item>Europe/Oslo</item>
+        <item>Europe/Paris</item>
+        <item>Europe/Podgorica</item>
+        <item>Europe/Prague</item>
+        <item>Europe/Riga</item>
+        <item>Europe/Rome</item>
+        <item>Europe/Samara</item>
+        <item>Europe/San_Marino</item>
+        <item>Europe/Sarajevo</item>
+        <item>Europe/Simferopol</item>
+        <item>Europe/Skopje</item>
+        <item>Europe/Sofia</item>
+        <item>Europe/Stockholm</item>
+        <item>Europe/Tallinn</item>
+        <item>Europe/Tirane</item>
+        <item>Europe/Tiraspol</item>
+        <item>Europe/Uzhgorod</item>
+        <item>Europe/Vaduz</item>
+        <item>Europe/Vatican</item>
+        <item>Europe/Vienna</item>
+        <item>Europe/Vilnius</item>
+        <item>Europe/Volgograd</item>
+        <item>Europe/Warsaw</item>
+        <item>Europe/Zagreb</item>
+        <item>Europe/Zaporozhye</item>
+        <item>Europe/Zurich</item>
+        <item>GB</item>
+        <item>GB-Eire</item>
+        <item>GMT</item>
+        <item>GMT+0</item>
+        <item>GMT-0</item>
+        <item>GMT0</item>
+        <item>Greenwich</item>
+        <item>HST</item>
+        <item>Hongkong</item>
+        <item>Iceland</item>
+        <item>Indian/Antananarivo</item>
+        <item>Indian/Chagos</item>
+        <item>Indian/Christmas</item>
+        <item>Indian/Cocos</item>
+        <item>Indian/Comoro</item>
+        <item>Indian/Kerguelen</item>
+        <item>Indian/Mahe</item>
+        <item>Indian/Maldives</item>
+        <item>Indian/Mauritius</item>
+        <item>Indian/Mayotte</item>
+        <item>Indian/Reunion</item>
+        <item>Iran</item>
+        <item>Israel</item>
+        <item>Jamaica</item>
+        <item>Japan</item>
+        <item>Kwajalein</item>
+        <item>Libya</item>
+        <item>MET</item>
+        <item>MST</item>
+        <item>MST7MDT</item>
+        <item>Mexico/BajaNorte</item>
+        <item>Mexico/BajaSur</item>
+        <item>Mexico/General</item>
+        <item>NZ</item>
+        <item>NZ-CHAT</item>
+        <item>Navajo</item>
+        <item>PRC</item>
+        <item>PST8PDT</item>
+        <item>Pacific/Apia</item>
+        <item>Pacific/Auckland</item>
+        <item>Pacific/Bougainville</item>
+        <item>Pacific/Chatham</item>
+        <item>Pacific/Chuuk</item>
+        <item>Pacific/Easter</item>
+        <item>Pacific/Efate</item>
+        <item>Pacific/Enderbury</item>
+        <item>Pacific/Fakaofo</item>
+        <item>Pacific/Fiji</item>
+        <item>Pacific/Funafuti</item>
+        <item>Pacific/Galapagos</item>
+        <item>Pacific/Gambier</item>
+        <item>Pacific/Guadalcanal</item>
+        <item>Pacific/Guam</item>
+        <item>Pacific/Honolulu</item>
+        <item>Pacific/Johnston</item>
+        <item>Pacific/Kiritimati</item>
+        <item>Pacific/Kosrae</item>
+        <item>Pacific/Kwajalein</item>
+        <item>Pacific/Majuro</item>
+        <item>Pacific/Marquesas</item>
+        <item>Pacific/Midway</item>
+        <item>Pacific/Nauru</item>
+        <item>Pacific/Niue</item>
+        <item>Pacific/Norfolk</item>
+        <item>Pacific/Noumea</item>
+        <item>Pacific/Pago_Pago</item>
+        <item>Pacific/Palau</item>
+        <item>Pacific/Pitcairn</item>
+        <item>Pacific/Pohnpei</item>
+        <item>Pacific/Ponape</item>
+        <item>Pacific/Port_Moresby</item>
+        <item>Pacific/Rarotonga</item>
+        <item>Pacific/Saipan</item>
+        <item>Pacific/Samoa</item>
+        <item>Pacific/Tahiti</item>
+        <item>Pacific/Tarawa</item>
+        <item>Pacific/Tongatapu</item>
+        <item>Pacific/Truk</item>
+        <item>Pacific/Wake</item>
+        <item>Pacific/Wallis</item>
+        <item>Pacific/Yap</item>
+        <item>Poland</item>
+        <item>Portugal</item>
+        <item>ROC</item>
+        <item>ROK</item>
+        <item>Singapore</item>
+        <item>Turkey</item>
+        <item>UCT</item>
+        <item>US/Alaska</item>
+        <item>US/Aleutian</item>
+        <item>US/Arizona</item>
+        <item>US/Central</item>
+        <item>US/East-Indiana</item>
+        <item>US/Eastern</item>
+        <item>US/Hawaii</item>
+        <item>US/Indiana-Starke</item>
+        <item>US/Michigan</item>
+        <item>US/Mountain</item>
+        <item>US/Pacific</item>
+        <item>US/Samoa</item>
+        <item>UTC</item>
+        <item>Universal</item>
+        <item>W-SU</item>
+        <item>WET</item>
+        <item>Zulu</item>
+    </string-array>
+
+    <string-array name="sessions_state">
+        <item>草案</item>
+        <item>公认</item>
+        <item>待定</item>
+        <item>已确认</item>
+    </string-array>
+
+    <string-array name="roles">
+        <item>组织者</item>
+        <item>协办单位</item>
+        <item>赛道组织者</item>
+        <item>主持人</item>
+        <item>参加者</item>
+        <item>注册商</item>
+    </string-array>
+
+    <string-array name="stepLabels">
+        <item>步骤1</item>
+        <item>步骤2</item>
+        <item>步骤3</item>
+    </string-array>
+
+</resources>
+
