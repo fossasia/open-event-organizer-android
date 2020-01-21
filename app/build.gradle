@@ -218,6 +218,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.3.1'
     implementation 'com.github.jasminb:jsonapi-converter:0.10'
 
+
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxjava}"
