@@ -33,7 +33,8 @@
     <string name="feedback">Feedback</string>
     <string name="forgot_password_link">I forgot my password</string>
     <string name="speaker_details">Speaker Details</string>
-
+    <string name="rate_dialog_title" translatable="false">Rate Eventyay Orgnizer.</string>
+    <string name="rate_dialog_message" translatable="false">If you enjoy using this app or want to provide feedback, please help us by rating it. It only takes a few seconds! 💖</string>
     <!-- Place Holders -->
     <string name="date_placeholder">May 25th 2017</string>
     <string name="date_placeholder_2">May 31th 2017</string>

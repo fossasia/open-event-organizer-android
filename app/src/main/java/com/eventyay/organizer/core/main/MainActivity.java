@@ -26,10 +26,10 @@ import com.eventyay.organizer.databinding.MainActivityBinding;
 import com.eventyay.organizer.databinding.MainNavHeaderBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.google.android.material.navigation.NavigationView;
+import com.marcoscg.ratedialog.RateDialog;
 
 import java.util.Arrays;
 import java.util.List;
-
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements
         headerBinding.profile.setOnClickListener(view -> startActivity(new Intent(this, OrganizerDetailActivity.class)));
 
         sharedPreferences = getSharedPreferences(Constants.FOSS_PREFS, MODE_PRIVATE);
+        RateDialog.with(this);
     }
 
     @Override

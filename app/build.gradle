@@ -286,6 +286,9 @@ dependencies {
     // About Page
     implementation 'com.github.medyo:android-about-page:1.2.5'
 
+    // Rating
+    implementation 'com.github.marcoscgdev:RateDialog:1.0.5'
+
     //Testing
     androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
