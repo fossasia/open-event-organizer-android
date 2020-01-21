@@ -77,5 +77,4 @@ public class TicketAnalyser {
         attendeeRepository.getCheckedInAttendees(event.getId())
             .subscribe(event.analytics.checkedIn::set, Logger::logError);
     }
-
 }

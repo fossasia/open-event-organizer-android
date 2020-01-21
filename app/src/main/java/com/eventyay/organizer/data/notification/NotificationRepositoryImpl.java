@@ -42,4 +42,3 @@ public class NotificationRepositoryImpl implements NotificationRepository {
             .build();
     }
 }
-

@@ -114,10 +114,10 @@ public class OrderRepositoryImpl implements OrderRepository {
             return Completable.error(new Throwable(Constants.NO_NETWORK));
 
         return orderApi
-                .sendReceiptEmail(orderReceiptRequest)
-                .flatMapCompletable(
-                    var -> Completable.complete())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+            .sendReceiptEmail(orderReceiptRequest)
+            .flatMapCompletable(
+                var -> Completable.complete())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     }
 }

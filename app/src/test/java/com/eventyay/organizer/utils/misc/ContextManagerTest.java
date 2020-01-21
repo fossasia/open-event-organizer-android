@@ -2,6 +2,7 @@ package com.eventyay.organizer.utils.misc;
 
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.data.user.User;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,9 +25,12 @@ import static org.mockito.Mockito.when;
 
 public class ContextManagerTest {
 
-    @Rule public MockitoRule rule = MockitoJUnit.rule();
-    @Mock private SentryClient client;
-    @Mock private Context context;
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
+    @Mock
+    private SentryClient client;
+    @Mock
+    private Context context;
 
     private SentryClient original;
 
@@ -67,5 +71,4 @@ public class ContextManagerTest {
         assertEquals("32", argument.getValue().getId());
         assertEquals(data, argument.getValue().getData());
     }
-
 }

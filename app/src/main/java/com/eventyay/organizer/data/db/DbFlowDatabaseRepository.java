@@ -1,5 +1,6 @@
 package com.eventyay.organizer.data.db;
 
+import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
@@ -8,8 +9,6 @@ import com.raizlabs.android.dbflow.sql.language.SQLOperator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
-
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 
 import java.util.List;
 
@@ -22,7 +21,8 @@ import timber.log.Timber;
 public class DbFlowDatabaseRepository implements DatabaseRepository {
 
     @Inject
-    public DbFlowDatabaseRepository() { }
+    public DbFlowDatabaseRepository() {
+    }
 
     @Override
     public <T> Observable<T> getItems(Class<T> typeClass, SQLOperator... conditions) {

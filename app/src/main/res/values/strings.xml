@@ -419,6 +419,7 @@
     <string name="github_repo_link">https://github.com/fossasia/open-event-organizer-android</string>
     <string name="github_developers_link">https://github.com/fossasia/open-event-organizer-android/graphs/contributors</string>
     <string name="third_party_licenses">Third Party Libraries Used</string>
+    <string name="event_owner_detail_organiser">Organiser</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>

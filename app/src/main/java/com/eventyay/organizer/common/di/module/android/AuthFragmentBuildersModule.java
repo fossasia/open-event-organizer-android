@@ -22,5 +22,4 @@ public abstract class AuthFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract SignUpFragment contributeSignupFragment();
-
 }

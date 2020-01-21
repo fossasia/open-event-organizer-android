@@ -88,5 +88,4 @@ public class SharedPreferencesImpl implements Preferences {
     private android.content.SharedPreferences.Editor getEditor() {
         return sharedPreferences.edit();
     }
-
 }

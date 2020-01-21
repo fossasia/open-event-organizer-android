@@ -6,6 +6,7 @@ import com.eventyay.organizer.core.session.list.SessionsView;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.session.SessionRepository;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

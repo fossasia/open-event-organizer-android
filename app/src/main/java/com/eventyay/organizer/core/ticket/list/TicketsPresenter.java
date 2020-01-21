@@ -1,13 +1,12 @@
 package com.eventyay.organizer.core.ticket.list;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.ArrayList;
 import java.util.List;

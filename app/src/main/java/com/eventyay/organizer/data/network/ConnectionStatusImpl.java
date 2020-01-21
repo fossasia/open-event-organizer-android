@@ -41,5 +41,4 @@ public class ConnectionStatusImpl implements ConnectionStatus {
     public static boolean isConnectedPure() {
         return isConnected(OrgaProvider.context);
     }
-
 }

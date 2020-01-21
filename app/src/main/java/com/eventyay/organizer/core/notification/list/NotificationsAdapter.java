@@ -25,7 +25,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsView
     @NonNull
     @Override
     public NotificationsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        NotificationsViewHolder notificationsViewHolder= new NotificationsViewHolder(
+        NotificationsViewHolder notificationsViewHolder = new NotificationsViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.notification_item, viewGroup, false));
 
@@ -42,5 +42,4 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsView
     public int getItemCount() {
         return notifications.size();
     }
-
 }

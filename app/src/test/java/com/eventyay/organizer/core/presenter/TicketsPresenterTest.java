@@ -1,11 +1,12 @@
 package com.eventyay.organizer.core.presenter;
 
 import com.eventyay.organizer.common.rx.Logger;
+import com.eventyay.organizer.core.ticket.list.TicketsPresenter;
+import com.eventyay.organizer.core.ticket.list.TicketsView;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.ticket.TicketRepository;
-import com.eventyay.organizer.core.ticket.list.TicketsPresenter;
-import com.eventyay.organizer.core.ticket.list.TicketsView;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -37,10 +38,14 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings({"PMD.CommentSize", "PMD.LineTooLong"})
 @RunWith(JUnit4.class)
 public class TicketsPresenterTest {
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Mock private TicketsView ticketsView;
-    @Mock private TicketRepository ticketRepository;
-    @Mock private DatabaseChangeListener<Ticket> databaseChangeListener;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Mock
+    private TicketsView ticketsView;
+    @Mock
+    private TicketRepository ticketRepository;
+    @Mock
+    private DatabaseChangeListener<Ticket> databaseChangeListener;
 
     private TicketsPresenter ticketsPresenter;
 

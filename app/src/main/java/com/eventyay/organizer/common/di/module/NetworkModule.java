@@ -18,6 +18,7 @@ import com.eventyay.organizer.data.session.Session;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.data.sponsor.Sponsor;
+import com.eventyay.organizer.data.ticket.OnSiteTicket;
 import com.eventyay.organizer.data.ticket.Ticket;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.user.User;
@@ -27,8 +28,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
-
-import com.eventyay.organizer.data.ticket.OnSiteTicket;
 
 import javax.inject.Named;
 import javax.inject.Singleton;

@@ -24,7 +24,8 @@ public class ContextManager {
     private User organiser;
 
     @Inject
-    public ContextManager() { }
+    public ContextManager() {
+    }
 
     public void setOrganiser(User user) {
         this.organiser = user;
@@ -35,10 +36,10 @@ public class ContextManager {
         Timber.i("User logged in - %s", user);
         Sentry.getContext().setUser(
             new UserBuilder()
-            .setEmail(user.getEmail())
-            .setId(String.valueOf(user.getId()))
-            .setData(userData)
-            .build()
+                .setEmail(user.getEmail())
+                .setId(String.valueOf(user.getId()))
+                .setData(userData)
+                .build()
         );
     }
 

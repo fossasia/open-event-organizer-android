@@ -8,5 +8,4 @@ import com.eventyay.organizer.common.mvp.view.Refreshable;
 import com.eventyay.organizer.data.feedback.Feedback;
 
 public interface FeedbackListView extends Progressive, Erroneous, Refreshable, Emptiable<Feedback> {
-
 }

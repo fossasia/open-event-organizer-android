@@ -1,10 +1,11 @@
 package com.eventyay.organizer.core.sponsor.list;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.sponsor.list.viewholder.SponsorsViewHolder;
@@ -44,5 +45,4 @@ public class SponsorsListAdapter extends RecyclerView.Adapter<SponsorsViewHolder
     public int getItemCount() {
         return sponsors.size();
     }
-
 }

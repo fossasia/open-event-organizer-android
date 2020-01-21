@@ -4,12 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import com.eventyay.organizer.BuildConfig;
-import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.core.main.MainActivity;
 import com.eventyay.organizer.data.Preferences;
+import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.utils.JWTUtils;
+
 import org.json.JSONException;
 
 import javax.inject.Inject;

@@ -3,10 +3,11 @@ package com.eventyay.organizer.core.organizer.detail;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.organizer.update.UpdateOrganizerInfoFragment;

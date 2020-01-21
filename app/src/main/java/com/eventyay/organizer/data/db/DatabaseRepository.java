@@ -25,5 +25,4 @@ public interface DatabaseRepository {
 
     @SuppressWarnings("unchecked")
     Completable deleteAll(Class<?>... typeClass);
-
 }

@@ -1,10 +1,9 @@
 package com.eventyay.organizer.common.model;
 
+import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +20,8 @@ public class SimpleModel extends BaseModel implements Cloneable {
     public String name;
     public String description;
 
-    SimpleModel() { }
+    SimpleModel() {
+    }
 
     public static SimpleModel fromModel(SimpleModel model) {
         try {

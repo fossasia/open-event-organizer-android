@@ -1,15 +1,16 @@
 package com.eventyay.organizer.core.speakerscall.create;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -69,7 +70,7 @@ public class CreateSpeakersCallFragment extends BaseFragment implements CreateSp
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        binding =  DataBindingUtil.inflate(localInflater, R.layout.speakers_call_create_layout, container, false);
+        binding = DataBindingUtil.inflate(localInflater, R.layout.speakers_call_create_layout, container, false);
 
         createSpeakersCallViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateSpeakersCallViewModel.class);
         validator = new Validator(binding.form);

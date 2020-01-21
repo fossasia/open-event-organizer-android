@@ -37,5 +37,4 @@ public abstract class AbstractBasePresenter<V> implements Presenter<V> {
     protected boolean isRotated() {
         return attachCount > 1;
     }
-
 }

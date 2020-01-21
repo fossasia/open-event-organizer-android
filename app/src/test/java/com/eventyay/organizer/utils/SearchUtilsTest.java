@@ -31,5 +31,4 @@ public class SearchUtilsTest {
         assertTrue(SearchUtils.filter("prri", "Henry", "Poish", "henry.poish@gmail.com"));
         assertTrue(SearchUtils.filter("hnr", "Hadley", "Parrish", "handly.chief@gmail.com"));
     }
-
 }

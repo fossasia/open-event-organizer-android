@@ -1,7 +1,8 @@
 package com.eventyay.organizer.core.sponsor.list.viewholder;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.common.Pipe;
 import com.eventyay.organizer.core.sponsor.list.SponsorsPresenter;
@@ -52,5 +53,4 @@ public class SponsorsViewHolder extends RecyclerView.ViewHolder {
     public View getRoot() {
         return binding.getRoot();
     }
-
 }

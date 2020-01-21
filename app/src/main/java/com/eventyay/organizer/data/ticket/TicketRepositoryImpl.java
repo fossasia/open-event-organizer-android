@@ -2,9 +2,6 @@ package com.eventyay.organizer.data.ticket;
 
 import androidx.annotation.NonNull;
 
-import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
-import com.raizlabs.android.dbflow.sql.language.Method;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.RateLimiter;
 import com.eventyay.organizer.data.Repository;
@@ -13,6 +10,9 @@ import com.eventyay.organizer.data.attendee.Attendee_Table;
 import com.eventyay.organizer.data.db.QueryHelper;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.Event_Table;
+import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
+import com.raizlabs.android.dbflow.sql.language.Method;
+
 import org.threeten.bp.Duration;
 
 import java.util.NoSuchElementException;
@@ -105,7 +105,7 @@ public class TicketRepositoryImpl implements TicketRepository {
             ticketApi
                 .getTickets(eventId)
                 .doOnNext(tickets -> repository.syncSave(Ticket.class, tickets, Ticket::getId, Ticket_Table.id).subscribe()))
-                .flatMapIterable(tickets -> tickets);
+            .flatMapIterable(tickets -> tickets);
 
         return repository.observableOf(Ticket.class)
             .reload(reload)

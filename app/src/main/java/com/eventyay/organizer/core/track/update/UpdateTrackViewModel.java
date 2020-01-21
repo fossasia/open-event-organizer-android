@@ -1,8 +1,9 @@
 package com.eventyay.organizer.core.track.update;
 
+import android.graphics.Color;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import android.graphics.Color;
 
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
@@ -62,15 +63,15 @@ public class UpdateTrackViewModel extends ViewModel {
 
     public void loadTrack(long trackId) {
         compositeDisposable.add(
-        trackRepository
-            .getTrack(trackId, false)
-            .doOnSubscribe(disposable -> progress.setValue(true))
-            .doFinally(() -> {
-                progress.setValue(false);
-                showTrack();
-            })
-            .subscribe(loadedTrack -> this.track = loadedTrack,
-                throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
+            trackRepository
+                .getTrack(trackId, false)
+                .doOnSubscribe(disposable -> progress.setValue(true))
+                .doFinally(() -> {
+                    progress.setValue(false);
+                    showTrack();
+                })
+                .subscribe(loadedTrack -> this.track = loadedTrack,
+                    throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
 
     public void updateTrack() {

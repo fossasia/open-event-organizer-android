@@ -4,6 +4,7 @@ import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.sponsor.Sponsor;
 import com.eventyay.organizer.data.sponsor.SponsorRepository;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -231,4 +232,3 @@ public class SponsorsPresenterTest {
         verify(sponsorsView).changeToolbarMode(false, false);
     }
 }
-

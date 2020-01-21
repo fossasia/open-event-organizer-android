@@ -1,13 +1,12 @@
 package com.eventyay.organizer.data.event;
 
 
+import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Type;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-
-import com.eventyay.organizer.data.db.configuration.OrgaDatabase;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

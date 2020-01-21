@@ -1,9 +1,8 @@
 package com.eventyay.organizer.common.mvp.view;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import com.eventyay.organizer.common.di.Injectable;
 import com.eventyay.organizer.common.mvp.presenter.BasePresenter;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import dagger.Lazy;
 

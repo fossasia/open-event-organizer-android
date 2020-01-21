@@ -105,6 +105,5 @@ public final class JWTUtils {
             }
             return buffer;
         }
-
     }
 }

@@ -1,11 +1,11 @@
 package com.eventyay.organizer.robo.db;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
-import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
-import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
 import com.eventyay.organizer.common.model.SimpleModel;
 import com.eventyay.organizer.common.model.SimpleModel_Table;
+import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
+import com.eventyay.organizer.data.db.DbFlowDatabaseRepository;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -95,5 +95,4 @@ public class DatabaseChangeListenerTest extends BaseTest {
             .test()
             .assertValueSequence(changes);
     }
-
 }

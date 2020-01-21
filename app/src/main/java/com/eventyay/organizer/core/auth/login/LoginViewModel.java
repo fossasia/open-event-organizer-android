@@ -1,9 +1,9 @@
 package com.eventyay.organizer.core.auth.login;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.annotation.VisibleForTesting;
 
 import com.eventyay.organizer.BuildConfig;
 import com.eventyay.organizer.common.Constants;

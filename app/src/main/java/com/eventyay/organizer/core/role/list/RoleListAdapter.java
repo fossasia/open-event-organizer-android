@@ -26,7 +26,7 @@ public class RoleListAdapter extends RecyclerView.Adapter<RoleViewHolder> {
     @NonNull
     @Override
     public RoleViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
-        RoleViewHolder roleViewHolder= new RoleViewHolder(
+        RoleViewHolder roleViewHolder = new RoleViewHolder(
             DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                 R.layout.role_item, viewGroup, false), roleListViewModel);
 
@@ -44,5 +44,4 @@ public class RoleListAdapter extends RecyclerView.Adapter<RoleViewHolder> {
     public int getItemCount() {
         return roles.size();
     }
-
 }

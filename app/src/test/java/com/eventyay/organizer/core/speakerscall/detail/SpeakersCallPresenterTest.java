@@ -4,6 +4,7 @@ import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.speakerscall.SpeakersCall;
 import com.eventyay.organizer.data.speakerscall.SpeakersCallRepositoryImpl;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

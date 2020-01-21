@@ -17,5 +17,4 @@ public interface AttendeesView extends Progressive, Refreshable, Erroneous, Empt
     void showToggleDialog(long attendeeId);
 
     List<Attendee> getAttendeeList();
-
 }

@@ -7,5 +7,4 @@ import com.eventyay.organizer.common.mvp.view.Successful;
 public interface CreateTicketView extends Progressive, Erroneous, Successful {
 
     void dismiss();
-
 }

@@ -1,13 +1,12 @@
 package com.eventyay.organizer.core.speaker.list;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
 import com.eventyay.organizer.common.mvp.presenter.AbstractDetailPresenter;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.db.DbFlowDatabaseChangeListener;
 import com.eventyay.organizer.data.speaker.Speaker;
 import com.eventyay.organizer.data.speaker.SpeakerRepository;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.ArrayList;
 import java.util.List;

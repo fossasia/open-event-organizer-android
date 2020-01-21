@@ -18,5 +18,4 @@ public abstract class AboutFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract UpdateCopyrightFragment contributeUpdateCopyrightFragment();
-
 }

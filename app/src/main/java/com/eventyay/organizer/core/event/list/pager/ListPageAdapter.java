@@ -1,12 +1,11 @@
 package com.eventyay.organizer.core.event.list.pager;
 
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.Pipe;
@@ -15,6 +14,8 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.databinding.EventLayoutBinding;
 import com.eventyay.organizer.databinding.HeaderLayoutBinding;
 import com.eventyay.organizer.ui.HeaderViewHolder;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -108,7 +109,7 @@ class ListPageAdapter extends RecyclerView.Adapter<ListPageAdapter.EventRecycler
             headerViewHolder.bindHeader(events.get(i).getName().substring(0, 1).toUpperCase(Locale.getDefault()));
         } else {
             headerViewHolder.bindHeader(events.get(i).getHeader());
-       }
+        }
     }
 
     @Override

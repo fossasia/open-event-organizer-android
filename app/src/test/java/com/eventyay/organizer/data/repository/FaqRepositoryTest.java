@@ -1,7 +1,5 @@
 package com.eventyay.organizer.data.repository;
 
-import com.raizlabs.android.dbflow.sql.language.SQLOperator;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.data.AbstractObservable;
 import com.eventyay.organizer.data.Repository;
@@ -9,6 +7,8 @@ import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.faq.Faq;
 import com.eventyay.organizer.data.faq.FaqApi;
 import com.eventyay.organizer.data.faq.FaqRepositoryImpl;
+import com.raizlabs.android.dbflow.sql.language.SQLOperator;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -41,8 +41,10 @@ public class FaqRepositoryTest {
     private static final Event EVENT = new Event();
     private static final long ID = 10L;
 
-    @Mock private FaqApi faqApi;
-    @Mock private Repository repository;
+    @Mock
+    private FaqApi faqApi;
+    @Mock
+    private Repository repository;
 
     static {
         FAQ.setEvent(EVENT);

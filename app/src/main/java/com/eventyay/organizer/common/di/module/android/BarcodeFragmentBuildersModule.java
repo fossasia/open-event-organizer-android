@@ -10,5 +10,4 @@ public abstract class BarcodeFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract AttendeeCheckInFragment contributeAttendeeCheckinFragment();
-
 }

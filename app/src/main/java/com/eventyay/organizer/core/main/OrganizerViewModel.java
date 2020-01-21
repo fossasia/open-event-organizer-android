@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.f2prateek.rx.preferences2.RxSharedPreferences;
-
 import com.eventyay.organizer.common.Constants;
 import com.eventyay.organizer.common.ContextManager;
 import com.eventyay.organizer.common.livedata.SingleEventLiveData;
@@ -14,6 +12,7 @@ import com.eventyay.organizer.data.auth.AuthService;
 import com.eventyay.organizer.data.user.User;
 import com.eventyay.organizer.data.user.UserRepository;
 import com.eventyay.organizer.utils.DateUtils;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
 
 import javax.inject.Inject;
 
@@ -42,8 +41,8 @@ public class OrganizerViewModel extends ViewModel {
 
     protected LiveData<User> getOrganizer() {
         compositeDisposable.add(userRepository
-                .getOrganizer(false)
-                .subscribe(organizer::setValue, Logger::logError));
+            .getOrganizer(false)
+            .subscribe(organizer::setValue, Logger::logError));
         return organizer;
     }
 

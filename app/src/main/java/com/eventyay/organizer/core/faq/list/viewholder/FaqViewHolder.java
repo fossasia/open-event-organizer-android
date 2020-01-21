@@ -1,8 +1,9 @@
 package com.eventyay.organizer.core.faq.list.viewholder;
 
+import android.view.View;
+
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Pipe;

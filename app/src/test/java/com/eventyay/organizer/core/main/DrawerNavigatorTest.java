@@ -1,9 +1,11 @@
 package com.eventyay.organizer.core.main;
 
-import androidx.appcompat.app.AlertDialog;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.eventyay.organizer.R;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -51,5 +53,4 @@ public class DrawerNavigatorTest {
         drawerNavigator.selectItem(menuItem);
         verify(fragmentNavigator).loadFragment(RANDOM_ID);
     }
-
 }

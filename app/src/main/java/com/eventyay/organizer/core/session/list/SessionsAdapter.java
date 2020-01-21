@@ -1,10 +1,11 @@
 package com.eventyay.organizer.core.session.list;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.core.session.list.viewholder.SessionViewHolder;

@@ -1,9 +1,9 @@
 package com.eventyay.organizer.core.notification.list;
 
 import androidx.lifecycle.LiveData;
-import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.eventyay.organizer.common.livedata.SingleEventLiveData;
 import com.eventyay.organizer.common.rx.Logger;
 import com.eventyay.organizer.data.auth.AuthHolder;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
@@ -71,7 +71,7 @@ public class NotificationsViewModel extends ViewModel {
                 .doOnSubscribe(disposable -> progress.setValue(true))
                 .doFinally(() -> progress.setValue(false))
                 .toList()
-                .subscribe(notificationsList-> {
+                .subscribe(notificationsList -> {
                     Collections.reverse(notificationsList);
                     notifications.clear();
                     notifications.addAll(notificationsList);

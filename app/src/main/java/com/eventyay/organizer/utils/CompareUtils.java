@@ -23,5 +23,4 @@ public final class CompareUtils {
         }
         return 0;
     }
-
 }

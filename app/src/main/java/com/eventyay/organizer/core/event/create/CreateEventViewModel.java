@@ -77,7 +77,6 @@ public class CreateEventViewModel extends ViewModel {
         currencyCodesList = currencyUtils.getCurrencyCodesList();
 
         setPaymentPreferences(preferences);
-
     }
 
     public int setTimeZoneList(List<String> timeZoneList) {
@@ -132,7 +131,6 @@ public class CreateEventViewModel extends ViewModel {
             onError.setValue("Please enter date in correct format");
             return false;
         }
-
     }
 
     protected void nullifyEmptyFields(Event event) {

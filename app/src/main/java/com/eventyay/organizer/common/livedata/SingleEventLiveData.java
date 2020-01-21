@@ -1,16 +1,17 @@
 package com.eventyay.organizer.common.livedata;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.annotation.MainThread;
-import androidx.annotation.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A wrapper over MutableLiveData in order to send a single event from ViewModel.
+ *
  * @param <T> Data type of the LiveData.
  */
 public class SingleEventLiveData<T> extends MutableLiveData<T> {

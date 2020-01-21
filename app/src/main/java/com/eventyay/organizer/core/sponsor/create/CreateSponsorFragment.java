@@ -1,11 +1,6 @@
 package com.eventyay.organizer.core.sponsor.create;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import com.google.android.material.textfield.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,6 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.eventyay.organizer.R;
 import com.eventyay.organizer.common.Function;
 import com.eventyay.organizer.common.mvp.view.BaseFragment;
@@ -21,6 +21,7 @@ import com.eventyay.organizer.data.sponsor.Sponsor;
 import com.eventyay.organizer.databinding.SponsorCreateLayoutBinding;
 import com.eventyay.organizer.ui.ViewUtils;
 import com.eventyay.organizer.utils.ValidateUtils;
+import com.google.android.material.textfield.TextInputLayout;
 
 import javax.inject.Inject;
 
@@ -53,7 +54,7 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding =  DataBindingUtil.inflate(inflater, R.layout.sponsor_create_layout, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.sponsor_create_layout, container, false);
         binding.form.name.requestFocus();
         ViewUtils.showKeyboard(getContext());
         createSponsorViewModel = ViewModelProviders.of(this, viewModelFactory).get(CreateSponsorViewModel.class);
@@ -159,5 +160,4 @@ public class CreateSponsorFragment extends BaseFragment implements CreateSponsor
     public void setSponsor(Sponsor sponsor) {
         binding.setSponsor(sponsor);
     }
-
 }

@@ -82,5 +82,4 @@ public class ActivityInstanceTest<T extends Activity> extends BaseParameterTest 
             testActivityCreation(activityClass, intent);
         }
     }
-
 }

@@ -2,17 +2,15 @@ package com.eventyay.organizer.core.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.MenuItem;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
-import android.view.MenuItem;
 
 import com.eventyay.organizer.OrgaProvider;
 import com.eventyay.organizer.R;
-import com.eventyay.organizer.core.event.about.AboutEventActivity;
 import com.eventyay.organizer.core.event.create.CreateEventActivity;
 import com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity;
-import com.eventyay.organizer.utils.BrowserUtils;
 import com.eventyay.organizer.utils.Utils;
 
 import static com.eventyay.organizer.core.event.create.CreateEventActivity.EVENT_ID;
@@ -20,7 +18,7 @@ import static com.eventyay.organizer.core.event.create.CreateEventActivity.EVENT
 class DrawerNavigator {
 
     private static final String GOOGLE_FORM_LINK = "https://docs.google.com/forms/d/e/" +
-    "1FAIpQLSfJ-v1mbmNp1ChpsikHDx6HZ5G9Bq8ELCivckPPcYlOAFOy2Q/viewform?usp=sf_link";
+        "1FAIpQLSfJ-v1mbmNp1ChpsikHDx6HZ5G9Bq8ELCivckPPcYlOAFOy2Q/viewform?usp=sf_link";
 
     private final Context context;
     private final FragmentNavigator fragmentNavigator;

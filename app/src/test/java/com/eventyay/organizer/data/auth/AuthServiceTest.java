@@ -1,10 +1,11 @@
 package com.eventyay.organizer.data.auth;
 
+import com.eventyay.organizer.common.Constants;
+import com.eventyay.organizer.data.Repository;
 import com.eventyay.organizer.data.auth.model.Login;
 import com.eventyay.organizer.data.auth.model.LoginResponse;
 import com.eventyay.organizer.data.user.User;
-import com.eventyay.organizer.common.Constants;
-import com.eventyay.organizer.data.Repository;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,12 +31,16 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class AuthServiceTest {
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private AuthService authService;
-    @Mock private AuthHolder authHolder;
-    @Mock private AuthApi authApi;
-    @Mock private Repository repository;
+    @Mock
+    private AuthHolder authHolder;
+    @Mock
+    private AuthApi authApi;
+    @Mock
+    private Repository repository;
 
     private static final String TOKEN = "TestToken";
     private static final String EMAIL = "test";
@@ -188,6 +193,4 @@ public class AuthServiceTest {
 
         verify(authHolder).saveEmail(EMAIL + "new");
     }
-
-
 }

@@ -30,5 +30,4 @@ public interface TicketApi {
 
     @PATCH("tickets/{ticket_id}")
     Observable<Ticket> updateTicket(@Path("ticket_id") long id, @Body Ticket ticket);
-
 }

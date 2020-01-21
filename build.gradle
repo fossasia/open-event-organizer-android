@@ -10,8 +10,8 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.2'
-        classpath 'io.sentry:sentry-android-gradle-plugin:1.7.28'
+        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'io.sentry:sentry-android-gradle-plugin:1.7.29'
         classpath 'com.noveogroup.android:check:1.2.5'
         classpath "com.google.gms:oss-licenses:0.9.2"
         classpath "net.ltgt.gradle:gradle-errorprone-plugin:1.1.1"
@@ -32,8 +32,4 @@ allprojects {
         KEYSTORE_FILE = rootProject.file('scripts/key.jks')
         TRAVIS_BUILD = System.getenv("TRAVIS") == "true" && KEYSTORE_FILE.exists()
     }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

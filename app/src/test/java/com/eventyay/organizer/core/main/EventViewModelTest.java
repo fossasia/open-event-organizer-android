@@ -9,6 +9,7 @@ import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.utils.CurrencyUtils;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

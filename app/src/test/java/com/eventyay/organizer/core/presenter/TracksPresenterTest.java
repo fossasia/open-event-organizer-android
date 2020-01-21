@@ -6,6 +6,7 @@ import com.eventyay.organizer.core.track.list.TracksView;
 import com.eventyay.organizer.data.db.DatabaseChangeListener;
 import com.eventyay.organizer.data.tracks.Track;
 import com.eventyay.organizer.data.tracks.TrackRepository;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

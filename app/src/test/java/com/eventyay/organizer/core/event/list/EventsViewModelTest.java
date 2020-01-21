@@ -8,6 +8,7 @@ import com.eventyay.organizer.data.Preferences;
 import com.eventyay.organizer.data.event.Event;
 import com.eventyay.organizer.data.event.EventRepository;
 import com.eventyay.organizer.utils.DateUtils;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,10 +35,14 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class EventsViewModelTest {
 
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
-    @Mock private EventRepository eventRepository;
-    @Mock private Preferences sharedPreferenceModel;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule
+    public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
+    @Mock
+    private EventRepository eventRepository;
+    @Mock
+    private Preferences sharedPreferenceModel;
 
     @Mock
     Observer<List<Event>> events;

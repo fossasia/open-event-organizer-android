@@ -11,7 +11,8 @@ import dagger.Lazy;
 
 public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements Injectable {
 
-    protected abstract @StringRes int getTitle();
+    protected abstract @StringRes
+    int getTitle();
 
     @Override
     public void onResume() {

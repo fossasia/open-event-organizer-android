@@ -38,5 +38,4 @@ public class TicketViewHolder extends RecyclerView.ViewHolder {
         binding.setTicket(ticket);
         binding.executePendingBindings();
     }
-
 }

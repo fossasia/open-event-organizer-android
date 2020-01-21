@@ -1,3 +1,6 @@
+plugins {
+    id "com.diffplug.gradle.spotless" version "3.27.1"
+}
 apply plugin: 'com.android.application'
 apply plugin: 'io.sentry.android.gradle'
 apply plugin: 'com.noveogroup.android.check'
@@ -32,7 +35,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [
-            appName: app_name,
+            appName            : app_name,
             MAPBOX_ACCESS_TOKEN: MAPBOX_ACCESS_TOKEN
         ]
     }
@@ -93,6 +96,9 @@ android {
         unitTests {
             includeAndroidResources = true
             unitTests.returnDefaultValues = true
+            all {
+                maxHeapSize = "512m"
+            }
         }
     }
 
@@ -107,6 +113,20 @@ android {
             dimension "default"
         }
     }
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        indentWithSpaces(2)
+        endWithNewline()
+        trimTrailingWhitespace()
+        target '**/*.java'
+    }
+}
+
+gradle.projectsEvaluated {
+    preBuild.dependsOn(spotlessApply)
 }
 
 repositories {
@@ -149,8 +169,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
-    implementation "com.google.android.material:material:1.1.0-beta01"
-    implementation "androidx.browser:browser:1.0.0"
+    implementation "com.google.android.material:material:1.2.0-alpha03"
+    implementation "androidx.browser:browser:1.2.0"
     implementation "androidx.palette:palette:1.0.0"
     implementation "com.takisoft.fix:preference-v7:${versions.support_lib}.0"
     //implementation "androidx.media:media:1.1.0-alpha04" // GradleIncompatible Workaround
@@ -195,8 +215,9 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
-    implementation 'com.github.jasminb:jsonapi-converter:0.9'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.3.1'
+    implementation 'com.github.jasminb:jsonapi-converter:0.10'
+
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}"
@@ -204,12 +225,12 @@ dependencies {
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
     // Fast Adapter
-    implementation "com.mikepenz:fastadapter:4.1.1"
+    implementation "com.mikepenz:fastadapter:4.1.2"
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     implementation 'me.xdrop:fuzzywuzzy:1.1.9'
 
     // Glide
-    implementation ("com.github.florent37:glidepalette:2.1.2") {
+    implementation("com.github.florent37:glidepalette:2.1.2") {
         transitive = false
     }
     implementation "com.github.bumptech.glide:glide:${versions.glide}"
@@ -218,7 +239,7 @@ dependencies {
 
     // ThreeTen
     implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenbp}"
-    testImplementation 'org.threeten:threetenbp:1.4.0'
+    testImplementation 'org.threeten:threetenbp:1.4.1'
 
     // Leak Canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
@@ -252,7 +273,7 @@ dependencies {
     implementation "jp.wasabeef:richeditor-android:1.2.2"
 
     // Chrome Custom Tabs
-    playStoreImplementation "androidx.browser:browser:1.0.0"
+    playStoreImplementation "androidx.browser:browser:1.2.0"
 
     //open-source licenses
     playStoreImplementation "com.google.android.gms:play-services-oss-licenses:${versions.play_services}"
@@ -275,8 +296,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-core-utils'
     })
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-inline:3.2.0'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.mockito:mockito-inline:3.2.4'
     testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"

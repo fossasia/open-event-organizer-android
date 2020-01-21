@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="eventOwner"
+            type="com.eventyay.organizer.data.event.Event" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/event_owner_detail_outer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="@{eventOwner.hasOwnerInfo ? View.VISIBLE : View.GONE}">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:text="@string/event_owner_detail_organiser"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:text='@{eventOwner.ownerName}'
+            android:textAllCaps="true"
+            android:textColor="@color/color_drawer_item_text"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="bold"
+            android:visibility="@{TextUtils.isEmpty( eventOwner.ownerName) ? View.GONE: View.VISIBLE}" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:text="@{eventOwner.ownerDescription}"
+            android:textSize="@dimen/text_size_small"
+            android:visibility='@{TextUtils.isEmpty( eventOwner.ownerDescription) ? View.GONE: View.VISIBLE}' />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_tiniest"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:background="@color/color_shadow"
+            bind:layout_constraintEnd_toEndOf="parent"
+            bind:layout_constraintStart_toStartOf="parent"
+            bind:layout_constraintTop_toBottomOf="@id/event_owner_detail_outer" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_small"
+            android:background="@color/color_bottom_surface" />
+    </LinearLayout>
+</layout>
