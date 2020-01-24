@@ -40,6 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/name"
+                    android:singleLine="true"
                     android:text="@={ user.firstName }" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -67,6 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/family_name"
+                    android:singleLine="true"
                     android:text="@={ user.lastName }" />
 
             </com.google.android.material.textfield.TextInputLayout>
