@@ -37,14 +37,15 @@
 
             </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/color_top_surface">
 
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/submit">
 
                     <include
                         android:id="@+id/form"
@@ -57,11 +58,13 @@
                     android:id="@+id/submit"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/submit_button_width"
+                    android:layout_alignParentBottom="true"
                     android:text="@string/done"/>
 
                 <FrameLayout
                     android:layout_width="@dimen/progressbar_large"
                     android:layout_height="@dimen/progressbar_large"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center">
 
                     <ProgressBar
@@ -73,7 +76,7 @@
                         android:visibility="gone" />
 
                 </FrameLayout>
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </RelativeLayout>
 
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
