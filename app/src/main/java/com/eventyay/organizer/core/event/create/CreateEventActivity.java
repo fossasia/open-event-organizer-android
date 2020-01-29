@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -78,17 +79,17 @@ public class CreateEventActivity extends AppCompatActivity implements HasSupport
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                //unimplemented
+            }
+
+            @Override
+            public void onPageSelected(int position) {
                 boolean isFirstPage = position == 0;
                 boolean isLastPage = position == PAGE_COUNT - 1;
 
                 btnPrev.setVisibility(isFirstPage ? View.GONE : View.VISIBLE);
                 btnNext.setVisibility(isLastPage ? View.GONE : View.VISIBLE);
                 btnSubmit.setVisibility(isLastPage ? View.VISIBLE : View.GONE);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                //unimplemented
             }
 
             @Override

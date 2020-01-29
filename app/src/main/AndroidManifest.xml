@@ -48,7 +48,6 @@
             android:theme="@style/AppTheme.Main" />
         <activity
             android:name="com.eventyay.organizer.core.main.MainActivity"
-            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.Main.Light" />
         <activity
@@ -60,12 +59,10 @@
             android:theme="@style/AppTheme.Main.Light" />
         <activity
             android:name="com.eventyay.organizer.core.event.create.CreateEventActivity"
-            android:configChanges="orientation|screenSize"
             android:label="@string/create_event"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.eventyay.organizer.core.organizer.detail.OrganizerDetailActivity"
-            android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_organizer_detail"
             android:theme="@style/AppTheme.Main.Light">
             <intent-filter>
