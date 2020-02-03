@@ -1028,4 +1028,9 @@
         <item>Step 3</item>
     </string-array>
 
+    <string-array name="privacy_array">
+        <item>public</item>
+        <item>private</item>
+    </string-array>
+
 </resources>

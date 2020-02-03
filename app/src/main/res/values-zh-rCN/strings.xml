@@ -1028,5 +1028,10 @@
         <item>步骤3</item>
     </string-array>
 
+    <string-array name="privacy_array">
+        <item>上市</item>
+        <item>私人的</item>
+    </string-array>
+
 </resources>
 

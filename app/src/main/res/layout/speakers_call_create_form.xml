@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
         <import type="android.view.View" />
@@ -10,8 +12,7 @@
             type="com.eventyay.organizer.data.speakerscall.SpeakersCall" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         style="@style/ItemPadding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,6 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/spacing_small"
         android:orientation="horizontal">
 
         <ImageView
@@ -93,19 +95,29 @@
             android:padding="@dimen/spacing_extra_small"
             app:srcCompat="@drawable/ic_password" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_extra_small">
+            android:padding="@dimen/spacing_extra_small"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/privacy"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/privacy"
-                android:text="@={ speakersCall.privacy }" />
+                android:layout_weight="1"
+                android:text="@string/privacy"
+                android:textSize="@dimen/text_size_normal" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/privacy"
+                android:onItemSelected="@{ (parent, v, pos, id) ->  speakersCall.setPrivacy(parent.getItemAtPosition(pos).toString())  }"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     </LinearLayout>

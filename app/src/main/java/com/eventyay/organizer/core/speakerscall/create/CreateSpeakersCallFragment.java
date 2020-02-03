@@ -6,6 +6,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -97,7 +98,7 @@ public class CreateSpeakersCallFragment extends BaseFragment implements CreateSp
         createSpeakersCallViewModel.getProgress().observe(this, this::showProgress);
         createSpeakersCallViewModel.getError().observe(this, this::showError);
         createSpeakersCallViewModel.getSuccess().observe(this, this::onSuccess);
-
+        setUpSpinner();
         if (isSpeakersCallUpdating) {
             createSpeakersCallViewModel.loadSpeakersCall(eventId, false);
         } else {
@@ -105,8 +106,18 @@ public class CreateSpeakersCallFragment extends BaseFragment implements CreateSp
         }
     }
 
+    private void setUpSpinner() {
+        ArrayAdapter<CharSequence> rolesAdapter = ArrayAdapter
+            .createFromResource(getActivity(), R.array.privacy_array, android.R.layout.simple_spinner_item);
+        rolesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.form.privacy.setAdapter(rolesAdapter);
+        binding.form.privacy.setSelection(((ArrayAdapter<CharSequence>)binding.form.privacy.getAdapter()).getPosition("public"));
+
+    }
+
     public void showSpeakersCall(SpeakersCall speakersCall) {
         binding.setSpeakersCall(speakersCall);
+        binding.form.privacy.setSelection(((ArrayAdapter<CharSequence>)binding.form.privacy.getAdapter()).getPosition(speakersCall.privacy));
     }
 
     @Override
