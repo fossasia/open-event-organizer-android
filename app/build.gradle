@@ -239,7 +239,7 @@ dependencies {
 
     // ThreeTen
     implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenbp}"
-    testImplementation 'org.threeten:threetenbp:1.4.2'
+    testImplementation 'org.threeten:threetenbp:1.4.3'
 
     // Leak Canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leak_canary}"
