@@ -178,7 +178,7 @@ dependencies {
     annotationProcessor 'androidx.annotation:annotation:1.1.0' // Required for Glide
     playStoreImplementation "com.google.android.gms:play-services-vision:${versions.play_services_vision}"
     playStoreImplementation "com.google.android.libraries.places:places:${versions.places}"
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0'
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"
