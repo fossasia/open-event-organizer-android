@@ -1,5 +1,5 @@
 plugins {
-    id "com.diffplug.gradle.spotless" version "4.4.0"
+    id "com.diffplug.gradle.spotless" version "4.5.1"
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.sentry.android.gradle'
@@ -166,7 +166,7 @@ dependencies {
 
     // Support Lib
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.appcompat:appcompat:1.2.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "com.google.android.material:material:1.2.0-beta01"
@@ -215,7 +215,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-jackson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
     implementation 'com.github.jasminb:jsonapi-converter:0.10'
 
 
@@ -297,7 +297,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-core-utils'
     })
     testImplementation 'junit:junit:4.13'
-    testImplementation 'org.mockito:mockito-inline:3.3.3'
+    testImplementation 'org.mockito:mockito-inline:3.5.2'
     testImplementation 'org.json:json:20180130'
     testImplementation "org.robolectric:robolectric:${versions.roboelectric}"
     testImplementation "org.robolectric:shadows-multidex:${versions.roboelectric}"
