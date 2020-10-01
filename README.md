@@ -101,11 +101,11 @@ Please find info about the set up of the App in your development environment [he
 
 ### Project Conventions
 
-There are certain conventions we follow in the project, we recommend that you become familiar with these so that the development process is uniform for everyone:
+There are certain conventions which we follow in the project, we would like to recommend that you become familiar with these so that the development process is uniform for everyone:
 
 #### Dependency Injection
 
-We use Dagger 2 for DI, so please take a look at how it works. We did not create very complex graphs, component or scopes to keep it simple and easy to refactor. But, we do have certain guidelines as to what needs to be injected and how. Every object which is configurable or there is a possibility for it to be shared among objects, instances or lifecycles in future, must be injected through DI. The interface implementations which have obvious constructions are `@Bind`ed to their concrete classes and a general rule of thumb we follow is to have only one `new` keyword in the injectable construction (the `@Provides` method in Dagger). Meaning that all other dependencies that need to be instantiated during its creation must be passed as arguments and provided by the DI itself.
+We use Dagger 2 for DI, so please take a look at how it works. We didn't create very complex graphs, component or scopes to keep it simple and easy to refactor. But, we do have certain guidelines as to what needs to be injected and how. Every object which is configurable or there is a possibility for it to be shared among objects, instances or lifecycles in future, must be injected through DI. The interface implementations which have obvious constructions are `@Bind`ed to their concrete classes and a general rule of thumb we follow is to have only one `new` keyword in the injectable construction (the `@Provides` method in Dagger). Meaning that all other dependencies that need to be instantiated during its creation must be passed as arguments and provided by the DI itself.
 
 #### MVP
 
