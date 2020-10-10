@@ -208,7 +208,11 @@ public class EventDashboardFragment extends BaseFragment<EventDashboardPresenter
 
     @Override
     public void showError(String error) {
-        ViewUtils.showSnackbar(binding.getRoot(), error);
+        if (error.contains("starts-at should be after current date-time")) {
+            ViewUtils.showSnackbar(binding.getRoot(), getString(R.string.past_event_error_message));
+        } else {
+            ViewUtils.showSnackbar(binding.getRoot(), error);
+        }
     }
 
     @Override

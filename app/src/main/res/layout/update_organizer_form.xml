@@ -15,6 +15,7 @@
         style="@style/ItemPadding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
         android:orientation="vertical"
         android:paddingTop="@dimen/const_normal">
 
