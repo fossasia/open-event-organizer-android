@@ -49,6 +49,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/event_name"
+                        android:singleLine="true"
+                        android:inputType="text"
                         android:text="@={ event.name }"
                         app:validateEmpty="@{true}" />
 
@@ -80,7 +82,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/organizer_name"
-                        android:inputType="textMultiLine"
+                        android:singleLine="true"
+                        android:inputType="text"
                         android:text="@={ event.ownerName }" />
 
                 </com.google.android.material.textfield.TextInputLayout>
