@@ -421,6 +421,7 @@
     <string name="third_party_licenses">Third Party Libraries Used</string>
     <string name="event_owner_detail_organiser">Organiser</string>
     <string name="past_event_error_message">Past events cannot be published.</string>
+    <string name="dialog_message">This mobile app is still in its prototype stage with many features being experimental. We currently recommend using this app only for testing.</string>
 
     <string-array name="timezones">
         <item>Africa/Abidjan</item>
