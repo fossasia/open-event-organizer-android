@@ -1,5 +1,6 @@
 package com.eventyay.organizer.core.auth.start;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
@@ -47,9 +48,11 @@ public class StartFragment extends BaseFragment implements StartView {
     private Validator validator;
     private SharedViewModel sharedViewModel;
 
+
     public static StartFragment newInstance() {
         return new StartFragment();
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +77,16 @@ public class StartFragment extends BaseFragment implements StartView {
             EmailRequest emailRequest = new EmailRequest();
             emailRequest.setEmail(email);
             startFragmentViewModel.getEmailRequestModel().setValue(emailRequest);
+        });
+        startFragmentViewModel.getWarningDialog().observe(this, showMessage -> {
+            new AlertDialog.Builder(requireActivity())
+                .setTitle("Message")
+                .setMessage(R.string.dialog_message)
+                .setPositiveButton(R.string.ok, ((dialog, which) -> {
+                    startFragmentViewModel.setWarningPreference();
+                    dialog.dismiss();
+                })).show();
+
         });
 
         binding.url.toggleUrl.setVisibility(View.VISIBLE);

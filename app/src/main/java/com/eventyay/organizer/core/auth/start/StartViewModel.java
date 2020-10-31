@@ -37,6 +37,8 @@ public class StartViewModel extends ViewModel {
     ;
     private final SingleEventLiveData<Boolean> isEmailRegistered = new SingleEventLiveData<>();
     private final MutableLiveData<EmailRequest> emailRequestModel = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> warningDialog = new MutableLiveData<>();
+    private static final String WARNING_PREFERENCE_KEY = "show_experimental_warning";
 
     @Inject
     public StartViewModel(AuthService authService, HostSelectionInterceptor interceptor,
@@ -100,6 +102,17 @@ public class StartViewModel extends ViewModel {
         String baseUrl = shouldSetDefaultUrl ? BuildConfig.DEFAULT_BASE_URL : url;
         interceptor.setInterceptor(baseUrl);
         sharedPreferenceModel.saveString(Constants.SHARED_PREFS_BASE_URL, baseUrl);
+    }
+
+    public MutableLiveData<Boolean> getWarningDialog() {
+        if (sharedPreferenceModel.getBoolean(WARNING_PREFERENCE_KEY, true)) {
+            warningDialog.setValue(true);
+        }
+        return warningDialog;
+    }
+
+    public void setWarningPreference() {
+        sharedPreferenceModel.setBoolean(WARNING_PREFERENCE_KEY, false);
     }
 
     @Override
