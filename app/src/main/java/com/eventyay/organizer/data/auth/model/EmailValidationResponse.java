@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmailValidationResponse {
-    public Boolean result;
+    public Boolean exists;
 }

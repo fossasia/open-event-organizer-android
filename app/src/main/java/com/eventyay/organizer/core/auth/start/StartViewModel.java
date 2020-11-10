@@ -54,7 +54,7 @@ public class StartViewModel extends ViewModel {
             .doOnSubscribe(disposable -> progress.setValue(true))
             .doFinally(() -> progress.setValue(false))
             .subscribe((isAvailable) -> {
-                    isEmailRegistered.setValue(!isAvailable.getResult());
+                    isEmailRegistered.setValue(isAvailable.getExists());
                 },
                 throwable -> error.setValue(ErrorUtils.getMessage(throwable).toString())));
     }
