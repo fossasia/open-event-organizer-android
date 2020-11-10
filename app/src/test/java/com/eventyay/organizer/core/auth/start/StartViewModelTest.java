@@ -123,7 +123,7 @@ public class StartViewModelTest {
 
         inOrder.verify(authService).checkEmailRegistered(EMAIL_REQUEST);
         inOrder.verify(progress).onChanged(true);
-        inOrder.verify(isEmailRegistered).onChanged(false);
+        inOrder.verify(isEmailRegistered).onChanged(true);
         inOrder.verify(progress).onChanged(false);
     }
 
