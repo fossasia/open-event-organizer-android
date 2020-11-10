@@ -25,7 +25,7 @@ import retrofit2.http.POST;
 
 public interface AuthApi {
 
-    @POST("users/checkEmail")
+    @POST("users/check_email")
     Observable<EmailValidationResponse> checkEmail(@Body EmailRequest emailRequest);
 
     @POST("users")

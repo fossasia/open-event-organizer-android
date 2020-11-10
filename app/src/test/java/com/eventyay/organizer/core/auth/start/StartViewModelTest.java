@@ -53,7 +53,7 @@ public class StartViewModelTest {
     private StartViewModel startViewModel;
     private static final Set<String> SAVED_EMAILS = new HashSet<>(Arrays.asList("email1", "email2", "email3"));
 
-    private static final EmailValidationResponse EMAIL_RESPONSE_REGISTERED = EmailValidationResponse.builder().result(true).build();
+    private static final EmailValidationResponse EMAIL_RESPONSE_REGISTERED = EmailValidationResponse.builder().exists(true).build();
 
     @Mock
     private Observer<Boolean> isLoggedIn;
@@ -123,7 +123,7 @@ public class StartViewModelTest {
 
         inOrder.verify(authService).checkEmailRegistered(EMAIL_REQUEST);
         inOrder.verify(progress).onChanged(true);
-        inOrder.verify(isEmailRegistered).onChanged(false);
+        inOrder.verify(isEmailRegistered).onChanged(true);
         inOrder.verify(progress).onChanged(false);
     }
 
