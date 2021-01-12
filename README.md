@@ -67,7 +67,7 @@ Our chat channel is on gitter here: https://gitter.im/fossasia/open-event-orga-a
 
 ## Publishing
 
-Each push to master branch automatically publishes the application to Play Store as an Alpha Release. Thus, on each merge into master, the `versionCode` and `versionName` **MUST** be changed accordingly in `app/build.gradle`  
+Each push to the master branch automatically publishes the application to Play Store as an Alpha Release. Thus, on each merge into master, the `versionCode` and `versionName` **MUST** be changed accordingly in `app/build.gradle`  
 - `versionCode` : Integer : To be monotonically incremented with each merge. Failure to do so will lead to publishing error, and thus is a crucial step before any merge
 - `versionName` : String : User visible version of the app. To be changed following [symantic versioning](http://semver.org/)
 
