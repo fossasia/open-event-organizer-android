@@ -92,4 +92,4 @@
             android:value="${MAPBOX_ACCESS_TOKEN}" />
     </application>
 
-</manifest
+</manifest>
